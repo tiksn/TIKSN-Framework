@@ -38,6 +38,10 @@ TestResult.xml
 [Rr]eleasePS/
 dlldata.c
 
+# DNX
+project.lock.json
+artifacts/
+
 *_i.c
 *_p.c
 *_i.h
@@ -90,7 +94,7 @@ _ReSharper*/
 *.[Rr]e[Ss]harper
 *.DotSettings.user
 
-# JustCode is a .NET coding addin-in
+# JustCode is a .NET coding add-in
 .JustCode
 
 # TeamCity is a build add-in
@@ -150,8 +154,13 @@ csx/
 # Windows Store app package directory
 AppPackages/
 
-# Others
+# Visual Studio cache files
+# files ending in .cache can be ignored
 *.[Cc]ache
+# but keep track of directories ending in .cache
+!*.[Cc]ache/
+
+# Others
 ClientBin/
 [Ss]tyle[Cc]op.*
 ~$*
@@ -162,6 +171,7 @@ ClientBin/
 *.publishsettings
 node_modules/
 bower_components/
+orleans.codegen.cs
 
 # RIA/Silverlight projects
 Generated_Code/
