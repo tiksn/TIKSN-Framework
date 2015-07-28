@@ -253,15 +253,15 @@
 			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(false, currency.IsCurrent);
 		}
 
-		public void CurrencyIsoSymbolAndNumber003()
+		public void CurrencyIsoSymbolAndNumber004()
 		{
-			var currency = new CurrencyInfo(new System.Globalization.RegionInfo("hy-AM"));
+			var currency = new CurrencyInfo(new System.Globalization.RegionInfo("en-US"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual("XRE", currency.ISOCurrencySymbol);
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual("XRE", currency.CurrencySymbol);
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual("XRE", currency.ToString());
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(true, currency.IsFund);
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(false, currency.IsCurrent);
+			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual("USD", currency.ISOCurrencySymbol);
+			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual("$", currency.CurrencySymbol);
+			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual("USD", currency.ToString());
+			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(false, currency.IsFund);
+			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(true, currency.IsCurrent);
 		}
 	}
 }
