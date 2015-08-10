@@ -313,6 +313,18 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         }
 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
+        public void GetExchangeRate006()
+        {
+            var Bank = new Finance.ForeignExchange.FederalReserveSystem();
+
+            var pair = new CurrencyPair(new CurrencyInfo(new System.Globalization.RegionInfo("US")), new CurrencyInfo(new System.Globalization.RegionInfo("SG")));
+
+            var rate = Bank.GetExchangeRate(pair, System.DateTime.Now);
+
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(rate > decimal.One);
+        }
+
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
         public void KeepCurrenciesPairsUpdated()
         {
             // In case or failure, check currency pair information from FRS website and set deadline up to 3 month.
