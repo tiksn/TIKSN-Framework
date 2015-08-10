@@ -39,6 +39,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <EmbeddedResource Include="CurrencyResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CurrencyResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -47,7 +51,13 @@
   <ItemGroup>
     <Compile Include="CachedCurrencyConverter.cs" />
     <Compile Include="CurrencyInfo.cs" />
+    <Compile Include="CurrencyNotFoundException.cs" />
     <Compile Include="CurrencyPair.cs" />
+    <Compile Include="CurrencyResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CurrencyResource.resx</DependentUpon>
+    </Compile>
     <Compile Include="FixedRateCurrencyConverter.cs" />
     <Compile Include="ForeignExchange\BankOfCanada.cs" />
     <Compile Include="ForeignExchange\BankOfEngland.cs" />
