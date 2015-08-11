@@ -129,7 +129,7 @@ namespace TIKSN.Finance.ForeignExchange
                 if (rawItem.Key == "BSD" || rawItem.Key == "XPF" || rawItem.Key == "FJD" || rawItem.Key == "GHS" || rawItem.Key == "ANG")
                     continue;
 
-                CurrencyInfo currency = this.rates.Keys.Single(C => C.ISOCurrencySymbol == rawItem.Key);
+                CurrencyInfo currency = new CurrencyInfo(rawItem.Key);
 
                 result.Add(currency, rawItem.Value);
             }
