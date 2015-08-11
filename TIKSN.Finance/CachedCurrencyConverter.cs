@@ -153,26 +153,26 @@ namespace TIKSN.Finance
             return cachedItem;
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money BaseMoney, CurrencyInfo CounterCurrency, DateTimeOffset asOn)
+        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
         {
-            if (BaseMoney.Amount == decimal.Zero)
+            if (baseMoney.Amount == decimal.Zero)
             {
-                return new Money(CounterCurrency, decimal.Zero);
+                return new Money(counterCurrency, decimal.Zero);
             }
             else
             {
-                var pair = new CurrencyPair(BaseMoney.Currency, CounterCurrency);
+                var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
                 var cachedRate = this.GetFromCache(this.cachedRates.Where(item => item.Pair == pair), this.RatesCacheInterval, asOn);
 
                 if (cachedRate != null)
                 {
-                    return new Money(CounterCurrency, BaseMoney.Amount * cachedRate.ExchangeRate);
+                    return new Money(counterCurrency, baseMoney.Amount * cachedRate.ExchangeRate);
                 }
 
-                var actualMoney = await this.originalConverter.ConvertCurrencyAsync(BaseMoney, CounterCurrency, asOn);
+                var actualMoney = await this.originalConverter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn);
 
-                var actualRate = actualMoney.Amount / BaseMoney.Amount;
+                var actualRate = actualMoney.Amount / baseMoney.Amount;
 
                 this.AddToCache(this.cachedRates, this.RatesCacheCapacity, new CachedRate(pair, actualRate, asOn));
 
@@ -196,18 +196,18 @@ namespace TIKSN.Finance
             return actualPairs;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair Pair, DateTimeOffset asOn)
+        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
         {
-            var cachedRate = this.GetFromCache(this.cachedRates.Where(item => item.Pair == Pair), this.RatesCacheInterval, asOn);
+            var cachedRate = this.GetFromCache(this.cachedRates.Where(item => item.Pair == pair), this.RatesCacheInterval, asOn);
 
             if (cachedRate != null)
             {
                 return cachedRate.ExchangeRate;
             }
 
-            var actualRate = await this.originalConverter.GetExchangeRateAsync(Pair, asOn);
+            var actualRate = await this.originalConverter.GetExchangeRateAsync(pair, asOn);
 
-            this.AddToCache(this.cachedRates, this.RatesCacheCapacity, new CachedRate(Pair, actualRate, asOn));
+            this.AddToCache(this.cachedRates, this.RatesCacheCapacity, new CachedRate(pair, actualRate, asOn));
 
             return actualRate;
         }
