@@ -131,13 +131,13 @@ namespace TIKSN.Finance.ForeignExchange
             this.SeriesCodes.Add(pair, SerieCode);
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money BaseMoney, CurrencyInfo CounterCurrency, DateTimeOffset asOn)
+        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
         {
-            CurrencyPair pair = new CurrencyPair(BaseMoney.Currency, CounterCurrency);
+            CurrencyPair pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
             decimal rate = await this.GetExchangeRateAsync(pair, asOn);
 
-            return new Money(CounterCurrency, BaseMoney.Amount * rate);
+            return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
         public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
@@ -157,7 +157,7 @@ namespace TIKSN.Finance.ForeignExchange
             return pairs;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair Pair, DateTimeOffset asOn)
+        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
         {
             if (asOn > DateTimeOffset.Now)
                 throw new ArgumentException("Exchange rate forecasting are not supported.");
@@ -166,7 +166,7 @@ namespace TIKSN.Finance.ForeignExchange
 
             try
             {
-                SerieCode = this.SeriesCodes[Pair];
+                SerieCode = this.SeriesCodes[pair];
             }
             catch (KeyNotFoundException)
             {

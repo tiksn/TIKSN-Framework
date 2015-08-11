@@ -29,13 +29,13 @@ namespace TIKSN.Finance.ForeignExchange
             this.lastFetchDate = DateTimeOffset.Now;
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money BaseMoney, CurrencyInfo CounterCurrency, DateTimeOffset asOn)
+        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
         {
-            CurrencyPair pair = new CurrencyPair(BaseMoney.Currency, CounterCurrency);
+            CurrencyPair pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
             decimal rate = await this.GetExchangeRateAsync(pair, asOn);
 
-            return new Money(CounterCurrency, BaseMoney.Amount * rate);
+            return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
         public async Task FetchAsync()
@@ -72,7 +72,7 @@ namespace TIKSN.Finance.ForeignExchange
             return result;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair Pair, DateTimeOffset asOn)
+        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
         {
             await this.FetchOnDemandAsync();
 
@@ -84,13 +84,13 @@ namespace TIKSN.Finance.ForeignExchange
 
             Tuple<DateTimeOffset, decimal> rateInfo;
 
-            if (this.IsHomeCurrencyPair(Pair))
+            if (this.IsHomeCurrencyPair(pair))
             {
-                rateInfo = this.rates[Pair.CounterCurrency];
+                rateInfo = this.rates[pair.CounterCurrency];
             }
             else
             {
-                rateInfo = this.rates[Pair.BaseCurrency];
+                rateInfo = this.rates[pair.BaseCurrency];
                 rateInfo = new Tuple<DateTimeOffset, decimal>(rateInfo.Item1, decimal.One / rateInfo.Item2);
             }
 

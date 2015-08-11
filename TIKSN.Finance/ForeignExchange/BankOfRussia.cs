@@ -31,13 +31,13 @@ namespace TIKSN.Finance.ForeignExchange
             this.published = null;
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money BaseMoney, CurrencyInfo CounterCurrency, DateTimeOffset asOn)
+        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
         {
             await this.FetchOnDemandAsync(asOn);
 
-            decimal rate = this.GetRate(BaseMoney.Currency, CounterCurrency);
+            decimal rate = this.GetRate(baseMoney.Currency, counterCurrency);
 
-            return new Money(CounterCurrency, BaseMoney.Amount * rate);
+            return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
         public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
@@ -55,11 +55,11 @@ namespace TIKSN.Finance.ForeignExchange
             return pairs;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair Pair, DateTimeOffset asOn)
+        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
         {
             await this.FetchOnDemandAsync(asOn);
 
-            decimal rate = this.GetRate(Pair.BaseCurrency, Pair.CounterCurrency);
+            decimal rate = this.GetRate(pair.BaseCurrency, pair.CounterCurrency);
 
             return rate;
         }
