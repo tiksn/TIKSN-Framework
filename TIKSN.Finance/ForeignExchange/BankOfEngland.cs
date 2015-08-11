@@ -175,7 +175,7 @@ namespace TIKSN.Finance.ForeignExchange
 
             string RequestUrl = string.Format(UrlFormat, ToInternalDataFormat(asOn.AddMonths(-1)), ToInternalDataFormat(asOn), SerieCode);
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(RequestUrl);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.CreateHttp(RequestUrl);
 
             HttpWebResponse response = (HttpWebResponse)await Task.Factory.FromAsync(request.BeginGetResponse, request.EndGetResponse, null);
 
