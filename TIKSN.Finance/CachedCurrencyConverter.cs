@@ -1,250 +1,256 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace TIKSN.Finance
 {
-	public class CachedCurrencyConverter : ICurrencyConverter
-	{
-		private System.Collections.Generic.List<CachedCurrencyPairs> cachedCurrencyPairs;
+    public class CachedCurrencyConverter : ICurrencyConverter
+    {
+        private List<CachedCurrencyPairs> cachedCurrencyPairs;
 
-		private System.Collections.Generic.List<CachedRate> cachedRates;
+        private List<CachedRate> cachedRates;
 
-		private ICurrencyConverter originalConverter;
+        private ICurrencyConverter originalConverter;
 
-		public CachedCurrencyConverter(ICurrencyConverter originalConverter, System.TimeSpan ratesCacheInterval, System.TimeSpan currencyPairsCacheInterval, int? ratesCacheCapacity = null, int? currencyPairsCacheCapacity = null)
-		{
-			if (originalConverter == null)
-				throw new System.ArgumentNullException("originalConverter");
+        public CachedCurrencyConverter(ICurrencyConverter originalConverter, TimeSpan ratesCacheInterval, TimeSpan currencyPairsCacheInterval, int? ratesCacheCapacity = null, int? currencyPairsCacheCapacity = null)
+        {
+            if (originalConverter == null)
+                throw new ArgumentNullException("originalConverter");
 
-			if (ratesCacheCapacity.HasValue)
-			{
-				if (ratesCacheCapacity.Value < 0)
-				{
-					throw new System.ArgumentOutOfRangeException("ratesCacheCapacity", "Rates cache capacity can not be negative.");
-				}
-			}
+            if (ratesCacheCapacity.HasValue)
+            {
+                if (ratesCacheCapacity.Value < 0)
+                {
+                    throw new ArgumentOutOfRangeException("ratesCacheCapacity", "Rates cache capacity can not be negative.");
+                }
+            }
 
-			if (currencyPairsCacheCapacity.HasValue)
-			{
-				if (currencyPairsCacheCapacity.Value < 0)
-				{
-					throw new System.ArgumentOutOfRangeException("currencyPairsCacheCapacity", "Currency pairs cache capacity can not be negative.");
-				}
-			}
+            if (currencyPairsCacheCapacity.HasValue)
+            {
+                if (currencyPairsCacheCapacity.Value < 0)
+                {
+                    throw new ArgumentOutOfRangeException("currencyPairsCacheCapacity", "Currency pairs cache capacity can not be negative.");
+                }
+            }
 
-			if (ratesCacheInterval < System.TimeSpan.Zero)
-			{
-				throw new System.ArgumentOutOfRangeException("ratesCacheInterval", "Rates cache interval can not be negative.");
-			}
+            if (ratesCacheInterval < TimeSpan.Zero)
+            {
+                throw new ArgumentOutOfRangeException("ratesCacheInterval", "Rates cache interval can not be negative.");
+            }
 
-			if (currencyPairsCacheInterval < System.TimeSpan.Zero)
-			{
-				throw new System.ArgumentOutOfRangeException("currencyPairsCacheInterval", "Currency pairs cache interval can not be negative.");
-			}
+            if (currencyPairsCacheInterval < TimeSpan.Zero)
+            {
+                throw new ArgumentOutOfRangeException("currencyPairsCacheInterval", "Currency pairs cache interval can not be negative.");
+            }
 
-			this.originalConverter = originalConverter;
-			this.RatesCacheInterval = ratesCacheInterval;
-			this.CurrencyPairsCacheInterval = currencyPairsCacheInterval;
-			this.RatesCacheCapacity = ratesCacheCapacity;
-			this.CurrencyPairsCacheCapacity = currencyPairsCacheCapacity;
+            this.originalConverter = originalConverter;
+            this.RatesCacheInterval = ratesCacheInterval;
+            this.CurrencyPairsCacheInterval = currencyPairsCacheInterval;
+            this.RatesCacheCapacity = ratesCacheCapacity;
+            this.CurrencyPairsCacheCapacity = currencyPairsCacheCapacity;
 
-			this.cachedCurrencyPairs = new System.Collections.Generic.List<CachedCurrencyPairs>();
-			this.cachedRates = new System.Collections.Generic.List<CachedRate>();
-		}
+            this.cachedCurrencyPairs = new List<CachedCurrencyPairs>();
+            this.cachedRates = new List<CachedRate>();
+        }
 
-		public int? CurrencyPairsCacheCapacity { get; private set; }
+        public int? CurrencyPairsCacheCapacity { get; private set; }
 
-		public System.TimeSpan CurrencyPairsCacheInterval { get; private set; }
+        public TimeSpan CurrencyPairsCacheInterval { get; private set; }
 
-		public int CurrencyPairsCacheSize
-		{
-			get
-			{
-				return this.cachedCurrencyPairs.Count;
-			}
-		}
+        public int CurrencyPairsCacheSize
+        {
+            get
+            {
+                return this.cachedCurrencyPairs.Count;
+            }
+        }
 
-		public int? RatesCacheCapacity { get; private set; }
+        public int? RatesCacheCapacity { get; private set; }
 
-		public System.TimeSpan RatesCacheInterval { get; private set; }
+        public TimeSpan RatesCacheInterval { get; private set; }
 
-		public int RatesCacheSize
-		{
-			get
-			{
-				return this.cachedRates.Count;
-			}
-		}
+        public int RatesCacheSize
+        {
+            get
+            {
+                return this.cachedRates.Count;
+            }
+        }
 
-		public void Clear()
-		{
-			this.cachedCurrencyPairs.Clear();
-			this.cachedRates.Clear();
-		}
+        public void Clear()
+        {
+            this.cachedCurrencyPairs.Clear();
+            this.cachedRates.Clear();
+        }
 
-		public Money ConvertCurrency(Money BaseMoney, CurrencyInfo CounterCurrency, System.DateTime asOn)
-		{
-			if (BaseMoney.Amount == decimal.Zero)
-			{
-				return new Money(CounterCurrency, decimal.Zero);
-			}
-			else
-			{
-				var pair = new CurrencyPair(BaseMoney.Currency, CounterCurrency);
+        private static TimeSpan Absolute(TimeSpan value)
+        {
+            if (value < TimeSpan.Zero)
+            {
+                return -value;
+            }
+            else
+            {
+                return value;
+            }
+        }
 
-				var cachedRate = this.GetFromCache(this.cachedRates.Where(item => item.Pair == pair), this.RatesCacheInterval, asOn);
+        private static bool IsActual(DateTimeOffset cachedAsOn, DateTimeOffset actualAsOn, TimeSpan interval)
+        {
+            if (cachedAsOn < actualAsOn)
+            {
+                if (actualAsOn - cachedAsOn <= interval)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                if (cachedAsOn - actualAsOn < interval)
+                {
+                    return true;
+                }
+            }
 
-				if (cachedRate != null)
-				{
-					return new Money(CounterCurrency, BaseMoney.Amount * cachedRate.ExchangeRate);
-				}
+            return false;
+        }
 
-				var actualMoney = this.originalConverter.ConvertCurrency(BaseMoney, CounterCurrency, asOn);
+        private void AddToCache<T>(List<T> cache, int? capacity, T itemToCache) where T : CachedData
+        {
+            lock (cache)
+            {
+                if (capacity != 0)
+                {
+                    if (capacity.HasValue)
+                    {
+                        if (cache.Count + 1 > capacity.Value)
+                        {
+                            var itemToRemove = cache.OrderBy(item => item.LastAccess).First();
 
-				var actualRate = actualMoney.Amount / BaseMoney.Amount;
+                            cache.Remove(itemToRemove);
+                        }
 
-				this.AddToCache(this.cachedRates, this.RatesCacheCapacity, new CachedRate(pair, actualRate, asOn));
+                        cache.Add(itemToCache);
+                    }
+                    else
+                    {
+                        cache.Add(itemToCache);
+                    }
+                }
+            }
+        }
 
-				return actualMoney;
-			}
-		}
+        private T GetFromCache<T>(IEnumerable<T> cache, TimeSpan interval, DateTimeOffset asOn) where T : CachedData
+        {
+            var cachedItem = cache.Where(item => IsActual(item.AsOn, asOn, interval)).OrderBy(item => Absolute(item.AsOn - asOn)).FirstOrDefault();
 
-		public System.Collections.Generic.IEnumerable<CurrencyPair> GetCurrencyPairs(System.DateTime asOn)
-		{
-			var cachedPairs = this.GetFromCache(this.cachedCurrencyPairs, this.CurrencyPairsCacheInterval, asOn);
+            if (cachedItem != null)
+            {
+                cachedItem.Update();
+            }
 
-			if (cachedPairs != null)
-			{
-				return cachedPairs.CurrencyPairs;
-			}
+            return cachedItem;
+        }
 
-			var actualPairs = this.originalConverter.GetCurrencyPairs(asOn);
+        public async Task<Money> ConvertCurrencyAsync(Money BaseMoney, CurrencyInfo CounterCurrency, DateTimeOffset asOn)
+        {
+            if (BaseMoney.Amount == decimal.Zero)
+            {
+                return new Money(CounterCurrency, decimal.Zero);
+            }
+            else
+            {
+                var pair = new CurrencyPair(BaseMoney.Currency, CounterCurrency);
 
-			this.AddToCache(this.cachedCurrencyPairs, this.CurrencyPairsCacheCapacity, new CachedCurrencyPairs(actualPairs, asOn));
+                var cachedRate = this.GetFromCache(this.cachedRates.Where(item => item.Pair == pair), this.RatesCacheInterval, asOn);
 
-			return actualPairs;
-		}
+                if (cachedRate != null)
+                {
+                    return new Money(CounterCurrency, BaseMoney.Amount * cachedRate.ExchangeRate);
+                }
 
-		public decimal GetExchangeRate(CurrencyPair Pair, System.DateTime asOn)
-		{
-			var cachedRate = this.GetFromCache(this.cachedRates.Where(item => item.Pair == Pair), this.RatesCacheInterval, asOn);
+                var actualMoney = await this.originalConverter.ConvertCurrencyAsync(BaseMoney, CounterCurrency, asOn);
 
-			if (cachedRate != null)
-			{
-				return cachedRate.ExchangeRate;
-			}
+                var actualRate = actualMoney.Amount / BaseMoney.Amount;
 
-			var actualRate = this.originalConverter.GetExchangeRate(Pair, asOn);
+                this.AddToCache(this.cachedRates, this.RatesCacheCapacity, new CachedRate(pair, actualRate, asOn));
 
-			this.AddToCache(this.cachedRates, this.RatesCacheCapacity, new CachedRate(Pair, actualRate, asOn));
+                return actualMoney;
+            }
+        }
 
-			return actualRate;
-		}
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
+        {
+            var cachedPairs = this.GetFromCache(this.cachedCurrencyPairs, this.CurrencyPairsCacheInterval, asOn);
 
-		private static System.TimeSpan Absolute(System.TimeSpan value)
-		{
-			if (value < System.TimeSpan.Zero)
-			{
-				return -value;
-			}
-			else
-			{
-				return value;
-			}
-		}
+            if (cachedPairs != null)
+            {
+                return cachedPairs.CurrencyPairs;
+            }
 
-		private static bool IsActual(System.DateTime cachedAsOn, System.DateTime actualAsOn, System.TimeSpan interval)
-		{
-			if (cachedAsOn < actualAsOn)
-			{
-				if (actualAsOn - cachedAsOn <= interval)
-				{
-					return true;
-				}
-			}
-			else
-			{
-				if (cachedAsOn - actualAsOn < interval)
-				{
-					return true;
-				}
-			}
+            var actualPairs = await this.originalConverter.GetCurrencyPairsAsync(asOn);
 
-			return false;
-		}
+            this.AddToCache(this.cachedCurrencyPairs, this.CurrencyPairsCacheCapacity, new CachedCurrencyPairs(actualPairs, asOn));
 
-		private void AddToCache<T>(System.Collections.Generic.List<T> cache, int? capacity, T itemToCache) where T : CachedData
-		{
-			if (capacity != 0)
-			{
-				if (capacity.HasValue)
-				{
-					if (cache.Count + 1 > capacity.Value)
-					{
-						var itemToRemove = cache.OrderBy(item => item.LastAccess).First();
+            return actualPairs;
+        }
 
-						cache.Remove(itemToRemove);
-					}
+        public async Task<decimal> GetExchangeRateAsync(CurrencyPair Pair, DateTimeOffset asOn)
+        {
+            var cachedRate = this.GetFromCache(this.cachedRates.Where(item => item.Pair == Pair), this.RatesCacheInterval, asOn);
 
-					cache.Add(itemToCache);
-				}
-				else
-				{
-					cache.Add(itemToCache);
-				}
-			}
-		}
+            if (cachedRate != null)
+            {
+                return cachedRate.ExchangeRate;
+            }
 
-		private T GetFromCache<T>(System.Collections.Generic.IEnumerable<T> cache, System.TimeSpan interval, System.DateTime asOn) where T : CachedData
-		{
-			var cachedItem = cache.Where(item => IsActual(item.AsOn, asOn, interval)).OrderBy(item => Absolute(item.AsOn - asOn)).FirstOrDefault();
+            var actualRate = await this.originalConverter.GetExchangeRateAsync(Pair, asOn);
 
-			if (cachedItem != null)
-			{
-				cachedItem.Update();
-			}
+            this.AddToCache(this.cachedRates, this.RatesCacheCapacity, new CachedRate(Pair, actualRate, asOn));
 
-			return cachedItem;
-		}
+            return actualRate;
+        }
 
-		private class CachedCurrencyPairs : CachedData
-		{
-			public CachedCurrencyPairs(System.Collections.Generic.IEnumerable<CurrencyPair> currencyPairs, System.DateTime asOn)
-			{
-				this.CurrencyPairs = currencyPairs;
-				this.AsOn = asOn;
+        private class CachedCurrencyPairs : CachedData
+        {
+            public CachedCurrencyPairs(IEnumerable<CurrencyPair> currencyPairs, DateTimeOffset asOn)
+            {
+                this.CurrencyPairs = currencyPairs;
+                this.AsOn = asOn;
 
-				this.Update();
-			}
+                this.Update();
+            }
 
-			public System.Collections.Generic.IEnumerable<CurrencyPair> CurrencyPairs { get; set; }
-		}
+            public IEnumerable<CurrencyPair> CurrencyPairs { get; set; }
+        }
 
-		private abstract class CachedData
-		{
-			public System.DateTime AsOn { get; set; }
+        private abstract class CachedData
+        {
+            public DateTimeOffset AsOn { get; set; }
 
-			public System.DateTime LastAccess { get; private set; }
+            public DateTimeOffset LastAccess { get; private set; }
 
-			public void Update()
-			{
-				this.LastAccess = System.DateTime.Now;
-			}
-		}
+            public void Update()
+            {
+                this.LastAccess = DateTimeOffset.Now;
+            }
+        }
 
-		private class CachedRate : CachedData
-		{
-			public CachedRate(CurrencyPair pair, decimal exchangeRate, System.DateTime asOn)
-			{
-				this.Pair = pair;
-				this.ExchangeRate = exchangeRate;
-				this.AsOn = asOn;
+        private class CachedRate : CachedData
+        {
+            public CachedRate(CurrencyPair pair, decimal exchangeRate, DateTimeOffset asOn)
+            {
+                this.Pair = pair;
+                this.ExchangeRate = exchangeRate;
+                this.AsOn = asOn;
 
-				this.Update();
-			}
+                this.Update();
+            }
 
-			public decimal ExchangeRate { get; private set; }
+            public decimal ExchangeRate { get; private set; }
 
-			public CurrencyPair Pair { get; private set; }
-		}
-	}
+            public CurrencyPair Pair { get; private set; }
+        }
+    }
 }
