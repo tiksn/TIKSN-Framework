@@ -1,166 +1,131 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace TIKSN.Finance.ForeignExchange
 {
-	public class BankOfRussia : ICurrencyConverter
-	{
-		private static readonly string AddressFormat = "http://www.cbr.ru/scripts/XML_daily.asp?date_req={0:00}.{1:00}.{2}";
-		private static readonly System.Collections.Generic.List<CurrencyInfo> currencies;
-		private static readonly CurrencyInfo RussianRuble;
+    public class BankOfRussia : ICurrencyConverter
+    {
+        private static readonly string AddressFormat = "http://www.cbr.ru/scripts/XML_daily.asp?date_req={0:00}.{1:00}.{2}";
+        private static readonly CurrencyInfo RussianRuble;
+        private static readonly CultureInfo RussianRussia;
 
-		private System.DateTime? published;
-		private System.Collections.Generic.Dictionary<CurrencyInfo, decimal> rates;
+        private DateTime? published;
+        private Dictionary<CurrencyInfo, decimal> rates;
 
-		static BankOfRussia()
-		{
-			var Russia = new System.Globalization.RegionInfo("ru-RU");
+        static BankOfRussia()
+        {
+            var russia = new RegionInfo("ru-RU");
 
-			RussianRuble = new CurrencyInfo(Russia);
+            RussianRuble = new CurrencyInfo(russia);
+            RussianRussia = new CultureInfo("ru-RU");
+        }
 
-			var countries = new System.Collections.Generic.List<string>();
+        public BankOfRussia()
+        {
+            this.rates = new Dictionary<CurrencyInfo, decimal>();
+            this.published = null;
+        }
 
-			countries.Add("en-AU");
-			countries.Add("az-Cyrl-AZ");
-			countries.Add("hy-AM");
-			countries.Add("be-BY");
-			countries.Add("bg-BG");
-			countries.Add("pt-BR");
-			countries.Add("hu-HU");
-			countries.Add("ko-KR");
-			countries.Add("da-DK");
-			countries.Add("en-US");
-			countries.Add("de-DE");
-			countries.Add("hi-IN");
-			countries.Add("kk-KZ");
-			countries.Add("en-CA");
-			countries.Add("ky-KG");
-			countries.Add("zh-CN");
-			countries.Add("lt-LT");
-			countries.Add("ro-MD");
-			countries.Add("ro-RO");
-			countries.Add("tk-TM");
-			countries.Add("nn-NO");
-			countries.Add("pl-PL");
-			countries.Add("zh-SG");
-			countries.Add("tg-Cyrl-TJ");
-			countries.Add("tr-TR");
-			countries.Add("uz-Cyrl-UZ");
-			countries.Add("uk-UA");
-			countries.Add("en-GB");
-			countries.Add("cs-CZ");
-			countries.Add("sv-SE");
-			countries.Add("de-CH");
-			countries.Add("af-ZA");
-			countries.Add("ja-JP");
-			countries.Add("is-IS");
-			countries.Add("ka-GE");
+        public async Task<Money> ConvertCurrencyAsync(Money BaseMoney, CurrencyInfo CounterCurrency, DateTimeOffset asOn)
+        {
+            await this.FetchOnDemandAsync(asOn);
 
-			var regions = countries.Select(C => new System.Globalization.RegionInfo(C));
+            decimal rate = this.GetRate(BaseMoney.Currency, CounterCurrency);
 
-			currencies = new System.Collections.Generic.List<CurrencyInfo>();
-			currencies.AddRange(regions.Select(R => new CurrencyInfo(R)));
-		}
+            return new Money(CounterCurrency, BaseMoney.Amount * rate);
+        }
 
-		public BankOfRussia()
-		{
-			this.rates = new System.Collections.Generic.Dictionary<CurrencyInfo, decimal>();
-			this.published = null;
-		}
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
+        {
+            await this.FetchOnDemandAsync(asOn);
 
-		public Money ConvertCurrency(Money BaseMoney, CurrencyInfo CounterCurrency, System.DateTime asOn)
-		{
-			this.FetchOnDemand(asOn);
+            var pairs = new List<CurrencyPair>();
 
-			decimal rate = this.GetRate(BaseMoney.Currency, CounterCurrency);
+            foreach (var foreignCurrency in this.rates.Keys)
+            {
+                pairs.Add(new CurrencyPair(foreignCurrency, RussianRuble));
+                pairs.Add(new CurrencyPair(RussianRuble, foreignCurrency));
+            }
 
-			return new Money(CounterCurrency, BaseMoney.Amount * rate);
-		}
+            return pairs;
+        }
 
-		public System.Collections.Generic.IEnumerable<CurrencyPair> GetCurrencyPairs(System.DateTime asOn)
-		{
-			this.FetchOnDemand(asOn);
+        public async Task<decimal> GetExchangeRateAsync(CurrencyPair Pair, DateTimeOffset asOn)
+        {
+            await this.FetchOnDemandAsync(asOn);
 
-			var pairs = new System.Collections.Generic.List<CurrencyPair>();
+            decimal rate = this.GetRate(Pair.BaseCurrency, Pair.CounterCurrency);
 
-			foreach (var ForeignCurrency in this.rates.Keys)
-			{
-				pairs.Add(new CurrencyPair(ForeignCurrency, RussianRuble));
-				pairs.Add(new CurrencyPair(RussianRuble, ForeignCurrency));
-			}
+            return rate;
+        }
 
-			return pairs;
-		}
+        private async Task FetchAsync(DateTimeOffset asOn)
+        {
+            var thatDay = asOn.Date;
 
-		public decimal GetExchangeRate(CurrencyPair Pair, System.DateTime asOn)
-		{
-			this.FetchOnDemand(asOn);
+            string address = string.Format(AddressFormat, thatDay.Day, thatDay.Month, thatDay.Year);
 
-			decimal rate = this.GetRate(Pair.BaseCurrency, Pair.CounterCurrency);
+            HttpWebRequest request = WebRequest.CreateHttp(address);
 
-			return rate;
-		}
+            HttpWebResponse response = (HttpWebResponse)await Task.Factory.FromAsync(request.BeginGetResponse, request.EndGetResponse, null);
 
-		private void Fetch(System.DateTime asOn)
-		{
-			var RussianRussia = new System.Globalization.CultureInfo("ru-RU");
+            var xdoc = XDocument.Load(response.GetResponseStream());
 
-			this.rates.Clear();
+            lock (this.rates)
+            {
+                this.rates.Clear();
 
-			var ThatDay = asOn.Date;
+                foreach (var ValuteElement in xdoc.Element("ValCurs").Elements("Valute"))
+                {
+                    var charCodeElement = ValuteElement.Element("CharCode");
+                    var nominalElement = ValuteElement.Element("Nominal");
+                    var valueElement = ValuteElement.Element("Value");
 
-			string address = string.Format(AddressFormat, ThatDay.Day, ThatDay.Month, ThatDay.Year);
+                    var code = charCodeElement.Value;
 
-			System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.HttpWebRequest.Create(address);
+                    if (code == "XDR" || code == "ATS" || code == "BEF" || code == "GRD" || code == "IEP" || code == "ESP" || code == "ITL" || code == "DEM" || code == "NLG" || code == "PTE" || code == "TRL" || code == "FIM" || code == "FRF" || code == "XEU" || code == "NULL" || code == "EEK" || code == "LVL" || code == "BYB" || code == "AZM")
+                        continue;
 
-			System.Net.HttpWebResponse response = (System.Net.HttpWebResponse)System.Threading.Tasks.Task.Factory.FromAsync<System.Net.WebResponse>(request.BeginGetResponse, request.EndGetResponse, null).Result;
+                    var Currency = new CurrencyInfo(charCodeElement.Value);
+                    decimal rate = decimal.Parse(valueElement.Value, RussianRussia) / decimal.Parse(nominalElement.Value, RussianRussia);
 
-			System.Xml.Linq.XDocument xdoc = System.Xml.Linq.XDocument.Load(response.GetResponseStream());
+                    this.rates.Add(Currency, rate);
+                }
 
-			foreach (var ValuteElement in xdoc.Element("ValCurs").Elements("Valute"))
-			{
-				var CharCodeElement = ValuteElement.Element("CharCode");
-				var NominalElement = ValuteElement.Element("Nominal");
-				var ValueElement = ValuteElement.Element("Value");
+                this.published = asOn.Date;
+            }
+        }
 
-				var code = CharCodeElement.Value;
+        private async Task FetchOnDemandAsync(DateTimeOffset asOn)
+        {
+            if (asOn > DateTimeOffset.Now)
+                throw new ArgumentException("Exchange rate forecasting not supported.");
 
-				if (code == "XDR" || code == "ATS" || code == "BEF" || code == "GRD" || code == "IEP" || code == "ESP" || code == "ITL" || code == "DEM" || code == "NLG" || code == "PTE" || code == "TRL" || code == "FIM" || code == "FRF" || code == "XEU" || code == "NULL" || code == "EEK" || code == "LVL" || code == "BYB" || code == "AZM")
-					continue;
+            if (!this.published.HasValue)
+                await this.FetchAsync(asOn);
+            else if (this.published.Value != asOn.Date)
+                await this.FetchAsync(asOn);
+        }
 
-				var Currency = currencies.Single(C => C.ToString() == CharCodeElement.Value);
-				decimal rate = decimal.Parse(ValueElement.Value, RussianRussia) / decimal.Parse(NominalElement.Value, RussianRussia);
+        private decimal GetRate(CurrencyInfo BaseCurrency, CurrencyInfo CounterCurrency)
+        {
+            if (BaseCurrency == RussianRuble)
+            {
+                if (rates.ContainsKey(CounterCurrency))
+                    return decimal.One / rates[CounterCurrency];
+            }
+            else if (CounterCurrency == RussianRuble)
+            {
+                if (this.rates.ContainsKey(BaseCurrency))
+                    return this.rates[BaseCurrency];
+            }
 
-				this.rates.Add(Currency, rate);
-			}
-
-			this.published = asOn.Date;
-		}
-
-		private void FetchOnDemand(System.DateTime asOn)
-		{
-			if (asOn > System.DateTime.Now)
-				throw new System.ArgumentException("Exchange rate forecasting not supported.");
-
-			if (!this.published.HasValue)
-				this.Fetch(asOn);
-			else if (this.published.Value != System.DateTime.Today)
-				this.Fetch(asOn);
-		}
-
-		private decimal GetRate(CurrencyInfo BaseCurrency, CurrencyInfo CounterCurrency)
-		{
-			if (BaseCurrency == RussianRuble)
-			{
-				if (rates.ContainsKey(CounterCurrency))
-					return decimal.One / rates[CounterCurrency];
-			}
-			else if (CounterCurrency == RussianRuble)
-			{
-				if (this.rates.ContainsKey(BaseCurrency))
-					return this.rates[BaseCurrency];
-			}
-
-			throw new System.ArgumentException("Currency pair not supported.");
-		}
-	}
+            throw new ArgumentException("Currency pair not supported.");
+        }
+    }
 }
