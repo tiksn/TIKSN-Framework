@@ -35,12 +35,12 @@ namespace TIKSN.Finance.ForeignExchange
 
 		public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
 		{
-            var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
+			var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
-            decimal rate =await this.GetExchangeRateAsync(pair, asOn);
+			decimal rate =await this.GetExchangeRateAsync(pair, asOn);
 
-            return new Money(counterCurrency, rate * baseMoney.Amount);
-        }
+			return new Money(counterCurrency, rate * baseMoney.Amount);
+		}
 
 		public async Task FetchAsync()
 		{
@@ -80,41 +80,41 @@ namespace TIKSN.Finance.ForeignExchange
 
 		public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
 		{
-            await this.FetchOnDemandAsync();
+			await this.FetchOnDemandAsync();
 
-            this.VerifyDate(asOn);
+			this.VerifyDate(asOn);
 
-            var pairs = new List<CurrencyPair>();
+			var pairs = new List<CurrencyPair>();
 
-            pairs.AddRange(this.rates.Keys.Select(R => new CurrencyPair(AustralianDollar, R)));
-            pairs.AddRange(this.rates.Keys.Select(R => new CurrencyPair(R, AustralianDollar)));
+			pairs.AddRange(this.rates.Keys.Select(R => new CurrencyPair(AustralianDollar, R)));
+			pairs.AddRange(this.rates.Keys.Select(R => new CurrencyPair(R, AustralianDollar)));
 
-            return pairs;
-        }
+			return pairs;
+		}
 
 		public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
 		{
-            await this.FetchOnDemandAsync();
+			await this.FetchOnDemandAsync();
 
-            this.VerifyDate(asOn);
+			this.VerifyDate(asOn);
 
-            if (pair.BaseCurrency == AustralianDollar)
-            {
-                if (this.rates.ContainsKey(pair.CounterCurrency))
-                    return this.rates[pair.CounterCurrency];
-            }
-            else if (pair.CounterCurrency == AustralianDollar)
-            {
-                if (this.rates.ContainsKey(pair.BaseCurrency))
-                    return decimal.One / this.rates[pair.BaseCurrency];
-            }
+			if (pair.BaseCurrency == AustralianDollar)
+			{
+				if (this.rates.ContainsKey(pair.CounterCurrency))
+					return this.rates[pair.CounterCurrency];
+			}
+			else if (pair.CounterCurrency == AustralianDollar)
+			{
+				if (this.rates.ContainsKey(pair.BaseCurrency))
+					return decimal.One / this.rates[pair.BaseCurrency];
+			}
 
-            throw new ArgumentException("Currency pair not supported.");
-        }
+			throw new ArgumentException("Currency pair not supported.");
+		}
 
 		private async Task FetchOnDemandAsync()
 		{
-            if (DateTimeOffset.Now - lastFetchDate > TimeSpan.FromDays(1d))
+			if (DateTimeOffset.Now - lastFetchDate > TimeSpan.FromDays(1d))
 			{
 				await this.FetchAsync();
 			}
