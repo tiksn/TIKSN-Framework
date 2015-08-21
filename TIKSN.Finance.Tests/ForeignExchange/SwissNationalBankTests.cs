@@ -1,100 +1,105 @@
-﻿using System.Linq;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
+using System.Threading.Tasks;
+using TIKSN.Finance.ForeignExchange;
+using System;
+using System.Globalization;
 
 namespace TIKSN.Finance.Tests.ForeignExchange
 {
-	[Microsoft.VisualStudio.TestTools.UnitTesting.TestClass]
+	[TestClass]
 	public class SwissNationalBankTests
 	{
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void Calculation001()
+		[TestMethod]
+		public async Task Calculation001()
 		{
-			var Bank = new Finance.ForeignExchange.SwissNationalBank();
+			var Bank = new SwissNationalBank();
 
-			var AtTheMoment = System.DateTime.Now;
+			var AtTheMoment = DateTimeOffset.Now;
 
-			foreach (var pair in Bank.GetCurrencyPairs(AtTheMoment))
+			foreach (var pair in await Bank.GetCurrencyPairsAsync(AtTheMoment))
 			{
 				var Before = new Money(pair.BaseCurrency, 100m);
 
-				var After = Bank.ConvertCurrency(Before, pair.CounterCurrency, AtTheMoment);
+				var After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, AtTheMoment);
 
-				var rate = Bank.GetExchangeRate(pair, AtTheMoment);
+				var rate = await Bank.GetExchangeRateAsync(pair, AtTheMoment);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(After.Amount == Before.Amount * rate);
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual<CurrencyInfo>(pair.CounterCurrency, After.Currency);
+				Assert.IsTrue(After.Amount == Before.Amount * rate);
+				Assert.AreEqual<CurrencyInfo>(pair.CounterCurrency, After.Currency);
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConvertCurrency001()
+		[TestMethod]
+		public async Task ConvertCurrency001()
 		{
-			var Bank = new Finance.ForeignExchange.SwissNationalBank();
+			var Bank = new SwissNationalBank();
 
-			var AtTheMoment = System.DateTime.Now;
+			var AtTheMoment = DateTimeOffset.Now;
 
-			foreach (var Pair in Bank.GetCurrencyPairs(AtTheMoment))
+			foreach (var Pair in await Bank.GetCurrencyPairsAsync(AtTheMoment))
 			{
 				var Before = new Money(Pair.BaseCurrency, 100m);
-				var After = Bank.ConvertCurrency(Before, Pair.CounterCurrency, AtTheMoment);
+				var After = await Bank.ConvertCurrencyAsync(Before, Pair.CounterCurrency, AtTheMoment);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(After.Amount > decimal.Zero);
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual<CurrencyInfo>(Pair.CounterCurrency, After.Currency);
+				Assert.IsTrue(After.Amount > decimal.Zero);
+				Assert.AreEqual<CurrencyInfo>(Pair.CounterCurrency, After.Currency);
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConvertCurrency002()
+		[TestMethod]
+		public async Task ConvertCurrency002()
 		{
-			var Bank = new Finance.ForeignExchange.SwissNationalBank();
+			var Bank = new SwissNationalBank();
 
-			var moment = System.DateTime.Now.AddMinutes(10d);
+			var moment = DateTimeOffset.Now.AddMinutes(10d);
 
-			foreach (var pair in Bank.GetCurrencyPairs(System.DateTime.Now))
+			foreach (var pair in await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now))
 			{
 				try
 				{
 					var Before = new Money(pair.BaseCurrency, 100m);
 
-					var After = Bank.ConvertCurrency(Before, pair.CounterCurrency, moment);
+					var After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, moment);
 
-					Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+					Assert.Fail();
 				}
-				catch (System.ArgumentException)
+				catch (ArgumentException)
 				{
 				}
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConvertCurrency004()
+		[TestMethod]
+		public async Task ConvertCurrency004()
 		{
-			var Bank = new Finance.ForeignExchange.SwissNationalBank();
+			var Bank = new SwissNationalBank();
 
-			var moment = System.DateTime.Now.AddDays(-10d);
+			var moment = DateTimeOffset.Now.AddDays(-10d);
 
-			foreach (var pair in Bank.GetCurrencyPairs(System.DateTime.Now))
+			foreach (var pair in await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now))
 			{
 				try
 				{
 					var Before = new Money(pair.BaseCurrency, 100m);
 
-					var After = Bank.ConvertCurrency(Before, pair.CounterCurrency, moment);
+					var After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, moment);
 
-					Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+					Assert.Fail();
 				}
-				catch (System.ArgumentException)
+				catch (ArgumentException)
 				{
 				}
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void CounterCurrency003()
+		[TestMethod]
+		public async Task CounterCurrency003()
 		{
-			var Bank = new Finance.ForeignExchange.SwissNationalBank();
+			var Bank = new SwissNationalBank();
 
-			System.Globalization.RegionInfo AO = new System.Globalization.RegionInfo("AO");
-			System.Globalization.RegionInfo BW = new System.Globalization.RegionInfo("BW");
+			RegionInfo AO = new RegionInfo("AO");
+			RegionInfo BW = new RegionInfo("BW");
 
 			CurrencyInfo AOA = new CurrencyInfo(AO);
 			CurrencyInfo BWP = new CurrencyInfo(BW);
@@ -103,141 +108,141 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			{
 				var Before = new Money(AOA, 100m);
 
-				var After = Bank.ConvertCurrency(Before, BWP, System.DateTime.Now);
+				var After = await Bank.ConvertCurrencyAsync(Before, BWP, DateTimeOffset.Now);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
-			catch (System.ArgumentException)
+			catch (ArgumentException)
 			{
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetCurrencyPairs001()
+		[TestMethod]
+		public async Task GetCurrencyPairs001()
 		{
-			var Bank = new Finance.ForeignExchange.SwissNationalBank();
+			var Bank = new SwissNationalBank();
 
-			var moment = System.DateTime.Now.AddMinutes(10d);
+			var moment = DateTimeOffset.Now.AddMinutes(10d);
 
 			try
 			{
-				var pairs = Bank.GetCurrencyPairs(moment);
+				var pairs = await Bank.GetCurrencyPairsAsync(moment);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
-			catch (System.ArgumentException)
+			catch (ArgumentException)
 			{
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetCurrencyPairs002()
+		[TestMethod]
+		public async Task GetCurrencyPairs002()
 		{
-			var Bank = new Finance.ForeignExchange.SwissNationalBank();
+			var Bank = new SwissNationalBank();
 
-			var Pairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var Pairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
 
 			var DistinctPairs = Pairs.Distinct();
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(Pairs.Count() == DistinctPairs.Count());
+			Assert.IsTrue(Pairs.Count() == DistinctPairs.Count());
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetCurrencyPairs003()
+		[TestMethod]
+		public async Task GetCurrencyPairs003()
 		{
-			var Bank = new Finance.ForeignExchange.SwissNationalBank();
+			var Bank = new SwissNationalBank();
 
-			var moment = System.DateTime.Now.AddDays(-10d);
+			var moment = DateTimeOffset.Now.AddDays(-10d);
 
 			try
 			{
-				var pairs = Bank.GetCurrencyPairs(moment);
+				var pairs = await Bank.GetCurrencyPairsAsync(moment);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
-			catch (System.ArgumentException)
+			catch (ArgumentException)
 			{
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetCurrencyPairs004()
+		[TestMethod]
+		public async Task GetCurrencyPairs004()
 		{
-			var Bank = new Finance.ForeignExchange.SwissNationalBank();
+			var Bank = new SwissNationalBank();
 
-			var Pairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var Pairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
 
 			foreach (var pair in Pairs)
 			{
 				var reversed = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(Pairs.Any(P => P == reversed));
+				Assert.IsTrue(Pairs.Any(P => P == reversed));
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetCurrencyPairs005()
+		[TestMethod]
+		public async Task GetCurrencyPairs005()
 		{
-			var Bank = new Finance.ForeignExchange.SwissNationalBank();
+			var Bank = new SwissNationalBank();
 
-			var Pairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var Pairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(Pairs.Any(P => P.ToString() == "EUR/CHF"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(Pairs.Any(P => P.ToString() == "USD/CHF"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(Pairs.Any(P => P.ToString() == "JPY/CHF"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(Pairs.Any(P => P.ToString() == "GBP/CHF"));
+			Assert.IsTrue(Pairs.Any(P => P.ToString() == "EUR/CHF"));
+			Assert.IsTrue(Pairs.Any(P => P.ToString() == "USD/CHF"));
+			Assert.IsTrue(Pairs.Any(P => P.ToString() == "JPY/CHF"));
+			Assert.IsTrue(Pairs.Any(P => P.ToString() == "GBP/CHF"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(Pairs.Any(P => P.ToString() == "CHF/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(Pairs.Any(P => P.ToString() == "CHF/USD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(Pairs.Any(P => P.ToString() == "CHF/JPY"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(Pairs.Any(P => P.ToString() == "CHF/GBP"));
+			Assert.IsTrue(Pairs.Any(P => P.ToString() == "CHF/EUR"));
+			Assert.IsTrue(Pairs.Any(P => P.ToString() == "CHF/USD"));
+			Assert.IsTrue(Pairs.Any(P => P.ToString() == "CHF/JPY"));
+			Assert.IsTrue(Pairs.Any(P => P.ToString() == "CHF/GBP"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual<int>(8, Pairs.Count());
+			Assert.AreEqual<int>(8, Pairs.Count());
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate001()
+		[TestMethod]
+		public async Task GetExchangeRate001()
 		{
-			var Bank = new Finance.ForeignExchange.SwissNationalBank();
+			var Bank = new SwissNationalBank();
 
-			var AtTheMoment = System.DateTime.Now;
+			var AtTheMoment = DateTimeOffset.Now;
 
-			foreach (var Pair in Bank.GetCurrencyPairs(AtTheMoment))
+			foreach (var Pair in await Bank.GetCurrencyPairsAsync(AtTheMoment))
 			{
-				decimal rate = Bank.GetExchangeRate(Pair, AtTheMoment);
+				decimal rate = await Bank.GetExchangeRateAsync(Pair, AtTheMoment);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(rate > decimal.Zero);
+				Assert.IsTrue(rate > decimal.Zero);
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate002()
+		[TestMethod]
+		public async Task GetExchangeRate002()
 		{
-			var Bank = new Finance.ForeignExchange.SwissNationalBank();
+			var Bank = new SwissNationalBank();
 
-			var moment = System.DateTime.Now.AddMinutes(10d);
+			var moment = DateTimeOffset.Now.AddMinutes(10d);
 
-			foreach (var pair in Bank.GetCurrencyPairs(System.DateTime.Now))
+			foreach (var pair in await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now))
 			{
 				try
 				{
-					decimal rate = Bank.GetExchangeRate(pair, moment);
+					decimal rate = await Bank.GetExchangeRateAsync(pair, moment);
 
-					Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+					Assert.Fail();
 				}
-				catch (System.ArgumentException)
+				catch (ArgumentException)
 				{
 				}
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate003()
+		[TestMethod]
+		public async Task GetExchangeRate003()
 		{
-			var Bank = new Finance.ForeignExchange.SwissNationalBank();
+			var Bank = new SwissNationalBank();
 
-			System.Globalization.RegionInfo AO = new System.Globalization.RegionInfo("AO");
-			System.Globalization.RegionInfo BW = new System.Globalization.RegionInfo("BW");
+			RegionInfo AO = new RegionInfo("AO");
+			RegionInfo BW = new RegionInfo("BW");
 
 			CurrencyInfo AOA = new CurrencyInfo(AO);
 			CurrencyInfo BWP = new CurrencyInfo(BW);
@@ -246,45 +251,34 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			try
 			{
-				var rate = Bank.GetExchangeRate(Pair, System.DateTime.Now);
+				var rate = await Bank.GetExchangeRateAsync(Pair, DateTimeOffset.Now);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
-			catch (System.ArgumentException)
+			catch (ArgumentException)
 			{
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate004()
+		[TestMethod]
+		public async Task GetExchangeRate004()
 		{
-			var Bank = new Finance.ForeignExchange.SwissNationalBank();
+			var Bank = new SwissNationalBank();
 
-			var moment = System.DateTime.Now.AddDays(-10d);
+			var moment = DateTimeOffset.Now.AddDays(-10d);
 
-			foreach (var pair in Bank.GetCurrencyPairs(System.DateTime.Now))
+			foreach (var pair in await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now))
 			{
 				try
 				{
-					decimal rate = Bank.GetExchangeRate(pair, moment);
+					decimal rate = await Bank.GetExchangeRateAsync(pair, moment);
 
-					Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+					Assert.Fail();
 				}
-				catch (System.ArgumentException)
+				catch (ArgumentException)
 				{
 				}
 			}
-		}
-
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void KeepCurrenciesPairsUpdated()
-		{
-			// In case or failure, check currency pair information from SNB website and set deadline up to 3 month.
-
-			System.DateTime Deadline = new System.DateTime(2015, 03, 1);
-
-			if (System.DateTime.Now > Deadline)
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
 		}
 	}
 }
