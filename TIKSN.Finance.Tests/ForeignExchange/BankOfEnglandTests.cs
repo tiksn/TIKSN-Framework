@@ -224,7 +224,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "USD/GBP"));
 
-			Assert.AreEqual<int>(61, await await Bank.GetCurrencyPairsAsync(System.DateTime.Now).Count());
+			Assert.AreEqual<int>(61, (await Bank.GetCurrencyPairsAsync(System.DateTime.Now)).Count());
 		}
 
 		[TestMethod]
