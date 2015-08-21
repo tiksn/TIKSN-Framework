@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using TIKSN.Finance.ForeignExchange;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Collections.Generic;
+using System.Threading.Tasks;
+using TIKSN.Finance.ForeignExchange;
 
 namespace TIKSN.Finance.Tests.ForeignExchange
 {
