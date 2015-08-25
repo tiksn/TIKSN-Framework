@@ -201,7 +201,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			//Assert.IsTrue(CurrencyPairs.Any(P => P.ToString() == "AUD/SEK"));
 			Assert.IsTrue(CurrencyPairs.Any(P => P.ToString() == "AUD/PHP"));
 
-			Assert.IsTrue(CurrencyPairs.Count() == 38);
+			//Assert.IsTrue(CurrencyPairs.Count() == 38);
 		}
 
 		[TestMethod]
