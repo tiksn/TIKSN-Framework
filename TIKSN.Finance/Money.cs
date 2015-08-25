@@ -232,7 +232,11 @@
 
 		public bool Equals(Money that)
 		{
-			if (object.ReferenceEquals(this, that))
+			if (object.ReferenceEquals(that, null))
+			{
+				return false;
+			}
+			else if (object.ReferenceEquals(this, that))
 			{
 				return true;
 			}
