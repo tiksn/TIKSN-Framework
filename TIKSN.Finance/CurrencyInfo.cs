@@ -106,7 +106,7 @@
         {
             if(!TryExtractCurrencyInformation(CurrencyResource.TableA1, isoSymbol, symbol, true, "CcyTbl", "CcyNtry"))
             {
-                if (!TryExtractCurrencyInformation(CurrencyResource.TableA1, isoSymbol, symbol, false, "HstrcCcyTbl", "HstrcCcyNtry"))
+                if (!TryExtractCurrencyInformation(CurrencyResource.TableA3, isoSymbol, symbol, false, "HstrcCcyTbl", "HstrcCcyNtry"))
                 {
                     throw new CurrencyNotFoundException();
                 }
@@ -135,7 +135,7 @@
                             var ccyNmElement = ccyNtryElement.Element("CcyNm");
                             string isFundAttributeValue = ccyNmElement.Attribute("IsFund")?.Value;
 
-                            this.isFund = !string.IsNullOrEmpty(isFundAttributeValue) && bool.Parse(isFundAttributeValue);
+                            this.isFund = !string.IsNullOrWhiteSpace(isFundAttributeValue) && bool.Parse(isFundAttributeValue);
 
                             return true;
                         }
