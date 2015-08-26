@@ -412,6 +412,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			Assert.IsTrue(CurrencyPairs.Remove("SKK/EUR"));
 			Assert.IsTrue(CurrencyPairs.Remove("EUR/SIT"));
 			Assert.IsTrue(CurrencyPairs.Remove("SIT/EUR"));
+
 			Assert.IsTrue(CurrencyPairs.Remove("EUR/ARS"));
 			Assert.IsTrue(CurrencyPairs.Remove("ARS/EUR"));
 			Assert.IsTrue(CurrencyPairs.Remove("EUR/DZD"));
