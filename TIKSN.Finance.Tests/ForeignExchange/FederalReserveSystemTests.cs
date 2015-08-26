@@ -349,16 +349,5 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			Assert.IsTrue(rate < decimal.One);
 		}
-
-		[TestMethod]
-		public async Task KeepCurrenciesPairsUpdated()
-		{
-			// In case or failure, check currency pair information from FRS website and set deadline up to 3 month.
-
-			System.DateTime Deadline = new System.DateTime(2015, 3, 1);
-
-			if (System.DateTime.Now > Deadline)
-				Assert.Fail();
-		}
 	}
 }

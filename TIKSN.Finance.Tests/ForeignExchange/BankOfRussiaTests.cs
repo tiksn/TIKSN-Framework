@@ -168,7 +168,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			Assert.IsTrue(pairs.Any(C => C.ToString() == "CAD/RUB"));
 			Assert.IsTrue(pairs.Any(C => C.ToString() == "KGS/RUB"));
 			Assert.IsTrue(pairs.Any(C => C.ToString() == "CNY/RUB"));
-			Assert.IsTrue(pairs.Any(C => C.ToString() == "LTL/RUB"));
+			//Assert.IsTrue(pairs.Any(C => C.ToString() == "LTL/RUB"));
 			Assert.IsTrue(pairs.Any(C => C.ToString() == "MDL/RUB"));
 			Assert.IsTrue(pairs.Any(C => C.ToString() == "RON/RUB"));
 			Assert.IsTrue(pairs.Any(C => C.ToString() == "TMT/RUB"));
@@ -202,7 +202,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			Assert.IsTrue(pairs.Any(C => C.ToString() == "RUB/CAD"));
 			Assert.IsTrue(pairs.Any(C => C.ToString() == "RUB/KGS"));
 			Assert.IsTrue(pairs.Any(C => C.ToString() == "RUB/CNY"));
-			Assert.IsTrue(pairs.Any(C => C.ToString() == "RUB/LTL"));
+			//Assert.IsTrue(pairs.Any(C => C.ToString() == "RUB/LTL"));
 			Assert.IsTrue(pairs.Any(C => C.ToString() == "RUB/MDL"));
 			Assert.IsTrue(pairs.Any(C => C.ToString() == "RUB/RON"));
 			Assert.IsTrue(pairs.Any(C => C.ToString() == "RUB/TMT"));
@@ -402,17 +402,6 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 				Assert.IsTrue(rate > decimal.Zero);
 			}
-		}
-
-		[TestMethod]
-		public async Task KeepCurrenciesPairsUpdated()
-		{
-			// In case or failure, check currency pair information from CBR website and set deadline up to 3 month.
-
-			System.DateTime Deadline = new System.DateTime(2015, 3, 1);
-
-			if (System.DateTime.Now > Deadline)
-				Assert.Fail();
 		}
 	}
 }
