@@ -397,7 +397,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 				CurrencyPairs.Add(string.Format("{1}/{0}", BaseCurrency, CounterCurrency));
 			}
 
-			// Replaced by Euro
+			// Replaced by Euro or not supported anymore.
 			Assert.IsTrue(CurrencyPairs.Remove("CYP/EUR"));
 			Assert.IsTrue(CurrencyPairs.Remove("EUR/CYP"));
 			Assert.IsTrue(CurrencyPairs.Remove("EEK/EUR"));
@@ -412,12 +412,24 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			Assert.IsTrue(CurrencyPairs.Remove("SKK/EUR"));
 			Assert.IsTrue(CurrencyPairs.Remove("EUR/SIT"));
 			Assert.IsTrue(CurrencyPairs.Remove("SIT/EUR"));
-			//Assert.IsTrue(CurrencyPairs.Remove());
-			//Assert.IsTrue(CurrencyPairs.Remove());
-			//Assert.IsTrue(CurrencyPairs.Remove());
-			//Assert.IsTrue(CurrencyPairs.Remove());
-			//Assert.IsTrue(CurrencyPairs.Remove());
-			//Assert.IsTrue(CurrencyPairs.Remove());
+			Assert.IsTrue(CurrencyPairs.Remove("EUR/ARS"));
+			Assert.IsTrue(CurrencyPairs.Remove("ARS/EUR"));
+			Assert.IsTrue(CurrencyPairs.Remove("EUR/DZD"));
+			Assert.IsTrue(CurrencyPairs.Remove("DZD/EUR"));
+			Assert.IsTrue(CurrencyPairs.Remove("EUR/ISK"));
+			Assert.IsTrue(CurrencyPairs.Remove("ISK/EUR"));
+			Assert.IsTrue(CurrencyPairs.Remove("EUR/LTL"));
+			Assert.IsTrue(CurrencyPairs.Remove("LTL/EUR"));
+			Assert.IsTrue(CurrencyPairs.Remove("EUR/MAD"));
+			Assert.IsTrue(CurrencyPairs.Remove("MAD/EUR"));
+			Assert.IsTrue(CurrencyPairs.Remove("EUR/TWD"));
+			Assert.IsTrue(CurrencyPairs.Remove("TWD/EUR"));
+			//Assert.IsTrue(CurrencyPairs.Remove(""));
+			//Assert.IsTrue(CurrencyPairs.Remove(""));
+			//Assert.IsTrue(CurrencyPairs.Remove(""));
+			//Assert.IsTrue(CurrencyPairs.Remove(""));
+			//Assert.IsTrue(CurrencyPairs.Remove(""));
+
 
 			var Bank = new EuropeanCentralBank();
 
@@ -425,7 +437,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			foreach (var pairCode in CurrencyPairs)
 			{
-				Assert.IsTrue(pairs.Any(P => P.ToString() == pairCode));
+				Assert.IsTrue(pairs.Any(P => P.ToString() == pairCode), "Pair code ({0}) is not found.", pairCode);
 			}
 
 			Assert.IsTrue(pairs.Count() == CurrencyPairs.Count);
