@@ -67,7 +67,9 @@
     <Compile Include="ForeignExchange\SwissNationalBank.cs" />
     <Compile Include="ICompositeCurrencyConverter.cs" />
     <Compile Include="ICurrencyConverter.cs" />
+    <Compile Include="IPricingStrategy.cs" />
     <Compile Include="Money.cs" />
+    <Compile Include="PricingStrategy\PsychologicalPricingStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
