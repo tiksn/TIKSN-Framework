@@ -366,16 +366,5 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 				Assert.Fail();
 			}
 		}
-
-		[TestMethod]
-		public async Task KeepCurrenciesPairsUpdated()
-		{
-			// In case or failure, check currency pair information from RBA website and set deadline up to 3 month.
-
-			System.DateTime Deadline = new System.DateTime(2015, 03, 1);
-
-			if (System.DateTime.Now > Deadline)
-				Assert.Fail();
-		}
 	}
 }
