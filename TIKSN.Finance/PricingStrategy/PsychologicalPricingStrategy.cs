@@ -17,7 +17,11 @@ namespace TIKSN.Finance.PricingStrategy
 
 		public decimal EstimateMarketPrice(decimal basePrice)
 		{
-			throw new NotImplementedException();
+			decimal sign = basePrice >= decimal.Zero ? decimal.One : decimal.MinusOne;
+			decimal absoluteBasePrice = Math.Abs(basePrice);
+			decimal absoluteEstimatedPrice;
+			
+			return sign * absoluteEstimatedPrice;
 		}
 	}
 }
