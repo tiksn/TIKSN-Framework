@@ -47,7 +47,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AverageCurrencyConversionCompositionStrategy.cs" />
     <Compile Include="CachedCurrencyConverter.cs" />
+    <Compile Include="CompositeCrossCurrencyConverter.cs" />
+    <Compile Include="CompositeCurrencyConverter.cs" />
+    <Compile Include="CompositeGraphCurrencyConverter.cs" />
     <Compile Include="CurrencyInfo.cs" />
     <Compile Include="CurrencyNotFoundException.cs" />
     <Compile Include="CurrencyPair.cs" />
@@ -65,12 +69,15 @@
     <Compile Include="ForeignExchange\FederalReserveSystem.cs" />
     <Compile Include="ForeignExchange\ReserveBankOfAustralia.cs" />
     <Compile Include="ForeignExchange\SwissNationalBank.cs" />
+    <Compile Include="Helpers\CurrencyHelper.cs" />
     <Compile Include="ICompositeCurrencyConverter.cs" />
+    <Compile Include="ICurrencyConversionCompositionStrategy.cs" />
     <Compile Include="ICurrencyConverter.cs" />
     <Compile Include="IPricingStrategy.cs" />
     <Compile Include="Money.cs" />
     <Compile Include="PricingStrategy\PsychologicalPricingStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SingleEntryCurrencyConversionCompositionStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -81,6 +88,14 @@
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks.Extensions">
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net45+win8+wp8+wpa81\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="QuickGraph, Version=3.6.61114.0, Culture=neutral, PublicKeyToken=f3fb40175eec2af3, processorArchitecture=MSIL">
+      <HintPath>..\packages\QuickGraphPCL.3.6.61114.2\lib\portable-win+net4+sl5+wp8+win8+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\QuickGraph.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="QuickGraph.Graphviz, Version=3.6.61114.0, Culture=neutral, PublicKeyToken=f3fb40175eec2af3, processorArchitecture=MSIL">
+      <HintPath>..\packages\QuickGraphPCL.3.6.61114.2\lib\portable-win+net4+sl5+wp8+win8+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\QuickGraph.Graphviz.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http">
       <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.dll</HintPath>
