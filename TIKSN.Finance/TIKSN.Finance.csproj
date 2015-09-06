@@ -49,9 +49,9 @@
   <ItemGroup>
     <Compile Include="AverageCurrencyConversionCompositionStrategy.cs" />
     <Compile Include="CachedCurrencyConverter.cs" />
+    <Compile Include="CompositeChainCurrencyConverter.cs" />
     <Compile Include="CompositeCrossCurrencyConverter.cs" />
     <Compile Include="CompositeCurrencyConverter.cs" />
-    <Compile Include="CompositeGraphCurrencyConverter.cs" />
     <Compile Include="CurrencyInfo.cs" />
     <Compile Include="CurrencyNotFoundException.cs" />
     <Compile Include="CurrencyPair.cs" />
