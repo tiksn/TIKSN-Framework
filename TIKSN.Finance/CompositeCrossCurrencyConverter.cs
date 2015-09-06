@@ -9,7 +9,6 @@ namespace TIKSN.Finance
 		public CompositeCrossCurrencyConverter(ICurrencyConversionCompositionStrategy compositionStrategy)
 			: base(compositionStrategy)
 		{
-
 		}
 
 		public override async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)

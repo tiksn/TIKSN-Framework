@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -81,6 +80,7 @@ namespace TIKSN.Finance.ForeignExchange
 				this.lastFetchDate = DateTimeOffset.Now; // this should stay at the end
 			}
 		}
+
 		public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
 		{
 			await this.FetchOnDemandAsync();

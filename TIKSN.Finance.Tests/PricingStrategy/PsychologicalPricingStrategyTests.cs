@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TIKSN.Finance.PricingStrategy;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using TIKSN.Finance.PricingStrategy;
 
 namespace TIKSN.Finance.Tests.PricingStrategy
 {

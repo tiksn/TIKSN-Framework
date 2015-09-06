@@ -8,7 +8,6 @@ namespace TIKSN.Finance
 {
 	public class AverageCurrencyConversionCompositionStrategy : ICurrencyConversionCompositionStrategy
 	{
-
 		public async Task<Money> ConvertCurrencyAsync(Money baseMoney, IEnumerable<ICurrencyConverter> converters, CurrencyInfo counterCurrency, DateTimeOffset asOn)
 		{
 			var filteredConverters = await CurrencyHelper.FilterConverters(converters, baseMoney.Currency, counterCurrency, asOn);

@@ -116,7 +116,6 @@ namespace TIKSN.Finance.ForeignExchange
 
 		public BankOfEngland()
 		{
-			
 		}
 
 		private static string ToInternalDataFormat(DateTimeOffset DT)

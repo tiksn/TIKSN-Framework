@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TIKSN.Finance.PricingStrategy
 {
@@ -20,7 +16,7 @@ namespace TIKSN.Finance.PricingStrategy
 			decimal sign = basePrice >= decimal.Zero ? decimal.One : decimal.MinusOne;
 			decimal absoluteBasePrice = Math.Abs(basePrice);
 			decimal absoluteEstimatedPrice = absoluteBasePrice; //TODO: To change
-			
+
 			return sign * absoluteEstimatedPrice;
 		}
 	}

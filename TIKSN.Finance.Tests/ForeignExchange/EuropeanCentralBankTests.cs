@@ -431,7 +431,6 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			//Assert.IsTrue(CurrencyPairs.Remove(""));
 			//Assert.IsTrue(CurrencyPairs.Remove(""));
 
-
 			var Bank = new EuropeanCentralBank();
 
 			var pairs = await Bank.GetCurrencyPairsAsync(System.DateTime.Now);

@@ -138,7 +138,6 @@ namespace TIKSN.Finance.ForeignExchange
 
 		private async Task<Dictionary<string, Tuple<DateTimeOffset, decimal>>> FetchRawDataAsync(string RssUrl)
 		{
-
 			HttpWebRequest request = WebRequest.CreateHttp(RssUrl);
 
 			HttpWebResponse response = (HttpWebResponse)await Task.Factory.FromAsync(request.BeginGetResponse, request.EndGetResponse, null);
