@@ -71,6 +71,7 @@
     <Compile Include="ForeignExchange\SwissNationalBankTests.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="PricingStrategy\PsychologicalPricingStrategyTests.cs" />
+    <Compile Include="PricingStrategy\RoundingPricingStrategyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MoneyTests.cs" />
     <Compile Include="FixedRateCurrencyConverterTests.cs" />
