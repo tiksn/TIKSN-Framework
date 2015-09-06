@@ -19,7 +19,7 @@ namespace TIKSN.Finance.PricingStrategy
 		{
 			decimal sign = basePrice >= decimal.Zero ? decimal.One : decimal.MinusOne;
 			decimal absoluteBasePrice = Math.Abs(basePrice);
-			decimal absoluteEstimatedPrice;
+			decimal absoluteEstimatedPrice = absoluteBasePrice; //TODO: To change
 			
 			return sign * absoluteEstimatedPrice;
 		}

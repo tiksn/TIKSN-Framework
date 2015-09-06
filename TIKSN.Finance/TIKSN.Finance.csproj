@@ -65,6 +65,7 @@
     <Compile Include="ForeignExchange\BankOfEngland.cs" />
     <Compile Include="ForeignExchange\BankOfRussia.cs" />
     <Compile Include="ForeignExchange\CentralBankOfArmenia.cs" />
+    <Compile Include="ForeignExchange\CurrencylayerDotCom.cs" />
     <Compile Include="ForeignExchange\EuropeanCentralBank.cs" />
     <Compile Include="ForeignExchange\FederalReserveSystem.cs" />
     <Compile Include="ForeignExchange\ReserveBankOfAustralia.cs" />
@@ -88,6 +89,10 @@
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks.Extensions">
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net45+win8+wp8+wpa81\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="QuickGraph, Version=3.6.61114.0, Culture=neutral, PublicKeyToken=f3fb40175eec2af3, processorArchitecture=MSIL">
       <HintPath>..\packages\QuickGraphPCL.3.6.61114.2\lib\portable-win+net4+sl5+wp8+win8+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\QuickGraph.dll</HintPath>
