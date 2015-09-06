@@ -2,7 +2,7 @@
 
 namespace TIKSN.Finance.PricingStrategy
 {
-	public class PsychologicalPricingStrategy : IPricingStrategy
+	internal class PsychologicalPricingStrategy : IPricingStrategy
 	{
 		public Money EstimateMarketPrice(Money basePrice)
 		{
