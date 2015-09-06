@@ -1,8 +1,6 @@
 ﻿using QuickGraph;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace TIKSN.Finance
@@ -12,7 +10,6 @@ namespace TIKSN.Finance
 		public CompositeChainCurrencyConverter(ICurrencyConversionCompositionStrategy compositionStrategy)
 			: base(compositionStrategy)
 		{
-
 		}
 
 		public override Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
@@ -32,7 +29,6 @@ namespace TIKSN.Finance
 
 		private async void GetConverterChain(DateTimeOffset asOn)
 		{
-
 		}
 
 		private async Task<BidirectionalGraph<CurrencyInfo, TaggedEdge<CurrencyInfo, ICurrencyConverter>>> CreateGraph(DateTimeOffset asOn)

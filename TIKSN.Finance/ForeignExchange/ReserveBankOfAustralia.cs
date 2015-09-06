@@ -29,7 +29,7 @@ namespace TIKSN.Finance.ForeignExchange
 			this.publishedDate = DateTimeOffset.MinValue;
 
 			this.rates = new Dictionary<CurrencyInfo, decimal>();
-			
+
 			this.lastFetchDate = DateTimeOffset.MinValue;
 		}
 
@@ -37,7 +37,7 @@ namespace TIKSN.Finance.ForeignExchange
 		{
 			var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
-			decimal rate =await this.GetExchangeRateAsync(pair, asOn);
+			decimal rate = await this.GetExchangeRateAsync(pair, asOn);
 
 			return new Money(counterCurrency, rate * baseMoney.Amount);
 		}
@@ -46,11 +46,11 @@ namespace TIKSN.Finance.ForeignExchange
 		{
 			HttpWebRequest request = WebRequest.CreateHttp(RSS);
 
-			HttpWebResponse response = (HttpWebResponse) await Task.Factory.FromAsync(request.BeginGetResponse, request.EndGetResponse, null);
+			HttpWebResponse response = (HttpWebResponse)await Task.Factory.FromAsync(request.BeginGetResponse, request.EndGetResponse, null);
 
 			var xdoc = XDocument.Load(response.GetResponseStream());
 
-			lock(this.rates)
+			lock (this.rates)
 			{
 				foreach (var item in xdoc.Element("{http://www.w3.org/1999/02/22-rdf-syntax-ns#}RDF").Elements("{http://purl.org/rss/1.0/}item"))
 				{
@@ -119,7 +119,7 @@ namespace TIKSN.Finance.ForeignExchange
 				await this.FetchAsync();
 			}
 		}
-		
+
 		private void VerifyDate(DateTimeOffset asOn)
 		{
 			if (asOn > DateTimeOffset.Now)

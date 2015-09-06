@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using TIKSN.Finance.ForeignExchange;
-using System;
-using System.Globalization;
 
 namespace TIKSN.Finance.Tests.ForeignExchange
 {

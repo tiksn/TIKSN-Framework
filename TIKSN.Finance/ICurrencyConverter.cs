@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Finance
 {
-    public interface ICurrencyConverter
-    {
-        Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn);
+	public interface ICurrencyConverter
+	{
+		Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn);
 
-        Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn);
+		Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn);
 
-        Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn);
-    }
+		Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn);
+	}
 }
