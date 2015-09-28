@@ -59,6 +59,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="CompositeCrossCurrencyConverterTests.cs" />
     <Compile Include="CurrencyInfoTests.cs" />
     <Compile Include="ForeignExchange\CentralBankOfArmeniaTests.cs" />
     <Compile Include="ForeignExchange\BankOfEnglandTests.cs" />
