@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2CE66F97-5B89-401D-AEE5-BF2228760097}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Versioning", "TIKSN.Versioning\TIKSN.Versioning.csproj", "{E4451ACD-4706-47A1-9E74-C24C0CE18198}"
@@ -22,37 +24,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Web", "TIKSN.Web\TIKS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Web.Tests", "TIKSN.Web.Tests\TIKSN.Web.Tests.csproj", "{FC457107-F8C7-43BB-854E-EB6B0283A4F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Core", "TIKSN.Core\TIKSN.Core.csproj", "{D1ECB169-BB57-4751-AECA-415E078E5996}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Analytics", "TIKSN.Analytics\TIKSN.Analytics.csproj", "{D70CBD83-C52A-479B-9885-4B9CD667B1B3}"
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 7
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tiksn.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = TIKSN.Versioning.Tests\\TIKSN.Versioning.Tests.csproj
-		SccProjectTopLevelParentUniqueName1 = TIKSN\u0020Framework.sln
-		SccProjectName1 = TIKSN.Versioning.Tests
-		SccLocalPath1 = TIKSN.Versioning.Tests
-		SccProjectUniqueName2 = TIKSN.Versioning\\TIKSN.Versioning.csproj
-		SccProjectTopLevelParentUniqueName2 = TIKSN\u0020Framework.sln
-		SccProjectName2 = TIKSN.Versioning
-		SccLocalPath2 = TIKSN.Versioning
-		SccProjectUniqueName3 = TIKSN.Finance\\TIKSN.Finance.csproj
-		SccProjectTopLevelParentUniqueName3 = TIKSN\u0020Framework.sln
-		SccProjectName3 = TIKSN.Finance
-		SccLocalPath3 = TIKSN.Finance
-		SccProjectUniqueName4 = TIKSN.Finance.Tests\\TIKSN.Finance.Tests.csproj
-		SccProjectTopLevelParentUniqueName4 = TIKSN\u0020Framework.sln
-		SccProjectName4 = TIKSN.Finance.Tests
-		SccLocalPath4 = TIKSN.Finance.Tests
-		SccProjectUniqueName5 = TIKSN.Web\\TIKSN.Web.csproj
-		SccProjectTopLevelParentUniqueName5 = TIKSN\u0020Framework.sln
-		SccProjectName5 = TIKSN.Web
-		SccLocalPath5 = TIKSN.Web
-		SccProjectUniqueName6 = TIKSN.Web.Tests\\TIKSN.Web.Tests.csproj
-		SccProjectTopLevelParentUniqueName6 = TIKSN\u0020Framework.sln
-		SccProjectName6 = TIKSN.Web.Tests
-		SccLocalPath6 = TIKSN.Web.Tests
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -82,16 +58,26 @@ Global
 		{FC457107-F8C7-43BB-854E-EB6B0283A4F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC457107-F8C7-43BB-854E-EB6B0283A4F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC457107-F8C7-43BB-854E-EB6B0283A4F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1ECB169-BB57-4751-AECA-415E078E5996}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1ECB169-BB57-4751-AECA-415E078E5996}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1ECB169-BB57-4751-AECA-415E078E5996}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1ECB169-BB57-4751-AECA-415E078E5996}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D70CBD83-C52A-479B-9885-4B9CD667B1B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D70CBD83-C52A-479B-9885-4B9CD667B1B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D70CBD83-C52A-479B-9885-4B9CD667B1B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D70CBD83-C52A-479B-9885-4B9CD667B1B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{A4E551D1-237F-4633-ACFE-FD43E9194097} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
-		{6A294698-AA56-4A0A-9457-D4416B89079D} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
-		{FC457107-F8C7-43BB-854E-EB6B0283A4F8} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
-		{BFB569FE-D1D4-433E-8E7A-69604367B755} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{E4451ACD-4706-47A1-9E74-C24C0CE18198} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
+		{A4E551D1-237F-4633-ACFE-FD43E9194097} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
+		{BFB569FE-D1D4-433E-8E7A-69604367B755} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
+		{6A294698-AA56-4A0A-9457-D4416B89079D} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
 		{6F2F0579-64A8-48D8-8278-7D5D438A5816} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
+		{FC457107-F8C7-43BB-854E-EB6B0283A4F8} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
+		{D1ECB169-BB57-4751-AECA-415E078E5996} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
+		{D70CBD83-C52A-479B-9885-4B9CD667B1B3} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 	EndGlobalSection
 EndGlobal
