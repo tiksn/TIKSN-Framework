@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TIKSN.Finance.Tests.ForeignExchange
@@ -128,6 +130,18 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		[TestMethod]
 		public async Task Fetch001()
 		{
+			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
+
+			await Bank.FetchAsync();
+		}
+
+		[TestMethod]
+		public async Task Fetch002()
+		{
+			var ci = new CultureInfo("ru-RU");
+			Thread.CurrentThread.CurrentCulture = ci;
+			Thread.CurrentThread.CurrentUICulture = ci;
+
 			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
 
 			await Bank.FetchAsync();

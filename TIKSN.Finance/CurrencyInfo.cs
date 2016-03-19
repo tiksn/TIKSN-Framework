@@ -60,12 +60,12 @@
 
 		public static bool operator !=(CurrencyInfo first, CurrencyInfo second)
 		{
-			return !first.Equals(second);
+			return !Equals(first, second);
 		}
 
 		public static bool operator ==(CurrencyInfo first, CurrencyInfo second)
 		{
-			return first.Equals(second);
+			return Equals(first, second);
 		}
 
 		public bool Equals(CurrencyInfo that)
@@ -100,6 +100,20 @@
 		public override string ToString()
 		{
 			return this.isoCurrencySymbol;
+		}
+
+		private static bool Equals(CurrencyInfo first, CurrencyInfo second)
+		{
+			if (object.ReferenceEquals(first, second))
+				return true;
+
+			if (object.ReferenceEquals(first, null))
+				return true;
+
+			if (object.ReferenceEquals(second, null))
+				return true;
+
+			return first.Equals(second);
 		}
 
 		private void InitializeCurrency(string isoSymbol, string symbol)

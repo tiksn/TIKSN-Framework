@@ -8,12 +8,12 @@
     <ProjectGuid>{D1ECB169-BB57-4751-AECA-415E078E5996}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TIKSN.Core</RootNamespace>
+    <RootNamespace>TIKSN</RootNamespace>
     <AssemblyName>TIKSN.Core</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -35,9 +35,18 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <Folder Include="Analytics\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analytics\Telemetry\CompositeEventTelemeter.cs" />
+    <Compile Include="Analytics\Telemetry\CompositeExceptionTelemeter.cs" />
+    <Compile Include="Analytics\Telemetry\CompositeMetricTelemeter.cs" />
+    <Compile Include="Analytics\Telemetry\CompositeTraceTelemeter.cs" />
+    <Compile Include="Analytics\Telemetry\IEventTelemeter.cs" />
+    <Compile Include="Analytics\Telemetry\IExceptionTelemeter.cs" />
+    <Compile Include="Analytics\Telemetry\IMetricTelemeter.cs" />
+    <Compile Include="Analytics\Telemetry\ITraceTelemeter.cs" />
+    <Compile Include="Analytics\Telemetry\TelemetrySeverityLevel.cs" />
+    <Compile Include="Configuration\ICommonConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
