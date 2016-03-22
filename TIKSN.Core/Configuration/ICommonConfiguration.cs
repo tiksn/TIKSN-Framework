@@ -3,6 +3,7 @@
 	public interface ICommonConfiguration
 	{
 		bool IsEventTrackingEnabled { get; set; }
+
 		bool IsExceptionTrackingEnabled { get; set; }
 
 		bool IsMetricTrackingEnabled { get; set; }
