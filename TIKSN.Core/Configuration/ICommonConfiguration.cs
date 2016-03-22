@@ -2,12 +2,12 @@
 {
 	public interface ICommonConfiguration
 	{
-		bool IsEventTrackingEnabled { get; set; }
+		bool IsEventTrackingEnabled { get; }
 
-		bool IsExceptionTrackingEnabled { get; set; }
+		bool IsExceptionTrackingEnabled { get; }
 
-		bool IsMetricTrackingEnabled { get; set; }
+		bool IsMetricTrackingEnabled { get; }
 
-		bool IsTraceTrackingEnabled { get; set; }
+		bool IsTraceTrackingEnabled { get; }
 	}
 }
