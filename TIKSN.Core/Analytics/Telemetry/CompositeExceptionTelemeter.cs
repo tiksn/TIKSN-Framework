@@ -3,12 +3,12 @@ using TIKSN.Configuration;
 
 namespace TIKSN.Analytics.Telemetry
 {
-	public class CompositeInsightsExceptionTelemeter : IExceptionTelemeter
+	public class CompositeExceptionTelemeter : IExceptionTelemeter
 	{
 		private ICommonConfiguration commonConfiguration;
 		private IExceptionTelemeter[] exceptionTelemeters;
 
-		public CompositeInsightsExceptionTelemeter(ICommonConfiguration commonConfiguration, IExceptionTelemeter[] exceptionTelemeters)
+		public CompositeExceptionTelemeter(ICommonConfiguration commonConfiguration, IExceptionTelemeter[] exceptionTelemeters)
 		{
 			this.commonConfiguration = commonConfiguration;
 			this.exceptionTelemeters = exceptionTelemeters;
