@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using TIKSN.Analytics.Telemetry;
+﻿using System.Collections.Generic;
 using TIKSN.Configuration;
 
-namespace TIKSN.Pushalot.Analytics.Telemetry
+namespace TIKSN.Analytics.Telemetry
 {
 	public class PushalotEventTelemeter : PushalotTelemeterBase, IEventTelemeter
 	{
 		public PushalotEventTelemeter(IPushalotConfiguration pushalotConfiguration)
 			: base(pushalotConfiguration)
 		{
-
 		}
 
 		public void TrackEvent(string name)

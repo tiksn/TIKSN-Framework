@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using TIKSN.Analytics.Telemetry;
 using TIKSN.Configuration;
 
-namespace TIKSN.Pushalot.Analytics.Telemetry
+namespace TIKSN.Analytics.Telemetry
 {
 	public class PushalotExceptionTelemeter : PushalotTelemeterBase, IExceptionTelemeter
 	{
 		public PushalotExceptionTelemeter(IPushalotConfiguration pushalotConfiguration)
 			: base(pushalotConfiguration)
 		{
-
 		}
 
 		public void TrackException(Exception exception)
