@@ -4,6 +4,6 @@ namespace TIKSN.Analytics.Telemetry
 {
 	public interface IMetricTelemeter
 	{
-		Task TrackMetric(string metricName, double metricValue);
+		Task TrackMetric(string metricName, decimal metricValue);
 	}
 }

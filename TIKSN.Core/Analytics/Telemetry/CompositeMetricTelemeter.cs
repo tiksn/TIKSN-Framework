@@ -14,7 +14,7 @@ namespace TIKSN.Analytics.Telemetry
 			this.metricTelemeters = metricTelemeters;
 		}
 
-		public async Task TrackMetric(string metricName, double metricValue)
+		public async Task TrackMetric(string metricName, decimal metricValue)
 		{
 			if (commonConfiguration.GetConfiguration().IsMetricTrackingEnabled)
 			{
