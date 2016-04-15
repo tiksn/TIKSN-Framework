@@ -1,7 +1,9 @@
-﻿namespace TIKSN.Analytics.Telemetry
+﻿using System.Threading.Tasks;
+
+namespace TIKSN.Analytics.Telemetry
 {
 	public interface IEventTelemeter
 	{
-		void TrackEvent(string name);
+		Task TrackEvent(string name);
 	}
 }

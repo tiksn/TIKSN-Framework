@@ -1,7 +1,9 @@
-﻿namespace TIKSN.Analytics.Telemetry
+﻿using System.Threading.Tasks;
+
+namespace TIKSN.Analytics.Telemetry
 {
 	public interface IMetricTelemeter
 	{
-		void TrackMetric(string metricName, double metricValue);
+		Task TrackMetric(string metricName, double metricValue);
 	}
 }

@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Core.Analytics.Telemetry
+﻿namespace TIKSN.Analytics.Telemetry
 {
 	public enum TelemetrySeverityLevel
 	{

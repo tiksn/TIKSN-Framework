@@ -1,25 +1,37 @@
-﻿using TIKSN.Configuration;
+﻿using System.Threading.Tasks;
+using TIKSN.Configuration;
 
 namespace TIKSN.Analytics.Telemetry
 {
 	public class CompositeTraceTelemeter : ITraceTelemeter
 	{
-		private ICommonConfiguration commonConfiguration;
+		private IConfiguration<CommonConfiguration> commonConfiguration;
 		private ITraceTelemeter[] traceTelemeters;
 
-		public CompositeTraceTelemeter(ICommonConfiguration commonConfiguration, ITraceTelemeter[] traceTelemeters)
+		public CompositeTraceTelemeter(IConfiguration<CommonConfiguration> commonConfiguration, ITraceTelemeter[] traceTelemeters)
 		{
 			this.commonConfiguration = commonConfiguration;
 			this.traceTelemeters = traceTelemeters;
 		}
 
-		public void TrackTrace(string message)
+		public async Task TrackTrace(string message)
 		{
-			if (commonConfiguration.IsTraceTrackingEnabled)
+			if (commonConfiguration.GetConfiguration().IsTraceTrackingEnabled)
 			{
 				foreach (var traceTelemeter in traceTelemeters)
 				{
-					traceTelemeter.TrackTrace(message);
+					await traceTelemeter.TrackTrace(message);
+				}
+			}
+		}
+
+		public async Task TrackTrace(string message, TelemetrySeverityLevel severityLevel)
+		{
+			if (commonConfiguration.GetConfiguration().IsTraceTrackingEnabled)
+			{
+				foreach (var traceTelemeter in traceTelemeters)
+				{
+					await traceTelemeter.TrackTrace(message, severityLevel);
 				}
 			}
 		}

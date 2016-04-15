@@ -1,23 +1,31 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using TIKSN.Configuration;
 
 namespace TIKSN.Analytics.Telemetry
 {
 	public class PushalotEventTelemeter : PushalotTelemeterBase, IEventTelemeter
 	{
-		public PushalotEventTelemeter(IPushalotConfiguration pushalotConfiguration)
+		public PushalotEventTelemeter(IConfiguration<PushalotConfiguration> pushalotConfiguration)
 			: base(pushalotConfiguration)
 		{
 		}
 
-		public void TrackEvent(string name)
+		public async Task TrackEvent(string name)
 		{
-			SendMessage("Event", name);
+			await SendMessage("Event", name);
 		}
 
-		protected override IEnumerable<string> GetAuthorizationTokens(IPushalotConfiguration pushalotConfiguration)
+		protected override IEnumerable<string> GetAuthorizationTokens(PushalotConfiguration pushalotConfiguration)
 		{
 			return pushalotConfiguration.EventAuthorizationTokens;
+		}
+
+		protected override IEnumerable<string> GetAuthorizationTokens(PushalotConfiguration pushalotConfiguration, TelemetrySeverityLevel severityLevel)
+		{
+			return Enumerable.Empty<string>();
 		}
 	}
 }
