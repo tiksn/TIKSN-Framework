@@ -14,7 +14,7 @@ namespace TIKSN.Analytics.Telemetry
 		{
 		}
 
-		public async Task TrackMetric(string metricName, double metricValue)
+		public async Task TrackMetric(string metricName, decimal metricValue)
 		{
 			await SendMessage("Metric", string.Format("{0}: {1}", metricName, metricValue));
 		}

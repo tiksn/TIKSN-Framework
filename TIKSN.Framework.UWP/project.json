@@ -1,7 +1,8 @@
 ﻿{
   "dependencies": {
+    "Exceptionless.Portable": "3.4.1662",
     "Microsoft.ApplicationInsights": "2.0.1",
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
     "Newtonsoft.Json": "8.0.3"
   },
   "frameworks": {

@@ -14,6 +14,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Telemetry\ApplicationInsightsHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Telemetry\ApplicationInsightsMetricTelemeter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Telemetry\ApplicationInsightsTraceTelemeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\ExceptionlessEventTelemeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\ExceptionlessTelemeterBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\ExceptionlessExceptionTelemeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\ExceptionlessMetricTelemeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\ExceptionlessTraceTelemeter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Telemetry\PushalotAuthorizationToken.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Telemetry\PushalotMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Telemetry\PushalotMessageBuilder.cs" />
