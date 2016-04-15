@@ -1,25 +1,26 @@
-﻿using TIKSN.Configuration;
+﻿using System.Threading.Tasks;
+using TIKSN.Configuration;
 
 namespace TIKSN.Analytics.Telemetry
 {
 	public class CompositeEventTelemeter : IEventTelemeter
 	{
-		private ICommonConfiguration commonConfiguration;
+		private IConfiguration<CommonConfiguration> commonConfiguration;
 		private IEventTelemeter[] eventTelemeters;
 
-		public CompositeEventTelemeter(ICommonConfiguration commonConfiguration, IEventTelemeter[] eventTelemeters)
+		public CompositeEventTelemeter(IConfiguration<CommonConfiguration> commonConfiguration, IEventTelemeter[] eventTelemeters)
 		{
 			this.commonConfiguration = commonConfiguration;
 			this.eventTelemeters = eventTelemeters;
 		}
 
-		public void TrackEvent(string name)
+		public async Task TrackEvent(string name)
 		{
-			if (commonConfiguration.IsEventTrackingEnabled)
+			if (commonConfiguration.GetConfiguration().IsEventTrackingEnabled)
 			{
 				foreach (var eventTelemeter in eventTelemeters)
 				{
-					eventTelemeter.TrackEvent(name);
+					await eventTelemeter.TrackEvent(name);
 				}
 			}
 		}

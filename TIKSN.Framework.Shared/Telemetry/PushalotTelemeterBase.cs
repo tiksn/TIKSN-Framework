@@ -1,29 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using TIKSN.Configuration;
 
 namespace TIKSN.Analytics.Telemetry
 {
 	public abstract class PushalotTelemeterBase
 	{
-		protected readonly PushalotClient client;
-		protected readonly IPushalotConfiguration pushalotConfiguration;
+		protected readonly Lazy<PushalotClient<TelemetrySeverityLevel>> lazyClient;
+		protected readonly IConfiguration<PushalotConfiguration> pushalotConfiguration;
 
-		public PushalotTelemeterBase(IPushalotConfiguration pushalotConfiguration)
+		public PushalotTelemeterBase(IConfiguration<PushalotConfiguration> pushalotConfiguration)
 		{
-			client = new PushalotClient();
+			this.pushalotConfiguration = pushalotConfiguration;
 
-			var authorizationTokens = GetAuthorizationTokens(pushalotConfiguration);
-
-			foreach (var authorizationToken in authorizationTokens)
-			{
-				client.Subscribe(new PushalotAuthorizationToken(authorizationToken));
-			}
+			lazyClient = new Lazy<PushalotClient<TelemetrySeverityLevel>>(CreatePushalotClient);
 		}
 
-		protected abstract IEnumerable<string> GetAuthorizationTokens(IPushalotConfiguration pushalotConfiguration);
+		protected abstract IEnumerable<string> GetAuthorizationTokens(PushalotConfiguration pushalotConfiguration);
 
-		protected void SendMessage(string title, string content)
+		protected abstract IEnumerable<string> GetAuthorizationTokens(PushalotConfiguration pushalotConfiguration, TelemetrySeverityLevel severityLevel);
+
+		protected async Task SendMessage(string title, string content)
 		{
 			var mbuilder = new PushalotMessageBuilder();
 			mbuilder.MessageLinkTitle = title;
@@ -31,7 +30,31 @@ namespace TIKSN.Analytics.Telemetry
 
 			var message = mbuilder.Build();
 
-			client.SendMessage(message).Wait();
+			await lazyClient.Value.SendMessage(message);
+		}
+
+		private PushalotClient<TelemetrySeverityLevel> CreatePushalotClient()
+		{
+			var client = new PushalotClient<TelemetrySeverityLevel>();
+
+			var authorizationTokens = GetAuthorizationTokens(pushalotConfiguration.GetConfiguration());
+
+			foreach (var authorizationToken in authorizationTokens)
+			{
+				client.Subscribe(new PushalotAuthorizationToken(authorizationToken));
+			}
+
+			foreach (var severityLevel in Enum.GetValues(typeof(TelemetrySeverityLevel)).Cast<TelemetrySeverityLevel>())
+			{
+				var severityLevelAuthorizationTokens = GetAuthorizationTokens(pushalotConfiguration.GetConfiguration(), severityLevel);
+
+				foreach (var severityLevelAuthorizationToken in severityLevelAuthorizationTokens)
+				{
+					client.Subscribe(severityLevel, new PushalotAuthorizationToken(severityLevelAuthorizationToken));
+				}
+			}
+
+			return client;
 		}
 	}
 }

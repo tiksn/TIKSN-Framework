@@ -1,25 +1,26 @@
-﻿using TIKSN.Configuration;
+﻿using System.Threading.Tasks;
+using TIKSN.Configuration;
 
 namespace TIKSN.Analytics.Telemetry
 {
 	public class CompositeMetricTelemeter : IMetricTelemeter
 	{
-		private ICommonConfiguration commonConfiguration;
+		private IConfiguration<CommonConfiguration> commonConfiguration;
 		private IMetricTelemeter[] metricTelemeters;
 
-		public CompositeMetricTelemeter(ICommonConfiguration commonConfiguration, IMetricTelemeter[] metricTelemeters)
+		public CompositeMetricTelemeter(IConfiguration<CommonConfiguration> commonConfiguration, IMetricTelemeter[] metricTelemeters)
 		{
 			this.commonConfiguration = commonConfiguration;
 			this.metricTelemeters = metricTelemeters;
 		}
 
-		public void TrackMetric(string metricName, double metricValue)
+		public async Task TrackMetric(string metricName, double metricValue)
 		{
-			if (commonConfiguration.IsMetricTrackingEnabled)
+			if (commonConfiguration.GetConfiguration().IsMetricTrackingEnabled)
 			{
 				foreach (var metricTelemeter in metricTelemeters)
 				{
-					metricTelemeter.TrackMetric(metricName, metricValue);
+					await metricTelemeter.TrackMetric(metricName, metricValue);
 				}
 			}
 		}
