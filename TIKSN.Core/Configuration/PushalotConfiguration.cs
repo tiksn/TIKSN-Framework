@@ -9,12 +9,16 @@ namespace TIKSN.Configuration
 			IEnumerable<string> eventAuthorizationTokens,
 			IEnumerable<string> exceptionAuthorizationTokens,
 			IEnumerable<string> metricAuthorizationTokens,
-			IEnumerable<string> traceAuthorizationTokens)
+			IEnumerable<string> traceAuthorizationTokens,
+			IDictionary<TelemetrySeverityLevel, IEnumerable<string>> severityLevelExceptionAuthorizationTokens,
+			IDictionary<TelemetrySeverityLevel, IEnumerable<string>> severityLevelTraceAuthorizationTokens)
 		{
 			this.EventAuthorizationTokens = eventAuthorizationTokens;
 			this.ExceptionAuthorizationTokens = exceptionAuthorizationTokens;
 			this.MetricAuthorizationTokens = metricAuthorizationTokens;
 			this.TraceAuthorizationTokens = traceAuthorizationTokens;
+			this.SeverityLevelExceptionAuthorizationTokens = severityLevelExceptionAuthorizationTokens;
+			this.SeverityLevelTraceAuthorizationTokens = SeverityLevelTraceAuthorizationTokens;
 		}
 
 		public IEnumerable<string> EventAuthorizationTokens { get; }
