@@ -18,7 +18,7 @@ namespace TIKSN.Configuration
 			this.MetricAuthorizationTokens = metricAuthorizationTokens;
 			this.TraceAuthorizationTokens = traceAuthorizationTokens;
 			this.SeverityLevelExceptionAuthorizationTokens = severityLevelExceptionAuthorizationTokens;
-			this.SeverityLevelTraceAuthorizationTokens = SeverityLevelTraceAuthorizationTokens;
+			this.SeverityLevelTraceAuthorizationTokens = severityLevelTraceAuthorizationTokens;
 		}
 
 		public IEnumerable<string> EventAuthorizationTokens { get; }
