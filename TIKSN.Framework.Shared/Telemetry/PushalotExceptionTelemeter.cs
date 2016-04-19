@@ -18,9 +18,9 @@ namespace TIKSN.Analytics.Telemetry
 			await SendMessage(exception.GetType().FullName, exception.Message + Environment.NewLine + exception.StackTrace);
 		}
 
-		public Task TrackException(Exception exception, TelemetrySeverityLevel severityLevel)
+		public async Task TrackException(Exception exception, TelemetrySeverityLevel severityLevel)
 		{
-			throw new NotImplementedException();
+			await SendMessage(string.Format("{0} - {1}", exception.GetType().FullName, severityLevel), exception.Message + Environment.NewLine + exception.StackTrace);
 		}
 
 		protected override IEnumerable<string> GetAuthorizationTokens(PushalotConfiguration pushalotConfiguration)
