@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>TIKSN-Framework</id>
-        <version>1.3.0.0-rc908</version>
+        <version>1.3.0.0-rc909</version>
         <title>TIKSN Framework</title>
         <authors>TIKSN</authors>
         <owners>TIKSN</owners>
@@ -41,8 +41,8 @@
         
         <file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.dll" target="lib\net46" />
         <file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.pdb" target="lib\net46" />
-        <file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP" target="lib\uap10.0" />
-        <file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP" target="lib\uap10.0" />
+        <file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.dll" target="lib\uap10.0" />
+        <file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.pdb" target="lib\uap10.0" />
         
         <file src="..\TIKSN.Versioning\bin\Release\TIKSN.Versioning.dll" target="lib\net46" />
         <file src="..\TIKSN.Versioning\bin\Release\TIKSN.Versioning.pdb" target="lib\net46" />
