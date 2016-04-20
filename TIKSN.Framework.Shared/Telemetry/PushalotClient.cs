@@ -25,8 +25,6 @@ namespace TIKSN.Analytics.Telemetry
 		private const string JSON_FIELD_NAME_TIME_TO_LIVE = "TimeToLive";
 		private const string REQUEST_CONTENT_TYPE = "application/json";
 
-		//private AuthorizationToken authorizationToken;
-
 		private HashSet<PushalotAuthorizationToken> generalSubscribers;
 
 		public PushalotClient()
@@ -170,7 +168,7 @@ namespace TIKSN.Analytics.Telemetry
 
 		public async Task SendMessage(PushalotMessage message, params T[] tags)
 		{
-			await SendMessage(message);
+			await base.SendMessage(message);
 
 			foreach (var tag in tags)
 			{
