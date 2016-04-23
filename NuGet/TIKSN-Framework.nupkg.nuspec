@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>TIKSN-Framework</id>
-        <version>1.3.0.0-rc913</version>
+        <version>1.3.1-pre</version>
         <title>TIKSN Framework</title>
         <authors>TIKSN</authors>
         <owners>TIKSN</owners>
@@ -12,15 +12,17 @@
         <description>This is a .NET Framework enhancement framework. It represents real word objects and ideas into .NET OOP environment. Main features are Versioning, Finance, Currency, Foreign Exchange, Money, Pricing strategy. Unit test full coverage guaranteed.</description>
         <copyright>Copyright © TIKSN Lab 2014</copyright>
         <language />
-        <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange</tags>
+        <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry</tags>
         <dependencies>
             <group targetFramework=".NETFramework4.6">
                 <dependency id="Newtonsoft.Json" version="8.0.3" />
                 <dependency id="Exceptionless.Portable" version="3.4.1669" />
+                <dependency id="HockeySDK.Core" version="2.2.3">
             </group>
-            <group targetFramework="Unsupported0.0">
+            <group targetFramework="uap10.0">
                 <dependency id="Newtonsoft.Json" version="8.0.3" />
                 <dependency id="Exceptionless.Portable" version="3.4.1669" />
+                <dependency id="HockeySDK.Core" version="2.2.3">
             </group>
         </dependencies>
     </metadata>

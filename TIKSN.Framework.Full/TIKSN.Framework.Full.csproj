@@ -35,6 +35,10 @@
       <HintPath>..\packages\Exceptionless.Portable.3.4.1669\lib\net45\Exceptionless.Portable.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="HockeyAppPCL, Version=2.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HockeySDK.Core.2.2.3\lib\portable-net45+win8+wp8+wpa81+win81\HockeyAppPCL.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.ApplicationInsights, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.2.0.1\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
       <Private>True</Private>
