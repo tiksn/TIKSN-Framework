@@ -5,8 +5,8 @@ namespace TIKSN.Analytics.Telemetry
 {
 	public class CompositeEventTelemeter : IEventTelemeter
 	{
-		private IConfiguration<CommonConfiguration> commonConfiguration;
-		private IEventTelemeter[] eventTelemeters;
+		private readonly IConfiguration<CommonConfiguration> commonConfiguration;
+		private readonly IEventTelemeter[] eventTelemeters;
 
 		public CompositeEventTelemeter(IConfiguration<CommonConfiguration> commonConfiguration, IEventTelemeter[] eventTelemeters)
 		{

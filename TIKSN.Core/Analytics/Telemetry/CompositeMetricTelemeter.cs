@@ -5,8 +5,8 @@ namespace TIKSN.Analytics.Telemetry
 {
 	public class CompositeMetricTelemeter : IMetricTelemeter
 	{
-		private IConfiguration<CommonConfiguration> commonConfiguration;
-		private IMetricTelemeter[] metricTelemeters;
+		private readonly IConfiguration<CommonConfiguration> commonConfiguration;
+		private readonly IMetricTelemeter[] metricTelemeters;
 
 		public CompositeMetricTelemeter(IConfiguration<CommonConfiguration> commonConfiguration, IMetricTelemeter[] metricTelemeters)
 		{
