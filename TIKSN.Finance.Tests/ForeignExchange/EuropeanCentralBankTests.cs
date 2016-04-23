@@ -1,108 +1,111 @@
-﻿using System.Linq;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
+using System.Threading.Tasks;
+using TIKSN.Finance.ForeignExchange;
 
 namespace TIKSN.Finance.Tests.ForeignExchange
 {
-	[Microsoft.VisualStudio.TestTools.UnitTesting.TestClass]
+	[TestClass]
 	public class EuropeanCentralBankTests
 	{
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void Calculation001()
+		[TestMethod]
+		public async Task Calculation001()
 		{
-			var Bank = new Finance.ForeignExchange.EuropeanCentralBank();
+			var Bank = new EuropeanCentralBank();
 
-			var pairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var pairs = await Bank.GetCurrencyPairsAsync(System.DateTime.Now);
 
 			foreach (var pair in pairs)
 			{
 				Money Before = new Money(pair.BaseCurrency, 10m);
-				decimal rate = Bank.GetExchangeRate(pair, System.DateTime.Now);
-				Money After = Bank.ConvertCurrency(Before, pair.CounterCurrency, System.DateTime.Now);
+				decimal rate = await Bank.GetExchangeRateAsync(pair, System.DateTime.Now);
+				Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, System.DateTime.Now);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(After.Amount == Before.Amount * rate);
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(After.Currency == pair.CounterCurrency);
+				Assert.IsTrue(After.Amount == Before.Amount * rate);
+				Assert.IsTrue(After.Currency == pair.CounterCurrency);
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void Calculation002()
+		[TestMethod]
+		public async Task Calculation002()
 		{
-			var Bank = new Finance.ForeignExchange.EuropeanCentralBank();
+			var Bank = new EuropeanCentralBank();
 
 			var OneYearsAgo = System.DateTime.Now.AddYears(-1);
-			var pairs = Bank.GetCurrencyPairs(OneYearsAgo);
+			var pairs = await Bank.GetCurrencyPairsAsync(OneYearsAgo);
 
 			foreach (var pair in pairs)
 			{
 				Money Before = new Money(pair.BaseCurrency, 10m);
-				decimal rate = Bank.GetExchangeRate(pair, OneYearsAgo);
-				Money After = Bank.ConvertCurrency(Before, pair.CounterCurrency, OneYearsAgo);
+				decimal rate = await Bank.GetExchangeRateAsync(pair, OneYearsAgo);
+				Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, OneYearsAgo);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(After.Amount == Before.Amount * rate);
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(After.Currency == pair.CounterCurrency);
+				Assert.IsTrue(After.Amount == Before.Amount * rate);
+				Assert.IsTrue(After.Currency == pair.CounterCurrency);
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConversionDirection001()
+		[TestMethod]
+		public async Task ConversionDirection001()
 		{
-			var Bank = new Finance.ForeignExchange.EuropeanCentralBank();
+			var Bank = new EuropeanCentralBank();
 
 			var Euro = new CurrencyInfo(new System.Globalization.RegionInfo("DE"));
 			var PoundSterling = new CurrencyInfo(new System.Globalization.RegionInfo("GB"));
 
 			var BeforeInEuro = new Money(Euro, 100m);
 
-			var AfterInPound = Bank.ConvertCurrency(BeforeInEuro, PoundSterling, System.DateTime.Now);
+			var AfterInPound = await Bank.ConvertCurrencyAsync(BeforeInEuro, PoundSterling, System.DateTime.Now);
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(BeforeInEuro.Amount > AfterInPound.Amount);
+			Assert.IsTrue(BeforeInEuro.Amount > AfterInPound.Amount);
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConvertCurrency001()
+		[TestMethod]
+		public async Task ConvertCurrency001()
 		{
-			Finance.ForeignExchange.EuropeanCentralBank Bank = new Finance.ForeignExchange.EuropeanCentralBank();
+			EuropeanCentralBank Bank = new EuropeanCentralBank();
 
-			var pairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var pairs = await Bank.GetCurrencyPairsAsync(System.DateTime.Now);
 
 			foreach (var pair in pairs)
 			{
 				Money Before = new Money(pair.BaseCurrency, 10m);
-				Money After = Bank.ConvertCurrency(Before, pair.CounterCurrency, System.DateTime.Now);
+				Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, System.DateTime.Now);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(After.Amount > 0m);
+				Assert.IsTrue(After.Amount > 0m);
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConvertCurrency002()
+		[TestMethod]
+		public async Task ConvertCurrency002()
 		{
-			Finance.ForeignExchange.EuropeanCentralBank Bank = new Finance.ForeignExchange.EuropeanCentralBank();
+			EuropeanCentralBank Bank = new EuropeanCentralBank();
 
-			var pairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var pairs = await Bank.GetCurrencyPairsAsync(System.DateTime.Now);
 
 			foreach (var pair in pairs)
 			{
 				try
 				{
 					Money Before = new Money(pair.BaseCurrency, 10m);
-					Money After = Bank.ConvertCurrency(Before, pair.CounterCurrency, System.DateTime.Now.AddMinutes(10d));
+					Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, System.DateTime.Now.AddMinutes(10d));
 
-					Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+					Assert.Fail();
 				}
 				catch (System.ArgumentException)
 				{
 				}
 				catch (System.Exception ex)
 				{
-					Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail(ex.Message);
+					Assert.Fail(ex.Message);
 				}
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConvertCurrency003()
+		[TestMethod]
+		public async Task ConvertCurrency003()
 		{
-			Finance.ForeignExchange.EuropeanCentralBank Bank = new Finance.ForeignExchange.EuropeanCentralBank();
+			EuropeanCentralBank Bank = new EuropeanCentralBank();
 
 			var AMD = new CurrencyInfo(new System.Globalization.RegionInfo("AM"));
 			var ALL = new CurrencyInfo(new System.Globalization.RegionInfo("AL"));
@@ -111,40 +114,40 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			try
 			{
-				Money After = Bank.ConvertCurrency(Before, ALL, System.DateTime.Now);
+				Money After = await Bank.ConvertCurrencyAsync(Before, ALL, System.DateTime.Now);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
 			catch (System.ArgumentException)
 			{
 			}
 			catch (System.Exception ex)
 			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail(ex.Message);
+				Assert.Fail(ex.Message);
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetCurrencyPairs001()
+		[TestMethod]
+		public async Task GetCurrencyPairs001()
 		{
-			var Bank = new Finance.ForeignExchange.EuropeanCentralBank();
+			var Bank = new EuropeanCentralBank();
 
-			var pairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var pairs = await Bank.GetCurrencyPairsAsync(System.DateTime.Now);
 
 			foreach (var pair in pairs)
 			{
 				var ReversedPair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P == ReversedPair));
+				Assert.IsTrue(pairs.Any(P => P == ReversedPair));
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetCurrencyPairs002()
+		[TestMethod]
+		public async Task GetCurrencyPairs002()
 		{
-			var Bank = new Finance.ForeignExchange.EuropeanCentralBank();
+			var Bank = new EuropeanCentralBank();
 
-			var pairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var pairs = await Bank.GetCurrencyPairsAsync(System.DateTime.Now);
 			var uniquePairs = new System.Collections.Generic.HashSet<CurrencyPair>();
 
 			foreach (var pair in pairs)
@@ -157,227 +160,227 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 				}
 			}
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(uniquePairs.Count == pairs.Count());
+			Assert.IsTrue(uniquePairs.Count == pairs.Count());
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetCurrencyPairs003()
+		[TestMethod]
+		public async Task GetCurrencyPairs003()
 		{
-			var Bank = new Finance.ForeignExchange.EuropeanCentralBank();
+			var Bank = new EuropeanCentralBank();
 
 			try
 			{
-				var pairs = Bank.GetCurrencyPairs(System.DateTime.Now.AddMinutes(10d));
+				var pairs = await Bank.GetCurrencyPairsAsync(System.DateTime.Now.AddMinutes(10d));
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
 			catch (System.ArgumentException)
 			{
 			}
 			catch (System.Exception ex)
 			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail(ex.Message);
+				Assert.Fail(ex.Message);
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetCurrencyPairs004()
+		[TestMethod]
+		public async Task GetCurrencyPairs004()
 		{
-			var Bank = new Finance.ForeignExchange.EuropeanCentralBank();
+			var Bank = new EuropeanCentralBank();
 
-			var pairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var pairs = await Bank.GetCurrencyPairsAsync(System.DateTime.Now);
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "ARS/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "AUD/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "BGN/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "BRL/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "CAD/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "CHF/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "CNY/EUR"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "CYP/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "CZK/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "DKK/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "DZD/EUR"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EEK/EUR"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EGP/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "GBP/EUR"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "GRD/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "HKD/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "HRK/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "HUF/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "IDR/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "ILS/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "INR/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "ISK/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "JPY/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "KRW/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "LTL/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "MAD/EUR"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "MTL/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "MXN/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "MYR/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "NOK/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "NZD/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "PHP/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "PLN/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "RON/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "RUB/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "SEK/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "SGD/EUR"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "SIT/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "THB/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "TRY/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "TWD/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "USD/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "ZAR/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "ARS/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "AUD/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "BGN/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "BRL/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "CAD/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "CHF/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "CNY/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "CYP/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "CZK/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "DKK/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "DZD/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EEK/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EGP/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "GBP/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "GRD/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "HKD/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "HRK/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "HUF/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "IDR/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "ILS/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "INR/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "ISK/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "JPY/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "KRW/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "LTL/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "MAD/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "MTL/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "MXN/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "MYR/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "NOK/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "NZD/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "PHP/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "PLN/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "RON/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "RUB/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "SEK/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "SGD/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "SIT/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "THB/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "TRY/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "TWD/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "USD/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "ZAR/EUR"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/ARS"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/AUD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/BGN"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/BRL"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/CHF"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/CNY"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/CYP"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/CZK"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/DKK"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/DZD"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/EEK"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/EGP"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/GBP"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/GRD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/HKD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/HRK"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/HUF"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/IDR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/ILS"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/INR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/ISK"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/JPY"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/KRW"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/LTL"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/MAD"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/MTL"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/MXN"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/MYR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/NOK"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/NZD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/PHP"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/PLN"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/RON"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/RUB"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/SEK"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/SGD"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/SIT"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/THB"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/TRY"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/TWD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/USD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/ZAR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/ARS"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/AUD"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/BGN"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/BRL"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/CAD"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/CHF"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/CNY"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/CYP"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/CZK"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/DKK"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/DZD"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/EEK"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/EGP"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/GBP"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/GRD"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/HKD"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/HRK"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/HUF"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/IDR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/ILS"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/INR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/ISK"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/JPY"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/KRW"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/LTL"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/MAD"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/MTL"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/MXN"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/MYR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/NOK"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/NZD"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/PHP"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/PLN"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/RON"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/RUB"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/SEK"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/SGD"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/SIT"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/THB"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/TRY"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/TWD"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/USD"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/ZAR"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual<int>(37 * 2, pairs.Count());
+			//Assert.AreEqual<int>(37 * 2, pairs.Count());
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetCurrencyPairs005()
+		[TestMethod]
+		public async Task GetCurrencyPairs005()
 		{
-			var Bank = new Finance.ForeignExchange.EuropeanCentralBank();
+			var Bank = new EuropeanCentralBank();
 
-			var pairs = Bank.GetCurrencyPairs(new System.DateTime(2010, 1, 1));
+			var pairs = await Bank.GetCurrencyPairsAsync(new System.DateTime(2010, 1, 1));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "ARS/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "AUD/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "BGN/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "BRL/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "CAD/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "CHF/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "CNY/EUR"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "CYP/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "CZK/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "DKK/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "DZD/EUR"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EEK/EUR"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EGP/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "GBP/EUR"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "GRD/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "HKD/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "HRK/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "HUF/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "IDR/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "ILS/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "INR/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "ISK/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "JPY/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "KRW/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "LTL/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "MAD/EUR"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "MTL/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "MXN/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "MYR/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "NOK/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "NZD/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "PHP/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "PLN/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "RON/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "RUB/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "SEK/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "SGD/EUR"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "SIT/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "THB/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "TRY/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "TWD/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "USD/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "ZAR/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "ARS/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "AUD/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "BGN/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "BRL/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "CAD/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "CHF/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "CNY/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "CYP/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "CZK/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "DKK/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "DZD/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EEK/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EGP/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "GBP/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "GRD/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "HKD/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "HRK/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "HUF/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "IDR/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "ILS/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "INR/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "ISK/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "JPY/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "KRW/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "LTL/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "MAD/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "MTL/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "MXN/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "MYR/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "NOK/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "NZD/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "PHP/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "PLN/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "RON/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "RUB/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "SEK/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "SGD/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "SIT/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "THB/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "TRY/EUR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "TWD/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "USD/EUR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "ZAR/EUR"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/ARS"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/AUD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/BGN"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/BRL"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/CHF"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/CNY"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/CYP"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/CZK"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/DKK"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/DZD"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/EEK"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/EGP"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/GBP"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/GRD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/HKD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/HRK"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/HUF"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/IDR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/ILS"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/INR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/ISK"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/JPY"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/KRW"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/LTL"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/MAD"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/MTL"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/MXN"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/MYR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/NOK"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/NZD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/PHP"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/PLN"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/RON"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/RUB"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/SEK"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/SGD"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/SIT"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/THB"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/TRY"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/TWD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/USD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/ZAR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/ARS"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/AUD"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/BGN"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/BRL"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/CAD"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/CHF"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/CNY"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/CYP"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/CZK"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/DKK"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/DZD"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/EEK"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/EGP"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/GBP"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/GRD"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/HKD"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/HRK"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/HUF"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/IDR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/ILS"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/INR"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/ISK"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/JPY"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/KRW"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/LTL"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/MAD"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/MTL"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/MXN"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/MYR"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/NOK"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/NZD"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/PHP"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/PLN"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/RON"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/RUB"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/SEK"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/SGD"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/SIT"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/THB"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/TRY"));
+			//Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/TWD"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/USD"));
+			Assert.IsTrue(pairs.Any(P => P.ToString() == "EUR/ZAR"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual<int>(37 * 2, pairs.Count());
+			//Assert.AreEqual<int>(37 * 2, pairs.Count());
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetCurrencyPairs006()
+		[TestMethod]
+		public async Task GetCurrencyPairs006()
 		{
 			const string RequestUrl = "http://sdw.ecb.europa.eu/export.do?node=2018794&CURRENCY=&FREQ=D&sfl1=4&sfl3=4&DATASET=0&exportType=sdmx";
 
@@ -394,99 +397,111 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 				CurrencyPairs.Add(string.Format("{1}/{0}", BaseCurrency, CounterCurrency));
 			}
 
-			// Replaced by Euro
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Remove("CYP/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Remove("EUR/CYP"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Remove("EEK/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Remove("EUR/EEK"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Remove("GRD/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Remove("EUR/GRD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Remove("EUR/LVL"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Remove("LVL/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Remove("EUR/MTL"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Remove("MTL/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Remove("EUR/SKK"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Remove("SKK/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Remove("EUR/SIT"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Remove("SIT/EUR"));
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Remove());
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Remove());
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Remove());
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Remove());
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Remove());
-			//Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Remove());
+			// Replaced by Euro or not supported anymore.
+			Assert.IsTrue(CurrencyPairs.Remove("CYP/EUR"));
+			Assert.IsTrue(CurrencyPairs.Remove("EUR/CYP"));
+			Assert.IsTrue(CurrencyPairs.Remove("EEK/EUR"));
+			Assert.IsTrue(CurrencyPairs.Remove("EUR/EEK"));
+			Assert.IsTrue(CurrencyPairs.Remove("GRD/EUR"));
+			Assert.IsTrue(CurrencyPairs.Remove("EUR/GRD"));
+			Assert.IsTrue(CurrencyPairs.Remove("EUR/LVL"));
+			Assert.IsTrue(CurrencyPairs.Remove("LVL/EUR"));
+			Assert.IsTrue(CurrencyPairs.Remove("EUR/MTL"));
+			Assert.IsTrue(CurrencyPairs.Remove("MTL/EUR"));
+			Assert.IsTrue(CurrencyPairs.Remove("EUR/SKK"));
+			Assert.IsTrue(CurrencyPairs.Remove("SKK/EUR"));
+			Assert.IsTrue(CurrencyPairs.Remove("EUR/SIT"));
+			Assert.IsTrue(CurrencyPairs.Remove("SIT/EUR"));
 
-			var Bank = new Finance.ForeignExchange.EuropeanCentralBank();
+			Assert.IsTrue(CurrencyPairs.Remove("EUR/ARS"));
+			Assert.IsTrue(CurrencyPairs.Remove("ARS/EUR"));
+			Assert.IsTrue(CurrencyPairs.Remove("EUR/DZD"));
+			Assert.IsTrue(CurrencyPairs.Remove("DZD/EUR"));
+			Assert.IsTrue(CurrencyPairs.Remove("EUR/ISK"));
+			Assert.IsTrue(CurrencyPairs.Remove("ISK/EUR"));
+			Assert.IsTrue(CurrencyPairs.Remove("EUR/LTL"));
+			Assert.IsTrue(CurrencyPairs.Remove("LTL/EUR"));
+			Assert.IsTrue(CurrencyPairs.Remove("EUR/MAD"));
+			Assert.IsTrue(CurrencyPairs.Remove("MAD/EUR"));
+			Assert.IsTrue(CurrencyPairs.Remove("EUR/TWD"));
+			Assert.IsTrue(CurrencyPairs.Remove("TWD/EUR"));
+			//Assert.IsTrue(CurrencyPairs.Remove(""));
+			//Assert.IsTrue(CurrencyPairs.Remove(""));
+			//Assert.IsTrue(CurrencyPairs.Remove(""));
+			//Assert.IsTrue(CurrencyPairs.Remove(""));
+			//Assert.IsTrue(CurrencyPairs.Remove(""));
 
-			var pairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var Bank = new EuropeanCentralBank();
+
+			var pairs = await Bank.GetCurrencyPairsAsync(System.DateTime.Now);
 
 			foreach (var pairCode in CurrencyPairs)
 			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Any(P => P.ToString() == pairCode));
+				Assert.IsTrue(pairs.Any(P => P.ToString() == pairCode), "Pair code ({0}) is not found.", pairCode);
 			}
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Count() == CurrencyPairs.Count);
+			Assert.IsTrue(pairs.Count() == CurrencyPairs.Count);
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate001()
+		[TestMethod]
+		public async Task GetExchangeRate001()
 		{
-			Finance.ForeignExchange.EuropeanCentralBank Bank = new Finance.ForeignExchange.EuropeanCentralBank();
+			EuropeanCentralBank Bank = new EuropeanCentralBank();
 
-			var pairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var pairs = await Bank.GetCurrencyPairsAsync(System.DateTime.Now);
 
 			foreach (var pair in pairs)
 			{
-				decimal rate = Bank.GetExchangeRate(pair, System.DateTime.Now);
+				decimal rate = await Bank.GetExchangeRateAsync(pair, System.DateTime.Now);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(rate > 0m);
+				Assert.IsTrue(rate > 0m);
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate002()
+		[TestMethod]
+		public async Task GetExchangeRate002()
 		{
-			Finance.ForeignExchange.EuropeanCentralBank Bank = new Finance.ForeignExchange.EuropeanCentralBank();
+			EuropeanCentralBank Bank = new EuropeanCentralBank();
 
-			var pairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var pairs = await Bank.GetCurrencyPairsAsync(System.DateTime.Now);
 
 			foreach (var pair in pairs)
 			{
 				try
 				{
-					decimal rate = Bank.GetExchangeRate(pair, System.DateTime.Now.AddMinutes(10d));
+					decimal rate = await Bank.GetExchangeRateAsync(pair, System.DateTime.Now.AddMinutes(10d));
 
-					Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+					Assert.Fail();
 				}
 				catch (System.ArgumentException)
 				{
 				}
 				catch (System.Exception ex)
 				{
-					Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail(ex.Message);
+					Assert.Fail(ex.Message);
 				}
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate003()
+		[TestMethod]
+		public async Task GetExchangeRate003()
 		{
-			Finance.ForeignExchange.EuropeanCentralBank Bank = new Finance.ForeignExchange.EuropeanCentralBank();
+			EuropeanCentralBank Bank = new EuropeanCentralBank();
 
-			var pairs = Bank.GetCurrencyPairs(System.DateTime.Now.AddYears(-1));
+			var pairs = await Bank.GetCurrencyPairsAsync(System.DateTime.Now.AddYears(-1));
 
 			foreach (var pair in pairs)
 			{
-				decimal rate = Bank.GetExchangeRate(pair, System.DateTime.Now.AddYears(-1));
+				decimal rate = await Bank.GetExchangeRateAsync(pair, System.DateTime.Now.AddYears(-1));
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(rate > 0m);
+				Assert.IsTrue(rate > 0m);
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate004()
+		[TestMethod]
+		public async Task GetExchangeRate004()
 		{
-			Finance.ForeignExchange.EuropeanCentralBank Bank = new Finance.ForeignExchange.EuropeanCentralBank();
+			EuropeanCentralBank Bank = new EuropeanCentralBank();
 
 			var AMD = new CurrencyInfo(new System.Globalization.RegionInfo("AM"));
 			var ALL = new CurrencyInfo(new System.Globalization.RegionInfo("AL"));
@@ -495,28 +510,17 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			try
 			{
-				decimal rate = Bank.GetExchangeRate(pair, System.DateTime.Now);
+				decimal rate = await Bank.GetExchangeRateAsync(pair, System.DateTime.Now);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
 			catch (System.ArgumentException)
 			{
 			}
 			catch (System.Exception ex)
 			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail(ex.Message);
+				Assert.Fail(ex.Message);
 			}
-		}
-
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void KeepCurrenciesPairsUpdated()
-		{
-			// In case or failure, check currency pair information from ECB website and set deadline up to 3 month.
-
-			System.DateTime Deadline = new System.DateTime(2015, 03, 1);
-
-			if (System.DateTime.Now > Deadline)
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
 		}
 	}
 }

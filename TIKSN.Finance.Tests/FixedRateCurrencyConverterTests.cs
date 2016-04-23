@@ -1,15 +1,19 @@
-﻿using System.Linq;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace TIKSN.Finance.Tests
 {
-	[Microsoft.VisualStudio.TestTools.UnitTesting.TestClass]
+	[TestClass]
 	public class FixedRateCurrencyConverterTests
 	{
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConvertCurrency001()
+		[TestMethod]
+		public async Task ConvertCurrency001()
 		{
-			System.Globalization.RegionInfo UnitedStates = new System.Globalization.RegionInfo("US");
-			System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
+			RegionInfo UnitedStates = new RegionInfo("US");
+			RegionInfo UnitedKingdom = new RegionInfo("GB");
 
 			CurrencyInfo USDollar = new CurrencyInfo(UnitedStates);
 			CurrencyInfo PoundSterling = new CurrencyInfo(UnitedKingdom);
@@ -18,18 +22,19 @@ namespace TIKSN.Finance.Tests
 
 			FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
-			Money Final = converter.ConvertCurrency(Initial, PoundSterling, System.DateTime.Now);
+			Money Final = await converter.ConvertCurrencyAsync(Initial, PoundSterling, System.DateTime.Now);
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual<CurrencyInfo>(PoundSterling, Final.Currency);
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual<decimal>(200m, Final.Amount);
+			Assert.AreEqual(PoundSterling, Final.Currency);
+			Assert.AreEqual(200m, Final.Amount);
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConvertCurrency002()
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public async Task ConvertCurrency002()
 		{
-			System.Globalization.RegionInfo UnitedStates = new System.Globalization.RegionInfo("US");
-			System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-			System.Globalization.RegionInfo Italy = new System.Globalization.RegionInfo("IT");
+			RegionInfo UnitedStates = new RegionInfo("US");
+			RegionInfo UnitedKingdom = new RegionInfo("GB");
+			RegionInfo Italy = new RegionInfo("IT");
 
 			CurrencyInfo USDollar = new CurrencyInfo(UnitedStates);
 			CurrencyInfo PoundSterling = new CurrencyInfo(UnitedKingdom);
@@ -39,28 +44,17 @@ namespace TIKSN.Finance.Tests
 
 			FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
-			try
-			{
-				converter.ConvertCurrency(Initial, Euro, System.DateTime.Now);
-
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
-			catch (System.ArgumentException)
-			{
-			}
-			catch
-			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
+			await converter.ConvertCurrencyAsync(Initial, Euro, DateTimeOffset.Now);
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConvertCurrency003()
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public async Task ConvertCurrency003()
 		{
-			System.Globalization.RegionInfo UnitedStates = new System.Globalization.RegionInfo("US");
-			System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-			System.Globalization.RegionInfo Italy = new System.Globalization.RegionInfo("IT");
-			System.Globalization.RegionInfo Armenia = new System.Globalization.RegionInfo("AM");
+			RegionInfo UnitedStates = new RegionInfo("US");
+			RegionInfo UnitedKingdom = new RegionInfo("GB");
+			RegionInfo Italy = new RegionInfo("IT");
+			RegionInfo Armenia = new RegionInfo("AM");
 
 			CurrencyInfo USDollar = new CurrencyInfo(UnitedStates);
 			CurrencyInfo PoundSterling = new CurrencyInfo(UnitedKingdom);
@@ -71,27 +65,15 @@ namespace TIKSN.Finance.Tests
 
 			FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
-			try
-			{
-				converter.ConvertCurrency(Initial, Euro, System.DateTime.Now);
-
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
-			catch (System.ArgumentException)
-			{
-			}
-			catch
-			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
+			await converter.ConvertCurrencyAsync(Initial, Euro, DateTimeOffset.Now);
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void CurrencyPair001()
+		[TestMethod]
+		public async Task CurrencyPair001()
 		{
-			System.Globalization.RegionInfo UnitedStates = new System.Globalization.RegionInfo("US");
-			System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-			System.Globalization.RegionInfo Italy = new System.Globalization.RegionInfo("IT");
+			RegionInfo UnitedStates = new RegionInfo("US");
+			RegionInfo UnitedKingdom = new RegionInfo("GB");
+			RegionInfo Italy = new RegionInfo("IT");
 
 			CurrencyInfo USDollar = new CurrencyInfo(UnitedStates);
 			CurrencyInfo PoundSterling = new CurrencyInfo(UnitedKingdom);
@@ -99,59 +81,37 @@ namespace TIKSN.Finance.Tests
 
 			FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(object.ReferenceEquals(converter.CurrencyPair.BaseCurrency, USDollar));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(object.ReferenceEquals(converter.CurrencyPair.CounterCurrency, PoundSterling));
+			Assert.IsTrue(ReferenceEquals(converter.CurrencyPair.BaseCurrency, USDollar));
+			Assert.IsTrue(object.ReferenceEquals(converter.CurrencyPair.CounterCurrency, PoundSterling));
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void FixedRateCurrencyConverter001()
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public async Task FixedRateCurrencyConverter001()
 		{
-			try
-			{
-				FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(null, 0.5m);
-
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
-			catch (System.ArgumentNullException)
-			{
-			}
-			catch
-			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
+			FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(null, 0.5m);
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void FixedRateCurrencyConverter002()
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public async Task FixedRateCurrencyConverter002()
 		{
-			try
-			{
-				System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
-				System.Globalization.RegionInfo AM = new System.Globalization.RegionInfo("AM");
+			RegionInfo US = new RegionInfo("US");
+			RegionInfo AM = new RegionInfo("AM");
 
-				CurrencyInfo USD = new CurrencyInfo(US);
-				CurrencyInfo AMD = new CurrencyInfo(AM);
+			CurrencyInfo USD = new CurrencyInfo(US);
+			CurrencyInfo AMD = new CurrencyInfo(AM);
 
-				CurrencyPair pair = new CurrencyPair(USD, AMD);
+			CurrencyPair pair = new CurrencyPair(USD, AMD);
 
-				FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(pair, -0.5m);
-
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
-			catch (System.ArgumentException)
-			{
-			}
-			catch
-			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
+			FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(pair, -0.5m);
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetCurrencyPairs001()
+		[TestMethod]
+		public async Task GetCurrencyPairs001()
 		{
-			System.Globalization.RegionInfo UnitedStates = new System.Globalization.RegionInfo("US");
-			System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
+			RegionInfo UnitedStates = new RegionInfo("US");
+			RegionInfo UnitedKingdom = new RegionInfo("GB");
 
 			CurrencyInfo USDollar = new CurrencyInfo(UnitedStates);
 			CurrencyInfo PoundSterling = new CurrencyInfo(UnitedKingdom);
@@ -160,58 +120,48 @@ namespace TIKSN.Finance.Tests
 
 			FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(pair, 2m);
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual<CurrencyInfo>(USDollar, converter.CurrencyPair.BaseCurrency);
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual<CurrencyInfo>(PoundSterling, converter.CurrencyPair.CounterCurrency);
+			Assert.AreEqual<CurrencyInfo>(USDollar, converter.CurrencyPair.BaseCurrency);
+			Assert.AreEqual<CurrencyInfo>(PoundSterling, converter.CurrencyPair.CounterCurrency);
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(object.ReferenceEquals(pair, converter.GetCurrencyPairs(System.DateTime.Now).Single()));
+			Assert.IsTrue(object.ReferenceEquals(pair, (await converter.GetCurrencyPairsAsync(DateTimeOffset.Now)).Single()));
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate001()
+		[TestMethod]
+		public async Task GetExchangeRate001()
 		{
-			System.Globalization.RegionInfo UnitedStates = new System.Globalization.RegionInfo("US");
-			System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
+			RegionInfo UnitedStates = new RegionInfo("US");
+			RegionInfo UnitedKingdom = new RegionInfo("GB");
 
 			CurrencyInfo USDollar = new CurrencyInfo(UnitedStates);
 			CurrencyInfo PoundSterling = new CurrencyInfo(UnitedKingdom);
 
 			FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual<decimal>(2m, converter.GetExchangeRate(new CurrencyPair(USDollar, PoundSterling), System.DateTime.Now));
+			Assert.AreEqual(2m, await converter.GetExchangeRateAsync(new CurrencyPair(USDollar, PoundSterling), DateTimeOffset.Now));
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate002()
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public async Task GetExchangeRate002()
 		{
-			System.Globalization.RegionInfo UnitedStates = new System.Globalization.RegionInfo("US");
-			System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
+			RegionInfo UnitedStates = new RegionInfo("US");
+			RegionInfo UnitedKingdom = new RegionInfo("GB");
 
 			CurrencyInfo USDollar = new CurrencyInfo(UnitedStates);
 			CurrencyInfo PoundSterling = new CurrencyInfo(UnitedKingdom);
 
 			FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
-			try
-			{
-				converter.GetExchangeRate(new CurrencyPair(PoundSterling, USDollar), System.DateTime.Now);
-
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
-			catch (System.ArgumentException)
-			{
-			}
-			catch
-			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
+			await converter.GetExchangeRateAsync(new CurrencyPair(PoundSterling, USDollar), DateTimeOffset.Now);
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate003()
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public async Task GetExchangeRate003()
 		{
-			System.Globalization.RegionInfo UnitedStates = new System.Globalization.RegionInfo("US");
-			System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-			System.Globalization.RegionInfo Italy = new System.Globalization.RegionInfo("IT");
+			RegionInfo UnitedStates = new RegionInfo("US");
+			RegionInfo UnitedKingdom = new RegionInfo("GB");
+			RegionInfo Italy = new RegionInfo("IT");
 
 			CurrencyInfo USDollar = new CurrencyInfo(UnitedStates);
 			CurrencyInfo PoundSterling = new CurrencyInfo(UnitedKingdom);
@@ -219,27 +169,16 @@ namespace TIKSN.Finance.Tests
 
 			FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
-			try
-			{
-				converter.GetExchangeRate(new CurrencyPair(Euro, USDollar), System.DateTime.Now);
-
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
-			catch (System.ArgumentException)
-			{
-			}
-			catch
-			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
+			await converter.GetExchangeRateAsync(new CurrencyPair(Euro, USDollar), DateTimeOffset.Now);
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate004()
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public async Task GetExchangeRate004()
 		{
-			System.Globalization.RegionInfo UnitedStates = new System.Globalization.RegionInfo("US");
-			System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-			System.Globalization.RegionInfo Italy = new System.Globalization.RegionInfo("IT");
+			RegionInfo UnitedStates = new RegionInfo("US");
+			RegionInfo UnitedKingdom = new RegionInfo("GB");
+			RegionInfo Italy = new RegionInfo("IT");
 
 			CurrencyInfo USDollar = new CurrencyInfo(UnitedStates);
 			CurrencyInfo PoundSterling = new CurrencyInfo(UnitedKingdom);
@@ -247,26 +186,14 @@ namespace TIKSN.Finance.Tests
 
 			FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
-			try
-			{
-				converter.GetExchangeRate(new CurrencyPair(USDollar, Euro), System.DateTime.Now);
-
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
-			catch (System.ArgumentException)
-			{
-			}
-			catch
-			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
+			await converter.GetExchangeRateAsync(new CurrencyPair(USDollar, Euro), DateTimeOffset.Now);
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate005()
+		[TestMethod]
+		public async Task GetExchangeRate005()
 		{
-			System.Globalization.RegionInfo UnitedStates = new System.Globalization.RegionInfo("US");
-			System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
+			RegionInfo UnitedStates = new RegionInfo("US");
+			RegionInfo UnitedKingdom = new RegionInfo("GB");
 
 			CurrencyInfo USDollar = new CurrencyInfo(UnitedStates);
 			CurrencyInfo PoundSterling = new CurrencyInfo(UnitedKingdom);
@@ -275,13 +202,13 @@ namespace TIKSN.Finance.Tests
 
 			var converter = new FixedRateCurrencyConverter(pair, 1.6m);
 
-			var LastMonth = System.DateTime.Now.AddMonths(-1);
-			var NextMonth = System.DateTime.Now.AddMonths(1);
+			var LastMonth = DateTimeOffset.Now.AddMonths(-1);
+			var NextMonth = DateTimeOffset.Now.AddMonths(1);
 
-			decimal RateInLastMonth = converter.GetExchangeRate(pair, LastMonth);
-			decimal RateInNextMonth = converter.GetExchangeRate(pair, NextMonth);
+			decimal RateInLastMonth = await converter.GetExchangeRateAsync(pair, LastMonth);
+			decimal RateInNextMonth = await converter.GetExchangeRateAsync(pair, NextMonth);
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(RateInLastMonth == RateInNextMonth);
+			Assert.IsTrue(RateInLastMonth == RateInNextMonth);
 		}
 	}
 }

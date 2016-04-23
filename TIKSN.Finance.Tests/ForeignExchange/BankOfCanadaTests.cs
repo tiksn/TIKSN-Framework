@@ -1,483 +1,390 @@
-﻿using System.Linq;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
+using TIKSN.Finance.ForeignExchange;
 
 namespace TIKSN.Finance.Tests.ForeignExchange
 {
-	[Microsoft.VisualStudio.TestTools.UnitTesting.TestClass]
+	[TestClass]
 	public class BankOfCanadaTests
 	{
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void Calculate001()
+		[TestMethod]
+		public async Task Calculate001()
 		{
-			var Bank = new Finance.ForeignExchange.BankOfCanada();
+			var bank = new BankOfCanada();
 
-			foreach (var pair in Bank.GetCurrencyPairs(System.DateTime.Now))
+			foreach (var pair in await bank.GetCurrencyPairsAsync(DateTimeOffset.Now))
 			{
 				Money Before = new Money(pair.BaseCurrency, 10m);
-				decimal rate = Bank.GetExchangeRate(pair, System.DateTime.Now);
-				Money After = Bank.ConvertCurrency(Before, pair.CounterCurrency, System.DateTime.Now);
+				decimal rate = await bank.GetExchangeRateAsync(pair, DateTimeOffset.Now);
+				Money After = await bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(After.Amount == rate * Before.Amount);
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(After.Currency == pair.CounterCurrency);
+				Assert.IsTrue(After.Amount == rate * Before.Amount);
+				Assert.IsTrue(After.Currency == pair.CounterCurrency);
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConversionDirection001()
+		[TestMethod]
+		public async Task ConversionDirection001()
 		{
-			var Bank = new Finance.ForeignExchange.BankOfCanada();
+			var Bank = new BankOfCanada();
 
-			var CanadianDollar = new CurrencyInfo(new System.Globalization.RegionInfo("CA"));
-			var PoundSterling = new CurrencyInfo(new System.Globalization.RegionInfo("GB"));
+			var CanadianDollar = new CurrencyInfo(new RegionInfo("CA"));
+			var PoundSterling = new CurrencyInfo(new RegionInfo("GB"));
 
 			var BeforeInPound = new Money(PoundSterling, 100m);
 
-			var AfterInDollar = Bank.ConvertCurrency(BeforeInPound, CanadianDollar, System.DateTime.Now);
+			var AfterInDollar = await Bank.ConvertCurrencyAsync(BeforeInPound, CanadianDollar, DateTimeOffset.Now);
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(BeforeInPound.Amount < AfterInDollar.Amount);
+			Assert.IsTrue(BeforeInPound.Amount < AfterInDollar.Amount);
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConvertCurrency001()
+		[TestMethod]
+		public async Task ConvertCurrency001()
 		{
-			Finance.ForeignExchange.BankOfCanada Bank = new Finance.ForeignExchange.BankOfCanada();
+			BankOfCanada Bank = new BankOfCanada();
 
-			var CurrencyPairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
 
 			foreach (CurrencyPair pair in CurrencyPairs)
 			{
 				Money Before = new Money(pair.BaseCurrency, decimal.One);
 
-				Money After = Bank.ConvertCurrency(Before, pair.CounterCurrency, System.DateTime.Now);
+				Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(After.Amount > decimal.Zero);
+				Assert.IsTrue(After.Amount > decimal.Zero);
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConvertCurrency002()
+		[TestMethod]
+		public async Task ConvertCurrency002()
 		{
-			Finance.ForeignExchange.BankOfCanada Bank = new Finance.ForeignExchange.BankOfCanada();
+			BankOfCanada Bank = new BankOfCanada();
 
-			var CurrencyPairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
 
 			foreach (CurrencyPair pair in CurrencyPairs)
 			{
 				Money Before = new Money(pair.BaseCurrency, decimal.One);
 
-				Money After = Bank.ConvertCurrency(Before, pair.CounterCurrency, System.DateTime.Now);
+				Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(After.Currency == pair.CounterCurrency);
+				Assert.IsTrue(After.Currency == pair.CounterCurrency);
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConvertCurrency003()
+		[TestMethod]
+		public async Task ConvertCurrency003()
 		{
-			Finance.ForeignExchange.BankOfCanada Bank = new Finance.ForeignExchange.BankOfCanada();
+			BankOfCanada Bank = new BankOfCanada();
 
-			var CurrencyPairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
 
 			foreach (CurrencyPair pair in CurrencyPairs)
 			{
 				Money Before = new Money(pair.BaseCurrency, 10m);
 
-				Money After = Bank.ConvertCurrency(Before, pair.CounterCurrency, System.DateTime.Now);
+				Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now);
 
-				decimal rate = Bank.GetExchangeRate(pair, System.DateTime.Now);
+				decimal rate = await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(After.Currency == pair.CounterCurrency);
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(After.Amount == rate * Before.Amount);
+				Assert.IsTrue(After.Currency == pair.CounterCurrency);
+				Assert.IsTrue(After.Amount == rate * Before.Amount);
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConvertCurrency004()
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public async Task ConvertCurrency004()
 		{
-			Finance.ForeignExchange.BankOfCanada Bank = new Finance.ForeignExchange.BankOfCanada();
+			BankOfCanada Bank = new BankOfCanada();
 
-			System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
-			System.Globalization.RegionInfo CA = new System.Globalization.RegionInfo("CA");
+			RegionInfo US = new RegionInfo("US");
+			RegionInfo CA = new RegionInfo("CA");
 
 			CurrencyInfo USD = new CurrencyInfo(US);
 			CurrencyInfo CAD = new CurrencyInfo(CA);
 
-			try
-			{
-				Money Before = new Money(USD, 100m);
+			Money Before = new Money(USD, 100m);
 
-				Money After = Bank.ConvertCurrency(Before, CAD, System.DateTime.Now.AddMinutes(1d));
-
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
-			catch (System.ArgumentException)
-			{
-			}
-			catch
-			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
+			Money After = await Bank.ConvertCurrencyAsync(Before, CAD, DateTimeOffset.Now.AddMinutes(1d));
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConvertCurrency005()
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public async Task ConvertCurrency005()
 		{
-			Finance.ForeignExchange.BankOfCanada Bank = new Finance.ForeignExchange.BankOfCanada();
+			BankOfCanada Bank = new BankOfCanada();
 
-			System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
-			System.Globalization.RegionInfo CA = new System.Globalization.RegionInfo("CA");
+			RegionInfo US = new RegionInfo("US");
+			RegionInfo CA = new RegionInfo("CA");
 
 			CurrencyInfo USD = new CurrencyInfo(US);
 			CurrencyInfo CAD = new CurrencyInfo(CA);
 
-			try
-			{
-				Money Before = new Money(USD, 100m);
+			Money Before = new Money(USD, 100m);
 
-				Money After = Bank.ConvertCurrency(Before, CAD, System.DateTime.Now.AddDays(-20d));
-
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
-			catch (System.ArgumentException)
-			{
-			}
-			catch
-			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
+			Money After = await Bank.ConvertCurrencyAsync(Before, CAD, DateTimeOffset.Now.AddDays(-20d));
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConvertCurrency006()
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public async Task ConvertCurrency006()
 		{
-			Finance.ForeignExchange.BankOfCanada Bank = new Finance.ForeignExchange.BankOfCanada();
+			BankOfCanada Bank = new BankOfCanada();
 
-			System.Globalization.RegionInfo AO = new System.Globalization.RegionInfo("AO");
-			System.Globalization.RegionInfo BW = new System.Globalization.RegionInfo("BW");
+			RegionInfo AO = new RegionInfo("AO");
+			RegionInfo BW = new RegionInfo("BW");
 
 			CurrencyInfo AOA = new CurrencyInfo(AO);
 			CurrencyInfo BWP = new CurrencyInfo(BW);
 
-			try
-			{
-				Money Before = new Money(AOA, 100m);
+			Money Before = new Money(AOA, 100m);
 
-				Money After = Bank.ConvertCurrency(Before, BWP, System.DateTime.Now);
-
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
-			catch (System.ArgumentException)
-			{
-			}
-			catch
-			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
+			Money After = await Bank.ConvertCurrencyAsync(Before, BWP, DateTimeOffset.Now);
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void CurrencyPairs001()
+		[TestMethod]
+		public async Task CurrencyPairs001()
 		{
-			Finance.ForeignExchange.BankOfCanada Bank = new Finance.ForeignExchange.BankOfCanada();
+			BankOfCanada Bank = new BankOfCanada();
 
-			var CurrencyPairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/USD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/ARS"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/AUD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/BRL"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/CLP"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/CNY"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/COP"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/HRK"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/CZK"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/DKK"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/EUR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/GTQ"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/HNL"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/HKD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/HUF"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/ISK"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/INR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/IDR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/ILS"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/JMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/JPY"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/MYR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/MXN"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/MAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/MMK"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/NZD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/NOK"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/PKR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/PAB"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/PEN"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/PHP"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/PLN"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/RON"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/RUB"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/RSD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/SGD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/ZAR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/KRW"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/LKR"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/SEK"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/CHF"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/TWD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/THB"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/TTD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/TND"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/TRY"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/AED"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/GBP"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/VEF"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/VND"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/XAF"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/XCD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/USD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/ARS"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/AUD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/BRL"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/CLP"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/CNY"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/COP"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/HRK"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/CZK"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/DKK"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/EUR"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/GTQ"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/HNL"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/HKD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/HUF"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/ISK"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/INR"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/IDR"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/ILS"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/JMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/JPY"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/MYR"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/MXN"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/MAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/MMK"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/NZD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/NOK"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/PKR"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/PAB"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/PEN"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/PHP"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/PLN"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/RON"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/RUB"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/RSD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/SGD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/ZAR"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/KRW"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/LKR"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/SEK"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/CHF"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/TWD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/THB"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/TTD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/TND"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/TRY"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/AED"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/GBP"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/VEF"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/VND"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/XAF"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CAD/XCD"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "USD/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "ARS/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "AUD/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "BRL/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CLP/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CNY/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "COP/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "HRK/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CZK/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "DKK/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "EUR/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "GTQ/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "HNL/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "HKD/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "HUF/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "ISK/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "INR/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "IDR/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "ILS/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "JMD/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "JPY/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "MYR/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "MXN/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "MAD/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "MMK/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "NZD/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "NOK/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "PKR/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "PAB/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "PEN/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "PHP/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "PLN/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "RON/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "RUB/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "RSD/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "SGD/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "ZAR/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "KRW/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "LKR/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "SEK/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CHF/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "TWD/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "THB/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "TTD/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "TND/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "TRY/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "AED/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "GBP/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "VEF/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "VND/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "XAF/CAD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "XCD/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "USD/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "ARS/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "AUD/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "BRL/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CLP/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CNY/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "COP/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "HRK/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CZK/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "DKK/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "EUR/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "GTQ/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "HNL/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "HKD/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "HUF/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "ISK/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "INR/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "IDR/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "ILS/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "JMD/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "JPY/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "MYR/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "MXN/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "MAD/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "MMK/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "NZD/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "NOK/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "PKR/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "PAB/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "PEN/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "PHP/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "PLN/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "RON/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "RUB/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "RSD/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "SGD/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "ZAR/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "KRW/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "LKR/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "SEK/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "CHF/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "TWD/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "THB/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "TTD/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "TND/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "TRY/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "AED/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "GBP/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "VEF/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "VND/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "XAF/CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.ToString() == "XCD/CAD"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual<int>(104, CurrencyPairs.Count());
+			//Assert.AreEqual<int>(104, CurrencyPairs.Count());
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void CurrencyPairs002()
+		[TestMethod]
+		public async Task CurrencyPairs002()
 		{
-			Finance.ForeignExchange.BankOfCanada Bank = new Finance.ForeignExchange.BankOfCanada();
+			BankOfCanada Bank = new BankOfCanada();
 
-			var CurrencyPairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
 
 			foreach (CurrencyPair pair in CurrencyPairs)
 			{
 				CurrencyPair reversePair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C == reversePair));
+				Assert.IsTrue(CurrencyPairs.Any(C => C == reversePair));
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void CurrencyPairs003()
+		[TestMethod]
+		public async Task CurrencyPairs003()
 		{
-			Finance.ForeignExchange.BankOfCanada Bank = new Finance.ForeignExchange.BankOfCanada();
+			BankOfCanada Bank = new BankOfCanada();
 
-			System.Collections.Generic.HashSet<CurrencyPair> pairSet = new System.Collections.Generic.HashSet<CurrencyPair>();
+			var pairSet = new HashSet<CurrencyPair>();
 
-			var CurrencyPairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
 
 			foreach (CurrencyPair pair in CurrencyPairs)
 			{
 				pairSet.Add(pair);
 			}
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairSet.Count == CurrencyPairs.Count());
+			Assert.IsTrue(pairSet.Count == CurrencyPairs.Count());
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void CurrencyPairs004()
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public async Task CurrencyPairs004()
 		{
-			Finance.ForeignExchange.BankOfCanada Bank = new Finance.ForeignExchange.BankOfCanada();
+			BankOfCanada Bank = new BankOfCanada();
 
-			try
-			{
-				var pairs = Bank.GetCurrencyPairs(System.DateTime.Now.AddDays(-10));
-
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
-			catch (System.ArgumentException)
-			{
-			}
-			catch (System.Exception)
-			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
+			var pairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now.AddDays(-10));
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void CurrencyPairs005()
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public async Task CurrencyPairs005()
 		{
-			Finance.ForeignExchange.BankOfCanada Bank = new Finance.ForeignExchange.BankOfCanada();
+			BankOfCanada Bank = new BankOfCanada();
 
-			try
-			{
-				var pairs = Bank.GetCurrencyPairs(System.DateTime.Now.AddDays(10));
-
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
-			catch (System.ArgumentException)
-			{
-			}
-			catch (System.Exception)
-			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
+			var pairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now.AddDays(10));
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void Fetch001()
+		[TestMethod]
+		public async Task Fetch001()
 		{
-			var Bank = new Finance.ForeignExchange.BankOfCanada();
+			var Bank = new BankOfCanada();
 
-			Bank.Fetch();
+			await Bank.FetchAsync();
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate001()
+		[TestMethod]
+		public async Task GetExchangeRate001()
 		{
-			Finance.ForeignExchange.BankOfCanada Bank = new Finance.ForeignExchange.BankOfCanada();
+			BankOfCanada Bank = new BankOfCanada();
 
-			var CurrencyPairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
 
 			foreach (CurrencyPair pair in CurrencyPairs)
 			{
-				decimal rate = Bank.GetExchangeRate(pair, System.DateTime.Now);
+				decimal rate = await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(rate > decimal.Zero);
+				Assert.IsTrue(rate > decimal.Zero);
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate002()
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public async Task GetExchangeRate002()
 		{
-			Finance.ForeignExchange.BankOfCanada Bank = new Finance.ForeignExchange.BankOfCanada();
+			BankOfCanada Bank = new BankOfCanada();
 
-			System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
-			System.Globalization.RegionInfo CA = new System.Globalization.RegionInfo("CA");
+			RegionInfo US = new RegionInfo("US");
+			RegionInfo CA = new RegionInfo("CA");
 
 			CurrencyInfo USD = new CurrencyInfo(US);
 			CurrencyInfo CAD = new CurrencyInfo(CA);
 
 			CurrencyPair pair = new CurrencyPair(CAD, USD);
 
-			try
-			{
-				decimal rate = Bank.GetExchangeRate(pair, System.DateTime.Now.AddMinutes(1d));
-
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
-			catch (System.ArgumentException)
-			{
-			}
-			catch
-			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
+			decimal rate = await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now.AddMinutes(1d));
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate003()
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public async Task GetExchangeRate003()
 		{
-			Finance.ForeignExchange.BankOfCanada Bank = new Finance.ForeignExchange.BankOfCanada();
+			BankOfCanada Bank = new BankOfCanada();
 
-			System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
-			System.Globalization.RegionInfo CA = new System.Globalization.RegionInfo("CA");
+			RegionInfo US = new RegionInfo("US");
+			RegionInfo CA = new RegionInfo("CA");
 
 			CurrencyInfo USD = new CurrencyInfo(US);
 			CurrencyInfo CAD = new CurrencyInfo(CA);
 
 			CurrencyPair pair = new CurrencyPair(CAD, USD);
 
-			try
-			{
-				decimal rate = Bank.GetExchangeRate(pair, System.DateTime.Now.AddDays(-20d));
-
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
-			catch (System.ArgumentException)
-			{
-			}
-			catch
-			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
+			decimal rate = await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now.AddDays(-20d));
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate004()
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public async Task GetExchangeRate004()
 		{
-			Finance.ForeignExchange.BankOfCanada Bank = new Finance.ForeignExchange.BankOfCanada();
+			BankOfCanada Bank = new BankOfCanada();
 
-			System.Globalization.RegionInfo AO = new System.Globalization.RegionInfo("AO");
-			System.Globalization.RegionInfo BW = new System.Globalization.RegionInfo("BW");
+			RegionInfo AO = new RegionInfo("AO");
+			RegionInfo BW = new RegionInfo("BW");
 
 			CurrencyInfo AOA = new CurrencyInfo(AO);
 			CurrencyInfo BWP = new CurrencyInfo(BW);
 
 			CurrencyPair pair = new CurrencyPair(BWP, AOA);
 
-			try
-			{
-				decimal rate = Bank.GetExchangeRate(pair, System.DateTime.Now);
-
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
-			catch (System.ArgumentException)
-			{
-			}
-			catch
-			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
-			}
-		}
-
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void KeepCurrenciesPairsUpdated()
-		{
-			// In case or failure, check currency pair information from BOC website and set deadline up to 3 month.
-
-			System.DateTime Deadline = new System.DateTime(2015, 3, 1);
-
-			if (System.DateTime.Now > Deadline)
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+			decimal rate = await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now);
 		}
 	}
 }

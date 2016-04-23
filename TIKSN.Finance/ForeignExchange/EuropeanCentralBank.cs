@@ -1,149 +1,123 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace TIKSN.Finance.ForeignExchange
 {
-	public class EuropeanCentralBank : ICurrencyConverter
-	{
-		private const string UrlFormat = "http://sdw.ecb.int/quickviewexport.do?SERIES_KEY=EXR.D.{0}.EUR.SP00.A&type=sdmx&start={1}&end={2}"; // Sample: "http://sdw.ecb.int/quickviewexport.do?SERIES_KEY=EXR.D.USD.EUR.SP00.A&type=sdmx&start=01-01-2013&end=01-03-2013"
-		//TODO: switch to http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml see http://www.ecb.europa.eu/stats/exchange/eurofxref/html/index.en.html (For Developers section)
+    public class EuropeanCentralBank : ICurrencyConverter
+    {                                                                                    //TODO: switch to http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml see http://www.ecb.europa.eu/stats/exchange/eurofxref/html/index.en.html (For Developers section)
+        private const string DailyRatesUrl = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
+        private const string Last90DaysRatesUrl = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml";
+        private const string Since1999RatesUrl = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.xml";
 
-		private readonly static System.Collections.Generic.List<CurrencyInfo> currencies;
-		private readonly static CurrencyInfo Euro;
+        private readonly static CurrencyInfo Euro;
 
-		static EuropeanCentralBank()
-		{
-			var countries = new System.Collections.Generic.List<string>();
+        static EuropeanCentralBank()
+        {
+            Euro = new CurrencyInfo(new RegionInfo("de-DE"));
+        }
 
-			countries.Add("en-US");
-			countries.Add("ja-JP");
-			countries.Add("bg-BG");
-			countries.Add("cs-CZ");
-			countries.Add("da-DK");
-			countries.Add("en-GB");
-			countries.Add("hu-HU");
-			countries.Add("lt-LT");
-			countries.Add("pl-PL");
-			countries.Add("ro-RO");
-			countries.Add("se-SE");
-			countries.Add("de-CH");
-			countries.Add("nn-NO");
-			countries.Add("hr-HR");
-			countries.Add("ru-RU");
-			countries.Add("tr-TR");
-			countries.Add("en-AU");
-			countries.Add("pt-BR");
-			countries.Add("en-CA");
-			countries.Add("zh-CN");
-			countries.Add("zh-HK");
-			countries.Add("id-ID");
-			countries.Add("he-IL");
-			countries.Add("hi-IN");
-			countries.Add("ko-KR");
-			countries.Add("es-MX");
-			countries.Add("ms-MY");
-			countries.Add("en-NZ");
-			countries.Add("fil-PH");
-			countries.Add("zh-SG");
-			countries.Add("th-TH");
-			countries.Add("af-ZA");
-			countries.Add("is-IS");
-			countries.Add("es-AR");
-			countries.Add("ar-DZ");
-			countries.Add("ar-MA");
-			countries.Add("zh-TW");
-			//countries.Add("EG");
-			//countries.Add("es-VE");
-			//countries.Add("es-CL");
+        public EuropeanCentralBank()
+        {
+        }
 
-			currencies = new System.Collections.Generic.List<CurrencyInfo>();
+        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+        {
+            var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
+            decimal rate = await this.GetExchangeRateAsync(pair, asOn);
 
-			currencies.AddRange(countries.Select(C => new CurrencyInfo(new System.Globalization.RegionInfo(C))));
+            return new Money(counterCurrency, baseMoney.Amount * rate);
+        }
 
-			Euro = new CurrencyInfo(new System.Globalization.RegionInfo("de-DE"));
-		}
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
+        {
+            this.VerifyDate(asOn);
 
-		public EuropeanCentralBank()
-		{
-		}
+            var rates = await GetRatesAsync(asOn);
 
-		public Money ConvertCurrency(Money BaseMoney, CurrencyInfo CounterCurrency, System.DateTime asOn)
-		{
-			var pair = new CurrencyPair(BaseMoney.Currency, CounterCurrency);
-			decimal rate = this.GetExchangeRate(pair, asOn);
+            var result = new List<CurrencyPair>();
 
-			return new Money(CounterCurrency, BaseMoney.Amount * rate);
-		}
+            foreach (var rate in rates)
+            {
+                result.Add(new CurrencyPair(Euro, rate.Key));
+                result.Add(new CurrencyPair(rate.Key, Euro));
+            }
 
-		public System.Collections.Generic.IEnumerable<CurrencyPair> GetCurrencyPairs(System.DateTime asOn)
-		{
-			this.VerifyDate(asOn);
+            return result;
+        }
 
-			var result = new System.Collections.Generic.List<CurrencyPair>();
+        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
+        {
+            this.VerifyDate(asOn);
 
-			foreach (var foreign in currencies)
-			{
-				result.Add(new CurrencyPair(Euro, foreign));
-				result.Add(new CurrencyPair(foreign, Euro));
-			}
+            var rates = await GetRatesAsync(asOn);
 
-			return result;
-		}
+            if (pair.BaseCurrency == Euro)
+            {
+                return rates[pair.CounterCurrency];
+            }
+            else if (pair.CounterCurrency == Euro)
+            {
+                return decimal.One / rates[pair.BaseCurrency];
+            }
+            else
+            {
+                throw new ArgumentException("One of currency pair should be Euro.");
+            }
+        }
 
-		public decimal GetExchangeRate(CurrencyPair Pair, System.DateTime asOn)
-		{
-			this.VerifyDate(asOn);
+        private static async Task<Dictionary<CurrencyInfo, decimal>> GetRatesAsync(DateTimeOffset asOn)
+        {
+            string requestURL = GetRatesUrl(asOn);
 
-			bool Reverse;
-			string ForeignCurrencyCode;
+            using (var httpClient = new HttpClient())
+            {
+                var responseStream = await httpClient.GetStreamAsync(requestURL);
 
-			if (Pair.BaseCurrency == Euro)
-			{
-				Reverse = false;
-				ForeignCurrencyCode = Pair.CounterCurrency.ISOCurrencySymbol;
-			}
-			else if (Pair.CounterCurrency == Euro)
-			{
-				Reverse = true;
-				ForeignCurrencyCode = Pair.BaseCurrency.ISOCurrencySymbol;
-			}
-			else
-			{
-				throw new System.ArgumentException("One of currency pair should be Euro.");
-			}
+                var xdoc = XDocument.Load(responseStream);
 
-			System.DateTime StartDay = System.DateTime.Now.AddDays(-3d);
+                var groupsCubes = xdoc.Element("{http://www.gesmes.org/xml/2002-08-01}Envelope").Element("{http://www.ecb.int/vocabulary/2002-08-01/eurofxref}Cube").Elements("{http://www.ecb.int/vocabulary/2002-08-01/eurofxref}Cube");
 
-			if (ForeignCurrencyCode == "ISK")
-			{
-				StartDay = new System.DateTime(2008, 12, 3);
-			}
+                //var groupsCubesCollection = groupsCubes.Select(item => new Tuple<XElement, DateTimeOffset>(item, DateTimeOffset.Parse(item.Attribute("time").Value)));
 
-			string RequestURL = string.Format(UrlFormat, ForeignCurrencyCode, StartDay.ToString("dd-MM-yyyy"), System.DateTime.Now.ToString("dd-MM-yyyy"));
+                //var closestCubeDateDifference = groupsCubesCollection.Where(item => item.Item2 <= asOn).Min(item => asOn - item.Item2);
 
-			System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.HttpWebRequest.Create(RequestURL);
+                //var groupCubes = groupsCubesCollection.First(item => asOn - item.Item2 == closestCubeDateDifference);
 
-			System.Net.HttpWebResponse response = (System.Net.HttpWebResponse)System.Threading.Tasks.Task.Factory.FromAsync<System.Net.WebResponse>(request.BeginGetResponse, request.EndGetResponse, null).Result;
+                var groupCubes = groupsCubes.Select(x => new Tuple<XElement, DateTimeOffset>(x, DateTimeOffset.Parse(x.Attribute("time").Value))).Where(z => z.Item2 <= asOn).OrderByDescending(y => y.Item2).First();
 
-			var xdoc = System.Xml.Linq.XDocument.Load(response.GetResponseStream());
+                var rates = new Dictionary<CurrencyInfo, decimal>();
 
-			var Obs = xdoc.Element("{http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message}MessageGroup").Element("{http://www.ecb.int/vocabulary/stats/exr}DataSet").Element("{http://www.ecb.int/vocabulary/stats/exr}Series").Element("{http://www.ecb.int/vocabulary/stats/exr}Obs");
+                foreach (var rateCube in groupCubes.Item1.Elements("{http://www.ecb.int/vocabulary/2002-08-01/eurofxref}Cube"))
+                {
+                    var currencyCode = rateCube.Attribute("currency").Value;
+                    var rate = decimal.Parse(rateCube.Attribute("rate").Value);
 
-			string ObsValue = Obs.Attribute("OBS_VALUE").Value;
+                    rates.Add(new CurrencyInfo(currencyCode), rate);
+                }
 
-			decimal rate = decimal.Parse(ObsValue);
+                return rates;
+            }
+        }
 
-			if (Reverse)
-			{
-				rate = decimal.One / rate;
-			}
+        private void VerifyDate(DateTimeOffset asOn)
+        {
+            if (asOn > DateTime.Now)
+                throw new ArgumentException("Exchange rate forecasting are not supported.");
+        }
 
-			return rate;
-		}
-
-		private void VerifyDate(System.DateTime asOn)
-		{
-			if (asOn > System.DateTime.Now)
-				throw new System.ArgumentException("Exchange rate forecasting are not supported.");
-		}
-	}
+        private static string GetRatesUrl(DateTimeOffset asOn)
+        {
+            if (asOn.Date == DateTimeOffset.Now.Date)
+                return DailyRatesUrl;
+            else if (asOn.Date >= DateTimeOffset.Now.AddDays(-90))
+                return Last90DaysRatesUrl;
+            else
+                return Since1999RatesUrl;
+        }
+    }
 }

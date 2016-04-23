@@ -1,12 +1,16 @@
-﻿using System.Linq;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace TIKSN.Finance.Tests.ForeignExchange
 {
-	[Microsoft.VisualStudio.TestTools.UnitTesting.TestClass]
+	[TestClass]
 	public class CentralBankOfArmeniaTests
 	{
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConversionDirection001()
+		[TestMethod]
+		public async Task ConversionDirection001()
 		{
 			var Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
 
@@ -15,32 +19,32 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			var BeforeInPound = new Money(PoundSterling, 100m);
 
-			var AfterInDram = Bank.ConvertCurrency(BeforeInPound, ArmenianDram, System.DateTime.Now);
+			var AfterInDram = await Bank.ConvertCurrencyAsync(BeforeInPound, ArmenianDram, System.DateTime.Now);
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(BeforeInPound.Amount < AfterInDram.Amount);
+			Assert.IsTrue(BeforeInPound.Amount < AfterInDram.Amount);
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConvertCurrency001()
+		[TestMethod]
+		public async Task ConvertCurrency001()
 		{
 			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
 
-			var CurrencyPairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(System.DateTime.Now);
 
 			foreach (var pair in CurrencyPairs)
 			{
 				Money Initial = new Money(pair.BaseCurrency, 10m);
-				decimal rate = Bank.GetExchangeRate(pair, System.DateTime.Now);
-				Money Result = Bank.ConvertCurrency(Initial, pair.CounterCurrency, System.DateTime.Now);
+				decimal rate = await Bank.GetExchangeRateAsync(pair, System.DateTime.Now);
+				Money Result = await Bank.ConvertCurrencyAsync(Initial, pair.CounterCurrency, System.DateTime.Now);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(Result.Currency == pair.CounterCurrency);
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(Result.Amount > 0m);
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(Result.Amount == (rate * Initial.Amount));
+				Assert.IsTrue(Result.Currency == pair.CounterCurrency);
+				Assert.IsTrue(Result.Amount > 0m);
+				Assert.IsTrue(Result.Amount == (rate * Initial.Amount));
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConvertCurrency002()
+		[TestMethod]
+		public async Task ConvertCurrency002()
 		{
 			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
 
@@ -54,21 +58,21 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			try
 			{
-				Money After = Bank.ConvertCurrency(Before, Dram, System.DateTime.Now.AddDays(1d));
+				Money After = await Bank.ConvertCurrencyAsync(Before, Dram, System.DateTime.Now.AddDays(1d));
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
 			catch (System.ArgumentException)
 			{
 			}
 			catch
 			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConvertCurrency003()
+		[TestMethod]
+		public async Task ConvertCurrency003()
 		{
 			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
 
@@ -82,21 +86,21 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			try
 			{
-				Money After = Bank.ConvertCurrency(Before, Dram, System.DateTime.Now.AddMinutes(1d));
+				Money After = await Bank.ConvertCurrencyAsync(Before, Dram, System.DateTime.Now.AddMinutes(1d));
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
 			catch (System.ArgumentException)
 			{
 			}
 			catch
 			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ConvertCurrency004()
+		[TestMethod]
+		public async Task ConvertCurrency004()
 		{
 			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
 
@@ -110,233 +114,244 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			try
 			{
-				Money After2 = Bank.ConvertCurrency(Before, Dram, System.DateTime.Now.AddDays(-20d));
+				Money After2 = await Bank.ConvertCurrencyAsync(Before, Dram, System.DateTime.Now.AddDays(-20d));
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
 			catch (System.ArgumentException)
 			{
 			}
 			catch
 			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void Fetch001()
+		[TestMethod]
+		public async Task Fetch001()
 		{
 			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
 
-			Bank.Fetch();
+			await Bank.FetchAsync();
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetCurrencyPairs001()
+		[TestMethod]
+		public async Task Fetch002()
+		{
+			var ci = new CultureInfo("ru-RU");
+			Thread.CurrentThread.CurrentCulture = ci;
+			Thread.CurrentThread.CurrentUICulture = ci;
+
+			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
+
+			await Bank.FetchAsync();
+		}
+
+		[TestMethod]
+		public async Task GetCurrencyPairs001()
 		{
 			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
 
 			System.Collections.Generic.HashSet<CurrencyPair> pairs = new System.Collections.Generic.HashSet<CurrencyPair>();
 
-			foreach (CurrencyPair pair in Bank.GetCurrencyPairs(System.DateTime.Now))
+			foreach (CurrencyPair pair in await Bank.GetCurrencyPairsAsync(System.DateTime.Now))
 			{
 				pairs.Add(pair);
 			}
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(pairs.Count == Bank.GetCurrencyPairs(System.DateTime.Now).Count());
+			Assert.IsTrue(pairs.Count == (await Bank.GetCurrencyPairsAsync(System.DateTime.Now)).Count());
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetCurrencyPairs002()
+		[TestMethod]
+		public async Task GetCurrencyPairs002()
 		{
 			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
 
-			var CurrencyPairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(System.DateTime.Now);
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "USD" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "USD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "USD" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "USD"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "GBP" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "GBP"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "GBP" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "GBP"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AUD" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "AUD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AUD" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "AUD"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "ARS" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "ARS"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "ARS" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "ARS"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "DKK" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "DKK"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "DKK" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "DKK"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "EGP" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "EGP"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "EGP" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "EGP"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "EUR" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "EUR"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "EUR" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "EUR"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "TRY" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "TRY"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "TRY" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "TRY"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "IRR" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "IRR"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "IRR" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "IRR"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "ILS" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "ILS"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "ILS" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "ILS"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "PLN" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "PLN"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "PLN" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "PLN"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "LBP" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "LBP"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "LBP" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "LBP"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "CAD" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "CAD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "CAD" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "CAD"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "INR" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "INR"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "INR" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "INR"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "HUF" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "HUF"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "HUF" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "HUF"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "JPY" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "JPY"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "JPY" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "JPY"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "NOK" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "NOK"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "NOK" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "NOK"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "SEK" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "SEK"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "SEK" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "SEK"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "CHF" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "CHF"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "CHF" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "CHF"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "CZK" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "CZK"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "CZK" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "CZK"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "CNY" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "CNY"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "CNY" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "CNY"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "SGD" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "SGD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "SGD" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "SGD"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "KRW" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "KRW"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "KRW" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "KRW"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "MXN" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "MXN"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "MXN" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "MXN"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "SAR" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "SAR"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "SAR" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "SAR"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "SYP" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "SYP"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "SYP" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "SYP"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AED" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "AED"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AED" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "AED"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "KWD" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "KWD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "KWD" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "KWD"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "BGN" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "BGN"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "BGN" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "BGN"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "RON" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "RON"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "RON" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "RON"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "ISK" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "ISK"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "ISK" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "ISK"));
 
-			// Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "LVL" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			// Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "LVL"));
+			// Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "LVL" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			// Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "LVL"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "LTL" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "LTL"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "LTL" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "LTL"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "KGS" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "KGS"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "KGS" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "KGS"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "KZT" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "KZT"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "KZT" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "KZT"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "MDL" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "MDL"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "MDL" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "MDL"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "RUB" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "RUB"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "RUB" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "RUB"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "UAH" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "UAH"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "UAH" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "UAH"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "UZS" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "UZS"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "UZS" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "UZS"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "BYR" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "BYR"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "BYR" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "BYR"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "TJS" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "TJS"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "TJS" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "TJS"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "TMT" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "TMT"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "TMT" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "TMT"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "GEL" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "GEL"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "GEL" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "GEL"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "HKD" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "HKD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "HKD" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "HKD"));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "BRL" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "BRL"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "BRL" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
+			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "BRL"));
 
-			// TODO: Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual<int>(88, CurrencyPairs.Count());
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual<int>(88, CurrencyPairs.Count());
+			//Assert.AreEqual<int>(88, CurrencyPairs.Count());
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetCurrencyPairs003()
+		[TestMethod]
+		public async Task GetCurrencyPairs003()
 		{
 			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
 
-			var CurrencyPairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(System.DateTime.Now);
 
 			foreach (CurrencyPair pair in CurrencyPairs)
 			{
 				CurrencyPair reverse = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(CurrencyPairs.Any(C => C == reverse));
+				Assert.IsTrue(CurrencyPairs.Any(C => C == reverse));
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate001()
+		[TestMethod]
+		public async Task GetExchangeRate001()
 		{
 			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
 
-			var CurrencyPairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(System.DateTime.Now);
 
 			foreach (CurrencyPair pair in CurrencyPairs)
 			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(Bank.GetExchangeRate(pair, System.DateTime.Now) > decimal.Zero);
+				Assert.IsTrue(await Bank.GetExchangeRateAsync(pair, System.DateTime.Now) > decimal.Zero);
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate002()
+		[TestMethod]
+		public async Task GetExchangeRate002()
 		{
 			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
 
-			var CurrencyPairs = Bank.GetCurrencyPairs(System.DateTime.Now);
+			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(System.DateTime.Now);
 
 			foreach (CurrencyPair pair in CurrencyPairs)
 			{
 				CurrencyPair reversePair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual<decimal>(decimal.One, System.Math.Round(Bank.GetExchangeRate(pair, System.DateTime.Now) * Bank.GetExchangeRate(reversePair, System.DateTime.Now), 5));
+				Assert.AreEqual<decimal>(decimal.One, System.Math.Round(await Bank.GetExchangeRateAsync(pair, System.DateTime.Now) * await Bank.GetExchangeRateAsync(reversePair, System.DateTime.Now), 5));
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate003()
+		[TestMethod]
+		public async Task GetExchangeRate003()
 		{
 			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
 
@@ -350,21 +365,21 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			try
 			{
-				decimal rate = Bank.GetExchangeRate(DollarPerDram, System.DateTime.Now.AddDays(1d));
+				decimal rate = await Bank.GetExchangeRateAsync(DollarPerDram, System.DateTime.Now.AddDays(1d));
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
 			catch (System.ArgumentException)
 			{
 			}
 			catch
 			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate004()
+		[TestMethod]
+		public async Task GetExchangeRate004()
 		{
 			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
 
@@ -378,21 +393,21 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			try
 			{
-				decimal rate2 = Bank.GetExchangeRate(DollarPerDram, System.DateTime.Now.AddDays(-20d));
+				decimal rate2 = await Bank.GetExchangeRateAsync(DollarPerDram, System.DateTime.Now.AddDays(-20d));
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
 			catch (System.ArgumentException)
 			{
 			}
 			catch
 			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate005()
+		[TestMethod]
+		public async Task GetExchangeRate005()
 		{
 			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
 
@@ -406,21 +421,21 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			try
 			{
-				decimal rate = Bank.GetExchangeRate(DollarPerDram, System.DateTime.Now.AddMinutes(1d));
+				decimal rate = await Bank.GetExchangeRateAsync(DollarPerDram, System.DateTime.Now.AddMinutes(1d));
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
 			catch (System.ArgumentException)
 			{
 			}
 			catch
 			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate006()
+		[TestMethod]
+		public async Task GetExchangeRate006()
 		{
 			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
 
@@ -434,21 +449,21 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			try
 			{
-				decimal rate = Bank.GetExchangeRate(LekPerDram, System.DateTime.Now);
+				decimal rate = await Bank.GetExchangeRateAsync(LekPerDram, System.DateTime.Now);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
 			catch (System.ArgumentException)
 			{
 			}
 			catch
 			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void GetExchangeRate007()
+		[TestMethod]
+		public async Task GetExchangeRate007()
 		{
 			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
 
@@ -462,28 +477,17 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			try
 			{
-				decimal rate = Bank.GetExchangeRate(DramPerLek, System.DateTime.Now);
+				decimal rate = await Bank.GetExchangeRateAsync(DramPerLek, System.DateTime.Now);
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
 			catch (System.ArgumentException)
 			{
 			}
 			catch
 			{
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
+				Assert.Fail();
 			}
-		}
-
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void KeepCurrenciesPairsUpdated()
-		{
-			// In case or failure, check currency pair information from CBA website and set deadline up to 3 month.
-
-			System.DateTime Deadline = new System.DateTime(2015, 3, 1);
-
-			if (System.DateTime.Now > Deadline)
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail();
 		}
 	}
 }
