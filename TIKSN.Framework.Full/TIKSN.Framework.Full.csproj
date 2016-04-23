@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Exceptionless.Portable, Version=3.4.1662.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Exceptionless.Portable.3.4.1662\lib\net45\Exceptionless.Portable.dll</HintPath>
+    <Reference Include="Exceptionless.Portable, Version=3.4.1669.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Exceptionless.Portable.3.4.1669\lib\net45\Exceptionless.Portable.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.ApplicationInsights, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -56,7 +56,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TIKSN.Core\TIKSN.Core.csproj">
