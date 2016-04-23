@@ -6,8 +6,8 @@ namespace TIKSN.Analytics.Telemetry
 {
 	public class CompositeExceptionTelemeter : IExceptionTelemeter
 	{
-		private IConfiguration<CommonConfiguration> commonConfiguration;
-		private IExceptionTelemeter[] exceptionTelemeters;
+		private readonly IConfiguration<CommonConfiguration> commonConfiguration;
+		private readonly IExceptionTelemeter[] exceptionTelemeters;
 
 		public CompositeExceptionTelemeter(IConfiguration<CommonConfiguration> commonConfiguration, IExceptionTelemeter[] exceptionTelemeters)
 		{

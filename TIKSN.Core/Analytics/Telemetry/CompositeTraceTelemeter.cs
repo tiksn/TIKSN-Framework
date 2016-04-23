@@ -5,8 +5,8 @@ namespace TIKSN.Analytics.Telemetry
 {
 	public class CompositeTraceTelemeter : ITraceTelemeter
 	{
-		private IConfiguration<CommonConfiguration> commonConfiguration;
-		private ITraceTelemeter[] traceTelemeters;
+		private readonly IConfiguration<CommonConfiguration> commonConfiguration;
+		private readonly ITraceTelemeter[] traceTelemeters;
 
 		public CompositeTraceTelemeter(IConfiguration<CommonConfiguration> commonConfiguration, ITraceTelemeter[] traceTelemeters)
 		{
