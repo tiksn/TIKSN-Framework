@@ -1,11 +1,15 @@
-﻿namespace TIKSN.Finance
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace TIKSN.Finance
 {
 	public interface ICurrencyConverter
 	{
-		Money ConvertCurrency(Money BaseMoney, CurrencyInfo CounterCurrency, System.DateTime asOn);
+		Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn);
 
-		System.Collections.Generic.IEnumerable<CurrencyPair> GetCurrencyPairs(System.DateTime asOn);
+		Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn);
 
-		decimal GetExchangeRate(CurrencyPair Pair, System.DateTime asOn);
+		Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn);
 	}
 }

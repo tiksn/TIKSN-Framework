@@ -190,36 +190,6 @@
 		}
 
 		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void Equals001()
-		{
-			System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
-			CurrencyInfo USD1 = new CurrencyInfo(US);
-			CurrencyInfo USD2 = USD1;
-			CurrencyInfo SomeCurrency1 = null;
-			object Something1 = new object();
-			object Something2 = null;
-			object USD3 = USD1;
-			object USD4 = new CurrencyInfo(US);
-
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(USD1.Equals(USD1));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(USD1.Equals(USD2));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsFalse(USD1.Equals(SomeCurrency1));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsFalse(USD1.Equals(Something1));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsFalse(USD1.Equals(Something2));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(USD1.Equals(USD3));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(USD1.Equals(USD4));
-		}
-
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
-		public void ToString001()
-		{
-			System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
-			CurrencyInfo USD = new CurrencyInfo(US);
-
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual<string>("USD", USD.ToString());
-		}
-
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
 		public void CurrencyIsoSymbolAndNumber001()
 		{
 			var currency = new CurrencyInfo("eur");
@@ -262,6 +232,36 @@
 			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual("USD", currency.ToString());
 			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(false, currency.IsFund);
 			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(true, currency.IsCurrent);
+		}
+
+		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
+		public void Equals001()
+		{
+			System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
+			CurrencyInfo USD1 = new CurrencyInfo(US);
+			CurrencyInfo USD2 = USD1;
+			CurrencyInfo SomeCurrency1 = null;
+			object Something1 = new object();
+			object Something2 = null;
+			object USD3 = USD1;
+			object USD4 = new CurrencyInfo(US);
+
+			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(USD1.Equals(USD1));
+			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(USD1.Equals(USD2));
+			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsFalse(USD1.Equals(SomeCurrency1));
+			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsFalse(USD1.Equals(Something1));
+			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsFalse(USD1.Equals(Something2));
+			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(USD1.Equals(USD3));
+			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(USD1.Equals(USD4));
+		}
+
+		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
+		public void ToString001()
+		{
+			System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
+			CurrencyInfo USD = new CurrencyInfo(US);
+
+			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual<string>("USD", USD.ToString());
 		}
 	}
 }
