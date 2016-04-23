@@ -1,5 +1,6 @@
 ﻿using Microsoft.ApplicationInsights.DataContracts;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace TIKSN.Analytics.Telemetry
@@ -18,11 +19,16 @@ namespace TIKSN.Analytics.Telemetry
 
 		private async Task TrackExceptionInternal(Exception exception, TelemetrySeverityLevel? severityLevel)
 		{
-			var telemetry = new ExceptionTelemetry(exception);
-
-			telemetry.SeverityLevel = ApplicationInsightsHelper.ConvertSeverityLevel(severityLevel);
-
-			ApplicationInsightsHelper.TrackException(telemetry);
+			try
+			{
+				var telemetry = new ExceptionTelemetry(exception);
+				telemetry.SeverityLevel = ApplicationInsightsHelper.ConvertSeverityLevel(severityLevel);
+				ApplicationInsightsHelper.TrackException(telemetry);
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(ex);
+			}
 		}
 	}
 }

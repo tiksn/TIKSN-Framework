@@ -1,5 +1,6 @@
 ﻿using Exceptionless;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace TIKSN.Analytics.Telemetry
@@ -12,7 +13,14 @@ namespace TIKSN.Analytics.Telemetry
 
 		public async Task TrackEvent(string name)
 		{
-			ExceptionlessClient.Default.CreateFeatureUsage(name).Submit();
+			try
+			{
+				ExceptionlessClient.Default.CreateFeatureUsage(name).Submit();
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(ex);
+			}
 		}
 	}
 }

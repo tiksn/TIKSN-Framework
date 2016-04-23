@@ -1,4 +1,6 @@
 ﻿using Microsoft.ApplicationInsights.DataContracts;
+using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace TIKSN.Analytics.Telemetry
@@ -7,9 +9,15 @@ namespace TIKSN.Analytics.Telemetry
 	{
 		public async Task TrackMetric(string metricName, decimal metricValue)
 		{
-			var telemetry = new MetricTelemetry(metricName, (double)metricValue);
-
-			ApplicationInsightsHelper.TrackMetric(telemetry);
+			try
+			{
+				var telemetry = new MetricTelemetry(metricName, (double)metricValue);
+				ApplicationInsightsHelper.TrackMetric(telemetry);
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(ex);
+			}
 		}
 	}
 }

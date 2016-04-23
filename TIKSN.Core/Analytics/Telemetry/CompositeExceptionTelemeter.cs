@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using TIKSN.Configuration;
 
@@ -21,7 +22,14 @@ namespace TIKSN.Analytics.Telemetry
 			{
 				foreach (var exceptionTelemeter in exceptionTelemeters)
 				{
-					await exceptionTelemeter.TrackException(exception);
+					try
+					{
+						await exceptionTelemeter.TrackException(exception);
+					}
+					catch (Exception ex)
+					{
+						Debug.WriteLine(ex);
+					}
 				}
 			}
 		}
@@ -32,7 +40,14 @@ namespace TIKSN.Analytics.Telemetry
 			{
 				foreach (var exceptionTelemeter in exceptionTelemeters)
 				{
-					await exceptionTelemeter.TrackException(exception, severityLevel);
+					try
+					{
+						await exceptionTelemeter.TrackException(exception, severityLevel);
+					}
+					catch (Exception ex)
+					{
+						Debug.WriteLine(ex);
+					}
 				}
 			}
 		}

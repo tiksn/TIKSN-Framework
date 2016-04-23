@@ -1,7 +1,6 @@
 ﻿using Exceptionless;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace TIKSN.Analytics.Telemetry
@@ -10,7 +9,14 @@ namespace TIKSN.Analytics.Telemetry
 	{
 		public async Task TrackMetric(string metricName, decimal metricValue)
 		{
-			ExceptionlessClient.Default.CreateFeatureUsage(metricName).SetValue(metricValue).Submit();
+			try
+			{
+				ExceptionlessClient.Default.CreateFeatureUsage(metricName).SetValue(metricValue).Submit();
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(ex);
+			}
 		}
 	}
 }
