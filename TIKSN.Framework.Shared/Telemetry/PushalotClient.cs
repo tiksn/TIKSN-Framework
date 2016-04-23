@@ -14,15 +14,15 @@ namespace TIKSN.Analytics.Telemetry
 	{
 		private const string API_SEND_MESSAGE_URL = "https://pushalot.com/api/sendmessage";
 		private const string JSON_FIELD_NAME_AUTHORIZATION_TOKEN = "AuthorizationToken";
-		private const string JSON_FIELD_NAME_TITLE = "Title";
 		private const string JSON_FIELD_NAME_BODY = "Body";
-		private const string JSON_FIELD_NAME_LINK_TITLE = "LinkTitle";
-		private const string JSON_FIELD_NAME_LINK = "Link";
+		private const string JSON_FIELD_NAME_IMAGE = "Image";
 		private const string JSON_FIELD_NAME_IS_IMPORTANT = "IsImportant";
 		private const string JSON_FIELD_NAME_IS_SILENT = "IsSilent";
-		private const string JSON_FIELD_NAME_IMAGE = "Image";
+		private const string JSON_FIELD_NAME_LINK = "Link";
+		private const string JSON_FIELD_NAME_LINK_TITLE = "LinkTitle";
 		private const string JSON_FIELD_NAME_SOURCE = "Source";
 		private const string JSON_FIELD_NAME_TIME_TO_LIVE = "TimeToLive";
+		private const string JSON_FIELD_NAME_TITLE = "Title";
 		private const string REQUEST_CONTENT_TYPE = "application/json";
 
 		private HashSet<PushalotAuthorizationToken> generalSubscribers;
@@ -30,6 +30,14 @@ namespace TIKSN.Analytics.Telemetry
 		public PushalotClient()
 		{
 			generalSubscribers = new HashSet<PushalotAuthorizationToken>();
+		}
+
+		public async Task SendMessage(PushalotMessage message)
+		{
+			foreach (var generalSubscriber in generalSubscribers)
+			{
+				await SendMessage(message, generalSubscriber);
+			}
 		}
 
 		public bool Subscribe(PushalotAuthorizationToken authorizationToken)
@@ -40,14 +48,6 @@ namespace TIKSN.Analytics.Telemetry
 		public bool Unsubscribe(PushalotAuthorizationToken authorizationToken)
 		{
 			return generalSubscribers.Remove(authorizationToken);
-		}
-
-		public async Task SendMessage(PushalotMessage message)
-		{
-			foreach (var generalSubscriber in generalSubscribers)
-			{
-				await SendMessage(message, generalSubscriber);
-			}
 		}
 
 		protected static async Task SendMessage(PushalotMessage message, PushalotAuthorizationToken authorizationToken)
@@ -66,6 +66,7 @@ namespace TIKSN.Analytics.Telemetry
 						{
 							case HttpStatusCode.OK:
 								break;
+
 							case HttpStatusCode.BadRequest:
 								throw new Exception("Input data validation failed. Check result information Description field for detailed information. Report about this issue by visiting https://pushalot.codeplex.com/workitem/list/basic.");
 							case HttpStatusCode.MethodNotAllowed:
@@ -146,26 +147,6 @@ namespace TIKSN.Analytics.Telemetry
 			ResetSpecialSubscribersLookup();
 		}
 
-		public bool Subscribe(T tag, PushalotAuthorizationToken authorizationToken)
-		{
-			return specialSubscribersSet.Add(new Tuple<T, PushalotAuthorizationToken>(tag, authorizationToken));
-		}
-
-		public bool Unsubscribe(T tag, PushalotAuthorizationToken authorizationToken)
-		{
-			return specialSubscribersSet.Remove(new Tuple<T, PushalotAuthorizationToken>(tag, authorizationToken));
-		}
-
-		private void ResetSpecialSubscribersLookup()
-		{
-			specialSubscribersLookup = new Lazy<ILookup<T, PushalotAuthorizationToken>>(InitializeSpecialSubscribersLookup);
-		}
-
-		private ILookup<T, PushalotAuthorizationToken> InitializeSpecialSubscribersLookup()
-		{
-			return specialSubscribersSet.ToLookup(item => item.Item1, item => item.Item2);
-		}
-
 		public async Task SendMessage(PushalotMessage message, params T[] tags)
 		{
 			await base.SendMessage(message);
@@ -177,6 +158,26 @@ namespace TIKSN.Analytics.Telemetry
 					await SendMessage(message, specialSubscriber);
 				}
 			}
+		}
+
+		public bool Subscribe(T tag, PushalotAuthorizationToken authorizationToken)
+		{
+			return specialSubscribersSet.Add(new Tuple<T, PushalotAuthorizationToken>(tag, authorizationToken));
+		}
+
+		public bool Unsubscribe(T tag, PushalotAuthorizationToken authorizationToken)
+		{
+			return specialSubscribersSet.Remove(new Tuple<T, PushalotAuthorizationToken>(tag, authorizationToken));
+		}
+
+		private ILookup<T, PushalotAuthorizationToken> InitializeSpecialSubscribersLookup()
+		{
+			return specialSubscribersSet.ToLookup(item => item.Item1, item => item.Item2);
+		}
+
+		private void ResetSpecialSubscribersLookup()
+		{
+			specialSubscribersLookup = new Lazy<ILookup<T, PushalotAuthorizationToken>>(InitializeSpecialSubscribersLookup);
 		}
 	}
 }

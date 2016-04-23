@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using TIKSN.Configuration;
 
 namespace TIKSN.Analytics.Telemetry
@@ -20,7 +22,14 @@ namespace TIKSN.Analytics.Telemetry
 			{
 				foreach (var traceTelemeter in traceTelemeters)
 				{
-					await traceTelemeter.TrackTrace(message);
+					try
+					{
+						await traceTelemeter.TrackTrace(message);
+					}
+					catch (Exception ex)
+					{
+						Debug.WriteLine(ex);
+					}
 				}
 			}
 		}
@@ -31,7 +40,14 @@ namespace TIKSN.Analytics.Telemetry
 			{
 				foreach (var traceTelemeter in traceTelemeters)
 				{
-					await traceTelemeter.TrackTrace(message, severityLevel);
+					try
+					{
+						await traceTelemeter.TrackTrace(message, severityLevel);
+					}
+					catch (Exception ex)
+					{
+						Debug.WriteLine(ex);
+					}
 				}
 			}
 		}

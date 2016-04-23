@@ -1,5 +1,6 @@
 ﻿using Exceptionless;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace TIKSN.Analytics.Telemetry
@@ -8,17 +9,30 @@ namespace TIKSN.Analytics.Telemetry
 	{
 		public ExceptionlessExceptionTelemeter()
 		{
-
 		}
 
 		public async Task TrackException(Exception exception)
 		{
-			exception.ToExceptionless().Submit();
+			try
+			{
+				exception.ToExceptionless().Submit();
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(ex);
+			}
 		}
 
 		public async Task TrackException(Exception exception, TelemetrySeverityLevel severityLevel)
 		{
-			exception.ToExceptionless().SetType(severityLevel.ToString()).Submit();
+			try
+			{
+				exception.ToExceptionless().SetType(severityLevel.ToString()).Submit();
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(ex);
+			}
 		}
 	}
 }

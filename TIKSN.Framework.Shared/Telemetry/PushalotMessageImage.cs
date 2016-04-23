@@ -1,5 +1,4 @@
-﻿
-namespace TIKSN.Analytics.Telemetry
+﻿namespace TIKSN.Analytics.Telemetry
 {
 	public class PushalotMessageImage
 	{

@@ -1,30 +1,20 @@
-﻿
-namespace TIKSN.Analytics.Telemetry
+﻿namespace TIKSN.Analytics.Telemetry
 {
 	public class PushalotMessageBuilder
 	{
 		public PushalotMessageBuilder()
 		{
-
 		}
 
-		public string MessageTitle { get; set; }
-
 		public string MessageBody { get; set; }
-
-		public string MessageLinkTitle { get; set; }
-
-		public string MessageLink { get; set; }
-
-		public bool MessageIsImportant { get; set; }
-
-		public bool MessageIsSilent { get; set; }
-
 		public string MessageImage { get; set; }
-
+		public bool MessageIsImportant { get; set; }
+		public bool MessageIsSilent { get; set; }
+		public string MessageLink { get; set; }
+		public string MessageLinkTitle { get; set; }
 		public string MessageSource { get; set; }
-
 		public int? MessageTimeToLive { get; set; }
+		public string MessageTitle { get; set; }
 
 		public PushalotMessage Build()
 		{

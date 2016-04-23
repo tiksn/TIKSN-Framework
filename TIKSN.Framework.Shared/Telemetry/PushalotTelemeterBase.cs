@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using TIKSN.Configuration;
@@ -24,13 +25,20 @@ namespace TIKSN.Analytics.Telemetry
 
 		protected async Task SendMessage(string title, string content)
 		{
-			var mbuilder = new PushalotMessageBuilder();
-			mbuilder.MessageLinkTitle = title;
-			mbuilder.MessageBody = content;
+			try
+			{
+				var mbuilder = new PushalotMessageBuilder();
+				mbuilder.MessageLinkTitle = title;
+				mbuilder.MessageBody = content;
 
-			var message = mbuilder.Build();
+				var message = mbuilder.Build();
 
-			await lazyClient.Value.SendMessage(message);
+				await lazyClient.Value.SendMessage(message);
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(ex);
+			}
 		}
 
 		private PushalotClient<TelemetrySeverityLevel> CreatePushalotClient()

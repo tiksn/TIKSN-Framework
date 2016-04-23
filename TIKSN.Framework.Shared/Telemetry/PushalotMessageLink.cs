@@ -1,10 +1,9 @@
-﻿
-namespace TIKSN.Analytics.Telemetry
+﻿namespace TIKSN.Analytics.Telemetry
 {
 	public class PushalotMessageLink
 	{
-		private const int TITLE_MAXIMUM_LENGTH = 100;
 		private const int LINK_MAXIMUM_LENGTH = 1000;
+		private const int TITLE_MAXIMUM_LENGTH = 100;
 
 		public PushalotMessageLink(string title, System.Uri link)
 		{
@@ -30,8 +29,7 @@ namespace TIKSN.Analytics.Telemetry
 			this.Link = link;
 		}
 
-		public string Title { get; private set; }
-
 		public System.Uri Link { get; private set; }
+		public string Title { get; private set; }
 	}
 }
