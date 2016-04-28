@@ -9,20 +9,20 @@
         <projectUrl>http://www.tiksn.com/Framework</projectUrl>
         <iconUrl>http://www.tiksn.com/Images/Logo.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>This is a .NET Framework enhancement framework. It represents real word objects and ideas into .NET OOP environment. Main features are Versioning, Finance, Currency, Foreign Exchange, Money, Pricing strategy. Unit test full coverage guaranteed.</description>
-        <copyright>Copyright © TIKSN Lab 2014</copyright>
+        <description>This is a .NET Framework enhancement framework. Main features are Versioning, Finance, Currency, Foreign Exchange, Money, Pricing strategy, Telemetry.</description>
+        <copyright>Copyright © TIKSN Lab 2016</copyright>
         <language />
         <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry</tags>
         <dependencies>
             <group targetFramework=".NETFramework4.6">
                 <dependency id="Newtonsoft.Json" version="8.0.3" />
-                <dependency id="Exceptionless.Portable" version="3.4.1669" />
-                <dependency id="HockeySDK.Core" version="2.2.3">
+                <dependency id="Exceptionless.Portable" version="3.4.1673" />
+                <dependency id="HockeySDK.Core" version="2.2.3" />
             </group>
             <group targetFramework="uap10.0">
                 <dependency id="Newtonsoft.Json" version="8.0.3" />
-                <dependency id="Exceptionless.Portable" version="3.4.1669" />
-                <dependency id="HockeySDK.Core" version="2.2.3">
+                <dependency id="Exceptionless.Portable" version="3.4.1673" />
+                <dependency id="HockeySDK.Core" version="2.2.3" />
             </group>
         </dependencies>
     </metadata>
