@@ -49,6 +49,9 @@
     <Compile Include="Configuration\CommonConfiguration.cs" />
     <Compile Include="Configuration\IConfiguration.cs" />
     <Compile Include="Configuration\PushalotConfiguration.cs" />
+    <Compile Include="Progress\PayloadProgress.cs" />
+    <Compile Include="Progress\ProgressData.cs" />
+    <Compile Include="Progress\ProgressStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
