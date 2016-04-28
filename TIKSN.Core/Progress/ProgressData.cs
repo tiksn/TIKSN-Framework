@@ -10,8 +10,7 @@ namespace TIKSN.Progress
 			Payload = payload;
 		}
 
-		public IProgress<ProgressStatus<TStatus>> Progress { get; private set; }
-
 		public TPayload Payload { get; private set; }
+		public IProgress<ProgressStatus<TStatus>> Progress { get; private set; }
 	}
 }
