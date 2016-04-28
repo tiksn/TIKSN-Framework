@@ -1,5 +1,4 @@
-﻿
-namespace TIKSN.Progress
+﻿namespace TIKSN.Progress
 {
 	public class ProgressStatus<T>
 	{
@@ -9,8 +8,7 @@ namespace TIKSN.Progress
 			Percentage = percentage;
 		}
 
-		public T Status { get; private set; }
-
 		public double Percentage { get; private set; }
+		public T Status { get; private set; }
 	}
 }
