@@ -6,8 +6,8 @@ namespace TIKSN.Finance
 {
 	public abstract class CompositeCurrencyConverter : ICompositeCurrencyConverter
 	{
-		protected List<ICurrencyConverter> converters;
 		protected ICurrencyConversionCompositionStrategy compositionStrategy;
+		protected List<ICurrencyConverter> converters;
 
 		public CompositeCurrencyConverter(ICurrencyConversionCompositionStrategy compositionStrategy)
 		{
