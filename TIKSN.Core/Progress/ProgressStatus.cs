@@ -1,14 +1,35 @@
-﻿namespace TIKSN.Progress
+﻿using System.Diagnostics;
+
+namespace TIKSN.Progress
 {
-	public class ProgressStatus<T>
+	public class ProgressStatus
 	{
-		public ProgressStatus(T status, double percentage)
+		public ProgressStatus(double percentage)
 		{
-			Status = status;
+			Debug.Assert(percentage >= 0d);
+			Debug.Assert(percentage <= 100d);
+
 			Percentage = percentage;
 		}
 
+		public ProgressStatus(int completed, int overall)
+		{
+			Debug.Assert(completed <= overall);
+			Debug.Assert(completed >= 0);
+
+			Percentage = overall > 0 ? completed * 100d / overall : 0d;
+		}
+
 		public double Percentage { get; private set; }
+	}
+
+	public class ProgressStatus<T> : ProgressStatus
+	{
+		public ProgressStatus(T status, double percentage) : base(percentage)
+		{
+			Status = status;
+		}
+
 		public T Status { get; private set; }
 	}
 }

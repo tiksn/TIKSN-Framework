@@ -2,14 +2,14 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>TIKSN-Framework</id>
-        <version>1.4.1-pre</version>
+        <version>1.4.3-pre</version>
         <title>TIKSN Framework</title>
         <authors>TIKSN</authors>
         <owners>TIKSN</owners>
         <projectUrl>http://www.tiksn.com/Framework</projectUrl>
         <iconUrl>http://www.tiksn.com/Images/Logo.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>This is a .NET Framework enhancement framework. Main features are Versioning, Finance, Currency, Foreign Exchange, Money, Pricing strategy, Telemetry.</description>
+        <description>This is a .NET Framework enhancement framework. Main features are Versioning, Finance, Currency, Foreign Exchange, Money, Pricing strategy, Telemetry, Composite Weighted Progress.</description>
         <copyright>Copyright © TIKSN Lab 2016</copyright>
         <language />
         <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry</tags>
