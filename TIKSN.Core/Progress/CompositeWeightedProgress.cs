@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace TIKSN.Progress
@@ -41,6 +42,9 @@ namespace TIKSN.Progress
 			var currentWeightedProgress = progresses.Sum(item => item.Item2 * item.Item1.Progress.Percentage);
 
 			currentWeightedProgress = overallWeight == 0 ? 0d : currentWeightedProgress / overallWeight;
+
+			Debug.Assert(currentWeightedProgress >= 0d);
+			Debug.Assert(currentWeightedProgress <= 100d);
 
 			OnReport(new ProgressStatus<TStatus>(currentProgress.Progress.Status, currentWeightedProgress));
 		}
