@@ -30,6 +30,11 @@ namespace TIKSN.Progress
 			Status = status;
 		}
 
+		public ProgressStatus(T status, int completed, int overall) : base(completed, overall)
+		{
+			Status = status;
+		}
+
 		public T Status { get; private set; }
 	}
 }

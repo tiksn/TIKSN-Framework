@@ -8,10 +8,23 @@ namespace TIKSN.Progress
 	public class CompositeWeightedProgress<TStatus> : Progress<ProgressStatus<TStatus>>
 	{
 		private readonly List<ProgressItem> progresses;
+		private readonly List<IProgress<ProgressStatus<TStatus>>> subscribers;
 
 		public CompositeWeightedProgress()
 		{
 			progresses = new List<ProgressItem>();
+			subscribers = new List<IProgress<ProgressStatus<TStatus>>>();
+		}
+
+		public CompositeWeightedProgress(Action<ProgressStatus<TStatus>> handler) : base(handler)
+		{
+			progresses = new List<ProgressItem>();
+			subscribers = new List<IProgress<ProgressStatus<TStatus>>>();
+		}
+
+		public CompositeWeightedProgress(IProgress<ProgressStatus<TStatus>> subscriber) : this()
+		{
+			Subscribe(subscriber);
 		}
 
 		public IProgress<ProgressStatus<TStatus>> AddProgress(int weight = 1)
@@ -19,48 +32,55 @@ namespace TIKSN.Progress
 			if (weight <= 0)
 				throw new ArgumentOutOfRangeException(nameof(weight), "Weight cannot be less than equal to 0");
 
-			var progress = new Progress<ProgressStatus<TStatus>>();
-			progress.ProgressChanged += ProgressChanged;
+			var progress = new ProgressItem(weight, SingleProgressItemHandler);
 
-			progresses.Add(new ProgressItem(progress, weight));
+			progresses.Add(progress);
+
 			return progress;
 		}
 
-		private void ProgressChanged(object sender, ProgressStatus<TStatus> e)
+		public void Subscribe(IProgress<ProgressStatus<TStatus>> subscriber)
 		{
-			var currentProgress = (Progress<ProgressStatus<TStatus>>)sender;
+			subscribers.Add(subscriber);
+		}
 
+		protected override void OnReport(ProgressStatus<TStatus> value)
+		{
+			base.OnReport(value);
+
+			foreach (var subscriber in subscribers)
+			{
+				subscriber.Report(value);
+			}
+		}
+
+		private void SingleProgressItemHandler(ProgressStatus<TStatus> status)
+		{
 			var overallWeight = progresses.Sum(item => item.Weight);
-
-			var currentWeightedProgress = progresses.Sum(item => item.Weight * item.Status.Percentage);
-
-			currentWeightedProgress = overallWeight == 0 ? 0d : currentWeightedProgress / overallWeight;
+			var currentWeightedProgress = overallWeight == 0 ? 0d : progresses.Sum(item => item.Weight * item.Status.Percentage) / overallWeight;
 
 			Debug.Assert(currentWeightedProgress >= 0d);
 			Debug.Assert(currentWeightedProgress <= 100d);
 
-			OnReport(new ProgressStatus<TStatus>(e.Status, currentWeightedProgress));
+			OnReport(new ProgressStatus<TStatus>(status.Status, currentWeightedProgress));
 		}
 
-		private class ProgressItem
+		private class ProgressItem : Progress<ProgressStatus<TStatus>>
 		{
-			public ProgressItem(Progress<ProgressStatus<TStatus>> progress, int weight)
+			public ProgressItem(int weight, Action<ProgressStatus<TStatus>> handler) : base(handler)
 			{
 				Weight = weight;
-				Progress = progress;
 				Status = new ProgressStatus<TStatus>(default(TStatus), 0d);
-				progress.ProgressChanged += ProgressChanged;
 			}
-
-			public IProgress<ProgressStatus<TStatus>> Progress { get; private set; }
 
 			public ProgressStatus<TStatus> Status { get; private set; }
 
 			public int Weight { get; private set; }
 
-			private void ProgressChanged(object sender, ProgressStatus<TStatus> e)
+			protected override void OnReport(ProgressStatus<TStatus> value)
 			{
-				Status = e;
+				Status = value;
+				base.OnReport(value);
 			}
 		}
 	}
