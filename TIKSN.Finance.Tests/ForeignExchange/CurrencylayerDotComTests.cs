@@ -7,6 +7,7 @@ using TIKSN.Finance.ForeignExchange;
 namespace TIKSN.Finance.Tests.ForeignExchange
 {
 	[TestClass]
+	[Ignore]
 	public class CurrencylayerDotComTests
 	{
 		private string accessKey = "<put your access key here>";
