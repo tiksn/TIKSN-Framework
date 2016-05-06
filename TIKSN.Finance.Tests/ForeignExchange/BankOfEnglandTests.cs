@@ -325,7 +325,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		{
 			// In case or failure, check currency pair information from BOE website and set deadline up to 3 month.
 
-			System.DateTimeOffset Deadline = new DateTime(2015, 3, 1);
+			System.DateTimeOffset Deadline = new DateTime(2016, 7, 1);
 
 			if (System.DateTimeOffset.Now > Deadline)
 				Assert.Fail();
