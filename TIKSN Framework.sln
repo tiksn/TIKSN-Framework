@@ -1,16 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2CE66F97-5B89-401D-AEE5-BF2228760097}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Versioning", "TIKSN.Versioning\TIKSN.Versioning.csproj", "{E4451ACD-4706-47A1-9E74-C24C0CE18198}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{0334DCD1-C522-49F0-A7BE-D89BC0EB7208}"
-	ProjectSection(SolutionItems) = preProject
-		TIKSN-Framework.nupkg = TIKSN-Framework.nupkg
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Versioning.Tests", "TIKSN.Versioning.Tests\TIKSN.Versioning.Tests.csproj", "{A4E551D1-237F-4633-ACFE-FD43E9194097}"
 EndProject
@@ -31,6 +26,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Framework.UWP", "TIKSN.Framework.UWP\TIKSN.Framework.UWP.csproj", "{3D7B87C7-B00C-4691-9BBD-F5836011345A}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TIKSN.Framework.Shared", "TIKSN.Framework.Shared\TIKSN.Framework.Shared.shproj", "{6670E3C7-F488-4212-80F4-6A914613AE5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Framework.Tests", "TIKSN.Framework.Tests\TIKSN.Framework.Tests.csproj", "{0413E49E-9396-4A37-8222-3636285B13A4}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -193,6 +190,22 @@ Global
 		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Release|x64.Build.0 = Release|x64
 		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Release|x86.ActiveCfg = Release|x86
 		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Release|x86.Build.0 = Release|x86
+		{0413E49E-9396-4A37-8222-3636285B13A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0413E49E-9396-4A37-8222-3636285B13A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0413E49E-9396-4A37-8222-3636285B13A4}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{0413E49E-9396-4A37-8222-3636285B13A4}.Debug|ARM.Build.0 = Debug|Any CPU
+		{0413E49E-9396-4A37-8222-3636285B13A4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0413E49E-9396-4A37-8222-3636285B13A4}.Debug|x64.Build.0 = Debug|Any CPU
+		{0413E49E-9396-4A37-8222-3636285B13A4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0413E49E-9396-4A37-8222-3636285B13A4}.Debug|x86.Build.0 = Debug|Any CPU
+		{0413E49E-9396-4A37-8222-3636285B13A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0413E49E-9396-4A37-8222-3636285B13A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0413E49E-9396-4A37-8222-3636285B13A4}.Release|ARM.ActiveCfg = Release|Any CPU
+		{0413E49E-9396-4A37-8222-3636285B13A4}.Release|ARM.Build.0 = Release|Any CPU
+		{0413E49E-9396-4A37-8222-3636285B13A4}.Release|x64.ActiveCfg = Release|Any CPU
+		{0413E49E-9396-4A37-8222-3636285B13A4}.Release|x64.Build.0 = Release|Any CPU
+		{0413E49E-9396-4A37-8222-3636285B13A4}.Release|x86.ActiveCfg = Release|Any CPU
+		{0413E49E-9396-4A37-8222-3636285B13A4}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -208,5 +221,6 @@ Global
 		{786B1846-C0A1-46D8-8E17-47CF5CBB0D0D} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{3D7B87C7-B00C-4691-9BBD-F5836011345A} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{6670E3C7-F488-4212-80F4-6A914613AE5B} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
+		{0413E49E-9396-4A37-8222-3636285B13A4} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
 	EndGlobalSection
 EndGlobal
