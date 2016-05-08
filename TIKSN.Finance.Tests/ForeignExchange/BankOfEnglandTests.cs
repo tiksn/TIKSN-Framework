@@ -323,7 +323,8 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		[TestMethod]
 		public async Task KeepCurrenciesPairsUpdated()
 		{
-			// In case or failure, check currency pair information from BOE website and set deadline up to 3 month.
+			// In case or failure, check currency pair information from BOE website and set deadline
+			// up to 3 month.
 
 			System.DateTimeOffset Deadline = new DateTime(2016, 7, 1);
 

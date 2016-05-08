@@ -262,8 +262,9 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "ISK" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
 			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "ISK"));
 
-			// Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "LVL" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			// Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "LVL"));
+			// Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "LVL" &&
+			// C.CounterCurrency.ISOCurrencySymbol == "AMD")); Assert.IsTrue(CurrencyPairs.Any(C =>
+			// C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "LVL"));
 
 			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "LTL" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
 			Assert.IsTrue(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "LTL"));
