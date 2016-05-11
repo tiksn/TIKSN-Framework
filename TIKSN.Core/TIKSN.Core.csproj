@@ -50,6 +50,7 @@
     <Compile Include="Configuration\IConfiguration.cs" />
     <Compile Include="Configuration\PushalotConfiguration.cs" />
     <Compile Include="Progress\CompositeWeightedProgress.cs" />
+    <Compile Include="Progress\OperationProgressReport.cs" />
     <Compile Include="Progress\ProgressReport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
