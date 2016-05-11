@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analytics\Telemetry\PowerShellExceptionTelemeter.cs" />
+    <Compile Include="Analytics\Telemetry\PowerShellTraceTelemeter.cs" />
     <Compile Include="Configuration\RegistryConfigurationManager.cs" />
     <Compile Include="Analytics\Telemetry\PowerShellEventTelemeter.cs" />
     <Compile Include="Analytics\Telemetry\PowerShellMetricTelemeter.cs" />
