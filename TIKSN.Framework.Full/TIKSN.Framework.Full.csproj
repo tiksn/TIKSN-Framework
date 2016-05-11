@@ -61,7 +61,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analytics\Telemetry\PowerShellExceptionTelemeter.cs" />
     <Compile Include="Configuration\RegistryConfigurationManager.cs" />
+    <Compile Include="Analytics\Telemetry\PowerShellEventTelemeter.cs" />
+    <Compile Include="Analytics\Telemetry\PowerShellMetricTelemeter.cs" />
     <Compile Include="Progress\PowerShellProgress.cs" />
     <Compile Include="Progress\PowerShellUserConfirmation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
