@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Configuration\RegistryConfigurationManager.cs" />
     <Compile Include="Progress\PowerShellProgress.cs" />
+    <Compile Include="Progress\PowerShellUserConfirmation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
