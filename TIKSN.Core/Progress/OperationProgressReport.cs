@@ -15,6 +15,7 @@
 		}
 
 		public string CurrentOperation { get; set; }
+
 		//public string Activity { get; set; }
 		//public int ActivityId { get; }
 		//public int ParentActivityId { get; set; }

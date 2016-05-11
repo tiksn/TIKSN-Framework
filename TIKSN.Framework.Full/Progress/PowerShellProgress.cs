@@ -16,14 +16,6 @@ namespace TIKSN.Progress
 			this.progressRecord = new ProgressRecord(activityId, activity, statusDescription);
 		}
 
-		private void Start()
-		{
-			if (stopwatch == null)
-			{
-				stopwatch = Stopwatch.StartNew();
-			}
-		}
-
 		protected override void OnReport(OperationProgressReport value)
 		{
 			Start();
@@ -44,6 +36,14 @@ namespace TIKSN.Progress
 
 			cmdlet.WriteProgress(progressRecord);
 			base.OnReport(value);
+		}
+
+		private void Start()
+		{
+			if (stopwatch == null)
+			{
+				stopwatch = Stopwatch.StartNew();
+			}
 		}
 	}
 }
