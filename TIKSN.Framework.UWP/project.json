@@ -1,5 +1,6 @@
 ﻿{
   "dependencies": {
+    "EntityFramework.Core": "7.0.0-rc1-final",
     "Exceptionless.Portable": "3.5.1738",
     "HockeySDK.Core": "2.2.3",
     "Microsoft.ApplicationInsights": "2.0.1",
