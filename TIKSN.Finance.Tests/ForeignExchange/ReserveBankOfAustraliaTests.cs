@@ -176,8 +176,10 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			Assert.IsTrue(CurrencyPairs.Any(P => P.ToString() == "CAD/AUD"));
 			//Assert.IsTrue(CurrencyPairs.Any(P => P.ToString() == "ZAR/AUD"));
 			Assert.IsTrue(CurrencyPairs.Any(P => P.ToString() == "CHF/AUD"));
+			Assert.IsTrue(CurrencyPairs.Any(P => P.ToString() == "PGK/AUD"));
+			Assert.IsTrue(CurrencyPairs.Any(P => P.ToString() == "XDR/AUD"));
 			//Assert.IsTrue(CurrencyPairs.Any(P => P.ToString() == "SEK/AUD"));
-			Assert.IsTrue(CurrencyPairs.Any(P => P.ToString() == "PHP/AUD"));
+			//Assert.IsTrue(CurrencyPairs.Any(P => P.ToString() == "PHP/AUD"));
 
 			Assert.IsTrue(CurrencyPairs.Any(P => P.ToString() == "AUD/USD"));
 			Assert.IsTrue(CurrencyPairs.Any(P => P.ToString() == "AUD/CNY"));
@@ -198,8 +200,10 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			Assert.IsTrue(CurrencyPairs.Any(P => P.ToString() == "AUD/CAD"));
 			//Assert.IsTrue(CurrencyPairs.Any(P => P.ToString() == "AUD/ZAR"));
 			Assert.IsTrue(CurrencyPairs.Any(P => P.ToString() == "AUD/CHF"));
+			Assert.IsTrue(CurrencyPairs.Any(P => P.ToString() == "AUD/PGK"));
+			Assert.IsTrue(CurrencyPairs.Any(P => P.ToString() == "AUD/XDR"));
 			//Assert.IsTrue(CurrencyPairs.Any(P => P.ToString() == "AUD/SEK"));
-			Assert.IsTrue(CurrencyPairs.Any(P => P.ToString() == "AUD/PHP"));
+			//Assert.IsTrue(CurrencyPairs.Any(P => P.ToString() == "AUD/PHP"));
 
 			//Assert.IsTrue(CurrencyPairs.Count() == 38);
 		}

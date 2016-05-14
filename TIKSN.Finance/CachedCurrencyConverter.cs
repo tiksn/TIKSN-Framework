@@ -84,6 +84,65 @@ namespace TIKSN.Finance
 			this.cachedRates.Clear();
 		}
 
+		public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+		{
+			if (baseMoney.Amount == decimal.Zero)
+			{
+				return new Money(counterCurrency, decimal.Zero);
+			}
+			else
+			{
+				var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
+
+				var cachedRate = this.GetFromCache(this.cachedRates.Where(item => item.Pair == pair), this.RatesCacheInterval, asOn);
+
+				if (cachedRate != null)
+				{
+					return new Money(counterCurrency, baseMoney.Amount * cachedRate.ExchangeRate);
+				}
+
+				var actualMoney = await this.originalConverter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn);
+
+				var actualRate = actualMoney.Amount / baseMoney.Amount;
+
+				this.AddToCache(this.cachedRates, this.RatesCacheCapacity, new CachedRate(pair, actualRate, asOn));
+
+				return actualMoney;
+			}
+		}
+
+		public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
+		{
+			var cachedPairs = this.GetFromCache(this.cachedCurrencyPairs, this.CurrencyPairsCacheInterval, asOn);
+
+			if (cachedPairs != null)
+			{
+				return cachedPairs.CurrencyPairs;
+			}
+
+			var actualPairs = await this.originalConverter.GetCurrencyPairsAsync(asOn);
+
+			this.AddToCache(this.cachedCurrencyPairs, this.CurrencyPairsCacheCapacity, new CachedCurrencyPairs(actualPairs, asOn));
+
+			return actualPairs;
+		}
+
+		public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
+		{
+			var cachedRate = this.GetFromCache(this.cachedRates.Where(item => item.Pair == pair), this.RatesCacheInterval, asOn);
+
+			if (cachedRate != null)
+			{
+				return cachedRate.ExchangeRate;
+			}
+
+			var actualRate = await this.originalConverter.GetExchangeRateAsync(pair, asOn);
+
+			this.AddToCache(this.cachedRates, this.RatesCacheCapacity, new CachedRate(pair, actualRate, asOn));
+
+			return actualRate;
+		}
+
 		private static TimeSpan Absolute(TimeSpan value)
 		{
 			if (value < TimeSpan.Zero)
@@ -151,65 +210,6 @@ namespace TIKSN.Finance
 			}
 
 			return cachedItem;
-		}
-
-		public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
-		{
-			if (baseMoney.Amount == decimal.Zero)
-			{
-				return new Money(counterCurrency, decimal.Zero);
-			}
-			else
-			{
-				var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
-
-				var cachedRate = this.GetFromCache(this.cachedRates.Where(item => item.Pair == pair), this.RatesCacheInterval, asOn);
-
-				if (cachedRate != null)
-				{
-					return new Money(counterCurrency, baseMoney.Amount * cachedRate.ExchangeRate);
-				}
-
-				var actualMoney = await this.originalConverter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn);
-
-				var actualRate = actualMoney.Amount / baseMoney.Amount;
-
-				this.AddToCache(this.cachedRates, this.RatesCacheCapacity, new CachedRate(pair, actualRate, asOn));
-
-				return actualMoney;
-			}
-		}
-
-		public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
-		{
-			var cachedPairs = this.GetFromCache(this.cachedCurrencyPairs, this.CurrencyPairsCacheInterval, asOn);
-
-			if (cachedPairs != null)
-			{
-				return cachedPairs.CurrencyPairs;
-			}
-
-			var actualPairs = await this.originalConverter.GetCurrencyPairsAsync(asOn);
-
-			this.AddToCache(this.cachedCurrencyPairs, this.CurrencyPairsCacheCapacity, new CachedCurrencyPairs(actualPairs, asOn));
-
-			return actualPairs;
-		}
-
-		public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
-		{
-			var cachedRate = this.GetFromCache(this.cachedRates.Where(item => item.Pair == pair), this.RatesCacheInterval, asOn);
-
-			if (cachedRate != null)
-			{
-				return cachedRate.ExchangeRate;
-			}
-
-			var actualRate = await this.originalConverter.GetExchangeRateAsync(pair, asOn);
-
-			this.AddToCache(this.cachedRates, this.RatesCacheCapacity, new CachedRate(pair, actualRate, asOn));
-
-			return actualRate;
 		}
 
 		private class CachedCurrencyPairs : CachedData
