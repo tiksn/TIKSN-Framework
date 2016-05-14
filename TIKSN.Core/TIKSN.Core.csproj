@@ -49,6 +49,7 @@
     <Compile Include="Configuration\CommonConfiguration.cs" />
     <Compile Include="Configuration\IConfiguration.cs" />
     <Compile Include="Configuration\PushalotConfiguration.cs" />
+    <Compile Include="Data\IRepository.cs" />
     <Compile Include="Progress\CompositeWeightedProgress.cs" />
     <Compile Include="Progress\IUserConfirmation.cs" />
     <Compile Include="Progress\OperationProgressReport.cs" />
