@@ -28,6 +28,15 @@ namespace TIKSN.Progress
 			cmdlet.WriteProgress(progressRecord);
 		}
 
+		public PowerShellProgress CreateChildProgress(string activity, string statusDescription)
+		{
+			var childProgress = new PowerShellProgress(cmdlet, activity, statusDescription);
+
+			childProgress.progressRecord.ParentActivityId = progressRecord.ActivityId;
+
+			return childProgress;
+		}
+
 		public void EndProgress()
 		{
 			stopwatch.Stop();
