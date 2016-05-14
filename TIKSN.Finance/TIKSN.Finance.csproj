@@ -68,6 +68,7 @@
     <Compile Include="ForeignExchange\CurrencylayerDotCom.cs" />
     <Compile Include="ForeignExchange\EuropeanCentralBank.cs" />
     <Compile Include="ForeignExchange\FederalReserveSystem.cs" />
+    <Compile Include="ForeignExchange\NationalBankOfUkraine.cs" />
     <Compile Include="ForeignExchange\ReserveBankOfAustralia.cs" />
     <Compile Include="ForeignExchange\SwissNationalBank.cs" />
     <Compile Include="Helpers\CurrencyHelper.cs" />

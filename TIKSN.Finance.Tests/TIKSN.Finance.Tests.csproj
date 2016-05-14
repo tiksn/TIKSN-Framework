@@ -65,6 +65,7 @@
     <Compile Include="ForeignExchange\BankOfEnglandTests.cs" />
     <Compile Include="ForeignExchange\BankOfCanadaTests.cs" />
     <Compile Include="ForeignExchange\CurrencylayerDotComTests.cs" />
+    <Compile Include="ForeignExchange\NationalBankOfUkraineTests.cs" />
     <Compile Include="ForeignExchange\ReserveBankOfAustraliaTests.cs" />
     <Compile Include="ForeignExchange\EuropeanCentralBankTests.cs" />
     <Compile Include="ForeignExchange\FederalReserveSystemTests.cs" />

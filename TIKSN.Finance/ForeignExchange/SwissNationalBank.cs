@@ -9,148 +9,148 @@ using System.Xml.Linq;
 
 namespace TIKSN.Finance.ForeignExchange
 {
-    public class SwissNationalBank : ICurrencyConverter
-    {
-        private static readonly CurrencyInfo SwissFranc;
-        private static string RSSURL = "http://www.snb.ch/selector/en/mmr/exfeed/rss";
-        private Dictionary<CurrencyInfo, Tuple<DateTimeOffset, decimal>> foreignRates;
+	public class SwissNationalBank : ICurrencyConverter
+	{
+		private static readonly CurrencyInfo SwissFranc;
+		private static string RSSURL = "http://www.snb.ch/selector/en/mmr/exfeed/rss";
+		private Dictionary<CurrencyInfo, Tuple<DateTimeOffset, decimal>> foreignRates;
 
-        static SwissNationalBank()
-        {
-            var Switzerland = new RegionInfo("de-CH");
+		static SwissNationalBank()
+		{
+			var Switzerland = new RegionInfo("de-CH");
 
-            SwissFranc = new CurrencyInfo(Switzerland);
-        }
+			SwissFranc = new CurrencyInfo(Switzerland);
+		}
 
-        public SwissNationalBank()
-        {
-            this.foreignRates = new Dictionary<CurrencyInfo, Tuple<DateTimeOffset, decimal>>();
-        }
+		public SwissNationalBank()
+		{
+			this.foreignRates = new Dictionary<CurrencyInfo, Tuple<DateTimeOffset, decimal>>();
+		}
 
-        private async Task FetchAsync()
-        {
-            using (var httpClient = new HttpClient())
-            {
-                var responseStream = await httpClient.GetStreamAsync(RSSURL);
+		public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+		{
+			await this.FetchOnDemandAsync();
 
-                var xdoc = XDocument.Load(responseStream);
+			decimal rate = this.GetRate(baseMoney.Currency, counterCurrency, asOn);
 
-                lock (this.foreignRates)
-                {
-                    foreach (var ItemElement in xdoc.Element("{http://www.w3.org/1999/02/22-rdf-syntax-ns#}RDF").Elements("{http://purl.org/rss/1.0/}item"))
-                    {
-                        var dateElement = ItemElement.Element("{http://purl.org/dc/elements/1.1/}date");
-                        var exchangeRateElement = ItemElement.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}statistics").Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}exchangeRate");
-                        var valueElement = exchangeRateElement.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}observation").Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}value");
-                        var targetCurrencyElement = exchangeRateElement.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}targetCurrency");
+			return new Money(counterCurrency, baseMoney.Amount * rate);
+		}
 
-                        var date = DateTimeOffset.Parse(dateElement.Value);
-                        var currencyCode = targetCurrencyElement.Value;
-                        decimal rate = decimal.Parse(valueElement.Value);
+		public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
+		{
+			await this.FetchOnDemandAsync();
 
-                        var currency = new CurrencyInfo(currencyCode);
+			var pairs = new List<CurrencyPair>();
 
-                        Debug.Assert(exchangeRateElement.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}observation").Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}unit").Value == "CHF");
+			var todayCurrencies = this.FilterByDate(asOn);
 
-                        this.foreignRates[currency] = new Tuple<DateTimeOffset, decimal>(date, rate);
-                    }
-                }
-            }
-        }
+			foreach (var currency in todayCurrencies)
+			{
+				pairs.Add(new CurrencyPair(SwissFranc, currency.Key));
+				pairs.Add(new CurrencyPair(currency.Key, SwissFranc));
+			}
 
-        private async Task FetchOnDemandAsync()
-        {
-            if (this.foreignRates.Count == 0)
-                await this.FetchAsync();
-            else if (this.foreignRates.Any(R => R.Value.Item1.Date == DateTimeOffset.Now.Date))
-                await this.FetchAsync();
-        }
+			return pairs;
+		}
 
-        private System.Collections.Generic.Dictionary<CurrencyInfo, decimal> FilterByDate(DateTimeOffset asOn)
-        {
-            if (asOn > DateTimeOffset.Now)
-                throw new System.ArgumentException("Exchange rate forecasting not supported.");
+		public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
+		{
+			await this.FetchOnDemandAsync();
 
-            var maxDate = this.foreignRates.Max(R => R.Value.Item1);
-            var minDate = this.foreignRates.Min(R => R.Value.Item1);
+			decimal rate = this.GetRate(pair.BaseCurrency, pair.CounterCurrency, asOn);
 
-            if (asOn < minDate)
-                throw new ArgumentException("Exchange rate history not supported.");
+			return rate;
+		}
 
-            DateTimeOffset filterDate;
+		private async Task FetchAsync()
+		{
+			using (var httpClient = new HttpClient())
+			{
+				var responseStream = await httpClient.GetStreamAsync(RSSURL);
 
-            if (asOn > maxDate)
-            {
-                filterDate = maxDate;
-            }
-            else
-            {
-                filterDate = asOn;
-            }
+				var xdoc = XDocument.Load(responseStream);
 
-            var filteredResults = this.foreignRates.Where(R => R.Value.Item1.Date == filterDate.Date).Select(R => new System.Tuple<CurrencyInfo, decimal>(R.Key, R.Value.Item2));
+				lock (this.foreignRates)
+				{
+					foreach (var ItemElement in xdoc.Element("{http://www.w3.org/1999/02/22-rdf-syntax-ns#}RDF").Elements("{http://purl.org/rss/1.0/}item"))
+					{
+						var dateElement = ItemElement.Element("{http://purl.org/dc/elements/1.1/}date");
+						var exchangeRateElement = ItemElement.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}statistics").Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}exchangeRate");
+						var valueElement = exchangeRateElement.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}observation").Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}value");
+						var targetCurrencyElement = exchangeRateElement.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}targetCurrency");
 
-            var Results = new Dictionary<CurrencyInfo, decimal>();
+						var date = DateTimeOffset.Parse(dateElement.Value);
+						var currencyCode = targetCurrencyElement.Value;
+						decimal rate = decimal.Parse(valueElement.Value);
 
-            foreach (var FilteredResult in filteredResults)
-            {
-                Results.Add(FilteredResult.Item1, FilteredResult.Item2);
-            }
+						var currency = new CurrencyInfo(currencyCode);
 
-            return Results;
-        }
+						Debug.Assert(exchangeRateElement.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}observation").Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}unit").Value == "CHF");
 
-        private decimal GetRate(CurrencyInfo BaseCurrency, CurrencyInfo CounterCurrency, DateTimeOffset asOn)
-        {
-            var filtered = this.FilterByDate(asOn);
+						this.foreignRates[currency] = new Tuple<DateTimeOffset, decimal>(date, rate);
+					}
+				}
+			}
+		}
 
-            if (BaseCurrency == SwissFranc)
-            {
-                if (filtered.ContainsKey(CounterCurrency))
-                    return 1 / filtered[CounterCurrency];
-            }
-            else if (CounterCurrency == SwissFranc)
-            {
-                if (filtered.ContainsKey(BaseCurrency))
-                    return filtered[BaseCurrency];
-            }
+		private async Task FetchOnDemandAsync()
+		{
+			if (this.foreignRates.Count == 0)
+				await this.FetchAsync();
+			else if (this.foreignRates.Any(R => R.Value.Item1.Date == DateTimeOffset.Now.Date))
+				await this.FetchAsync();
+		}
 
-            throw new ArgumentException("Currency pair not supported.");
-        }
+		private System.Collections.Generic.Dictionary<CurrencyInfo, decimal> FilterByDate(DateTimeOffset asOn)
+		{
+			if (asOn > DateTimeOffset.Now)
+				throw new System.ArgumentException("Exchange rate forecasting not supported.");
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
-        {
-            await this.FetchOnDemandAsync();
+			var maxDate = this.foreignRates.Max(R => R.Value.Item1);
+			var minDate = this.foreignRates.Min(R => R.Value.Item1);
 
-            decimal rate = this.GetRate(baseMoney.Currency, counterCurrency, asOn);
+			if (asOn < minDate)
+				throw new ArgumentException("Exchange rate history not supported.");
 
-            return new Money(counterCurrency, baseMoney.Amount * rate);
-        }
+			DateTimeOffset filterDate;
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
-        {
-            await this.FetchOnDemandAsync();
+			if (asOn > maxDate)
+			{
+				filterDate = maxDate;
+			}
+			else
+			{
+				filterDate = asOn;
+			}
 
-            var pairs = new List<CurrencyPair>();
+			var filteredResults = this.foreignRates.Where(R => R.Value.Item1.Date == filterDate.Date).Select(R => new System.Tuple<CurrencyInfo, decimal>(R.Key, R.Value.Item2));
 
-            var todayCurrencies = this.FilterByDate(asOn);
+			var Results = new Dictionary<CurrencyInfo, decimal>();
 
-            foreach (var currency in todayCurrencies)
-            {
-                pairs.Add(new CurrencyPair(SwissFranc, currency.Key));
-                pairs.Add(new CurrencyPair(currency.Key, SwissFranc));
-            }
+			foreach (var FilteredResult in filteredResults)
+			{
+				Results.Add(FilteredResult.Item1, FilteredResult.Item2);
+			}
 
-            return pairs;
-        }
+			return Results;
+		}
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
-        {
-            await this.FetchOnDemandAsync();
+		private decimal GetRate(CurrencyInfo BaseCurrency, CurrencyInfo CounterCurrency, DateTimeOffset asOn)
+		{
+			var filtered = this.FilterByDate(asOn);
 
-            decimal rate = this.GetRate(pair.BaseCurrency, pair.CounterCurrency, asOn);
+			if (BaseCurrency == SwissFranc)
+			{
+				if (filtered.ContainsKey(CounterCurrency))
+					return 1 / filtered[CounterCurrency];
+			}
+			else if (CounterCurrency == SwissFranc)
+			{
+				if (filtered.ContainsKey(BaseCurrency))
+					return filtered[BaseCurrency];
+			}
 
-            return rate;
-        }
-    }
+			throw new ArgumentException("Currency pair not supported.");
+		}
+	}
 }

@@ -2,26 +2,27 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>TIKSN-Framework</id>
-        <version>1.3.1</version>
+        <version>1.4.22</version>
         <title>TIKSN Framework</title>
         <authors>TIKSN</authors>
         <owners>TIKSN</owners>
         <projectUrl>http://www.tiksn.com/Framework</projectUrl>
         <iconUrl>http://www.tiksn.com/Images/Logo.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>This is a .NET Framework enhancement framework. Main features are Versioning, Finance, Currency, Foreign Exchange, Money, Pricing strategy, Telemetry.</description>
+        <description>This is a .NET Framework enhancement framework. Main features are Versioning, Finance, Currency, Foreign Exchange, Money, Pricing strategy, Telemetry, Composite Weighted Progress.</description>
         <copyright>Copyright © TIKSN Lab 2016</copyright>
         <language />
         <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry</tags>
         <dependencies>
             <group targetFramework=".NETFramework4.6">
-                <dependency id="Newtonsoft.Json" version="8.0.3" />
-                <dependency id="Exceptionless.Portable" version="3.4.1673" />
+                <dependency id="Microsoft.PowerShell.3.ReferenceAssemblies" version="1.0.0" />
+                <dependency id="Newtonsoft.Json" version="6.0.8" />
+                <dependency id="Exceptionless.Portable" version="3.5.1738" />
                 <dependency id="HockeySDK.Core" version="2.2.3" />
             </group>
             <group targetFramework="uap10.0">
-                <dependency id="Newtonsoft.Json" version="8.0.3" />
-                <dependency id="Exceptionless.Portable" version="3.4.1673" />
+                <dependency id="Newtonsoft.Json" version="6.0.8" />
+                <dependency id="Exceptionless.Portable" version="3.5.1738" />
                 <dependency id="HockeySDK.Core" version="2.2.3" />
             </group>
         </dependencies>
