@@ -47,6 +47,7 @@
     <Compile Include="Analytics\Telemetry\ITraceTelemeter.cs" />
     <Compile Include="Analytics\Telemetry\TelemetrySeverityLevel.cs" />
     <Compile Include="Configuration\CommonConfiguration.cs" />
+    <Compile Include="Configuration\DatabaseConfiguration.cs" />
     <Compile Include="Configuration\IConfiguration.cs" />
     <Compile Include="Configuration\PushalotConfiguration.cs" />
     <Compile Include="Data\IRepository.cs" />
