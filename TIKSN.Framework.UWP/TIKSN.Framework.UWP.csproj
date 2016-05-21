@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\EntityRepositoryBase.cs" />
+    <Compile Include="Data\SQLiteNetRepositoryBase.Platform.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\TIKSN.Framework.UWP.rd.xml" />
   </ItemGroup>
