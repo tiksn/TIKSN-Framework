@@ -1,9 +1,10 @@
-﻿namespace TIKSN.Web.Tests
+﻿using Xunit;
+
+namespace TIKSN.Web.Tests
 {
-	[Microsoft.VisualStudio.TestTools.UnitTesting.TestClass]
 	public class SitemapTests
 	{
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
+		[Fact]
 		public void Pages001()
 		{
 			Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
@@ -11,22 +12,22 @@
 
 			Sitemap map = new Sitemap();
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(map.Pages.Add(p1));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsFalse(map.Pages.Add(p2));
+			Assert.True(map.Pages.Add(p1));
+			Assert.False(map.Pages.Add(p2));
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
+		[Fact]
 		public void Pages002()
 		{
 			Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
 
 			Sitemap map = new Sitemap();
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(map.Pages.Add(p1));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsFalse(map.Pages.Add(p1));
+			Assert.True(map.Pages.Add(p1));
+			Assert.False(map.Pages.Add(p1));
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
+		[Fact]
 		public void Pages003()
 		{
 			Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
@@ -34,11 +35,11 @@
 
 			Sitemap map = new Sitemap();
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(map.Pages.Add(p1));
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsFalse(map.Pages.Add(p2));
+			Assert.True(map.Pages.Add(p1));
+			Assert.False(map.Pages.Add(p2));
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
+		[Fact]
 		public void Write001()
 		{
 			System.Text.StringBuilder sbuilder = new System.Text.StringBuilder();
@@ -50,13 +51,13 @@
 
 			string XmlOutput = sbuilder.ToString();
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual<string>(
+			Assert.Equal(
 				"<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
 				"<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" />",
 				XmlOutput);
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
+		[Fact]
 		public void Write002()
 		{
 			System.Text.StringBuilder sbuilder = new System.Text.StringBuilder();
@@ -72,7 +73,7 @@
 
 			string XmlOutput = sbuilder.ToString();
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual<string>(
+			Assert.Equal(
 				"<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
 				"<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" +
 
