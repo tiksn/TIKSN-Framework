@@ -81,13 +81,13 @@
     <Compile Include="CachedCurrencyConverterTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TIKSN.Finance\TIKSN.Finance.csproj">
-      <Project>{bfb569fe-d1d4-433e-8e7a-69604367b755}</Project>
-      <Name>TIKSN.Finance</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\TIKSN.Core\TIKSN.Core.csproj">
+      <Project>{d1ecb169-bb57-4751-aeca-415e078e5996}</Project>
+      <Name>TIKSN.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
