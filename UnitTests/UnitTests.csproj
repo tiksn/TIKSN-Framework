@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Versioning\MilestoneTests.cs" />
+    <Compile Include="Versioning\VersionTests.cs" />
     <Compile Include="Web\SitemapIndexTests.cs" />
     <Compile Include="Web\SitemapPageTests.cs" />
     <Compile Include="Web\SitemapTests.cs" />
