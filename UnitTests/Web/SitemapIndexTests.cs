@@ -1,19 +1,20 @@
-﻿namespace TIKSN.Web.Tests
+﻿using Xunit;
+
+namespace TIKSN.Web.Tests
 {
-	[Microsoft.VisualStudio.TestTools.UnitTesting.TestClass]
 	public class SitemapIndexTests
 	{
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
+		[Fact]
 		public void SitemapIndex001()
 		{
 			SitemapIndex SIndex = new SitemapIndex();
 
 			SIndex.Sitemaps.Add(new System.Uri("http://microsoft.com/"), new System.DateTime(2012, 8, 4, 15, 58, 58, System.DateTimeKind.Utc));
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual<int>(1, SIndex.Sitemaps.Count);
+			Assert.Equal(1, SIndex.Sitemaps.Count);
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
+		[Fact]
 		public void Write001()
 		{
 			SitemapIndex SIndex = new SitemapIndex();
@@ -26,13 +27,13 @@
 
 			string XmlOutput = SBuilder.ToString();
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual<string>(
+			Assert.Equal(
 				"<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
 				"<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" />",
 				XmlOutput);
 		}
 
-		[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
+		[Fact]
 		public void Write002()
 		{
 			SitemapIndex SIndex = new SitemapIndex();
@@ -48,7 +49,7 @@
 
 			string XmlOutput = SBuilder.ToString();
 
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual<string>(
+			Assert.Equal(
 				"<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
 				"<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" +
 

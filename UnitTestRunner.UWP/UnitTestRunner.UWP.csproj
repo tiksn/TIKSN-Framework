@@ -119,6 +119,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UnitTests\UnitTests.csproj">
+      <Project>{70dd4c39-7d1d-4dd3-87d5-059842a27c20}</Project>
+      <Name>UnitTests</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
