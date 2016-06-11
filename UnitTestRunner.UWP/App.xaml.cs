@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using TIKSN.Web.Tests;
 using Xunit.Runners.UI;
 
 namespace TIKSN.Framework.UnitTestRunner.UWP
@@ -11,6 +12,8 @@ namespace TIKSN.Framework.UnitTestRunner.UWP
         protected override void OnInitializeRunner()
         {
             AddTestAssembly(GetType().GetTypeInfo().Assembly);
+
+            AddTestAssembly(typeof(SitemapTests).GetTypeInfo().Assembly);
         }
     }
 }
