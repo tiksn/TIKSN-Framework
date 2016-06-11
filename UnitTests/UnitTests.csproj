@@ -45,6 +45,25 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Finance\CachedCurrencyConverterTests.cs" />
+    <Compile Include="Finance\CompositeCrossCurrencyConverterTests.cs" />
+    <Compile Include="Finance\CurrencyInfoTests.cs" />
+    <Compile Include="Finance\CurrencyPairTests.cs" />
+    <Compile Include="Finance\FixedRateCurrencyConverterTests.cs" />
+    <Compile Include="Finance\ForeignExchange\BankOfCanadaTests.cs" />
+    <Compile Include="Finance\ForeignExchange\BankOfEnglandTests.cs" />
+    <Compile Include="Finance\ForeignExchange\BankOfRussiaTests.cs" />
+    <Compile Include="Finance\ForeignExchange\CentralBankOfArmeniaTests.cs" />
+    <Compile Include="Finance\ForeignExchange\CurrencylayerDotComTests.cs" />
+    <Compile Include="Finance\ForeignExchange\EuropeanCentralBankTests.cs" />
+    <Compile Include="Finance\ForeignExchange\FederalReserveSystemTests.cs" />
+    <Compile Include="Finance\ForeignExchange\NationalBankOfUkraineTests.cs" />
+    <Compile Include="Finance\ForeignExchange\ReserveBankOfAustraliaTests.cs" />
+    <Compile Include="Finance\ForeignExchange\SwissNationalBankTests.cs" />
+    <Compile Include="Finance\Helper.cs" />
+    <Compile Include="Finance\MoneyTests.cs" />
+    <Compile Include="Finance\PricingStrategy\PsychologicalPricingStrategyTests.cs" />
+    <Compile Include="Finance\PricingStrategy\RoundingPricingStrategyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Versioning\MilestoneTests.cs" />
     <Compile Include="Versioning\VersionTests.cs" />
@@ -76,6 +95,7 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -83,7 +103,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\xunit.core.2.1.0\build\portable-net45+win8+wp8+wpa81\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.core.2.1.0\build\portable-net45+win8+wp8+wpa81\xunit.core.props'))" />
     <Error Condition="!Exists('..\packages\xunit.runner.visualstudio.2.1.0\build\portable-net45+win8+wp8+wpa81\xunit.runner.visualstudio.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.runner.visualstudio.2.1.0\build\portable-net45+win8+wp8+wpa81\xunit.runner.visualstudio.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
   </Target>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
