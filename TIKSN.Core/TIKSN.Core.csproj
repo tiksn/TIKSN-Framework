@@ -57,6 +57,9 @@
     <Compile Include="Progress\ProgressReport.cs" />
     <Compile Include="Progress\SilentUserConfirmation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Versioning\Milestone.cs" />
+    <Compile Include="Versioning\Stability.cs" />
+    <Compile Include="Versioning\Version.cs" />
     <Compile Include="Web\Sitemap.cs" />
     <Compile Include="Web\SitemapIndex.cs" />
   </ItemGroup>
