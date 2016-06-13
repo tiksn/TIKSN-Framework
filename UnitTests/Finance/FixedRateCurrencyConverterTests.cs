@@ -21,7 +21,7 @@ namespace TIKSN.Finance.Tests
 
 			FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
-			Money Final = await converter.ConvertCurrencyAsync(Initial, PoundSterling, System.DateTime.Now);
+			Money Final = await converter.ConvertCurrencyAsync(Initial, PoundSterling, DateTime.Now);
 
 			Assert.Equal(PoundSterling, Final.Currency);
 			Assert.Equal(200m, Final.Amount);
