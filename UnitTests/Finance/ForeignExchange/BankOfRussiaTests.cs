@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -11,11 +12,11 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		{
 			var Bank = new Finance.ForeignExchange.BankOfRussia();
 
-			foreach (var pair in await Bank.GetCurrencyPairsAsync(System.DateTime.Now))
+			foreach (var pair in await Bank.GetCurrencyPairsAsync(DateTime.Now))
 			{
 				Money Before = new Money(pair.BaseCurrency, 10m);
-				decimal rate = await Bank.GetExchangeRateAsync(pair, System.DateTime.Now);
-				Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, System.DateTime.Now);
+				decimal rate = await Bank.GetExchangeRateAsync(pair, DateTime.Now);
+				Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTime.Now);
 
 				Assert.True(After.Amount == rate * Before.Amount);
 				Assert.True(After.Currency == pair.CounterCurrency);
@@ -27,7 +28,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		{
 			var Bank = new Finance.ForeignExchange.BankOfRussia();
 
-			var Moment = System.DateTime.Now;
+			var Moment = DateTime.Now;
 
 			foreach (var pair in await Bank.GetCurrencyPairsAsync(Moment))
 			{
@@ -51,21 +52,12 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			CurrencyInfo USD = new CurrencyInfo(US);
 			CurrencyInfo RUB = new CurrencyInfo(RU);
 
-			try
-			{
-				Money Before = new Money(USD, 100m);
+			Money Before = new Money(USD, 100m);
 
-				Money After = await Bank.ConvertCurrencyAsync(Before, RUB, System.DateTime.Now.AddMinutes(1d));
-
-				Assert.Fail();
-			}
-			catch (System.ArgumentException)
-			{
-			}
-			catch
-			{
-				Assert.Fail();
-			}
+			await
+				Assert.ThrowsAsync<ArgumentException>(
+					async () =>
+						await Bank.ConvertCurrencyAsync(Before, RUB, DateTimeOffset.Now.AddMinutes(1d)));
 		}
 
 		[Fact]
@@ -79,21 +71,12 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			CurrencyInfo AOA = new CurrencyInfo(AO);
 			CurrencyInfo BWP = new CurrencyInfo(BW);
 
-			try
-			{
-				Money Before = new Money(AOA, 100m);
+            Money Before = new Money(AOA, 100m);
 
-				Money After = await Bank.ConvertCurrencyAsync(Before, BWP, System.DateTime.Now);
-
-				Assert.Fail();
-			}
-			catch (System.ArgumentException)
-			{
-			}
-			catch
-			{
-				Assert.Fail();
-			}
+            await
+                Assert.ThrowsAsync<ArgumentException>(
+                    async () =>
+                        await Bank.ConvertCurrencyAsync(Before, BWP, DateTime.Now));
 		}
 
 		[Fact]
@@ -101,7 +84,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		{
 			var Bank = new Finance.ForeignExchange.BankOfRussia();
 
-			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(System.DateTime.Now);
+			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now);
 
 			foreach (CurrencyPair pair in CurrencyPairs)
 			{
@@ -118,7 +101,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			System.Collections.Generic.HashSet<CurrencyPair> pairSet = new System.Collections.Generic.HashSet<CurrencyPair>();
 
-			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(System.DateTime.Now);
+			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now);
 
 			foreach (CurrencyPair pair in CurrencyPairs)
 			{
@@ -133,15 +116,10 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		{
 			var Bank = new Finance.ForeignExchange.BankOfRussia();
 
-			try
-			{
-				var pairs = await Bank.GetCurrencyPairsAsync(System.DateTime.Now.AddDays(10));
-
-				Assert.Fail();
-			}
-			catch (System.ArgumentException)
-			{
-			}
+            await
+                    Assert.ThrowsAsync<ArgumentException>(
+                        async () =>
+                            await Bank.GetCurrencyPairsAsync(DateTime.Now.AddDays(10)));
 		}
 
 		[Fact]
@@ -149,7 +127,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		{
 			var Bank = new Finance.ForeignExchange.BankOfRussia();
 
-			var pairs = await Bank.GetCurrencyPairsAsync(System.DateTime.Now);
+			var pairs = await Bank.GetCurrencyPairsAsync(DateTime.Now);
 
 			Assert.True(pairs.Any(C => C.ToString() == "AUD/RUB"));
 			Assert.True(pairs.Any(C => C.ToString() == "AZN/RUB"));
@@ -273,7 +251,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		{
 			var Bank = new Finance.ForeignExchange.BankOfRussia();
 
-			var AtTheMoment = System.DateTime.Now;
+			var AtTheMoment = DateTime.Now;
 
 			var pairs = await Bank.GetCurrencyPairsAsync(AtTheMoment);
 
@@ -312,9 +290,9 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		{
 			var Bank = new Finance.ForeignExchange.BankOfRussia();
 
-			for (int year = 1994; year <= System.DateTime.Now.Year; year++)
+			for (int year = 1994; year <= DateTime.Now.Year; year++)
 			{
-				for (int month = 1; (year < System.DateTime.Now.Year && month <= 12) || month <= System.DateTime.Now.Month; month++)
+				for (int month = 1; (year < DateTime.Now.Year && month <= 12) || month <= DateTime.Now.Month; month++)
 				{
 					var date = new System.DateTime(year, month, 1);
 
@@ -328,9 +306,9 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		{
 			var Bank = new Finance.ForeignExchange.BankOfRussia();
 
-			foreach (var pair in await Bank.GetCurrencyPairsAsync(System.DateTime.Now))
+			foreach (var pair in await Bank.GetCurrencyPairsAsync(DateTime.Now))
 			{
-				var rate = await Bank.GetExchangeRateAsync(pair, System.DateTime.Now);
+				var rate = await Bank.GetExchangeRateAsync(pair, DateTime.Now);
 
 				Assert.True(rate > decimal.Zero);
 			}
@@ -349,19 +327,10 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			CurrencyPair pair = new CurrencyPair(RUB, USD);
 
-			try
-			{
-				decimal rate = await Bank.GetExchangeRateAsync(pair, System.DateTime.Now.AddMinutes(1d));
-
-				Assert.Fail();
-			}
-			catch (System.ArgumentException)
-			{
-			}
-			catch
-			{
-				Assert.Fail();
-			}
+            await
+                    Assert.ThrowsAsync<ArgumentException>(
+                        async () =>
+                            await Bank.GetExchangeRateAsync(pair, DateTime.Now.AddMinutes(1d)));
 		}
 
 		[Fact]
@@ -377,15 +346,10 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			CurrencyPair pair = new CurrencyPair(BWP, AOA);
 
-			try
-			{
-				decimal rate = await Bank.GetExchangeRateAsync(pair, System.DateTime.Now);
-
-				Assert.Fail();
-			}
-			catch (System.ArgumentException)
-			{
-			}
+            await
+                    Assert.ThrowsAsync<ArgumentException>(
+                        async () =>
+                            await Bank.GetExchangeRateAsync(pair, DateTime.Now));
 		}
 
 		[Fact]
@@ -393,7 +357,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		{
 			var Bank = new Finance.ForeignExchange.BankOfRussia();
 
-			var Moment = System.DateTime.Now.AddYears(-1);
+			var Moment = DateTime.Now.AddYears(-1);
 
 			foreach (var pair in await Bank.GetCurrencyPairsAsync(Moment))
 			{
