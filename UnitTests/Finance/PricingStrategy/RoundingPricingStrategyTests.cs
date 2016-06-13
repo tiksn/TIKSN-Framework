@@ -41,7 +41,7 @@ namespace TIKSN.Finance.Tests.PricingStrategy
 				var actualEstimatedPrice = strategy.EstimateMarketPrice(price.Key);
 				var expectedEstimatedPrice = price.Value;
 
-				Assert.Equal(expectedEstimatedPrice, actualEstimatedPrice, "Actual: {0} Expected: {1}", actualEstimatedPrice, expectedEstimatedPrice);
+				Assert.Equal(expectedEstimatedPrice, actualEstimatedPrice);
 			}
 		}
 
@@ -68,7 +68,7 @@ namespace TIKSN.Finance.Tests.PricingStrategy
 				var actualEstimatedPrice = strategy.EstimateMarketPrice(price.Key);
 				var expectedEstimatedPrice = price.Value;
 
-				Assert.Equal(expectedEstimatedPrice, actualEstimatedPrice, "Actual: {0} Expected: {1}", actualEstimatedPrice, expectedEstimatedPrice);
+				Assert.Equal(expectedEstimatedPrice, actualEstimatedPrice);
 			}
 		}
 	}
