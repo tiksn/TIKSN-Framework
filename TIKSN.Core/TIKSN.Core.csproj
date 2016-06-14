@@ -35,6 +35,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <EmbeddedResource Include="Finance\CurrencyResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CurrencyResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analytics\Telemetry\CompositeEventTelemeter.cs" />
@@ -51,14 +55,77 @@
     <Compile Include="Configuration\IConfiguration.cs" />
     <Compile Include="Configuration\PushalotConfiguration.cs" />
     <Compile Include="Data\IRepository.cs" />
+    <Compile Include="Finance\AverageCurrencyConversionCompositionStrategy.cs" />
+    <Compile Include="Finance\CachedCurrencyConverter.cs" />
+    <Compile Include="Finance\CompositeCrossCurrencyConverter.cs" />
+    <Compile Include="Finance\CompositeCurrencyConverter.cs" />
+    <Compile Include="Finance\CurrencyInfo.cs" />
+    <Compile Include="Finance\CurrencyNotFoundException.cs" />
+    <Compile Include="Finance\CurrencyPair.cs" />
+    <Compile Include="Finance\CurrencyResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CurrencyResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Finance\FixedRateCurrencyConverter.cs" />
+    <Compile Include="Finance\ForeignExchange\BankOfCanada.cs" />
+    <Compile Include="Finance\ForeignExchange\BankOfEngland.cs" />
+    <Compile Include="Finance\ForeignExchange\BankOfRussia.cs" />
+    <Compile Include="Finance\ForeignExchange\CentralBankOfArmenia.cs" />
+    <Compile Include="Finance\ForeignExchange\CurrencylayerDotCom.cs" />
+    <Compile Include="Finance\ForeignExchange\EuropeanCentralBank.cs" />
+    <Compile Include="Finance\ForeignExchange\FederalReserveSystem.cs" />
+    <Compile Include="Finance\ForeignExchange\NationalBankOfUkraine.cs" />
+    <Compile Include="Finance\ForeignExchange\ReserveBankOfAustralia.cs" />
+    <Compile Include="Finance\ForeignExchange\SwissNationalBank.cs" />
+    <Compile Include="Finance\Helpers\CurrencyHelper.cs" />
+    <Compile Include="Finance\ICompositeCurrencyConverter.cs" />
+    <Compile Include="Finance\ICurrencyConversionCompositionStrategy.cs" />
+    <Compile Include="Finance\ICurrencyConverter.cs" />
+    <Compile Include="Finance\IPricingStrategy.cs" />
+    <Compile Include="Finance\Money.cs" />
+    <Compile Include="Finance\PricingStrategy\PsychologicalPricingStrategy.cs" />
+    <Compile Include="Finance\PricingStrategy\RoundingPricingStrategy.cs" />
+    <Compile Include="Finance\SingleEntryCurrencyConversionCompositionStrategy.cs" />
     <Compile Include="Progress\CompositeWeightedProgress.cs" />
     <Compile Include="Progress\IUserConfirmation.cs" />
     <Compile Include="Progress\OperationProgressReport.cs" />
     <Compile Include="Progress\ProgressReport.cs" />
     <Compile Include="Progress\SilentUserConfirmation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Versioning\Milestone.cs" />
+    <Compile Include="Versioning\Stability.cs" />
+    <Compile Include="Versioning\Version.cs" />
+    <Compile Include="Web\Sitemap.cs" />
+    <Compile Include="Web\SitemapIndex.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
