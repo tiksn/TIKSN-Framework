@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>TIKSN-Framework</id>
-        <version>1.5.2-pre</version>
+        <version>1.5.3-pre</version>
         <title>TIKSN Framework</title>
         <authors>TIKSN</authors>
         <owners>TIKSN</owners>
@@ -19,7 +19,7 @@
                 <dependency id="Newtonsoft.Json" version="6.0.8" />
                 <dependency id="Exceptionless.Portable" version="3.5.1738" />
                 <dependency id="HockeySDK.Core" version="2.2.3" />
-                <dependency id="EntityFramework" version="7.0.0-beta1" />
+                <dependency id="Microsoft.EntityFrameworkCore" version="1.0.0-rc2-final" />
                 <dependency id="SQLite.Net-PCL" version="3.1.1" />
                 <dependency id="SQLite.Net.Async-PCL" version="3.1.1" />
                 <dependency id="Microsoft.Bcl" version="1.1.10" />
