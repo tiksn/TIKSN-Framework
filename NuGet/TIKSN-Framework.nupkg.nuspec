@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>TIKSN-Framework</id>
-        <version>1.5.1-pre</version>
+        <version>1.5.2-pre</version>
         <title>TIKSN Framework</title>
         <authors>TIKSN</authors>
         <owners>TIKSN</owners>
@@ -22,6 +22,9 @@
                 <dependency id="EntityFramework" version="7.0.0-beta1" />
                 <dependency id="SQLite.Net-PCL" version="3.1.1" />
                 <dependency id="SQLite.Net.Async-PCL" version="3.1.1" />
+                <dependency id="Microsoft.Bcl" version="1.1.10" />
+                <dependency id="Microsoft.Bcl.Build" version="1.0.21" />
+                <dependency id="Microsoft.Bcl.Http" version="2.2.29" />
             </group>
             <group targetFramework="uap10.0">
                 <dependency id="Newtonsoft.Json" version="6.0.8" />
@@ -30,6 +33,9 @@
                 <dependency id="EntityFramework.Core" version="7.0.0-rc1-final" />
                 <dependency id="SQLite.Net-PCL" version="3.1.1" />
                 <dependency id="SQLite.Net.Async-PCL" version="3.1.1" />
+                <dependency id="Microsoft.Bcl" version="1.1.10" />
+                <dependency id="Microsoft.Bcl.Build" version="1.0.21" />
+                <dependency id="Microsoft.Bcl.Http" version="2.2.29" />
             </group>
         </dependencies>
     </metadata>
@@ -41,30 +47,9 @@
         <file src="..\TIKSN.Core\bin\Release\TIKSN.Core.dll" target="lib\uap10.0" />
         <file src="..\TIKSN.Core\bin\Release\TIKSN.Core.pdb" target="lib\uap10.0" />
 
-        <file src="..\TIKSN.Finance\bin\Release\TIKSN.Finance.dll" target="lib\net46" />
-        <file src="..\TIKSN.Finance\bin\Release\TIKSN.Finance.pdb" target="lib\net46" />
-        <file src="..\TIKSN.Finance\bin\Release\TIKSN.Finance.dll" target="lib\portable-Net46+UAP10+.NETPlatform50" />
-        <file src="..\TIKSN.Finance\bin\Release\TIKSN.Finance.pdb" target="lib\portable-Net46+UAP10+.NETPlatform50" />
-        <file src="..\TIKSN.Finance\bin\Release\TIKSN.Finance.dll" target="lib\uap10.0" />
-        <file src="..\TIKSN.Finance\bin\Release\TIKSN.Finance.pdb" target="lib\uap10.0" />
-
         <file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.dll" target="lib\net46" />
         <file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.pdb" target="lib\net46" />
         <file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.dll" target="lib\uap10.0" />
         <file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.pdb" target="lib\uap10.0" />
-
-        <file src="..\TIKSN.Versioning\bin\Release\TIKSN.Versioning.dll" target="lib\net46" />
-        <file src="..\TIKSN.Versioning\bin\Release\TIKSN.Versioning.pdb" target="lib\net46" />
-        <file src="..\TIKSN.Versioning\bin\Release\TIKSN.Versioning.dll" target="lib\portable-Net46+UAP10+.NETPlatform50" />
-        <file src="..\TIKSN.Versioning\bin\Release\TIKSN.Versioning.pdb" target="lib\portable-Net46+UAP10+.NETPlatform50" />
-        <file src="..\TIKSN.Versioning\bin\Release\TIKSN.Versioning.dll" target="lib\uap10.0" />
-        <file src="..\TIKSN.Versioning\bin\Release\TIKSN.Versioning.pdb" target="lib\uap10.0" />
-
-        <file src="..\TIKSN.Web\bin\Release\TIKSN.Web.dll" target="lib\net46" />
-        <file src="..\TIKSN.Web\bin\Release\TIKSN.Web.pdb" target="lib\net46" />
-        <file src="..\TIKSN.Web\bin\Release\TIKSN.Web.dll" target="lib\portable-Net46+UAP10+.NETPlatform50" />
-        <file src="..\TIKSN.Web\bin\Release\TIKSN.Web.pdb" target="lib\portable-Net46+UAP10+.NETPlatform50" />
-        <file src="..\TIKSN.Web\bin\Release\TIKSN.Web.dll" target="lib\uap10.0" />
-        <file src="..\TIKSN.Web\bin\Release\TIKSN.Web.pdb" target="lib\uap10.0" />
     </files>
 </package>
