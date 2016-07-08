@@ -64,20 +64,8 @@
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="mscorlib.4.0.0.0.Fakes">
-      <HintPath>FakesAssemblies\mscorlib.4.0.0.0.Fakes.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.4.0.0.0.Fakes">
-      <HintPath>FakesAssemblies\System.4.0.0.0.Fakes.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.4.0.0.0.Fakes">
-      <HintPath>FakesAssemblies\System.Net.Http.4.0.0.0.Fakes.dll</HintPath>
-    </Reference>
-    <Reference Include="TIKSN.Core.Fakes">
-      <HintPath>FakesAssemblies\TIKSN.Core.Fakes.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TIKSN.Core\TIKSN.Core.csproj">
@@ -97,9 +85,6 @@
     <Compile Include="Unity\UnityConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Fakes Include="Fakes\System.Net.Http.fakes" />
-    <Fakes Include="Fakes\System.fakes" />
-    <Fakes Include="Fakes\mscorlib.fakes" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>

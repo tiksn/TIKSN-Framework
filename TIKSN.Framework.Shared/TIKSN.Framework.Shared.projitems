@@ -15,21 +15,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)Telemetry\ApplicationInsightsHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Telemetry\ApplicationInsightsMetricTelemeter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Telemetry\ApplicationInsightsTraceTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\ExceptionlessEventTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\ExceptionlessTelemeterBase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\ExceptionlessExceptionTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\ExceptionlessMetricTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\ExceptionlessTraceTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\PushalotAuthorizationToken.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\PushalotMessage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\PushalotMessageBuilder.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\PushalotMessageImage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\PushalotMessageLink.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\PushalotClient.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\PushalotEventTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\PushalotExceptionTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\PushalotMetricTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\PushalotTraceTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\PushalotTelemeterBase.cs" />
   </ItemGroup>
 </Project>

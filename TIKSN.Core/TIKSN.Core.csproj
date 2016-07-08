@@ -2,7 +2,7 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{D1ECB169-BB57-4751-AECA-415E078E5996}</ProjectGuid>
@@ -13,8 +13,9 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -36,26 +37,36 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-    <EmbeddedResource Include="Finance\CurrencyResource.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>CurrencyResource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Analytics\Telemetry\CompositeEventTelemeter.cs" />
     <Compile Include="Analytics\Telemetry\CompositeExceptionTelemeter.cs" />
     <Compile Include="Analytics\Telemetry\CompositeMetricTelemeter.cs" />
     <Compile Include="Analytics\Telemetry\CompositeTraceTelemeter.cs" />
+    <Compile Include="Analytics\Telemetry\ExceptionlessEventTelemeter.cs" />
+    <Compile Include="Analytics\Telemetry\ExceptionlessExceptionTelemeter.cs" />
+    <Compile Include="Analytics\Telemetry\ExceptionlessMetricTelemeter.cs" />
+    <Compile Include="Analytics\Telemetry\ExceptionlessTelemeterBase.cs" />
+    <Compile Include="Analytics\Telemetry\ExceptionlessTraceTelemeter.cs" />
     <Compile Include="Analytics\Telemetry\IEventTelemeter.cs" />
     <Compile Include="Analytics\Telemetry\IExceptionTelemeter.cs" />
     <Compile Include="Analytics\Telemetry\IMetricTelemeter.cs" />
     <Compile Include="Analytics\Telemetry\ITraceTelemeter.cs" />
+    <Compile Include="Analytics\Telemetry\PushalotAuthorizationToken.cs" />
+    <Compile Include="Analytics\Telemetry\PushalotClient.cs" />
+    <Compile Include="Analytics\Telemetry\PushalotEventTelemeter.cs" />
+    <Compile Include="Analytics\Telemetry\PushalotExceptionTelemeter.cs" />
+    <Compile Include="Analytics\Telemetry\PushalotMessage.cs" />
+    <Compile Include="Analytics\Telemetry\PushalotMessageBuilder.cs" />
+    <Compile Include="Analytics\Telemetry\PushalotMessageImage.cs" />
+    <Compile Include="Analytics\Telemetry\PushalotMessageLink.cs" />
+    <Compile Include="Analytics\Telemetry\PushalotMetricTelemeter.cs" />
+    <Compile Include="Analytics\Telemetry\PushalotTelemeterBase.cs" />
+    <Compile Include="Analytics\Telemetry\PushalotTraceTelemeter.cs" />
     <Compile Include="Analytics\Telemetry\TelemetrySeverityLevel.cs" />
     <Compile Include="Configuration\CommonConfiguration.cs" />
     <Compile Include="Configuration\DatabaseConfiguration.cs" />
     <Compile Include="Configuration\IConfiguration.cs" />
     <Compile Include="Configuration\PushalotConfiguration.cs" />
+    <Compile Include="Data\EntityRepositoryBase.cs" />
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Finance\AverageCurrencyConversionCompositionStrategy.cs" />
     <Compile Include="Finance\CachedCurrencyConverter.cs" />
@@ -64,11 +75,6 @@
     <Compile Include="Finance\CurrencyInfo.cs" />
     <Compile Include="Finance\CurrencyNotFoundException.cs" />
     <Compile Include="Finance\CurrencyPair.cs" />
-    <Compile Include="Finance\CurrencyResource.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CurrencyResource.resx</DependentUpon>
-    </Compile>
     <Compile Include="Finance\FixedRateCurrencyConverter.cs" />
     <Compile Include="Finance\ForeignExchange\BankOfCanada.cs" />
     <Compile Include="Finance\ForeignExchange\BankOfEngland.cs" />
@@ -102,36 +108,13 @@
     <Compile Include="Web\SitemapIndex.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Net.Http, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Net.Http.Extensions, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Extensions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Net.Http.Primitives, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Primitives.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <EmbeddedResource Include="Finance\Resources\TableA1.xml" />
+    <EmbeddedResource Include="Finance\Resources\TableA3.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
