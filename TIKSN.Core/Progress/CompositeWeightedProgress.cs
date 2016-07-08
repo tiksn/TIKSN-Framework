@@ -60,7 +60,9 @@ namespace TIKSN.Progress
 
 		private void SingleProgressItemHandler(T status)
 		{
-			Contract.Requires(status != null);
+			if (status == null)
+				throw new ArgumentNullException(nameof(status));
+
 			var overallWeight = progresses.Sum(item => item.Weight);
 			var currentWeightedProgress = overallWeight == 0 ? 0d : progresses.Sum(item => item.Weight * (item.Status == null ? 0d : item.Status.PercentComplete)) / overallWeight;
 
