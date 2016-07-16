@@ -1,7 +1,7 @@
 ﻿{
   "supports": {},
   "dependencies": {
-    "Exceptionless": "4.0.1879",
+    "Exceptionless": "4.0.1883",
     "Microsoft.EntityFrameworkCore": "1.0.0",
     "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
     "NETStandard.Library": "1.6.0",
