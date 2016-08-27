@@ -1,4 +1,6 @@
-﻿namespace TIKSN.Finance
+﻿using System.Reflection;
+
+namespace TIKSN.Finance
 {
 	public sealed class CurrencyInfo : System.IEquatable<CurrencyInfo>
 	{
@@ -118,20 +120,20 @@
 
 		private void InitializeCurrency(string isoSymbol, string symbol)
 		{
-			if (!TryExtractCurrencyInformation(CurrencyResource.TableA1, isoSymbol, symbol, true, "CcyTbl", "CcyNtry"))
-			{
-				if (!TryExtractCurrencyInformation(CurrencyResource.TableA3, isoSymbol, symbol, false, "HstrcCcyTbl", "HstrcCcyNtry"))
-				{
-					throw new CurrencyNotFoundException();
-				}
-			}
-		}
+            if (!TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA1.xml", isoSymbol, symbol, true, "CcyTbl", "CcyNtry"))
+            {
+                if (!TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA3.xml", isoSymbol, symbol, false, "HstrcCcyTbl", "HstrcCcyNtry"))
+                {
+                    throw new CurrencyNotFoundException();
+                }
+            }
+        }
 
-		private bool TryExtractCurrencyInformation(string tableResource, string isoSymbol, string symbol, bool lookingForCurrent, string tableElementName, string entityElementName)
+        private bool TryExtractCurrencyInformation(string tableResource, string isoSymbol, string symbol, bool lookingForCurrent, string tableElementName, string entityElementName)
 		{
-			using (var reader = new System.IO.StringReader(tableResource))
+            using (var stream = GetType().GetTypeInfo().Assembly.GetManifestResourceStream(tableResource))
 			{
-				var tableXDoc = System.Xml.Linq.XDocument.Load(reader);
+				var tableXDoc = System.Xml.Linq.XDocument.Load(stream);
 
 				foreach (var ccyNtryElement in tableXDoc.Element("ISO_4217").Element(tableElementName).Elements(entityElementName))
 				{
