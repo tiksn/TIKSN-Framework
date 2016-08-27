@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>TIKSN-Framework</id>
-        <version>1.5.7-pre</version>
+        <version>1.5.8-pre</version>
         <title>TIKSN Framework</title>
         <authors>TIKSN</authors>
         <owners>TIKSN</owners>
@@ -12,7 +12,7 @@
         <description>This is a .NET Framework enhancement framework. Main features are Versioning, Finance, Currency, Foreign Exchange, Money, Pricing strategy, Telemetry, Composite Weighted Progress.</description>
         <copyright>Copyright © TIKSN Lab 2016</copyright>
         <language />
-        <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry</tags>
+        <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry, Configuration</tags>
         <dependencies>
             <group targetFramework=".NETFramework4.6">
                 <dependency id="Microsoft.PowerShell.3.ReferenceAssemblies" version="1.0.0" />
@@ -24,6 +24,8 @@
                 <dependency id="Microsoft.NETCore.Portable.Compatibility" version="1.0.1" />
                 <dependency id="NETStandard.Library" version="1.6.0" />
                 <dependency id="Newtonsoft.Json" version="9.0.1" />
+                <dependency id="Microsoft.Win32.Registry" version="4.0.0" />
+                <dependency id="Microsoft.Extensions.Configuration" version="1.0.0" />
             </group>
             <group targetFramework="uap10.0">
                 <dependency id="Exceptionless" version="4.0.1902" />
@@ -34,6 +36,8 @@
                 <dependency id="Microsoft.NETCore.Portable.Compatibility" version="1.0.1" />
                 <dependency id="NETStandard.Library" version="1.6.0" />
                 <dependency id="Newtonsoft.Json" version="9.0.1" />
+                <dependency id="Microsoft.Win32.Registry" version="4.0.0" />
+                <dependency id="Microsoft.Extensions.Configuration" version="1.0.0" />
             </group>
             <group targetFramework="netstandard1.3">
                 <dependency id="Exceptionless" version="4.0.1902" />
@@ -41,6 +45,8 @@
                 <dependency id="Microsoft.NETCore.Portable.Compatibility" version="1.0.1" />
                 <dependency id="NETStandard.Library" version="1.6.0" />
                 <dependency id="Newtonsoft.Json" version="9.0.1" />
+                <dependency id="Microsoft.Win32.Registry" version="4.0.0" />
+                <dependency id="Microsoft.Extensions.Configuration" version="1.0.0" />
             </group>
         </dependencies>
     </metadata>

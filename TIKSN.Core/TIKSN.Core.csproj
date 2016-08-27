@@ -66,6 +66,9 @@
     <Compile Include="Configuration\DatabaseConfiguration.cs" />
     <Compile Include="Configuration\IConfiguration.cs" />
     <Compile Include="Configuration\PushalotConfiguration.cs" />
+    <Compile Include="Configuration\WindowsRegistryConfigurationExtensions.cs" />
+    <Compile Include="Configuration\WindowsRegistryConfigurationProvider.cs" />
+    <Compile Include="Configuration\WindowsRegistryConfigurationSource.cs" />
     <Compile Include="Data\EntityRepositoryBase.cs" />
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Finance\AverageCurrencyConversionCompositionStrategy.cs" />
