@@ -1,6 +1,6 @@
 ﻿namespace TIKSN.Analytics.Telemetry
 {
-    public class HockeyAppTelemeterBase
+    public abstract class HockeyAppTelemeterBase
     {
     }
 }
