@@ -14,11 +14,19 @@
     <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ApplicationInsightsHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ApplicationInsightsMetricTelemeter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ApplicationInsightsTraceTelemeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ExceptionlessEventTelemeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ExceptionlessExceptionTelemeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ExceptionlessMetricTelemeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ExceptionlessTelemeterBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ExceptionlessTraceTelemeter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\HockeyAppEventTelemeter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\HockeyAppExceptionTelemeter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\HockeyAppMetricTelemeter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\HockeyAppTelemeterBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\HockeyAppTraceTelemeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\WindowsRegistryConfigurationExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\WindowsRegistryConfigurationProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\WindowsRegistryConfigurationSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\SQLiteNetRepositoryBase.cs" />
   </ItemGroup>
 </Project>

@@ -1,11 +1,8 @@
 ﻿{
   "supports": {},
   "dependencies": {
-    "Exceptionless": "4.0.1902",
     "Microsoft.EntityFrameworkCore": "1.0.0",
-    "Microsoft.Extensions.Configuration": "1.0.0",
     "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
-    "Microsoft.Win32.Registry": "4.0.0",
     "NETStandard.Library": "1.6.0",
     "Newtonsoft.Json": "9.0.1"
   },
