@@ -4,86 +4,70 @@ using System.Management.Automation;
 
 namespace TIKSN.Progress
 {
-	public class PowerShellProgress : Progress<OperationProgressReport>
-	{
-		private static readonly object activityIdLocker = new object();
-		private static int nextActivityId = 0;
+    public class PowerShellProgress : Progress<OperationProgressReport>, IDisposable
+    {
+        private static readonly object activityIdLocker = new object();
+        private static int nextActivityId = 0;
 
-		private readonly Cmdlet cmdlet;
-		private readonly ProgressRecord progressRecord;
-		private Stopwatch stopwatch;
+        private readonly Cmdlet cmdlet;
+        private readonly ProgressRecord progressRecord;
+        private Stopwatch stopwatch;
 
-		public PowerShellProgress(Cmdlet cmdlet, string activity, string statusDescription)
-		{
-			this.cmdlet = cmdlet;
-			this.progressRecord = new ProgressRecord(GenerateNextActivityId(), activity, statusDescription);
-		}
+        public PowerShellProgress(Cmdlet cmdlet, string activity, string statusDescription)
+        {
+            this.cmdlet = cmdlet;
+            this.progressRecord = new ProgressRecord(GenerateNextActivityId(), activity, statusDescription);
 
-		public void BeginProgress()
-		{
-			stopwatch = Stopwatch.StartNew();
+            stopwatch = Stopwatch.StartNew();
+            progressRecord.RecordType = ProgressRecordType.Processing;
+            cmdlet.WriteProgress(progressRecord);
+        }
 
-			progressRecord.RecordType = ProgressRecordType.Processing;
+        public PowerShellProgress CreateChildProgress(string activity, string statusDescription)
+        {
+            var childProgress = new PowerShellProgress(cmdlet, activity, statusDescription);
 
-			cmdlet.WriteProgress(progressRecord);
-		}
+            childProgress.progressRecord.ParentActivityId = progressRecord.ActivityId;
 
-		public PowerShellProgress CreateChildProgress(string activity, string statusDescription)
-		{
-			var childProgress = new PowerShellProgress(cmdlet, activity, statusDescription);
+            return childProgress;
+        }
 
-			childProgress.progressRecord.ParentActivityId = progressRecord.ActivityId;
+        public void Dispose()
+        {
+            stopwatch.Stop();
+            progressRecord.RecordType = ProgressRecordType.Completed;
+            cmdlet.WriteProgress(progressRecord);
+        }
 
-			return childProgress;
-		}
+        protected override void OnReport(OperationProgressReport value)
+        {
+            progressRecord.RecordType = ProgressRecordType.Processing;
+            progressRecord.PercentComplete = (int)value.PercentComplete;
 
-		public void EndProgress()
-		{
-			stopwatch.Stop();
+            progressRecord.SecondsRemaining = (int)(stopwatch.Elapsed.TotalSeconds * (100d - value.PercentComplete) / value.PercentComplete);
 
-			progressRecord.RecordType = ProgressRecordType.Completed;
-			cmdlet.WriteProgress(progressRecord);
-		}
+            if (value.CurrentOperation != null)
+            {
+                progressRecord.CurrentOperation = value.CurrentOperation;
+            }
 
-		protected override void OnReport(OperationProgressReport value)
-		{
-			Start();
+            if (value.StatusDescription != null)
+            {
+                progressRecord.StatusDescription = value.StatusDescription;
+            }
 
-			progressRecord.RecordType = ProgressRecordType.Processing;
-			progressRecord.PercentComplete = (int)value.PercentComplete;
+            cmdlet.WriteProgress(progressRecord);
+            base.OnReport(value);
+        }
 
-			progressRecord.SecondsRemaining = (int)(stopwatch.Elapsed.TotalSeconds * (100d - value.PercentComplete) / value.PercentComplete);
+        private static int GenerateNextActivityId()
+        {
+            lock (activityIdLocker)
+            {
+                nextActivityId++;
+            }
 
-			if (value.CurrentOperation != null)
-			{
-				progressRecord.CurrentOperation = value.CurrentOperation;
-			}
-
-			if (value.StatusDescription != null)
-			{
-				progressRecord.StatusDescription = value.StatusDescription;
-			}
-
-			cmdlet.WriteProgress(progressRecord);
-			base.OnReport(value);
-		}
-
-		private static int GenerateNextActivityId()
-		{
-			lock (activityIdLocker)
-			{
-				nextActivityId++;
-			}
-
-			return nextActivityId;
-		}
-
-		private void Start()
-		{
-			if (stopwatch == null)
-			{
-				stopwatch = Stopwatch.StartNew();
-			}
-		}
-	}
+            return nextActivityId;
+        }
+    }
 }
