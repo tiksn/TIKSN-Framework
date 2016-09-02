@@ -9,11 +9,16 @@
     <Import_RootNamespace>TIKSN.Framework.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ApplicationInsightsEventTelemeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ApplicationInsightsExceptionTelemeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ApplicationInsightsHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ApplicationInsightsMetricTelemeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ApplicationInsightsTraceTelemeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\HockeyAppEventTelemeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\HockeyAppExceptionTelemeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\HockeyAppMetricTelemeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\HockeyAppTelemeterBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\HockeyAppTraceTelemeter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\SQLiteNetRepositoryBase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\ApplicationInsightsEventTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\ApplicationInsightsExceptionTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\ApplicationInsightsHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\ApplicationInsightsMetricTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\ApplicationInsightsTraceTelemeter.cs" />
   </ItemGroup>
 </Project>

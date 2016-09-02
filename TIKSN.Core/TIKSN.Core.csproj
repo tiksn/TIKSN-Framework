@@ -46,11 +46,6 @@
     <Compile Include="Analytics\Telemetry\ExceptionlessMetricTelemeter.cs" />
     <Compile Include="Analytics\Telemetry\ExceptionlessTelemeterBase.cs" />
     <Compile Include="Analytics\Telemetry\ExceptionlessTraceTelemeter.cs" />
-    <Compile Include="Analytics\Telemetry\HockeyAppEventTelemeter.cs" />
-    <Compile Include="Analytics\Telemetry\HockeyAppExceptionTelemeter.cs" />
-    <Compile Include="Analytics\Telemetry\HockeyAppMetricTelemeter.cs" />
-    <Compile Include="Analytics\Telemetry\HockeyAppTelemeterBase.cs" />
-    <Compile Include="Analytics\Telemetry\HockeyAppTraceTelemeter.cs" />
     <Compile Include="Analytics\Telemetry\IEventTelemeter.cs" />
     <Compile Include="Analytics\Telemetry\IExceptionTelemeter.cs" />
     <Compile Include="Analytics\Telemetry\IMetricTelemeter.cs" />
