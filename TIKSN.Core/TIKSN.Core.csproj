@@ -63,6 +63,7 @@
     <Compile Include="Configuration\PushalotConfiguration.cs" />
     <Compile Include="Data\EntityRepositoryBase.cs" />
     <Compile Include="Data\IRepository.cs" />
+    <Compile Include="Settings\ISettingsService.cs" />
     <Compile Include="Finance\AverageCurrencyConversionCompositionStrategy.cs" />
     <Compile Include="Finance\CachedCurrencyConverter.cs" />
     <Compile Include="Finance\CompositeCrossCurrencyConverter.cs" />
