@@ -2,6 +2,7 @@ using Android.App;
 using Android.Content;
 using Android.Preferences;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -35,54 +36,6 @@ namespace TIKSN.Settings
             var preferences = GetLocalPreferences();
 
             SetSetting(preferences, name, value);
-        }
-
-        private void SetSetting<T>(ISharedPreferences preferences, string name, T value)
-        {
-            using (var prefs = preferences)
-            {
-                using (var editor = prefs.Edit())
-                {
-                    SetSetting(editor, name, value);
-
-                    editor.Commit();
-                }
-            }
-        }
-
-        private void SetSetting<T>(ISharedPreferencesEditor preferencesEditor, string name, T value)
-        {
-            var type = typeof(T);
-
-            //Is Not Universal preferencesEditor.PutStringSet(name, (ICollection<string>)value);
-
-            var typeCode = Type.GetTypeCode(type);
-
-            switch (typeCode)
-            {
-                case TypeCode.Boolean:
-                    preferencesEditor.PutBoolean(name, (bool)(object)value);
-                    break;
-
-                case TypeCode.Int32:
-                    preferencesEditor.PutInt(name, (int)(object)value);
-                    break;
-
-                case TypeCode.Int64:
-                    preferencesEditor.PutLong(name, (long)(object)value);
-                    break;
-
-                case TypeCode.Single:
-                    preferencesEditor.PutFloat(name, (float)(object)value);
-                    break;
-
-                case TypeCode.String:
-                    preferencesEditor.PutString(name, (string)(object)value);
-                    break;
-
-                default:
-                    throw new NotSupportedException($"Setting type code '{typeCode}' is not supported.");
-            }
         }
 
         public void SetRoamingSetting<T>(string name, T value)
@@ -131,7 +84,72 @@ namespace TIKSN.Settings
                     return (T)(object)preferences.GetString(name, (string)(object)defaultValue);
 
                 default:
-                    throw new NotSupportedException($"Setting type code '{typeCode}' is not supported.");
+                    if (defaultValue is ICollection<string>)
+                        return (T)preferences.GetStringSet(name, (ICollection<string>)(object)defaultValue);
+                    else
+                    {
+                        var jsonValue = preferences.GetString(name, null);
+                        if (!string.IsNullOrEmpty(jsonValue))
+                            return JsonConvert.DeserializeObject<T>(jsonValue);
+
+                        return defaultValue;
+                    }
+                    break;
+            }
+        }
+
+        private void SetSetting<T>(ISharedPreferences preferences, string name, T value)
+        {
+            using (var prefs = preferences)
+            {
+                using (var editor = prefs.Edit())
+                {
+                    SetSetting(editor, name, value);
+
+                    editor.Commit();
+                }
+            }
+        }
+
+        private void SetSetting<T>(ISharedPreferencesEditor preferencesEditor, string name, T value)
+        {
+            var type = typeof(T);
+
+            //Is Not Universal preferencesEditor.PutStringSet(name, (ICollection<string>)value);
+
+            var typeCode = Type.GetTypeCode(type);
+
+            switch (typeCode)
+            {
+                case TypeCode.Boolean:
+                    preferencesEditor.PutBoolean(name, (bool)(object)value);
+                    break;
+
+                case TypeCode.Int32:
+                    preferencesEditor.PutInt(name, (int)(object)value);
+                    break;
+
+                case TypeCode.Int64:
+                    preferencesEditor.PutLong(name, (long)(object)value);
+                    break;
+
+                case TypeCode.Single:
+                    preferencesEditor.PutFloat(name, (float)(object)value);
+                    break;
+
+                case TypeCode.String:
+                    preferencesEditor.PutString(name, (string)(object)value);
+                    break;
+
+                default:
+                    if (value is ICollection<string>)
+                        preferencesEditor.PutStringSet(name, (ICollection<string>)value);
+                    else
+                    {
+                        var jsonValue = JsonConvert.SerializeObject(value);
+                        preferencesEditor.PutString(name, jsonValue);
+                    }
+                    break;
             }
         }
     }
