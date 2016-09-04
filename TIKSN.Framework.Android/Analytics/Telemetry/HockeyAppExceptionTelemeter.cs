@@ -7,12 +7,16 @@ namespace TIKSN.Analytics.Telemetry
     {
         public Task TrackException(Exception exception)
         {
-            throw new NotImplementedException();
+            //TODO: throw new NotImplementedException();
+
+            return Task.FromResult<object>(null);
         }
 
         public Task TrackException(Exception exception, TelemetrySeverityLevel severityLevel)
         {
-            throw new NotImplementedException();
+            //TODO: throw new NotImplementedException();
+
+            return Task.FromResult<object>(null);
         }
     }
 }
