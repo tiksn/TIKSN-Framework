@@ -1,4 +1,4 @@
-﻿using System;
+﻿using HockeyApp.Android.Metrics;
 using System.Threading.Tasks;
 
 namespace TIKSN.Analytics.Telemetry
@@ -7,7 +7,9 @@ namespace TIKSN.Analytics.Telemetry
     {
         public Task TrackEvent(string name)
         {
-            throw new NotImplementedException();
+            MetricsManager.TrackEvent(name);
+
+            return Task.FromResult<object>(null);
         }
     }
 }
