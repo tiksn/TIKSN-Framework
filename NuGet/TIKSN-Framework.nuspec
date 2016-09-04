@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>TIKSN-Framework</id>
-        <version>1.5.16-pre</version>
+        <version>1.5.18-pre</version>
         <title>TIKSN Framework</title>
         <authors>TIKSN</authors>
         <owners>TIKSN</owners>
@@ -31,6 +31,7 @@
                 <dependency id="HockeySDK.Xamarin" version="4.1.0-beta3" />
                 <dependency id="Microsoft.EntityFrameworkCore" version="1.0.0" />
                 <dependency id="Newtonsoft.Json" version="9.0.1" />
+                <dependency id="Microsoft.Extensions.Options" version="1.0.0" />
             </group>
             <group targetFramework="netstandard1.3">
                 <dependency id="Microsoft.EntityFrameworkCore" version="1.0.0" />
