@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Data
 {
-    public class UnitOfWork : IUnitOfWork
+    public class EntityUnitOfWork : IUnitOfWork
     {
         private readonly DbContext dbContext;
 
-        public UnitOfWork(DbContext dbContext)
+        public EntityUnitOfWork(DbContext dbContext)
         {
             this.dbContext = dbContext;
         }
