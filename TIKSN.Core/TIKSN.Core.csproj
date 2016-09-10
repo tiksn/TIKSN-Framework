@@ -65,6 +65,9 @@
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Data\IUnitOfWork.cs" />
     <Compile Include="Data\EntityUnitOfWork.cs" />
+    <Compile Include="Network\INetworkConnectivityService.cs" />
+    <Compile Include="Network\InternetConnectivityState.cs" />
+    <Compile Include="Network\NetworkConnectivityServiceBase.cs" />
     <Compile Include="Settings\ISettingsService.cs" />
     <Compile Include="Finance\AverageCurrencyConversionCompositionStrategy.cs" />
     <Compile Include="Finance\CachedCurrencyConverter.cs" />
@@ -112,6 +115,7 @@
     <EmbeddedResource Include="Finance\Resources\TableA1.xml" />
     <EmbeddedResource Include="Finance\Resources\TableA3.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
