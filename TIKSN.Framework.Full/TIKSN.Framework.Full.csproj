@@ -159,6 +159,18 @@
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Reactive.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Core.3.0.0\lib\net46\System.Reactive.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=3.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Interfaces.3.0.0\lib\net45\System.Reactive.Interfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Linq, Version=3.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Linq.3.0.0\lib\net46\System.Reactive.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
@@ -175,6 +187,7 @@
     <Compile Include="Analytics\Telemetry\PowerShellEventTelemeter.cs" />
     <Compile Include="Analytics\Telemetry\PowerShellMetricTelemeter.cs" />
     <Compile Include="Data\SQLiteNetRepositoryBase.Platform.cs" />
+    <Compile Include="Network\NetworkConnectivityService.cs" />
     <Compile Include="Progress\PowerShellProgress.cs" />
     <Compile Include="Progress\PowerShellUserConfirmation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

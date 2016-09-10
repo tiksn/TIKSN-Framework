@@ -23,6 +23,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\Unit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Framework.Android", "TIKSN.Framework.Android\TIKSN.Framework.Android.csproj", "{572734F9-E631-44AB-91F0-54735B50D91B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{D98A9FAA-7292-44A9-BDCA-ADC0C704EF92}"
+	ProjectSection(SolutionItems) = preProject
+		NuGet\TIKSN-Framework.nuspec = NuGet\TIKSN-Framework.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TIKSN.Framework.Shared\TIKSN.Framework.Shared.projitems*{3d7b87c7-b00c-4691-9bbd-f5836011345a}*SharedItemsImports = 4
