@@ -5,7 +5,7 @@ using Xunit;
 
 namespace TIKSN.Finance.Tests
 {
-    public class CompositeCrossCurrencyConverterTests
+	public class CompositeCrossCurrencyConverterTests
 	{
 		[Fact]
 		public async Task GetCurrencyPairsAsync001()

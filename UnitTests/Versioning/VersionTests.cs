@@ -160,7 +160,7 @@ namespace TIKSN.Versioning.Tests
 		[Fact]
 		public void PrereleaseNumber001()
 		{
-		    Assert.Throws<ArgumentOutOfRangeException>(() => new Version(1, 2, 3, 4, Milestone.ReleaseCandidate, -5));
+			Assert.Throws<ArgumentOutOfRangeException>(() => new Version(1, 2, 3, 4, Milestone.ReleaseCandidate, -5));
 		}
 
 		[Fact]
@@ -230,7 +230,7 @@ namespace TIKSN.Versioning.Tests
 		[Fact]
 		public void ToPrereleaseString008()
 		{
-		    Assert.Throws<NotSupportedException>(() => new Version(1, 2, 3, 4, (Milestone) 125689, 5));
+			Assert.Throws<NotSupportedException>(() => new Version(1, 2, 3, 4, (Milestone)125689, 5));
 		}
 
 		[Fact]

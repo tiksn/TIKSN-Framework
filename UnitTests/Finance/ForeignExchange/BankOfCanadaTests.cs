@@ -124,7 +124,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			CurrencyInfo CAD = new CurrencyInfo(CA);
 
 			Money Before = new Money(USD, 100m);
-			
+
 			await Assert.ThrowsAsync<ArgumentException>(
 				async () => await Bank.ConvertCurrencyAsync(Before, CAD, DateTimeOffset.Now.AddDays(-20d)));
 		}
@@ -141,7 +141,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			CurrencyInfo BWP = new CurrencyInfo(BW);
 
 			Money Before = new Money(AOA, 100m);
-			
+
 			await Assert.ThrowsAsync<ArgumentException>(
 				async () => await Bank.ConvertCurrencyAsync(Before, BWP, DateTimeOffset.Now));
 		}
@@ -298,7 +298,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		public async Task CurrencyPairs004()
 		{
 			BankOfCanada Bank = new BankOfCanada();
-			
+
 			await Assert.ThrowsAsync<ArgumentException>(
 				async () => await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now.AddDays(-10)));
 		}
@@ -307,7 +307,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		public async Task CurrencyPairs005()
 		{
 			BankOfCanada Bank = new BankOfCanada();
-			
+
 			await Assert.ThrowsAsync<ArgumentException>(
 				async () => await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now.AddDays(10)));
 		}
@@ -347,7 +347,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			CurrencyInfo CAD = new CurrencyInfo(CA);
 
 			CurrencyPair pair = new CurrencyPair(CAD, USD);
-			
+
 			await Assert.ThrowsAsync<ArgumentException>(
 				async () => await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now.AddMinutes(1d)));
 		}
@@ -364,7 +364,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			CurrencyInfo CAD = new CurrencyInfo(CA);
 
 			CurrencyPair pair = new CurrencyPair(CAD, USD);
-			
+
 			await Assert.ThrowsAsync<ArgumentException>(
 				async () => await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now.AddDays(-20d)));
 		}
@@ -381,7 +381,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			CurrencyInfo BWP = new CurrencyInfo(BW);
 
 			CurrencyPair pair = new CurrencyPair(BWP, AOA);
-			
+
 			await Assert.ThrowsAsync<ArgumentException>(
 				async () => await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now));
 		}
