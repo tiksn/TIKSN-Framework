@@ -74,7 +74,7 @@ namespace TIKSN.Finance.Tests
 			var interval = System.TimeSpan.FromDays(10);
 			int negativeCapacity = -10;
 			int positiveCapacity = 10;
-			
+
 			Assert.Throws<ArgumentOutOfRangeException>(
 				() => new CachedCurrencyConverter(converter, interval, interval, negativeCapacity, positiveCapacity));
 		}
@@ -83,11 +83,11 @@ namespace TIKSN.Finance.Tests
 		public void CachedCurrencyConverter_NegativeCapacity002()
 		{
 			var converter = new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
-			
+
 			var interval = System.TimeSpan.FromDays(10);
 			int negativeCapacity = -10;
 			int positiveCapacity = 10;
-			
+
 			Assert.Throws<ArgumentOutOfRangeException>(
 				() => new CachedCurrencyConverter(converter, interval, interval, positiveCapacity, negativeCapacity));
 		}
@@ -99,7 +99,7 @@ namespace TIKSN.Finance.Tests
 
 			var negativeInterval = System.TimeSpan.FromDays(-10);
 			var positiveInterval = System.TimeSpan.FromDays(10);
-			
+
 			Assert.Throws<ArgumentOutOfRangeException>(
 				() => new CachedCurrencyConverter(converter, negativeInterval, positiveInterval));
 		}
@@ -111,7 +111,7 @@ namespace TIKSN.Finance.Tests
 
 			var negativeInterval = System.TimeSpan.FromDays(-10);
 			var positiveInterval = System.TimeSpan.FromDays(10);
-			
+
 			Assert.Throws<ArgumentOutOfRangeException>(
 				() => new CachedCurrencyConverter(converter, positiveInterval, negativeInterval));
 		}
@@ -152,20 +152,17 @@ namespace TIKSN.Finance.Tests
 
 		// var cachedRate1 = cachedConverter.GetExchangeRate(pair, date1);
 
-		// Assert.Equal<decimal>(rate1, cachedRate1);
-		// Assert.Equal(1, cachedConverter.RatesCacheSize);
+		// Assert.Equal<decimal>(rate1, cachedRate1); Assert.Equal(1, cachedConverter.RatesCacheSize);
 
 		// var convertedMoney1 = cachedConverter.ConvertCurrency(testBaseMoney, pair.CounterCurrency, date1);
 
-		// Assert.Equal<Money>(new
-		// Money(pair.CounterCurrency, testBaseMoney.Amount * rate1), convertedMoney1);
-		// Assert.Equal(1, cachedConverter.RatesCacheSize);
+		// Assert.Equal<Money>(new Money(pair.CounterCurrency, testBaseMoney.Amount * rate1),
+		// convertedMoney1); Assert.Equal(1, cachedConverter.RatesCacheSize);
 
 		// var convertedMoney2 = cachedConverter.ConvertCurrency(testBaseMoney, pair.CounterCurrency, date2);
 
-		// Assert.Equal<Money>(new
-		// Money(pair.CounterCurrency, testBaseMoney.Amount * rate2), convertedMoney2);
-		// Assert.Equal(2, cachedConverter.RatesCacheSize);
+		// Assert.Equal<Money>(new Money(pair.CounterCurrency, testBaseMoney.Amount * rate2),
+		// convertedMoney2); Assert.Equal(2, cachedConverter.RatesCacheSize);
 
 		// var cachedRate2 = cachedConverter.GetExchangeRate(pair, date2);
 
@@ -197,8 +194,7 @@ namespace TIKSN.Finance.Tests
 		// Assert.Equal(1, currencyPairsCallCount);
 
 		// cachedConverter.GetExchangeRate(Helper.SampleCurrencyPair1, testDate);
-		// cachedConverter.GetExchangeRate(Helper.SampleCurrencyPair1, testDate);
-		// Assert.Equal(1, rateCallCount);
+		// cachedConverter.GetExchangeRate(Helper.SampleCurrencyPair1, testDate); Assert.Equal(1, rateCallCount);
 
 		// cachedConverter.ConvertCurrency(Helper.SampleMoney1, Helper.SampleCurrency2, testDate);
 		// cachedConverter.ConvertCurrency(Helper.SampleMoney1, Helper.SampleCurrency2, testDate);
@@ -206,11 +202,9 @@ namespace TIKSN.Finance.Tests
 
 		// cachedConverter.Clear();
 
-		// cachedConverter.GetCurrencyPairs(testDate);
-		// Assert.Equal(2, currencyPairsCallCount);
+		// cachedConverter.GetCurrencyPairs(testDate); Assert.Equal(2, currencyPairsCallCount);
 
-		// cachedConverter.GetExchangeRate(Helper.SampleCurrencyPair1, testDate);
-		// Assert.Equal(2, rateCallCount);
+		// cachedConverter.GetExchangeRate(Helper.SampleCurrencyPair1, testDate); Assert.Equal(2, rateCallCount);
 
 		//    cachedConverter.ConvertCurrency(Helper.SampleMoney1, Helper.SampleCurrency2, testDate);
 		//    Assert.Equal(2, rateCallCount);
@@ -236,24 +230,18 @@ namespace TIKSN.Finance.Tests
 		// System.DateTime(2014, 10, 1)); cachedConverter.GetExchangeRate(Helper.SampleCurrencyPair1,
 		// new System.DateTime(2014, 9, 1));
 
-		// Assert.Equal(2,
-		// cachedConverter.RatesCacheSize);
-		// Assert.Equal(2, rateCallCount);
+		// Assert.Equal(2, cachedConverter.RatesCacheSize); Assert.Equal(2, rateCallCount);
 
 		// cachedConverter.ConvertCurrency(Helper.SampleMoney1, Helper.SampleCurrency2, new
 		// System.DateTime(2014, 8, 1));
 
-		// Assert.Equal(2,
-		// cachedConverter.RatesCacheSize);
-		// Assert.Equal(3, rateCallCount);
+		// Assert.Equal(2, cachedConverter.RatesCacheSize); Assert.Equal(3, rateCallCount);
 
 		// cachedConverter.ConvertCurrency(Helper.SampleMoney1, Helper.SampleCurrency2, new
 		// System.DateTime(2014, 9, 1)); cachedConverter.ConvertCurrency(Helper.SampleMoney1,
 		// Helper.SampleCurrency2, new System.DateTime(2014, 8, 1));
 
-		// Assert.Equal(2,
-		// cachedConverter.RatesCacheSize);
-		// Assert.Equal(3, rateCallCount);
+		// Assert.Equal(2, cachedConverter.RatesCacheSize); Assert.Equal(3, rateCallCount);
 
 		// cachedConverter.GetExchangeRate(Helper.SampleCurrencyPair1, new System.DateTime(2014, 11, 1));
 
@@ -320,29 +308,23 @@ namespace TIKSN.Finance.Tests
 
 		// var cachedConverter = new CachedCurrencyConverter(converter, interval, interval);
 
-		// Assert.Equal<Money>(convertedMoney1,
-		// cachedConverter.ConvertCurrency(testBaseMoney, testBaseCurrency, date1));
-		// Assert.Equal(1, callsCount);
+		// Assert.Equal<Money>(convertedMoney1, cachedConverter.ConvertCurrency(testBaseMoney,
+		// testBaseCurrency, date1)); Assert.Equal(1, callsCount);
 
-		// Assert.Equal<Money>(convertedMoney2,
-		// cachedConverter.ConvertCurrency(testBaseMoney, testBaseCurrency, date2));
-		// Assert.Equal(2, callsCount);
+		// Assert.Equal<Money>(convertedMoney2, cachedConverter.ConvertCurrency(testBaseMoney,
+		// testBaseCurrency, date2)); Assert.Equal(2, callsCount);
 
-		// Assert.Equal<Money>(convertedMoney3,
-		// cachedConverter.ConvertCurrency(testBaseMoney, testBaseCurrency, date3));
-		// Assert.Equal(3, callsCount);
+		// Assert.Equal<Money>(convertedMoney3, cachedConverter.ConvertCurrency(testBaseMoney,
+		// testBaseCurrency, date3)); Assert.Equal(3, callsCount);
 
-		// Assert.Equal<Money>(convertedMoney1,
-		// cachedConverter.ConvertCurrency(testBaseMoney, testBaseCurrency, new System.DateTime(2014,
-		// 11, 22))); Assert.Equal(3, callsCount);
+		// Assert.Equal<Money>(convertedMoney1, cachedConverter.ConvertCurrency(testBaseMoney,
+		// testBaseCurrency, new System.DateTime(2014, 11, 22))); Assert.Equal(3, callsCount);
 
-		// Assert.Equal<Money>(convertedMoney2,
-		// cachedConverter.ConvertCurrency(testBaseMoney, testBaseCurrency, new System.DateTime(2014,
-		// 11, 24))); Assert.Equal(3, callsCount);
+		// Assert.Equal<Money>(convertedMoney2, cachedConverter.ConvertCurrency(testBaseMoney,
+		// testBaseCurrency, new System.DateTime(2014, 11, 24))); Assert.Equal(3, callsCount);
 
-		// Assert.Equal<Money>(convertedMoney3,
-		// cachedConverter.ConvertCurrency(testBaseMoney, testBaseCurrency, new System.DateTime(2014,
-		// 11, 26))); Assert.Equal(3, callsCount);
+		// Assert.Equal<Money>(convertedMoney3, cachedConverter.ConvertCurrency(testBaseMoney,
+		// testBaseCurrency, new System.DateTime(2014, 11, 26))); Assert.Equal(3, callsCount);
 
 		//    Assert.Equal<Money>(convertedMoney0, cachedConverter.ConvertCurrency(testBaseMoney, testBaseCurrency, new System.DateTime(2014, 11, 27)));
 		//    Assert.Equal(4, callsCount);
@@ -388,22 +370,16 @@ namespace TIKSN.Finance.Tests
 		// cachedConverter.GetCurrencyPairs(new System.DateTime(2014, 10, 1));
 		// cachedConverter.GetCurrencyPairs(new System.DateTime(2014, 9, 1));
 
-		// Assert.Equal(2,
-		// cachedConverter.CurrencyPairsCacheSize);
-		// Assert.Equal(2, pairsCallCount);
+		// Assert.Equal(2, cachedConverter.CurrencyPairsCacheSize); Assert.Equal(2, pairsCallCount);
 
 		// cachedConverter.GetCurrencyPairs(new System.DateTime(2014, 8, 1));
 
-		// Assert.Equal(2,
-		// cachedConverter.CurrencyPairsCacheSize);
-		// Assert.Equal(3, pairsCallCount);
+		// Assert.Equal(2, cachedConverter.CurrencyPairsCacheSize); Assert.Equal(3, pairsCallCount);
 
 		// cachedConverter.GetCurrencyPairs(new System.DateTime(2014, 9, 1));
 		// cachedConverter.GetCurrencyPairs(new System.DateTime(2014, 8, 1));
 
-		// Assert.Equal(2,
-		// cachedConverter.CurrencyPairsCacheSize);
-		// Assert.Equal(3, pairsCallCount);
+		// Assert.Equal(2, cachedConverter.CurrencyPairsCacheSize); Assert.Equal(3, pairsCallCount);
 
 		// cachedConverter.GetCurrencyPairs(new System.DateTime(2014, 11, 1));
 
@@ -453,19 +429,15 @@ namespace TIKSN.Finance.Tests
 
 		// var cachedConverter = new CachedCurrencyConverter(converter, interval, interval);
 
-		// Assert.True(pair1.SequenceEqual(cachedConverter.GetCurrencyPairs(date1)));
-		// Assert.Equal(1, callsCount);
+		// Assert.True(pair1.SequenceEqual(cachedConverter.GetCurrencyPairs(date1))); Assert.Equal(1, callsCount);
 
-		// Assert.True(pair2.SequenceEqual(cachedConverter.GetCurrencyPairs(date2)));
-		// Assert.Equal(2, callsCount);
+		// Assert.True(pair2.SequenceEqual(cachedConverter.GetCurrencyPairs(date2))); Assert.Equal(2, callsCount);
 
-		// Assert.True(pair1.SequenceEqual(cachedConverter.GetCurrencyPairs(new
-		// System.DateTime(2014, 11, 22))));
-		// Assert.Equal(2, callsCount);
+		// Assert.True(pair1.SequenceEqual(cachedConverter.GetCurrencyPairs(new System.DateTime(2014,
+		// 11, 22)))); Assert.Equal(2, callsCount);
 
-		// Assert.True(pair2.SequenceEqual(cachedConverter.GetCurrencyPairs(new
-		// System.DateTime(2014, 11, 24))));
-		// Assert.Equal(2, callsCount);
+		// Assert.True(pair2.SequenceEqual(cachedConverter.GetCurrencyPairs(new System.DateTime(2014,
+		// 11, 24)))); Assert.Equal(2, callsCount);
 
 		//    Assert.True(pair0.SequenceEqual(cachedConverter.GetCurrencyPairs(new System.DateTime(2014, 11, 25))));
 		//    Assert.Equal(3, callsCount);
@@ -494,23 +466,17 @@ namespace TIKSN.Finance.Tests
 		// cachedConverter.GetExchangeRate(testPair, new System.DateTime(2014, 10, 1));
 		// cachedConverter.GetExchangeRate(testPair, new System.DateTime(2014, 9, 1));
 
-		// Assert.Equal(2,
-		// cachedConverter.RatesCacheSize);
-		// Assert.Equal(2, rateCallCount);
+		// Assert.Equal(2, cachedConverter.RatesCacheSize); Assert.Equal(2, rateCallCount);
 
 		// cachedConverter.ConvertCurrency(testMoney, testPair.CounterCurrency, new
 		// System.DateTime(2014, 8, 1));
 
-		// Assert.Equal(2,
-		// cachedConverter.RatesCacheSize);
-		// Assert.Equal(3, rateCallCount);
+		// Assert.Equal(2, cachedConverter.RatesCacheSize); Assert.Equal(3, rateCallCount);
 
 		// cachedConverter.GetExchangeRate(testPair, new System.DateTime(2014, 8, 1));
 		// cachedConverter.GetExchangeRate(testPair, new System.DateTime(2014, 9, 1));
 
-		// Assert.Equal(2,
-		// cachedConverter.RatesCacheSize);
-		// Assert.Equal(3, rateCallCount);
+		// Assert.Equal(2, cachedConverter.RatesCacheSize); Assert.Equal(3, rateCallCount);
 
 		// cachedConverter.GetExchangeRate(testPair, new System.DateTime(2014, 11, 1));
 
@@ -571,29 +537,23 @@ namespace TIKSN.Finance.Tests
 
 		// var cachedConverter = new CachedCurrencyConverter(converter, interval, interval);
 
-		// Assert.Equal<decimal>(rate1,
-		// cachedConverter.GetExchangeRate(currencyPair, date1));
+		// Assert.Equal<decimal>(rate1, cachedConverter.GetExchangeRate(currencyPair, date1));
 		// Assert.Equal(1, callsCount);
 
-		// Assert.Equal<decimal>(rate2,
-		// cachedConverter.GetExchangeRate(currencyPair, date2));
+		// Assert.Equal<decimal>(rate2, cachedConverter.GetExchangeRate(currencyPair, date2));
 		// Assert.Equal(2, callsCount);
 
-		// Assert.Equal<decimal>(rate3,
-		// cachedConverter.GetExchangeRate(currencyPair, date3));
+		// Assert.Equal<decimal>(rate3, cachedConverter.GetExchangeRate(currencyPair, date3));
 		// Assert.Equal(3, callsCount);
 
-		// Assert.Equal<decimal>(rate1,
-		// cachedConverter.GetExchangeRate(currencyPair, new System.DateTime(2014, 11, 22)));
-		// Assert.Equal(3, callsCount);
+		// Assert.Equal<decimal>(rate1, cachedConverter.GetExchangeRate(currencyPair, new
+		// System.DateTime(2014, 11, 22))); Assert.Equal(3, callsCount);
 
-		// Assert.Equal<decimal>(rate2,
-		// cachedConverter.GetExchangeRate(currencyPair, new System.DateTime(2014, 11, 24)));
-		// Assert.Equal(3, callsCount);
+		// Assert.Equal<decimal>(rate2, cachedConverter.GetExchangeRate(currencyPair, new
+		// System.DateTime(2014, 11, 24))); Assert.Equal(3, callsCount);
 
-		// Assert.Equal<decimal>(rate3,
-		// cachedConverter.GetExchangeRate(currencyPair, new System.DateTime(2014, 11, 26)));
-		// Assert.Equal(3, callsCount);
+		// Assert.Equal<decimal>(rate3, cachedConverter.GetExchangeRate(currencyPair, new
+		// System.DateTime(2014, 11, 26))); Assert.Equal(3, callsCount);
 
 		//	Assert.Equal<decimal>(rate0, cachedConverter.GetExchangeRate(currencyPair, new System.DateTime(2014, 11, 27)));
 		//	Assert.Equal(4, callsCount);

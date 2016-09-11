@@ -6,12 +6,12 @@ using Xunit;
 
 namespace TIKSN.Finance.Tests.ForeignExchange
 {
-    public class CurrencylayerDotComTests
+	public class CurrencylayerDotComTests
 	{
 		private string accessKey = "<put your access key here>";
 
-        //[Fact]
-        public async Task GetCurrencyPairs001()
+		//[Fact]
+		public async Task GetCurrencyPairs001()
 		{
 			var exchange = new CurrencylayerDotCom(accessKey);
 

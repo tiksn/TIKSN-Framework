@@ -44,6 +44,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DI\Dependencies.cs" />
     <Compile Include="Finance\CachedCurrencyConverterTests.cs" />
     <Compile Include="Finance\CompositeCrossCurrencyConverterTests.cs" />
     <Compile Include="Finance\CurrencyInfoTests.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Finance\PricingStrategy\PsychologicalPricingStrategyTests.cs" />
     <Compile Include="Finance\PricingStrategy\RoundingPricingStrategyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings\SettingsServiceTests.cs" />
     <Compile Include="Versioning\MilestoneTests.cs" />
     <Compile Include="Versioning\VersionTests.cs" />
     <Compile Include="Web\SitemapIndexTests.cs" />

@@ -71,12 +71,12 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			CurrencyInfo AOA = new CurrencyInfo(AO);
 			CurrencyInfo BWP = new CurrencyInfo(BW);
 
-            Money Before = new Money(AOA, 100m);
+			Money Before = new Money(AOA, 100m);
 
-            await
-                Assert.ThrowsAsync<ArgumentException>(
-                    async () =>
-                        await Bank.ConvertCurrencyAsync(Before, BWP, DateTime.Now));
+			await
+				Assert.ThrowsAsync<ArgumentException>(
+					async () =>
+						await Bank.ConvertCurrencyAsync(Before, BWP, DateTime.Now));
 		}
 
 		[Fact]
@@ -116,10 +116,10 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		{
 			var Bank = new Finance.ForeignExchange.BankOfRussia();
 
-            await
-                    Assert.ThrowsAsync<ArgumentException>(
-                        async () =>
-                            await Bank.GetCurrencyPairsAsync(DateTime.Now.AddDays(10)));
+			await
+					Assert.ThrowsAsync<ArgumentException>(
+						async () =>
+							await Bank.GetCurrencyPairsAsync(DateTime.Now.AddDays(10)));
 		}
 
 		[Fact]
@@ -327,10 +327,10 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			CurrencyPair pair = new CurrencyPair(RUB, USD);
 
-            await
-                    Assert.ThrowsAsync<ArgumentException>(
-                        async () =>
-                            await Bank.GetExchangeRateAsync(pair, DateTime.Now.AddMinutes(1d)));
+			await
+					Assert.ThrowsAsync<ArgumentException>(
+						async () =>
+							await Bank.GetExchangeRateAsync(pair, DateTime.Now.AddMinutes(1d)));
 		}
 
 		[Fact]
@@ -346,10 +346,10 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			CurrencyPair pair = new CurrencyPair(BWP, AOA);
 
-            await
-                    Assert.ThrowsAsync<ArgumentException>(
-                        async () =>
-                            await Bank.GetExchangeRateAsync(pair, DateTime.Now));
+			await
+					Assert.ThrowsAsync<ArgumentException>(
+						async () =>
+							await Bank.GetExchangeRateAsync(pair, DateTime.Now));
 		}
 
 		[Fact]

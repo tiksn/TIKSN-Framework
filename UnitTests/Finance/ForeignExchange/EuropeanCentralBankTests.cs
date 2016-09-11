@@ -85,12 +85,12 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			foreach (var pair in pairs)
 			{
-                Money Before = new Money(pair.BaseCurrency, 10m);
+				Money Before = new Money(pair.BaseCurrency, 10m);
 
-                await
-                    Assert.ThrowsAsync<ArgumentException>(
-                        async () =>
-                            await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTime.Now.AddMinutes(10d)));
+				await
+					Assert.ThrowsAsync<ArgumentException>(
+						async () =>
+							await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTime.Now.AddMinutes(10d)));
 			}
 		}
 
@@ -104,9 +104,9 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			Money Before = new Money(AMD, 10m);
 
-            await Assert.ThrowsAsync<ArgumentException>(
-                async () =>
-                    await Bank.ConvertCurrencyAsync(Before, ALL, DateTime.Now));
+			await Assert.ThrowsAsync<ArgumentException>(
+				async () =>
+					await Bank.ConvertCurrencyAsync(Before, ALL, DateTime.Now));
 		}
 
 		[Fact]
@@ -150,9 +150,9 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		{
 			var Bank = new EuropeanCentralBank();
 
-            await Assert.ThrowsAsync<ArgumentException>(
-                async () =>
-                    await Bank.GetCurrencyPairsAsync(DateTime.Now.AddMinutes(10d)));
+			await Assert.ThrowsAsync<ArgumentException>(
+				async () =>
+					await Bank.GetCurrencyPairsAsync(DateTime.Now.AddMinutes(10d)));
 		}
 
 		[Fact]
@@ -439,9 +439,9 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			foreach (var pair in pairs)
 			{
-                await Assert.ThrowsAsync<ArgumentException>(
-                async () =>
-                    await Bank.GetExchangeRateAsync(pair, DateTime.Now.AddMinutes(10d)));
+				await Assert.ThrowsAsync<ArgumentException>(
+				async () =>
+					await Bank.GetExchangeRateAsync(pair, DateTime.Now.AddMinutes(10d)));
 			}
 		}
 
@@ -470,9 +470,9 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			var pair = new CurrencyPair(AMD, ALL);
 
-            await Assert.ThrowsAsync<ArgumentException>(
-                async () =>
-                    await Bank.GetExchangeRateAsync(pair, DateTime.Now));
+			await Assert.ThrowsAsync<ArgumentException>(
+				async () =>
+					await Bank.GetExchangeRateAsync(pair, DateTime.Now));
 		}
 	}
 }

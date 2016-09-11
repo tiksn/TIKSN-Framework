@@ -41,10 +41,10 @@ namespace TIKSN.Finance.Tests
 			Money Initial = new Money(USDollar, 100);
 
 			FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
-            
-            await Assert.ThrowsAsync<ArgumentException>(
-                    async () => await converter.ConvertCurrencyAsync(Initial, Euro, DateTimeOffset.Now));
-        }
+
+			await Assert.ThrowsAsync<ArgumentException>(
+					async () => await converter.ConvertCurrencyAsync(Initial, Euro, DateTimeOffset.Now));
+		}
 
 		[Fact]
 		public async Task ConvertCurrency003()
@@ -62,7 +62,7 @@ namespace TIKSN.Finance.Tests
 			Money Initial = new Money(ArmenianDram, 100);
 
 			FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
-			
+
 			await Assert.ThrowsAsync<ArgumentException>(
 					async () => await converter.ConvertCurrencyAsync(Initial, Euro, DateTimeOffset.Now));
 		}
@@ -149,7 +149,7 @@ namespace TIKSN.Finance.Tests
 			CurrencyInfo PoundSterling = new CurrencyInfo(UnitedKingdom);
 
 			FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
-			
+
 			await Assert.ThrowsAsync<ArgumentException>(
 					async () => await converter.GetExchangeRateAsync(new CurrencyPair(PoundSterling, USDollar), DateTimeOffset.Now));
 		}
@@ -166,7 +166,7 @@ namespace TIKSN.Finance.Tests
 			CurrencyInfo Euro = new CurrencyInfo(Italy);
 
 			FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
-			
+
 			await Assert.ThrowsAsync<ArgumentException>(
 					async () => await converter.GetExchangeRateAsync(new CurrencyPair(Euro, USDollar), DateTimeOffset.Now));
 		}
@@ -183,7 +183,7 @@ namespace TIKSN.Finance.Tests
 			CurrencyInfo Euro = new CurrencyInfo(Italy);
 
 			FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
-			
+
 			await Assert.ThrowsAsync<ArgumentException>(
 					async () => await converter.GetExchangeRateAsync(new CurrencyPair(USDollar, Euro), DateTimeOffset.Now));
 		}
