@@ -24,10 +24,11 @@ namespace TIKSN.Configuration
             {
                 using (var machineKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, _registryView))
                 {
-                    PopulateRootKey(machineKey);
+                    if (machineKey != null)
+                        PopulateRootKey(machineKey);
                 }
             }
-            catch(SecurityException)
+            catch (SecurityException)
             {
             }
 
@@ -35,10 +36,11 @@ namespace TIKSN.Configuration
             {
                 using (var userKey = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, _registryView))
                 {
-                    PopulateRootKey(userKey);
+                    if (userKey != null)
+                        PopulateRootKey(userKey);
                 }
             }
-            catch(SecurityException)
+            catch (SecurityException)
             {
             }
         }
@@ -47,7 +49,8 @@ namespace TIKSN.Configuration
         {
             using (var registryKey = hiveKey.OpenSubKey(_rootKey))
             {
-                PopulateKeys(registryKey, null);
+                if (registryKey != null)
+                    PopulateKeys(registryKey, null);
             }
         }
 
@@ -61,7 +64,8 @@ namespace TIKSN.Configuration
             {
                 using (var registrySubKey = currentRegistryKey.OpenSubKey(subKeyName))
                 {
-                    PopulateKeys(currentRegistryKey, ConfigurationPath.Combine(parentConfigurationKey, subKeyName));
+                    if (registrySubKey != null)
+                        PopulateKeys(registrySubKey, ConfigurationPath.Combine(parentConfigurationKey, subKeyName));
                 }
             }
         }
