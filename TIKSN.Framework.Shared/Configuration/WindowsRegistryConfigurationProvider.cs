@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Win32;
 using System.Security;
+using System;
 
 namespace TIKSN.Configuration
 {
@@ -23,7 +24,7 @@ namespace TIKSN.Configuration
             {
                 using (var machineKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, _registryView))
                 {
-                    PopulateKeys(machineKey, null);
+                    PopulateRootKey(machineKey);
                 }
             }
             catch(SecurityException)
@@ -34,11 +35,19 @@ namespace TIKSN.Configuration
             {
                 using (var userKey = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, _registryView))
                 {
-                    PopulateKeys(userKey, null);
+                    PopulateRootKey(userKey);
                 }
             }
             catch(SecurityException)
             {
+            }
+        }
+
+        private void PopulateRootKey(RegistryKey hiveKey)
+        {
+            using (var registryKey = hiveKey.OpenSubKey(_rootKey))
+            {
+                PopulateKeys(registryKey, null);
             }
         }
 
