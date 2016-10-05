@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Win32;
 using System.Security;
-using System;
 
 namespace TIKSN.Configuration
 {
@@ -65,7 +64,7 @@ namespace TIKSN.Configuration
                 using (var registrySubKey = currentRegistryKey.OpenSubKey(subKeyName))
                 {
                     if (registrySubKey != null)
-                        PopulateKeys(registrySubKey, ConfigurationPath.Combine(parentConfigurationKey, subKeyName));
+                        PopulateKeys(registrySubKey, CombineConfigurationPath(parentConfigurationKey, subKeyName));
                 }
             }
         }
@@ -78,8 +77,16 @@ namespace TIKSN.Configuration
             {
                 var valueData = currentRegistryKey.GetValue(valueName);
 
-                Set(ConfigurationPath.Combine(parentConfigurationKey, valueName), valueData.ToString());
+                Set(CombineConfigurationPath(parentConfigurationKey, valueName), valueData.ToString());
             }
+        }
+
+        private static string CombineConfigurationPath(string parentConfigurationKey, string childConfigurationKey)
+        {
+            if (string.IsNullOrEmpty(parentConfigurationKey))
+                return childConfigurationKey;
+
+            return ConfigurationPath.Combine(parentConfigurationKey, childConfigurationKey);
         }
     }
 }
