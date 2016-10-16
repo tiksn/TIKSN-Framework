@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>TIKSN-Framework</id>
-    <version>1.5.32</version>
+    <version>1.5.35-pre</version>
     <title>TIKSN Framework</title>
     <authors>TIKSN</authors>
     <owners>TIKSN</owners>
@@ -39,6 +39,8 @@
         <dependency id="System.Reactive.Interfaces" version="3.0.0" />
         <dependency id="System.Reactive.Core" version="3.0.0" />
         <dependency id="System.Reactive.Linq" version="3.0.0" />
+        <dependency id="SQLite.Net-PCL" version="3.1.1" />
+        <dependency id="SQLite.Net.Async-PCL" version="3.1.1" />
       </group>
       <group targetFramework="netcoreapp1.0">
         <dependency id="Microsoft.ApplicationInsights" version="2.1.0" />
