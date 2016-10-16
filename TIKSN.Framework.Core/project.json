@@ -1,6 +1,6 @@
 {
   "title": "TIKSN.Framework.Core",
-  "version": "1.0.0-*",
+  "version": "1.5.32-*",
 
   "dependencies": {
     "Microsoft.ApplicationInsights": "2.1.0",

@@ -7,7 +7,8 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TIKSN.Framework.Core")]
+[assembly: AssemblyProduct("TIKSN Framework")]
+[assembly: AssemblyCopyright("Copyright © 2016, TIKSN Lab")]
 [assembly: AssemblyTrademark("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
