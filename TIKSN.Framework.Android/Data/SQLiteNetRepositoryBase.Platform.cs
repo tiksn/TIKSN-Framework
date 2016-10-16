@@ -1,6 +1,6 @@
 ﻿using SQLite.Net;
 using SQLite.Net.Async;
-using SQLite.Net.Platform.Win32;
+using SQLite.Net.Platform.XamarinAndroid;
 
 namespace TIKSN.Data
 {
@@ -8,9 +8,10 @@ namespace TIKSN.Data
     {
         protected SQLiteAsyncConnection CreateConnection()
         {
+            //var connectionString = new SQLiteConnectionString(Path.Combine(ApplicationData.Current.LocalFolder.Path, databaseConfiguration.GetConfiguration().DatabasePath), true);
             var connectionString = new SQLiteConnectionString(databaseConfiguration.GetConfiguration().DatabasePath, true);
 
-            var connectionWithLock = new SQLiteConnectionWithLock(new SQLitePlatformWin32(), connectionString);
+            var connectionWithLock = new SQLiteConnectionWithLock(new SQLitePlatformAndroid(), connectionString);
             return new SQLiteAsyncConnection(() => connectionWithLock);
         }
     }
