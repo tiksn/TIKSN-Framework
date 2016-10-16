@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("TIKSN Framework")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCopyright("Copyright © 2016, TIKSN Lab")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en")]
@@ -20,7 +20,7 @@ using System.Runtime.CompilerServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers by using the '*'
 // as shown below: [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.4.22.0")]
-[assembly: AssemblyFileVersion("1.4.22.0")]
+[assembly: AssemblyVersion("1.5.32.0")]
+[assembly: AssemblyFileVersion("1.5.32.0")]
 [assembly: InternalsVisibleTo("TIKSN.Framework.Tests")]
 [assembly: InternalsVisibleTo("TIKSN.Core.Explorables")]
