@@ -9,7 +9,7 @@
 				<projectUrl>http://www.tiksn.com/Framework</projectUrl>
 				<iconUrl>http://www.tiksn.com/Images/Logo.png</iconUrl>
 				<requireLicenseAcceptance>false</requireLicenseAcceptance>
-				<description>This is a .NET Framework enhancement framework. Main features are Versioning, Finance, Currency, Foreign Exchange, Money, Pricing strategy, Telemetry, Composite Weighted Progress.</description>
+				<description>This is a .NET Framework enhancement framework. Main features are Versioning, Finance, Currency, Foreign Exchange, Money, Pricing strategy, Telemetry, Composite Weighted Progress, Repository and Unity of Wok pattern implementation with Entity Framework Core, Network Connectivity Service and Triggering, Settings, Windows Registry configuration source.</description>
 				<copyright>Copyright © TIKSN Lab 2016</copyright>
 				<language />
 				<tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry, Configuration</tags>
