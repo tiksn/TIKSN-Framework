@@ -1,6 +1,6 @@
 ﻿namespace TIKSN.Analytics.Telemetry
 {
-	public abstract class ExceptionlessTelemeterBase
-	{
-	}
+    public abstract class ExceptionlessTelemeterBase
+    {
+    }
 }
