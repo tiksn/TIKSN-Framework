@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>TIKSN-Framework</id>
-    <version>1.5.35-pre</version>
+    <version>1.5.36-pre</version>
     <title>TIKSN Framework</title>
     <authors>TIKSN</authors>
     <owners>TIKSN</owners>
@@ -30,6 +30,7 @@
         <dependency id="System.Reactive.Interfaces" version="3.0.0" />
         <dependency id="System.Reactive.Core" version="3.0.0" />
         <dependency id="System.Reactive.Linq" version="3.0.0" />
+        <dependency id="Nito.AsyncEx" version="3.0.1" />
       </group>
       <group targetFramework="MonoAndroid403">
         <dependency id="HockeySDK.Xamarin" version="4.1.0" />
