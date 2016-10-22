@@ -33,7 +33,7 @@ namespace TIKSN.PowerShell
             this.WriteVerbose(string.Format("Command started at {0}.", DateTime.Now.ToLongTimeString()));
             this.stopwatch = Stopwatch.StartNew();
 
-            ServiceProvider = CreateServiceProvider(this);
+            ServiceProvider = CreateServiceProvider();
 
             //if (!string.IsNullOrEmpty(this.Language))
             //{
@@ -44,7 +44,7 @@ namespace TIKSN.PowerShell
             //}
         }
 
-        protected abstract IServiceProvider CreateServiceProvider(CommandBase command);
+        protected abstract IServiceProvider CreateServiceProvider();
 
         protected override void EndProcessing()
         {
