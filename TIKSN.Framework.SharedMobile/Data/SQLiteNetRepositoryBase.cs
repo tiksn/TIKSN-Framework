@@ -5,58 +5,58 @@ using TIKSN.Configuration;
 
 namespace TIKSN.Data
 {
-	public abstract partial class SQLiteNetRepositoryBase<T> : IRepository<T> where T : class
-	{
-		private readonly IConfiguration<DatabaseConfiguration> databaseConfiguration;
+    public abstract partial class SQLiteNetRepositoryBase<T> : IRepository<T> where T : class
+    {
+        private readonly IConfiguration<DatabaseConfiguration> databaseConfiguration;
 
-		public SQLiteNetRepositoryBase(IConfiguration<DatabaseConfiguration> databaseConfiguration)
-		{
-			this.databaseConfiguration = databaseConfiguration;
-		}
+        public SQLiteNetRepositoryBase(IConfiguration<DatabaseConfiguration> databaseConfiguration)
+        {
+            this.databaseConfiguration = databaseConfiguration;
+        }
 
-		public async Task AddAsync(T entity, CancellationToken cancellationToken = default(CancellationToken))
-		{
-			var connection = CreateConnection();
+        public async Task AddAsync(T entity, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var connection = CreateConnection();
 
-			await connection.InsertAsync(entity, cancellationToken);
-		}
+            await connection.InsertAsync(entity, cancellationToken);
+        }
 
-		public async Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default(CancellationToken))
-		{
-			var connection = CreateConnection();
+        public async Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var connection = CreateConnection();
 
-			await connection.InsertAllAsync(entities, cancellationToken);
-		}
+            await connection.InsertAllAsync(entities, cancellationToken);
+        }
 
-		public async Task RemoveAsync(T entity, CancellationToken cancellationToken = default(CancellationToken))
-		{
-			var connection = CreateConnection();
+        public async Task RemoveAsync(T entity, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var connection = CreateConnection();
 
-			await connection.DeleteAsync(entity, cancellationToken);
-		}
+            await connection.DeleteAsync(entity, cancellationToken);
+        }
 
-		public async Task RemoveRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default(CancellationToken))
-		{
-			var connection = CreateConnection();
+        public async Task RemoveRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var connection = CreateConnection();
 
-			foreach (var entity in entities)
-			{
-				await connection.DeleteAsync(entity, cancellationToken);
-			}
-		}
+            foreach (var entity in entities)
+            {
+                await connection.DeleteAsync(entity, cancellationToken);
+            }
+        }
 
-		public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default(CancellationToken))
-		{
-			var connection = CreateConnection();
+        public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var connection = CreateConnection();
 
-			await connection.UpdateAsync(entity, cancellationToken);
-		}
+            await connection.UpdateAsync(entity, cancellationToken);
+        }
 
-		public async Task UpdateRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default(CancellationToken))
-		{
-			var connection = CreateConnection();
+        public async Task UpdateRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var connection = CreateConnection();
 
-			await connection.UpdateAllAsync(entities, cancellationToken);
-		}
-	}
+            await connection.UpdateAllAsync(entities, cancellationToken);
+        }
+    }
 }
