@@ -44,13 +44,12 @@ namespace TIKSN.Configuration
             }
         }
 
-        private void PopulateRootKey(RegistryKey hiveKey)
+        private static string CombineConfigurationPath(string parentConfigurationKey, string childConfigurationKey)
         {
-            using (var registryKey = hiveKey.OpenSubKey(_rootKey))
-            {
-                if (registryKey != null)
-                    PopulateKeys(registryKey, null);
-            }
+            if (string.IsNullOrEmpty(parentConfigurationKey))
+                return childConfigurationKey;
+
+            return ConfigurationPath.Combine(parentConfigurationKey, childConfigurationKey);
         }
 
         private void PopulateKeys(RegistryKey currentRegistryKey, string parentConfigurationKey)
@@ -69,6 +68,15 @@ namespace TIKSN.Configuration
             }
         }
 
+        private void PopulateRootKey(RegistryKey hiveKey)
+        {
+            using (var registryKey = hiveKey.OpenSubKey(_rootKey))
+            {
+                if (registryKey != null)
+                    PopulateKeys(registryKey, null);
+            }
+        }
+
         private void PopulateValues(RegistryKey currentRegistryKey, string parentConfigurationKey)
         {
             var valueNames = currentRegistryKey.GetValueNames();
@@ -79,14 +87,6 @@ namespace TIKSN.Configuration
 
                 Set(CombineConfigurationPath(parentConfigurationKey, valueName), valueData.ToString());
             }
-        }
-
-        private static string CombineConfigurationPath(string parentConfigurationKey, string childConfigurationKey)
-        {
-            if (string.IsNullOrEmpty(parentConfigurationKey))
-                return childConfigurationKey;
-
-            return ConfigurationPath.Combine(parentConfigurationKey, childConfigurationKey);
         }
     }
 }
