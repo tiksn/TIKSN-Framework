@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>TIKSN-Framework</id>
-    <version>1.5.37-pre</version>
+    <version>1.5.38-pre</version>
     <title>TIKSN Framework</title>
     <authors>TIKSN</authors>
     <owners>TIKSN</owners>
@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This is a .NET Framework enhancement framework. Main features are Versioning, Finance, Currency, Foreign Exchange, Money, Pricing strategy, Telemetry, Composite Weighted Progress, Repository and Unity of Wok pattern implementation with Entity Framework Core, Network Connectivity Service and Triggering, Settings, Windows Registry configuration source.</description>
     <copyright>Copyright © 2016, TIKSN Lab</copyright>
-    <releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/milestone/4 </releaseNotes>
+    <releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/milestone/5 </releaseNotes>
     <language />
     <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry, Configuration</tags>
     <dependencies>
