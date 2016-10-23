@@ -32,6 +32,7 @@
         <dependency id="System.Reactive.Linq" version="3.0.0" />
         <dependency id="Nito.AsyncEx" version="3.0.1" />
         <dependency id="System.Diagnostics.Contracts" version="4.0.1" />
+        <dependency id="System.Xml.XmlSerializer" version="4.0.11" />
       </group>
       <group targetFramework="MonoAndroid403">
         <dependency id="HockeySDK.Xamarin" version="4.1.0" />
@@ -44,6 +45,7 @@
         <dependency id="SQLite.Net-PCL" version="3.1.1" />
         <dependency id="SQLite.Net.Async-PCL" version="3.1.1" />
         <dependency id="System.Diagnostics.Contracts" version="4.0.1" />
+        <dependency id="System.Xml.XmlSerializer" version="4.0.11" />
       </group>
       <group targetFramework="netcoreapp1.0">
         <dependency id="Microsoft.ApplicationInsights" version="2.1.0" />
@@ -52,6 +54,7 @@
         <dependency id="Newtonsoft.Json" version="9.0.1" />
         <dependency id="System.Reactive.Interfaces" version="3.0.0" />
         <dependency id="System.Diagnostics.Contracts" version="4.0.1" />
+        <dependency id="System.Xml.XmlSerializer" version="4.0.11" />
       </group>
       <group targetFramework="netstandard1.3">
         <dependency id="Microsoft.EntityFrameworkCore" version="1.0.1" />
@@ -59,6 +62,7 @@
         <dependency id="Newtonsoft.Json" version="9.0.1" />
         <dependency id="System.Reactive.Interfaces" version="3.0.0" />
         <dependency id="System.Diagnostics.Contracts" version="4.0.1" />
+        <dependency id="System.Xml.XmlSerializer" version="4.0.11" />
       </group>
       <group targetFramework="uap10.0">
         <dependency id="Exceptionless" version="4.0.1906" />
@@ -74,6 +78,7 @@
         <dependency id="System.Reactive.Core" version="3.0.0" />
         <dependency id="System.Reactive.Linq" version="3.0.0" />
         <dependency id="System.Diagnostics.Contracts" version="4.0.1" />
+        <dependency id="System.Xml.XmlSerializer" version="4.0.11" />
       </group>
     </dependencies>
   </metadata>
