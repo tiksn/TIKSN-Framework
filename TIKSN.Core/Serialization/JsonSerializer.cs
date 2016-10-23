@@ -1,32 +1,17 @@
 using Newtonsoft.Json;
-using System;
-using System.Diagnostics.Contracts;
 using TIKSN.Analytics.Telemetry;
 
 namespace TIKSN.Serialization
 {
-    public class JsonSerializer : ISerializer
+    public class JsonSerializer : SerializerBase
     {
-        private readonly IExceptionTelemeter _exceptionTelemeter;
-
-        public JsonSerializer(IExceptionTelemeter exceptionTelemeter)
+        public JsonSerializer(IExceptionTelemeter exceptionTelemeter) : base(exceptionTelemeter)
         {
-            Contract.Requires<ArgumentNullException>(exceptionTelemeter != null);
-            _exceptionTelemeter = exceptionTelemeter;
         }
 
-        public string Serialize(object obj)
+        protected override string SerializeInternal(object obj)
         {
-            try
-            {
-                return JsonConvert.SerializeObject(obj);
-            }
-            catch (Exception ex)
-            {
-                _exceptionTelemeter.TrackException(ex);
-
-                return null;
-            }
+            return JsonConvert.SerializeObject(obj);
         }
     }
 }
