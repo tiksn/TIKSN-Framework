@@ -68,6 +68,15 @@
     <Compile Include="Network\INetworkConnectivityService.cs" />
     <Compile Include="Network\InternetConnectivityState.cs" />
     <Compile Include="Network\NetworkConnectivityServiceBase.cs" />
+    <Compile Include="Serialization\DeserializerBase.cs" />
+    <Compile Include="Serialization\DotNetXmlDeserializer.cs" />
+    <Compile Include="Serialization\DotNetXmlSerializer.cs" />
+    <Compile Include="Serialization\IDeserializer.cs" />
+    <Compile Include="Serialization\ISerializer.cs" />
+    <Compile Include="Serialization\JsonDeserializer.cs" />
+    <Compile Include="Serialization\JsonSerializer.cs" />
+    <Compile Include="Serialization\SerializationBase.cs" />
+    <Compile Include="Serialization\SerializerBase.cs" />
     <Compile Include="Settings\ISettingsService.cs" />
     <Compile Include="Finance\AverageCurrencyConversionCompositionStrategy.cs" />
     <Compile Include="Finance\CachedCurrencyConverter.cs" />
@@ -105,6 +114,15 @@
     <Compile Include="Versioning\Milestone.cs" />
     <Compile Include="Versioning\Stability.cs" />
     <Compile Include="Versioning\Version.cs" />
+    <Compile Include="Web\Rest\IDeserializerRestFactory.cs" />
+    <Compile Include="Web\Rest\IRestRequester.cs" />
+    <Compile Include="Web\Rest\IRestRequesterConfiguration.cs" />
+    <Compile Include="Web\Rest\ISerializerRestFactory.cs" />
+    <Compile Include="Web\Rest\RestContentAttribute.cs" />
+    <Compile Include="Web\Rest\RestEndpointAttribute.cs" />
+    <Compile Include="Web\Rest\RestVerb.cs" />
+    <Compile Include="Web\Rest\RestRequester.cs" />
+    <Compile Include="Web\Rest\SerializationRestFactory.cs" />
     <Compile Include="Web\Sitemap.cs" />
     <Compile Include="Web\SitemapIndex.cs" />
   </ItemGroup>
