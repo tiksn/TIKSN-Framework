@@ -62,10 +62,10 @@ namespace TIKSN.Web.Rest
                             propertyStringValue = propertyValue.ToString();
                         }
 
-                        parameter = Uri.EscapeUriString(propertyStringValue);
+                        parameter = propertyStringValue;
                     }
 
-                    resourceLocation = resourceLocation.Replace($"{{{property.Name}}}", parameter);
+                    resourceLocation = ReplaceParameterValueInLocation(resourceLocation, property.Name, parameter);
                 }
                 else
                 {
@@ -78,12 +78,39 @@ namespace TIKSN.Web.Rest
                 }
             }
 
+            var resourceParameters = await _configuration.GetResourceParameters(restEndpointAttribute.ApiName);
+            if (resourceParameters != null)
+            {
+                foreach (var resourceParameter in resourceParameters)
+                {
+                    resourceLocation = ReplaceParameterValueInLocation(resourceLocation, resourceParameter.Key, resourceParameter.Value);
+                }
+            }
+
             var baseUrl = await _configuration.GetBaseUrl(restEndpointAttribute.ApiName);
             var requestUrl = new Uri(baseUrl, resourceLocation);
 
             var httpClient = new HttpClient();
 
+            var defaultHeaders = await _configuration.GetDefaultHeaders(restEndpointAttribute.ApiName);
+            if (defaultHeaders != null)
+            {
+                foreach (var defaultHeader in defaultHeaders)
+                {
+                    httpClient.DefaultRequestHeaders.Add(defaultHeader.Key, defaultHeader.Value);
+                }
+            }
+
             return await MakeRequest<TResult>(httpClient, restEndpointAttribute.Verb, requestUrl, requestContent, requestContentMediaType, restEndpointAttribute.MediaType, cancellationToken);
+        }
+
+        private static string ReplaceParameterValueInLocation(string resourceLocation, string parameterName, string parameterValue)
+        {
+            var escapedParameterValue = parameterValue ?? string.Empty;
+            escapedParameterValue = Uri.EscapeUriString(parameterValue);
+
+            resourceLocation = resourceLocation.Replace($"{{{parameterName}}}", escapedParameterValue);
+            return resourceLocation;
         }
 
         private HttpContent GetContent(object requestContent, string requestContentMediaType)
