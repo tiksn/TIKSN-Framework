@@ -56,6 +56,7 @@
     <Compile Include="Analytics\Telemetry\PushalotMetricTelemeter.cs" />
     <Compile Include="Analytics\Telemetry\PushalotTelemeterBase.cs" />
     <Compile Include="Analytics\Telemetry\PushalotTraceTelemeter.cs" />
+    <Compile Include="Analytics\Telemetry\TelemetryLogger.cs" />
     <Compile Include="Analytics\Telemetry\TelemetrySeverityLevel.cs" />
     <Compile Include="Configuration\CommonConfiguration.cs" />
     <Compile Include="Configuration\DatabaseConfiguration.cs" />
