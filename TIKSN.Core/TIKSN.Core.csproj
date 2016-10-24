@@ -115,9 +115,11 @@
     <Compile Include="Versioning\Stability.cs" />
     <Compile Include="Versioning\Version.cs" />
     <Compile Include="Web\Rest\IDeserializerRestFactory.cs" />
+    <Compile Include="Web\Rest\IRestAuthenticationTokenProvider.cs" />
     <Compile Include="Web\Rest\IRestRequester.cs" />
     <Compile Include="Web\Rest\IRestRequesterConfiguration.cs" />
     <Compile Include="Web\Rest\ISerializerRestFactory.cs" />
+    <Compile Include="Web\Rest\RestAuthenticationType.cs" />
     <Compile Include="Web\Rest\RestContentAttribute.cs" />
     <Compile Include="Web\Rest\RestEndpointAttribute.cs" />
     <Compile Include="Web\Rest\RestVerb.cs" />
