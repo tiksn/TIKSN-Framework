@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>TIKSN-Framework</id>
-    <version>1.5.39-pre</version>
+    <version>1.5.40-pre</version>
     <title>TIKSN Framework</title>
     <authors>TIKSN</authors>
     <owners>TIKSN</owners>
@@ -14,6 +14,9 @@
     <releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/milestone/5 </releaseNotes>
     <language />
     <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry, Configuration</tags>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Speech" targetFramework=".NETFramework4.6" />
+    </frameworkAssemblies>
     <dependencies>
       <group targetFramework=".NETFramework4.6">
         <dependency id="Microsoft.PowerShell.3.ReferenceAssemblies" version="1.0.0" />
