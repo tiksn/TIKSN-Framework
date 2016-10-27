@@ -7,7 +7,7 @@ namespace TIKSN.Analytics.Telemetry
 {
     public class ApplicationInsightsEventTelemeter : IEventTelemeter
     {
-        public async Task TrackEvent(string name)
+        public Task TrackEvent(string name)
         {
             try
             {
@@ -18,6 +18,8 @@ namespace TIKSN.Analytics.Telemetry
             {
                 Debug.WriteLine(ex);
             }
+
+            return Task.FromResult<object>(null);
         }
     }
 }
