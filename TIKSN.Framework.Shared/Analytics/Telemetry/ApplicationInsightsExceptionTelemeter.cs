@@ -12,12 +12,12 @@ namespace TIKSN.Analytics.Telemetry
             await TrackExceptionInternal(exception, null);
         }
 
-        public async Task TrackException(Exception exception, TelemetrySeverityLevel severityLevel)
+        public Task TrackException(Exception exception, TelemetrySeverityLevel severityLevel)
         {
-            await TrackExceptionInternal(exception, severityLevel);
+            return TrackExceptionInternal(exception, severityLevel);
         }
 
-        private async Task TrackExceptionInternal(Exception exception, TelemetrySeverityLevel? severityLevel)
+        private Task TrackExceptionInternal(Exception exception, TelemetrySeverityLevel? severityLevel)
         {
             try
             {
@@ -29,6 +29,8 @@ namespace TIKSN.Analytics.Telemetry
             {
                 Debug.WriteLine(ex);
             }
+
+            return Task.FromResult<object>(null);
         }
     }
 }
