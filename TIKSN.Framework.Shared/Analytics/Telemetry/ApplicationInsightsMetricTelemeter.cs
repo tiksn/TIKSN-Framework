@@ -7,7 +7,7 @@ namespace TIKSN.Analytics.Telemetry
 {
     public class ApplicationInsightsMetricTelemeter : IMetricTelemeter
     {
-        public async Task TrackMetric(string metricName, decimal metricValue)
+        public Task TrackMetric(string metricName, decimal metricValue)
         {
             try
             {
@@ -18,6 +18,8 @@ namespace TIKSN.Analytics.Telemetry
             {
                 Debug.WriteLine(ex);
             }
+
+            return Task.FromResult<object>(null);
         }
     }
 }
