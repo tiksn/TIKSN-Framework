@@ -5,16 +5,24 @@ namespace TIKSN.Network
 {
     public class NetworkConnectivityService : NetworkConnectivityServiceBase
     {
-        public NetworkConnectivityService(IObserver<InternetConnectivityState> internetConnectivityStateObserver) : base(internetConnectivityStateObserver)
+        public NetworkConnectivityService() : base()
         {
+        }
+
+        protected override IObservable<InternetConnectivityState> InternetConnectivityStateInternal
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
         }
 
         protected override InternetConnectivityState GetInternetConnectivityStateInternal()
         {
             var isNetworkAvailable = NetworkInterface.GetIsNetworkAvailable();
             var allNetworkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
-            bool isWiFiAvailable = false;
-            bool isCellularNetworkAvailable = false;
+            var isWiFiAvailable = false;
+            var isCellularNetworkAvailable = false;
 
             foreach (var networkInterface in allNetworkInterfaces)
             {
