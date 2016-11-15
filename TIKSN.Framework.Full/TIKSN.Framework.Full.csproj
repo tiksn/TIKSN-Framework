@@ -329,6 +329,11 @@
     <Compile Include="Data\SQLiteNetRepositoryBase.Platform.cs" />
     <Compile Include="Network\NetworkConnectivityService.cs" />
     <Compile Include="PowerShell\CommandBase.cs" />
+    <Compile Include="PowerShell\PowerShellLogger.cs" />
+    <Compile Include="PowerShell\PowerShellLoggerFactoryExtensions.cs" />
+    <Compile Include="PowerShell\PowerShellLoggerOptions.cs" />
+    <Compile Include="PowerShell\PowerShellLoggerProvider.cs" />
+    <Compile Include="PowerShell\PowerShellLoggerScopeDisposable.cs" />
     <Compile Include="Progress\PowerShellProgress.cs" />
     <Compile Include="Progress\PowerShellUserConfirmation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
