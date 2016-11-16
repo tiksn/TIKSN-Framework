@@ -1,6 +1,6 @@
 ﻿{
   "dependencies": {
-    "Microsoft.Extensions.DependencyInjection": "1.0.0",
+    "Microsoft.Extensions.DependencyInjection": "1.1.0",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
     "xunit.runner.devices": "2.1.0"
   },
