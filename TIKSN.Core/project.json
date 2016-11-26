@@ -7,9 +7,9 @@
     "NETStandard.Library": "1.6.1",
     "Newtonsoft.Json": "9.0.1",
     "System.Diagnostics.Contracts": "4.3.0",
-    "System.Reactive.Core": "3.1.0",
-    "System.Reactive.Interfaces": "3.1.0",
-    "System.Reactive.Linq": "3.1.0",
+    "System.Reactive.Core": "3.1.1",
+    "System.Reactive.Interfaces": "3.1.1",
+    "System.Reactive.Linq": "3.1.1",
     "System.Xml.XmlSerializer": "4.3.0"
   },
   "frameworks": {
