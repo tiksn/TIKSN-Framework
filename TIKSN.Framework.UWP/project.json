@@ -1,8 +1,8 @@
 ﻿{
   "dependencies": {
-    "Exceptionless": "4.0.1919",
+    "Exceptionless": "4.0.1922",
     "HockeySDK.Core": "4.1.5",
-    "Microsoft.ApplicationInsights": "2.1.0",
+    "Microsoft.ApplicationInsights": "2.2.0",
     "Microsoft.EntityFrameworkCore": "1.1.0",
     "Microsoft.Extensions.Configuration": "1.1.0",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
