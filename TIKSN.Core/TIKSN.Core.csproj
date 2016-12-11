@@ -154,6 +154,7 @@
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Data\IUnitOfWork.cs" />
     <Compile Include="Data\EntityUnitOfWork.cs" />
+    <Compile Include="Localization\LocalizationExtensions.cs" />
     <Compile Include="Network\INetworkConnectivityService.cs" />
     <Compile Include="Network\InternetConnectivityState.cs" />
     <Compile Include="Network\NetworkConnectivityServiceBase.cs" />
