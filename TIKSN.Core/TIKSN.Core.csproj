@@ -124,6 +124,9 @@
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Analytics\Telemetry\AudibleTelemeter.cs" />
     <Compile Include="Analytics\Telemetry\CompositeEventTelemeter.cs" />
     <Compile Include="Analytics\Telemetry\CompositeExceptionTelemeter.cs" />
