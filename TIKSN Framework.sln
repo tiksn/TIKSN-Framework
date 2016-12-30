@@ -25,6 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Framework.Android", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{D98A9FAA-7292-44A9-BDCA-ADC0C704EF92}"
 	ProjectSection(SolutionItems) = preProject
+		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 		NuGet\TIKSN-Framework.nuspec = NuGet\TIKSN-Framework.nuspec
 	EndProjectSection
 EndProject

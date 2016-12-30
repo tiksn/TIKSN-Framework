@@ -194,6 +194,9 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Network\NetworkConnectivityService.cs" />
     <Compile Include="Settings\SettingsService.cs" />
     <Compile Include="Data\SQLiteNetRepositoryBase.Platform.cs" />
