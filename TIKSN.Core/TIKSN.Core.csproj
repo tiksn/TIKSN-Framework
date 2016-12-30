@@ -154,6 +154,8 @@
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Data\IUnitOfWork.cs" />
     <Compile Include="Data\EntityUnitOfWork.cs" />
+    <Compile Include="Localization\CompositeAssemblyStringLocalizer.cs" />
+    <Compile Include="Localization\CompositeStringLocalizer.cs" />
     <Compile Include="Localization\LocalizationExtensions.cs" />
     <Compile Include="Localization\StringLocalizerMonitor.cs" />
     <Compile Include="Localization\StringLocalizerMonitorOptions.cs" />
