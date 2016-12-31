@@ -2,8 +2,8 @@
 
 namespace TIKSN.Shell
 {
-    public interface IShellCommand
-    {
-        Task ExecuteAsync();
-    }
+	public interface IShellCommand
+	{
+		Task ExecuteAsync();
+	}
 }

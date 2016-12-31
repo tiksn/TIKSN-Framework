@@ -2,8 +2,8 @@
 
 namespace TIKSN.Web.Rest
 {
-    public interface ISerializerRestFactory
-    {
-        ISerializer Create(string mediaType);
-    }
+	public interface ISerializerRestFactory
+	{
+		ISerializer Create(string mediaType);
+	}
 }

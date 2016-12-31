@@ -6,33 +6,33 @@ using TIKSN.Configuration;
 
 namespace TIKSN.Analytics.Telemetry
 {
-    public class CompositeMetricTelemeter : IMetricTelemeter
-    {
-        private readonly IConfiguration<CommonConfiguration> commonConfiguration;
-        private readonly IEnumerable<IMetricTelemeter> metricTelemeters;
+	public class CompositeMetricTelemeter : IMetricTelemeter
+	{
+		private readonly IConfiguration<CommonConfiguration> commonConfiguration;
+		private readonly IEnumerable<IMetricTelemeter> metricTelemeters;
 
-        public CompositeMetricTelemeter(IConfiguration<CommonConfiguration> commonConfiguration, IEnumerable<IMetricTelemeter> metricTelemeters)
-        {
-            this.commonConfiguration = commonConfiguration;
-            this.metricTelemeters = metricTelemeters;
-        }
+		public CompositeMetricTelemeter(IConfiguration<CommonConfiguration> commonConfiguration, IEnumerable<IMetricTelemeter> metricTelemeters)
+		{
+			this.commonConfiguration = commonConfiguration;
+			this.metricTelemeters = metricTelemeters;
+		}
 
-        public async Task TrackMetric(string metricName, decimal metricValue)
-        {
-            if (commonConfiguration.GetConfiguration().IsMetricTrackingEnabled)
-            {
-                foreach (var metricTelemeter in metricTelemeters)
-                {
-                    try
-                    {
-                        await metricTelemeter.TrackMetric(metricName, metricValue);
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine(ex);
-                    }
-                }
-            }
-        }
-    }
+		public async Task TrackMetric(string metricName, decimal metricValue)
+		{
+			if (commonConfiguration.GetConfiguration().IsMetricTrackingEnabled)
+			{
+				foreach (var metricTelemeter in metricTelemeters)
+				{
+					try
+					{
+						await metricTelemeter.TrackMetric(metricName, metricValue);
+					}
+					catch (Exception ex)
+					{
+						Debug.WriteLine(ex);
+					}
+				}
+			}
+		}
+	}
 }

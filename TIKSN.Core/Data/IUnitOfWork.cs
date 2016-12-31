@@ -2,8 +2,8 @@
 
 namespace TIKSN.Data
 {
-    public interface IUnitOfWork
-    {
-        Task CompleteAsync();
-    }
+	public interface IUnitOfWork
+	{
+		Task CompleteAsync();
+	}
 }
