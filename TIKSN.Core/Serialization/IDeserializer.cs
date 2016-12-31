@@ -1,7 +1,7 @@
 ﻿namespace TIKSN.Serialization
 {
-    public interface IDeserializer
-    {
-        T Deserialize<T>(string text);
-    }
+	public interface IDeserializer
+	{
+		T Deserialize<T>(string text);
+	}
 }

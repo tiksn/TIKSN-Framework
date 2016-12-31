@@ -1,7 +1,7 @@
 ﻿namespace TIKSN.Serialization
 {
-    public interface ISerializer
-    {
-        string Serialize(object obj);
-    }
+	public interface ISerializer
+	{
+		string Serialize(object obj);
+	}
 }

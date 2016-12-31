@@ -120,18 +120,18 @@ namespace TIKSN.Finance
 
 		private void InitializeCurrency(string isoSymbol, string symbol)
 		{
-            if (!TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA1.xml", isoSymbol, symbol, true, "CcyTbl", "CcyNtry"))
-            {
-                if (!TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA3.xml", isoSymbol, symbol, false, "HstrcCcyTbl", "HstrcCcyNtry"))
-                {
-                    throw new CurrencyNotFoundException();
-                }
-            }
-        }
+			if (!TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA1.xml", isoSymbol, symbol, true, "CcyTbl", "CcyNtry"))
+			{
+				if (!TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA3.xml", isoSymbol, symbol, false, "HstrcCcyTbl", "HstrcCcyNtry"))
+				{
+					throw new CurrencyNotFoundException();
+				}
+			}
+		}
 
-        private bool TryExtractCurrencyInformation(string tableResource, string isoSymbol, string symbol, bool lookingForCurrent, string tableElementName, string entityElementName)
+		private bool TryExtractCurrencyInformation(string tableResource, string isoSymbol, string symbol, bool lookingForCurrent, string tableElementName, string entityElementName)
 		{
-            using (var stream = GetType().GetTypeInfo().Assembly.GetManifestResourceStream(tableResource))
+			using (var stream = GetType().GetTypeInfo().Assembly.GetManifestResourceStream(tableResource))
 			{
 				var tableXDoc = System.Xml.Linq.XDocument.Load(stream);
 

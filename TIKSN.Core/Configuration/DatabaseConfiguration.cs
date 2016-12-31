@@ -1,12 +1,12 @@
 ﻿namespace TIKSN.Configuration
 {
-    public class DatabaseConfiguration
-    {
-        public DatabaseConfiguration(string databasePath)
-        {
-            DatabasePath = databasePath;
-        }
+	public class DatabaseConfiguration
+	{
+		public DatabaseConfiguration(string databasePath)
+		{
+			DatabasePath = databasePath;
+		}
 
-        public string DatabasePath { get; private set; }
-    }
+		public string DatabasePath { get; private set; }
+	}
 }
