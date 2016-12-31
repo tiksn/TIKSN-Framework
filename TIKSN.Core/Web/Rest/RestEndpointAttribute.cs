@@ -5,16 +5,16 @@ namespace TIKSN.Web.Rest
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class RestEndpointAttribute : Attribute
     {
-        public RestEndpointAttribute(string apiName, RestVerb verb, string resourceTemplate, RestAuthenticationType authentication = RestAuthenticationType.None, string mediaType = "application/json")
+        public RestEndpointAttribute(string apiKey, RestVerb verb, string resourceTemplate, RestAuthenticationType authentication = RestAuthenticationType.None, string mediaType = "application/json")
         {
-            ApiName = apiName;
+            ApiKey = new Guid(apiKey);
             Verb = verb;
             ResourceTemplate = resourceTemplate;
             MediaType = mediaType;
             Authentication = authentication;
         }
 
-        public string ApiName { get; private set; }
+        public Guid ApiKey { get; private set; }
 
         public RestAuthenticationType Authentication { get; private set; }
 
