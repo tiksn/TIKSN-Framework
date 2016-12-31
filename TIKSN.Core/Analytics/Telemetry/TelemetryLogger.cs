@@ -4,55 +4,55 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Analytics.Telemetry
 {
-    public class TelemetryLogger : IEventTelemeter, IExceptionTelemeter, IMetricTelemeter, ITraceTelemeter
-    {
-        private readonly ILogger _logger;
+	public class TelemetryLogger : IEventTelemeter, IExceptionTelemeter, IMetricTelemeter, ITraceTelemeter
+	{
+		private readonly ILogger _logger;
 
-        public TelemetryLogger(ILoggerFactory loggerFactory)
-        {
-            _logger = loggerFactory.CreateLogger<TelemetryLogger>();
-        }
+		public TelemetryLogger(ILoggerFactory loggerFactory)
+		{
+			_logger = loggerFactory.CreateLogger<TelemetryLogger>();
+		}
 
-        public Task TrackEvent(string name)
-        {
-            _logger.LogInformation("Telemetry Event '{0}' tracked.", name);
+		public Task TrackEvent(string name)
+		{
+			_logger.LogInformation("Telemetry Event '{0}' tracked.", name);
 
-            return Task.FromResult<object>(null);
-        }
+			return Task.FromResult<object>(null);
+		}
 
-        public Task TrackException(Exception exception)
-        {
-            _logger.LogError(1206969841, exception, "Telemetry Exception of type '{0}' is tracked.", exception.GetType().FullName);
+		public Task TrackException(Exception exception)
+		{
+			_logger.LogError(1206969841, exception, "Telemetry Exception of type '{0}' is tracked.", exception.GetType().FullName);
 
-            return Task.FromResult<object>(null);
-        }
+			return Task.FromResult<object>(null);
+		}
 
-        public Task TrackException(Exception exception, TelemetrySeverityLevel severityLevel)
-        {
-            _logger.LogError(1215703672, exception, "Telemetry Exception of type '{0}' is tracked with severity level of '{1}'.", exception.GetType().FullName, severityLevel);
+		public Task TrackException(Exception exception, TelemetrySeverityLevel severityLevel)
+		{
+			_logger.LogError(1215703672, exception, "Telemetry Exception of type '{0}' is tracked with severity level of '{1}'.", exception.GetType().FullName, severityLevel);
 
-            return Task.FromResult<object>(null);
-        }
+			return Task.FromResult<object>(null);
+		}
 
-        public Task TrackMetric(string metricName, decimal metricValue)
-        {
-            _logger.LogInformation("Telemetry Metric '{0}' tracked with value {1}.", metricName, metricValue);
+		public Task TrackMetric(string metricName, decimal metricValue)
+		{
+			_logger.LogInformation("Telemetry Metric '{0}' tracked with value {1}.", metricName, metricValue);
 
-            return Task.FromResult<object>(null);
-        }
+			return Task.FromResult<object>(null);
+		}
 
-        public Task TrackTrace(string message)
-        {
-            _logger.LogTrace("Telemetry Trace is tracked with message: {0}.", message);
+		public Task TrackTrace(string message)
+		{
+			_logger.LogTrace("Telemetry Trace is tracked with message: {0}.", message);
 
-            return Task.FromResult<object>(null);
-        }
+			return Task.FromResult<object>(null);
+		}
 
-        public Task TrackTrace(string message, TelemetrySeverityLevel severityLevel)
-        {
-            _logger.LogTrace("Telemetry Trace is tracked with severity level of '{1}' and message: {0}.", message, severityLevel);
+		public Task TrackTrace(string message, TelemetrySeverityLevel severityLevel)
+		{
+			_logger.LogTrace("Telemetry Trace is tracked with severity level of '{1}' and message: {0}.", message, severityLevel);
 
-            return Task.FromResult<object>(null);
-        }
-    }
+			return Task.FromResult<object>(null);
+		}
+	}
 }
