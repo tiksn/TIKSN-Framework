@@ -11,22 +11,22 @@ namespace TIKSN.Web.Rest
 {
     public class RestRequester : IRestRequester
     {
-        private readonly IRestRequesterConfiguration _configuration;
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly IDeserializerRestFactory _deserializerRestFactory;
         private readonly ISerializerRestFactory _serializerRestFactory;
         private readonly IRestAuthenticationTokenProvider _restAuthenticationTokenProvider;
 
-        public RestRequester(IRestRequesterConfiguration configuration,
+        public RestRequester(IHttpClientFactory httpClientFactory,
             ISerializerRestFactory serializerRestFactory,
             IDeserializerRestFactory deserializerRestFactory,
             IRestAuthenticationTokenProvider restAuthenticationTokenProvider)
         {
-            Contract.Requires<ArgumentNullException>(configuration != null);
+            Contract.Requires<ArgumentNullException>(httpClientFactory != null);
             Contract.Requires<ArgumentNullException>(serializerRestFactory != null);
             Contract.Requires<ArgumentNullException>(deserializerRestFactory != null);
             Contract.Requires<ArgumentNullException>(restAuthenticationTokenProvider != null);
 
-            _configuration = configuration;
+            _httpClientFactory = httpClientFactory;
             _serializerRestFactory = serializerRestFactory;
             _deserializerRestFactory = deserializerRestFactory;
             _restAuthenticationTokenProvider = restAuthenticationTokenProvider;
@@ -85,13 +85,10 @@ namespace TIKSN.Web.Rest
                 }
             }
 
-            resourceLocation = await SetResourceParameters(restEndpointAttribute, resourceLocation);
+            var requestUrl = new Uri(resourceLocation, UriKind.Relative);
 
-            var baseUrl = await _configuration.GetBaseUrl(restEndpointAttribute.ApiName);
-            var requestUrl = new Uri(baseUrl, resourceLocation);
+            var httpClient = await _httpClientFactory.Create(restEndpointAttribute.ApiKey);
 
-            var httpClient = new HttpClient();
-            await SetDefaultHeaders(restEndpointAttribute, httpClient);
             await SetAuthenticationHeader(restEndpointAttribute, httpClient);
 
             return await MakeRequest<TResult>(httpClient, restEndpointAttribute.Verb, requestUrl, requestContent, requestContentMediaType, restEndpointAttribute.MediaType, cancellationToken);
@@ -118,7 +115,7 @@ namespace TIKSN.Web.Rest
                     throw new NotSupportedException($"Authentication type '{restEndpointAttribute.Authentication.ToString()}' is not supported.");
             }
 
-            var authenticationToken = await _restAuthenticationTokenProvider.GetAuthenticationToken(restEndpointAttribute.ApiName);
+            var authenticationToken = await _restAuthenticationTokenProvider.GetAuthenticationToken(restEndpointAttribute.ApiKey);
 
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authenticationSchema, authenticationToken);
         }
@@ -177,32 +174,6 @@ namespace TIKSN.Web.Rest
             }
 
             return result;
-        }
-
-        private async Task SetDefaultHeaders(RestEndpointAttribute restEndpointAttribute, HttpClient httpClient)
-        {
-            var defaultHeaders = await _configuration.GetDefaultHeaders(restEndpointAttribute.ApiName);
-            if (defaultHeaders != null)
-            {
-                foreach (var defaultHeader in defaultHeaders)
-                {
-                    httpClient.DefaultRequestHeaders.Add(defaultHeader.Key, defaultHeader.Value);
-                }
-            }
-        }
-
-        private async Task<string> SetResourceParameters(RestEndpointAttribute restEndpointAttribute, string resourceLocation)
-        {
-            var resourceParameters = await _configuration.GetResourceParameters(restEndpointAttribute.ApiName);
-            if (resourceParameters != null)
-            {
-                foreach (var resourceParameter in resourceParameters)
-                {
-                    resourceLocation = ReplaceParameterValueInLocation(resourceLocation, resourceParameter.Key, resourceParameter.Value);
-                }
-            }
-
-            return resourceLocation;
         }
     }
 }
