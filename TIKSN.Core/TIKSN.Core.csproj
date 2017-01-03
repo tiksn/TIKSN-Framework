@@ -217,6 +217,7 @@
     <Compile Include="Versioning\Milestone.cs" />
     <Compile Include="Versioning\Stability.cs" />
     <Compile Include="Versioning\Version.cs" />
+    <Compile Include="Web\Rest\HttpClientFactoryBase.cs" />
     <Compile Include="Web\Rest\IDeserializerRestFactory.cs" />
     <Compile Include="Web\Rest\IHttpClientFactory.cs" />
     <Compile Include="Web\Rest\IRestAuthenticationTokenProvider.cs" />
