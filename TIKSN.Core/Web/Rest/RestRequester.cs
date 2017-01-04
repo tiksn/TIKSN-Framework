@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -42,16 +43,39 @@ namespace TIKSN.Web.Rest
 				throw new NotSupportedException("Requested Type has to have RestEndpointAttribute.");
 
 			var resourceLocation = restEndpointAttribute.ResourceTemplate;
+			var requestUrl = new Uri(resourceLocation, UriKind.Relative);
 
-			bool hasContent = false;
+			var httpClient = await _httpClientFactory.Create(restEndpointAttribute.ApiKey);
+
+			httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(restEndpointAttribute.MediaType));
+
+			var hasContent = false;
 			object requestContent = null;
 			string requestContentMediaType = null;
 
 			foreach (var property in requestType.DeclaredProperties)
 			{
 				var restContentAttribute = property.GetCustomAttribute<RestContentAttribute>();
+				var acceptLanguageAttribute = property.GetCustomAttribute<AcceptLanguageAttribute>();
 
-				if (restContentAttribute == null)
+				if (acceptLanguageAttribute != null)
+				{
+					var propertyValue = (CultureInfo)property.GetValue(request);
+					httpClient.DefaultRequestHeaders.AcceptLanguage.Add(acceptLanguageAttribute.Quality.HasValue ?
+						new StringWithQualityHeaderValue(propertyValue.Name, acceptLanguageAttribute.Quality.Value) :
+						new StringWithQualityHeaderValue(propertyValue.Name));
+				}
+
+				if (restContentAttribute != null)
+				{
+					if (hasContent)
+						throw new NotSupportedException("Request model can't have more than one content property.");
+					hasContent = true;
+
+					requestContent = property.GetValue(request);
+					requestContentMediaType = restContentAttribute.MediaType;
+				}
+				else
 				{
 					var propertyValue = property.GetValue(request);
 					var parameter = string.Empty;
@@ -74,20 +98,7 @@ namespace TIKSN.Web.Rest
 
 					resourceLocation = ReplaceParameterValueInLocation(resourceLocation, property.Name, parameter);
 				}
-				else
-				{
-					if (hasContent)
-						throw new NotSupportedException("Request model can't have more than one content property.");
-					hasContent = true;
-
-					requestContent = property.GetValue(request);
-					requestContentMediaType = restContentAttribute.MediaType;
-				}
 			}
-
-			var requestUrl = new Uri(resourceLocation, UriKind.Relative);
-
-			var httpClient = await _httpClientFactory.Create(restEndpointAttribute.ApiKey);
 
 			await SetAuthenticationHeader(restEndpointAttribute, httpClient);
 
