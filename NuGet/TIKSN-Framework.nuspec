@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
 	<metadata>
 		<id>TIKSN-Framework</id>
-		<version>1.6.5-pre</version>
+		<version>1.6.6-pre</version>
 		<title>TIKSN Framework</title>
 		<authors>TIKSN</authors>
 		<owners>TIKSN</owners>
@@ -28,7 +28,7 @@
 				<dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.0" />
 				<dependency id="Microsoft.NETCore.Portable.Compatibility" version="1.0.1" />
 				<dependency id="Microsoft.PowerShell.3.ReferenceAssemblies" version="1.0.0" />
-				<dependency id="Microsoft.Win32.Registry" version="4.0.0" />
+				<dependency id="Microsoft.Win32.Registry" version="4.3.0" />
 				<dependency id="NETStandard.Library" version="1.6.1" />
 				<dependency id="Newtonsoft.Json" version="9.0.1" />
 				<dependency id="Nito.AsyncEx" version="3.0.1" />
@@ -90,7 +90,7 @@
 				<dependency id="Microsoft.Extensions.Localization" version="1.1.0" />
 				<dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.0" />
 				<dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.0" />
-				<dependency id="Microsoft.Win32.Registry" version="4.0.0" />
+				<dependency id="Microsoft.Win32.Registry" version="4.3.0" />
 				<dependency id="NETStandard.Library" version="1.6.1" />
 				<dependency id="Newtonsoft.Json" version="9.0.1" />
 				<dependency id="SQLite.Net.Async-PCL" version="3.1.1" />
