@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using TIKSN.Serialization;
+using TIKSN.Web.Rest;
 
 namespace TIKSN
 {
@@ -6,7 +8,11 @@ namespace TIKSN
 	{
 		public static void Register(IServiceCollection services)
 		{
-
+			services.AddSingleton<IRestRequester, RestRequester>();
+			services.AddSingleton<JsonSerializer, JsonSerializer>();
+			services.AddSingleton<JsonDeserializer, JsonDeserializer>();
+			services.AddSingleton<DotNetXmlSerializer, DotNetXmlSerializer>();
+			services.AddSingleton<DotNetXmlDeserializer, DotNetXmlDeserializer>();
 		}
 	}
 }
