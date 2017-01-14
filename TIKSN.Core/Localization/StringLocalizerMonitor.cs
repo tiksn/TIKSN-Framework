@@ -15,10 +15,10 @@ namespace TIKSN.Localization
 		private readonly IOptions<StringLocalizerMonitorOptions> _options;
 		private readonly IStringLocalizer _stringLocalizer;
 
-		public StringLocalizerMonitor(IStringLocalizer stringLocalizer, ILoggerFactory loggerFactory, IOptions<StringLocalizerMonitorOptions> options)
+		public StringLocalizerMonitor(IStringLocalizer stringLocalizer, ILogger<StringLocalizerMonitor> logger, IOptions<StringLocalizerMonitorOptions> options)
 		{
 			_stringLocalizer = stringLocalizer;
-			_logger = loggerFactory.CreateLogger<StringLocalizerMonitor>();
+			_logger = logger;
 			_options = options;
 		}
 
