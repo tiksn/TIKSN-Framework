@@ -6,11 +6,11 @@ namespace TIKSN.Analytics.Telemetry
 {
 	public class TelemetryLogger : IEventTelemeter, IExceptionTelemeter, IMetricTelemeter, ITraceTelemeter
 	{
-		private readonly ILogger _logger;
+		private readonly ILogger<TelemetryLogger> _logger;
 
-		public TelemetryLogger(ILoggerFactory loggerFactory)
+		public TelemetryLogger(ILogger<TelemetryLogger> logger)
 		{
-			_logger = loggerFactory.CreateLogger<TelemetryLogger>();
+			_logger = logger;
 		}
 
 		public Task TrackEvent(string name)
