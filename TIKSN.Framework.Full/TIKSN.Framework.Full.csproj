@@ -211,6 +211,10 @@
       <HintPath>..\packages\Remotion.Linq.2.1.1\lib\net45\Remotion.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ShellProgressBar, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ShellProgressBar.3.0.0.0\lib\NET4\ShellProgressBar.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="SQLite.Net, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SQLite.Net.Core-PCL.3.1.1\lib\portable-win8+net45+wp8+wpa81+MonoAndroid1+MonoTouch1\SQLite.Net.dll</HintPath>
       <Private>True</Private>
@@ -359,6 +363,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shell\ConsoleService.cs" />
     <Compile Include="Shell\ShellCommandEngine.cs" />
+    <Compile Include="Shell\ShellProgress.cs" />
     <Compile Include="Speech\TextToSpeechService.cs" />
   </ItemGroup>
   <ItemGroup>
