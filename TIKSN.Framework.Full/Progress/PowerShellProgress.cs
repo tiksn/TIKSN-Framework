@@ -4,7 +4,7 @@ using System.Management.Automation;
 
 namespace TIKSN.Progress
 {
-    public class PowerShellProgress : Progress<OperationProgressReport>, IDisposable
+    public class PowerShellProgress : DisposableProgress<OperationProgressReport>
     {
         private static readonly object activityIdLocker = new object();
         private static int nextActivityId = 0;
@@ -32,7 +32,7 @@ namespace TIKSN.Progress
             return childProgress;
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             stopwatch.Stop();
             progressRecord.RecordType = ProgressRecordType.Completed;
