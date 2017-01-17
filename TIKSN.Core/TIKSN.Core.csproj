@@ -167,6 +167,8 @@
     <Compile Include="Network\InternetConnectivityState.cs" />
     <Compile Include="Network\NetworkConnectivityServiceBase.cs" />
     <Compile Include="Progress\DisposableProgress.cs" />
+    <Compile Include="Progress\IOperationProgressFactory.cs" />
+    <Compile Include="Progress\SilentOperationProgressFactory.cs" />
     <Compile Include="Serialization\DeserializerBase.cs" />
     <Compile Include="Serialization\DotNetXmlDeserializer.cs" />
     <Compile Include="Serialization\DotNetXmlSerializer.cs" />
