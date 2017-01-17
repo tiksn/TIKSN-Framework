@@ -217,6 +217,7 @@
     <Compile Include="Shell\IShellCommand.cs" />
     <Compile Include="Shell\IShellCommandEngine.cs" />
     <Compile Include="Shell\ShellCommandAttribute.cs" />
+    <Compile Include="Shell\ShellCommandHelpItem.cs" />
     <Compile Include="Shell\ShellCommandParameterAttribute.cs" />
     <Compile Include="Speech\ITextToSpeechService.cs" />
     <Compile Include="Speech\TextToSpeechOptions.cs" />
