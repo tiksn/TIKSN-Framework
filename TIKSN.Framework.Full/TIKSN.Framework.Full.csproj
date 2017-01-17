@@ -362,6 +362,7 @@
     <Compile Include="Progress\PowerShellUserConfirmation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shell\ConsoleService.cs" />
+    <Compile Include="Shell\ShellCommandBase.cs" />
     <Compile Include="Shell\ShellCommandEngine.cs" />
     <Compile Include="Shell\ShellProgress.cs" />
     <Compile Include="Speech\TextToSpeechService.cs" />
