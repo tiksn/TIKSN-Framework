@@ -212,6 +212,7 @@
     <Compile Include="Progress\ProgressReport.cs" />
     <Compile Include="Progress\SilentUserConfirmation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shell\IConsoleService.cs" />
     <Compile Include="Shell\IShellCommand.cs" />
     <Compile Include="Shell\IShellCommandEngine.cs" />
     <Compile Include="Shell\ShellCommandAttribute.cs" />
