@@ -135,6 +135,9 @@
   <data name="8c329f82-7354-4149-9057-0cd434b3dff0" xml:space="preserve">
     <value>help</value>
   </data>
+  <data name="9649762e-d441-4fa0-b7d5-e9a3e406aa04" xml:space="preserve">
+    <value>Command executed with exception(s).</value>
+  </data>
   <data name="b7f83482-597b-434b-bf18-1abdee641e34" xml:space="preserve">
     <value>Command</value>
     <comment>Command prompt text</comment>
