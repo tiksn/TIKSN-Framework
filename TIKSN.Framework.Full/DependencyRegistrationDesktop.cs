@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using TIKSN.Shell;
 
 namespace TIKSN
@@ -7,8 +8,8 @@ namespace TIKSN
     {
         public static void Register(IServiceCollection services)
         {
-            services.AddSingleton<IConsoleService, ConsoleService>();
-            services.AddSingleton<IShellCommandEngine, ShellCommandEngine>();
+            services.TryAddSingleton<IConsoleService, ConsoleService>();
+            services.TryAddSingleton<IShellCommandEngine, ShellCommandEngine>();
         }
     }
 }
