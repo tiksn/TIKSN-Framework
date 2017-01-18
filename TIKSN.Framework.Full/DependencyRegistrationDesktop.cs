@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using TIKSN.Shell;
+using TIKSN.Speech;
 
 namespace TIKSN
 {
@@ -10,6 +11,7 @@ namespace TIKSN
         {
             services.TryAddSingleton<IConsoleService, ConsoleService>();
             services.TryAddSingleton<IShellCommandEngine, ShellCommandEngine>();
+            services.TryAddSingleton<ITextToSpeechService, TextToSpeechService>();
         }
     }
 }
