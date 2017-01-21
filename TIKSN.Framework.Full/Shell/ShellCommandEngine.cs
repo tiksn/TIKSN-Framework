@@ -177,7 +177,7 @@ namespace TIKSN.Shell
 				if (parameter != null)
 					property.Item2.SetValue(obj, parameter);
 
-				_logger.LogTrace($"Parameter {_stringLocalizer.GetRequiredString(property.Item1.ParameterNameKey)} has value {property.Item2.GetValue(obj)}");
+				_logger.LogTrace($"Parameter '{_stringLocalizer.GetRequiredString(property.Item1.ParameterNameKey)}' has value '{property.Item2.GetValue(obj)}'");
 			}
 
 			var command = obj as IShellCommand;
