@@ -132,9 +132,15 @@ namespace TIKSN.Shell
 
 		private string NormalizeCommandName(string command)
 		{
-			command = command.Trim();
+			if (command != null)
+			{
+				var additionalSeparators = new string[] { "-", "_" };
 
-			//TODO: logic needs to be completed
+				var normalizedParts = command.Split(null)
+					.SelectMany(whitespaceSeparatedPart => whitespaceSeparatedPart.Split(additionalSeparators, StringSplitOptions.RemoveEmptyEntries));
+
+				return string.Join(" ", normalizedParts);
+			}
 
 			return command;
 		}
