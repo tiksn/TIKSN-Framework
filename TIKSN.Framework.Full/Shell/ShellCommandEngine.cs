@@ -101,7 +101,7 @@ namespace TIKSN.Shell
 					foreach (var commandItem in commands)
 					{
 						helpItems.Add(new ShellCommandHelpItem(
-							_stringLocalizer.GetRequiredString(commandItem.Item2.CommandNameKey),
+							NormalizeCommandName(_stringLocalizer.GetRequiredString(commandItem.Item2.CommandNameKey)),
 							commandItem.Item4.Select(item => _stringLocalizer.GetRequiredString(item.Item1.ParameterNameKey))));
 					}
 
