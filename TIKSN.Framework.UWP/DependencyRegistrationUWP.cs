@@ -9,8 +9,8 @@ namespace TIKSN
 	{
 		public static void Register(IServiceCollection services)
 		{
-			services.TryAddSingleton<ISettingsService, SettingsService>();
 			services.TryAddSingleton<INetworkConnectivityService, NetworkConnectivityService>();
+			services.TryAddSingleton<ISettingsService, SettingsService>();
 		}
 	}
 }
