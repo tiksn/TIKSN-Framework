@@ -27,5 +27,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\WindowsRegistryConfigurationExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\WindowsRegistryConfigurationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\WindowsRegistryConfigurationSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\WindowsRegistrySettingsService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\WindowsRegistrySettingsServiceOptions.cs" />
   </ItemGroup>
 </Project>
