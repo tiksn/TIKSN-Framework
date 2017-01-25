@@ -8,7 +8,6 @@
 *.user
 *.userosscache
 *.sln.docstates
-*.vcxproj.filters
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -272,4 +271,5 @@ __pycache__/
 *.pyc
 
 # Cake - Uncomment if you are using it
-# tools/
+# tools/**
+# !tools/packages.config
