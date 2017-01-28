@@ -11,6 +11,7 @@ namespace TIKSN.Settings
 		public WindowsRegistrySettingsService(IOptions<WindowsRegistrySettingsServiceOptions> options)
 		{
 			_options = options;
+			ValidateOptions();
 		}
 
 		public T GetLocalSetting<T>(string name, T defaultValue)
@@ -40,9 +41,11 @@ namespace TIKSN.Settings
 
 		private T Process<T>(RegistryHive hiveKey, string name, T value, Func<RegistryKey, string, T, T> processor)
 		{
-			using (var machineKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, _options.Value.RegistryView))
+			ValidateOptions();
+
+			using (var rootKey = RegistryKey.OpenBaseKey(hiveKey, _options.Value.RegistryView))
 			{
-				using (var registrySubKey = machineKey.OpenSubKey(_options.Value.SubKey))
+				using (var registrySubKey = rootKey.OpenSubKey(_options.Value.SubKey))
 				{
 					return processor(registrySubKey, name, value);
 				}
@@ -54,6 +57,12 @@ namespace TIKSN.Settings
 			subKey.SetValue(name, value);
 
 			return value;
+		}
+
+		private void ValidateOptions()
+		{
+			if (string.IsNullOrWhiteSpace(_options.Value.SubKey))
+				throw new ArgumentException("Parameter is null or white space.", nameof(_options.Value.SubKey));
 		}
 	}
 }

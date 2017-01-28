@@ -6,6 +6,7 @@ namespace TIKSN.Network
 {
 	public abstract class NetworkConnectivityServiceBase : INetworkConnectivityService
 	{
+		protected IObservable<InternetConnectivityState> internetConnectivityStateInternal;
 		private readonly Subject<InternetConnectivityState> manualChecks;
 
 		protected NetworkConnectivityServiceBase()
@@ -17,13 +18,11 @@ namespace TIKSN.Network
 		{
 			get
 			{
-				return InternetConnectivityStateInternal
+				return internetConnectivityStateInternal
 					.Merge(manualChecks)
 					.DistinctUntilChanged();
 			}
 		}
-
-		protected abstract IObservable<InternetConnectivityState> InternetConnectivityStateInternal { get; }
 
 		public InternetConnectivityState GetInternetConnectivityState()
 		{
