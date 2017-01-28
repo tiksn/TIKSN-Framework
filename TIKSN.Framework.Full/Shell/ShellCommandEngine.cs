@@ -98,6 +98,9 @@ namespace TIKSN.Shell
 				{
 					var helpItems = new List<ShellCommandHelpItem>();
 
+					helpItems.Add(new ShellCommandHelpItem(NormalizeCommandName(_stringLocalizer.GetRequiredString(ExitKey)), Enumerable.Empty<string>()));
+					helpItems.Add(new ShellCommandHelpItem(NormalizeCommandName(_stringLocalizer.GetRequiredString(HelpKey)), Enumerable.Empty<string>()));
+
 					foreach (var commandItem in commands)
 					{
 						helpItems.Add(new ShellCommandHelpItem(

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="025e10ac-e0d0-442c-b847-e672f29b0ac5" xml:space="preserve">
-    <value>exit</value>
+    <value>Exit</value>
   </data>
   <data name="0b809baf-fbc8-4594-92f4-07cfc427010c" xml:space="preserve">
     <value>Command is not found</value>
@@ -133,7 +133,7 @@
     <value>No</value>
   </data>
   <data name="8c329f82-7354-4149-9057-0cd434b3dff0" xml:space="preserve">
-    <value>help</value>
+    <value>Help</value>
   </data>
   <data name="9649762e-d441-4fa0-b7d5-e9a3e406aa04" xml:space="preserve">
     <value>Command executed with exception(s).</value>
