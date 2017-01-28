@@ -157,6 +157,7 @@
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Data\IUnitOfWork.cs" />
     <Compile Include="Data\EntityUnitOfWork.cs" />
+    <Compile Include="Data\UnitOfWorkBase.cs" />
     <Compile Include="DependencyRegistration.cs" />
     <Compile Include="Localization\CompositeAssemblyStringLocalizer.cs" />
     <Compile Include="Localization\CompositeStringLocalizer.cs" />
