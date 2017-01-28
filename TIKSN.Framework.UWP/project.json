@@ -1,7 +1,7 @@
 ﻿{
   "dependencies": {
-    "Exceptionless": "4.0.1927",
-    "HockeySDK.Core": "4.1.5",
+    "Exceptionless": "4.0.1929",
+    "HockeySDK.Core": "4.1.6",
     "Microsoft.ApplicationInsights": "2.2.0",
     "Microsoft.EntityFrameworkCore": "1.1.0",
     "Microsoft.Extensions.Configuration": "1.1.0",
