@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Data
 {
-	public class EntityUnitOfWork : IUnitOfWork
+	public class EntityUnitOfWork : UnitOfWorkBase
 	{
 		private readonly DbContext dbContext;
 
@@ -12,9 +12,14 @@ namespace TIKSN.Data
 			this.dbContext = dbContext;
 		}
 
-		public Task CompleteAsync()
+		public override Task CompleteAsync()
 		{
 			return dbContext.SaveChangesAsync();
+		}
+
+		protected override bool IsDirty()
+		{
+			return dbContext.ChangeTracker.HasChanges();
 		}
 	}
 }
