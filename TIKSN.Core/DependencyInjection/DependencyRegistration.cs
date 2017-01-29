@@ -6,21 +6,21 @@ using TIKSN.Web.Rest;
 
 namespace TIKSN.DependencyInjection
 {
-    public static class DependencyRegistration
-    {
-        public static void Register(IServiceCollection services)
-        {
-            services.AddLocalization();
-            services.AddLogging();
-            services.AddOptions();
+	public static class DependencyRegistration
+	{
+		public static void Register(IServiceCollection services)
+		{
+			services.AddLocalization();
+			services.AddLogging();
+			services.AddOptions();
 
-            services.TryAddSingleton<IResourceNamesCache, ResourceNamesCache>();
+			services.TryAddSingleton<IResourceNamesCache, ResourceNamesCache>();
 
-            services.TryAddSingleton<IRestRequester, RestRequester>();
-            services.TryAddSingleton<DotNetXmlDeserializer, DotNetXmlDeserializer>();
-            services.TryAddSingleton<DotNetXmlSerializer, DotNetXmlSerializer>();
-            services.TryAddSingleton<JsonDeserializer, JsonDeserializer>();
-            services.TryAddSingleton<JsonSerializer, JsonSerializer>();
-        }
-    }
+			services.TryAddSingleton<IRestRequester, RestRequester>();
+			services.TryAddSingleton<DotNetXmlDeserializer, DotNetXmlDeserializer>();
+			services.TryAddSingleton<DotNetXmlSerializer, DotNetXmlSerializer>();
+			services.TryAddSingleton<JsonDeserializer, JsonDeserializer>();
+			services.TryAddSingleton<JsonSerializer, JsonSerializer>();
+		}
+	}
 }
