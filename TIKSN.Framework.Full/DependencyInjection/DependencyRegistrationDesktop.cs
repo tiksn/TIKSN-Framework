@@ -5,7 +5,7 @@ using TIKSN.Settings;
 using TIKSN.Shell;
 using TIKSN.Speech;
 
-namespace TIKSN
+namespace TIKSN.DependencyInjection
 {
 	public static class DependencyRegistrationDesktop
 	{

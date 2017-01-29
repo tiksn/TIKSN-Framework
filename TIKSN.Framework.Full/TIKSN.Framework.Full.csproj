@@ -118,6 +118,14 @@
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.3.0\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Extensions.DependencyInjection, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Extensions.DependencyInjection.4.0.0\lib\netstandard1.1\Autofac.Extensions.DependencyInjection.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ConsoleTables, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ConsoleTables.2.1.0\lib\net40\ConsoleTables.dll</HintPath>
       <Private>True</Private>
@@ -350,7 +358,8 @@
     <Compile Include="Analytics\Telemetry\PowerShellEventTelemeter.cs" />
     <Compile Include="Analytics\Telemetry\PowerShellMetricTelemeter.cs" />
     <Compile Include="Data\SQLiteNetRepositoryBase.Platform.cs" />
-    <Compile Include="DependencyRegistrationDesktop.cs" />
+    <Compile Include="DependencyInjection\DependencyRegistrationDesktop.cs" />
+    <Compile Include="DependencyInjection\DesktopModule.cs" />
     <Compile Include="Network\NetworkConnectivityService.cs" />
     <Compile Include="PowerShell\CommandBase.cs" />
     <Compile Include="PowerShell\PowerShellLogger.cs" />

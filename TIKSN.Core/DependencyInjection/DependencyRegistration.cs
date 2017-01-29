@@ -4,7 +4,7 @@ using Microsoft.Extensions.Localization;
 using TIKSN.Serialization;
 using TIKSN.Web.Rest;
 
-namespace TIKSN
+namespace TIKSN.DependencyInjection
 {
     public static class DependencyRegistration
     {
