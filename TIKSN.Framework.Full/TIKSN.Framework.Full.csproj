@@ -371,7 +371,7 @@
     <Compile Include="Analytics\Telemetry\PowerShellMetricTelemeter.cs" />
     <Compile Include="Data\SQLiteNetRepositoryBase.Platform.cs" />
     <Compile Include="DependencyInjection\PlatformDependencyRegistration.cs" />
-    <Compile Include="DependencyInjection\DesktopModule.cs" />
+    <Compile Include="DependencyInjection\PlatformModule.cs" />
     <Compile Include="Network\NetworkConnectivityService.cs" />
     <Compile Include="PowerShell\CommandBase.cs" />
     <Compile Include="PowerShell\PowerShellLogger.cs" />

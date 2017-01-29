@@ -198,6 +198,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="DependencyInjection\PlatformDependencyRegistration.cs" />
+    <Compile Include="DependencyInjection\PlatformModule.cs" />
     <Compile Include="Network\NetworkConnectivityService.cs" />
     <Compile Include="Settings\SettingsService.cs" />
     <Compile Include="Data\SQLiteNetRepositoryBase.Platform.cs" />
