@@ -11,7 +11,7 @@ namespace TIKSN.DependencyInjection
 {
 	public abstract class CompositionRootSetupBase
 	{
-		private readonly IServiceCollection services;
+		protected readonly IServiceCollection services;
 
 		protected CompositionRootSetupBase()
 		{
