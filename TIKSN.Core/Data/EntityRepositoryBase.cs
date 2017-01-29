@@ -65,14 +65,12 @@ namespace TIKSN.Data
 			return Task.FromResult<object>(null);
 		}
 
-		protected async Task<IEnumerable<T>> SearchAsync(Func<DbSet<T>, IQueryable<T>> filter, CancellationToken cancellationToken = default(CancellationToken))
+		protected async Task<IEnumerable<TResult>> SearchAsync<TResult>(Func<DbSet<T>, IQueryable<TResult>> filter, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var tableDataSet = dbContext.Set<T>();
 			var query = filter(tableDataSet);
 
-			IEnumerable<T> matchedEntities = await query.ToListAsync(cancellationToken);
-
-			return matchedEntities;
+			return await query.ToListAsync(cancellationToken);
 		}
 	}
 }
