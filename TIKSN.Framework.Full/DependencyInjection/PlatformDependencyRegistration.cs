@@ -7,10 +7,12 @@ using TIKSN.Speech;
 
 namespace TIKSN.DependencyInjection
 {
-	public static class DependencyRegistrationDesktop
+	public static class PlatformDependencyRegistration
 	{
 		public static void Register(IServiceCollection services)
 		{
+			DependencyRegistration.Register(services);
+
 			services.TryAddSingleton<IConsoleService, ConsoleService>();
 			services.TryAddSingleton<INetworkConnectivityService, NetworkConnectivityService>();
 			services.TryAddSingleton<ISettingsService, WindowsRegistrySettingsService>();

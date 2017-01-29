@@ -158,6 +158,8 @@
     <Compile Include="Data\IUnitOfWork.cs" />
     <Compile Include="Data\EntityUnitOfWork.cs" />
     <Compile Include="Data\UnitOfWorkBase.cs" />
+    <Compile Include="DependencyInjection\AutofacCompositionRootSetupBase.cs" />
+    <Compile Include="DependencyInjection\CompositionRootSetupBase.cs" />
     <Compile Include="DependencyInjection\CoreModule.cs" />
     <Compile Include="DependencyInjection\DependencyRegistration.cs" />
     <Compile Include="Localization\CompositeAssemblyStringLocalizer.cs" />

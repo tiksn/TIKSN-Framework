@@ -197,7 +197,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="DependencyRegistrationUWP.cs" />
+    <Compile Include="DependencyInjection\PlatformDependencyRegistration.cs" />
     <Compile Include="Network\NetworkConnectivityService.cs" />
     <Compile Include="Settings\SettingsService.cs" />
     <Compile Include="Data\SQLiteNetRepositoryBase.Platform.cs" />
