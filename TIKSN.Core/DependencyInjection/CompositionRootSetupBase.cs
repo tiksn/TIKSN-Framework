@@ -65,7 +65,19 @@ namespace TIKSN.DependencyInjection
 			return services.BuildServiceProvider();
 		}
 
-		protected abstract IConfigurationRoot GetConfigurationRoot();
+		protected virtual IConfigurationRoot GetConfigurationRoot()
+		{
+			var builder = new ConfigurationBuilder();
+
+			SetupConfiguration(builder);
+
+			return builder.Build();
+		}
+
+		protected virtual void SetupConfiguration(IConfigurationBuilder builder)
+		{
+			builder.AddInMemoryCollection();
+		}
 
 		private void ValidateOptions(IServiceCollection services, IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
 		{

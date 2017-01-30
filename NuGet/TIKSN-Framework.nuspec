@@ -86,6 +86,7 @@
 			<group targetFramework="netstandard1.3">
 				<dependency id="Autofac.Extensions.DependencyInjection" version="4.0.0" />
 				<dependency id="Microsoft.EntityFrameworkCore" version="1.1.0" />
+				<dependency id="Microsoft.Extensions.Configuration" version="1.1.0" />
 				<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.0" />
 				<dependency id="Microsoft.Extensions.Localization" version="1.1.0" />
 				<dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.0" />
