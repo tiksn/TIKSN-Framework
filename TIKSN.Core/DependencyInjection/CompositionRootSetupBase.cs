@@ -56,7 +56,9 @@ namespace TIKSN.DependencyInjection
 
 		protected abstract void ConfigureOptions(IServiceCollection services, IConfigurationRoot configuration);
 
-		protected abstract void ConfigureSerilog(LoggerConfiguration serilogLoggerConfiguration, IServiceProvider serviceProvider);
+		protected virtual void ConfigureSerilog(LoggerConfiguration serilogLoggerConfiguration, IServiceProvider serviceProvider)
+		{
+		}
 
 		protected abstract void ConfigureServices(IServiceCollection services);
 
