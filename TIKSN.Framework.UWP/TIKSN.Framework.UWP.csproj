@@ -197,6 +197,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Advertising\AdUnitSelector.cs" />
     <Compile Include="DependencyInjection\PlatformDependencyRegistration.cs" />
     <Compile Include="DependencyInjection\PlatformModule.cs" />
     <Compile Include="Network\NetworkConnectivityService.cs" />
