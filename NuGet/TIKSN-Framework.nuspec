@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
 	<metadata>
 		<id>TIKSN-Framework</id>
@@ -113,7 +114,6 @@
 				<dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.0" />
 				<dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.0" />
 				<dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.0" />
-				<dependency id="Microsoft.Win32.Registry" version="4.3.0" />
 				<dependency id="NETStandard.Library" version="1.6.1" />
 				<dependency id="Newtonsoft.Json" version="9.0.1" />
 				<dependency id="Serilog.Extensions.Logging" version="1.4.0" />
@@ -124,6 +124,7 @@
 				<dependency id="System.Reactive.Interfaces" version="3.1.1" />
 				<dependency id="System.Reactive.Linq" version="3.1.1" />
 				<dependency id="System.Xml.XmlSerializer" version="4.3.0" />
+				<dependency id="Template10" version="1.1.12" />
 			</group>
 		</dependencies>
 	</metadata>
