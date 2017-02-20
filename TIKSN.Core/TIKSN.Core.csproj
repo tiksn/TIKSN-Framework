@@ -130,6 +130,9 @@
     <Compile Include="Advertising\AdDuplexAdUnitBundle.cs" />
     <Compile Include="Advertising\AdUnit.cs" />
     <Compile Include="Advertising\AdUnitBundle.cs" />
+    <Compile Include="Advertising\AdUnitFactoryBase.cs" />
+    <Compile Include="Advertising\IAdUnitFactory.cs" />
+    <Compile Include="Advertising\IAdUnitSelector.cs" />
     <Compile Include="Advertising\MicrosoftBannerAdUnitBundle.cs" />
     <Compile Include="Advertising\MicrosoftInterstitialAdUnitBundle.cs" />
     <Compile Include="Analytics\Telemetry\AudibleTelemeter.cs" />
