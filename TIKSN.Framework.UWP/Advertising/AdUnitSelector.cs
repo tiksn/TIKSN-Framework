@@ -1,4 +1,5 @@
-﻿using Template10.Utils;
+﻿using System.Diagnostics;
+using Template10.Utils;
 
 namespace TIKSN.Advertising
 {
@@ -8,7 +9,22 @@ namespace TIKSN.Advertising
 		{
 			var deviceDispositions = DeviceUtils.Current().DeviceDisposition();
 
-			return null;
+			if (Debugger.IsAttached)
+				return adUnitBundle.DesignTime;
+
+			switch (deviceDispositions)
+			{
+				case DeviceUtils.DeviceDispositions.Virtual:
+				case DeviceUtils.DeviceDispositions.IoT:
+					return adUnitBundle.DesignTime;
+
+				case DeviceUtils.DeviceDispositions.Phone:
+				case DeviceUtils.DeviceDispositions.Mobile:
+					return adUnitBundle.Mobile;
+
+				default:
+					return adUnitBundle.Tablet;
+			}
 		}
 	}
 }
