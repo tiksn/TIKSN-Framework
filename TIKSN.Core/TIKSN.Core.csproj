@@ -131,6 +131,7 @@
     <Compile Include="Advertising\AdUnit.cs" />
     <Compile Include="Advertising\AdUnitBundle.cs" />
     <Compile Include="Advertising\AdUnitFactoryBase.cs" />
+    <Compile Include="Advertising\AdUnitSelectorOptions.cs" />
     <Compile Include="Advertising\IAdUnitFactory.cs" />
     <Compile Include="Advertising\IAdUnitSelector.cs" />
     <Compile Include="Advertising\MicrosoftBannerAdUnitBundle.cs" />
