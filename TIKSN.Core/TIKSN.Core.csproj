@@ -163,6 +163,7 @@
     <Compile Include="Configuration\IConfiguration.cs" />
     <Compile Include="Configuration\PushalotConfiguration.cs" />
     <Compile Include="Data\EntityRepositoryBase.cs" />
+    <Compile Include="Data\EntityWriterRepository.cs" />
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Data\IUnitOfWork.cs" />
     <Compile Include="Data\EntityUnitOfWork.cs" />
