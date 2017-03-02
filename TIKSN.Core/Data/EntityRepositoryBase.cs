@@ -16,7 +16,7 @@ namespace TIKSN.Data
 			this.dbContext = dbContext;
 		}
 
-		protected IQueryable<T> Entities => dbContext.Set<T>();
+		protected IQueryable<T> Entities => dbContext.Set<T>().AsNoTracking();
 
 		public Task AddAsync(T entity, CancellationToken cancellationToken = default(CancellationToken))
 		{
