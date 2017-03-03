@@ -3,7 +3,9 @@
 	public class AdDuplexAdUnitBundle : AdUnitBundle
 	{
 		public AdDuplexAdUnitBundle(string applicationId, string adUnitId)
-			: base(new AdUnit(applicationId, adUnitId, true), new AdUnit(applicationId, adUnitId), null)
+			: base(
+				new AdUnit(AdProviders.AdDuplex, applicationId, adUnitId, true),
+				new AdUnit(AdProviders.AdDuplex, applicationId, adUnitId), null)
 		{
 		}
 	}

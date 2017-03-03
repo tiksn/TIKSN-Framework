@@ -128,6 +128,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Advertising\AdDuplexAdUnitBundle.cs" />
+    <Compile Include="Advertising\AdProviders.cs" />
     <Compile Include="Advertising\AdUnit.cs" />
     <Compile Include="Advertising\AdUnitBundle.cs" />
     <Compile Include="Advertising\AdUnitFactoryBase.cs" />
