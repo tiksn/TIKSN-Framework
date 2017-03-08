@@ -24,13 +24,13 @@
         <dependency id="ConsoleTables" version="2.1.0" />
         <dependency id="Exceptionless.Signed" version="4.0.1934" />
         <dependency id="HockeySDK.Core" version="4.1.6" />
-        <dependency id="Microsoft.EntityFrameworkCore" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Configuration" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Localization" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.0" />
+        <dependency id="Microsoft.EntityFrameworkCore" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Configuration" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Localization" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.1" />
         <dependency id="Microsoft.NETCore.Portable.Compatibility" version="1.0.1" />
         <dependency id="Microsoft.PowerShell.3.ReferenceAssemblies" version="1.0.0" />
         <dependency id="Microsoft.Win32.Registry" version="4.3.0" />
@@ -51,12 +51,12 @@
       <group targetFramework="MonoAndroid403">
         <dependency id="Autofac.Extensions.DependencyInjection" version="4.0.0" />
         <dependency id="HockeySDK.Xamarin" version="4.1.1" />
-        <dependency id="Microsoft.EntityFrameworkCore" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Localization" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.0" />
+        <dependency id="Microsoft.EntityFrameworkCore" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Localization" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.1" />
         <dependency id="Microsoft.Extensions.Options" version="1.1.0" />
         <dependency id="NETStandard.Library" version="1.6.1" />
         <dependency id="Newtonsoft.Json" version="9.0.1" />
@@ -72,12 +72,12 @@
       <group targetFramework="netcoreapp1.0">
         <dependency id="Autofac.Extensions.DependencyInjection" version="4.0.0" />
         <dependency id="Microsoft.ApplicationInsights" version="2.2.0" />
-        <dependency id="Microsoft.EntityFrameworkCore" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Localization" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.0" />
+        <dependency id="Microsoft.EntityFrameworkCore" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Localization" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.1" />
         <dependency id="NETStandard.Library" version="1.6.1" />
         <dependency id="Newtonsoft.Json" version="9.0.1" />
         <dependency id="Serilog.Extensions.Logging" version="1.4.0" />
@@ -87,13 +87,13 @@
       </group>
       <group targetFramework="netstandard1.3">
         <dependency id="Autofac.Extensions.DependencyInjection" version="4.0.0" />
-        <dependency id="Microsoft.EntityFrameworkCore" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Configuration" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Localization" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.0" />
+        <dependency id="Microsoft.EntityFrameworkCore" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Configuration" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Localization" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.1" />
         <dependency id="NETStandard.Library" version="1.6.1" />
         <dependency id="Newtonsoft.Json" version="9.0.1" />
         <dependency id="Serilog.Extensions.Logging" version="1.4.0" />
@@ -107,13 +107,13 @@
         <dependency id="Autofac.Extensions.DependencyInjection" version="4.0.0" />
         <dependency id="Exceptionless.Signed" version="4.0.1934" />
         <dependency id="HockeySDK.Core" version="4.1.6" />
-        <dependency id="Microsoft.EntityFrameworkCore" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Configuration" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Localization" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.0" />
-        <dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.0" />
+        <dependency id="Microsoft.EntityFrameworkCore" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Configuration" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Localization" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.1" />
+        <dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.1" />
         <dependency id="NETStandard.Library" version="1.6.1" />
         <dependency id="Newtonsoft.Json" version="9.0.1" />
         <dependency id="Serilog.Extensions.Logging" version="1.4.0" />
