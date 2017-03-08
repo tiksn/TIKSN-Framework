@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2CE66F97-5B89-401D-AEE5-BF2228760097}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{38C873E2-88C6-435A-89B3-A3EBD5D4D171}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{D98A9FAA-7292-44A9-BDCA-ADC0C704EF92}"
+	ProjectSection(SolutionItems) = preProject
+		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
+		NuGet\TIKSN-Framework.nuspec = NuGet\TIKSN-Framework.nuspec
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Core", "TIKSN.Core\TIKSN.Core.csproj", "{D1ECB169-BB57-4751-AECA-415E078E5996}"
 EndProject
@@ -23,13 +29,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\Unit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Framework.Android", "TIKSN.Framework.Android\TIKSN.Framework.Android.csproj", "{572734F9-E631-44AB-91F0-54735B50D91B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{D98A9FAA-7292-44A9-BDCA-ADC0C704EF92}"
-	ProjectSection(SolutionItems) = preProject
-		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
-		NuGet\TIKSN-Framework.nuspec = NuGet\TIKSN-Framework.nuspec
-	EndProjectSection
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TIKSN.Framework.Core", "TIKSN.Framework.Core\TIKSN.Framework.Core.xproj", "{ED598E91-6D8E-4132-A73D-A1A9A402F395}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Framework.Core", "TIKSN.Framework.Core\TIKSN.Framework.Core.csproj", "{ED598E91-6D8E-4132-A73D-A1A9A402F395}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TIKSN.Framework.SharedMobile", "TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.shproj", "{7A9B69CB-8ABF-4474-A85A-11D5D9F3D005}"
 EndProject

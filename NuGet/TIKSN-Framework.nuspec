@@ -1,152 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
-	<metadata>
-		<id>TIKSN-Framework</id>
-		<version>1.6.29-pre</version>
-		<title>TIKSN Framework</title>
-		<authors>TIKSN</authors>
-		<owners>TIKSN</owners>
-		<projectUrl>http://www.tiksn.com/Framework</projectUrl>
-		<iconUrl>http://www.tiksn.com/Images/Logo.png</iconUrl>
-		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<description>This is a .NET Framework enhancement framework. Main features are Versioning, Finance, Currency, Foreign Exchange, Money, Pricing strategy, Telemetry, Composite Weighted Progress, Repository and Unity of Wok pattern implementation with Entity Framework Core, Network Connectivity Service and Triggering, Settings, Windows Registry configuration source.</description>
-		<copyright>Copyright © 2016, TIKSN Lab</copyright>
-		<releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/milestone/5 </releaseNotes>
-		<language />
-		<tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry, Configuration</tags>
-		<frameworkAssemblies>
-			<frameworkAssembly assemblyName="System.Speech" targetFramework=".NETFramework4.6" />
-		</frameworkAssemblies>
-		<dependencies>
-			<group targetFramework=".NETFramework4.6">
-				<dependency id="Autofac.Extensions.DependencyInjection" version="4.0.0" />
-				<dependency id="ConsoleTables" version="2.1.0" />
-				<dependency id="Exceptionless.Signed" version="4.0.1934" />
-				<dependency id="HockeySDK.Core" version="4.1.6" />
-				<dependency id="Microsoft.EntityFrameworkCore" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Configuration" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Localization" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.0" />
-				<dependency id="Microsoft.NETCore.Portable.Compatibility" version="1.0.1" />
-				<dependency id="Microsoft.PowerShell.3.ReferenceAssemblies" version="1.0.0" />
-				<dependency id="Microsoft.Win32.Registry" version="4.3.0" />
-				<dependency id="NETStandard.Library" version="1.6.1" />
-				<dependency id="Newtonsoft.Json" version="9.0.1" />
-				<dependency id="Nito.AsyncEx" version="3.0.1" />
-				<dependency id="Serilog.Extensions.Logging" version="1.4.0" />
-				<dependency id="ShellProgressBar" version="3.0.0" />
-				<dependency id="SQLite.Net.Async-PCL" version="3.1.1" />
-				<dependency id="SQLite.Net-PCL" version="3.1.1" />
-				<dependency id="System.Diagnostics.Contracts" version="4.3.0" />
-				<dependency id="System.Reactive.Core" version="3.1.1" />
-				<dependency id="System.Reactive.Interfaces" version="3.1.1" />
-				<dependency id="System.Reactive.Linq" version="3.1.1" />
-				<dependency id="System.Reflection.TypeExtensions" version="4.3.0" />
-				<dependency id="System.Xml.XmlSerializer" version="4.3.0" />
-			</group>
-			<group targetFramework="MonoAndroid403">
-				<dependency id="Autofac.Extensions.DependencyInjection" version="4.0.0" />
-				<dependency id="HockeySDK.Xamarin" version="4.1.1" />
-				<dependency id="Microsoft.EntityFrameworkCore" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Localization" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Options" version="1.1.0" />
-				<dependency id="NETStandard.Library" version="1.6.1" />
-				<dependency id="Newtonsoft.Json" version="9.0.1" />
-				<dependency id="Serilog.Extensions.Logging" version="1.4.0" />
-				<dependency id="SQLite.Net.Async-PCL" version="3.1.1" />
-				<dependency id="SQLite.Net-PCL" version="3.1.1" />
-				<dependency id="System.Diagnostics.Contracts" version="4.3.0" />
-				<dependency id="System.Reactive.Core" version="3.1.1" />
-				<dependency id="System.Reactive.Interfaces" version="3.1.1" />
-				<dependency id="System.Reactive.Linq" version="3.1.1" />
-				<dependency id="System.Xml.XmlSerializer" version="4.3.0" />
-			</group>
-			<group targetFramework="netcoreapp1.0">
-				<dependency id="Autofac.Extensions.DependencyInjection" version="4.0.0" />
-				<dependency id="Microsoft.ApplicationInsights" version="2.2.0" />
-				<dependency id="Microsoft.EntityFrameworkCore" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Localization" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.0" />
-				<dependency id="NETStandard.Library" version="1.6.1" />
-				<dependency id="Newtonsoft.Json" version="9.0.1" />
-				<dependency id="Serilog.Extensions.Logging" version="1.4.0" />
-				<dependency id="System.Diagnostics.Contracts" version="4.3.0" />
-				<dependency id="System.Reactive.Interfaces" version="3.1.1" />
-				<dependency id="System.Xml.XmlSerializer" version="4.3.0" />
-			</group>
-			<group targetFramework="netstandard1.3">
-				<dependency id="Autofac.Extensions.DependencyInjection" version="4.0.0" />
-				<dependency id="Microsoft.EntityFrameworkCore" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Configuration" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Localization" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.0" />
-				<dependency id="NETStandard.Library" version="1.6.1" />
-				<dependency id="Newtonsoft.Json" version="9.0.1" />
-				<dependency id="Serilog.Extensions.Logging" version="1.4.0" />
-				<dependency id="System.Diagnostics.Contracts" version="4.3.0" />
-				<dependency id="System.Reactive.Core" version="3.1.1" />
-				<dependency id="System.Reactive.Interfaces" version="3.1.1" />
-				<dependency id="System.Reactive.Linq" version="3.1.1" />
-				<dependency id="System.Xml.XmlSerializer" version="4.3.0" />
-			</group>
-			<group targetFramework="uap10.0">
-				<dependency id="Autofac.Extensions.DependencyInjection" version="4.0.0" />
-				<dependency id="Exceptionless.Signed" version="4.0.1934" />
-				<dependency id="HockeySDK.Core" version="4.1.6" />
-				<dependency id="Microsoft.EntityFrameworkCore" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Configuration" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Localization" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.0" />
-				<dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.0" />
-				<dependency id="NETStandard.Library" version="1.6.1" />
-				<dependency id="Newtonsoft.Json" version="9.0.1" />
-				<dependency id="Serilog.Extensions.Logging" version="1.4.0" />
-				<dependency id="SQLite.Net.Async-PCL" version="3.1.1" />
-				<dependency id="SQLite.Net-PCL" version="3.1.1" />
-				<dependency id="System.Diagnostics.Contracts" version="4.3.0" />
-				<dependency id="System.Reactive.Core" version="3.1.1" />
-				<dependency id="System.Reactive.Interfaces" version="3.1.1" />
-				<dependency id="System.Reactive.Linq" version="3.1.1" />
-				<dependency id="System.Xml.XmlSerializer" version="4.3.0" />
-				<dependency id="Template10" version="1.1.12" />
-			</group>
-		</dependencies>
-	</metadata>
-	<files>
-		<file src="..\TIKSN.Core\bin\Release\TIKSN.Core.dll" target="lib\MonoAndroid403" />
-		<file src="..\TIKSN.Core\bin\Release\TIKSN.Core.pdb" target="lib\MonoAndroid403" />
-		<file src="..\TIKSN.Core\bin\Release\TIKSN.Core.dll" target="lib\net46" />
-		<file src="..\TIKSN.Core\bin\Release\TIKSN.Core.pdb" target="lib\net46" />
-		<file src="..\TIKSN.Core\bin\Release\TIKSN.Core.dll" target="lib\netcoreapp1.0" />
-		<file src="..\TIKSN.Core\bin\Release\TIKSN.Core.pdb" target="lib\netcoreapp1.0" />
-		<file src="..\TIKSN.Core\bin\Release\TIKSN.Core.dll" target="lib\netstandard1.3" />
-		<file src="..\TIKSN.Core\bin\Release\TIKSN.Core.pdb" target="lib\netstandard1.3" />
-		<file src="..\TIKSN.Core\bin\Release\TIKSN.Core.dll" target="lib\uap10.0" />
-		<file src="..\TIKSN.Core\bin\Release\TIKSN.Core.pdb" target="lib\uap10.0" />
+  <metadata>
+    <id>TIKSN-Framework</id>
+    <version>1.6.30-pre</version>
+    <title>TIKSN Framework</title>
+    <authors>TIKSN</authors>
+    <owners>TIKSN</owners>
+    <projectUrl>http://www.tiksn.com/Framework</projectUrl>
+    <iconUrl>http://www.tiksn.com/Images/Logo.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This is a .NET Framework enhancement framework. Main features are Versioning, Finance, Currency, Foreign Exchange, Money, Pricing strategy, Telemetry, Composite Weighted Progress, Repository and Unity of Wok pattern implementation with Entity Framework Core, Network Connectivity Service and Triggering, Settings, Windows Registry configuration source.</description>
+    <copyright>Copyright © 2016, TIKSN Lab</copyright>
+    <releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/milestone/5 </releaseNotes>
+    <language />
+    <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry, Configuration</tags>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Speech" targetFramework=".NETFramework4.6" />
+    </frameworkAssemblies>
+    <dependencies>
+      <group targetFramework=".NETFramework4.6">
+        <dependency id="Autofac.Extensions.DependencyInjection" version="4.0.0" />
+        <dependency id="ConsoleTables" version="2.1.0" />
+        <dependency id="Exceptionless.Signed" version="4.0.1934" />
+        <dependency id="HockeySDK.Core" version="4.1.6" />
+        <dependency id="Microsoft.EntityFrameworkCore" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Configuration" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Localization" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.0" />
+        <dependency id="Microsoft.NETCore.Portable.Compatibility" version="1.0.1" />
+        <dependency id="Microsoft.PowerShell.3.ReferenceAssemblies" version="1.0.0" />
+        <dependency id="Microsoft.Win32.Registry" version="4.3.0" />
+        <dependency id="NETStandard.Library" version="1.6.1" />
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
+        <dependency id="Nito.AsyncEx" version="3.0.1" />
+        <dependency id="Serilog.Extensions.Logging" version="1.4.0" />
+        <dependency id="ShellProgressBar" version="3.0.0" />
+        <dependency id="SQLite.Net.Async-PCL" version="3.1.1" />
+        <dependency id="SQLite.Net-PCL" version="3.1.1" />
+        <dependency id="System.Diagnostics.Contracts" version="4.3.0" />
+        <dependency id="System.Reactive.Core" version="3.1.1" />
+        <dependency id="System.Reactive.Interfaces" version="3.1.1" />
+        <dependency id="System.Reactive.Linq" version="3.1.1" />
+        <dependency id="System.Reflection.TypeExtensions" version="4.3.0" />
+        <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
+      </group>
+      <group targetFramework="MonoAndroid403">
+        <dependency id="Autofac.Extensions.DependencyInjection" version="4.0.0" />
+        <dependency id="HockeySDK.Xamarin" version="4.1.1" />
+        <dependency id="Microsoft.EntityFrameworkCore" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Localization" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Options" version="1.1.0" />
+        <dependency id="NETStandard.Library" version="1.6.1" />
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
+        <dependency id="Serilog.Extensions.Logging" version="1.4.0" />
+        <dependency id="SQLite.Net.Async-PCL" version="3.1.1" />
+        <dependency id="SQLite.Net-PCL" version="3.1.1" />
+        <dependency id="System.Diagnostics.Contracts" version="4.3.0" />
+        <dependency id="System.Reactive.Core" version="3.1.1" />
+        <dependency id="System.Reactive.Interfaces" version="3.1.1" />
+        <dependency id="System.Reactive.Linq" version="3.1.1" />
+        <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
+      </group>
+      <group targetFramework="netcoreapp1.0">
+        <dependency id="Autofac.Extensions.DependencyInjection" version="4.0.0" />
+        <dependency id="Microsoft.ApplicationInsights" version="2.2.0" />
+        <dependency id="Microsoft.EntityFrameworkCore" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Localization" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.0" />
+        <dependency id="NETStandard.Library" version="1.6.1" />
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
+        <dependency id="Serilog.Extensions.Logging" version="1.4.0" />
+        <dependency id="System.Diagnostics.Contracts" version="4.3.0" />
+        <dependency id="System.Reactive.Interfaces" version="3.1.1" />
+        <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
+      </group>
+      <group targetFramework="netstandard1.3">
+        <dependency id="Autofac.Extensions.DependencyInjection" version="4.0.0" />
+        <dependency id="Microsoft.EntityFrameworkCore" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Configuration" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Localization" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.0" />
+        <dependency id="NETStandard.Library" version="1.6.1" />
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
+        <dependency id="Serilog.Extensions.Logging" version="1.4.0" />
+        <dependency id="System.Diagnostics.Contracts" version="4.3.0" />
+        <dependency id="System.Reactive.Core" version="3.1.1" />
+        <dependency id="System.Reactive.Interfaces" version="3.1.1" />
+        <dependency id="System.Reactive.Linq" version="3.1.1" />
+        <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
+      </group>
+      <group targetFramework="uap10.0">
+        <dependency id="Autofac.Extensions.DependencyInjection" version="4.0.0" />
+        <dependency id="Exceptionless.Signed" version="4.0.1934" />
+        <dependency id="HockeySDK.Core" version="4.1.6" />
+        <dependency id="Microsoft.EntityFrameworkCore" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Configuration" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Localization" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.0" />
+        <dependency id="NETStandard.Library" version="1.6.1" />
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
+        <dependency id="Serilog.Extensions.Logging" version="1.4.0" />
+        <dependency id="SQLite.Net.Async-PCL" version="3.1.1" />
+        <dependency id="SQLite.Net-PCL" version="3.1.1" />
+        <dependency id="System.Diagnostics.Contracts" version="4.3.0" />
+        <dependency id="System.Reactive.Core" version="3.1.1" />
+        <dependency id="System.Reactive.Interfaces" version="3.1.1" />
+        <dependency id="System.Reactive.Linq" version="3.1.1" />
+        <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
+        <dependency id="Template10" version="1.1.12" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\TIKSN.Core\bin\Release\TIKSN.Core.dll" target="lib\MonoAndroid403" />
+    <file src="..\TIKSN.Core\bin\Release\TIKSN.Core.pdb" target="lib\MonoAndroid403" />
+    <file src="..\TIKSN.Core\bin\Release\TIKSN.Core.dll" target="lib\net46" />
+    <file src="..\TIKSN.Core\bin\Release\TIKSN.Core.pdb" target="lib\net46" />
+    <file src="..\TIKSN.Core\bin\Release\TIKSN.Core.dll" target="lib\netcoreapp1.0" />
+    <file src="..\TIKSN.Core\bin\Release\TIKSN.Core.pdb" target="lib\netcoreapp1.0" />
+    <file src="..\TIKSN.Core\bin\Release\TIKSN.Core.dll" target="lib\netstandard1.3" />
+    <file src="..\TIKSN.Core\bin\Release\TIKSN.Core.pdb" target="lib\netstandard1.3" />
+    <file src="..\TIKSN.Core\bin\Release\TIKSN.Core.dll" target="lib\uap10.0" />
+    <file src="..\TIKSN.Core\bin\Release\TIKSN.Core.pdb" target="lib\uap10.0" />
 
-		<file src="..\TIKSN.Framework.Android\bin\Release\TIKSN.Framework.Android.dll" target="lib\MonoAndroid403" />
-		<file src="..\TIKSN.Framework.Android\bin\Release\TIKSN.Framework.Android.pdb" target="lib\MonoAndroid403" />
-		<file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.dll" target="lib\net46" />
-		<file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.pdb" target="lib\net46" />
-		<file src="..\TIKSN.Framework.Core\bin\Release\netstandard1.6\TIKSN.Framework.Core.dll" target="lib\netcoreapp1.0" />
-		<file src="..\TIKSN.Framework.Core\bin\Release\netstandard1.6\TIKSN.Framework.Core.pdb" target="lib\netcoreapp1.0" />
-		<file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.dll" target="lib\uap10.0" />
-		<file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.pdb" target="lib\uap10.0" />
-	</files>
+    <file src="..\TIKSN.Framework.Android\bin\Release\TIKSN.Framework.Android.dll" target="lib\MonoAndroid403" />
+    <file src="..\TIKSN.Framework.Android\bin\Release\TIKSN.Framework.Android.pdb" target="lib\MonoAndroid403" />
+    <file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.dll" target="lib\net46" />
+    <file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.pdb" target="lib\net46" />
+    <file src="..\TIKSN.Framework.Core\bin\Release\netstandard1.6\TIKSN.Framework.Core.dll" target="lib\netcoreapp1.0" />
+    <file src="..\TIKSN.Framework.Core\bin\Release\netstandard1.6\TIKSN.Framework.Core.pdb" target="lib\netcoreapp1.0" />
+    <file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.dll" target="lib\uap10.0" />
+    <file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.pdb" target="lib\uap10.0" />
+  </files>
 </package>
