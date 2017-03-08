@@ -1,5 +1,5 @@
-﻿using System;
-using System.Diagnostics.Contracts;
+﻿using LiteGuard;
+using System;
 using System.Threading.Tasks;
 using TIKSN.Speech;
 
@@ -11,7 +11,7 @@ namespace TIKSN.Analytics.Telemetry
 
 		public AudibleTelemeter(ITextToSpeechService textToSpeechService)
 		{
-			Contract.Requires<ArgumentNullException>(textToSpeechService != null);
+			Guard.AgainstNullArgument(nameof(textToSpeechService), textToSpeechService);
 
 			_textToSpeechService = textToSpeechService;
 		}

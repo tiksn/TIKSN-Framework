@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics.Contracts;
+﻿using LiteGuard;
 using TIKSN.Analytics.Telemetry;
 
 namespace TIKSN.Serialization
@@ -10,7 +9,8 @@ namespace TIKSN.Serialization
 
 		public SerializationBase(IExceptionTelemeter exceptionTelemeter)
 		{
-			Contract.Requires<ArgumentNullException>(exceptionTelemeter != null);
+			Guard.AgainstNullArgument(nameof(exceptionTelemeter), exceptionTelemeter);
+
 			_exceptionTelemeter = exceptionTelemeter;
 		}
 	}

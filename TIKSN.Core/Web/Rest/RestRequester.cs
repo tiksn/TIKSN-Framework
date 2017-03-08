@@ -1,5 +1,5 @@
-﻿using System;
-using System.Diagnostics.Contracts;
+﻿using LiteGuard;
+using System;
 using System.Globalization;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -22,10 +22,10 @@ namespace TIKSN.Web.Rest
 			IDeserializerRestFactory deserializerRestFactory,
 			IRestAuthenticationTokenProvider restAuthenticationTokenProvider)
 		{
-			Contract.Requires<ArgumentNullException>(httpClientFactory != null);
-			Contract.Requires<ArgumentNullException>(serializerRestFactory != null);
-			Contract.Requires<ArgumentNullException>(deserializerRestFactory != null);
-			Contract.Requires<ArgumentNullException>(restAuthenticationTokenProvider != null);
+			Guard.AgainstNullArgument(nameof(httpClientFactory), httpClientFactory);
+			Guard.AgainstNullArgument(nameof(serializerRestFactory), serializerRestFactory);
+			Guard.AgainstNullArgument(nameof(deserializerRestFactory), deserializerRestFactory);
+			Guard.AgainstNullArgument(nameof(restAuthenticationTokenProvider), restAuthenticationTokenProvider);
 
 			_httpClientFactory = httpClientFactory;
 			_serializerRestFactory = serializerRestFactory;
