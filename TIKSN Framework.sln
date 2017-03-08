@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2CE66F97-5B89-401D-AEE5-BF2228760097}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{38C873E2-88C6-435A-89B3-A3EBD5D4D171}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{D98A9FAA-7292-44A9-BDCA-ADC0C704EF92}"
+	ProjectSection(SolutionItems) = preProject
+		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
+		NuGet\TIKSN-Framework.nuspec = NuGet\TIKSN-Framework.nuspec
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Core", "TIKSN.Core\TIKSN.Core.csproj", "{D1ECB169-BB57-4751-AECA-415E078E5996}"
 EndProject
@@ -23,25 +29,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\Unit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Framework.Android", "TIKSN.Framework.Android\TIKSN.Framework.Android.csproj", "{572734F9-E631-44AB-91F0-54735B50D91B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{D98A9FAA-7292-44A9-BDCA-ADC0C704EF92}"
-	ProjectSection(SolutionItems) = preProject
-		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
-		NuGet\TIKSN-Framework.nuspec = NuGet\TIKSN-Framework.nuspec
-	EndProjectSection
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TIKSN.Framework.Core", "TIKSN.Framework.Core\TIKSN.Framework.Core.xproj", "{ED598E91-6D8E-4132-A73D-A1A9A402F395}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Framework.Core", "TIKSN.Framework.Core\TIKSN.Framework.Core.csproj", "{ED598E91-6D8E-4132-A73D-A1A9A402F395}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TIKSN.Framework.SharedMobile", "TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.shproj", "{7A9B69CB-8ABF-4474-A85A-11D5D9F3D005}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TIKSN.Framework.Platform", "TIKSN.Framework.Platform\TIKSN.Framework.Platform.shproj", "{B067DD13-E17B-45CC-8B35-D34A1876E0FE}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems*{3d7b87c7-b00c-4691-9bbd-f5836011345a}*SharedItemsImports = 4
 		TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems*{3d7b87c7-b00c-4691-9bbd-f5836011345a}*SharedItemsImports = 4
 		TIKSN.Framework.Shared\TIKSN.Framework.Shared.projitems*{3d7b87c7-b00c-4691-9bbd-f5836011345a}*SharedItemsImports = 4
+		TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems*{572734f9-e631-44ab-91f0-54735b50d91b}*SharedItemsImports = 4
 		TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems*{572734f9-e631-44ab-91f0-54735b50d91b}*SharedItemsImports = 4
 		TIKSN.Framework.Shared\TIKSN.Framework.Shared.projitems*{6670e3c7-f488-4212-80f4-6a914613ae5b}*SharedItemsImports = 13
+		TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems*{786b1846-c0a1-46d8-8e17-47cf5cbb0d0d}*SharedItemsImports = 4
 		TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems*{786b1846-c0a1-46d8-8e17-47cf5cbb0d0d}*SharedItemsImports = 4
 		TIKSN.Framework.Shared\TIKSN.Framework.Shared.projitems*{786b1846-c0a1-46d8-8e17-47cf5cbb0d0d}*SharedItemsImports = 4
 		TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems*{7a9b69cb-8abf-4474-a85a-11d5d9f3d005}*SharedItemsImports = 13
+		TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems*{b067dd13-e17b-45cc-8b35-d34a1876e0fe}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -201,5 +207,6 @@ Global
 		{572734F9-E631-44AB-91F0-54735B50D91B} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{ED598E91-6D8E-4132-A73D-A1A9A402F395} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{7A9B69CB-8ABF-4474-A85A-11D5D9F3D005} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
+		{B067DD13-E17B-45CC-8B35-D34A1876E0FE} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 	EndGlobalSection
 EndGlobal
