@@ -14,15 +14,19 @@ namespace TIKSN.Advertising
 				throw new ArgumentNullException(nameof(designTime));
 
 			if (!designTime.IsTest)
-				throw new ArgumentException($"Value of designTime.IsTest must be true.", nameof(designTime));
+				throw new ArgumentException($"Value of {nameof(designTime)}.{nameof(designTime.IsTest)} must be true.", nameof(designTime));
 
-			if (tablet == null && mobile == null)
+			if (!tablet.IsTest || !mobile.IsTest)
+				throw new ArgumentException($"Value of {nameof(tablet)}.{nameof(tablet.IsTest)} and {nameof(mobile)}.{nameof(mobile.IsTest)} must be false.");
+
+			if (tablet == null || mobile == null)
 				throw new ArgumentException($"Arguments {nameof(tablet)} and {nameof(mobile)} cannot be null simultaneously.");
 		}
 
 		public AdUnit DesignTime { get; }
 
 		public AdUnit Mobile { get; }
+
 		public AdUnit Tablet { get; }
 	}
 }
