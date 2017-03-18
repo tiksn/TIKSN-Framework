@@ -48,6 +48,7 @@
     <Compile Include="Advertising\AdUnitSelectorOptions.cs" />
     <Compile Include="Advertising\IAdUnitFactory.cs" />
     <Compile Include="Advertising\IAdUnitSelector.cs" />
+    <Compile Include="Advertising\MicrosoftAdUnitBundle.cs" />
     <Compile Include="Advertising\MicrosoftBannerAdUnitBundle.cs" />
     <Compile Include="Advertising\MicrosoftInterstitialAdUnitBundle.cs" />
     <Compile Include="Analytics\Telemetry\AudibleTelemeter.cs" />
