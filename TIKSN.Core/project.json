@@ -2,7 +2,9 @@
   "supports": {},
   "dependencies": {
     "Autofac.Extensions.DependencyInjection": "4.0.0",
+    "codecracker.CSharp": "1.0.3",
     "LiteGuard": "1.1.0",
+    "Microsoft.CodeAnalysis.FxCopAnalyzers": "1.1.0",
     "Microsoft.EntityFrameworkCore": "1.1.1",
     "Microsoft.Extensions.Configuration": "1.1.1",
     "Microsoft.Extensions.Localization": "1.1.1",
