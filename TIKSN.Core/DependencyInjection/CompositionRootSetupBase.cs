@@ -34,9 +34,9 @@ namespace TIKSN.DependencyInjection
 
 			var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
 
-			ConfigureLoggingInternal(loggerFactory, serviceProvider);
+			ConfigureLoggingInternal(serviceProvider);
 
-			ValidateOptions(services, serviceProvider, loggerFactory);
+			ValidateOptions(services, serviceProvider);
 
 			return serviceProvider;
 		}
@@ -46,8 +46,10 @@ namespace TIKSN.DependencyInjection
 			loggerFactory.AddDebug(LogLevel.Trace);
 		}
 
-		protected void ConfigureLoggingInternal(ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
+		protected void ConfigureLoggingInternal(IServiceProvider serviceProvider)
 		{
+			var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+
 			ConfigureLogging(loggerFactory);
 
 			var serilogLoggerConfiguration = new LoggerConfiguration()
@@ -86,8 +88,10 @@ namespace TIKSN.DependencyInjection
 			builder.AddInMemoryCollection();
 		}
 
-		private void ValidateOptions(IServiceCollection services, IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
+		protected void ValidateOptions(IServiceCollection services, IServiceProvider serviceProvider)
 		{
+			var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+
 			foreach (var service in services)
 			{
 				if (service.ServiceType.GetTypeInfo().IsGenericType &&

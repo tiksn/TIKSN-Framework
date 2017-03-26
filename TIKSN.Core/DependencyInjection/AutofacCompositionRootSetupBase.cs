@@ -8,9 +8,21 @@ namespace TIKSN.DependencyInjection
 {
 	public abstract class AutofacCompositionRootSetupBase : CompositionRootSetupBase
 	{
+		public IContainer CreateContainer()
+		{
+			var container = CreateContainerInternal();
+			var serviceProvider = new AutofacServiceProvider(container);
+
+			ConfigureLoggingInternal(serviceProvider);
+
+			ValidateOptions(services, serviceProvider);
+
+			return container;
+		}
+
 		protected abstract void ConfigureContainerBuilder(ContainerBuilder builder);
 
-		protected override IServiceProvider CreateServiceProviderInternal()
+		protected IContainer CreateContainerInternal()
 		{
 			var builder = new ContainerBuilder();
 			builder.Populate(services);
@@ -22,9 +34,12 @@ namespace TIKSN.DependencyInjection
 
 			ConfigureContainerBuilder(builder);
 
-			var applicationContainer = builder.Build();
+			return builder.Build();
+		}
 
-			return new AutofacServiceProvider(applicationContainer);
+		protected override IServiceProvider CreateServiceProviderInternal()
+		{
+			return new AutofacServiceProvider(CreateContainerInternal());
 		}
 
 		protected virtual IEnumerable<IModule> GetAutofacModules()
