@@ -34,15 +34,7 @@ namespace TIKSN.DependencyInjection
 
 			var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
 
-			ConfigureLogging(loggerFactory);
-
-			var serilogLoggerConfiguration = new LoggerConfiguration()
-				.MinimumLevel.Verbose()
-				.Enrich.FromLogContext();
-
-			ConfigureSerilog(serilogLoggerConfiguration, serviceProvider);
-
-			loggerFactory.AddSerilog(serilogLoggerConfiguration.CreateLogger());
+			ConfigureLoggingInternal(loggerFactory, serviceProvider);
 
 			ValidateOptions(services, serviceProvider, loggerFactory);
 
@@ -52,6 +44,19 @@ namespace TIKSN.DependencyInjection
 		protected virtual void ConfigureLogging(ILoggerFactory loggerFactory)
 		{
 			loggerFactory.AddDebug(LogLevel.Trace);
+		}
+
+		protected void ConfigureLoggingInternal(ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
+		{
+			ConfigureLogging(loggerFactory);
+
+			var serilogLoggerConfiguration = new LoggerConfiguration()
+				.MinimumLevel.Verbose()
+				.Enrich.FromLogContext();
+
+			ConfigureSerilog(serilogLoggerConfiguration, serviceProvider);
+
+			loggerFactory.AddSerilog(serilogLoggerConfiguration.CreateLogger());
 		}
 
 		protected abstract void ConfigureOptions(IServiceCollection services, IConfigurationRoot configuration);
