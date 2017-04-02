@@ -77,6 +77,12 @@
     <Compile Include="Configuration\DatabaseConfiguration.cs" />
     <Compile Include="Configuration\IConfiguration.cs" />
     <Compile Include="Configuration\PushalotConfiguration.cs" />
+    <Compile Include="Data\AzureStorage\AzureStorageBase.cs" />
+    <Compile Include="Data\AzureStorage\AzureTableStorageExtensions.cs" />
+    <Compile Include="Data\AzureStorage\AzureTableStorageRepository.cs" />
+    <Compile Include="Data\AzureStorage\IAzureTableStorageQueryRepository.cs" />
+    <Compile Include="Data\AzureStorage\IAzureTableStorageRepository.cs" />
+    <Compile Include="Data\AzureStorage\IAzureTableStorageRepositoryInitializer.cs" />
     <Compile Include="Data\EntityRepositoryBase.cs" />
     <Compile Include="Data\EntityWriterRepository.cs" />
     <Compile Include="Data\IRepository.cs" />
