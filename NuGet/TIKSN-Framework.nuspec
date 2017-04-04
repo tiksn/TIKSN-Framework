@@ -107,6 +107,26 @@
 				<dependency id="System.Xml.XmlSerializer" version="4.3.0" />
 				<dependency id="WindowsAzure.Storage" version="8.1.1" />
 			</group>
+			<group targetFramework="netstandard1.5">
+				<dependency id="Autofac.Extensions.DependencyInjection" version="4.0.0" />
+				<dependency id="LiteGuard" version="1.1.0" />
+				<dependency id="Microsoft.EntityFrameworkCore" version="1.1.1" />
+				<dependency id="Microsoft.Extensions.Configuration" version="1.1.1" />
+				<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.1" />
+				<dependency id="Microsoft.Extensions.Localization" version="1.1.1" />
+				<dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.1" />
+				<dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.1" />
+				<dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.1" />
+				<dependency id="MongoDB.Driver" version="2.4.3" />
+				<dependency id="NETStandard.Library" version="1.6.1" />
+				<dependency id="Newtonsoft.Json" version="9.0.1" />
+				<dependency id="Serilog.Extensions.Logging" version="1.4.0" />
+				<dependency id="System.Reactive.Core" version="3.1.1" />
+				<dependency id="System.Reactive.Interfaces" version="3.1.1" />
+				<dependency id="System.Reactive.Linq" version="3.1.1" />
+				<dependency id="System.Xml.XmlSerializer" version="4.3.0" />
+				<dependency id="WindowsAzure.Storage" version="8.1.1" />
+			</group>
 			<group targetFramework="uap10.0">
 				<dependency id="Autofac.Extensions.DependencyInjection" version="4.0.0" />
 				<dependency id="Exceptionless.Signed" version="4.0.1934" />
@@ -142,6 +162,8 @@
 		<file src="..\TIKSN.Core\bin\Release\TIKSN.Core.pdb" target="lib\netcoreapp1.0" />
 		<file src="..\TIKSN.Core\bin\Release\TIKSN.Core.dll" target="lib\netstandard1.3" />
 		<file src="..\TIKSN.Core\bin\Release\TIKSN.Core.pdb" target="lib\netstandard1.3" />
+		<file src="..\TIKSN.Core\bin\Release\TIKSN.Core.dll" target="lib\netstandard1.5" />
+		<file src="..\TIKSN.Core\bin\Release\TIKSN.Core.pdb" target="lib\netstandard1.5" />
 		<file src="..\TIKSN.Core\bin\Release\TIKSN.Core.dll" target="lib\uap10.0" />
 		<file src="..\TIKSN.Core\bin\Release\TIKSN.Core.pdb" target="lib\uap10.0" />
 
