@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Data
 {
-	public interface IRepository<T> where T : class
+	public interface IRepository<T>
 	{
 		Task AddAsync(T entity, CancellationToken cancellationToken = default(CancellationToken));
 
