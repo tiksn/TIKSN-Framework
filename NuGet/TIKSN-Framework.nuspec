@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
 	<metadata>
 		<id>TIKSN-Framework</id>
-		<version>1.6.35-pre</version>
+		<version>1.6.36-pre</version>
 		<title>TIKSN Framework</title>
 		<authors>TIKSN</authors>
 		<owners>TIKSN</owners>
@@ -167,12 +167,23 @@
 		<file src="..\TIKSN.Core\bin\Release\TIKSN.Core.dll" target="lib\uap10.0" />
 		<file src="..\TIKSN.Core\bin\Release\TIKSN.Core.pdb" target="lib\uap10.0" />
 
+		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.dll" target="lib\MonoAndroid403" />
+		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\MonoAndroid403" />
+		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.dll" target="lib\net46" />
+		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\net46" />
+		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.dll" target="lib\netcoreapp1.0" />
+		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\netcoreapp1.0" />
+		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.dll" target="lib\netstandard1.3" />
+		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\netstandard1.3" />
+		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.dll" target="lib\netstandard1.5" />
+		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\netstandard1.5" />
+		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.dll" target="lib\uap10.0" />
+		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\uap10.0" />
+
 		<file src="..\TIKSN.Framework.Android\bin\Release\TIKSN.Framework.Android.dll" target="lib\MonoAndroid403" />
 		<file src="..\TIKSN.Framework.Android\bin\Release\TIKSN.Framework.Android.pdb" target="lib\MonoAndroid403" />
 		<file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.dll" target="lib\net46" />
 		<file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.pdb" target="lib\net46" />
-		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.dll" target="lib\netstandard1.5" />
-		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\netstandard1.5" />
 		<file src="..\TIKSN.Framework.Core\bin\Release\netstandard1.6\TIKSN.Framework.Core.dll" target="lib\netcoreapp1.0" />
 		<file src="..\TIKSN.Framework.Core\bin\Release\netstandard1.6\TIKSN.Framework.Core.pdb" target="lib\netcoreapp1.0" />
 		<file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.dll" target="lib\uap10.0" />
