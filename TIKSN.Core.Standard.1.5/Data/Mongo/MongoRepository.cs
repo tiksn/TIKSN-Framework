@@ -20,7 +20,7 @@ namespace TIKSN.Data.Mongo
 
 		public Task AddAsync(TDocument entity, CancellationToken cancellationToken) => collection.InsertOneAsync(entity, null, cancellationToken);
 
-		public Task AddOrUpdateAsync(T entity, CancellationToken cancellationToken) => collection.ReplaceOneAsync(item => item.ID.Equals(entity.ID), entity, new UpdateOptions { IsUpsert = true }, cancellationToken);
+		public Task AddOrUpdateAsync(TDocument entity, CancellationToken cancellationToken) => collection.ReplaceOneAsync(item => item.ID.Equals(entity.ID), entity, new UpdateOptions { IsUpsert = true }, cancellationToken);
 
 		public Task AddRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken) => collection.InsertManyAsync(entities, cancellationToken: cancellationToken);
 
