@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Data.AzureStorage
 {
-	public class AzureTableStorageRepositoryAdapter<T> : IRepository<T> where T : class, ITableEntity
+	public class AzureTableStorageRepositoryAdapter<T> : IRepository<T> where T : ITableEntity
 	{
 		private readonly IAzureTableStorageRepository<T> _azureTableStorageRepository;
 		private readonly IOptions<AzureTableStorageRepositoryAdapterOptions> _options;

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2CE66F97-5B89-401D-AEE5-BF2228760097}"
 EndProject
@@ -34,6 +34,8 @@ EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TIKSN.Framework.SharedMobile", "TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.shproj", "{7A9B69CB-8ABF-4474-A85A-11D5D9F3D005}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TIKSN.Framework.Platform", "TIKSN.Framework.Platform\TIKSN.Framework.Platform.shproj", "{B067DD13-E17B-45CC-8B35-D34A1876E0FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Core.Standard.1.5", "TIKSN.Core.Standard.1.5\TIKSN.Core.Standard.1.5.csproj", "{A803FB83-4643-4FDD-9313-6C0E037F55CB}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -192,6 +194,22 @@ Global
 		{ED598E91-6D8E-4132-A73D-A1A9A402F395}.Release|x64.Build.0 = Release|Any CPU
 		{ED598E91-6D8E-4132-A73D-A1A9A402F395}.Release|x86.ActiveCfg = Release|Any CPU
 		{ED598E91-6D8E-4132-A73D-A1A9A402F395}.Release|x86.Build.0 = Release|Any CPU
+		{A803FB83-4643-4FDD-9313-6C0E037F55CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A803FB83-4643-4FDD-9313-6C0E037F55CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A803FB83-4643-4FDD-9313-6C0E037F55CB}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{A803FB83-4643-4FDD-9313-6C0E037F55CB}.Debug|ARM.Build.0 = Debug|Any CPU
+		{A803FB83-4643-4FDD-9313-6C0E037F55CB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A803FB83-4643-4FDD-9313-6C0E037F55CB}.Debug|x64.Build.0 = Debug|Any CPU
+		{A803FB83-4643-4FDD-9313-6C0E037F55CB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A803FB83-4643-4FDD-9313-6C0E037F55CB}.Debug|x86.Build.0 = Debug|Any CPU
+		{A803FB83-4643-4FDD-9313-6C0E037F55CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A803FB83-4643-4FDD-9313-6C0E037F55CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A803FB83-4643-4FDD-9313-6C0E037F55CB}.Release|ARM.ActiveCfg = Release|Any CPU
+		{A803FB83-4643-4FDD-9313-6C0E037F55CB}.Release|ARM.Build.0 = Release|Any CPU
+		{A803FB83-4643-4FDD-9313-6C0E037F55CB}.Release|x64.ActiveCfg = Release|Any CPU
+		{A803FB83-4643-4FDD-9313-6C0E037F55CB}.Release|x64.Build.0 = Release|Any CPU
+		{A803FB83-4643-4FDD-9313-6C0E037F55CB}.Release|x86.ActiveCfg = Release|Any CPU
+		{A803FB83-4643-4FDD-9313-6C0E037F55CB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -208,5 +226,6 @@ Global
 		{ED598E91-6D8E-4132-A73D-A1A9A402F395} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{7A9B69CB-8ABF-4474-A85A-11D5D9F3D005} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{B067DD13-E17B-45CC-8B35-D34A1876E0FE} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
+		{A803FB83-4643-4FDD-9313-6C0E037F55CB} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 	EndGlobalSection
 EndGlobal

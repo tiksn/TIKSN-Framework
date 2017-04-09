@@ -27,6 +27,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\TIKSN.Core.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,6 +36,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\TIKSN.Core.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs">
@@ -86,8 +88,10 @@
     <Compile Include="Data\AzureStorage\IAzureTableStorageRepository.cs" />
     <Compile Include="Data\AzureStorage\IAzureTableStorageRepositoryInitializer.cs" />
     <Compile Include="Data\BatchOperationHelper.cs" />
+    <Compile Include="Data\Entity.cs" />
     <Compile Include="Data\EntityRepositoryBase.cs" />
     <Compile Include="Data\EntityWriterRepository.cs" />
+    <Compile Include="Data\IEntity.cs" />
     <Compile Include="Data\IMapper.cs" />
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Data\IUnitOfWork.cs" />

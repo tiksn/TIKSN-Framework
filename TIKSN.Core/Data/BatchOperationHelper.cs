@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Data
 {
-	internal static class BatchOperationHelper
+	public static class BatchOperationHelper
 	{
-		internal static Task BatchOperationAsync<T>(IEnumerable<T> entities, CancellationToken cancellationToken, Func<T, CancellationToken, Task> singleOperation)
+		public static Task BatchOperationAsync<T>(IEnumerable<T> entities, CancellationToken cancellationToken, Func<T, CancellationToken, Task> singleOperation)
 		{
 			Guard.AgainstNullArgument(nameof(entities), entities);
 			Guard.AgainstNullArgument(nameof(singleOperation), singleOperation);
