@@ -6,6 +6,8 @@ namespace TIKSN.Data.Mongo
 {
 	public interface IMongoRepository<TDocument, TField> : IRepository<TDocument> where TDocument : IEntity<TField> where TField : IEquatable<TField>
 	{
+		Task AddOrUpdateAsync(T entity, CancellationToken cancellationToken = default(CancellationToken));
+
 		Task<TDocument> GetAsync(TField id, CancellationToken cancellationToken = default(CancellationToken));
 	}
 }
