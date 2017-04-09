@@ -3,41 +3,50 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using System.Linq;
+using LiteGuard;
 
 namespace TIKSN.Data.Mongo
 {
-	public class MongoRepository<T> : IMongoRepository<T>
+	public class MongoRepository<TDocument, TField> : IMongoRepository<TDocument, TField> where TDocument : IEntity<TField> where TField : IEquatable<TField>
 	{
-		private readonly IMongoCollection<T> collection;
+		protected readonly IMongoCollection<TDocument> collection;
 
-		public MongoRepository(IMongoDatabaseProvider mongoDatabaseProvider, string collectionName)
+		protected MongoRepository(IMongoDatabaseProvider mongoDatabaseProvider, string collectionName)
 		{
 			var database = mongoDatabaseProvider.GetDatabase();
-			collection = database.GetCollection<T>(collectionName);
+			collection = database.GetCollection<TDocument>(collectionName);
 		}
 
-		public Task AddAsync(T entity, CancellationToken cancellationToken) => collection.InsertOneAsync(entity, cancellationToken);
-
-		public Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken) => collection.InsertManyAsync(entities, cancellationToken: cancellationToken);
-
-		public Task RemoveAsync(T entity, CancellationToken cancellationToken)
+		protected static FilterDefinition<TDocument> GetIdentityFilter(TField id)
 		{
-			throw new NotImplementedException();
+			return Builders<TDocument>.Filter.Eq(item => item.ID, id);
 		}
 
-		public Task RemoveRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken)
+		public Task AddAsync(TDocument entity, CancellationToken cancellationToken) => collection.InsertOneAsync(entity, null, cancellationToken);
+
+		public Task AddRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken) => collection.InsertManyAsync(entities, cancellationToken: cancellationToken);
+
+		public Task<TDocument> GetAsync(TField id, CancellationToken cancellationToken) => collection.Find(GetIdentityFilter(id)).SingleOrDefaultAsync(cancellationToken);
+
+		public Task RemoveAsync(TDocument entity, CancellationToken cancellationToken) => collection.DeleteOneAsync(item => item.ID.Equals(entity.ID), cancellationToken: cancellationToken);
+
+		public Task RemoveRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken)
 		{
-			throw new NotImplementedException();
+			Guard.AgainstNullArgument(nameof(entities), entities);
+
+			var filters = entities.Select(item => GetIdentityFilter(item.ID)).ToArray();
+
+			if (filters.Length == 0)
+				return Task.FromResult<object>(null);
+
+			var filter = Builders<TDocument>.Filter.Or(filters);
+
+			return collection.DeleteManyAsync(filter, cancellationToken);
 		}
 
-		public Task UpdateAsync(T entity, CancellationToken cancellationToken)
-		{
-			throw new NotImplementedException();
-		}
+		public Task UpdateAsync(TDocument entity, CancellationToken cancellationToken) => collection.ReplaceOneAsync(item => item.ID.Equals(entity.ID), entity, cancellationToken: cancellationToken);
 
-		public Task UpdateRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken)
-		{
-			throw new NotImplementedException();
-		}
+		public Task UpdateRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken) => BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, UpdateAsync);
 	}
 }
