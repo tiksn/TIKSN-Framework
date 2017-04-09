@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
 	<metadata>
 		<id>TIKSN-Framework</id>
-		<version>1.6.39-pre</version>
+		<version>1.6.40-pre</version>
 		<title>TIKSN Framework</title>
 		<authors>TIKSN</authors>
 		<owners>TIKSN</owners>
@@ -173,8 +173,6 @@
 		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\net46" />
 		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.dll" target="lib\netcoreapp1.0" />
 		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\netcoreapp1.0" />
-		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.dll" target="lib\netstandard1.3" />
-		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\netstandard1.3" />
 		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.dll" target="lib\netstandard1.5" />
 		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\netstandard1.5" />
 		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.dll" target="lib\uap10.0" />
