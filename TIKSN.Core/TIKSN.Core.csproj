@@ -86,8 +86,10 @@
     <Compile Include="Data\AzureStorage\IAzureTableStorageRepository.cs" />
     <Compile Include="Data\AzureStorage\IAzureTableStorageRepositoryInitializer.cs" />
     <Compile Include="Data\BatchOperationHelper.cs" />
+    <Compile Include="Data\Entity.cs" />
     <Compile Include="Data\EntityRepositoryBase.cs" />
     <Compile Include="Data\EntityWriterRepository.cs" />
+    <Compile Include="Data\IEntity.cs" />
     <Compile Include="Data\IMapper.cs" />
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Data\IUnitOfWork.cs" />
