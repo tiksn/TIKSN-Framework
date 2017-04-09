@@ -1,10 +1,10 @@
-﻿using System;
+﻿using LiteGuard;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MongoDB.Driver;
-using System.Linq;
-using LiteGuard;
 
 namespace TIKSN.Data.Mongo
 {
@@ -18,12 +18,9 @@ namespace TIKSN.Data.Mongo
 			collection = database.GetCollection<TDocument>(collectionName);
 		}
 
-		protected static FilterDefinition<TDocument> GetIdentityFilter(TField id)
-		{
-			return Builders<TDocument>.Filter.Eq(item => item.ID, id);
-		}
-
 		public Task AddAsync(TDocument entity, CancellationToken cancellationToken) => collection.InsertOneAsync(entity, null, cancellationToken);
+
+		public Task AddOrUpdateAsync(T entity, CancellationToken cancellationToken) => collection.ReplaceOneAsync(item => item.ID.Equals(entity.ID), entity, new UpdateOptions { IsUpsert = true }, cancellationToken);
 
 		public Task AddRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken) => collection.InsertManyAsync(entities, cancellationToken: cancellationToken);
 
@@ -48,5 +45,10 @@ namespace TIKSN.Data.Mongo
 		public Task UpdateAsync(TDocument entity, CancellationToken cancellationToken) => collection.ReplaceOneAsync(item => item.ID.Equals(entity.ID), entity, cancellationToken: cancellationToken);
 
 		public Task UpdateRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken) => BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, UpdateAsync);
+
+		protected static FilterDefinition<TDocument> GetIdentityFilter(TField id)
+		{
+			return Builders<TDocument>.Filter.Eq(item => item.ID, id);
+		}
 	}
 }
