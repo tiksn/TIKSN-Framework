@@ -24,8 +24,8 @@ namespace TIKSN.DependencyInjection
 
 			ConfigureOptions(services, configuration);
 
-			//services.AddSingleton(configuration);
-			//services.AddSingleton<IConfiguration>(configuration);
+			services.AddSingleton(configuration);
+			services.AddSingleton<IConfiguration>(configuration);
 		}
 
 		public IServiceProvider CreateServiceProvider()
