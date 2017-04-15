@@ -1,9 +1,9 @@
 ﻿{
 	"dependencies": {
 		"Autofac.Extensions.DependencyInjection": "4.0.0",
-		"Exceptionless.Signed": "4.0.1934",
+		"Exceptionless.Signed": "4.0.1951",
 		"HockeySDK.Core": "4.1.6",
-		"Microsoft.ApplicationInsights": "2.2.0",
+		"Microsoft.ApplicationInsights": "2.3.0",
 		"Microsoft.EntityFrameworkCore": "1.1.1",
 		"Microsoft.Extensions.Configuration": "1.1.1",
 		"Microsoft.Extensions.Logging.Debug": "1.1.1",
