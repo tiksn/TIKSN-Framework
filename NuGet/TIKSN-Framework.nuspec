@@ -20,6 +20,7 @@
 		</frameworkAssemblies>
 		<dependencies>
 			<group targetFramework=".NETFramework4.6">
+				<dependency id="Autofac" version="4.5.0" />
 				<dependency id="Autofac.Extensions.DependencyInjection" version="4.0.0" />
 				<dependency id="ConsoleTables" version="2.1.0" />
 				<dependency id="Exceptionless.Signed" version="4.0.1951" />
