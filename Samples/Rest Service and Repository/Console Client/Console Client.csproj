@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="TIKSN-Framework" Version="1.6.45-pre" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Common Models\Common Models.csproj" />
   </ItemGroup>
 
