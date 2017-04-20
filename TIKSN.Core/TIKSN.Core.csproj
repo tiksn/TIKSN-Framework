@@ -179,6 +179,7 @@
     <Compile Include="Web\Rest\RestAuthenticationType.cs" />
     <Compile Include="Web\Rest\RestContentAttribute.cs" />
     <Compile Include="Web\Rest\RestEndpointAttribute.cs" />
+    <Compile Include="Web\Rest\RestRepository.cs" />
     <Compile Include="Web\Rest\RestVerb.cs" />
     <Compile Include="Web\Rest\RestRequester.cs" />
     <Compile Include="Web\Rest\SerializationRestFactory.cs" />
