@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using TIKSN.Data;
+using Web_Service.Data.Entities;
 
 namespace Web_Service.Data.Repositories
 {
-    public class CultureRepository
-    {
-    }
+	public class CultureRepository : EntityRepositoryBase<CultureEntity>
+	{
+		public CultureRepository(InternationalizationContext context) : base(context)
+		{
+
+		}
+	}
 }

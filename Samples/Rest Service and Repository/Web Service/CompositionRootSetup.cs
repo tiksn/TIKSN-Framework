@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Web_Service.Data.Entities;
 using LiteGuard;
 using Microsoft.Extensions.Logging;
+using Web_Service.Data.Repositories;
 
 namespace Web_Service
 {
@@ -25,6 +26,9 @@ namespace Web_Service
 
 		protected override void ConfigureContainerBuilder(ContainerBuilder builder)
 		{
+			builder.RegisterType<CultureRepository>().As<ICultureRepository>().InstancePerLifetimeScope();
+			builder.RegisterType<CurrencyRepository>().As<ICurrencyRepository>().InstancePerLifetimeScope();
+			builder.RegisterType<CultureRepository>().As<IRegionRepository>().InstancePerLifetimeScope();
 		}
 
 		protected override IServiceCollection GetInitialServiceCollection()
