@@ -24,7 +24,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.1" />
-    <PackageReference Include="TIKSN-Framework" Version="1.6.45-pre" />
+    <PackageReference Include="TIKSN-Framework" Version="1.6.46-pre" />
 	<PackageReference Include="NetEscapades.Configuration.Yaml" Version="1.2.0" />
   </ItemGroup>
   <ItemGroup>
@@ -33,5 +33,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Common Models\Common Models.csproj" />
   </ItemGroup>
-
+  <PropertyGroup>
+      <PackageTargetFallback>$(PackageTargetFallback);dotnet</PackageTargetFallback>
+  </PropertyGroup>
 </Project>
