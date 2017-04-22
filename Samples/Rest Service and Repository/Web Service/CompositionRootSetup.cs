@@ -13,15 +13,23 @@ namespace Web_Service
 	public class CompositionRootSetup : AutofacCompositionRootSetupBase
 	{
 		private readonly IHostingEnvironment _env;
+		private readonly IServiceCollection _initialServiceCollection;
 
-		public CompositionRootSetup(IHostingEnvironment env)
+		public CompositionRootSetup(IHostingEnvironment env, IServiceCollection initialServiceCollection)
 		{
 			Guard.AgainstNullArgument(nameof(env), env);
+			Guard.AgainstNullArgument(nameof(initialServiceCollection), initialServiceCollection);
 			_env = env;
+			_initialServiceCollection = initialServiceCollection;
 		}
 
 		protected override void ConfigureContainerBuilder(ContainerBuilder builder)
 		{
+		}
+
+		protected override IServiceCollection GetInitialServiceCollection()
+		{
+			return _initialServiceCollection;
 		}
 
 		protected override void ConfigureLogging(ILoggerFactory loggerFactory)
