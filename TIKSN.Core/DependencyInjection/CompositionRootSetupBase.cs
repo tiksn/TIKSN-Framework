@@ -59,9 +59,14 @@ namespace TIKSN.DependencyInjection
 
 		protected abstract void ConfigureServices(IServiceCollection services);
 
+		protected virtual IServiceCollection GetInitialServiceCollection()
+		{
+			return new ServiceCollection();
+		}
+
 		protected IServiceCollection CreateServiceCollection()
 		{
-			var services = new ServiceCollection();
+			var services = GetInitialServiceCollection();
 			DependencyRegistration.Register(services);
 
 			ConfigureServices(services);
