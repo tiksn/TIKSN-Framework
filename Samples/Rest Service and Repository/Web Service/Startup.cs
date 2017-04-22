@@ -24,7 +24,7 @@ namespace Web_Service
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public IServiceProvider ConfigureServices(IServiceCollection services)
 		{
-			var compositionRootSetup = new CompositionRootSetup(_env);
+			var compositionRootSetup = new CompositionRootSetup(_env, services);
 			var serviceProvider = compositionRootSetup.CreateServiceProvider();
 			return serviceProvider;
 		}
