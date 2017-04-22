@@ -18,23 +18,6 @@ namespace TIKSN.DependencyInjection
 			services = new Lazy<IServiceCollection>(CreateServiceCollection, false);
 		}
 
-		protected IServiceCollection CreateServiceCollection()
-		{
-			var services = new ServiceCollection();
-			DependencyRegistration.Register(services);
-
-			ConfigureServices(services);
-
-			var configuration = GetConfigurationRoot();
-
-			ConfigureOptions(services, configuration);
-
-			services.AddSingleton(configuration);
-			services.AddSingleton<IConfiguration>(configuration);
-
-			return services;
-		}
-
 		public IServiceProvider CreateServiceProvider()
 		{
 			var serviceProvider = CreateServiceProviderInternal();
@@ -75,6 +58,23 @@ namespace TIKSN.DependencyInjection
 		}
 
 		protected abstract void ConfigureServices(IServiceCollection services);
+
+		protected IServiceCollection CreateServiceCollection()
+		{
+			var services = new ServiceCollection();
+			DependencyRegistration.Register(services);
+
+			ConfigureServices(services);
+
+			var configuration = GetConfigurationRoot();
+
+			ConfigureOptions(services, configuration);
+
+			services.AddSingleton(configuration);
+			services.AddSingleton<IConfiguration>(configuration);
+
+			return services;
+		}
 
 		protected virtual IServiceProvider CreateServiceProviderInternal()
 		{
@@ -126,7 +126,7 @@ namespace TIKSN.DependencyInjection
 
 						if (pInfo.PropertyType == typeof(string))
 							isNotSpecified = string.IsNullOrEmpty(pInfo.GetValue(options.Value)?.ToString());
-						else if (pInfo.GetValue(options.Value) == Activator.CreateInstance(pInfo.PropertyType) && pInfo.PropertyType.GetConstructor(Type.EmptyTypes) != null)
+						else if (pInfo.PropertyType.GetConstructor(Type.EmptyTypes) != null && pInfo.GetValue(options.Value) == Activator.CreateInstance(pInfo.PropertyType))
 							isNotSpecified = true;
 						else
 							logger.LogDebug(2016759580, $"{pInfo.Name} property of {optionType.FullName} object is type of {pInfo.PropertyType}.");
