@@ -13,7 +13,7 @@ namespace Web_Service.Data.Entities
         public int? RegionId { get; set; }
 
         public virtual CultureEntity Parent { get; set; }
-        public virtual ICollection<CultureEntity> InverseParent { get; set; }
+        public virtual ICollection<CultureEntity> Children { get; set; }
         public virtual RegionEntity Region { get; set; }
     }
 }
