@@ -28,7 +28,7 @@ namespace Web_Service
 		{
 			builder.RegisterType<CultureRepository>().As<ICultureRepository>().InstancePerLifetimeScope();
 			builder.RegisterType<CurrencyRepository>().As<ICurrencyRepository>().InstancePerLifetimeScope();
-			builder.RegisterType<CultureRepository>().As<IRegionRepository>().InstancePerLifetimeScope();
+			builder.RegisterType<RegionRepository>().As<IRegionRepository>().InstancePerLifetimeScope();
 		}
 
 		protected override IServiceCollection GetInitialServiceCollection()
