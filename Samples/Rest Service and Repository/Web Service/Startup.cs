@@ -9,9 +9,16 @@ namespace Web_Service
 	public class Startup
 	{
 		private IHostingEnvironment _env;
+
 		public Startup(IHostingEnvironment env)
 		{
 			_env = env;
+		}
+
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+		{
+			app.UseMvc();
 		}
 
 		// This method gets called by the runtime. Use this method to add services to the container.
@@ -20,12 +27,6 @@ namespace Web_Service
 			var compositionRootSetup = new CompositionRootSetup(_env);
 			var serviceProvider = compositionRootSetup.CreateServiceProvider();
 			return serviceProvider;
-		}
-
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-		{
-			//app.UseMvc();
 		}
 	}
 }
