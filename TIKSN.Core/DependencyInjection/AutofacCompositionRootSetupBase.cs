@@ -15,7 +15,7 @@ namespace TIKSN.DependencyInjection
 
 			ConfigureLoggingInternal(serviceProvider);
 
-			ValidateOptions(services, serviceProvider);
+			ValidateOptions(services.Value, serviceProvider);
 
 			return container;
 		}
@@ -25,7 +25,7 @@ namespace TIKSN.DependencyInjection
 		protected IContainer CreateContainerInternal()
 		{
 			var builder = new ContainerBuilder();
-			builder.Populate(services);
+			builder.Populate(services.Value);
 
 			foreach (var module in GetAutofacModules())
 			{

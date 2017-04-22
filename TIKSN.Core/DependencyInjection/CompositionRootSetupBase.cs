@@ -11,11 +11,16 @@ namespace TIKSN.DependencyInjection
 {
 	public abstract class CompositionRootSetupBase
 	{
-		protected readonly IServiceCollection services;
+		protected readonly Lazy<IServiceCollection> services;
 
 		protected CompositionRootSetupBase()
 		{
-			services = new ServiceCollection();
+			services = new Lazy<IServiceCollection>(CreateServiceCollection, false);
+		}
+
+		protected IServiceCollection CreateServiceCollection()
+		{
+			var services = new ServiceCollection();
 			DependencyRegistration.Register(services);
 
 			ConfigureServices(services);
@@ -26,6 +31,8 @@ namespace TIKSN.DependencyInjection
 
 			services.AddSingleton(configuration);
 			services.AddSingleton<IConfiguration>(configuration);
+
+			return services;
 		}
 
 		public IServiceProvider CreateServiceProvider()
@@ -36,7 +43,7 @@ namespace TIKSN.DependencyInjection
 
 			ConfigureLoggingInternal(serviceProvider);
 
-			ValidateOptions(services, serviceProvider);
+			ValidateOptions(services.Value, serviceProvider);
 
 			return serviceProvider;
 		}
@@ -71,7 +78,7 @@ namespace TIKSN.DependencyInjection
 
 		protected virtual IServiceProvider CreateServiceProviderInternal()
 		{
-			return services.BuildServiceProvider();
+			return services.Value.BuildServiceProvider();
 		}
 
 		protected virtual IConfigurationRoot GetConfigurationRoot()
