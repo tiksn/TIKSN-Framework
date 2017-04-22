@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using TIKSN.Data;
+using Web_Service.Data.Entities;
 
 namespace Web_Service.Data.Repositories
 {
-    public class RegionRepository
-    {
+	public class RegionRepository : EntityRepositoryBase<RegionEntity>
+	{
+		public RegionRepository(InternationalizationContext context) : base(context)
+		{
+
+		}
     }
 }
