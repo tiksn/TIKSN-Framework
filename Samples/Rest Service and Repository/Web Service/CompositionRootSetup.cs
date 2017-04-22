@@ -39,7 +39,7 @@ namespace Web_Service
 		protected override void ConfigureServices(IServiceCollection services)
 		{
 			services.AddSingleton(_env);
-			services.AddMvcCore();
+			services.AddMvc();
 			services.AddEntityFrameworkSqlServer();
 			services.AddDbContext<InternationalizationContext>(options =>
 				options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Internationalization;Trusted_Connection=True;"));
