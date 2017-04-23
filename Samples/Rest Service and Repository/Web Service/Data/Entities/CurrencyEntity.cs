@@ -14,7 +14,7 @@ namespace Web_Service.Data.Entities
         public int Number { get; set; }
         public string CurrencySymbol { get; set; }
         public bool IsCurrent { get; set; }
-        public string IsFund { get; set; }
+        public bool IsFund { get; set; }
 
         public virtual ICollection<RegionEntity> Regions { get; set; }
     }
