@@ -5,6 +5,10 @@ namespace Web_Service.Data.Entities
 {
 	public partial class InternationalizationContext : DbContext
 	{
+		public InternationalizationContext(DbContextOptions<InternationalizationContext> options) : base(options)
+		{
+
+		}
 		public virtual DbSet<CultureEntity> Cultures { get; set; }
 		public virtual DbSet<CurrencyEntity> Currencies { get; set; }
 		public virtual DbSet<RegionEntity> Regions { get; set; }

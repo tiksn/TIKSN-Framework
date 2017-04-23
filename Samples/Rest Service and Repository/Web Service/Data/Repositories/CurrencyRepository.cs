@@ -3,7 +3,7 @@ using Web_Service.Data.Entities;
 
 namespace Web_Service.Data.Repositories
 {
-	public class CurrencyRepository: EntityRepositoryBase<CurrencyEntity>, ICurrencyRepository
+	public class CurrencyRepository: EntityRepository<InternationalizationContext, CurrencyEntity>, ICurrencyRepository
 	{
 		public CurrencyRepository(InternationalizationContext context) : base(context)
 		{

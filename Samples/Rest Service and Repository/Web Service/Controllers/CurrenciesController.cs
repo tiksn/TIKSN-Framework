@@ -5,6 +5,7 @@ using Web_Service.Data.Repositories;
 using Common_Models;
 using AutoMapper;
 using Web_Service.Data.Entities;
+using TIKSN.Data;
 
 namespace Web_Service.Controllers
 {

@@ -9,6 +9,7 @@ using LiteGuard;
 using Microsoft.Extensions.Logging;
 using Web_Service.Data.Repositories;
 using AutoMapper;
+using TIKSN.Data;
 
 namespace Web_Service
 {
@@ -31,7 +32,7 @@ namespace Web_Service
 			builder.RegisterType<CurrencyRepository>().As<ICurrencyRepository>().InstancePerLifetimeScope();
 			builder.RegisterType<RegionRepository>().As<IRegionRepository>().InstancePerLifetimeScope();
 
-			builder.RegisterType<UnitOfWorkFactory>().As<IUnitOfWorkFactory>().InstancePerLifetimeScope();
+			builder.RegisterType<UnitOfWorkFactory<InternationalizationContext>>().As<IUnitOfWorkFactory>().InstancePerLifetimeScope();
 		}
 
 		protected override IServiceCollection GetInitialServiceCollection()
