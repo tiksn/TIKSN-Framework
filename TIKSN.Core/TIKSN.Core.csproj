@@ -89,8 +89,7 @@
     <Compile Include="Data\AzureStorage\IAzureTableStorageRepositoryInitializer.cs" />
     <Compile Include="Data\BatchOperationHelper.cs" />
     <Compile Include="Data\Entity.cs" />
-    <Compile Include="Data\EntityRepositoryBase.cs" />
-    <Compile Include="Data\EntityWriterRepository.cs" />
+    <Compile Include="Data\EntityRepository.cs" />
     <Compile Include="Data\IEntity.cs" />
     <Compile Include="Data\IMapper.cs" />
     <Compile Include="Data\IRepository.cs" />
@@ -98,6 +97,7 @@
     <Compile Include="Data\EntityUnitOfWork.cs" />
     <Compile Include="Data\IUnitOfWorkFactory.cs" />
     <Compile Include="Data\UnitOfWorkBase.cs" />
+    <Compile Include="Data\UnitOfWorkFactory.cs" />
     <Compile Include="DependencyInjection\AutofacCompositionRootSetupBase.cs" />
     <Compile Include="DependencyInjection\CompositionRootSetupBase.cs" />
     <Compile Include="DependencyInjection\CoreModule.cs" />
