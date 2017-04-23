@@ -22,11 +22,12 @@ namespace Web_Service.Controllers
 			this.mapper = mapper;
 		}
 
-		// GET api/values
 		[HttpGet]
-		public IEnumerable<string> Get()
+		public async Task<IEnumerable<CurrencyModel>> Get()
 		{
-			return new string[] { "value1", "value2" };
+			var entities = await currencyRepository.GetAllAsync();
+
+			return mapper.Map<IEnumerable<CurrencyModel>>(entities);
 		}
 
 		// GET api/values/5
