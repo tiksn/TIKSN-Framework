@@ -1,14 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Web_Service.Data.Repositories;
 
 namespace Web_Service.Controllers
 {
-    [Route("api/[controller]")]
+	[Route("api/[controller]")]
     public class CulturesController : Controller
     {
+		private readonly ICultureRepository cultureRepository;
+
+		public CulturesController(ICultureRepository cultureRepository)
+		{
+			this.cultureRepository = cultureRepository;
+		}
+
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()

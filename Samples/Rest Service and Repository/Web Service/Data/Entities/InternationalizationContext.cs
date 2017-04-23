@@ -9,10 +9,6 @@ namespace Web_Service.Data.Entities
 		public virtual DbSet<CurrencyEntity> Currencies { get; set; }
 		public virtual DbSet<RegionEntity> Regions { get; set; }
 
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-		}
-
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<CultureEntity>(entity =>
