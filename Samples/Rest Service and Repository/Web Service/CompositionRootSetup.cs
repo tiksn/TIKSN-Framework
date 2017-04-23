@@ -8,6 +8,7 @@ using Web_Service.Data.Entities;
 using LiteGuard;
 using Microsoft.Extensions.Logging;
 using Web_Service.Data.Repositories;
+using AutoMapper;
 
 namespace Web_Service
 {
@@ -29,6 +30,8 @@ namespace Web_Service
 			builder.RegisterType<CultureRepository>().As<ICultureRepository>().InstancePerLifetimeScope();
 			builder.RegisterType<CurrencyRepository>().As<ICurrencyRepository>().InstancePerLifetimeScope();
 			builder.RegisterType<RegionRepository>().As<IRegionRepository>().InstancePerLifetimeScope();
+
+			builder.RegisterType<UnitOfWorkFactory>().As<IUnitOfWorkFactory>().InstancePerLifetimeScope();
 		}
 
 		protected override IServiceCollection GetInitialServiceCollection()
@@ -53,6 +56,7 @@ namespace Web_Service
 			services.AddSingleton(_env);
 			services.AddMvc();
 			services.AddEntityFrameworkSqlServer();
+			services.AddAutoMapper();
 			services.AddDbContext<InternationalizationContext>(options =>
 				options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Internationalization;Trusted_Connection=True;"));
 		}
