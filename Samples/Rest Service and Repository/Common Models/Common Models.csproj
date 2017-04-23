@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
+    <RootNamespace>Common_Models</RootNamespace>
   </PropertyGroup>
 
 </Project>
