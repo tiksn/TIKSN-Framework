@@ -76,9 +76,13 @@ namespace Web_Service.Data.Entities
 					.IsRequired()
 					.HasColumnType("nchar(10)");
 
+				entity.Property(e => e.IsCurrent)
+					.IsRequired()
+					.HasColumnType("bit");
+
 				entity.Property(e => e.IsFund)
 					.IsRequired()
-					.HasColumnType("nchar(10)");
+					.HasColumnType("bit");
 			});
 
 			modelBuilder.Entity<RegionEntity>(entity =>
