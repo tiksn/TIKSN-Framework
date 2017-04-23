@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Web_Service.Data.Repositories;
+using TIKSN.Data;
 
 namespace Web_Service.Controllers
 {
