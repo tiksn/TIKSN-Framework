@@ -44,7 +44,7 @@ namespace Web_Service.Data.Entities
 				entity.Property(e => e.RegionId).HasColumnName("RegionID");
 
 				entity.HasOne(d => d.Parent)
-					.WithMany(p => p.InverseParent)
+					.WithMany(p => p.Children)
 					.HasForeignKey(d => d.ParentId)
 					.HasConstraintName("FK_Cultures_Cultures");
 
