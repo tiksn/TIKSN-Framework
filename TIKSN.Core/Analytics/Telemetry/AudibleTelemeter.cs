@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using TIKSN.Speech;
+using System.Collections.Generic;
 
 namespace TIKSN.Analytics.Telemetry
 {
@@ -17,6 +18,11 @@ namespace TIKSN.Analytics.Telemetry
 		}
 
 		public Task TrackEvent(string name)
+		{
+			return _textToSpeechService.SpeakAsync($"Event {name} occurred.");
+		}
+
+		public Task TrackEvent(string name, IDictionary<string, string> properties)
 		{
 			return _textToSpeechService.SpeakAsync($"Event {name} occurred.");
 		}

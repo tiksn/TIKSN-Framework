@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TIKSN.Analytics.Telemetry
 {
@@ -16,6 +18,13 @@ namespace TIKSN.Analytics.Telemetry
 		public Task TrackEvent(string name)
 		{
 			_logger.LogInformation("Telemetry Event '{0}' tracked.", name);
+
+			return Task.FromResult<object>(null);
+		}
+
+		public Task TrackEvent(string name, IDictionary<string, string> properties)
+		{
+			_logger.LogInformation("Telemetry Event '{0}' tracked. with properties {1}", name, string.Join(" ", properties.Select(item => string.Format("{0} is {1}", item.Key, item.Value))));
 
 			return Task.FromResult<object>(null);
 		}
