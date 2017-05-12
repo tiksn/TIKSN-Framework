@@ -34,5 +34,23 @@ namespace TIKSN.Analytics.Telemetry
 				}
 			}
 		}
+
+		public async Task TrackEvent(string name, IDictionary<string, string> properties)
+		{
+			if (commonConfiguration.GetConfiguration().IsEventTrackingEnabled)
+			{
+				foreach (var eventTelemeter in eventTelemeters)
+				{
+					try
+					{
+						await eventTelemeter.TrackEvent(name, properties);
+					}
+					catch (Exception ex)
+					{
+						Debug.WriteLine(ex);
+					}
+				}
+			}
+		}
 	}
 }
