@@ -3,11 +3,9 @@
   <PropertyGroup>
     <AssemblyTitle>TIKSN.Framework.Core</AssemblyTitle>
     <VersionPrefix>1.6.0</VersionPrefix>
-    <TargetFramework>netstandard1.6</TargetFramework>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
     <AssemblyName>TIKSN.Framework.Core</AssemblyName>
     <PackageId>TIKSN.Framework.Core</PackageId>
-    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
-    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
@@ -17,11 +15,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard1.6\TIKSN.Framework.Core.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netcoreapp1.1\TIKSN.Framework.Core.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard1.6\TIKSN.Framework.Core.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netcoreapp1.1\TIKSN.Framework.Core.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,11 +27,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.0.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.1.0" />
     <PackageReference Include="codecracker.CSharp" Version="1.0.3" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.3.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="1.4.0" />
   </ItemGroup>
 
