@@ -17,7 +17,9 @@
 		"System.Reactive.Linq": "3.1.1",
 		"Template10": "1.1.12",
 		"Microsoft.CodeAnalysis.FxCopAnalyzers": "1.1.0",
-		"CodeCracker.CSharp": "1.0.3"
+		"CodeCracker.CSharp": "1.0.3",
+		"Microsoft.Azure.Mobile.Analytics": "0.11.1",
+		"Microsoft.Azure.Mobile.Crashes": "0.11.1"
 	},
 	"frameworks": {
 		"uap10.0": {}
