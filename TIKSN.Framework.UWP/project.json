@@ -1,12 +1,12 @@
 ﻿{
 	"dependencies": {
-		"Autofac.Extensions.DependencyInjection": "4.0.0",
+		"Autofac.Extensions.DependencyInjection": "4.1.0",
 		"Exceptionless.Signed": "4.0.1951",
 		"HockeySDK.Core": "4.1.6",
 		"Microsoft.ApplicationInsights": "2.3.0",
-		"Microsoft.EntityFrameworkCore": "1.1.1",
-		"Microsoft.Extensions.Configuration": "1.1.1",
-		"Microsoft.Extensions.Logging.Debug": "1.1.1",
+		"Microsoft.EntityFrameworkCore": "1.1.2",
+		"Microsoft.Extensions.Configuration": "1.1.2",
+		"Microsoft.Extensions.Logging.Debug": "1.1.2",
 		"Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
 		"Newtonsoft.Json": "10.0.2",
 		"Serilog.Extensions.Logging": "1.4.0",
