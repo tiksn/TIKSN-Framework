@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
 	<metadata>
 		<id>TIKSN-Framework</id>
-		<version>1.6.50-pre</version>
+		<version>1.6.51-pre</version>
 		<title>TIKSN Framework</title>
 		<authors>TIKSN</authors>
 		<owners>TIKSN</owners>
@@ -182,9 +182,9 @@
 		<file src="..\TIKSN.Core\bin\Release\TIKSN.Core.pdb" target="lib\uap10.0" />
 
 		<!-- Standard 1.5 -->
-		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.dll" target="lib\MonoAndroid403" />
+		<!--<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.dll" target="lib\MonoAndroid403" />
 		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.xml" target="lib\MonoAndroid403" />
-		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\MonoAndroid403" />
+		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\MonoAndroid403" />-->
 		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.dll" target="lib\net46" />
 		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.xml" target="lib\net46" />
 		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\net46" />
@@ -194,9 +194,9 @@
 		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.dll" target="lib\netstandard1.5" />
 		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.xml" target="lib\netstandard1.5" />
 		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\netstandard1.5" />
-		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.dll" target="lib\uap10.0" />
+		<!--<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.dll" target="lib\uap10.0" />
 		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.xml" target="lib\uap10.0" />
-		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\uap10.0" />
+		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\uap10.0" />-->
 
 		<!-- Platform: Xamarin Android -->
 		<file src="..\TIKSN.Framework.Android\bin\Release\TIKSN.Framework.Android.dll" target="lib\MonoAndroid403" />
