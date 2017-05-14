@@ -213,6 +213,11 @@
 		<file src="..\TIKSN.Framework.Core\bin\Release\netcoreapp1.1\TIKSN.Framework.Core.xml" target="lib\netcoreapp1.1" />
 		<file src="..\TIKSN.Framework.Core\bin\Release\netcoreapp1.1\TIKSN.Framework.Core.pdb" target="lib\netcoreapp1.1" />
 
+		<!-- Platform: UWP -->
+		<file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.dll" target="lib\uap10.0" />
+		<file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.xml" target="lib\uap10.0" />
+		<file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.pdb" target="lib\uap10.0" />
+
 		<!-- Platform: UWP: x86 -->
 		<file src="..\TIKSN.Framework.UWP\bin\x86\Release\TIKSN.Framework.UWP.dll" target="runtimes\win10-x86\lib\uap10.0" />
 		<file src="..\TIKSN.Framework.UWP\bin\x86\Release\TIKSN.Framework.UWP.xml" target="runtimes\win10-x86\lib\uap10.0" />
