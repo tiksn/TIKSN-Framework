@@ -138,7 +138,7 @@
 				<dependency id="LiteGuard" version="1.1.0" />
 				<dependency id="Microsoft.ApplicationInsights" version="2.3.0" />
 				<dependency id="Microsoft.Azure.Mobile.Analytics" version="0.11.1" />
-				<dependency id="Microsoft.Azure.Mobile.Crashes" version="0.11.1" />
+				<!--<dependency id="Microsoft.Azure.Mobile.Crashes" version="0.11.1" />-->
 				<dependency id="Microsoft.EntityFrameworkCore" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.2" />
