@@ -4,11 +4,11 @@ using System;
 
 namespace TIKSN.Data
 {
-	public class UnitOfWorkFactory<TContext> : IUnitOfWorkFactory where TContext : DbContext
+	public class EntityUnitOfWorkFactory<TContext> : IUnitOfWorkFactory where TContext : DbContext
 	{
 		private readonly IServiceProvider serviceProvider;
 
-		public UnitOfWorkFactory(IServiceProvider serviceProvider)
+		public EntityUnitOfWorkFactory(IServiceProvider serviceProvider)
 		{
 			this.serviceProvider = serviceProvider;
 		}

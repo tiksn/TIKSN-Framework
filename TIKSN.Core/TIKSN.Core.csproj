@@ -97,7 +97,7 @@
     <Compile Include="Data\EntityUnitOfWork.cs" />
     <Compile Include="Data\IUnitOfWorkFactory.cs" />
     <Compile Include="Data\UnitOfWorkBase.cs" />
-    <Compile Include="Data\UnitOfWorkFactory.cs" />
+    <Compile Include="Data\EntityUnitOfWorkFactory.cs" />
     <Compile Include="DependencyInjection\AutofacCompositionRootSetupBase.cs" />
     <Compile Include="DependencyInjection\CompositionRootSetupBase.cs" />
     <Compile Include="DependencyInjection\CoreModule.cs" />

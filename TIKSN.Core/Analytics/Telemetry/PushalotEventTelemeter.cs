@@ -17,6 +17,11 @@ namespace TIKSN.Analytics.Telemetry
 			await SendMessage("Event", name);
 		}
 
+		public async Task TrackEvent(string name, IDictionary<string, string> properties)
+		{
+			await SendMessage("Event", $"{name}. {string.Join(" ", properties.Select(item => string.Format("{0} is {1}", item.Key, item.Value)))}");
+		}
+
 		protected override IEnumerable<string> GetAuthorizationTokens(PushalotConfiguration pushalotConfiguration)
 		{
 			return pushalotConfiguration.EventAuthorizationTokens;
