@@ -4,7 +4,7 @@ namespace TIKSN.Advertising
 {
 	public abstract class MicrosoftAdUnitBundle : AdUnitBundle
 	{
-		public MicrosoftAdUnitBundle(AdUnit designTime, string tabletApplicationId, string tabletAdUnitId, string mobileApplicationId, string mobileAdUnitId)
+		protected MicrosoftAdUnitBundle(AdUnit designTime, string tabletApplicationId, string tabletAdUnitId, string mobileApplicationId, string mobileAdUnitId)
 			: base(designTime, CreateAdUnit(tabletApplicationId, tabletAdUnitId), CreateAdUnit(mobileApplicationId, mobileAdUnitId))
 		{
 		}
