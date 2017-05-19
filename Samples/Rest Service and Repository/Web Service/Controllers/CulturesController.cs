@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Web_Service.Data.Repositories;
@@ -40,8 +41,11 @@ namespace Web_Service.Controllers
         }
 
         [HttpPost]
-        public async Task Post([FromBody]CultureSubmissionModel model)
+        public async Task Post([FromBody]CultureModel model)
         {
+            if (model.Id != 0)
+                throw new ArgumentException();
+
             using (var unitOfWork = _unitOfWorkFactory.Create())
             {
                 var entity = _mapper.Map<CultureEntity>(model);
@@ -53,8 +57,14 @@ namespace Web_Service.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task Put(int id, [FromBody]CultureSubmissionModel model)
+        public async Task Put(int id, [FromBody]CultureModel model)
         {
+            if (id != 0)
+                throw new ArgumentException();
+
+            if (model.Id != 0 && model.Id != id)
+                throw new ArgumentException();
+
             using (var unitOfWork = _unitOfWorkFactory.Create())
             {
                 var entity = _mapper.Map<CultureEntity>(model);
