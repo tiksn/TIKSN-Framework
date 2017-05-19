@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using TIKSN.DependencyInjection;
 
 namespace Console_Client
@@ -17,6 +18,11 @@ namespace Console_Client
 
 		protected override void ConfigureServices(IServiceCollection services)
 		{
+		}
+
+		protected override void ConfigureLogging(ILoggerFactory loggerFactory)
+		{
+			loggerFactory.AddConsole();
 		}
 	}
 }

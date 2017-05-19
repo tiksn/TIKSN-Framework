@@ -8,6 +8,8 @@ namespace Console_Client
 		{
 			var compositionRootSetup = new CompositionRootSetup();
 			var serviceProvider = compositionRootSetup.CreateServiceProvider();
+
+			Console.ReadLine();
 		}
 	}
 }
