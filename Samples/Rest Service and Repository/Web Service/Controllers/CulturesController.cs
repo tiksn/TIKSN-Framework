@@ -35,6 +35,9 @@ namespace Web_Service.Controllers
         [HttpGet("{id}")]
         public async Task<CultureModel> Get(int id)
         {
+            if (id != 0)
+                throw new ArgumentException();
+
             var entity = await cultureRepository.GetAsync(id);
 
             return _mapper.Map<CultureModel>(entity);
