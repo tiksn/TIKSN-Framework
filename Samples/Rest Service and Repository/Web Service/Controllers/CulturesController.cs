@@ -1,49 +1,82 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Web_Service.Data.Repositories;
+using AutoMapper;
+using Common_Models;
+using TIKSN.Data;
+using Web_Service.Data.Entities;
 
 namespace Web_Service.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
     public class CulturesController : Controller
     {
-		private readonly ICultureRepository cultureRepository;
+        private readonly ICultureRepository cultureRepository;
+        private readonly IUnitOfWorkFactory _unitOfWorkFactory;
+        private readonly IMapper _mapper;
 
-		public CulturesController(ICultureRepository cultureRepository)
-		{
-			this.cultureRepository = cultureRepository;
-		}
+        public CulturesController(ICultureRepository cultureRepository, IUnitOfWorkFactory unitOfWorkFactory, IMapper mapper)
+        {
+            this.cultureRepository = cultureRepository;
+            _unitOfWorkFactory = unitOfWorkFactory;
+            _mapper = mapper;
+        }
 
-        // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IEnumerable<CultureModel>> Get()
         {
-            return new string[] { "value1", "value2" };
+            var entities = await cultureRepository.GetAllAsync();
+
+            return _mapper.Map<IEnumerable<CultureModel>>(entities);
         }
 
-        // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<CultureModel> Get(int id)
         {
-            return "value";
+            var entity = await cultureRepository.GetAsync(id);
+
+            return _mapper.Map<CultureModel>(entity);
         }
 
-        // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task Post([FromBody]CultureSubmissionModel model)
         {
+            using (var unitOfWork = _unitOfWorkFactory.Create())
+            {
+                var entity = _mapper.Map<CultureEntity>(model);
+
+                await cultureRepository.AddAsync(entity);
+
+                await unitOfWork.CompleteAsync();
+            }
         }
 
-        // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public async Task Put(int id, [FromBody]CultureSubmissionModel model)
         {
+            using (var unitOfWork = _unitOfWorkFactory.Create())
+            {
+                var entity = _mapper.Map<CultureEntity>(model);
+                entity.Id = id;
+
+                await cultureRepository.UpdateAsync(entity);
+
+                await unitOfWork.CompleteAsync();
+            }
         }
 
-        // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
+            using (var unitOfWork = _unitOfWorkFactory.Create())
+            {
+                var entity = await cultureRepository.GetAsync(id);
+
+                await cultureRepository.RemoveAsync(entity);
+
+                await unitOfWork.CompleteAsync();
+            }
         }
     }
 }
