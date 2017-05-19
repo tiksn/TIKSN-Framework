@@ -174,12 +174,14 @@
     <Compile Include="Web\Rest\IDeserializerRestFactory.cs" />
     <Compile Include="Web\Rest\IHttpClientFactory.cs" />
     <Compile Include="Web\Rest\IRestAuthenticationTokenProvider.cs" />
+    <Compile Include="Web\Rest\IRestRepository.cs" />
     <Compile Include="Web\Rest\IRestRequester.cs" />
     <Compile Include="Web\Rest\ISerializerRestFactory.cs" />
     <Compile Include="Web\Rest\RestAuthenticationType.cs" />
     <Compile Include="Web\Rest\RestContentAttribute.cs" />
     <Compile Include="Web\Rest\RestEndpointAttribute.cs" />
     <Compile Include="Web\Rest\RestRepository.cs" />
+    <Compile Include="Web\Rest\RestRepositoryOptions.cs" />
     <Compile Include="Web\Rest\RestVerb.cs" />
     <Compile Include="Web\Rest\RestRequester.cs" />
     <Compile Include="Web\Rest\SerializationRestFactory.cs" />
