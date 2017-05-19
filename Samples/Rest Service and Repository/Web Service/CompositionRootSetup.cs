@@ -32,7 +32,7 @@ namespace Web_Service
 			builder.RegisterType<CurrencyRepository>().As<ICurrencyRepository>().InstancePerLifetimeScope();
 			builder.RegisterType<RegionRepository>().As<IRegionRepository>().InstancePerLifetimeScope();
 
-			builder.RegisterType<UnitOfWorkFactory<InternationalizationContext>>().As<IUnitOfWorkFactory>().InstancePerLifetimeScope();
+			builder.RegisterType<EntityUnitOfWorkFactory<InternationalizationContext>>().As<IUnitOfWorkFactory>().InstancePerLifetimeScope();
 		}
 
 		protected override IServiceCollection GetInitialServiceCollection()
