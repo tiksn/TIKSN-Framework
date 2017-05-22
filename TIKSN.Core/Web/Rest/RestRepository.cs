@@ -41,12 +41,12 @@ namespace TIKSN.Web.Rest
 			return AddObjectAsync(entities, cancellationToken);
 		}
 
-		public async Task<TEntity> GetAsync(string id, CancellationToken cancellationToken)
+		public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
 		{
 			var httpClient = await GetHttpClientAsync();
 			var uriTemplate = new UriTemplate(_options.Value.ResourceTemplate);
 
-			uriTemplate.Fill("ID", id);
+			uriTemplate.Fill("ID", id.ToString());
 
 			var requestUrl = uriTemplate.Compose();
 
