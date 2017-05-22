@@ -187,6 +187,7 @@
     <Compile Include="Web\Rest\SerializationRestFactory.cs" />
     <Compile Include="Web\Sitemap.cs" />
     <Compile Include="Web\SitemapIndex.cs" />
+    <Compile Include="Web\UriTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
