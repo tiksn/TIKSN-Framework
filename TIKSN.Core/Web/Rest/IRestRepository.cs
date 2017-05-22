@@ -7,6 +7,6 @@ namespace TIKSN.Web.Rest
 {
 	public interface IRestRepository<TEntity, TIdentity> : IRepository<TEntity> where TEntity : IEntity<TIdentity> where TIdentity : IEquatable<TIdentity>
 	{
-		Task<TEntity> GetAsync(string id, CancellationToken cancellationToken = default(CancellationToken));
+		Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken = default(CancellationToken));
 	}
 }
