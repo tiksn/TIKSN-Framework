@@ -1,10 +1,12 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
+using TIKSN.Data;
 
 namespace TIKSN.Web.Rest
 {
-	public interface IRestRepository<T>
+	public interface IRestRepository<TEntity, TIdentity> : IRepository<TEntity> where TEntity : IEntity<TIdentity> where TIdentity : IEquatable<TIdentity>
 	{
-		Task<T> GetAsync(string id, CancellationToken cancellationToken = default(CancellationToken));
+		Task<TEntity> GetAsync(string id, CancellationToken cancellationToken = default(CancellationToken));
 	}
 }
