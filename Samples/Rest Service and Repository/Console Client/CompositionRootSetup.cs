@@ -1,8 +1,10 @@
 ﻿using Autofac;
+using Common_Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TIKSN.DependencyInjection;
+using TIKSN.Web.Rest;
 
 namespace Console_Client
 {
@@ -10,6 +12,7 @@ namespace Console_Client
 	{
 		protected override void ConfigureContainerBuilder(ContainerBuilder builder)
 		{
+			builder.RegisterType<RestRepository<CultureModel, int>>().As<IRestRepository<CultureModel, int>>();
 		}
 
 		protected override void ConfigureOptions(IServiceCollection services, IConfigurationRoot configuration)

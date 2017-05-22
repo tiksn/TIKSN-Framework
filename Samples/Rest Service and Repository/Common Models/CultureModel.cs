@@ -1,8 +1,9 @@
-﻿namespace Common_Models
+﻿using TIKSN.Data;
+
+namespace Common_Models
 {
-	public class CultureModel
+	public class CultureModel : Entity<int>
     {
-		public int Id { get; set; }
 		public string Code { get; set; }
 		public int? ParentId { get; set; }
 		public int Lcid { get; set; }

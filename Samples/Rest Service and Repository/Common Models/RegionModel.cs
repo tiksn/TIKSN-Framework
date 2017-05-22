@@ -1,8 +1,9 @@
-﻿namespace Common_Models
+﻿using TIKSN.Data;
+
+namespace Common_Models
 {
-	public class RegionModel
-    {
-		public int Id { get; set; }
+	public class RegionModel : Entity<int>
+	{
 		public string Code { get; set; }
 		public bool GeoId { get; set; }
 		public int CurrencyId { get; set; }

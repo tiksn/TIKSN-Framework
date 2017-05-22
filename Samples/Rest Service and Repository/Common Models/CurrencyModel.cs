@@ -1,8 +1,9 @@
-﻿namespace Common_Models
+﻿using TIKSN.Data;
+
+namespace Common_Models
 {
-	public class CurrencyModel
-    {
-		public int Id { get; set; }
+	public class CurrencyModel : Entity<int>
+	{
 		public string Code { get; set; }
 		public int Number { get; set; }
 		public string CurrencySymbol { get; set; }
