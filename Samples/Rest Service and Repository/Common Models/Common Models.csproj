@@ -5,4 +5,8 @@
     <RootNamespace>Common_Models</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="TIKSN-Framework" Version="1.6.60-pre" />
+  </ItemGroup>
+
 </Project>
