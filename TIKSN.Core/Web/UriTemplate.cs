@@ -3,53 +3,53 @@ using System.Collections.Generic;
 
 namespace TIKSN.Web
 {
-    public class UriTemplate
-    {
-        private readonly string _template;
-        private readonly Dictionary<string, string> _values;
+	public class UriTemplate
+	{
+		private readonly string _template;
+		private readonly Dictionary<string, string> _values;
 
-        public UriTemplate(string template)
-        {
-            _template = template;
-            _values = new Dictionary<string, string>();
-        }
+		public UriTemplate(string template)
+		{
+			_template = template;
+			_values = new Dictionary<string, string>();
+		}
 
-        void Fill(string name, string value)
-        {
-            _values.Add(name, value);
-        }
+		public Uri Compose()
+		{
+			var queriesToAppend = new List<string>();
+			var resourceLocation = _template;
 
-        void Unfill(string name)
-        {
-            _values.Remove(name);
-        }
+			foreach (var parameter in _values)
+			{
+				var parameterName = $"{{{parameter.Key}}}";
+				var escapedParameterValue = Uri.EscapeUriString(parameter.Value) ?? string.Empty;
 
-        public Uri Compose()
-        {
-            var queriesToAppend = new List<string>();
-            var resourceLocation = _template;
+				if (resourceLocation.Contains(parameterName))
+					resourceLocation = resourceLocation.Replace(parameterName, escapedParameterValue);
+				else
+					queriesToAppend.Add($"{parameterName}={escapedParameterValue}");
+			}
 
-            foreach (var parameter in _values)
-            {
-                var parameterName = $"{{{parameter.Key}}}";
-                var escapedParameterValue = Uri.EscapeUriString(parameter.Value) ?? string.Empty;
+			var builder = new UriBuilder(new Uri(resourceLocation, UriKind.Relative));
 
-                if (resourceLocation.Contains(parameterName))
-                    resourceLocation = resourceLocation.Replace(parameterName, escapedParameterValue);
-                else
-                    queriesToAppend.Add($"{parameterName}={escapedParameterValue}");
-            }
+			var queryToAppend = string.Join("&", queriesToAppend);
 
-            var builder = new UriBuilder(new Uri(resourceLocation, UriKind.Relative));
+			if (builder.Query != null && builder.Query.Length > 1)
+				builder.Query = builder.Query.Substring(1) + "&" + queryToAppend;
+			else
+				builder.Query = queryToAppend;
 
-            var queryToAppend = string.Join("&", queriesToAppend);
+			return builder.Uri;
+		}
 
-            if (builder.Query != null && builder.Query.Length > 1)
-                builder.Query = builder.Query.Substring(1) + "&" + queryToAppend;
-            else
-                builder.Query = queryToAppend;
+		public void Fill(string name, string value)
+		{
+			_values.Add(name, value);
+		}
 
-            return builder.Uri;
-        }
-    }
+		public void Unfill(string name)
+		{
+			_values.Remove(name);
+		}
+	}
 }
