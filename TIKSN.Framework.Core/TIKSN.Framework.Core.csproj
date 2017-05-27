@@ -35,4 +35,6 @@
     <PackageReference Include="Serilog.Extensions.Logging" Version="1.4.0" />
   </ItemGroup>
 
+  <Import Project="..\TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems" Label="Shared" />
+
 </Project>
