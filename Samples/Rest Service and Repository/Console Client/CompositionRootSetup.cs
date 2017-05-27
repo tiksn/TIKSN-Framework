@@ -12,6 +12,7 @@ namespace Console_Client
 	{
 		protected override void ConfigureContainerBuilder(ContainerBuilder builder)
 		{
+			builder.RegisterType<Program>().AsSelf().SingleInstance();
 			builder.RegisterType<RestRepository<CultureModel, int>>().As<IRestRepository<CultureModel, int>>();
 		}
 
