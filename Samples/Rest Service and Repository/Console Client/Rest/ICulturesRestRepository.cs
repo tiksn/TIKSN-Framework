@@ -9,5 +9,7 @@ namespace Console_Client.Rest
 	public interface ICulturesRestRepository : IRestRepository<CultureModel, int>
 	{
 		Task<IEnumerable<CultureModel>> GetAllAsync(CancellationToken cancellationToken = default(CancellationToken));
+
+		Task<CultureModel> GetByNameAsync(string name, CancellationToken cancellationToken = default(CancellationToken));
 	}
 }
