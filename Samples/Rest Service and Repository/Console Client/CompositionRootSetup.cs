@@ -9,7 +9,7 @@ using TIKSN.Web.Rest;
 
 namespace Console_Client
 {
-	public class CompositionRootSetup : AutofacCompositionRootSetupBase
+	public class CompositionRootSetup : AutofacPlatformCompositionRootSetupBase
 	{
 		protected override void ConfigureContainerBuilder(ContainerBuilder builder)
 		{

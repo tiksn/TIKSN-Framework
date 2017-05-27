@@ -13,7 +13,7 @@ using TIKSN.Data;
 
 namespace Web_Service
 {
-	public class CompositionRootSetup : AutofacCompositionRootSetupBase
+	public class CompositionRootSetup : AutofacPlatformCompositionRootSetupBase
 	{
 		private readonly IHostingEnvironment _env;
 		private readonly IServiceCollection _initialServiceCollection;
