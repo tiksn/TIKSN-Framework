@@ -3,6 +3,7 @@ using Console_Client.Rest;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using TIKSN.Shell;
 
@@ -38,6 +39,16 @@ namespace Console_Client
 				ParentId = null,
 				RegionId = null
 			});
+
+			var cultures = await _culturesRestRepository.GetAllAsync();
+
+			Console.WriteLine($"There are {cultures.Count()} cultures in database.");
+
+			Console.Write("Delete? ");
+
+			if (Console.ReadLine().StartsWith("y"))
+				foreach (var culture in cultures)
+					await _culturesRestRepository.RemoveAsync(culture);
 		}
 
 		static void Main(string[] args)
