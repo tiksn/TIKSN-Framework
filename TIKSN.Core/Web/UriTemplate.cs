@@ -16,7 +16,6 @@ namespace TIKSN.Web
 
 		public Uri Compose()
 		{
-			var queriesToAppend = new List<string>();
 			var resourceLocation = _template;
 
 			foreach (var parameter in _values)
@@ -27,19 +26,18 @@ namespace TIKSN.Web
 				if (resourceLocation.Contains(parameterName))
 					resourceLocation = resourceLocation.Replace(parameterName, escapedParameterValue);
 				else
-					queriesToAppend.Add($"{parameterName}={escapedParameterValue}");
+				{
+					var queryToAppend = $"{parameterName}={escapedParameterValue}";
+					if (resourceLocation.EndsWith("?"))
+						resourceLocation = $"{resourceLocation}{queryToAppend}";
+					else if (resourceLocation.Contains("?"))
+						resourceLocation = $"{resourceLocation}&{queryToAppend}";
+					else
+						resourceLocation = $"{resourceLocation}?{queryToAppend}";
+				}
 			}
 
-			var builder = new UriBuilder(new Uri(resourceLocation, UriKind.Relative));
-
-			var queryToAppend = string.Join("&", queriesToAppend);
-
-			if (builder.Query != null && builder.Query.Length > 1)
-				builder.Query = builder.Query.Substring(1) + "&" + queryToAppend;
-			else
-				builder.Query = queryToAppend;
-
-			return builder.Uri;
+			return new Uri(resourceLocation, UriKind.Relative);
 		}
 
 		public void Fill(string name, string value)
