@@ -1,10 +1,10 @@
 ﻿using Common_Models;
-using System;
 using System.Collections.Generic;
 using TIKSN.Web.Rest;
 using Microsoft.Extensions.Options;
 using System.Threading;
 using System.Threading.Tasks;
+using System;
 
 namespace Console_Client.Rest
 {
@@ -14,7 +14,14 @@ namespace Console_Client.Rest
 		{
 		}
 
-		public Task<IEnumerable<CultureModel>> GetAllAsync(CancellationToken cancellationToken = default(CancellationToken))
+		public Task<IEnumerable<CultureModel>> GetAllAsync(CancellationToken cancellationToken)
+		{
+			var parameters = new Dictionary<string, string>();
+
+			return SearchAsync(parameters, cancellationToken);
+		}
+
+		public Task<CultureModel> GetByNameAsync(string name, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			throw new NotImplementedException();
 		}
