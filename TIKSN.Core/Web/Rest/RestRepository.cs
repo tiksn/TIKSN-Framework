@@ -93,6 +93,20 @@ namespace TIKSN.Web.Rest
 			throw new NotImplementedException();
 		}
 
+		protected async Task<IEnumerable<TEntity>> SearchAsync(IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken)
+		{
+			var httpClient = await GetHttpClientAsync();
+			var uriTemplate = new UriTemplate(_options.Value.ResourceTemplate);
+
+			foreach (var parameter in parameters)
+				uriTemplate.Fill(parameter.Key, parameter.Value);
+
+			var requestUrl = uriTemplate.Compose();
+
+			var response = await httpClient.GetAsync(requestUrl, cancellationToken);
+
+			return await ObjectifyResponse<IEnumerable<TEntity>>(response);
+		}
 		private async Task AddObjectAsync(object requestContent, CancellationToken cancellationToken)
 		{
 			var httpClient = await GetHttpClientAsync();
