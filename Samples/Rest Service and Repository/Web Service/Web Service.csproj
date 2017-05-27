@@ -27,7 +27,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
-    <PackageReference Include="TIKSN-Framework" Version="1.6.64-pre" />
+    <PackageReference Include="TIKSN-Framework" Version="1.6.65-pre" />
 	<PackageReference Include="NetEscapades.Configuration.Yaml" Version="1.2.0" />
   </ItemGroup>
   <ItemGroup>
