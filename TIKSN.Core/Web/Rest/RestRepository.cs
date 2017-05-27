@@ -52,7 +52,7 @@ namespace TIKSN.Web.Rest
 
 			var response = await httpClient.GetAsync(requestUrl, cancellationToken);
 
-			return await ObjectifyResponse<TEntity>(response);
+			return await ObjectifyResponse<TEntity>(response, true);
 		}
 
 		public async Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)
@@ -64,7 +64,7 @@ namespace TIKSN.Web.Rest
 
 			var requestUrl = uriTemplate.Compose();
 
-			var response = await httpClient.GetAsync(requestUrl, cancellationToken);
+			var response = await httpClient.DeleteAsync(requestUrl, cancellationToken);
 
 			response.EnsureSuccessStatusCode();
 		}
@@ -105,8 +105,24 @@ namespace TIKSN.Web.Rest
 
 			var response = await httpClient.GetAsync(requestUrl, cancellationToken);
 
-			return await ObjectifyResponse<IEnumerable<TEntity>>(response);
+			return await ObjectifyResponse<IEnumerable<TEntity>>(response, false);
 		}
+
+		protected async Task<TEntity> SingleOrDefaultAsync(IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken)
+		{
+			var httpClient = await GetHttpClientAsync();
+			var uriTemplate = new UriTemplate(_options.Value.ResourceTemplate);
+
+			foreach (var parameter in parameters)
+				uriTemplate.Fill(parameter.Key, parameter.Value);
+
+			var requestUrl = uriTemplate.Compose();
+
+			var response = await httpClient.GetAsync(requestUrl, cancellationToken);
+
+			return await ObjectifyResponse<TEntity>(response, true);
+		}
+
 		private async Task AddObjectAsync(object requestContent, CancellationToken cancellationToken)
 		{
 			var httpClient = await GetHttpClientAsync();
@@ -138,8 +154,11 @@ namespace TIKSN.Web.Rest
 			return httpClient;
 		}
 
-		private async Task<TResult> ObjectifyResponse<TResult>(HttpResponseMessage response)
+		private async Task<TResult> ObjectifyResponse<TResult>(HttpResponseMessage response, bool defaultIfNotFound)
 		{
+			if (defaultIfNotFound && response.StatusCode == System.Net.HttpStatusCode.NotFound)
+				return default(TResult);
+
 			response.EnsureSuccessStatusCode();
 
 			var content = await response.Content.ReadAsStringAsync();
