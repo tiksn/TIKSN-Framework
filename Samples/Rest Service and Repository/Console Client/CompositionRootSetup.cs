@@ -16,6 +16,7 @@ namespace Console_Client
 			builder.RegisterType<Program>().AsSelf().SingleInstance();
 			builder.RegisterType<RestRepository<CultureModel, int>>().As<IRestRepository<CultureModel, int>>();
 			builder.RegisterType<CulturesRestRepository>().As<ICulturesRestRepository>();
+			builder.RegisterType<HttpClientFactory>().As<IHttpClientFactory>();
 		}
 
 		protected override void ConfigureOptions(IServiceCollection services, IConfigurationRoot configuration)
