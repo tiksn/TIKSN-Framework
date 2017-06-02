@@ -5,7 +5,10 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Localization;
+using TIKSN.Analytics.Telemetry;
 using TIKSN.Data;
+using TIKSN.Localization;
 
 namespace TIKSN.Web.Rest
 {
@@ -15,9 +18,13 @@ namespace TIKSN.Web.Rest
 			where TEntity : IEntity<TIdentity>
 			where TIdentity : IEquatable<TIdentity>
 	{
+		private static readonly Guid RemoveRangeWarningKey = new Guid("a2715b9a-1fca-4408-aa7f-afddf27a6cc7");
+
 		private readonly IDeserializerRestFactory _deserializerRestFactory;
 		private readonly IHttpClientFactory _httpClientFactory;
 		private readonly IOptions<RestRepositoryOptions<TEntity>> _options;
+		private readonly IStringLocalizer _stringLocalizer;
+		private readonly ITraceTelemeter _traceTelemeter;
 		private readonly IRestAuthenticationTokenProvider _restAuthenticationTokenProvider;
 		private readonly ISerializerRestFactory _serializerRestFactory;
 
@@ -26,11 +33,15 @@ namespace TIKSN.Web.Rest
 			ISerializerRestFactory serializerRestFactory,
 			IDeserializerRestFactory deserializerRestFactory,
 			IRestAuthenticationTokenProvider restAuthenticationTokenProvider,
-			IOptions<RestRepositoryOptions<TEntity>> options)
+			IOptions<RestRepositoryOptions<TEntity>> options,
+			IStringLocalizer stringLocalizer,
+			ITraceTelemeter traceTelemeter)
 		{
 			_httpClientFactory = httpClientFactory;
 			_serializerRestFactory = serializerRestFactory;
 			_options = options;
+			_stringLocalizer = stringLocalizer;
+			_traceTelemeter = traceTelemeter;
 			_restAuthenticationTokenProvider = restAuthenticationTokenProvider;
 			_deserializerRestFactory = deserializerRestFactory;
 		}
@@ -73,9 +84,12 @@ namespace TIKSN.Web.Rest
 			response.EnsureSuccessStatusCode();
 		}
 
-		public Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
+		public async Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
 		{
-			throw new NotImplementedException();
+			await _traceTelemeter.TrackTrace(_stringLocalizer.GetRequiredString(RemoveRangeWarningKey));
+
+			foreach (var entity in entities)
+				await RemoveAsync(entity, cancellationToken);
 		}
 
 		public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
