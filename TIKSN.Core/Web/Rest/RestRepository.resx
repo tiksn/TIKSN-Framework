@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="a2715b9a-1fca-4408-aa7f-afddf27a6cc7" xml:space="preserve">
-    <value>TIKSN.Web.Rest.RestRepository.RemoveRangeAsync</value>
+    <value>TIKSN.Web.Rest.RestRepository.RemoveRangeAsync method is not adviced to use.</value>
   </data>
 </root>
