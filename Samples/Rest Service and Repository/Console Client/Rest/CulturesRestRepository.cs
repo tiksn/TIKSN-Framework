@@ -18,6 +18,8 @@ namespace Console_Client.Rest
         {
             var parameters = new Dictionary<string, string>();
 
+            parameters.Add("ID", string.Empty);
+
             return SearchAsync(parameters, cancellationToken);
         }
 
