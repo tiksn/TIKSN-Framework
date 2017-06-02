@@ -123,7 +123,7 @@ namespace TIKSN.Shell
 							break;
 
 						case 1:
-							await RunCommandAsync(matches.Single());
+							await RunCommandAsync(command, matches.Single());
 							break;
 
 						default:
@@ -162,37 +162,44 @@ namespace TIKSN.Shell
 			return Convert.ChangeType(stringParameter, property.Item2.PropertyType);
 		}
 
-		private async Task RunCommandAsync(Tuple<Type, ShellCommandAttribute, ConstructorInfo, IEnumerable<Tuple<ShellCommandParameterAttribute, PropertyInfo>>> commandInfo)
+		private async Task RunCommandAsync(string commandName, Tuple<Type, ShellCommandAttribute, ConstructorInfo, IEnumerable<Tuple<ShellCommandParameterAttribute, PropertyInfo>>> commandInfo)
 		{
-			var args = new List<object>();
-
-			foreach (var parameterInfo in commandInfo.Item3.GetParameters())
+			using (var commandScope = _serviceProvider.CreateScope())
 			{
-				args.Add(_serviceProvider.GetRequiredService(parameterInfo.ParameterType));
-			}
+				var commandContextStore = commandScope.ServiceProvider.GetRequiredService<IShellCommandContext>() as IShellCommandContextStore;
 
-			var obj = Activator.CreateInstance(commandInfo.Item1, args.ToArray());
+				commandContextStore.SetCommandName(commandName);
 
-			foreach (var property in commandInfo.Item4)
-			{
-				var parameter = ReadCommandParameter(property);
+				var args = new List<object>();
 
-				if (parameter != null)
-					property.Item2.SetValue(obj, parameter);
+				foreach (var parameterInfo in commandInfo.Item3.GetParameters())
+				{
+					args.Add(commandScope.ServiceProvider.GetRequiredService(parameterInfo.ParameterType));
+				}
 
-				_logger.LogTrace($"Parameter '{_stringLocalizer.GetRequiredString(property.Item1.ParameterNameKey)}' has value '{property.Item2.GetValue(obj)}'");
-			}
+				var obj = Activator.CreateInstance(commandInfo.Item1, args.ToArray());
 
-			var command = obj as IShellCommand;
+				foreach (var property in commandInfo.Item4)
+				{
+					var parameter = ReadCommandParameter(property);
 
-			try
-			{
-				await command.ExecuteAsync();
-			}
-			catch (Exception ex)
-			{
-				_consoleService.WriteError(_stringLocalizer.GetRequiredString(ExecutedWithExceptionKey));
-				_logger.LogError(1815744366, ex, _stringLocalizer.GetRequiredString(ExecutedWithExceptionKey));
+					if (parameter != null)
+						property.Item2.SetValue(obj, parameter);
+
+					_logger.LogTrace($"Parameter '{_stringLocalizer.GetRequiredString(property.Item1.ParameterNameKey)}' has value '{property.Item2.GetValue(obj)}'");
+				}
+
+				var command = obj as IShellCommand;
+
+				try
+				{
+					await command.ExecuteAsync();
+				}
+				catch (Exception ex)
+				{
+					_consoleService.WriteError(_stringLocalizer.GetRequiredString(ExecutedWithExceptionKey));
+					_logger.LogError(1815744366, ex, _stringLocalizer.GetRequiredString(ExecutedWithExceptionKey));
+				}
 			}
 		}
 

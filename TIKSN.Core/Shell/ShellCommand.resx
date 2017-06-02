@@ -126,6 +126,9 @@
   <data name="0c7f1703-7e67-4d3b-ae6d-4eb9ec3172c4" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="1840e905-af75-41db-ac90-fb71e309f03f" xml:space="preserve">
+    <value>Performing the operation "{0}" on target "{1}".</value>
+  </data>
   <data name="584b08cf-386c-468a-ab33-cac0030e8c9c" xml:space="preserve">
     <value>{0} class must have {1} attribute.</value>
   </data>
@@ -138,9 +141,15 @@
   <data name="9649762e-d441-4fa0-b7d5-e9a3e406aa04" xml:space="preserve">
     <value>Command executed with exception(s).</value>
   </data>
+  <data name="a4de1bc6-68af-4363-9ce4-91a13dd2c786" xml:space="preserve">
+    <value>Suspend</value>
+  </data>
   <data name="b7f83482-597b-434b-bf18-1abdee641e34" xml:space="preserve">
     <value>Command</value>
     <comment>Command prompt text</comment>
+  </data>
+  <data name="bea642f9-d15e-4e4a-86bd-5576ce526e3b" xml:space="preserve">
+    <value>No to All</value>
   </data>
   <data name="c02e939d-db0a-499e-939c-c204be3f88b9" xml:space="preserve">
     <value>: </value>
@@ -149,8 +158,10 @@
   <data name="c522bde2-fb65-420c-8c86-d85ecdcd790a" xml:space="preserve">
     <value>{0} class must implement {1} interface.</value>
   </data>
-  <data name="f14b7287-e810-4e6e-8ee1-7ff89ed496e8" xml:space="preserve">
-    <value>Are you sure you want to perform this action?
-Performing the operation "{0}" on target "{1}".</value>
+  <data name="d0885792-d60b-4f76-82a8-c4ceacc1c606" xml:space="preserve">
+    <value>Are you sure you want to perform this action?</value>
+  </data>
+  <data name="daaa9e93-e303-4cae-a05c-874481769f34" xml:space="preserve">
+    <value>Yes to All</value>
   </data>
 </root>
