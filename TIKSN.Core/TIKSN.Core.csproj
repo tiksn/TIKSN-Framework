@@ -167,7 +167,7 @@
     <Compile Include="Shell\ShellCommandContext.cs" />
     <Compile Include="Shell\ShellCommandHelpItem.cs" />
     <Compile Include="Shell\ShellCommandParameterAttribute.cs" />
-    <Compile Include="Shell\ShellSuspendCommandException.cs" />
+    <Compile Include="Shell\ShellCommandSuspendException.cs" />
     <Compile Include="Speech\ITextToSpeechService.cs" />
     <Compile Include="Speech\TextToSpeechOptions.cs" />
     <Compile Include="Versioning\Milestone.cs" />
