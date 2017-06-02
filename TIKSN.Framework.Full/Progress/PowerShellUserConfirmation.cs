@@ -18,7 +18,7 @@ namespace TIKSN.Progress
 
 		public bool ShouldContinue(string query, string caption, ref bool yesToAll, ref bool noToAll)
 		{
-			return ShouldContinue(query, caption, ref yesToAll, ref noToAll);
+			return cmdlet.ShouldContinue(query, caption, ref yesToAll, ref noToAll);
 		}
 
 		public bool ShouldProcess(string target)
