@@ -8,11 +8,11 @@ using Web_Service.Data.Entities;
 namespace Web_Service.Data.Repositories
 {
     public class CultureRepository : EntityRepository<InternationalizationContext, CultureEntity>, ICultureRepository
-	{
-		public CultureRepository(InternationalizationContext context) : base(context)
-		{
+    {
+        public CultureRepository(InternationalizationContext context) : base(context)
+        {
 
-		}
+        }
 
         public async Task<IEnumerable<CultureEntity>> GetAllAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -21,7 +21,12 @@ namespace Web_Service.Data.Repositories
 
         public async Task<CultureEntity> GetAsync(int ID, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await Entities.SingleOrDefaultAsync(item => item.Id == ID);
+            return await Entities.SingleOrDefaultAsync(item => item.Id == ID, cancellationToken);
+        }
+
+        public async Task<CultureEntity> GetByNameAsync(string name, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await Entities.SingleOrDefaultAsync(item => item.Code == name, cancellationToken);
         }
     }
 }

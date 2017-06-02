@@ -9,57 +9,69 @@ using TIKSN.Shell;
 
 namespace Console_Client
 {
-	class Program : IShellCommand
-	{
-		private readonly ICulturesRestRepository _culturesRestRepository;
+    class Program : IShellCommand
+    {
+        private readonly ICulturesRestRepository _culturesRestRepository;
 
-		public Program(ICulturesRestRepository culturesRestRepository)
-		{
-			_culturesRestRepository = culturesRestRepository;
-		}
+        public Program(ICulturesRestRepository culturesRestRepository)
+        {
+            _culturesRestRepository = culturesRestRepository;
+        }
 
-		public async Task ExecuteAsync()
-		{
-			await _culturesRestRepository.AddAsync(new CultureModel
-			{
-				Code = "en",
-				EnglishName = "English",
-				Lcid = 123,
-				NativeName = "English",
-				ParentId = null,
-				RegionId = null
-			});
+        public async Task ExecuteAsync()
+        {
+            await _culturesRestRepository.AddAsync(new CultureModel
+            {
+                Code = "en",
+                EnglishName = "English",
+                Lcid = 123,
+                NativeName = "English",
+                ParentId = null,
+                RegionId = null
+            });
 
-			await _culturesRestRepository.AddAsync(new CultureModel
-			{
-				Code = "en-US",
-				EnglishName = "English (US)",
-				Lcid = 123,
-				NativeName = "English (United States)",
-				ParentId = null,
-				RegionId = null
-			});
+            await _culturesRestRepository.AddAsync(new CultureModel
+            {
+                Code = "en-US",
+                EnglishName = "English (US)",
+                Lcid = 123,
+                NativeName = "English (United States)",
+                ParentId = null,
+                RegionId = null
+            });
 
-			var cultures = await _culturesRestRepository.GetAllAsync();
+            var cultures = await _culturesRestRepository.GetAllAsync();
 
-			Console.WriteLine($"There are {cultures.Count()} cultures in database.");
+            Console.WriteLine($"There are {cultures.Count()} cultures in database.");
 
-			Console.Write("Delete? ");
+            var enUS = await _culturesRestRepository.GetByNameAsync("en-US");
 
-			if (Console.ReadLine().StartsWith("y"))
-				foreach (var culture in cultures)
-					await _culturesRestRepository.RemoveAsync(culture);
-		}
+            enUS.NativeName = "English (US)";
 
-		static void Main(string[] args)
-		{
-			var compositionRootSetup = new CompositionRootSetup();
-			var serviceProvider = compositionRootSetup.CreateServiceProvider();
+            await _culturesRestRepository.UpdateAsync(enUS);
 
-			serviceProvider.GetRequiredService<Program>().ExecuteAsync().GetAwaiter().GetResult();
+            Console.Write("Delete? ");
 
-			Console.WriteLine("Execution completed!");
-			Console.ReadLine();
-		}
-	}
+            if (Console.ReadLine().StartsWith("y"))
+                foreach (var culture in cultures)
+                    await _culturesRestRepository.RemoveAsync(culture);
+        }
+
+        static void Main(string[] args)
+        {
+            var compositionRootSetup = new CompositionRootSetup();
+            var serviceProvider = compositionRootSetup.CreateServiceProvider();
+
+            try
+            {
+                serviceProvider.GetRequiredService<Program>().ExecuteAsync().GetAwaiter().GetResult();
+            }
+            catch (Exception)
+            {
+            }
+
+            Console.WriteLine("Execution completed!");
+            Console.ReadLine();
+        }
+    }
 }

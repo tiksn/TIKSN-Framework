@@ -10,86 +10,97 @@ using Web_Service.Data.Entities;
 
 namespace Web_Service.Controllers
 {
-	[Route("api/[controller]")]
-	public class CulturesController : Controller
-	{
-		private readonly ICultureRepository cultureRepository;
-		private readonly IUnitOfWorkFactory _unitOfWorkFactory;
-		private readonly IMapper _mapper;
+    [Route("api/[controller]")]
+    public class CulturesController : Controller
+    {
+        private readonly ICultureRepository cultureRepository;
+        private readonly IUnitOfWorkFactory _unitOfWorkFactory;
+        private readonly IMapper _mapper;
 
-		public CulturesController(ICultureRepository cultureRepository, IUnitOfWorkFactory unitOfWorkFactory, IMapper mapper)
-		{
-			this.cultureRepository = cultureRepository;
-			_unitOfWorkFactory = unitOfWorkFactory;
-			_mapper = mapper;
-		}
+        public CulturesController(ICultureRepository cultureRepository, IUnitOfWorkFactory unitOfWorkFactory, IMapper mapper)
+        {
+            this.cultureRepository = cultureRepository;
+            _unitOfWorkFactory = unitOfWorkFactory;
+            _mapper = mapper;
+        }
 
-		[HttpGet]
-		public async Task<IEnumerable<CultureModel>> Get()
-		{
-			var entities = await cultureRepository.GetAllAsync();
+        [HttpGet]
+        public async Task<IEnumerable<CultureModel>> Get()
+        {
+            var entities = await cultureRepository.GetAllAsync();
 
-			return _mapper.Map<IEnumerable<CultureModel>>(entities);
-		}
+            return _mapper.Map<IEnumerable<CultureModel>>(entities);
+        }
 
-		[HttpGet("{id}")]
-		public async Task<CultureModel> Get(int id)
-		{
-			if (id != 0)
-				throw new ArgumentException();
+        [HttpGet("{id:int}")]
+        public async Task<CultureModel> Get(int id)
+        {
+            if (id == 0)
+                throw new ArgumentException();
 
-			var entity = await cultureRepository.GetAsync(id);
+            var entity = await cultureRepository.GetAsync(id);
 
-			return _mapper.Map<CultureModel>(entity);
-		}
+            return _mapper.Map<CultureModel>(entity);
+        }
 
-		[HttpPost]
-		public async Task Post([FromBody]CultureModel model)
-		{
-			if (model.ID != 0)
-				throw new ArgumentException();
+        [HttpGet("{name}")]
+        public async Task<CultureModel> Get(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentException();
 
-			using (var unitOfWork = _unitOfWorkFactory.Create())
-			{
-				var entity = _mapper.Map<CultureEntity>(model);
+            var entity = await cultureRepository.GetByNameAsync(name);
 
-				await cultureRepository.AddAsync(entity);
+            return _mapper.Map<CultureModel>(entity);
+        }
 
-				await unitOfWork.CompleteAsync();
-			}
-		}
+        [HttpPost]
+        public async Task Post([FromBody]CultureModel model)
+        {
+            if (model.ID != 0)
+                throw new ArgumentException();
 
-		[HttpPut("{id}")]
-		public async Task Put(int id, [FromBody]CultureModel model)
-		{
-			if (id != 0)
-				throw new ArgumentException();
+            using (var unitOfWork = _unitOfWorkFactory.Create())
+            {
+                var entity = _mapper.Map<CultureEntity>(model);
 
-			if (model.ID != 0 && model.ID != id)
-				throw new ArgumentException();
+                await cultureRepository.AddAsync(entity);
 
-			using (var unitOfWork = _unitOfWorkFactory.Create())
-			{
-				var entity = _mapper.Map<CultureEntity>(model);
-				entity.Id = id;
+                await unitOfWork.CompleteAsync();
+            }
+        }
 
-				await cultureRepository.UpdateAsync(entity);
+        [HttpPut("{id}")]
+        public async Task Put(int id, [FromBody]CultureModel model)
+        {
+            if (id == 0)
+                throw new ArgumentException();
 
-				await unitOfWork.CompleteAsync();
-			}
-		}
+            if (model.ID != 0 && model.ID != id)
+                throw new ArgumentException();
 
-		[HttpDelete("{id}")]
-		public async Task Delete(int id)
-		{
-			using (var unitOfWork = _unitOfWorkFactory.Create())
-			{
-				var entity = await cultureRepository.GetAsync(id);
+            using (var unitOfWork = _unitOfWorkFactory.Create())
+            {
+                var entity = _mapper.Map<CultureEntity>(model);
+                entity.Id = id;
 
-				await cultureRepository.RemoveAsync(entity);
+                await cultureRepository.UpdateAsync(entity);
 
-				await unitOfWork.CompleteAsync();
-			}
-		}
-	}
+                await unitOfWork.CompleteAsync();
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task Delete(int id)
+        {
+            using (var unitOfWork = _unitOfWorkFactory.Create())
+            {
+                var entity = await cultureRepository.GetAsync(id);
+
+                await cultureRepository.RemoveAsync(entity);
+
+                await unitOfWork.CompleteAsync();
+            }
+        }
+    }
 }
