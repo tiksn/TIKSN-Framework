@@ -195,6 +195,7 @@ namespace TIKSN.Shell
 				{
 					await command.ExecuteAsync();
 				}
+				catch (ShellCommandSuspendException) { }
 				catch (Exception ex)
 				{
 					_consoleService.WriteError(_stringLocalizer.GetRequiredString(ExecutedWithExceptionKey));

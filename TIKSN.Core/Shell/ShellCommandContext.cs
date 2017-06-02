@@ -47,7 +47,7 @@ namespace TIKSN.Shell
 					return false;
 
 				case 2:
-					throw new ShellSuspendCommandException();
+					throw new ShellCommandSuspendException();
 
 				default:
 					throw new NotSupportedException();
@@ -87,7 +87,7 @@ namespace TIKSN.Shell
 					return false;
 
 				case 4:
-					throw new ShellSuspendCommandException();
+					throw new ShellCommandSuspendException();
 
 				default:
 					throw new NotSupportedException();
