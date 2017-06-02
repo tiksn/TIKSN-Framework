@@ -10,6 +10,8 @@ namespace Web_Service.Data.Repositories
     {
         Task<CultureEntity> GetAsync(int ID, CancellationToken cancellationToken = default(CancellationToken));
 
+        Task<CultureEntity> GetByNameAsync(string name, CancellationToken cancellationToken = default(CancellationToken));
+
         Task<IEnumerable<CultureEntity>> GetAllAsync(CancellationToken cancellationToken = default(CancellationToken));
     }
 }
