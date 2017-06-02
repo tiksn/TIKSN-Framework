@@ -8,8 +8,8 @@ namespace Web_Service.Mappers
     {
         public CultureMappingProfile()
         {
-            CreateMap<CultureModel, CultureEntity>();
-            CreateMap<CultureEntity, CultureModel>();
+            CreateMap<CultureModel, CultureEntity>().ForMember(m => m.Id, c => c.MapFrom(x => x.ID));
+            CreateMap<CultureEntity, CultureModel>().ForMember(m => m.ID, c => c.MapFrom(x => x.Id));
         }
     }
 }

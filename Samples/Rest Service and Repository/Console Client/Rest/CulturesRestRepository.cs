@@ -8,22 +8,26 @@ using System;
 
 namespace Console_Client.Rest
 {
-	public class CulturesRestRepository : RestRepository<CultureModel, int>, ICulturesRestRepository
-	{
-		public CulturesRestRepository(IHttpClientFactory httpClientFactory, ISerializerRestFactory serializerRestFactory, IDeserializerRestFactory deserializerRestFactory, IRestAuthenticationTokenProvider restAuthenticationTokenProvider, IOptions<RestRepositoryOptions<CultureModel>> options) : base(httpClientFactory, serializerRestFactory, deserializerRestFactory, restAuthenticationTokenProvider, options)
-		{
-		}
+    public class CulturesRestRepository : RestRepository<CultureModel, int>, ICulturesRestRepository
+    {
+        public CulturesRestRepository(IHttpClientFactory httpClientFactory, ISerializerRestFactory serializerRestFactory, IDeserializerRestFactory deserializerRestFactory, IRestAuthenticationTokenProvider restAuthenticationTokenProvider, IOptions<RestRepositoryOptions<CultureModel>> options) : base(httpClientFactory, serializerRestFactory, deserializerRestFactory, restAuthenticationTokenProvider, options)
+        {
+        }
 
-		public Task<IEnumerable<CultureModel>> GetAllAsync(CancellationToken cancellationToken)
-		{
-			var parameters = new Dictionary<string, string>();
+        public Task<IEnumerable<CultureModel>> GetAllAsync(CancellationToken cancellationToken)
+        {
+            var parameters = new Dictionary<string, string>();
 
-			return SearchAsync(parameters, cancellationToken);
-		}
+            return SearchAsync(parameters, cancellationToken);
+        }
 
-		public Task<CultureModel> GetByNameAsync(string name, CancellationToken cancellationToken = default(CancellationToken))
-		{
-			throw new NotImplementedException();
-		}
-	}
+        public Task<CultureModel> GetByNameAsync(string name, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var parameters = new Dictionary<string, string>();
+
+            parameters.Add("ID", name);
+
+            return SingleOrDefaultAsync(parameters, cancellationToken);
+        }
+    }
 }
