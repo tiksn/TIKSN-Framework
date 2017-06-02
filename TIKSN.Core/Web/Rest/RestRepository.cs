@@ -92,9 +92,18 @@ namespace TIKSN.Web.Rest
 			response.EnsureSuccessStatusCode();
 		}
 
-		public Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
+		public async Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
 		{
-			throw new NotImplementedException();
+			var httpClient = await GetHttpClientAsync();
+			var uriTemplate = new UriTemplate(_options.Value.ResourceTemplate);
+
+			uriTemplate.Fill("ID", string.Empty);
+
+			var requestUrl = uriTemplate.Compose();
+
+			var response = await httpClient.PutAsync(requestUrl, GetContent(entities), cancellationToken);
+
+			response.EnsureSuccessStatusCode();
 		}
 
 		protected async Task<IEnumerable<TEntity>> SearchAsync(IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken)
