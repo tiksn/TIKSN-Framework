@@ -9,7 +9,11 @@ using TIKSN.Data;
 
 namespace TIKSN.Web.Rest
 {
-	public class RestRepository<TEntity, TIdentity> : IRestRepository<TEntity, TIdentity> where TEntity : IEntity<TIdentity> where TIdentity : IEquatable<TIdentity>
+	public class RestRepository<TEntity, TIdentity> :
+		IRestRepository<TEntity, TIdentity>, IRestBulkRepository<TEntity, TIdentity>,
+		IRepository<TEntity>
+			where TEntity : IEntity<TIdentity>
+			where TIdentity : IEquatable<TIdentity>
 	{
 		private readonly IDeserializerRestFactory _deserializerRestFactory;
 		private readonly IHttpClientFactory _httpClientFactory;
