@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
 using TIKSN.Serialization;
+using TIKSN.Shell;
 using TIKSN.Web.Rest;
 
 namespace TIKSN.DependencyInjection
@@ -21,6 +22,8 @@ namespace TIKSN.DependencyInjection
 			services.TryAddSingleton<DotNetXmlSerializer, DotNetXmlSerializer>();
 			services.TryAddSingleton<JsonDeserializer, JsonDeserializer>();
 			services.TryAddSingleton<JsonSerializer, JsonSerializer>();
+
+			services.TryAddScoped<IShellCommandContext, ShellCommandContext>();
 		}
 	}
 }
