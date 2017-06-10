@@ -130,12 +130,12 @@ namespace TIKSN.DependencyInjection
 						var isNotSpecified = false;
 						var logger = loggerFactory.CreateLogger(optionsType);
 
+						logger.LogDebug(1959347740, $"{pInfo.Name} property of {optionType.FullName} object is type of {pInfo.PropertyType}.");
+
 						if (pInfo.PropertyType == typeof(string))
 							isNotSpecified = string.IsNullOrEmpty(pInfo.GetValue(options.Value)?.ToString());
 						else if (pInfo.PropertyType.GetMatchingConstructor(Type.EmptyTypes) != null && pInfo.GetValue(options.Value) == Activator.CreateInstance(pInfo.PropertyType))
 							isNotSpecified = true;
-						else
-							logger.LogDebug(2016759580, $"{pInfo.Name} property of {optionType.FullName} object is type of {pInfo.PropertyType}.");
 
 						if (isNotSpecified)
 							logger.LogWarning(1881146767, $"{pInfo.Name} property of {optionType.FullName} most likely is not specified in configuration files.");
