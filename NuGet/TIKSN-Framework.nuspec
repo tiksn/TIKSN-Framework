@@ -30,6 +30,8 @@
 				<dependency id="Microsoft.EntityFrameworkCore" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.2" />
+				<dependency id="Microsoft.Extensions.DependencyInjection" version="1.1.1" />
+				<dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="1.1.1" />
 				<dependency id="Microsoft.Extensions.Localization" version="1.1.1" />
 				<dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.1" />
 				<dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.2" />
@@ -60,6 +62,8 @@
 				<dependency id="Microsoft.Azure.Mobile.Crashes" version="0.12.0" />
 				<dependency id="Microsoft.EntityFrameworkCore" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.2" />
+				<dependency id="Microsoft.Extensions.DependencyInjection" version="1.1.1" />
+				<dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="1.1.1" />
 				<dependency id="Microsoft.Extensions.Localization" version="1.1.1" />
 				<dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.1" />
 				<dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.2" />
@@ -83,6 +87,8 @@
 				<dependency id="Microsoft.EntityFrameworkCore" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.2" />
+				<dependency id="Microsoft.Extensions.DependencyInjection" version="1.1.1" />
+				<dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="1.1.1" />
 				<dependency id="Microsoft.Extensions.Localization" version="1.1.1" />
 				<dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.1" />
 				<dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.2" />
@@ -103,6 +109,8 @@
 				<dependency id="Microsoft.EntityFrameworkCore" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.2" />
+				<dependency id="Microsoft.Extensions.DependencyInjection" version="1.1.1" />
+				<dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="1.1.1" />
 				<dependency id="Microsoft.Extensions.Localization" version="1.1.1" />
 				<dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.1" />
 				<dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.2" />
@@ -122,6 +130,8 @@
 				<dependency id="Microsoft.EntityFrameworkCore" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.2" />
+				<dependency id="Microsoft.Extensions.DependencyInjection" version="1.1.1" />
+				<dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="1.1.1" />
 				<dependency id="Microsoft.Extensions.Localization" version="1.1.1" />
 				<dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.1" />
 				<dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.2" />
@@ -147,6 +157,8 @@
 				<dependency id="Microsoft.EntityFrameworkCore" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.2" />
+				<dependency id="Microsoft.Extensions.DependencyInjection" version="1.1.1" />
+				<dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="1.1.1" />
 				<dependency id="Microsoft.Extensions.Localization" version="1.1.1" />
 				<dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.1" />
 				<dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.2" />
