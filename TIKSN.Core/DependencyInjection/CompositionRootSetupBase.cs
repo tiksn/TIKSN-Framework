@@ -6,6 +6,7 @@ using Serilog;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using Autofac;
 
 namespace TIKSN.DependencyInjection
 {
@@ -109,7 +110,7 @@ namespace TIKSN.DependencyInjection
 				if (service.ServiceType.GetTypeInfo().IsGenericType &&
 					service.ServiceType.GetGenericTypeDefinition() == typeof(IConfigureOptions<>))
 				{
-					var optionType = service.ServiceType.GetGenericArguments()[0];
+					var optionType = service.ServiceType.GenericTypeArguments[0];
 					var optionsType = typeof(IOptions<>).MakeGenericType(optionType);
 
 					var options = (IOptions<object>)serviceProvider.GetRequiredService(optionsType);
@@ -124,14 +125,14 @@ namespace TIKSN.DependencyInjection
 						throw new Exception($"Option model of type {optionType.FullName} is invalid. Please check configuration files.", ex);
 					}
 
-					foreach (var pInfo in optionType.GetProperties())
+					foreach (var pInfo in optionType.GetRuntimeProperties())
 					{
 						var isNotSpecified = false;
 						var logger = loggerFactory.CreateLogger(optionsType);
 
 						if (pInfo.PropertyType == typeof(string))
 							isNotSpecified = string.IsNullOrEmpty(pInfo.GetValue(options.Value)?.ToString());
-						else if (pInfo.PropertyType.GetConstructor(Type.EmptyTypes) != null && pInfo.GetValue(options.Value) == Activator.CreateInstance(pInfo.PropertyType))
+						else if (pInfo.PropertyType.GetMatchingConstructor(Type.EmptyTypes) != null && pInfo.GetValue(options.Value) == Activator.CreateInstance(pInfo.PropertyType))
 							isNotSpecified = true;
 						else
 							logger.LogDebug(2016759580, $"{pInfo.Name} property of {optionType.FullName} object is type of {pInfo.PropertyType}.");
