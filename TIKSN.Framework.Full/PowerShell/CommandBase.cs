@@ -6,61 +6,44 @@ using System.Threading.Tasks;
 
 namespace TIKSN.PowerShell
 {
-    public abstract class CommandBase : PSCmdlet
-    {
-        //private Lazy<SpeechSynthesizer> lazySpeechSynthesizer = new Lazy<SpeechSynthesizer>(() => new SpeechSynthesizer());
-        private Stopwatch stopwatch;
+	public abstract class CommandBase : PSCmdlet
+	{
+		private Stopwatch _stopwatch;
 
-        protected IServiceProvider ServiceProvider { get; private set; }
+		protected IServiceProvider ServiceProvider { get; private set; }
 
-        //public void WriteVerboseAndVocal(string text)
-        //{
-        //    this.WriteVerbose(text);
-        //    this.WriteVocal(text);
-        //}
+		protected override void BeginProcessing()
+		{
+			base.BeginProcessing();
+			WriteVerbose($"Command started at {DateTime.Now.ToLongTimeString()}.");
+			_stopwatch = Stopwatch.StartNew();
 
-        //public void WriteVocal(string text)
-        //{
-        //    if (this.Vocal.IsPresent)
-        //    {
-        //        this.lazySpeechSynthesizer.Value.SpeakAsync(text);
-        //    }
-        //}
+			ServiceProvider = CreateServiceProvider();
 
-        protected override void BeginProcessing()
-        {
-            base.BeginProcessing();
-            this.WriteVerbose(string.Format("Command started at {0}.", DateTime.Now.ToLongTimeString()));
-            this.stopwatch = Stopwatch.StartNew();
+			//if (!string.IsNullOrEmpty(this.Language))
+			//{
+			//    var contentCulture = new CultureInfo(this.Language);
 
-            ServiceProvider = CreateServiceProvider();
+			//    Thread.CurrentThread.CurrentCulture = contentCulture;
+			//    Thread.CurrentThread.CurrentUICulture = contentCulture;
+			//}
+		}
 
-            //if (!string.IsNullOrEmpty(this.Language))
-            //{
-            //    var contentCulture = new CultureInfo(this.Language);
+		protected abstract IServiceProvider CreateServiceProvider();
 
-            //    Thread.CurrentThread.CurrentCulture = contentCulture;
-            //    Thread.CurrentThread.CurrentUICulture = contentCulture;
-            //}
-        }
+		protected override void EndProcessing()
+		{
+			_stopwatch.Stop();
+			WriteVerbose(
+				$"Command finished at {DateTime.Now.ToLongTimeString()}. It took {_stopwatch.Elapsed} to complete.");
+			base.EndProcessing();
+		}
 
-        protected abstract IServiceProvider CreateServiceProvider();
+		protected sealed override void ProcessRecord()
+		{
+			AsyncContext.Run(async () => await ProcessRecordAsync());
+		}
 
-        protected override void EndProcessing()
-        {
-            this.stopwatch.Stop();
-            this.WriteVerbose(string.Format("Command finished at {0}. It took {1} to complete.", DateTime.Now.ToLongTimeString(), this.stopwatch.Elapsed));
-            base.EndProcessing();
-        }
-
-        protected sealed override void ProcessRecord()
-        {
-            AsyncContext.Run(async () => await ProcessRecordAsync());
-        }
-
-        protected virtual Task ProcessRecordAsync()
-        {
-            return Task.Delay(0);
-        }
-    }
+		protected abstract Task ProcessRecordAsync();
+	}
 }
