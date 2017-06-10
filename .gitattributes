@@ -14,3 +14,4 @@
 *.props      text
 *.filters    text
 *.vcxitems   text
+*.nuspec     text
