@@ -18,6 +18,7 @@ namespace Web_Service
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .UseApplicationInsights()
+				.UseUrls("http://localhost:15671/")
                 .Build();
 
             host.Run();
