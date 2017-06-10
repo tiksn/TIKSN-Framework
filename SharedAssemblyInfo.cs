@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyCompany("TIKSN Development")]
 [assembly: AssemblyProduct("TIKSN Framework")]
-[assembly: AssemblyCopyright("Copyright © 2016, TIKSN Lab")]
+[assembly: AssemblyCopyright("Copyright © 2017, TIKSN Lab")]
 #if DEBUG
 
 [assembly: AssemblyConfiguration("Debug")]
@@ -17,6 +17,6 @@ using System.Runtime.InteropServices;
 
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
-[assembly: AssemblyVersion("1.6.0.0")]
-[assembly: AssemblyFileVersion("1.6.0.0")]
-[assembly: AssemblyInformationalVersion("1.6.0.0")] // a.k.a. “Product version”
+[assembly: AssemblyVersion("1.6.72.0")]
+[assembly: AssemblyFileVersion("1.6.72.0")]
+[assembly: AssemblyInformationalVersion("1.6.72.0")] // a.k.a. “Product version”
