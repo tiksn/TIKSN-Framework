@@ -1,7 +1,9 @@
+root = true
+
 [*]
 end_of_line = crlf
 
-[*.xml]
+[*.{xml,csproj}]
 indent_style = tab
 
 [*.cs]
