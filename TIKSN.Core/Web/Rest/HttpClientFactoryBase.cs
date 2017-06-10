@@ -9,7 +9,7 @@ namespace TIKSN.Web.Rest
 	{
 		public virtual Task<HttpClient> Create(Guid apiKey)
 		{
-			throw new KeyNotFoundException($"API key {apiKey} was not found.");
+			throw new KeyNotFoundException($"Http Client for API with key {apiKey} was not found.");
 		}
 	}
 }
