@@ -10,6 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\MobileCenterEventTelemeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\MobileCenterExceptionTelemeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\MobileCenterTraceTelemeter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\SQLiteNetRepositoryBase.cs" />
   </ItemGroup>
 </Project>
