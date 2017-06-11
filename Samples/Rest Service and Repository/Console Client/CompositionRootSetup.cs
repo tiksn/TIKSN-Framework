@@ -26,6 +26,7 @@ namespace Console_Client
 		protected override void ConfigureLogging(ILoggerFactory loggerFactory)
 		{
 			loggerFactory.AddConsole();
+			base.ConfigureLogging(loggerFactory);
 		}
 
 		protected override void ConfigureOptions(IServiceCollection services, IConfigurationRoot configuration)

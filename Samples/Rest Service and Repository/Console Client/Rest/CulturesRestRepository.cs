@@ -4,13 +4,26 @@ using TIKSN.Web.Rest;
 using Microsoft.Extensions.Options;
 using System.Threading;
 using System.Threading.Tasks;
-using System;
+using Microsoft.Extensions.Localization;
+using TIKSN.Analytics.Telemetry;
 
 namespace Console_Client.Rest
 {
     public class CulturesRestRepository : RestRepository<CultureModel, int>, ICulturesRestRepository
     {
-        public CulturesRestRepository(IHttpClientFactory httpClientFactory, ISerializerRestFactory serializerRestFactory, IDeserializerRestFactory deserializerRestFactory, IRestAuthenticationTokenProvider restAuthenticationTokenProvider, IOptions<RestRepositoryOptions<CultureModel>> options) : base(httpClientFactory, serializerRestFactory, deserializerRestFactory, restAuthenticationTokenProvider, options)
+        public CulturesRestRepository(IHttpClientFactory httpClientFactory,
+			ISerializerRestFactory serializerRestFactory,
+			IDeserializerRestFactory deserializerRestFactory,
+			IRestAuthenticationTokenProvider restAuthenticationTokenProvider,
+			IOptions<RestRepositoryOptions<CultureModel>> options,
+			IStringLocalizer stringLocalizer,
+			ITraceTelemeter traceTelemeter) : base(httpClientFactory,
+				serializerRestFactory,
+				deserializerRestFactory,
+				restAuthenticationTokenProvider,
+				options,
+				stringLocalizer,
+				traceTelemeter)
         {
         }
 
