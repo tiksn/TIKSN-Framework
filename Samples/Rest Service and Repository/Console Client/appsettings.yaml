@@ -1,0 +1,10 @@
+﻿---
+Logging:
+ IncludeScopes: false
+ LogLevel:
+  Default: Warning
+RestRepository:
+ Culture:
+  ApiKey: aad1b73c-06ca-4424-8f96-35d9abc9c925
+  BaseAddress: http://localhost:15671/
+  ResourceTemplate: api/Cultures/{ID}

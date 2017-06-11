@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TIKSN.Data
 {
-    public class EntityUnitOfWork : IUnitOfWork
+    public class EntityUnitOfWork : UnitOfWorkBase
     {
         private readonly DbContext dbContext;
 
@@ -12,9 +13,14 @@ namespace TIKSN.Data
             this.dbContext = dbContext;
         }
 
-        public Task CompleteAsync()
+        public override Task CompleteAsync(CancellationToken cancellationToken)
         {
-            return dbContext.SaveChangesAsync();
+            return dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        protected override bool IsDirty()
+        {
+            return dbContext.ChangeTracker.HasChanges();
         }
     }
 }

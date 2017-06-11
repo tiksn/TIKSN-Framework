@@ -1,0 +1,17 @@
+*.sln        text
+*.csproj     text
+*.vbproj     text
+*.vcxproj    text
+*.vcproj     text
+*.dbproj     text
+*.fsproj     text
+*.lsproj     text
+*.wixproj    text
+*.modelproj  text
+*.sqlproj    text
+*.wmaproj    text
+*.xproj      text
+*.props      text
+*.filters    text
+*.vcxitems   text
+*.nuspec     text

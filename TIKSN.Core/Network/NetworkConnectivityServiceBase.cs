@@ -4,42 +4,41 @@ using System.Reactive.Subjects;
 
 namespace TIKSN.Network
 {
-    public abstract class NetworkConnectivityServiceBase : INetworkConnectivityService
-    {
-        private readonly Subject<InternetConnectivityState> manualChecks;
+	public abstract class NetworkConnectivityServiceBase : INetworkConnectivityService
+	{
+		protected IObservable<InternetConnectivityState> internetConnectivityStateInternal;
+		private readonly Subject<InternetConnectivityState> manualChecks;
 
-        protected NetworkConnectivityServiceBase()
-        {
-            manualChecks = new Subject<InternetConnectivityState>();
-        }
+		protected NetworkConnectivityServiceBase()
+		{
+			manualChecks = new Subject<InternetConnectivityState>();
+		}
 
-        public IObservable<InternetConnectivityState> InternetConnectivityChanged
-        {
-            get
-            {
-                return InternetConnectivityStateInternal
-                    .Merge(manualChecks)
-                    .DistinctUntilChanged();
-            }
-        }
+		public IObservable<InternetConnectivityState> InternetConnectivityChanged
+		{
+			get
+			{
+				return internetConnectivityStateInternal
+					.Merge(manualChecks)
+					.DistinctUntilChanged();
+			}
+		}
 
-        protected abstract IObservable<InternetConnectivityState> InternetConnectivityStateInternal { get; }
+		public InternetConnectivityState GetInternetConnectivityState()
+		{
+			return GetInternetConnectivityState(true);
+		}
 
-        public InternetConnectivityState GetInternetConnectivityState()
-        {
-            return GetInternetConnectivityState(true);
-        }
+		protected abstract InternetConnectivityState GetInternetConnectivityStateInternal();
 
-        protected abstract InternetConnectivityState GetInternetConnectivityStateInternal();
+		private InternetConnectivityState GetInternetConnectivityState(bool broadcast)
+		{
+			var result = GetInternetConnectivityStateInternal();
 
-        private InternetConnectivityState GetInternetConnectivityState(bool broadcast)
-        {
-            var result = GetInternetConnectivityStateInternal();
+			if (broadcast)
+				manualChecks.OnNext(result);
 
-            if (broadcast)
-                manualChecks.OnNext(result);
-
-            return result;
-        }
-    }
+			return result;
+		}
+	}
 }

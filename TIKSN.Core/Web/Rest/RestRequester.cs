@@ -1,5 +1,6 @@
-﻿using System;
-using System.Diagnostics.Contracts;
+﻿using LiteGuard;
+using System;
+using System.Globalization;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -9,200 +10,181 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Web.Rest
 {
-    public class RestRequester : IRestRequester
-    {
-        private readonly IRestRequesterConfiguration _configuration;
-        private readonly IDeserializerRestFactory _deserializerRestFactory;
-        private readonly ISerializerRestFactory _serializerRestFactory;
-        private readonly IRestAuthenticationTokenProvider _restAuthenticationTokenProvider;
+	public class RestRequester : IRestRequester
+	{
+		private readonly IDeserializerRestFactory _deserializerRestFactory;
+		private readonly IHttpClientFactory _httpClientFactory;
+		private readonly IRestAuthenticationTokenProvider _restAuthenticationTokenProvider;
+		private readonly ISerializerRestFactory _serializerRestFactory;
 
-        public RestRequester(IRestRequesterConfiguration configuration,
-            ISerializerRestFactory serializerRestFactory,
-            IDeserializerRestFactory deserializerRestFactory,
-            IRestAuthenticationTokenProvider restAuthenticationTokenProvider)
-        {
-            Contract.Requires<ArgumentNullException>(configuration != null);
-            Contract.Requires<ArgumentNullException>(serializerRestFactory != null);
-            Contract.Requires<ArgumentNullException>(deserializerRestFactory != null);
-            Contract.Requires<ArgumentNullException>(restAuthenticationTokenProvider != null);
+		public RestRequester(IHttpClientFactory httpClientFactory,
+			ISerializerRestFactory serializerRestFactory,
+			IDeserializerRestFactory deserializerRestFactory,
+			IRestAuthenticationTokenProvider restAuthenticationTokenProvider)
+		{
+			Guard.AgainstNullArgument(nameof(httpClientFactory), httpClientFactory);
+			Guard.AgainstNullArgument(nameof(serializerRestFactory), serializerRestFactory);
+			Guard.AgainstNullArgument(nameof(deserializerRestFactory), deserializerRestFactory);
+			Guard.AgainstNullArgument(nameof(restAuthenticationTokenProvider), restAuthenticationTokenProvider);
 
-            _configuration = configuration;
-            _serializerRestFactory = serializerRestFactory;
-            _deserializerRestFactory = deserializerRestFactory;
-            _restAuthenticationTokenProvider = restAuthenticationTokenProvider;
-        }
+			_httpClientFactory = httpClientFactory;
+			_serializerRestFactory = serializerRestFactory;
+			_deserializerRestFactory = deserializerRestFactory;
+			_restAuthenticationTokenProvider = restAuthenticationTokenProvider;
+		}
 
-        public async Task<TResult> Request<TResult, TRequest>(TRequest request, CancellationToken cancellationToken)
-        {
-            var requestType = request.GetType().GetTypeInfo();
+		public async Task<TResult> Request<TResult, TRequest>(TRequest request, CancellationToken cancellationToken)
+		{
+			var requestType = request.GetType().GetTypeInfo();
 
-            var restEndpointAttribute = requestType.GetCustomAttribute<RestEndpointAttribute>();
+			var restEndpointAttribute = requestType.GetCustomAttribute<RestEndpointAttribute>();
 
-            if (restEndpointAttribute == null)
-                throw new NotSupportedException("Requested Type has to have RestEndpointAttribute.");
+			if (restEndpointAttribute == null)
+				throw new NotSupportedException("Requested Type has to have RestEndpointAttribute.");
 
-            var resourceLocation = restEndpointAttribute.ResourceTemplate;
+			var resourceLocation = restEndpointAttribute.ResourceTemplate;
+			var requestUrl = new Uri(resourceLocation, UriKind.Relative);
 
-            bool hasContent = false;
-            object requestContent = null;
-            string requestContentMediaType = null;
+			var httpClient = await _httpClientFactory.Create(restEndpointAttribute.ApiKey);
 
-            foreach (var property in requestType.DeclaredProperties)
-            {
-                var restContentAttribute = property.GetCustomAttribute<RestContentAttribute>();
+			httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(restEndpointAttribute.MediaType));
 
-                if (restContentAttribute == null)
-                {
-                    var propertyValue = property.GetValue(request);
-                    var parameter = string.Empty;
+			var hasContent = false;
+			object requestContent = null;
+			string requestContentMediaType = null;
 
-                    if (propertyValue != null)
-                    {
-                        string propertyStringValue;
+			foreach (var property in requestType.DeclaredProperties)
+			{
+				var restContentAttribute = property.GetCustomAttribute<RestContentAttribute>();
+				var acceptLanguageAttribute = property.GetCustomAttribute<AcceptLanguageAttribute>();
 
-                        if (property.PropertyType == typeof(DateTimeOffset))
-                        {
-                            propertyStringValue = ((DateTimeOffset)propertyValue).ToString("s");
-                        }
-                        else
-                        {
-                            propertyStringValue = propertyValue.ToString();
-                        }
+				if (acceptLanguageAttribute != null)
+				{
+					var propertyValue = (CultureInfo)property.GetValue(request);
+					httpClient.DefaultRequestHeaders.AcceptLanguage.Add(acceptLanguageAttribute.Quality.HasValue ?
+						new StringWithQualityHeaderValue(propertyValue.Name, acceptLanguageAttribute.Quality.Value) :
+						new StringWithQualityHeaderValue(propertyValue.Name));
+				}
 
-                        parameter = propertyStringValue;
-                    }
+				if (restContentAttribute != null)
+				{
+					if (hasContent)
+						throw new NotSupportedException("Request model can't have more than one content property.");
+					hasContent = true;
 
-                    resourceLocation = ReplaceParameterValueInLocation(resourceLocation, property.Name, parameter);
-                }
-                else
-                {
-                    if (hasContent)
-                        throw new NotSupportedException("Request model can't have more than one content property.");
-                    hasContent = true;
+					requestContent = property.GetValue(request);
+					requestContentMediaType = restContentAttribute.MediaType;
+				}
+				else
+				{
+					var propertyValue = property.GetValue(request);
+					var parameter = string.Empty;
 
-                    requestContent = property.GetValue(request);
-                    requestContentMediaType = restContentAttribute.MediaType;
-                }
-            }
+					if (propertyValue != null)
+					{
+						string propertyStringValue;
 
-            resourceLocation = await SetResourceParameters(restEndpointAttribute, resourceLocation);
+						if (property.PropertyType == typeof(DateTimeOffset))
+						{
+							propertyStringValue = ((DateTimeOffset)propertyValue).ToString("s");
+						}
+						else
+						{
+							propertyStringValue = propertyValue.ToString();
+						}
 
-            var baseUrl = await _configuration.GetBaseUrl(restEndpointAttribute.ApiName);
-            var requestUrl = new Uri(baseUrl, resourceLocation);
+						parameter = propertyStringValue;
+					}
 
-            var httpClient = new HttpClient();
-            await SetDefaultHeaders(restEndpointAttribute, httpClient);
-            await SetAuthenticationHeader(restEndpointAttribute, httpClient);
+					resourceLocation = ReplaceParameterValueInLocation(resourceLocation, property.Name, parameter);
+				}
+			}
 
-            return await MakeRequest<TResult>(httpClient, restEndpointAttribute.Verb, requestUrl, requestContent, requestContentMediaType, restEndpointAttribute.MediaType, cancellationToken);
-        }
+			await SetAuthenticationHeader(restEndpointAttribute, httpClient);
 
-        private async Task SetAuthenticationHeader(RestEndpointAttribute restEndpointAttribute, HttpClient httpClient)
-        {
-            var authenticationSchema = string.Empty;
+			return await MakeRequest<TResult>(httpClient, restEndpointAttribute.Verb, requestUrl, requestContent, requestContentMediaType, restEndpointAttribute.MediaType, cancellationToken);
+		}
 
-            switch (restEndpointAttribute.Authentication)
-            {
-                case RestAuthenticationType.None:
-                    return;
+		private static string ReplaceParameterValueInLocation(string resourceLocation, string parameterName, string parameterValue)
+		{
+			var escapedParameterValue = parameterValue ?? string.Empty;
+			escapedParameterValue = Uri.EscapeUriString(parameterValue);
 
-                case RestAuthenticationType.Basic:
-                    authenticationSchema = "Basic";
-                    break;
+			resourceLocation = resourceLocation.Replace($"{{{parameterName}}}", escapedParameterValue);
+			return resourceLocation;
+		}
 
-                case RestAuthenticationType.Bearer:
-                    authenticationSchema = "Bearer";
-                    break;
+		private HttpContent GetContent(object requestContent, string requestContentMediaType)
+		{
+			return new StringContent(_serializerRestFactory.Create(requestContentMediaType).Serialize(requestContent), Encoding.UTF8, requestContentMediaType);
+		}
 
-                default:
-                    throw new NotSupportedException($"Authentication type '{restEndpointAttribute.Authentication.ToString()}' is not supported.");
-            }
+		private async Task<TResult> MakeRequest<TResult>(HttpClient httpClient, RestVerb verb, Uri requestUrl, object requestContent, string requestContentMediaType, string responseContentMediaType, CancellationToken cancellationToken)
+		{
+			HttpResponseMessage response;
+			switch (verb)
+			{
+				case RestVerb.Get:
+					response = await httpClient.GetAsync(requestUrl, cancellationToken);
+					break;
 
-            var authenticationToken = await _restAuthenticationTokenProvider.GetAuthenticationToken(restEndpointAttribute.ApiName);
+				case RestVerb.Delete:
+					response = await httpClient.DeleteAsync(requestUrl, cancellationToken);
+					break;
 
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authenticationSchema, authenticationToken);
-        }
+				case RestVerb.Put:
+					response = await httpClient.PutAsync(requestUrl, GetContent(requestContent, requestContentMediaType), cancellationToken);
+					break;
 
-        private static string ReplaceParameterValueInLocation(string resourceLocation, string parameterName, string parameterValue)
-        {
-            var escapedParameterValue = parameterValue ?? string.Empty;
-            escapedParameterValue = Uri.EscapeUriString(parameterValue);
+				case RestVerb.Post:
+					response = await httpClient.PostAsync(requestUrl, GetContent(requestContent, requestContentMediaType), cancellationToken);
+					break;
 
-            resourceLocation = resourceLocation.Replace($"{{{parameterName}}}", escapedParameterValue);
-            return resourceLocation;
-        }
+				default:
+					throw new NotSupportedException($"Request method '{verb.ToString()}' is not supported.");
+			}
 
-        private HttpContent GetContent(object requestContent, string requestContentMediaType)
-        {
-            return new StringContent(_serializerRestFactory.Create(requestContentMediaType).Serialize(requestContent), Encoding.UTF8, requestContentMediaType);
-        }
+			return await ParseResponse<TResult>(response, responseContentMediaType);
+		}
 
-        private async Task<TResult> MakeRequest<TResult>(HttpClient httpClient, RestVerb verb, Uri requestUrl, object requestContent, string requestContentMediaType, string responseContentMediaType, CancellationToken cancellationToken)
-        {
-            HttpResponseMessage response;
-            switch (verb)
-            {
-                case RestVerb.Get:
-                    response = await httpClient.GetAsync(requestUrl, cancellationToken);
-                    break;
+		private async Task<TResult> ParseResponse<TResult>(HttpResponseMessage response, string responseContentMediaType)
+		{
+			var result = default(TResult);
 
-                case RestVerb.Delete:
-                    response = await httpClient.DeleteAsync(requestUrl, cancellationToken);
-                    break;
+			var content = await response.Content.ReadAsStringAsync();
 
-                case RestVerb.Put:
-                    response = await httpClient.PutAsync(requestUrl, GetContent(requestContent, requestContentMediaType), cancellationToken);
-                    break;
+			if (content != null)
+			{
+				result = _deserializerRestFactory.Create(responseContentMediaType).Deserialize<TResult>(content);
+			}
 
-                case RestVerb.Post:
-                    response = await httpClient.PostAsync(requestUrl, GetContent(requestContent, requestContentMediaType), cancellationToken);
-                    break;
+			return result;
+		}
 
-                default:
-                    throw new NotSupportedException($"Request method '{verb.ToString()}' is not supported.");
-            }
+		private async Task SetAuthenticationHeader(RestEndpointAttribute restEndpointAttribute, HttpClient httpClient)
+		{
+			var authenticationSchema = string.Empty;
 
-            return await ParseResponse<TResult>(response, responseContentMediaType);
-        }
+			switch (restEndpointAttribute.Authentication)
+			{
+				case RestAuthenticationType.None:
+					return;
 
-        private async Task<TResult> ParseResponse<TResult>(HttpResponseMessage response, string responseContentMediaType)
-        {
-            var result = default(TResult);
+				case RestAuthenticationType.Basic:
+					authenticationSchema = "Basic";
+					break;
 
-            var content = await response.Content.ReadAsStringAsync();
+				case RestAuthenticationType.Bearer:
+					authenticationSchema = "Bearer";
+					break;
 
-            if (content != null)
-            {
-                result = _deserializerRestFactory.Create(responseContentMediaType).Deserialize<TResult>(content);
-            }
+				default:
+					throw new NotSupportedException($"Authentication type '{restEndpointAttribute.Authentication.ToString()}' is not supported.");
+			}
 
-            return result;
-        }
+			var authenticationToken = await _restAuthenticationTokenProvider.GetAuthenticationToken(restEndpointAttribute.ApiKey);
 
-        private async Task SetDefaultHeaders(RestEndpointAttribute restEndpointAttribute, HttpClient httpClient)
-        {
-            var defaultHeaders = await _configuration.GetDefaultHeaders(restEndpointAttribute.ApiName);
-            if (defaultHeaders != null)
-            {
-                foreach (var defaultHeader in defaultHeaders)
-                {
-                    httpClient.DefaultRequestHeaders.Add(defaultHeader.Key, defaultHeader.Value);
-                }
-            }
-        }
-
-        private async Task<string> SetResourceParameters(RestEndpointAttribute restEndpointAttribute, string resourceLocation)
-        {
-            var resourceParameters = await _configuration.GetResourceParameters(restEndpointAttribute.ApiName);
-            if (resourceParameters != null)
-            {
-                foreach (var resourceParameter in resourceParameters)
-                {
-                    resourceLocation = ReplaceParameterValueInLocation(resourceLocation, resourceParameter.Key, resourceParameter.Value);
-                }
-            }
-
-            return resourceLocation;
-        }
-    }
+			httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authenticationSchema, authenticationToken);
+		}
+	}
 }

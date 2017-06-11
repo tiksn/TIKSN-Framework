@@ -1,0 +1,10 @@
+root = true
+
+[*]
+end_of_line = crlf
+
+[*.{xml,csproj}]
+indent_style = tab
+
+[*.cs]
+indent_style = tab
