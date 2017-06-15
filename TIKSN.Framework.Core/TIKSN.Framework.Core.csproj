@@ -5,6 +5,7 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <AssemblyName>TIKSN.Framework.Core</AssemblyName>
 	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	  <RootNamespace>TIKSN</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
