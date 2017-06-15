@@ -13,6 +13,7 @@ namespace TIKSN.DependencyInjection
 		{
 			services.AddLocalization();
 			services.AddLogging();
+			services.AddMemoryCache();
 			services.AddOptions();
 
 			services.TryAddSingleton<IResourceNamesCache, ResourceNamesCache>();
