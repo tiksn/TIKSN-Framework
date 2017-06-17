@@ -24,9 +24,4 @@
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Strings.resx">
-      <Generator></Generator>
-    </EmbeddedResource>
-  </ItemGroup>
 </Project>
