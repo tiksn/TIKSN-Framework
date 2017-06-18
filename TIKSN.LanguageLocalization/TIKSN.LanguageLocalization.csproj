@@ -24,4 +24,12 @@
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <XliffResource Include="MultilingualResources\TIKSN.LanguageLocalization.hy.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.LanguageLocalization.ru.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+  </ItemGroup>
 </Project>
