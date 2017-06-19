@@ -25,7 +25,14 @@ namespace TIKSN.Localization
 			}
 		}
 
-		protected abstract IEnumerable<Assembly> GetAssemblies();
+		protected virtual IEnumerable<Assembly> GetAssemblies()
+		{
+			yield return typeof(CompositeAssemblyStringLocalizer).GetTypeInfo().Assembly;
+
+			yield return typeof(LanguageLocalizationParameters).GetTypeInfo().Assembly;
+
+			yield return typeof(RegionLocalizationParameters).GetTypeInfo().Assembly;
+		}
 
 		private IEnumerable<IStringLocalizer> CreateLocalizers()
 		{

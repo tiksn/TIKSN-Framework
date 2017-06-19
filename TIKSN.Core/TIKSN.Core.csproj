@@ -51,4 +51,9 @@
     <PackageReference Include="WindowsAzure.Storage" Version="8.1.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TIKSN.LanguageLocalization\TIKSN.LanguageLocalization.csproj" />
+    <ProjectReference Include="..\TIKSN.RegionLocalization\TIKSN.RegionLocalization.csproj" />
+  </ItemGroup>
+
 </Project>
