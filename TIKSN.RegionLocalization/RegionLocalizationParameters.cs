@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace TIKSN.RegionLocalization
+namespace TIKSN.Localization
 {
 	public static class RegionLocalizationParameters
 	{

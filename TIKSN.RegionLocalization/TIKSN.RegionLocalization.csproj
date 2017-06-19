@@ -10,6 +10,7 @@
     <TargetFramework>netstandard1.0</TargetFramework>
     <NeutralLanguage>en-US</NeutralLanguage>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <RootNamespace>TIKSN</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard1.0\TIKSN.RegionLocalization.xml</DocumentationFile>
