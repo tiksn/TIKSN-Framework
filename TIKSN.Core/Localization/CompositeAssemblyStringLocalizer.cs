@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Resources;
 
@@ -38,7 +39,7 @@ namespace TIKSN.Localization
 		{
 			var result = new List<IStringLocalizer>();
 
-			var assemblies = GetAssemblies();
+			var assemblies = GetAssemblies().ToArray();
 
 			foreach (var assembly in assemblies)
 			{
