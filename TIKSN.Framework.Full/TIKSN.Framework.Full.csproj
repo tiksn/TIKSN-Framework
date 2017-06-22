@@ -306,6 +306,14 @@
       <Project>{d1ecb169-bb57-4751-aeca-415e078e5996}</Project>
       <Name>TIKSN.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TIKSN.LanguageLocalization\TIKSN.LanguageLocalization.csproj">
+      <Project>{974db7c5-ce2d-4232-b781-cfcbb1f7784f}</Project>
+      <Name>TIKSN.LanguageLocalization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TIKSN.RegionLocalization\TIKSN.RegionLocalization.csproj">
+      <Project>{9d8726cc-ac22-4597-90db-a2809e22500c}</Project>
+      <Name>TIKSN.RegionLocalization</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\codecracker.CSharp.1.0.3\analyzers\dotnet\cs\CodeCracker.Common.dll" />
