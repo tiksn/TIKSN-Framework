@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("TIKSN Development")]
 [assembly: AssemblyProduct("TIKSN Framework")]
 [assembly: AssemblyCopyright("Copyright © 2017, TIKSN Lab")]
+[assembly: AssemblyCulture("")]
 #if DEBUG
 
 [assembly: AssemblyConfiguration("Debug")]
