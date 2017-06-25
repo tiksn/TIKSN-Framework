@@ -254,7 +254,6 @@
     <Compile Include="Configuration\WindowsRegistryConfigurationExtensions.cs" />
     <Compile Include="Configuration\WindowsRegistryConfigurationProvider.cs" />
     <Compile Include="Configuration\WindowsRegistryConfigurationSource.cs" />
-    <Compile Include="Data\SQLiteNetRepositoryBase.Platform.cs" />
     <Compile Include="DependencyInjection\PlatformDependencyRegistration.cs" />
     <Compile Include="DependencyInjection\PlatformModule.cs" />
     <Compile Include="Network\NetworkConnectivityService.cs" />

@@ -120,7 +120,6 @@
     <Compile Include="DependencyInjection\PlatformModule.cs" />
     <Compile Include="Network\NetworkConnectivityService.cs" />
     <Compile Include="Settings\SettingsService.cs" />
-    <Compile Include="Data\SQLiteNetRepositoryBase.Platform.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\TIKSN.Framework.UWP.rd.xml" />
   </ItemGroup>
