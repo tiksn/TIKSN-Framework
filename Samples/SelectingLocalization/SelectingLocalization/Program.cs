@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Localization;
 using System;
 using System.Globalization;
+using System.Threading;
 using TIKSN.Localization;
 
 namespace SelectingLocalization
@@ -11,16 +12,21 @@ namespace SelectingLocalization
 		static void Main(string[] args)
 		{
 			var compositionRoot = new CompositionRoot();
-			var serviceProvider =  compositionRoot.CreateServiceProvider();
+			var serviceProvider = compositionRoot.CreateServiceProvider();
 
 			var localizer = serviceProvider.GetRequiredService<IStringLocalizer>();
 			var selector = serviceProvider.GetRequiredService<ILocalizationSelector>();
 
-			
 			Print(localizer);
 			Select(selector, "ru-RU");
 			Print(localizer);
+			Select(selector, "ru-UA");
+			Print(localizer);
+			Select(selector, "ru");
+			Print(localizer);
 			Select(selector, "hy-AM");
+			Print(localizer);
+			Select(selector, "hy");
 			Print(localizer);
 
 			Console.ReadLine();
