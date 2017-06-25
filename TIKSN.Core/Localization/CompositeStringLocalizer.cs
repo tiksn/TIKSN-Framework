@@ -49,17 +49,12 @@ namespace TIKSN.Localization
 
 		public IStringLocalizer WithCulture(CultureInfo culture)
 		{
-			return new CompositeStringLocalizer(Localizers.Select(item => item.WithCulture(culture)));
+			return new CompositeStringLocalizer(Localizers.Select(item => item.WithCulture(culture)).ToArray());
 		}
 
 		private LocalizedString GetLocalizedString(Func<IStringLocalizer, LocalizedString> singleLocalizer)
 		{
-			var localizedStrings = new List<LocalizedString>();
-
-			foreach (var localizer in Localizers)
-			{
-				localizedStrings.Add(singleLocalizer(localizer));
-			}
+			var localizedStrings = Localizers.Select(localizer => singleLocalizer(localizer)).ToArray();
 
 			var localizableStrings = localizedStrings.Where(item => !item.ResourceNotFound).ToArray();
 
