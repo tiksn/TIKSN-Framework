@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelectingLocalization", "SelectingLocalization\SelectingLocalization.csproj", "{67187440-1687-44AC-9EEE-4EF4F68F9AD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllCulturesLocalization", "AllCulturesLocalization\AllCulturesLocalization.csproj", "{FE449290-79D2-4A90-9692-299980BF13CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{67187440-1687-44AC-9EEE-4EF4F68F9AD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67187440-1687-44AC-9EEE-4EF4F68F9AD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67187440-1687-44AC-9EEE-4EF4F68F9AD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE449290-79D2-4A90-9692-299980BF13CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE449290-79D2-4A90-9692-299980BF13CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE449290-79D2-4A90-9692-299980BF13CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE449290-79D2-4A90-9692-299980BF13CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
