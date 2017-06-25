@@ -19,6 +19,12 @@
 			<frameworkAssembly assemblyName="System.Speech" targetFramework=".NETFramework4.6" />
 		</frameworkAssemblies>
 		<dependencies>
+			<group>
+				<dependency id="Newtonsoft.Json" version="10.0.3" />
+				<dependency id="NETStandard.Library" version="1.6.1" />
+				<dependency id="Serilog" version="2.5.0" />
+				<dependency id="Serilog.Extensions.Logging" version="1.4.0" />
+			</group>
 			<group targetFramework=".NETFramework4.6">
 				<dependency id="Autofac" version="4.6.0" />
 				<dependency id="Autofac.Extensions.DependencyInjection" version="4.1.0" />
@@ -39,12 +45,9 @@
 				<dependency id="Microsoft.NETCore.Portable.Compatibility" version="1.0.1" />
 				<dependency id="Microsoft.PowerShell.3.ReferenceAssemblies" version="1.0.0" />
 				<dependency id="Microsoft.Win32.Registry" version="4.3.0" />
-				<dependency id="NETStandard.Library" version="1.6.1" />
-				<dependency id="Newtonsoft.Json" version="10.0.2" />
 				<dependency id="Nito.AsyncEx.Context" version="1.1.0" />
 				<dependency id="Nito.AsyncEx.Tasks" version="1.1.0" />
 				<dependency id="Nito.Disposables" version="1.1.0" />
-				<dependency id="Serilog.Extensions.Logging" version="1.4.0" />
 				<dependency id="ShellProgressBar" version="3.0.0" />
 				<dependency id="System.Reactive.Core" version="3.1.1" />
 				<dependency id="System.Reactive.Interfaces" version="3.1.1" />
@@ -58,8 +61,8 @@
 				<dependency id="Autofac.Extensions.DependencyInjection" version="4.1.0" />
 				<dependency id="HockeySDK.Xamarin" version="4.1.4" />
 				<dependency id="LiteGuard" version="1.1.0" />
-				<dependency id="Microsoft.Azure.Mobile.Analytics" version="0.12.0" />
-				<dependency id="Microsoft.Azure.Mobile.Crashes" version="0.12.0" />
+				<dependency id="Microsoft.Azure.Mobile.Analytics" version="0.13.0" />
+				<dependency id="Microsoft.Azure.Mobile.Crashes" version="0.13.0" />
 				<dependency id="Microsoft.EntityFrameworkCore" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.DependencyInjection" version="1.1.1" />
@@ -69,9 +72,6 @@
 				<dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Options" version="1.1.2" />
-				<dependency id="NETStandard.Library" version="1.6.1" />
-				<dependency id="Newtonsoft.Json" version="10.0.2" />
-				<dependency id="Serilog.Extensions.Logging" version="1.4.0" />
 				<dependency id="System.Reactive.Core" version="3.1.1" />
 				<dependency id="System.Reactive.Interfaces" version="3.1.1" />
 				<dependency id="System.Reactive.Linq" version="3.1.1" />
@@ -92,9 +92,6 @@
 				<dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.2" />
 				<dependency id="MongoDB.Driver" version="2.4.3" />
-				<dependency id="NETStandard.Library" version="1.6.1" />
-				<dependency id="Newtonsoft.Json" version="10.0.2" />
-				<dependency id="Serilog.Extensions.Logging" version="1.4.0" />
 				<dependency id="System.Reactive.Core" version="3.1.1" />
 				<dependency id="System.Reactive.Interfaces" version="3.1.1" />
 				<dependency id="System.Reactive.Linq" version="3.1.1" />
@@ -113,9 +110,6 @@
 				<dependency id="Microsoft.Extensions.Localization.Abstractions" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.2" />
-				<dependency id="NETStandard.Library" version="1.6.1" />
-				<dependency id="Newtonsoft.Json" version="10.0.2" />
-				<dependency id="Serilog.Extensions.Logging" version="1.4.0" />
 				<dependency id="System.Reactive.Core" version="3.1.1" />
 				<dependency id="System.Reactive.Interfaces" version="3.1.1" />
 				<dependency id="System.Reactive.Linq" version="3.1.1" />
@@ -135,9 +129,6 @@
 				<dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.2" />
 				<dependency id="MongoDB.Driver" version="2.4.4" />
-				<dependency id="NETStandard.Library" version="1.6.1" />
-				<dependency id="Newtonsoft.Json" version="10.0.2" />
-				<dependency id="Serilog.Extensions.Logging" version="1.4.0" />
 				<dependency id="System.Reactive.Core" version="3.1.1" />
 				<dependency id="System.Reactive.Interfaces" version="3.1.1" />
 				<dependency id="System.Reactive.Linq" version="3.1.1" />
@@ -151,7 +142,7 @@
 				<dependency id="HockeySDK.Core" version="4.1.6" />
 				<dependency id="LiteGuard" version="1.1.0" />
 				<dependency id="Microsoft.ApplicationInsights" version="2.3.0" />
-				<dependency id="Microsoft.Azure.Mobile.Analytics" version="0.12.0" />
+				<dependency id="Microsoft.Azure.Mobile.Analytics" version="0.13.0" />
 				<dependency id="Microsoft.EntityFrameworkCore" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.2" />
@@ -162,9 +153,6 @@
 				<dependency id="Microsoft.Extensions.Logging.Abstractions" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Logging.Debug" version="1.1.2" />
 				<dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="5.3.3" />
-				<dependency id="NETStandard.Library" version="1.6.1" />
-				<dependency id="Newtonsoft.Json" version="10.0.2" />
-				<dependency id="Serilog.Extensions.Logging" version="1.4.0" />
 				<dependency id="System.Reactive.Core" version="3.1.1" />
 				<dependency id="System.Reactive.Interfaces" version="3.1.1" />
 				<dependency id="System.Reactive.Linq" version="3.1.1" />

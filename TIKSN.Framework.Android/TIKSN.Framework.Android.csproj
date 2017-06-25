@@ -52,22 +52,22 @@
       <HintPath>..\packages\HockeySDK.Xamarin.4.1.4\lib\MonoAndroid403\HockeySDK.AndroidBindings.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Azure.Mobile.0.12.0\lib\MonoAndroid403\Microsoft.Azure.Mobile.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Azure.Mobile.0.13.0\lib\MonoAndroid403\Microsoft.Azure.Mobile.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile.Analytics, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Azure.Mobile.Analytics.0.12.0\lib\MonoAndroid403\Microsoft.Azure.Mobile.Analytics.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Azure.Mobile.Analytics.0.13.0\lib\MonoAndroid403\Microsoft.Azure.Mobile.Analytics.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile.Analytics.Android.Bindings, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Azure.Mobile.Analytics.0.12.0\lib\MonoAndroid403\Microsoft.Azure.Mobile.Analytics.Android.Bindings.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Azure.Mobile.Analytics.0.13.0\lib\MonoAndroid403\Microsoft.Azure.Mobile.Analytics.Android.Bindings.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile.Android.Bindings, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Azure.Mobile.0.12.0\lib\MonoAndroid403\Microsoft.Azure.Mobile.Android.Bindings.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Azure.Mobile.0.13.0\lib\MonoAndroid403\Microsoft.Azure.Mobile.Android.Bindings.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile.Crashes, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Azure.Mobile.Crashes.0.12.0\lib\MonoAndroid403\Microsoft.Azure.Mobile.Crashes.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Azure.Mobile.Crashes.0.13.0\lib\MonoAndroid403\Microsoft.Azure.Mobile.Crashes.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile.Crashes.Android.Bindings, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Azure.Mobile.Crashes.0.12.0\lib\MonoAndroid403\Microsoft.Azure.Mobile.Crashes.Android.Bindings.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Azure.Mobile.Crashes.0.13.0\lib\MonoAndroid403\Microsoft.Azure.Mobile.Crashes.Android.Bindings.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
@@ -91,11 +91,10 @@
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.2.4.0\lib\netstandard1.3\Serilog.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Serilog.2.5.0\lib\netstandard1.3\Serilog.dll</HintPath>
     </Reference>
     <Reference Include="Serilog.Extensions.Logging, Version=1.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\packages\Serilog.Extensions.Logging.1.4.0\lib\netstandard1.3\Serilog.Extensions.Logging.dll</HintPath>
