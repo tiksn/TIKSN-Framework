@@ -29,7 +29,7 @@ namespace SelectingLocalization
 		private static void Select(ILocalizationSelector selector, string name)
 		{
 			selector.Select(new CultureInfo(name));
-			Console.WriteLine($"Culture {name} is selected.");
+			Console.WriteLine($"Culture '{name}' is selected.");
 		}
 
 		private static void Print(IStringLocalizer localizer)
