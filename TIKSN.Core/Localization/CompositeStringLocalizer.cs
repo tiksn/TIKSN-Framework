@@ -61,8 +61,10 @@ namespace TIKSN.Localization
 				localizedStrings.Add(singleLocalizer(localizer));
 			}
 
-			if (localizedStrings.Any(item => !item.ResourceNotFound))
-				return localizedStrings.Single(item => !item.ResourceNotFound);
+			var localizableStrings = localizedStrings.Where(item => !item.ResourceNotFound).ToArray();
+
+			if (localizableStrings.Length > 0)
+				return localizableStrings.First();
 
 			return localizedStrings.First();
 		}
