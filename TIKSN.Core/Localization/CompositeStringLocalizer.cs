@@ -8,11 +8,9 @@ namespace TIKSN.Localization
 {
 	public class CompositeStringLocalizer : IStringLocalizer
 	{
-		private IEnumerable<IStringLocalizer> lazyLocalizers;
-
 		public CompositeStringLocalizer(IEnumerable<IStringLocalizer> localizers)
 		{
-			this.lazyLocalizers = localizers;
+			Localizers = localizers;
 		}
 
 		protected CompositeStringLocalizer()
