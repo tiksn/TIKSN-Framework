@@ -147,9 +147,6 @@
     <PackageReference Include="Exceptionless.Signed">
       <Version>4.0.1951</Version>
     </PackageReference>
-    <PackageReference Include="HockeySDK.Core">
-      <Version>4.1.6</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.ApplicationInsights">
       <Version>2.3.0</Version>
     </PackageReference>
