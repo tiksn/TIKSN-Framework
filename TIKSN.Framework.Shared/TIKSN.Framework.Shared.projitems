@@ -19,10 +19,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ExceptionlessMetricTelemeter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ExceptionlessTelemeterBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ExceptionlessTraceTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\HockeyAppEventTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\HockeyAppExceptionTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\HockeyAppMetricTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\HockeyAppTelemeterBase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\HockeyAppTraceTelemeter.cs" />
   </ItemGroup>
 </Project>

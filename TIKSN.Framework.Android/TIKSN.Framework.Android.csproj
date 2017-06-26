@@ -121,11 +121,6 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Analytics\Telemetry\HockeyAppEventTelemeter.cs" />
-    <Compile Include="Analytics\Telemetry\HockeyAppExceptionTelemeter.cs" />
-    <Compile Include="Analytics\Telemetry\HockeyAppMetricTelemeter.cs" />
-    <Compile Include="Analytics\Telemetry\HockeyAppTelemeterBase.cs" />
-    <Compile Include="Analytics\Telemetry\HockeyAppTraceTelemeter.cs" />
     <Compile Include="DependencyInjection\PlatformDependencyRegistration.cs" />
     <Compile Include="DependencyInjection\PlatformModule.cs" />
     <Compile Include="Settings\AndroidSettingsOptions.cs" />
