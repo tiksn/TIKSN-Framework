@@ -14,8 +14,11 @@ namespace SelectingLocalization
 			var compositionRoot = new CompositionRoot();
 			var serviceProvider = compositionRoot.CreateServiceProvider();
 
-			var localizer = serviceProvider.GetRequiredService<IStringLocalizer>();
+			//var localizer = serviceProvider.GetRequiredService<IStringLocalizer>();
+			var localizer = serviceProvider.GetRequiredService<TextLocalizer>();
 			var selector = serviceProvider.GetRequiredService<ILocalizationSelector>();
+
+			Console.ReadLine();
 
 			foreach (var cultiure in CultureInfo.GetCultures(CultureTypes.AllCultures))
 			{
@@ -49,6 +52,7 @@ namespace SelectingLocalization
 		private static void Print(IStringLocalizer localizer)
 		{
 			Console.WriteLine(localizer.GetRequiredString("066c2ac3-cacc-4271-9ed8-8a5cf9fb8369"));
+			Console.WriteLine(localizer.GetRequiredString("xx"));
 		}
 	}
 }
