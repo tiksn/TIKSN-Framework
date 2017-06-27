@@ -56,7 +56,7 @@ namespace TIKSN.Localization
 		{
 			var localizedStrings = Localizers.Select(localizer => singleLocalizer(localizer)).ToArray();
 
-			var localizableStrings = localizedStrings.Where(item => !item.ResourceNotFound).ToArray();
+			var localizableStrings = localizedStrings.Where(item => !item.ResourceNotFound && item.Name != item.Value).ToArray();
 
 			if (localizableStrings.Length > 0)
 				return localizableStrings.First();
