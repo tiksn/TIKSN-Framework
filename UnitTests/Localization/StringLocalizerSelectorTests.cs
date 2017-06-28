@@ -12,6 +12,10 @@ namespace TIKSN.Localization.Tests
 		[InlineData("066c2ac3-cacc-4271-9ed8-8a5cf9fb8369", "ru-RU", "Реклама")]
 		[InlineData("066c2ac3-cacc-4271-9ed8-8a5cf9fb8369", "hy", "Գովազդ")]
 		[InlineData("066c2ac3-cacc-4271-9ed8-8a5cf9fb8369", "hy-AM", "Գովազդ")]
+		[InlineData("066c2ac3-cacc-4271-9ed8-8a5cf9fb8369", "en-US", "Advertisement")]
+		[InlineData("066c2ac3-cacc-4271-9ed8-8a5cf9fb8369", "en-GB", "Advertisement")]
+		[InlineData("066c2ac3-cacc-4271-9ed8-8a5cf9fb8369", "en", "Advertisement")]
+		[InlineData("066c2ac3-cacc-4271-9ed8-8a5cf9fb8369", "de-CH", "Advertisement")]
 		public void SelectLocalization(string resourceKey, string cultureName, string expectedLocalization)
 		{
 			var resourceNamesCache = new ResourceNamesCache();
