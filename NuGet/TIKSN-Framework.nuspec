@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
 	<metadata>
 		<id>TIKSN-Framework</id>
-		<version>2.0.13-pre</version>
+		<version>2.0.14-pre</version>
 		<title>TIKSN Framework</title>
 		<authors>TIKSN</authors>
 		<owners>TIKSN</owners>
@@ -11,7 +11,7 @@
 		<iconUrl>http://www.tiksn.com/Images/Logo.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>This is a .NET Framework enhancement framework. Main features are Versioning, Finance, Currency, Foreign Exchange, Money, Pricing strategy, Telemetry, Composite Weighted Progress, Repository and Unity of Wok pattern implementation with Entity Framework Core, Network Connectivity Service and Triggering, Settings, Windows Registry configuration source.</description>
-		<copyright>Copyright © 2016, TIKSN Lab</copyright>
+		<copyright>Copyright © 2017, TIKSN Lab</copyright>
 		<releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/milestone/5 </releaseNotes>
 		<language />
 		<tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry, Configuration</tags>
@@ -162,21 +162,33 @@
 	<files>
 		<!-- Standard 1.0 -->
 		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.dll" target="lib\MonoAndroid403" />
+		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\MonoAndroid403" />
+		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\MonoAndroid403" />
 		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.xml" target="lib\MonoAndroid403" />
 		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.pdb" target="lib\MonoAndroid403" />
 		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.dll" target="lib\net46" />
+		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\net46" />
+		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\net46" />
 		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.xml" target="lib\net46" />
 		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.pdb" target="lib\net46" />
 		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.dll" target="lib\netcoreapp1.1" />
+		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\netcoreapp1.1" />
+		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\netcoreapp1.1" />
 		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.xml" target="lib\netcoreapp1.1" />
 		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.pdb" target="lib\netcoreapp1.1" />
 		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.dll" target="lib\netstandard1.3" />
+		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\netstandard1.3" />
+		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\netstandard1.3" />
 		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.xml" target="lib\netstandard1.3" />
 		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.pdb" target="lib\netstandard1.3" />
 		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.dll" target="lib\netstandard1.5" />
+		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\netstandard1.5" />
+		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\netstandard1.5" />
 		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.xml" target="lib\netstandard1.5" />
 		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.pdb" target="lib\netstandard1.5" />
 		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.dll" target="lib\uap10.0" />
+		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\uap10.0" />
+		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\uap10.0" />
 		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.xml" target="lib\uap10.0" />
 		<file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.pdb" target="lib\uap10.0" />
 		<file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.dll" target="lib\MonoAndroid403" />
