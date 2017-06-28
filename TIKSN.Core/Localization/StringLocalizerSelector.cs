@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Localization;
 using System.Collections.Generic;
 using System.Globalization;
+using System;
 
 namespace TIKSN.Localization
 {
@@ -27,6 +28,11 @@ namespace TIKSN.Localization
 		public void Select(CultureInfo cultureInfo)
 		{
 			_selectedStringLocalizer = _originalStringLocalizer.WithCulture(cultureInfo);
+		}
+
+		public void Unselect()
+		{
+			_selectedStringLocalizer = _originalStringLocalizer;
 		}
 
 		public IStringLocalizer WithCulture(CultureInfo culture)
