@@ -1,5 +1,8 @@
-﻿using Microsoft.Extensions.Localization;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using Microsoft.Extensions.Localization;
 using TIKSN.Localization;
+using System.Linq;
 
 namespace SelectingLocalization
 {
@@ -7,6 +10,15 @@ namespace SelectingLocalization
 	{
 		public TextLocalizer(IResourceNamesCache resourceNamesCache) : base(resourceNamesCache)
 		{
+		}
+
+		protected override IEnumerable<Assembly> GetAssemblies()
+		{
+			var result = base.GetAssemblies().ToList();
+
+			result.Add(typeof(TextLocalizer).GetTypeInfo().Assembly);
+
+			return result;
 		}
 	}
 }

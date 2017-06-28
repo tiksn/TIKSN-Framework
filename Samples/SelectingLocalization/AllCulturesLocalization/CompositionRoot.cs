@@ -11,8 +11,8 @@ namespace SelectingLocalization
 	{
 		protected override void ConfigureContainerBuilder(ContainerBuilder builder)
 		{
-			builder.RegisterType<TextLocalizer>().Named<IStringLocalizer>("service").AsSelf();
-			builder.RegisterDecorator<IStringLocalizer>((c, inner) => new StringLocalizerSelector(inner), "service").As<IStringLocalizer>().As<ILocalizationSelector>();
+			builder.RegisterType<TextLocalizer>().Named<IStringLocalizer>("service").SingleInstance();
+			builder.RegisterDecorator<IStringLocalizer>((c, inner) => new StringLocalizerSelector(inner), "service").As<IStringLocalizer>().As<ILocalizationSelector>().SingleInstance();
 		}
 
 		protected override void ConfigureOptions(IServiceCollection services, IConfigurationRoot configuration)

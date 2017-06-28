@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Localization;
 using System;
 using System.Globalization;
-using System.Threading;
 using TIKSN.Localization;
 
 namespace SelectingLocalization
@@ -14,11 +13,8 @@ namespace SelectingLocalization
 			var compositionRoot = new CompositionRoot();
 			var serviceProvider = compositionRoot.CreateServiceProvider();
 
-			//var localizer = serviceProvider.GetRequiredService<IStringLocalizer>();
-			var localizer = serviceProvider.GetRequiredService<TextLocalizer>();
+			var localizer = serviceProvider.GetRequiredService<IStringLocalizer>();
 			var selector = serviceProvider.GetRequiredService<ILocalizationSelector>();
-
-			Console.ReadLine();
 
 			foreach (var cultiure in CultureInfo.GetCultures(CultureTypes.AllCultures))
 			{

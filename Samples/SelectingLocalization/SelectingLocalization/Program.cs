@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Localization;
 using System;
 using System.Globalization;
-using System.Threading;
 using TIKSN.Localization;
 
 namespace SelectingLocalization
@@ -16,6 +15,8 @@ namespace SelectingLocalization
 
 			var localizer = serviceProvider.GetRequiredService<IStringLocalizer>();
 			var selector = serviceProvider.GetRequiredService<ILocalizationSelector>();
+
+			var isEqual = ReferenceEquals(localizer, selector);
 
 			Print(localizer);
 			Select(selector, "ru-RU");
