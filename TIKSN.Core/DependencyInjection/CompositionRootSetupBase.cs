@@ -136,7 +136,7 @@ namespace TIKSN.DependencyInjection
 							isNotSpecified = string.IsNullOrEmpty(pInfo.GetValue(options.Value)?.ToString());
 						else if (pInfo.PropertyType.GetTypeInfo().IsAbstract)
 							logger.LogDebug(1714558096, $"{pInfo.Name} property of {optionType.FullName} object is abstract type of {pInfo.PropertyType}. Abstract option types cannot be validated.");
-						else if (pInfo.PropertyType.GetMatchingConstructor(Type.EmptyTypes) != null && pInfo.GetValue(options.Value) == Activator.CreateInstance(pInfo.PropertyType))
+						else if (pInfo.PropertyType.GetConstructor(Type.EmptyTypes) != null && pInfo.GetValue(options.Value) == Activator.CreateInstance(pInfo.PropertyType))
 							isNotSpecified = true;
 
 						if (isNotSpecified)
