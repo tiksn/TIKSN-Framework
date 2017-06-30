@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -73,7 +75,9 @@ namespace TIKSN.Finance.ForeignExchange
 			{
 				var responseStream = await httpClient.GetStreamAsync(address);
 
-				var xdoc = XDocument.Load(responseStream);
+				var stream​Reader = new Stream​Reader(responseStream, Encoding.UTF7);
+
+				var xdoc = XDocument.Load(stream​Reader);
 
 				lock (this.rates)
 				{

@@ -1,6 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Xunit;
 
 namespace TIKSN.Finance.Tests.ForeignExchange
@@ -257,32 +261,39 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			var WebUrl = string.Format("http://www.cbr.ru/scripts/XML_daily.asp?date_req={2:00}/{1:00}/{0}", AtTheMoment.Year, AtTheMoment.Month, AtTheMoment.Day);
 
-			System.Xml.Linq.XDocument Xdoc = System.Xml.Linq.XDocument.Load(WebUrl);
-
-			var WebPairs = new System.Collections.Generic.List<string>();
-
-			foreach (var CodeElement in Xdoc.Element("ValCurs").Elements("Valute"))
+			using (var httpClient = new HttpClient())
 			{
-				string code = CodeElement.Element("CharCode").Value.Trim().ToUpper();
+				var responseStream = await httpClient.GetStreamAsync(WebUrl);
 
-				if (code == "XDR")
-					continue;
+				var stream​Reader = new Stream​Reader(responseStream, Encoding.UTF7);
 
-				WebPairs.Add(string.Format("{0}/RUB", code));
-				WebPairs.Add(string.Format("RUB/{0}", code));
+				var Xdoc = XDocument.Load(stream​Reader);
+
+				var WebPairs = new System.Collections.Generic.List<string>();
+
+				foreach (var CodeElement in Xdoc.Element("ValCurs").Elements("Valute"))
+				{
+					string code = CodeElement.Element("CharCode").Value.Trim().ToUpper();
+
+					if (code == "XDR")
+						continue;
+
+					WebPairs.Add(string.Format("{0}/RUB", code));
+					WebPairs.Add(string.Format("RUB/{0}", code));
+				}
+
+				foreach (var Pair in pairs)
+				{
+					Assert.True(WebPairs.Any(WP => WP == Pair.ToString()));
+				}
+
+				foreach (var WebPair in WebPairs)
+				{
+					Assert.True(pairs.Any(P => P.ToString() == WebPair));
+				}
+
+				Assert.True(pairs.Count() == WebPairs.Count);
 			}
-
-			foreach (var Pair in pairs)
-			{
-				Assert.True(WebPairs.Any(WP => WP == Pair.ToString()));
-			}
-
-			foreach (var WebPair in WebPairs)
-			{
-				Assert.True(pairs.Any(P => P.ToString() == WebPair));
-			}
-
-			Assert.True(pairs.Count() == WebPairs.Count);
 		}
 
 		[Fact]
