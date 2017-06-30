@@ -85,7 +85,8 @@ namespace TIKSN.Finance.ForeignExchange
 				var currencyCode = currencyElement.Element("cc").Value;
 				var rate = decimal.Parse(currencyElement.Element("rate").Value, CultureInfo.InvariantCulture);
 
-				result.Add(new Tuple<CurrencyInfo, decimal>(new CurrencyInfo(currencyCode), rate));
+				if (!string.IsNullOrEmpty(currencyCode))
+					result.Add(new Tuple<CurrencyInfo, decimal>(new CurrencyInfo(currencyCode), rate));
 			}
 
 			return result;
