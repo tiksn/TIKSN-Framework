@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TIKSN-Framework" Version="1.6.73-pre" />
+    <PackageReference Include="TIKSN-Framework" Version="2.0.17-pre" />
   </ItemGroup>
 
 </Project>

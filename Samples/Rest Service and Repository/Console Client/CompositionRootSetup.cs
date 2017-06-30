@@ -3,6 +3,7 @@ using Common_Models;
 using Console_Client.Rest;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using TIKSN.Analytics.Telemetry;
 using TIKSN.DependencyInjection;
@@ -21,6 +22,8 @@ namespace Console_Client
 			builder.RegisterType<HttpClientFactory>().As<IHttpClientFactory>();
 			builder.RegisterType<RestAuthenticationTokenProvider>().As<IRestAuthenticationTokenProvider>();
 			builder.RegisterType<TelemetryLogger>().As<IExceptionTelemeter>().SingleInstance();
+			builder.RegisterType<TextLocalizer>().As<IStringLocalizer>().SingleInstance();
+			builder.RegisterType<TelemetryLogger>().As<ITraceTelemeter>().As<IExceptionTelemeter>().SingleInstance();
 		}
 
 		protected override void ConfigureLogging(ILoggerFactory loggerFactory)
