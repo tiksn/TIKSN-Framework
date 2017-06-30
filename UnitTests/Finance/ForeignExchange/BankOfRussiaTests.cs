@@ -136,7 +136,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			Assert.True(pairs.Any(C => C.ToString() == "AUD/RUB"));
 			Assert.True(pairs.Any(C => C.ToString() == "AZN/RUB"));
 			Assert.True(pairs.Any(C => C.ToString() == "AMD/RUB"));
-			Assert.True(pairs.Any(C => C.ToString() == "BYR/RUB"));
+			Assert.True(pairs.Any(C => C.ToString() == "BYN/RUB"));
 			Assert.True(pairs.Any(C => C.ToString() == "BGN/RUB"));
 			Assert.True(pairs.Any(C => C.ToString() == "BRL/RUB"));
 			Assert.True(pairs.Any(C => C.ToString() == "HUF/RUB"));
@@ -149,7 +149,6 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			Assert.True(pairs.Any(C => C.ToString() == "CAD/RUB"));
 			Assert.True(pairs.Any(C => C.ToString() == "KGS/RUB"));
 			Assert.True(pairs.Any(C => C.ToString() == "CNY/RUB"));
-			//Assert.True(pairs.Any(C => C.ToString() == "LTL/RUB"));
 			Assert.True(pairs.Any(C => C.ToString() == "MDL/RUB"));
 			Assert.True(pairs.Any(C => C.ToString() == "RON/RUB"));
 			Assert.True(pairs.Any(C => C.ToString() == "TMT/RUB"));
@@ -170,7 +169,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/AUD"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/AZN"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/AMD"));
-			Assert.True(pairs.Any(C => C.ToString() == "RUB/BYR"));
+			Assert.True(pairs.Any(C => C.ToString() == "RUB/BYN"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/BGN"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/BRL"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/HUF"));
@@ -183,7 +182,6 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/CAD"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/KGS"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/CNY"));
-			//Assert.True(pairs.Any(C => C.ToString() == "RUB/LTL"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/MDL"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/RON"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/TMT"));
