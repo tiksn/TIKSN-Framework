@@ -1,7 +1,8 @@
 ﻿using System;
+using TIKSN.Finance.Tests;
 using Xunit;
 
-namespace TIKSN.Finance.Tests
+namespace TIKSN.Finance.Cache.Tests
 {
 	public class CachedCurrencyConverterTests
 	{
