@@ -18,6 +18,6 @@ using System.Runtime.InteropServices;
 
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
-[assembly: AssemblyVersion("2.0.18.0")]
-[assembly: AssemblyFileVersion("2.0.18.0")]
-[assembly: AssemblyInformationalVersion("2.0.18.0")] // a.k.a. “Product version”
+[assembly: AssemblyVersion("2.0.19.0")]
+[assembly: AssemblyFileVersion("2.0.19.0")]
+[assembly: AssemblyInformationalVersion("2.0.19.0")] // a.k.a. “Product version”
