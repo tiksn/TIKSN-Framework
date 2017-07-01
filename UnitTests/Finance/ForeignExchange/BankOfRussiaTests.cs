@@ -244,8 +244,6 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/SEK"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/CHF"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/JPY"));
-
-			Assert.Equal(34, pairs.Count());
 		}
 
 		[Fact]
@@ -257,7 +255,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			var pairs = await Bank.GetCurrencyPairsAsync(AtTheMoment);
 
-			var WebUrl = string.Format("http://www.cbr.ru/scripts/XML_daily.asp?date_req={2:00}/{1:00}/{0}", AtTheMoment.Year, AtTheMoment.Month, AtTheMoment.Day);
+			var WebUrl = string.Format("http://www.cbr.ru/scripts/XML_daily.asp?date_req={2:00}.{1:00}.{0}", AtTheMoment.Year, AtTheMoment.Month, AtTheMoment.Day);
 
 			using (var httpClient = new HttpClient())
 			{
@@ -272,9 +270,6 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 				foreach (var CodeElement in Xdoc.Element("ValCurs").Elements("Valute"))
 				{
 					string code = CodeElement.Element("CharCode").Value.Trim().ToUpper();
-
-					if (code == "XDR")
-						continue;
 
 					WebPairs.Add(string.Format("{0}/RUB", code));
 					WebPairs.Add(string.Format("RUB/{0}", code));

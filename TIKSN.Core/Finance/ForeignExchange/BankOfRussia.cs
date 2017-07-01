@@ -91,7 +91,7 @@ namespace TIKSN.Finance.ForeignExchange
 
 						var code = charCodeElement.Value;
 
-						if (code == "XDR" || code == "ATS" || code == "BEF" || code == "GRD" || code == "IEP" || code == "ESP" || code == "ITL" || code == "DEM" || code == "NLG" || code == "PTE" || code == "TRL" || code == "FIM" || code == "FRF" || code == "XEU" || code == "NULL" || code == "EEK" || code == "LVL" || code == "BYB" || code == "AZM")
+						if (code == "NULL")
 							continue;
 
 						var Currency = new CurrencyInfo(charCodeElement.Value);
