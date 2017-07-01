@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Mobile;
 using TIKSN.Analytics.Telemetry;
 
-namespace TIKSN.Framework.SharedMobile.Analytics.Telemetry
+namespace TIKSN.Analytics.Telemetry
 {
 	public class MobileCenterTraceTelemeter : ITraceTelemeter
 	{

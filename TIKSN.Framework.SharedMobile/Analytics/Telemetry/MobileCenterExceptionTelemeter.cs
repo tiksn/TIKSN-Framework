@@ -3,7 +3,7 @@ using System;
 using System.Threading.Tasks;
 using TIKSN.Analytics.Telemetry;
 
-namespace TIKSN.Framework.SharedMobile.Analytics.Telemetry
+namespace TIKSN.Analytics.Telemetry
 {
 	public class MobileCenterExceptionTelemeter : IExceptionTelemeter
 	{
