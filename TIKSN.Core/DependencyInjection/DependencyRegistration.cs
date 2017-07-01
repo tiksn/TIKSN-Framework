@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
 using TIKSN.Serialization;
 using TIKSN.Shell;
+using TIKSN.Time;
 using TIKSN.Web.Rest;
 
 namespace TIKSN.DependencyInjection
@@ -17,10 +18,11 @@ namespace TIKSN.DependencyInjection
 			services.AddOptions();
 
 			services.TryAddSingleton<IResourceNamesCache, ResourceNamesCache>();
+			services.TryAddSingleton<ITimeProvider, TimeProvider>();
 
-			services.TryAddSingleton<IRestRequester, RestRequester>();
 			services.TryAddSingleton<DotNetXmlDeserializer, DotNetXmlDeserializer>();
 			services.TryAddSingleton<DotNetXmlSerializer, DotNetXmlSerializer>();
+			services.TryAddSingleton<IRestRequester, RestRequester>();
 			services.TryAddSingleton<JsonDeserializer, JsonDeserializer>();
 			services.TryAddSingleton<JsonSerializer, JsonSerializer>();
 

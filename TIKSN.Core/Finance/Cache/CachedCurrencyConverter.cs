@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TIKSN.Finance
+namespace TIKSN.Finance.Cache
 {
 	public class CachedCurrencyConverter : ICurrencyConverter
 	{
