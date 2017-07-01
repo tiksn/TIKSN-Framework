@@ -11,7 +11,7 @@ namespace TIKSN.Finance.Cache.Tests
 		{
 			var converter = new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
 
-			var interval = System.TimeSpan.FromDays(10);
+			var interval = TimeSpan.FromDays(10);
 			int capacity = 20;
 
 			var cachedConverter = new CachedCurrencyConverter(converter, interval, interval, capacity, capacity);
@@ -30,7 +30,7 @@ namespace TIKSN.Finance.Cache.Tests
 		{
 			var converter = new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
 
-			var interval = System.TimeSpan.FromDays(10);
+			var interval = TimeSpan.FromDays(10);
 
 			var cachedConverter = new CachedCurrencyConverter(converter, interval, interval);
 
@@ -49,7 +49,7 @@ namespace TIKSN.Finance.Cache.Tests
 		{
 			var converter = new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
 
-			var interval = System.TimeSpan.FromDays(10);
+			var interval = TimeSpan.FromDays(10);
 
 			var cachedConverter = new CachedCurrencyConverter(converter, interval, interval);
 
@@ -60,7 +60,7 @@ namespace TIKSN.Finance.Cache.Tests
 		[Fact]
 		public void CachedCurrencyConverter_004()
 		{
-			var interval = System.TimeSpan.FromDays(10);
+			var interval = TimeSpan.FromDays(10);
 			int capacity = 20;
 
 			Assert.Throws<ArgumentNullException>(
@@ -72,7 +72,7 @@ namespace TIKSN.Finance.Cache.Tests
 		{
 			var converter = new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
 
-			var interval = System.TimeSpan.FromDays(10);
+			var interval = TimeSpan.FromDays(10);
 			int negativeCapacity = -10;
 			int positiveCapacity = 10;
 
@@ -85,7 +85,7 @@ namespace TIKSN.Finance.Cache.Tests
 		{
 			var converter = new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
 
-			var interval = System.TimeSpan.FromDays(10);
+			var interval = TimeSpan.FromDays(10);
 			int negativeCapacity = -10;
 			int positiveCapacity = 10;
 
@@ -98,8 +98,8 @@ namespace TIKSN.Finance.Cache.Tests
 		{
 			var converter = new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
 
-			var negativeInterval = System.TimeSpan.FromDays(-10);
-			var positiveInterval = System.TimeSpan.FromDays(10);
+			var negativeInterval = TimeSpan.FromDays(-10);
+			var positiveInterval = TimeSpan.FromDays(10);
 
 			Assert.Throws<ArgumentOutOfRangeException>(
 				() => new CachedCurrencyConverter(converter, negativeInterval, positiveInterval));
@@ -110,8 +110,8 @@ namespace TIKSN.Finance.Cache.Tests
 		{
 			var converter = new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
 
-			var negativeInterval = System.TimeSpan.FromDays(-10);
-			var positiveInterval = System.TimeSpan.FromDays(10);
+			var negativeInterval = TimeSpan.FromDays(-10);
+			var positiveInterval = TimeSpan.FromDays(10);
 
 			Assert.Throws<ArgumentOutOfRangeException>(
 				() => new CachedCurrencyConverter(converter, positiveInterval, negativeInterval));
