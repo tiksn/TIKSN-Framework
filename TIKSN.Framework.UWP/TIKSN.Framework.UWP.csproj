@@ -145,13 +145,16 @@
       <Version>1.0.3</Version>
     </PackageReference>
     <PackageReference Include="Exceptionless.Signed">
-      <Version>4.0.1951</Version>
+      <Version>4.0.1955</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.ApplicationInsights">
-      <Version>2.3.0</Version>
+      <Version>2.4.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Azure.Mobile.Analytics">
-      <Version>0.13.0</Version>
+      <Version>0.13.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Azure.Mobile.Push">
+      <Version>0.13.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers">
       <Version>1.1.0</Version>
