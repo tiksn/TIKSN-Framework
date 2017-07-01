@@ -23,9 +23,9 @@
 				<dependency id="Autofac" version="4.6.0" />
 				<dependency id="Autofac.Extensions.DependencyInjection" version="4.1.0" />
 				<dependency id="ConsoleTables" version="2.1.0" />
-				<dependency id="Exceptionless.Signed" version="4.0.1951" />
+				<dependency id="Exceptionless.Signed" version="4.0.1955" />
 				<dependency id="LiteGuard" version="1.1.0" />
-				<dependency id="Microsoft.ApplicationInsights" version="2.3.0" />
+				<dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
 				<dependency id="Microsoft.EntityFrameworkCore" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.2" />
@@ -57,8 +57,9 @@
 				<dependency id="Autofac" version="4.6.0" />
 				<dependency id="Autofac.Extensions.DependencyInjection" version="4.1.0" />
 				<dependency id="LiteGuard" version="1.1.0" />
-				<dependency id="Microsoft.Azure.Mobile.Analytics" version="0.13.0" />
-				<dependency id="Microsoft.Azure.Mobile.Crashes" version="0.13.0" />
+				<dependency id="Microsoft.Azure.Mobile.Analytics" version="0.13.1" />
+				<dependency id="Microsoft.Azure.Mobile.Crashes" version="0.13.1" />
+				<dependency id="Microsoft.Azure.Mobile.Push" version="0.13.1" />
 				<dependency id="Microsoft.EntityFrameworkCore" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.DependencyInjection" version="1.1.1" />
@@ -81,7 +82,7 @@
 			<group targetFramework="netcoreapp1.1">
 				<dependency id="Autofac.Extensions.DependencyInjection" version="4.1.0" />
 				<dependency id="LiteGuard" version="1.1.0" />
-				<dependency id="Microsoft.ApplicationInsights" version="2.3.0" />
+				<dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
 				<dependency id="Microsoft.EntityFrameworkCore" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.2" />
@@ -150,10 +151,11 @@
 			<group targetFramework="uap10.0">
 				<!--<dependency id="Microsoft.Azure.Mobile.Crashes" version="0.11.1" />-->
 				<dependency id="Autofac.Extensions.DependencyInjection" version="4.1.0" />
-				<dependency id="Exceptionless.Signed" version="4.0.1951" />
+				<dependency id="Exceptionless.Signed" version="4.0.1955" />
 				<dependency id="LiteGuard" version="1.1.0" />
-				<dependency id="Microsoft.ApplicationInsights" version="2.3.0" />
-				<dependency id="Microsoft.Azure.Mobile.Analytics" version="0.13.0" />
+				<dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
+				<dependency id="Microsoft.Azure.Mobile.Analytics" version="0.13.1" />
+				<dependency id="Microsoft.Azure.Mobile.Push" version="0.13.1" />
 				<dependency id="Microsoft.EntityFrameworkCore" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration" version="1.1.2" />
 				<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.2" />
