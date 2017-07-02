@@ -86,11 +86,11 @@ namespace TIKSN.Finance.ForeignExchange
 
 			if (IsHomeCurrencyPair(pair, asOn))
 			{
-				return GetRatesByDate(asOn)[pair.CounterCurrency];
+				return decimal.One / GetRatesByDate(asOn)[pair.CounterCurrency];
 			}
 			else
 			{
-				return decimal.One / GetRatesByDate(asOn)[pair.BaseCurrency];
+				return GetRatesByDate(asOn)[pair.BaseCurrency];
 			}
 		}
 

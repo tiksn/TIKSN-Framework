@@ -113,23 +113,6 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		}
 
 		[Fact]
-		public async Task ConvertCurrency005()
-		{
-			BankOfCanada Bank = new BankOfCanada();
-
-			RegionInfo US = new RegionInfo("US");
-			RegionInfo CA = new RegionInfo("CA");
-
-			CurrencyInfo USD = new CurrencyInfo(US);
-			CurrencyInfo CAD = new CurrencyInfo(CA);
-
-			Money Before = new Money(USD, 100m);
-
-			await Assert.ThrowsAsync<ArgumentException>(
-				async () => await Bank.ConvertCurrencyAsync(Before, CAD, DateTimeOffset.Now.AddDays(-20d)));
-		}
-
-		[Fact]
 		public async Task ConvertCurrency006()
 		{
 			BankOfCanada Bank = new BankOfCanada();
@@ -239,15 +222,6 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		}
 
 		[Fact]
-		public async Task CurrencyPairs004()
-		{
-			BankOfCanada Bank = new BankOfCanada();
-
-			await Assert.ThrowsAsync<ArgumentException>(
-				async () => await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now.AddDays(-10)));
-		}
-
-		[Fact]
 		public async Task CurrencyPairs005()
 		{
 			BankOfCanada Bank = new BankOfCanada();
@@ -294,23 +268,6 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			await Assert.ThrowsAsync<ArgumentException>(
 				async () => await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now.AddMinutes(1d)));
-		}
-
-		[Fact]
-		public async Task GetExchangeRate003()
-		{
-			BankOfCanada Bank = new BankOfCanada();
-
-			RegionInfo US = new RegionInfo("US");
-			RegionInfo CA = new RegionInfo("CA");
-
-			CurrencyInfo USD = new CurrencyInfo(US);
-			CurrencyInfo CAD = new CurrencyInfo(CA);
-
-			CurrencyPair pair = new CurrencyPair(CAD, USD);
-
-			await Assert.ThrowsAsync<ArgumentException>(
-				async () => await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now.AddDays(-20d)));
 		}
 
 		[Fact]
