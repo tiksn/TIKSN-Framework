@@ -3,5 +3,5 @@
 	<uses-sdk android:minSdkVersion="16" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.INTERNET" />
-	<application android:label="UnitTestRunner.Android" android:icon="@drawable/Icon"></application>
+	<application android:label="TIKSN Framework UnitTest Runner" android:icon="@drawable/Icon"></application>
 </manifest>
