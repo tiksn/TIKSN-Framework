@@ -41,12 +41,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\GetSampleCommand.cs" />
     <Compile Include="CompositionRootSetup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="TIKSN-Framework">
-      <Version>2.0.22-beta</Version>
+      <Version>2.0.23-beta</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />

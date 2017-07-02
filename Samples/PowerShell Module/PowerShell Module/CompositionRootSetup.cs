@@ -1,4 +1,5 @@
-﻿using System.Management.Automation;
+﻿using System;
+using System.Management.Automation;
 using Autofac;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +10,7 @@ using TIKSN.PowerShell;
 namespace PowerShell_Module
 {
 	public class CompositionRootSetup : AutofacCompositionRootSetupBase
-    {
+	{
 		private readonly Cmdlet _cmdlet;
 
 		public CompositionRootSetup(Cmdlet cmdlet)
@@ -28,6 +29,13 @@ namespace PowerShell_Module
 		protected override void ConfigureServices(IServiceCollection services)
 		{
 			services.AddSingleton(_cmdlet);
+		}
+
+		protected override void ConfigureLogging(ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
+		{
+			loggerFactory.AddPowerShell(serviceProvider);
+
+			base.ConfigureLogging(loggerFactory, serviceProvider);
 		}
 	}
 }
