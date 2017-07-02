@@ -32,7 +32,7 @@ namespace TIKSN.DependencyInjection
 			return serviceProvider;
 		}
 
-		protected virtual void ConfigureLogging(ILoggerFactory loggerFactory)
+		protected virtual void ConfigureLogging(ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
 		{
 			loggerFactory.AddDebug(LogLevel.Trace);
 		}
@@ -41,7 +41,7 @@ namespace TIKSN.DependencyInjection
 		{
 			var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
 
-			ConfigureLogging(loggerFactory);
+			ConfigureLogging(loggerFactory, serviceProvider);
 
 			var serilogLoggerConfiguration = new LoggerConfiguration()
 				.MinimumLevel.Verbose()
