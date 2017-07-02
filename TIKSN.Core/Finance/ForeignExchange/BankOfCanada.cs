@@ -1,71 +1,74 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace TIKSN.Finance.ForeignExchange
 {
 	public class BankOfCanada : ICurrencyConverter
 	{
-		private const string ClosingURL = "http://www.bankofcanada.ca/stats/assets/rates_rss/closing/en_all.xml";
-		private const string NoonURL = "http://www.bankofcanada.ca/stats/assets/rates_rss/noon/en_all.xml";
+		private const string RestURL = "http://www.bankofcanada.ca/valet/observations/group/FX_RATES_DAILY/json";
 		private static CurrencyInfo CanadianDollar;
 
 		private DateTimeOffset lastFetchDate;
-		private Dictionary<CurrencyInfo, Tuple<DateTimeOffset, decimal>> rates;
+		private Dictionary<DateTimeOffset, Dictionary<CurrencyInfo, decimal>> rates;
 
 		static BankOfCanada()
 		{
-			RegionInfo Canada = new RegionInfo("en-CA");
+			var Canada = new RegionInfo("en-CA");
 			CanadianDollar = new CurrencyInfo(Canada);
 		}
 
 		public BankOfCanada()
 		{
-			this.rates = new Dictionary<CurrencyInfo, Tuple<DateTimeOffset, decimal>>();
+			rates = new Dictionary<DateTimeOffset, Dictionary<CurrencyInfo, decimal>>();
 
-			this.lastFetchDate = DateTimeOffset.MinValue;
+			lastFetchDate = DateTimeOffset.MinValue;
 		}
 
 		public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
 		{
-			CurrencyPair pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
+			var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
-			decimal rate = await this.GetExchangeRateAsync(pair, asOn);
+			var rate = await this.GetExchangeRateAsync(pair, asOn);
 
 			return new Money(counterCurrency, baseMoney.Amount * rate);
 		}
 
 		public async Task FetchAsync()
 		{
-			var noonRates = await this.FetchRatesAsync(NoonURL);
-			var closingRates = await this.FetchRatesAsync(ClosingURL);
+			var ratesList = await FetchRatesAsync(RestURL);
 
-			this.UpdateRates(noonRates);
-			this.UpdateRates(closingRates);
+			lock (rates)
+			{
+				rates.Clear();
 
-			this.lastFetchDate = DateTime.Now; // must stay at the end
+				foreach (var perDate in ratesList.GroupBy(item => item.Item2))
+				{
+					rates.Add(perDate.Key, perDate.ToDictionary(k => k.Item1, v => v.Item3));
+				}
+			}
+
+			lastFetchDate = DateTime.Now; // must stay at the end
 		}
 
 		public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
 		{
-			await this.FetchOnDemandAsync();
-
-			var MinDate = this.rates.Min(R => R.Value.Item1);
+			await FetchOnDemandAsync();
 
 			if (asOn > DateTime.Now)
 				throw new ArgumentException("Exchange rate forecasting are not supported.");
 
-			if (asOn < MinDate)
-				throw new ArgumentException("Exchange rate history not supported.");
 
 			var result = new List<CurrencyPair>();
 
-			foreach (CurrencyInfo against in this.rates.Keys)
+			foreach (CurrencyInfo against in GetRatesByDate(asOn).Keys)
 			{
 				result.Add(new CurrencyPair(CanadianDollar, against));
 				result.Add(new CurrencyPair(against, CanadianDollar));
@@ -76,133 +79,112 @@ namespace TIKSN.Finance.ForeignExchange
 
 		public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
 		{
-			await this.FetchOnDemandAsync();
+			await FetchOnDemandAsync();
 
 			if (asOn > DateTimeOffset.Now)
 				throw new ArgumentException("Exchange rate forecasting not supported.");
 
-			//if (asOn.Date < System.DateTime.Now.Date)
-			//    throw new System.ArgumentException("Exchange rate history not supported.");
-
-			Tuple<DateTimeOffset, decimal> rateInfo;
-
-			if (this.IsHomeCurrencyPair(pair))
+			if (IsHomeCurrencyPair(pair, asOn))
 			{
-				rateInfo = this.rates[pair.CounterCurrency];
+				return GetRatesByDate(asOn)[pair.CounterCurrency];
 			}
 			else
 			{
-				rateInfo = this.rates[pair.BaseCurrency];
-				rateInfo = new Tuple<DateTimeOffset, decimal>(rateInfo.Item1, decimal.One / rateInfo.Item2);
+				return decimal.One / GetRatesByDate(asOn)[pair.BaseCurrency];
 			}
-
-			if (asOn < rateInfo.Item1)
-				throw new ArgumentException("Exchange rate history not supported.");
-
-			return rateInfo.Item2;
 		}
 
 		private async Task FetchOnDemandAsync()
 		{
-			foreach (var rate in rates)
+			if (DateTimeOffset.Now - lastFetchDate > TimeSpan.FromDays(1d))
 			{
-				if (rate.Value.Item2 == decimal.Zero)
-				{
-					await this.FetchAsync();
-
-					return;
-				}
-			}
-
-			if (DateTimeOffset.Now - this.lastFetchDate > TimeSpan.FromDays(1d))
-			{
-				await this.FetchAsync();
+				await FetchAsync();
 			}
 		}
 
-		private async Task<Dictionary<CurrencyInfo, Tuple<DateTimeOffset, decimal>>> FetchRatesAsync(string RssUrl)
+		private async Task<List<Tuple<CurrencyInfo, DateTimeOffset, decimal>>> FetchRatesAsync(string restUrl)
 		{
-			var result = new Dictionary<CurrencyInfo, Tuple<DateTimeOffset, decimal>>();
+			var result = new List<Tuple<CurrencyInfo, DateTimeOffset, decimal>>();
 
-			var rawData = await FetchRawDataAsync(RssUrl);
+			var rawData = await FetchRawDataAsync(restUrl);
 
 			foreach (var rawItem in rawData)
 			{
-				CurrencyInfo currency = new CurrencyInfo(rawItem.Key);
+				var currency = new CurrencyInfo(rawItem.Item1);
 
-				result.Add(currency, rawItem.Value);
+				result.Add(new Tuple<CurrencyInfo, DateTimeOffset, decimal>(currency, rawItem.Item2, rawItem.Item3));
 			}
 
 			return result;
 		}
 
-		private async Task<Dictionary<string, Tuple<DateTimeOffset, decimal>>> FetchRawDataAsync(string RssUrl)
+		private async Task<List<Tuple<string, DateTimeOffset, decimal>>> FetchRawDataAsync(string restUrl)
 		{
 			using (var httpClient = new HttpClient())
 			{
-				var responseStream = await httpClient.GetStreamAsync(RssUrl);
+				var responseStream = await httpClient.GetStreamAsync(restUrl);
 
-				var xdoc = XDocument.Load(responseStream);
-
-				var result = new Dictionary<string, Tuple<DateTimeOffset, decimal>>();
-
-				foreach (var ItemElement in xdoc.Element("{http://www.w3.org/1999/02/22-rdf-syntax-ns#}RDF").Elements("{http://purl.org/rss/1.0/}item"))
+				using (var streamReader = new StreamReader(responseStream))
 				{
-					var ExchangeRateElement = ItemElement.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.1}statistics").Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.1}exchangeRate");
-					var ValueElement = ExchangeRateElement.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.1}value");
-					var BaseCurrencyElement = ExchangeRateElement.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.1}baseCurrency");
-					var TargetCurrencyElement = ExchangeRateElement.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.1}targetCurrency");
-					var ObservationPeriodElement = ExchangeRateElement.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.1}observationPeriod");
+					var jsonDoc = (JObject)JsonConvert.DeserializeObject(await streamReader.ReadToEndAsync());
 
-					Debug.Assert(BaseCurrencyElement.Value == "CAD");
+					var result = new List<Tuple<string, DateTimeOffset, decimal>>();
 
-					decimal rate = decimal.Parse(ValueElement.Value);
-					var asOn = DateTimeOffset.Parse(ObservationPeriodElement.Value);
+					foreach (var observation in jsonDoc.Children().Single(item => string.Equals(item.Path, "observations", StringComparison.OrdinalIgnoreCase)).Children().Single().Children())
+					{
+						var asOn = new DateTimeOffset(observation.Value<DateTime>("d"));
 
-					var targetCurrencyCode = TargetCurrencyElement.Value.Substring(0, 3);
+						foreach (JProperty observationProperty in observation.Children())
+						{
+							if (observationProperty.Name.StartsWith("FX", StringComparison.OrdinalIgnoreCase))
+							{
+								Debug.Assert(observationProperty.Name.EndsWith("CAD"));
 
-					result.Add(targetCurrencyCode, new Tuple<DateTimeOffset, decimal>(asOn, rate));
+								var targetCurrencyCode = observationProperty.Name.Substring(2, 3);
+
+								var valueObject = observationProperty.Value.Children().OfType<JProperty>().FirstOrDefault(item => string.Equals(item.Name, "v", StringComparison.OrdinalIgnoreCase));
+
+								if (valueObject != null)
+								{
+									var rate = (decimal)valueObject.Value;
+
+									result.Add(new Tuple<string, DateTimeOffset, decimal>(targetCurrencyCode, asOn, rate));
+								}
+							}
+						}
+					}
+
+					return result;
 				}
-
-				return result;
 			}
 		}
 
-		private bool IsHomeCurrencyPair(CurrencyPair Pair)
+		private Dictionary<CurrencyInfo, decimal> GetRatesByDate(DateTimeOffset asOn)
+		{
+			var date = asOn.Date;
+
+			if (date.DayOfWeek == DayOfWeek.Saturday)
+				date = date.AddDays(-1);
+			else if (date.DayOfWeek == DayOfWeek.Sunday)
+				date = date.AddDays(-2);
+
+			return rates[date];
+		}
+
+		private bool IsHomeCurrencyPair(CurrencyPair Pair, DateTimeOffset asOn)
 		{
 			if (Pair.BaseCurrency == CanadianDollar)
 			{
-				if (this.rates.Any(R => R.Key == Pair.CounterCurrency))
+				if (GetRatesByDate(asOn).Any(R => R.Key == Pair.CounterCurrency))
 					return true;
 			}
 			else if (Pair.CounterCurrency == CanadianDollar)
 			{
-				if (this.rates.Any(R => R.Key == Pair.BaseCurrency))
+				if (GetRatesByDate(asOn).Any(R => R.Key == Pair.BaseCurrency))
 					return false;
 			}
 
 			throw new ArgumentException("Currency pair not supported.");
-		}
-
-		private void UpdateRates(Dictionary<CurrencyInfo, Tuple<DateTimeOffset, decimal>> newRates)
-		{
-			lock (this.rates)
-			{
-				foreach (var keyValue in newRates)
-				{
-					if (this.rates.ContainsKey(keyValue.Key))
-					{
-						if (keyValue.Value.Item1 > this.rates[keyValue.Key].Item1)
-						{
-							this.rates[keyValue.Key] = keyValue.Value;
-						}
-					}
-					else
-					{
-						this.rates[keyValue.Key] = keyValue.Value;
-					}
-				}
-			}
 		}
 	}
 }
