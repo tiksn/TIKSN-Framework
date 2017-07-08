@@ -23,6 +23,7 @@ namespace TIKSN.DependencyInjection
 			services.TryAddSingleton<ICurrencyFactory, CurrencyFactory>();
 			services.TryAddSingleton<IRegionFactory, RegionFactory>();
 			services.TryAddSingleton<IResourceNamesCache, ResourceNamesCache>();
+			services.TryAddSingleton<IShellCommandEngine, ShellCommandEngine>();
 			services.TryAddSingleton<ITimeProvider, TimeProvider>();
 
 			services.TryAddSingleton<DotNetXmlDeserializer, DotNetXmlDeserializer>();

@@ -40,7 +40,7 @@ namespace TIKSN.Shell
 		{
 			foreach (var definedType in assembly.DefinedTypes)
 			{
-				TryAddType(definedType);
+				TryAddType(definedType.AsType());
 			}
 		}
 
@@ -52,7 +52,7 @@ namespace TIKSN.Shell
 			if (!type.GetInterfaces().Contains(typeof(IShellCommand)))
 				throw new ArgumentException(_stringLocalizer.GetRequiredString(NotCommandmentKey, type.FullName, typeof(IShellCommand).FullName), nameof(type));
 
-			var commandAttribute = type.GetCustomAttribute<ShellCommandAttribute>();
+			var commandAttribute = type.GetTypeInfo().GetCustomAttribute<ShellCommandAttribute>();
 			if (commandAttribute == null)
 				throw new ArgumentException(_stringLocalizer.GetRequiredString(MustImplementCommandmentAttributeKey, type.FullName, typeof(ShellCommandAttribute).FullName), nameof(type));
 
