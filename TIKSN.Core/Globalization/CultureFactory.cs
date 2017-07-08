@@ -14,7 +14,7 @@ namespace TIKSN.Globalization
 
 		public CultureInfo Create(string name)
 		{
-			var cacheKey = Tuple.Create(entityType, MemoryCacheKeyKind.Entity, name);
+			var cacheKey = Tuple.Create(entityType, name);
 
 			return GetFromMemoryCache(cacheKey, () => new CultureInfo(name));
 		}

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
+using TIKSN.Globalization;
 using TIKSN.Serialization;
 using TIKSN.Shell;
 using TIKSN.Time;
@@ -17,6 +18,8 @@ namespace TIKSN.DependencyInjection
 			services.AddMemoryCache();
 			services.AddOptions();
 
+			services.TryAddSingleton<ICultureFactory, CultureFactory>();
+			services.TryAddSingleton<IRegionFactory, RegionFactory>();
 			services.TryAddSingleton<IResourceNamesCache, ResourceNamesCache>();
 			services.TryAddSingleton<ITimeProvider, TimeProvider>();
 
