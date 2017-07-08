@@ -12,7 +12,6 @@ namespace TIKSN.Data.Cache
 		where TEntity : IEntity<TIdentity>
 		where TIdentity : IEquatable<TIdentity>
 	{
-		protected static readonly Type entityType = typeof(TEntity);
 		protected readonly HashSet<object> _cacheKeychain;
 		protected readonly IRepository<TEntity> _repository;
 		public RepositoryMemoryCacheDecorator(IRepository<TEntity> repository,
