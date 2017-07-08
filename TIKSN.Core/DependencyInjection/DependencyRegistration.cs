@@ -18,6 +18,7 @@ namespace TIKSN.DependencyInjection
 			services.AddMemoryCache();
 			services.AddOptions();
 
+			services.TryAddSingleton<IConsoleService, ConsoleService>();
 			services.TryAddSingleton<ICultureFactory, CultureFactory>();
 			services.TryAddSingleton<ICurrencyFactory, CurrencyFactory>();
 			services.TryAddSingleton<IRegionFactory, RegionFactory>();

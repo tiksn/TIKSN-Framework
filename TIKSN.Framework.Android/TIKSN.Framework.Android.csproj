@@ -46,6 +46,9 @@
     <Reference Include="Autofac.Extensions.DependencyInjection, Version=4.1.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.Extensions.DependencyInjection.4.1.0\lib\netstandard1.1\Autofac.Extensions.DependencyInjection.dll</HintPath>
     </Reference>
+    <Reference Include="ConsoleTables, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ConsoleTables.2.1.0\lib\netstandard1.3\ConsoleTables.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Azure.Mobile, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Azure.Mobile.0.13.1\lib\MonoAndroid403\Microsoft.Azure.Mobile.dll</HintPath>
     </Reference>
