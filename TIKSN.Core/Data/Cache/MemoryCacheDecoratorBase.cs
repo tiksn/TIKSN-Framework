@@ -7,6 +7,8 @@ namespace TIKSN.Data.Cache
 {
 	public abstract class MemoryCacheDecoratorBase<T>
 	{
+		protected static readonly Type entityType = typeof(T);
+
 		protected readonly IMemoryCache _memoryCache;
 		private readonly IOptions<MemoryCacheDecoratorOptions> _genericOptions;
 		private readonly IOptions<MemoryCacheDecoratorOptions<T>> _specificOptions;
