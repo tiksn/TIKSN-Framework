@@ -19,6 +19,7 @@ namespace TIKSN.DependencyInjection
 			services.AddOptions();
 
 			services.TryAddSingleton<ICultureFactory, CultureFactory>();
+			services.TryAddSingleton<ICurrencyFactory, CurrencyFactory>();
 			services.TryAddSingleton<IRegionFactory, RegionFactory>();
 			services.TryAddSingleton<IResourceNamesCache, ResourceNamesCache>();
 			services.TryAddSingleton<ITimeProvider, TimeProvider>();
