@@ -1,6 +1,6 @@
-﻿using TIKSN.Shell;
+﻿using TIKSN.Progress;
 
-namespace TIKSN.Progress
+namespace TIKSN.Shell
 {
 	public class ShellUserConfirmation : IUserConfirmation
 	{

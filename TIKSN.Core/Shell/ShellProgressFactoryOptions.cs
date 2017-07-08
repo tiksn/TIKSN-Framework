@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Progress
+﻿namespace TIKSN.Shell
 {
 	public class ShellProgressFactoryOptions
 	{

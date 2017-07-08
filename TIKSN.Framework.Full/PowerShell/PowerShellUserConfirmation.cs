@@ -1,6 +1,7 @@
 ﻿using System.Management.Automation;
+using TIKSN.Progress;
 
-namespace TIKSN.Progress
+namespace TIKSN.PowerShell
 {
 	public class PowerShellUserConfirmation : IUserConfirmation
 	{

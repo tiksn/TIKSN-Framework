@@ -257,10 +257,10 @@
     <Compile Include="PowerShell\PowerShellLoggerOptions.cs" />
     <Compile Include="PowerShell\PowerShellLoggerProvider.cs" />
     <Compile Include="PowerShell\PowerShellLoggerScopeDisposable.cs" />
-    <Compile Include="Progress\PowerShellProgress.cs" />
-    <Compile Include="Progress\PowerShellProgressFactory.cs" />
-    <Compile Include="Progress\PowerShellUserConfirmation.cs" />
-    <Compile Include="Progress\ShellProgressFactory.cs" />
+    <Compile Include="PowerShell\PowerShellProgress.cs" />
+    <Compile Include="PowerShell\PowerShellProgressFactory.cs" />
+    <Compile Include="PowerShell\PowerShellUserConfirmation.cs" />
+    <Compile Include="Shell\ShellProgressFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\WindowsRegistrySettingsService.cs" />
     <Compile Include="Settings\WindowsRegistrySettingsServiceOptions.cs" />
