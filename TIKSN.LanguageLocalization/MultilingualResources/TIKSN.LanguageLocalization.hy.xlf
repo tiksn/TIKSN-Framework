@@ -6,9 +6,9 @@
     </header>
     <body>
       <group id="TIKSN.LANGUAGELOCALIZATION/STRINGS.RESX" datatype="resx">
-        <trans-unit id="066c2ac3-cacc-4271-9ed8-8a5cf9fb8369" translate="yes" xml:space="preserve">
+        <trans-unit id="931254976" translate="yes" xml:space="preserve">
           <source>Advertisement</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Գովազդ</target>
+          <target state="translated" state-qualifier="tm-suggestion">Գովազդ</target>
         </trans-unit>
       </group>
     </body>
