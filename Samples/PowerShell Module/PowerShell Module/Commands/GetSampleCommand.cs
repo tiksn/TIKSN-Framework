@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace PowerShell_Module.Commands
 {
 	[Cmdlet("Get", "Sample")]
-	public class GetSampleCommand : CommandBase
+	public class GetSampleCommand : Command
 	{
 		protected override Task ProcessRecordAsync()
 		{

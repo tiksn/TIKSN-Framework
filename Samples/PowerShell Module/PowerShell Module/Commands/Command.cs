@@ -1,8 +1,9 @@
 ﻿using System;
+using TIKSN.PowerShell;
 
 namespace PowerShell_Module.Commands
 {
-	public abstract class CommandBase : TIKSN.PowerShell.CommandBase
+	public abstract class Command : CommandBase
 	{
 		protected override IServiceProvider CreateServiceProvider()
 		{

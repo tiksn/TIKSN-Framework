@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\GetSampleCommand.cs" />
     <Compile Include="CompositionRootSetup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

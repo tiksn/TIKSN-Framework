@@ -1,19 +1,9 @@
 ﻿using PoshCode.Controls;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management.Automation.Runspaces;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace PowerShell_Module_UI
@@ -36,7 +26,7 @@ namespace PowerShell_Module_UI
 			var processes = await poshConsole.InvokeAsync(new[] { importCommand });
 
 			var getCommand = new Command("Get-Command");
-			getCommand.Parameters.Add("Module", "GroceryChecklistToolkit");
+			getCommand.Parameters.Add("Module", "PowerShell_Module");
 
 			var selectCommand = new Command("Select-Object");
 			selectCommand.Parameters.Add("Property", "Name");
