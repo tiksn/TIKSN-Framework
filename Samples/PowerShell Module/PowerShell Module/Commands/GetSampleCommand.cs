@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System.Management.Automation;
 using System.Threading.Tasks;
 
@@ -7,9 +8,10 @@ namespace PowerShell_Module.Commands
 	[Cmdlet("Get", "Sample")]
 	public class GetSampleCommand : Command
 	{
-		protected override Task ProcessRecordAsync()
+		protected override async Task ProcessRecordAsync()
 		{
-			throw new NotImplementedException();
+			var logger = ServiceProvider.GetRequiredService<ILogger<GetSampleCommand>>();
+			logger.LogTrace("some message");
 		}
 	}
 }
