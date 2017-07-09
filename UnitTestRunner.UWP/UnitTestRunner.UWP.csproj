@@ -18,7 +18,6 @@
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>UnitTestRunner.UWP_TemporaryKey.pfx</PackageCertificateKeyFile>
     <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -125,6 +124,14 @@
     <ProjectReference Include="..\TIKSN.Framework.UWP\TIKSN.Framework.UWP.csproj">
       <Project>{3d7b87c7-b00c-4691-9bbd-f5836011345a}</Project>
       <Name>TIKSN.Framework.UWP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TIKSN.LanguageLocalization\TIKSN.LanguageLocalization.csproj">
+      <Project>{974db7c5-ce2d-4232-b781-cfcbb1f7784f}</Project>
+      <Name>TIKSN.LanguageLocalization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TIKSN.RegionLocalization\TIKSN.RegionLocalization.csproj">
+      <Project>{9d8726cc-ac22-4597-90db-a2809e22500c}</Project>
+      <Name>TIKSN.RegionLocalization</Name>
     </ProjectReference>
     <ProjectReference Include="..\UnitTests\UnitTests.csproj">
       <Project>{70dd4c39-7d1d-4dd3-87d5-059842a27c20}</Project>
