@@ -117,7 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="365281568" xml:space="preserve">
+    <value>About this application</value>
+  </data>
+  <data name="445651597" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="599209173" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="706106182" xml:space="preserve">
+    <value>Privacy Terms</value>
+  </data>
+  <data name="846795929" xml:space="preserve">
+    <value>Light</value>
+  </data>
   <data name="931254976" xml:space="preserve">
     <value>Advertisement</value>
+  </data>
+  <data name="971869905" xml:space="preserve">
+    <value>Theme</value>
   </data>
 </root>
