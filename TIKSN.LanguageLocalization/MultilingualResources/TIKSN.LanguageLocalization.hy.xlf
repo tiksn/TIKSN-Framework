@@ -10,6 +10,30 @@
           <source>Advertisement</source>
           <target state="translated" state-qualifier="tm-suggestion">Գովազդ</target>
         </trans-unit>
+        <trans-unit id="365281568" translate="yes" xml:space="preserve">
+          <source>About this application</source>
+          <target state="translated">Այս ծրագրի մասին</target>
+        </trans-unit>
+        <trans-unit id="445651597" translate="yes" xml:space="preserve">
+          <source>Dark</source>
+          <target state="translated" state-qualifier="tm-suggestion">Մուգ</target>
+        </trans-unit>
+        <trans-unit id="599209173" translate="yes" xml:space="preserve">
+          <source>Settings</source>
+          <target state="translated" state-qualifier="tm-suggestion">Կարգավորումներ</target>
+        </trans-unit>
+        <trans-unit id="706106182" translate="yes" xml:space="preserve">
+          <source>Privacy Terms</source>
+          <target state="translated" state-qualifier="tm-suggestion">Գաղտնիություն և պայմաններ</target>
+        </trans-unit>
+        <trans-unit id="846795929" translate="yes" xml:space="preserve">
+          <source>Light</source>
+          <target state="translated" state-qualifier="tm-suggestion">Բաց</target>
+        </trans-unit>
+        <trans-unit id="971869905" translate="yes" xml:space="preserve">
+          <source>Theme</source>
+          <target state="translated" state-qualifier="tm-suggestion">Ոճ</target>
+        </trans-unit>
       </group>
     </body>
   </file>
