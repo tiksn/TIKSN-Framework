@@ -34,6 +34,10 @@
           <source>Theme</source>
           <target state="translated" state-qualifier="tm-suggestion">Ոճ</target>
         </trans-unit>
+        <trans-unit id="179741382" translate="yes" xml:space="preserve">
+          <source>Language</source>
+          <target state="translated">Լեզու</target>
+        </trans-unit>
       </group>
     </body>
   </file>
