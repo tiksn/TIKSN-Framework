@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project>
+  <configuration createBackupFiles="False" hideEmptyRows="False" hideTranslatedRows="False" useSpellChecker="True" resXIndentChar="	" neutralLanguageCode="en" languagesToDisplay="">
+    <description>
+    </description>
+  </configuration>
+  <fileGroups>
+    <fileGroup name="" projectFolderUniqueID="d8fe1ac5-f36a-40a4-a437-054f0deca379" orderPosition="0" ignoreDuringExportAndImport="False" uniqueID="bc13fa08-1cbe-4338-9d1b-95f7f82d3aa3">
+      <file filePath="TIKSN.Core\Web\Rest\RestRepository.resx" uniqueID="6c78cdc4-719b-4f5f-95be-5642dfe31f1d" />
+      <remarks>
+      </remarks>
+    </fileGroup>
+    <fileGroup name="" projectFolderUniqueID="3fe730c7-3eca-424e-8a04-f2a64e7a1ee8" orderPosition="0" ignoreDuringExportAndImport="False" uniqueID="83fba6f3-1966-4be3-898c-256ae01b7cd2">
+      <file filePath="TIKSN.LanguageLocalization\Strings.resx" uniqueID="4d52eee1-b1ff-4757-a6c1-969f15e0bbaf" />
+      <file filePath="TIKSN.LanguageLocalization\Strings.hy.resx" uniqueID="a20cbdfb-551f-4aa8-9ad2-4425b9316359" />
+      <file filePath="TIKSN.LanguageLocalization\Strings.ru.resx" uniqueID="6042bdc5-479b-4b73-a108-8d949e82275c" />
+      <remarks>
+      </remarks>
+    </fileGroup>
+    <fileGroup name="" projectFolderUniqueID="d8fe1ac5-f36a-40a4-a437-054f0deca379" orderPosition="2" ignoreDuringExportAndImport="False" uniqueID="543aaa03-f607-4133-a7a5-8adcb6544424">
+      <file filePath="TIKSN.Core\Shell\ShellCommand.resx" uniqueID="8de6e24f-7462-4e4f-a36e-c51a06eac5c4" />
+      <remarks>
+      </remarks>
+    </fileGroup>
+  </fileGroups>
+  <projectFolders>
+    <projectFolder uniqueID="d8fe1ac5-f36a-40a4-a437-054f0deca379" parentUniqueID="00000000-0000-0000-0000-000000000000" name="English Only" orderPosition="1">
+      <remarks>
+      </remarks>
+      <dynSettings>
+        <setting name="UseParentFilePatternSettings">
+          <value>True</value>
+        </setting>
+        <setting name="NeutralLanguageFileNamePattern">
+          <value>[basename][optionaldefaulttypes].[extension]</value>
+        </setting>
+        <setting name="NonNeutralLanguageFileNamePattern">
+          <value>[basename][optionaldefaulttypes].[languagecode].[extension]</value>
+        </setting>
+        <setting name="BaseNameDotCount">
+          <value>0</value>
+        </setting>
+        <setting name="DefaultFileTypesToIgnore">
+          <value>.aspx;.ascx;.asmx;.master;.sitemap</value>
+        </setting>
+        <setting name="IgnoreDuringExportAndImport">
+          <value>False</value>
+        </setting>
+      </dynSettings>
+    </projectFolder>
+    <projectFolder uniqueID="3fe730c7-3eca-424e-8a04-f2a64e7a1ee8" parentUniqueID="00000000-0000-0000-0000-000000000000" name="Language Localization" orderPosition="2">
+      <remarks>
+      </remarks>
+      <dynSettings>
+        <setting name="UseParentFilePatternSettings">
+          <value>True</value>
+        </setting>
+        <setting name="NeutralLanguageFileNamePattern">
+          <value>[basename][optionaldefaulttypes].[extension]</value>
+        </setting>
+        <setting name="NonNeutralLanguageFileNamePattern">
+          <value>[basename][optionaldefaulttypes].[languagecode].[extension]</value>
+        </setting>
+        <setting name="BaseNameDotCount">
+          <value>0</value>
+        </setting>
+        <setting name="DefaultFileTypesToIgnore">
+          <value>.aspx;.ascx;.asmx;.master;.sitemap</value>
+        </setting>
+        <setting name="IgnoreDuringExportAndImport">
+          <value>False</value>
+        </setting>
+      </dynSettings>
+    </projectFolder>
+  </projectFolders>
+</project>
