@@ -22,6 +22,11 @@
       <remarks>
       </remarks>
     </fileGroup>
+    <fileGroup name="" projectFolderUniqueID="d8fe1ac5-f36a-40a4-a437-054f0deca379" orderPosition="0" ignoreDuringExportAndImport="False" uniqueID="8dc30e4a-05dd-45de-8998-1378bab36ced">
+      <file filePath="TIKSN.Core\Localization\EnglishOnly.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
+      <remarks>
+      </remarks>
+    </fileGroup>
   </fileGroups>
   <projectFolders>
     <projectFolder uniqueID="d8fe1ac5-f36a-40a4-a437-054f0deca379" parentUniqueID="00000000-0000-0000-0000-000000000000" name="English Only" orderPosition="1">
