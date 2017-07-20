@@ -653,8 +653,7 @@
         </trans-unit>
         <trans-unit id="977944607" translate="yes" xml:space="preserve">
           <source>Details</source>
-          <target state="translated">Մանրամասներ
-</target>
+          <target state="translated">Մանրամասներ</target>
         </trans-unit>
         <trans-unit id="484534012" translate="yes" xml:space="preserve">
           <source>Custom Search</source>
