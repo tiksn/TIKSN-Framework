@@ -38,6 +38,26 @@
           <source>Language</source>
           <target state="translated">Язык</target>
         </trans-unit>
+        <trans-unit id="239441347" translate="yes" xml:space="preserve">
+          <source>Available in {0} languages</source>
+          <target state="translated">Доступно на {0} языках</target>
+        </trans-unit>
+        <trans-unit id="102475419" translate="yes" xml:space="preserve">
+          <source>{0} languages</source>
+          <target state="translated">{0} языки</target>
+        </trans-unit>
+        <trans-unit id="269773285" translate="yes" xml:space="preserve">
+          <source>Maintenance {0} per month</source>
+          <target state="translated">Поддержание {0} за месяц</target>
+        </trans-unit>
+        <trans-unit id="870549797" translate="yes" xml:space="preserve">
+          <source>Up to {0} pages</source>
+          <target state="translated">Более {0} страниц</target>
+        </trans-unit>
+        <trans-unit id="121714030" translate="yes" xml:space="preserve">
+          <source>Version {0}</source>
+          <target state="translated">Версия {0}</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -38,6 +38,26 @@
           <source>Language</source>
           <target state="translated">Լեզու</target>
         </trans-unit>
+        <trans-unit id="239441347" translate="yes" xml:space="preserve">
+          <source>Available in {0} languages</source>
+          <target state="translated">Հասանելի է {0} լեզուներով</target>
+        </trans-unit>
+        <trans-unit id="102475419" translate="yes" xml:space="preserve">
+          <source>{0} languages</source>
+          <target state="translated">{0} լեզուներ</target>
+        </trans-unit>
+        <trans-unit id="269773285" translate="yes" xml:space="preserve">
+          <source>Maintenance {0} per month</source>
+          <target state="translated">Օժանդակությունը {0} ամսական</target>
+        </trans-unit>
+        <trans-unit id="870549797" translate="yes" xml:space="preserve">
+          <source>Up to {0} pages</source>
+          <target state="translated">Մինչև {0} էջ</target>
+        </trans-unit>
+        <trans-unit id="121714030" translate="yes" xml:space="preserve">
+          <source>Version {0}</source>
+          <target state="translated">Տարբերակ {0}</target>
+        </trans-unit>
       </group>
     </body>
   </file>

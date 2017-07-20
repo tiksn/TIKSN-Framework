@@ -141,4 +141,19 @@
   <data name="971869905" xml:space="preserve">
     <value>Theme</value>
   </data>
+  <data name="239441347" xml:space="preserve">
+    <value>Available in {0} languages</value>
+  </data>
+  <data name="102475419" xml:space="preserve">
+    <value>{0} languages</value>
+  </data>
+  <data name="269773285" xml:space="preserve">
+    <value>Maintenance {0} per month</value>
+  </data>
+  <data name="870549797" xml:space="preserve">
+    <value>Up to {0} pages</value>
+  </data>
+  <data name="121714030" xml:space="preserve">
+    <value>Version {0}</value>
+  </data>
 </root>

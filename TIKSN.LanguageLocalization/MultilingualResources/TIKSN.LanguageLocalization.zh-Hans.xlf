@@ -38,6 +38,26 @@
           <source>Theme</source>
           <target state="new">Theme</target>
         </trans-unit>
+        <trans-unit id="239441347" translate="yes" xml:space="preserve">
+          <source>Available in {0} languages</source>
+          <target state="needs-review-translation" state-qualifier="mt-suggestion">{0} 种语言</target>
+        </trans-unit>
+        <trans-unit id="102475419" translate="yes" xml:space="preserve">
+          <source>{0} languages</source>
+          <target state="needs-review-translation" state-qualifier="mt-suggestion">{0} 语言</target>
+        </trans-unit>
+        <trans-unit id="269773285" translate="yes" xml:space="preserve">
+          <source>Maintenance {0} per month</source>
+          <target state="needs-review-translation" state-qualifier="mt-suggestion">每月维护 {0}</target>
+        </trans-unit>
+        <trans-unit id="870549797" translate="yes" xml:space="preserve">
+          <source>Up to {0} pages</source>
+          <target state="needs-review-translation" state-qualifier="mt-suggestion">高达 {0} 页</target>
+        </trans-unit>
+        <trans-unit id="121714030" translate="yes" xml:space="preserve">
+          <source>Version {0}</source>
+          <target state="needs-review-translation" state-qualifier="mt-suggestion">版本 {0}</target>
+        </trans-unit>
       </group>
     </body>
   </file>
