@@ -121,20 +121,62 @@
     <value>TIKSN Development</value>
     <comment>Development division name</comment>
   </data>
+  <data name="268933415" xml:space="preserve">
+    <value>Visual C#, Visual Basic.NET</value>
+  </data>
   <data name="318230625" xml:space="preserve">
     <value>Microsoft .NET Framework</value>
+  </data>
+  <data name="332401553" xml:space="preserve">
+    <value>Windows Communication Foundation</value>
+  </data>
+  <data name="445070316" xml:space="preserve">
+    <value>Windows Presentation Foundation</value>
+  </data>
+  <data name="503335681" xml:space="preserve">
+    <value>Git, VSTS, TFVC</value>
+  </data>
+  <data name="514218975" xml:space="preserve">
+    <value>Microsoft .NET Framework</value>
+  </data>
+  <data name="597321719" xml:space="preserve">
+    <value>Unity Container, Autofac, .NET Core DI</value>
   </data>
   <data name="604857687" xml:space="preserve">
     <value>Doing Science</value>
     <comment>Research division slogan</comment>
   </data>
+  <data name="604953315" xml:space="preserve">
+    <value>ASP.NET MVC</value>
+  </data>
   <data name="638649280" xml:space="preserve">
     <value>TIKSN Lab</value>
     <comment>Lab division name</comment>
   </data>
+  <data name="696323782" xml:space="preserve">
+    <value>Java</value>
+  </data>
+  <data name="698722217" xml:space="preserve">
+    <value>Microsoft Enterprise Library</value>
+  </data>
+  <data name="727951503" xml:space="preserve">
+    <value>ADO.NET Entity Framework</value>
+  </data>
+  <data name="803042279" xml:space="preserve">
+    <value>Visual Studio LightSwitch</value>
+  </data>
   <data name="829543091" xml:space="preserve">
     <value>Developing for Developers</value>
     <comment>Lab division slogan</comment>
+  </data>
+  <data name="843366643" xml:space="preserve">
+    <value>ASP.NET Web API</value>
+  </data>
+  <data name="867886502" xml:space="preserve">
+    <value>Microsoft SQL Server</value>
+  </data>
+  <data name="885406747" xml:space="preserve">
+    <value>C/C++/Visual C++</value>
   </data>
   <data name="962082254" xml:space="preserve">
     <value>WinUtils</value>
