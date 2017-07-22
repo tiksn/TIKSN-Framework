@@ -36,6 +36,7 @@
     <PackageReference Include="ConsoleTables" Version="2.1.0" />
     <PackageReference Include="Exceptionless.Signed" Version="4.0.1955" />
     <PackageReference Include="LiteGuard" Version="1.1.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.4.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="1.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.2" />

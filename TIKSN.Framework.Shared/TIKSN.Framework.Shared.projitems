@@ -9,10 +9,6 @@
     <Import_RootNamespace>TIKSN.Framework.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ApplicationInsightsEventTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ApplicationInsightsExceptionTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ApplicationInsightsHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ApplicationInsightsMetricTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ApplicationInsightsTraceTelemeter.cs" />
+    <Folder Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\" />
   </ItemGroup>
 </Project>
