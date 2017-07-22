@@ -14,10 +14,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ApplicationInsightsHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ApplicationInsightsMetricTelemeter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ApplicationInsightsTraceTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ExceptionlessEventTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ExceptionlessExceptionTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ExceptionlessMetricTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ExceptionlessTelemeterBase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\ExceptionlessTraceTelemeter.cs" />
   </ItemGroup>
 </Project>
