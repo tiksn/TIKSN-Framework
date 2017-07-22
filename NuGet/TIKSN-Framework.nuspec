@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>TIKSN-Framework</id>
-    <version>2.0.33-alpha</version>
+    <version>2.0.34-alpha</version>
     <title>TIKSN Framework</title>
     <authors>TIKSN</authors>
     <owners>TIKSN</owners>
@@ -19,7 +19,7 @@
       <frameworkAssembly assemblyName="System.Speech" targetFramework=".NETFramework4.6" />
     </frameworkAssemblies>
     <dependencies>
-      <group targetFramework=".NETFramework4.6">
+      <group targetFramework=".NETFramework4.7">
         <dependency id="Autofac" version="4.6.0" />
         <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
         <dependency id="ConsoleTables" version="2.1.0" />
