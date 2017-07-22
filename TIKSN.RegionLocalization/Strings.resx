@@ -119,11 +119,14 @@
   </resheader>
   <data name="171457896" xml:space="preserve">
     <value>World</value>
+    <comment>Country's native name</comment>
   </data>
   <data name="289384638" xml:space="preserve">
     <value>Special drawing rights</value>
+    <comment>Culture's native name</comment>
   </data>
   <data name="559506575" xml:space="preserve">
     <value>English (World)</value>
+    <comment>Currency's native name</comment>
   </data>
 </root>
