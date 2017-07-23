@@ -6,17 +6,15 @@
     </header>
     <body>
       <group id="TIKSN.REGIONLOCALIZATION/STRINGS.RESX" datatype="resx">
-        <trans-unit id="171457896" translate="yes" xml:space="preserve">
-          <source>World</source>
-          <target state="new">World</target>
-        </trans-unit>
         <trans-unit id="289384638" translate="yes" xml:space="preserve">
           <source>Special drawing rights</source>
-          <target state="new">Special drawing rights</target>
+          <target state="translated">Pound sterling</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Culture's native name</note>
         </trans-unit>
         <trans-unit id="559506575" translate="yes" xml:space="preserve">
           <source>English (World)</source>
-          <target state="new">English (World)</target>
+          <target state="translated">English (United Kingdom)</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Currency's native name</note>
         </trans-unit>
       </group>
     </body>

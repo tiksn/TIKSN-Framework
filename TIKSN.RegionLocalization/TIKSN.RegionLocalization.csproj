@@ -26,29 +26,53 @@
     <Compile Include="..\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Update="Strings.en-001.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Strings.en-150.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Strings.en-AU.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Strings.en-CA.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Strings.en-GB.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Strings.en-IE.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Strings.en-NZ.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Strings.resx">
-      <Generator></Generator>
-    </EmbeddedResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-001.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-150.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-AU.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-CA.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-GB.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-IE.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-NZ.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-SG.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.hy-AM.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.ru-BY.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.ru-KZ.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.ru-RU.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.ru-UA.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.uk-UA.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.zh-CN.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.zh-SG.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
   </ItemGroup>
 </Project>
