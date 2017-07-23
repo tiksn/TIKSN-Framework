@@ -257,6 +257,17 @@ namespace TIKSN.Finance.Tests
 		}
 
 		[Fact]
+		public void EqualsToNull()
+		{
+			System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
+			CurrencyInfo USD1 = new CurrencyInfo(US);
+			CurrencyInfo USD2 = null;
+
+			Assert.True(USD1 != USD2);
+			Assert.False(USD1 == USD2);
+		}
+
+		[Fact]
 		public void ToString001()
 		{
 			System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
