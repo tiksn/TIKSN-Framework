@@ -9,8 +9,13 @@ namespace TIKSN.Globalization
 {
 	public class CurrencyFactory : MemoryCacheDecoratorBase<CurrencyInfo>, ICurrencyFactory
 	{
-		public CurrencyFactory(IMemoryCache memoryCache, IOptions<MemoryCacheDecoratorOptions> genericOptions, IOptions<MemoryCacheDecoratorOptions<CurrencyInfo>> specificOptions) : base(memoryCache, genericOptions, specificOptions)
+		private readonly IRegionFactory _regionFactory;
+		private readonly IOptions<RegionalCurrencyRedirectionOptions> _regionalCurrencyRedirectionOptions;
+
+		public CurrencyFactory(IMemoryCache memoryCache, IRegionFactory regionFactory, IOptions<RegionalCurrencyRedirectionOptions> regionalCurrencyRedirectionOptions, IOptions<MemoryCacheDecoratorOptions> genericOptions, IOptions<MemoryCacheDecoratorOptions<CurrencyInfo>> specificOptions) : base(memoryCache, genericOptions, specificOptions)
 		{
+			_regionFactory = regionFactory;
+			_regionalCurrencyRedirectionOptions = regionalCurrencyRedirectionOptions;
 		}
 
 		public CurrencyInfo Create(string isoCurrencySymbol)
@@ -22,6 +27,11 @@ namespace TIKSN.Globalization
 
 		public CurrencyInfo Create(RegionInfo region)
 		{
+			if (_regionalCurrencyRedirectionOptions.Value.RegionalCurrencyRedirections.ContainsKey(region.Name))
+				region = _regionFactory.Create(_regionalCurrencyRedirectionOptions.Value.RegionalCurrencyRedirections[region.Name]);
+			else if (_regionalCurrencyRedirectionOptions.Value.RegionalCurrencyRedirections.ContainsKey(region.TwoLetterISORegionName))
+				region = _regionFactory.Create(_regionalCurrencyRedirectionOptions.Value.RegionalCurrencyRedirections[region.TwoLetterISORegionName]);
+
 			var cacheKey = Tuple.Create(entityType, region.ISOCurrencySymbol);
 
 			return GetFromMemoryCache(cacheKey, () => new CurrencyInfo(region));
