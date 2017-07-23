@@ -2,4 +2,4 @@
 using System.Resources;
 
 [assembly: AssemblyTitle("TIKSN.RegionLocalization")]
-[assembly: NeutralResourcesLanguage("en-US")]
+[assembly: NeutralResourcesLanguage("en")]

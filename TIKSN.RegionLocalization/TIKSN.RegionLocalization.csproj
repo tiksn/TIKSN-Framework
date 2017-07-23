@@ -50,6 +50,9 @@
     <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-SG.xlf">
       <Generator>XliffResxGenerator</Generator>
     </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-US.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
     <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.hy-AM.xlf">
       <Generator>XliffResxGenerator</Generator>
     </XliffResource>
