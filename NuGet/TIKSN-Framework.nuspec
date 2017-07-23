@@ -230,14 +230,14 @@
     <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\zh-Hant\TIKSN.LanguageLocalization.resources.dll" target="lib\MonoAndroid403\zh-Hant" />
     <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.xml" target="lib\MonoAndroid403" />
     <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.pdb" target="lib\MonoAndroid403" />
-    <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.dll" target="lib\net46" />
-    <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\net46\hy" />
-    <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\net46\ru" />
-    <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\uk\TIKSN.LanguageLocalization.resources.dll" target="lib\net46\uk" />
-    <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\zh-Hans\TIKSN.LanguageLocalization.resources.dll" target="lib\net46\zh-Hans" />
-    <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\zh-Hant\TIKSN.LanguageLocalization.resources.dll" target="lib\net46\zh-Hant" />
-    <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.xml" target="lib\net46" />
-    <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.pdb" target="lib\net46" />
+    <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.dll" target="lib\net47" />
+    <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\net47\hy" />
+    <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\net47\ru" />
+    <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\uk\TIKSN.LanguageLocalization.resources.dll" target="lib\net47\uk" />
+    <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\zh-Hans\TIKSN.LanguageLocalization.resources.dll" target="lib\net47\zh-Hans" />
+    <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\zh-Hant\TIKSN.LanguageLocalization.resources.dll" target="lib\net47\zh-Hant" />
+    <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.xml" target="lib\net47" />
+    <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.pdb" target="lib\net47" />
     <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.dll" target="lib\netcoreapp1.1" />
     <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\netcoreapp1.1\hy" />
     <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\netcoreapp1.1\ru" />
@@ -279,24 +279,136 @@
     <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.xml" target="lib\uap10.0" />
     <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard1.0\TIKSN.LanguageLocalization.pdb" target="lib\uap10.0" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.dll" target="lib\MonoAndroid403" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-001\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-001" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-150" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-AU\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-AU" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-CA\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-CA" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-GB\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-GB" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-IE" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-NZ" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-SG" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\hy-AM" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\ru-BY" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\ru-KZ" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-RU\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\ru-RU" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-UA\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\ru-UA" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\uk-UA\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\uk-UA" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\zh-CN\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\zh-CN" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\zh-SG\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\zh-SG" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.xml" target="lib\MonoAndroid403" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.pdb" target="lib\MonoAndroid403" />
-    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.dll" target="lib\net46" />
-    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.xml" target="lib\net46" />
-    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.pdb" target="lib\net46" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.dll" target="lib\net47" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-001\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-001" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-150" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-AU\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-AU" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-CA\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-CA" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-GB\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-GB" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-IE" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-NZ" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-SG" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\net47\hy-AM" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\net47\ru-BY" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\net47\ru-KZ" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-RU\TIKSN.RegionLocalization.resources.dll" target="lib\net47\ru-RU" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-UA\TIKSN.RegionLocalization.resources.dll" target="lib\net47\ru-UA" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\uk-UA\TIKSN.RegionLocalization.resources.dll" target="lib\net47\uk-UA" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\zh-CN\TIKSN.RegionLocalization.resources.dll" target="lib\net47\zh-CN" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\zh-SG\TIKSN.RegionLocalization.resources.dll" target="lib\net47\zh-SG" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.xml" target="lib\net47" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.pdb" target="lib\net47" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.dll" target="lib\netcoreapp1.1" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-001\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\en-001" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\en-150" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-AU\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\en-AU" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-CA\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\en-CA" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-GB\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\en-GB" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\en-IE" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\en-NZ" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\en-SG" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\hy-AM" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\ru-BY" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\ru-KZ" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-RU\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\ru-RU" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-UA\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\ru-UA" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\uk-UA\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\uk-UA" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\zh-CN\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\zh-CN" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\zh-SG\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\zh-SG" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.xml" target="lib\netcoreapp1.1" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.pdb" target="lib\netcoreapp1.1" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.dll" target="lib\netstandard1.3" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-001\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\en-001" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\en-150" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-AU\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\en-AU" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-CA\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\en-CA" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-GB\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\en-GB" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\en-IE" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\en-NZ" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\en-SG" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\hy-AM" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\ru-BY" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\ru-KZ" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-RU\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\ru-RU" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-UA\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\ru-UA" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\uk-UA\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\uk-UA" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\zh-CN\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\zh-CN" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\zh-SG\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\zh-SG" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.xml" target="lib\netstandard1.3" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.pdb" target="lib\netstandard1.3" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.dll" target="lib\netstandard1.5" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-001\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\en-001" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\en-150" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-AU\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\en-AU" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-CA\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\en-CA" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-GB\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\en-GB" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\en-IE" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\en-NZ" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\en-SG" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\hy-AM" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\ru-BY" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\ru-KZ" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-RU\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\ru-RU" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-UA\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\ru-UA" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\uk-UA\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\uk-UA" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\zh-CN\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\zh-CN" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\zh-SG\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\zh-SG" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.xml" target="lib\netstandard1.5" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.pdb" target="lib\netstandard1.5" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.dll" target="lib\netstandard1.6" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-001\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\en-001" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\en-150" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-AU\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\en-AU" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-CA\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\en-CA" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-GB\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\en-GB" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\en-IE" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\en-NZ" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\en-SG" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\hy-AM" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\ru-BY" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\ru-KZ" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-RU\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\ru-RU" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-UA\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\ru-UA" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\uk-UA\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\uk-UA" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\zh-CN\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\zh-CN" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\zh-SG\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\zh-SG" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.xml" target="lib\netstandard1.6" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.pdb" target="lib\netstandard1.6" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.dll" target="lib\uap10.0" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-001\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\en-001" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\en-150" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-AU\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\en-AU" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-CA\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\en-CA" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-GB\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\en-GB" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\en-IE" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\en-NZ" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\en-SG" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\hy-AM" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\ru-BY" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\ru-KZ" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-RU\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\ru-RU" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-UA\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\ru-UA" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\uk-UA\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\uk-UA" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\zh-CN\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\zh-CN" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\zh-SG\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\zh-SG" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.xml" target="lib\uap10.0" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.pdb" target="lib\uap10.0" />
 
@@ -304,9 +416,9 @@
     <file src="..\TIKSN.Core\bin\Release\netstandard1.3\TIKSN.Core.dll" target="lib\MonoAndroid403" />
     <file src="..\TIKSN.Core\bin\Release\netstandard1.3\TIKSN.Core.xml" target="lib\MonoAndroid403" />
     <file src="..\TIKSN.Core\bin\Release\netstandard1.3\TIKSN.Core.pdb" target="lib\MonoAndroid403" />
-    <file src="..\TIKSN.Core\bin\Release\netstandard1.3\TIKSN.Core.dll" target="lib\net46" />
-    <file src="..\TIKSN.Core\bin\Release\netstandard1.3\TIKSN.Core.xml" target="lib\net46" />
-    <file src="..\TIKSN.Core\bin\Release\netstandard1.3\TIKSN.Core.pdb" target="lib\net46" />
+    <file src="..\TIKSN.Core\bin\Release\netstandard1.3\TIKSN.Core.dll" target="lib\net47" />
+    <file src="..\TIKSN.Core\bin\Release\netstandard1.3\TIKSN.Core.xml" target="lib\net47" />
+    <file src="..\TIKSN.Core\bin\Release\netstandard1.3\TIKSN.Core.pdb" target="lib\net47" />
     <file src="..\TIKSN.Core\bin\Release\netstandard1.3\TIKSN.Core.dll" target="lib\netcoreapp1.1" />
     <file src="..\TIKSN.Core\bin\Release\netstandard1.3\TIKSN.Core.xml" target="lib\netcoreapp1.1" />
     <file src="..\TIKSN.Core\bin\Release\netstandard1.3\TIKSN.Core.pdb" target="lib\netcoreapp1.1" />
@@ -327,9 +439,9 @@
     <!--<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.dll" target="lib\MonoAndroid403" />
 		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.xml" target="lib\MonoAndroid403" />
 		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\MonoAndroid403" />-->
-    <file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.dll" target="lib\net46" />
-    <file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.xml" target="lib\net46" />
-    <file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\net46" />
+    <file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.dll" target="lib\net47" />
+    <file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.xml" target="lib\net47" />
+    <file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\net47" />
     <file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.dll" target="lib\netcoreapp1.1" />
     <file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.xml" target="lib\netcoreapp1.1" />
     <file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\netcoreapp1.1" />
@@ -344,9 +456,9 @@
 		<file src="..\TIKSN.Core.Standard.1.5\bin\Release\netstandard1.5\TIKSN.Core.Standard.1.5.pdb" target="lib\uap10.0" />-->
 
     <!-- Standard 1.6 -->
-    <file src="..\TIKSN.Core.Standard.1.6\bin\Release\netstandard1.6\TIKSN.Core.Standard.1.6.dll" target="lib\net46" />
-    <file src="..\TIKSN.Core.Standard.1.6\bin\Release\netstandard1.6\TIKSN.Core.Standard.1.6.xml" target="lib\net46" />
-    <file src="..\TIKSN.Core.Standard.1.6\bin\Release\netstandard1.6\TIKSN.Core.Standard.1.6.pdb" target="lib\net46" />
+    <file src="..\TIKSN.Core.Standard.1.6\bin\Release\netstandard1.6\TIKSN.Core.Standard.1.6.dll" target="lib\net47" />
+    <file src="..\TIKSN.Core.Standard.1.6\bin\Release\netstandard1.6\TIKSN.Core.Standard.1.6.xml" target="lib\net47" />
+    <file src="..\TIKSN.Core.Standard.1.6\bin\Release\netstandard1.6\TIKSN.Core.Standard.1.6.pdb" target="lib\net47" />
     <file src="..\TIKSN.Core.Standard.1.6\bin\Release\netstandard1.6\TIKSN.Core.Standard.1.6.dll" target="lib\netcoreapp1.1" />
     <file src="..\TIKSN.Core.Standard.1.6\bin\Release\netstandard1.6\TIKSN.Core.Standard.1.6.xml" target="lib\netcoreapp1.1" />
     <file src="..\TIKSN.Core.Standard.1.6\bin\Release\netstandard1.6\TIKSN.Core.Standard.1.6.pdb" target="lib\netcoreapp1.1" />
@@ -360,9 +472,9 @@
     <file src="..\TIKSN.Framework.Android\bin\Release\TIKSN.Framework.Android.pdb" target="lib\MonoAndroid403" />
 
     <!-- Platform: .NET Framework -->
-    <file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.dll" target="lib\net46" />
-    <file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.xml" target="lib\net46" />
-    <file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.pdb" target="lib\net46" />
+    <file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.dll" target="lib\net47" />
+    <file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.xml" target="lib\net47" />
+    <file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.pdb" target="lib\net47" />
 
     <!-- Platform: .NET Core -->
     <file src="..\TIKSN.Framework.Core\bin\Release\netcoreapp1.1\TIKSN.Framework.Core.dll" target="lib\netcoreapp1.1" />
