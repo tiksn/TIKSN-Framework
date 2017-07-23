@@ -100,7 +100,7 @@
         </setting>
       </dynSettings>
     </projectFolder>
-    <projectFolder uniqueID="b7b533a1-8db6-4a55-96b6-cc84a8628282" parentUniqueID="00000000-0000-0000-0000-000000000000" name="Region Localization" orderPosition="0">
+    <projectFolder uniqueID="b7b533a1-8db6-4a55-96b6-cc84a8628282" parentUniqueID="00000000-0000-0000-0000-000000000000" name="Region Localization" orderPosition="3">
       <remarks>
       </remarks>
       <dynSettings>
