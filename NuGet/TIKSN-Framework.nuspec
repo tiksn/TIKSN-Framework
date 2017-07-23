@@ -287,6 +287,7 @@
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-IE" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-NZ" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-SG" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-US\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-US" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\hy-AM" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\ru-BY" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\ru-KZ" />
@@ -306,6 +307,7 @@
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-IE" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-NZ" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-SG" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-US\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-US" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\net47\hy-AM" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\net47\ru-BY" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\net47\ru-KZ" />
@@ -325,6 +327,7 @@
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\en-IE" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\en-NZ" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\en-SG" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-US\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\en-US" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\hy-AM" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\ru-BY" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp1.1\ru-KZ" />
@@ -344,6 +347,7 @@
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\en-IE" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\en-NZ" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\en-SG" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-US\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\en-US" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\hy-AM" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\ru-BY" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.3\ru-KZ" />
@@ -363,6 +367,7 @@
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\en-IE" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\en-NZ" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\en-SG" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-US\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\en-US" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\hy-AM" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\ru-BY" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.5\ru-KZ" />
@@ -382,6 +387,7 @@
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\en-IE" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\en-NZ" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\en-SG" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-US\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\en-US" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\hy-AM" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\ru-BY" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard1.6\ru-KZ" />
@@ -401,6 +407,7 @@
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\en-IE" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\en-NZ" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\en-SG" />
+    <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\en-US\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\en-US" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\hy-AM" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\ru-BY" />
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\uap10.0\ru-KZ" />
