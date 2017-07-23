@@ -96,7 +96,7 @@ namespace TIKSN.Finance.ForeignExchange
 
 				var responseJsonString = await response.Content.ReadAsStringAsync();
 
-				var responseJsonObject = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseJsonString);
+				var responseJsonObject = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseJsonString, new JsonSerializerSettings { Culture = CultureInfo.InvariantCulture });
 
 				var success = (bool)responseJsonObject["success"];
 
