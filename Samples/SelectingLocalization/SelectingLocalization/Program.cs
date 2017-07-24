@@ -41,7 +41,7 @@ namespace SelectingLocalization
 
 		private static void Print(IStringLocalizer localizer)
 		{
-			Console.WriteLine(localizer.GetRequiredString("066c2ac3-cacc-4271-9ed8-8a5cf9fb8369"));
+			Console.WriteLine(localizer.GetRequiredString(802024377));
 		}
 	}
 }
