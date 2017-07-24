@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using System;
 using TIKSN.Analytics.Telemetry;
 using TIKSN.DependencyInjection;
 using TIKSN.Web;
@@ -26,10 +27,10 @@ namespace Console_Client
 			builder.RegisterType<TelemetryLogger>().As<ITraceTelemeter>().As<IExceptionTelemeter>().SingleInstance();
 		}
 
-		protected override void ConfigureLogging(ILoggerFactory loggerFactory)
+		protected override void ConfigureLogging(ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
 		{
 			loggerFactory.AddConsole();
-			base.ConfigureLogging(loggerFactory);
+			base.ConfigureLogging(loggerFactory, serviceProvider);
 		}
 
 		protected override void ConfigureOptions(IServiceCollection services, IConfigurationRoot configuration)
