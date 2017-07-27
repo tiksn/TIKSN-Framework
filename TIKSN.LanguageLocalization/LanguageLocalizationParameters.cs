@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace TIKSN.LanguageLocalization
+namespace TIKSN.Localization
 {
 	public static class LanguageLocalizationParameters
 	{

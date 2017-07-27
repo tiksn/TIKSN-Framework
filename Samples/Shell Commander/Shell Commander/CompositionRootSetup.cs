@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using System;
 using TIKSN.DependencyInjection;
 
 namespace Shell_Commander
@@ -14,7 +15,7 @@ namespace Shell_Commander
 			builder.RegisterType<TextsStringLocalizer>().As<IStringLocalizer>().SingleInstance();
 		}
 
-		protected override void ConfigureLogging(ILoggerFactory loggerFactory)
+		protected override void ConfigureLogging(ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
 		{
 			loggerFactory.AddConsole();
 		}

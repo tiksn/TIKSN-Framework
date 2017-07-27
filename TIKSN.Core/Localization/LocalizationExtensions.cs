@@ -16,14 +16,24 @@ namespace TIKSN.Localization
 			return localizedString.Value;
 		}
 
-		public static string GetRequiredString(this IStringLocalizer stringLocalizer, Guid ID)
+		public static string GetRequiredString(this IStringLocalizer stringLocalizer, Guid key)
 		{
-			return stringLocalizer.GetRequiredString(ID.ToString());
+			return stringLocalizer.GetRequiredString(key.ToString());
 		}
 
-		public static string GetRequiredString(this IStringLocalizer stringLocalizer, Guid ID, params object[] arguments)
+		public static string GetRequiredString(this IStringLocalizer stringLocalizer, int key)
 		{
-			return stringLocalizer.GetRequiredString(ID.ToString(), arguments);
+			return stringLocalizer.GetRequiredString(key.ToString());
+		}
+
+		public static string GetRequiredString(this IStringLocalizer stringLocalizer, Guid key, params object[] arguments)
+		{
+			return stringLocalizer.GetRequiredString(key.ToString(), arguments);
+		}
+
+		public static string GetRequiredString(this IStringLocalizer stringLocalizer, int key, params object[] arguments)
+		{
+			return stringLocalizer.GetRequiredString(key.ToString(), arguments);
 		}
 
 		public static string GetRequiredString(this IStringLocalizer stringLocalizer, string name, params object[] arguments)

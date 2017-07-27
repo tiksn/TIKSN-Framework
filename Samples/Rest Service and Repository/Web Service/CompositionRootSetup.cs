@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Web_Service.Data.Repositories;
 using AutoMapper;
 using TIKSN.Data;
+using System;
 
 namespace Web_Service
 {
@@ -40,12 +41,12 @@ namespace Web_Service
 			return _initialServiceCollection;
 		}
 
-		protected override void ConfigureLogging(ILoggerFactory loggerFactory)
+		protected override void ConfigureLogging(ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
 		{
 			loggerFactory.AddConsole(true);
 			loggerFactory.AddDebug(LogLevel.Trace);
 
-			base.ConfigureLogging(loggerFactory);
+			base.ConfigureLogging(loggerFactory, serviceProvider);
 		}
 
 		protected override void ConfigureOptions(IServiceCollection services, IConfigurationRoot configuration)

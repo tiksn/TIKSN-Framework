@@ -12,7 +12,6 @@ namespace TIKSN.DependencyInjection
 		{
 			builder.RegisterType<ConsoleService>().As<IConsoleService>().SingleInstance();
 			builder.RegisterType<NetworkConnectivityService>().As<INetworkConnectivityService>().SingleInstance();
-			builder.RegisterType<ShellCommandEngine>().As<IShellCommandEngine>().SingleInstance();
 			builder.RegisterType<TextToSpeechService>().As<ITextToSpeechService>().SingleInstance();
 			builder.RegisterType<WindowsRegistrySettingsService>().As<ISettingsService>().SingleInstance();
 		}

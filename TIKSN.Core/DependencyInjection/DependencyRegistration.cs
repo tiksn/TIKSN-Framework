@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
+using TIKSN.Globalization;
 using TIKSN.Serialization;
 using TIKSN.Shell;
+using TIKSN.Time;
 using TIKSN.Web.Rest;
 
 namespace TIKSN.DependencyInjection
@@ -13,13 +15,20 @@ namespace TIKSN.DependencyInjection
 		{
 			services.AddLocalization();
 			services.AddLogging();
+			services.AddMemoryCache();
 			services.AddOptions();
 
+			services.TryAddSingleton<IConsoleService, ConsoleService>();
+			services.TryAddSingleton<ICultureFactory, CultureFactory>();
+			services.TryAddSingleton<ICurrencyFactory, CurrencyFactory>();
+			services.TryAddSingleton<IRegionFactory, RegionFactory>();
 			services.TryAddSingleton<IResourceNamesCache, ResourceNamesCache>();
+			services.TryAddSingleton<IShellCommandEngine, ShellCommandEngine>();
+			services.TryAddSingleton<ITimeProvider, TimeProvider>();
 
-			services.TryAddSingleton<IRestRequester, RestRequester>();
 			services.TryAddSingleton<DotNetXmlDeserializer, DotNetXmlDeserializer>();
 			services.TryAddSingleton<DotNetXmlSerializer, DotNetXmlSerializer>();
+			services.TryAddSingleton<IRestRequester, RestRequester>();
 			services.TryAddSingleton<JsonDeserializer, JsonDeserializer>();
 			services.TryAddSingleton<JsonSerializer, JsonSerializer>();
 

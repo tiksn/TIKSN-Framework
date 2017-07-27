@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -96,7 +97,9 @@ namespace TIKSN.Finance.ForeignExchange
 
 				var responseJsonString = await response.Content.ReadAsStringAsync();
 
-				var responseJsonObject = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseJsonString);
+				var jsonSerializerSettings = new JsonSerializerSettings { Culture = CultureInfo.InvariantCulture };
+
+				var responseJsonObject = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseJsonString, jsonSerializerSettings);
 
 				var success = (bool)responseJsonObject["success"];
 
@@ -104,7 +107,7 @@ namespace TIKSN.Finance.ForeignExchange
 				{
 					var result = new Dictionary<CurrencyPair, decimal>();
 
-					var quotes = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseJsonObject["quotes"].ToString());
+					var quotes = JsonConvert.DeserializeObject<Dictionary<string, decimal>>(responseJsonObject["quotes"].ToString(), jsonSerializerSettings);
 
 					foreach (var quote in quotes)
 					{
@@ -115,11 +118,10 @@ namespace TIKSN.Finance.ForeignExchange
 						{
 							var quoteBaseCurrency = new CurrencyInfo(quoteBaseCurrencyCode);
 							var quoteCounterCurrency = new CurrencyInfo(quoteCounterCurrencyCode);
-							var rate = decimal.Parse(quote.Value.ToString(), CultureInfo.InvariantCulture);
 
 							var quotePair = new CurrencyPair(quoteBaseCurrency, quoteCounterCurrency);
 
-							result.Add(quotePair, rate);
+							result.Add(quotePair, quote.Value);
 						}
 					}
 

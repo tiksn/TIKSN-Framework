@@ -1,4 +1,6 @@
-﻿namespace TIKSN.Versioning
+﻿using System;
+
+namespace TIKSN.Versioning
 {
 	public class Version : System.IComparable<Version>, System.IEquatable<Version>
 	{
@@ -80,6 +82,8 @@
 			this.milestone = Milestone;
 			this.prereleaseNumber = DefaultPrereleaseNumber;
 			this.releaseDate = null;
+
+			ValidateMilestone();
 		}
 
 		public Version(int ReleaseMajor, int ReleaseMinor, Milestone Milestone, System.DateTime ReleaseDate)
@@ -88,6 +92,8 @@
 			this.milestone = Milestone;
 			this.prereleaseNumber = DefaultPrereleaseNumber;
 			this.releaseDate = ReleaseDate;
+
+			ValidateMilestone();
 		}
 
 		public Version(int ReleaseMajor, int ReleaseMinor, int ReleaseBuild, Milestone Milestone)
@@ -96,6 +102,8 @@
 			this.milestone = Milestone;
 			this.prereleaseNumber = DefaultPrereleaseNumber;
 			this.releaseDate = null;
+
+			ValidateMilestone();
 		}
 
 		public Version(int ReleaseMajor, int ReleaseMinor, int ReleaseBuild, Milestone Milestone, System.DateTime ReleaseDate)
@@ -104,6 +112,8 @@
 			this.milestone = Milestone;
 			this.prereleaseNumber = DefaultPrereleaseNumber;
 			this.releaseDate = ReleaseDate;
+
+			ValidateMilestone();
 		}
 
 		public Version(int ReleaseMajor, int ReleaseMinor, int ReleaseBuild, int ReleaseRevision, Milestone Milestone)
@@ -112,6 +122,8 @@
 			this.milestone = Milestone;
 			this.prereleaseNumber = DefaultPrereleaseNumber;
 			this.releaseDate = null;
+
+			ValidateMilestone();
 		}
 
 		public Version(int ReleaseMajor, int ReleaseMinor, int ReleaseBuild, int ReleaseRevision, Milestone Milestone, System.DateTime ReleaseDate)
@@ -120,6 +132,8 @@
 			this.milestone = Milestone;
 			this.prereleaseNumber = DefaultPrereleaseNumber;
 			this.releaseDate = ReleaseDate;
+
+			ValidateMilestone();
 		}
 
 		public Version(System.Version Release, Milestone Milestone)
@@ -128,6 +142,8 @@
 			this.milestone = Milestone;
 			this.prereleaseNumber = DefaultPrereleaseNumber;
 			this.releaseDate = null;
+
+			ValidateMilestone();
 		}
 
 		public Version(System.Version Release, Milestone Milestone, System.DateTime ReleaseDate)
@@ -136,6 +152,8 @@
 			this.milestone = Milestone;
 			this.prereleaseNumber = DefaultPrereleaseNumber;
 			this.releaseDate = ReleaseDate;
+
+			ValidateMilestone();
 		}
 
 		public Version(int ReleaseMajor, int ReleaseMinor, Milestone Milestone, int PrereleaseNumber)
@@ -144,6 +162,8 @@
 			this.milestone = Milestone;
 			this.PrereleaseNumber = PrereleaseNumber;
 			this.releaseDate = null;
+
+			ValidateMilestone();
 		}
 
 		public Version(int ReleaseMajor, int ReleaseMinor, Milestone Milestone, int PrereleaseNumber, System.DateTime ReleaseDate)
@@ -152,6 +172,8 @@
 			this.milestone = Milestone;
 			this.PrereleaseNumber = PrereleaseNumber;
 			this.releaseDate = ReleaseDate;
+
+			ValidateMilestone();
 		}
 
 		public Version(int ReleaseMajor, int ReleaseMinor, int ReleaseBuild, Milestone Milestone, int PrereleaseNumber)
@@ -160,6 +182,8 @@
 			this.milestone = Milestone;
 			this.PrereleaseNumber = PrereleaseNumber;
 			this.releaseDate = null;
+
+			ValidateMilestone();
 		}
 
 		public Version(int ReleaseMajor, int ReleaseMinor, int ReleaseBuild, Milestone Milestone, int PrereleaseNumber, System.DateTime ReleaseDate)
@@ -168,6 +192,8 @@
 			this.milestone = Milestone;
 			this.PrereleaseNumber = PrereleaseNumber;
 			this.releaseDate = ReleaseDate;
+
+			ValidateMilestone();
 		}
 
 		public Version(int ReleaseMajor, int ReleaseMinor, int ReleaseBuild, int ReleaseRevision, Milestone Milestone, int PrereleaseNumber)
@@ -176,6 +202,8 @@
 			this.milestone = Milestone;
 			this.PrereleaseNumber = PrereleaseNumber;
 			this.releaseDate = null;
+
+			ValidateMilestone();
 		}
 
 		public Version(int ReleaseMajor, int ReleaseMinor, int ReleaseBuild, int ReleaseRevision, Milestone Milestone, int PrereleaseNumber, System.DateTime ReleaseDate)
@@ -184,6 +212,8 @@
 			this.milestone = Milestone;
 			this.PrereleaseNumber = PrereleaseNumber;
 			this.releaseDate = ReleaseDate;
+
+			ValidateMilestone();
 		}
 
 		public Version(System.Version Release, Milestone Milestone, int PrereleaseNumber)
@@ -192,6 +222,8 @@
 			this.milestone = Milestone;
 			this.PrereleaseNumber = PrereleaseNumber;
 			this.releaseDate = null;
+
+			ValidateMilestone();
 		}
 
 		public Version(System.Version Release, Milestone Milestone, int PrereleaseNumber, System.DateTime ReleaseDate)
@@ -200,55 +232,9 @@
 			this.milestone = Milestone;
 			this.PrereleaseNumber = PrereleaseNumber;
 			this.releaseDate = ReleaseDate;
+
+			ValidateMilestone();
 		}
-
-		//public Version(string ReleaseVersion)
-		//{
-		//    this.release = new System.Version(ReleaseVersion);
-		//    this.milestone = DefaultMilestone;
-		//    this.prereleaseNumber = DefaultPrereleaseNumber;
-		//    this.releaseDate = null;
-		//}
-
-		//public Version(string ReleaseVersion, System.DateTime ReleaseDate)
-		//{
-		//    this.release = new System.Version(ReleaseVersion);
-		//    this.milestone = DefaultMilestone;
-		//    this.prereleaseNumber = DefaultPrereleaseNumber;
-		//    this.releaseDate = ReleaseDate;
-		//}
-
-		//public Version(string ReleaseVersion, Milestone Milestone)
-		//{
-		//    this.release = new System.Version(ReleaseVersion);
-		//    this.milestone = Milestone;
-		//    this.prereleaseNumber = DefaultPrereleaseNumber;
-		//    this.releaseDate = null;
-		//}
-
-		//public Version(string ReleaseVersion, Milestone Milestone, System.DateTime ReleaseDate)
-		//{
-		//    this.release = new System.Version(ReleaseVersion);
-		//    this.milestone = Milestone;
-		//    this.prereleaseNumber = DefaultPrereleaseNumber;
-		//    this.releaseDate = ReleaseDate;
-		//}
-
-		//public Version(string ReleaseVersion, Milestone Milestone, int PrereleaseNumber)
-		//{
-		//    this.release = new System.Version(ReleaseVersion);
-		//    this.milestone = Milestone;
-		//    this.PrereleaseNumber = PrereleaseNumber;
-		//    this.releaseDate = null;
-		//}
-
-		//public Version(string ReleaseVersion, Milestone Milestone, int PrereleaseNumber, System.DateTime ReleaseDate)
-		//{
-		//    this.release = new System.Version(ReleaseVersion);
-		//    this.milestone = Milestone;
-		//    this.PrereleaseNumber = PrereleaseNumber;
-		//    this.releaseDate = ReleaseDate;
-		//}
 
 		public Milestone Milestone
 		{
@@ -258,6 +244,13 @@
 			}
 		}
 
+		//public Version(string ReleaseVersion, Milestone Milestone, int PrereleaseNumber, System.DateTime ReleaseDate)
+		//{
+		//    this.release = new System.Version(ReleaseVersion);
+		//    this.milestone = Milestone;
+		//    this.PrereleaseNumber = PrereleaseNumber;
+		//    this.releaseDate = ReleaseDate;
+		//}
 		public int PrereleaseNumber
 		{
 			get
@@ -277,6 +270,13 @@
 			}
 		}
 
+		//public Version(string ReleaseVersion, Milestone Milestone, int PrereleaseNumber)
+		//{
+		//    this.release = new System.Version(ReleaseVersion);
+		//    this.milestone = Milestone;
+		//    this.PrereleaseNumber = PrereleaseNumber;
+		//    this.releaseDate = null;
+		//}
 		public System.Version Release
 		{
 			get
@@ -285,6 +285,13 @@
 			}
 		}
 
+		//public Version(string ReleaseVersion, Milestone Milestone, System.DateTime ReleaseDate)
+		//{
+		//    this.release = new System.Version(ReleaseVersion);
+		//    this.milestone = Milestone;
+		//    this.prereleaseNumber = DefaultPrereleaseNumber;
+		//    this.releaseDate = ReleaseDate;
+		//}
 		public System.DateTime? ReleaseDate
 		{
 			get
@@ -293,6 +300,13 @@
 			}
 		}
 
+		//public Version(string ReleaseVersion, Milestone Milestone)
+		//{
+		//    this.release = new System.Version(ReleaseVersion);
+		//    this.milestone = Milestone;
+		//    this.prereleaseNumber = DefaultPrereleaseNumber;
+		//    this.releaseDate = null;
+		//}
 		public Stability Stability
 		{
 			get
@@ -308,11 +322,25 @@
 			}
 		}
 
+		//public Version(string ReleaseVersion, System.DateTime ReleaseDate)
+		//{
+		//    this.release = new System.Version(ReleaseVersion);
+		//    this.milestone = DefaultMilestone;
+		//    this.prereleaseNumber = DefaultPrereleaseNumber;
+		//    this.releaseDate = ReleaseDate;
+		//}
 		public static bool operator !=(Version v1, Version v2)
 		{
 			return v1.CompareTo(v2) != 0;
 		}
 
+		//public Version(string ReleaseVersion)
+		//{
+		//    this.release = new System.Version(ReleaseVersion);
+		//    this.milestone = DefaultMilestone;
+		//    this.prereleaseNumber = DefaultPrereleaseNumber;
+		//    this.releaseDate = null;
+		//}
 		public static bool operator <(Version v1, Version v2)
 		{
 			return v1.CompareTo(v2) < 0;
@@ -471,6 +499,18 @@
 			{
 				return string.Format("{0}-{1}", this.ToShortReleaseString(), this.ToPrereleaseString());
 			}
+		}
+
+		private void ValidateMilestone()
+		{
+			var values = Enum.GetValues(typeof(Milestone));
+			for (int i = 0; i < values.Length; i++)
+			{
+				var value = (Milestone)values.GetValue(i);
+				if (value == milestone) return;
+			}
+
+			throw new NotSupportedException($"Milestone '{milestone}' value is not supported.");
 		}
 	}
 }

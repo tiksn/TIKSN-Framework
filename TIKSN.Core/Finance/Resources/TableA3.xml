@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ISO_4217 Pblshd="2016-02-24">
+<ISO_4217 Pblshd="2017-06-09">
 	<HstrcCcyTbl>
 		<HstrcCcyNtry>
 			<CtryNm>AFGHANISTAN</CtryNm>
@@ -119,7 +119,14 @@
 		</HstrcCcyNtry>
 		<HstrcCcyNtry>
 			<CtryNm>BELARUS</CtryNm>
-			<CcyNm>Belarussian Ruble</CcyNm>
+			<CcyNm IsFund="0">Belarusian Ruble</CcyNm>
+			<Ccy>BYR</Ccy>
+			<CcyNbr>974</CcyNbr>
+			<WthdrwlDt>2017-01</WthdrwlDt>
+		</HstrcCcyNtry>
+		<HstrcCcyNtry>
+			<CtryNm>BELARUS</CtryNm>
+			<CcyNm>Belarusian Ruble</CcyNm>
 			<Ccy>BYB</Ccy>
 			<CcyNbr>112</CcyNbr>
 			<WthdrwlDt>2001-01</WthdrwlDt>
@@ -220,15 +227,9 @@
 		</HstrcCcyNtry>
 		<HstrcCcyNtry>
 			<CtryNm>BURMA </CtryNm>
-			<CcyNm>N.A.</CcyNm>
+			<CcyNm>Kyat</CcyNm>
 			<Ccy>BUK</Ccy>
 			<WthdrwlDt>1990-02</WthdrwlDt>
-		</HstrcCcyNtry>
-		<HstrcCcyNtry>
-			<CtryNm>CHINA</CtryNm>
-			<CcyNm>Peoples Bank Dollar</CcyNm>
-			<Ccy>CNX</Ccy>
-			<WthdrwlDt>1989-12</WthdrwlDt>
 		</HstrcCcyNtry>
 		<HstrcCcyNtry>
 			<CtryNm>CROATIA</CtryNm>
@@ -277,12 +278,6 @@
 			<Ccy>ECV</Ccy>
 			<CcyNbr>983</CcyNbr>
 			<WthdrwlDt>2000-09</WthdrwlDt>
-		</HstrcCcyNtry>
-		<HstrcCcyNtry>
-			<CtryNm>EQUATORIAL GUINEA</CtryNm>
-			<CcyNm>Ekwele</CcyNm>
-			<Ccy>EQE</Ccy>
-			<WthdrwlDt>1989-12</WthdrwlDt>
 		</HstrcCcyNtry>
 		<HstrcCcyNtry>
 			<CtryNm>EQUATORIAL GUINEA</CtryNm>
@@ -469,7 +464,7 @@
 		</HstrcCcyNtry>
 		<HstrcCcyNtry>
 			<CtryNm>LAO</CtryNm>
-			<CcyNm>Kip Pot Pol</CcyNm>
+			<CcyNm>Pathet Lao Kip</CcyNm>
 			<Ccy>LAJ</Ccy>
 			<WthdrwlDt>1989-12</WthdrwlDt>
 		</HstrcCcyNtry>
@@ -489,7 +484,7 @@
 		</HstrcCcyNtry>
 		<HstrcCcyNtry>
 			<CtryNm>LESOTHO</CtryNm>
-			<CcyNm>Maloti</CcyNm>
+			<CcyNm>Loti</CcyNm>
 			<Ccy>LSM</Ccy>
 			<WthdrwlDt>1985-05</WthdrwlDt>
 		</HstrcCcyNtry>
@@ -553,12 +548,6 @@
 			<CtryNm>MALDIVES</CtryNm>
 			<CcyNm>Maldive Rupee</CcyNm>
 			<Ccy>MVQ</Ccy>
-			<WthdrwlDt>1989-12</WthdrwlDt>
-		</HstrcCcyNtry>
-		<HstrcCcyNtry>
-			<CtryNm>MALI</CtryNm>
-			<CcyNm>Mali Franc</CcyNm>
-			<Ccy>MAF</Ccy>
 			<WthdrwlDt>1989-12</WthdrwlDt>
 		</HstrcCcyNtry>
 		<HstrcCcyNtry>

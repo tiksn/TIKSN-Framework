@@ -5,6 +5,7 @@
     <AssemblyName>TIKSN.Core</AssemblyName>
     <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
 	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	  <RootNamespace>TIKSN</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -30,9 +31,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.1.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.0" />
     <PackageReference Include="codecracker.CSharp" Version="1.0.3" />
+    <PackageReference Include="ConsoleTables" Version="2.1.0" />
+    <PackageReference Include="Exceptionless.Signed" Version="4.0.1955" />
     <PackageReference Include="LiteGuard" Version="1.1.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.4.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="1.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.2" />
@@ -41,13 +45,18 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
     <PackageReference Include="Microsoft.NETCore.Portable.Compatibility" Version="1.0.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="1.4.0" />
     <PackageReference Include="System.Reactive.Core" Version="3.1.1" />
     <PackageReference Include="System.Reactive.Interfaces" Version="3.1.1" />
     <PackageReference Include="System.Reactive.Linq" Version="3.1.1" />
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
-    <PackageReference Include="WindowsAzure.Storage" Version="8.1.4" />
+    <PackageReference Include="WindowsAzure.Storage" Version="8.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TIKSN.LanguageLocalization\TIKSN.LanguageLocalization.csproj" />
+    <ProjectReference Include="..\TIKSN.RegionLocalization\TIKSN.RegionLocalization.csproj" />
   </ItemGroup>
 
 </Project>

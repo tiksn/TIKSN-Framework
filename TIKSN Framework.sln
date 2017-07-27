@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2CE66F97-5B89-401D-AEE5-BF2228760097}"
 EndProject
@@ -13,19 +13,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{D98A9FAA
 		NuGet\TIKSN-Framework.nuspec = NuGet\TIKSN-Framework.nuspec
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Core", "TIKSN.Core\TIKSN.Core.csproj", "{D1ECB169-BB57-4751-AECA-415E078E5996}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Core", "TIKSN.Core\TIKSN.Core.csproj", "{D1ECB169-BB57-4751-AECA-415E078E5996}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Framework.Full", "TIKSN.Framework.Full\TIKSN.Framework.Full.csproj", "{786B1846-C0A1-46D8-8E17-47CF5CBB0D0D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Framework.UWP", "TIKSN.Framework.UWP\TIKSN.Framework.UWP.csproj", "{3D7B87C7-B00C-4691-9BBD-F5836011345A}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TIKSN.Framework.Shared", "TIKSN.Framework.Shared\TIKSN.Framework.Shared.shproj", "{6670E3C7-F488-4212-80F4-6A914613AE5B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Framework.Tests", "TIKSN.Framework.Tests\TIKSN.Framework.Tests.csproj", "{0413E49E-9396-4A37-8222-3636285B13A4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestRunner.UWP", "UnitTestRunner.UWP\UnitTestRunner.UWP.csproj", "{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{70DD4C39-7D1D-4DD3-87D5-059842A27C20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{70DD4C39-7D1D-4DD3-87D5-059842A27C20}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Framework.Android", "TIKSN.Framework.Android\TIKSN.Framework.Android.csproj", "{572734F9-E631-44AB-91F0-54735B50D91B}"
 EndProject
@@ -35,27 +33,28 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TIKSN.Framework.SharedMobil
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TIKSN.Framework.Platform", "TIKSN.Framework.Platform\TIKSN.Framework.Platform.shproj", "{B067DD13-E17B-45CC-8B35-D34A1876E0FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Core.Standard.1.5", "TIKSN.Core.Standard.1.5\TIKSN.Core.Standard.1.5.csproj", "{A803FB83-4643-4FDD-9313-6C0E037F55CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Core.Standard.1.5", "TIKSN.Core.Standard.1.5\TIKSN.Core.Standard.1.5.csproj", "{A803FB83-4643-4FDD-9313-6C0E037F55CB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2278829B-1466-45C6-862F-FF38DFF07A24}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.LanguageLocalization", "TIKSN.LanguageLocalization\TIKSN.LanguageLocalization.csproj", "{974DB7C5-CE2D-4232-B781-CFCBB1F7784F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.LanguageLocalization", "TIKSN.LanguageLocalization\TIKSN.LanguageLocalization.csproj", "{974DB7C5-CE2D-4232-B781-CFCBB1F7784F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.RegionLocalization", "TIKSN.RegionLocalization\TIKSN.RegionLocalization.csproj", "{9D8726CC-AC22-4597-90DB-A2809E22500C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.RegionLocalization", "TIKSN.RegionLocalization\TIKSN.RegionLocalization.csproj", "{9D8726CC-AC22-4597-90DB-A2809E22500C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestRunner.Android", "UnitTestRunner.Android\UnitTestRunner.Android.csproj", "{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Core.Standard.1.6", "TIKSN.Core.Standard.1.6\TIKSN.Core.Standard.1.6.csproj", "{1236F079-8A9F-4E3E-9F0B-C1B34333C75C}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems*{3d7b87c7-b00c-4691-9bbd-f5836011345a}*SharedItemsImports = 4
 		TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems*{3d7b87c7-b00c-4691-9bbd-f5836011345a}*SharedItemsImports = 4
-		TIKSN.Framework.Shared\TIKSN.Framework.Shared.projitems*{3d7b87c7-b00c-4691-9bbd-f5836011345a}*SharedItemsImports = 4
 		TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems*{572734f9-e631-44ab-91f0-54735b50d91b}*SharedItemsImports = 4
 		TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems*{572734f9-e631-44ab-91f0-54735b50d91b}*SharedItemsImports = 4
-		TIKSN.Framework.Shared\TIKSN.Framework.Shared.projitems*{6670e3c7-f488-4212-80f4-6a914613ae5b}*SharedItemsImports = 13
 		TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems*{786b1846-c0a1-46d8-8e17-47cf5cbb0d0d}*SharedItemsImports = 4
-		TIKSN.Framework.Shared\TIKSN.Framework.Shared.projitems*{786b1846-c0a1-46d8-8e17-47cf5cbb0d0d}*SharedItemsImports = 4
 		TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems*{7a9b69cb-8abf-4474-a85a-11d5d9f3d005}*SharedItemsImports = 13
 		TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems*{b067dd13-e17b-45cc-8b35-d34a1876e0fe}*SharedItemsImports = 13
 	EndGlobalSection
@@ -134,7 +133,9 @@ Global
 		{0413E49E-9396-4A37-8222-3636285B13A4}.Release|x64.Build.0 = Release|Any CPU
 		{0413E49E-9396-4A37-8222-3636285B13A4}.Release|x86.ActiveCfg = Release|Any CPU
 		{0413E49E-9396-4A37-8222-3636285B13A4}.Release|x86.Build.0 = Release|Any CPU
-		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Debug|Any CPU.Build.0 = Debug|x64
+		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Debug|Any CPU.Deploy.0 = Debug|x64
 		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Debug|ARM.ActiveCfg = Debug|ARM
 		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Debug|ARM.Build.0 = Debug|ARM
 		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Debug|ARM.Deploy.0 = Debug|ARM
@@ -250,6 +251,46 @@ Global
 		{9D8726CC-AC22-4597-90DB-A2809E22500C}.Release|x64.Build.0 = Release|Any CPU
 		{9D8726CC-AC22-4597-90DB-A2809E22500C}.Release|x86.ActiveCfg = Release|Any CPU
 		{9D8726CC-AC22-4597-90DB-A2809E22500C}.Release|x86.Build.0 = Release|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Debug|ARM.Build.0 = Debug|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Debug|ARM.Deploy.0 = Debug|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Debug|x64.Build.0 = Debug|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Debug|x64.Deploy.0 = Debug|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Debug|x86.Build.0 = Debug|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Debug|x86.Deploy.0 = Debug|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Release|ARM.ActiveCfg = Release|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Release|ARM.Build.0 = Release|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Release|ARM.Deploy.0 = Release|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Release|x64.ActiveCfg = Release|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Release|x64.Build.0 = Release|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Release|x64.Deploy.0 = Release|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Release|x86.ActiveCfg = Release|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Release|x86.Build.0 = Release|Any CPU
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}.Release|x86.Deploy.0 = Release|Any CPU
+		{1236F079-8A9F-4E3E-9F0B-C1B34333C75C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1236F079-8A9F-4E3E-9F0B-C1B34333C75C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1236F079-8A9F-4E3E-9F0B-C1B34333C75C}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{1236F079-8A9F-4E3E-9F0B-C1B34333C75C}.Debug|ARM.Build.0 = Debug|Any CPU
+		{1236F079-8A9F-4E3E-9F0B-C1B34333C75C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1236F079-8A9F-4E3E-9F0B-C1B34333C75C}.Debug|x64.Build.0 = Debug|Any CPU
+		{1236F079-8A9F-4E3E-9F0B-C1B34333C75C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1236F079-8A9F-4E3E-9F0B-C1B34333C75C}.Debug|x86.Build.0 = Debug|Any CPU
+		{1236F079-8A9F-4E3E-9F0B-C1B34333C75C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1236F079-8A9F-4E3E-9F0B-C1B34333C75C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1236F079-8A9F-4E3E-9F0B-C1B34333C75C}.Release|ARM.ActiveCfg = Release|Any CPU
+		{1236F079-8A9F-4E3E-9F0B-C1B34333C75C}.Release|ARM.Build.0 = Release|Any CPU
+		{1236F079-8A9F-4E3E-9F0B-C1B34333C75C}.Release|x64.ActiveCfg = Release|Any CPU
+		{1236F079-8A9F-4E3E-9F0B-C1B34333C75C}.Release|x64.Build.0 = Release|Any CPU
+		{1236F079-8A9F-4E3E-9F0B-C1B34333C75C}.Release|x86.ActiveCfg = Release|Any CPU
+		{1236F079-8A9F-4E3E-9F0B-C1B34333C75C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -258,7 +299,6 @@ Global
 		{D1ECB169-BB57-4751-AECA-415E078E5996} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{786B1846-C0A1-46D8-8E17-47CF5CBB0D0D} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{3D7B87C7-B00C-4691-9BBD-F5836011345A} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
-		{6670E3C7-F488-4212-80F4-6A914613AE5B} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{0413E49E-9396-4A37-8222-3636285B13A4} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
 		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
 		{70DD4C39-7D1D-4DD3-87D5-059842A27C20} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
@@ -269,5 +309,7 @@ Global
 		{A803FB83-4643-4FDD-9313-6C0E037F55CB} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{974DB7C5-CE2D-4232-B781-CFCBB1F7784F} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{9D8726CC-AC22-4597-90DB-A2809E22500C} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
+		{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
+		{1236F079-8A9F-4E3E-9F0B-C1B34333C75C} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 	EndGlobalSection
 EndGlobal

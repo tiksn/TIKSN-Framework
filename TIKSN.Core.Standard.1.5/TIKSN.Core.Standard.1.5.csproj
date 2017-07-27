@@ -20,9 +20,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TIKSN.Core\TIKSN.Core.csproj" />
+    <ProjectReference Include="..\TIKSN.LanguageLocalization\TIKSN.LanguageLocalization.csproj" />
+    <ProjectReference Include="..\TIKSN.RegionLocalization\TIKSN.RegionLocalization.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ConsoleTables" Version="2.1.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.4.4" />
   </ItemGroup>
 

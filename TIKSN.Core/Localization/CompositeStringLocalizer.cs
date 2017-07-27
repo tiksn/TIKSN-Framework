@@ -8,11 +8,9 @@ namespace TIKSN.Localization
 {
 	public class CompositeStringLocalizer : IStringLocalizer
 	{
-		private IEnumerable<IStringLocalizer> lazyLocalizers;
-
 		public CompositeStringLocalizer(IEnumerable<IStringLocalizer> localizers)
 		{
-			this.lazyLocalizers = localizers;
+			Localizers = localizers;
 		}
 
 		protected CompositeStringLocalizer()
@@ -51,20 +49,17 @@ namespace TIKSN.Localization
 
 		public IStringLocalizer WithCulture(CultureInfo culture)
 		{
-			return new CompositeStringLocalizer(Localizers.Select(item => item.WithCulture(culture)));
+			return new CompositeStringLocalizer(Localizers.Select(item => item.WithCulture(culture)).ToArray());
 		}
 
 		private LocalizedString GetLocalizedString(Func<IStringLocalizer, LocalizedString> singleLocalizer)
 		{
-			var localizedStrings = new List<LocalizedString>();
+			var localizedStrings = Localizers.Select(localizer => singleLocalizer(localizer)).ToArray();
 
-			foreach (var localizer in Localizers)
-			{
-				localizedStrings.Add(singleLocalizer(localizer));
-			}
+			var localizableStrings = localizedStrings.Where(item => !item.ResourceNotFound && item.Name != item.Value).ToArray();
 
-			if (localizedStrings.Any(item => !item.ResourceNotFound))
-				return localizedStrings.Single(item => !item.ResourceNotFound);
+			if (localizableStrings.Length > 0)
+				return localizableStrings.First();
 
 			return localizedStrings.First();
 		}

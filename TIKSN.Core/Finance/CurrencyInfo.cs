@@ -110,10 +110,10 @@ namespace TIKSN.Finance
 				return true;
 
 			if (object.ReferenceEquals(first, null))
-				return true;
+				return false;
 
 			if (object.ReferenceEquals(second, null))
-				return true;
+				return false;
 
 			return first.Equals(second);
 		}

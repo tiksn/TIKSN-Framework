@@ -1,6 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Xunit;
 
 namespace TIKSN.Finance.Tests.ForeignExchange
@@ -132,7 +136,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			Assert.True(pairs.Any(C => C.ToString() == "AUD/RUB"));
 			Assert.True(pairs.Any(C => C.ToString() == "AZN/RUB"));
 			Assert.True(pairs.Any(C => C.ToString() == "AMD/RUB"));
-			Assert.True(pairs.Any(C => C.ToString() == "BYR/RUB"));
+			Assert.True(pairs.Any(C => C.ToString() == "BYN/RUB"));
 			Assert.True(pairs.Any(C => C.ToString() == "BGN/RUB"));
 			Assert.True(pairs.Any(C => C.ToString() == "BRL/RUB"));
 			Assert.True(pairs.Any(C => C.ToString() == "HUF/RUB"));
@@ -145,7 +149,6 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			Assert.True(pairs.Any(C => C.ToString() == "CAD/RUB"));
 			Assert.True(pairs.Any(C => C.ToString() == "KGS/RUB"));
 			Assert.True(pairs.Any(C => C.ToString() == "CNY/RUB"));
-			//Assert.True(pairs.Any(C => C.ToString() == "LTL/RUB"));
 			Assert.True(pairs.Any(C => C.ToString() == "MDL/RUB"));
 			Assert.True(pairs.Any(C => C.ToString() == "RON/RUB"));
 			Assert.True(pairs.Any(C => C.ToString() == "TMT/RUB"));
@@ -166,7 +169,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/AUD"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/AZN"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/AMD"));
-			Assert.True(pairs.Any(C => C.ToString() == "RUB/BYR"));
+			Assert.True(pairs.Any(C => C.ToString() == "RUB/BYN"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/BGN"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/BRL"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/HUF"));
@@ -179,7 +182,6 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/CAD"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/KGS"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/CNY"));
-			//Assert.True(pairs.Any(C => C.ToString() == "RUB/LTL"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/MDL"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/RON"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/TMT"));
@@ -242,8 +244,6 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/SEK"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/CHF"));
 			Assert.True(pairs.Any(C => C.ToString() == "RUB/JPY"));
-
-			Assert.Equal(34, pairs.Count());
 		}
 
 		[Fact]
@@ -255,34 +255,38 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
 			var pairs = await Bank.GetCurrencyPairsAsync(AtTheMoment);
 
-			var WebUrl = string.Format("http://www.cbr.ru/scripts/XML_daily.asp?date_req={2:00}/{1:00}/{0}", AtTheMoment.Year, AtTheMoment.Month, AtTheMoment.Day);
+			var WebUrl = string.Format("http://www.cbr.ru/scripts/XML_daily.asp?date_req={2:00}.{1:00}.{0}", AtTheMoment.Year, AtTheMoment.Month, AtTheMoment.Day);
 
-			System.Xml.Linq.XDocument Xdoc = System.Xml.Linq.XDocument.Load(WebUrl);
-
-			var WebPairs = new System.Collections.Generic.List<string>();
-
-			foreach (var CodeElement in Xdoc.Element("ValCurs").Elements("Valute"))
+			using (var httpClient = new HttpClient())
 			{
-				string code = CodeElement.Element("CharCode").Value.Trim().ToUpper();
+				var responseStream = await httpClient.GetStreamAsync(WebUrl);
 
-				if (code == "XDR")
-					continue;
+				var stream​Reader = new Stream​Reader(responseStream, Encoding.UTF7);
 
-				WebPairs.Add(string.Format("{0}/RUB", code));
-				WebPairs.Add(string.Format("RUB/{0}", code));
+				var Xdoc = XDocument.Load(stream​Reader);
+
+				var WebPairs = new System.Collections.Generic.List<string>();
+
+				foreach (var CodeElement in Xdoc.Element("ValCurs").Elements("Valute"))
+				{
+					string code = CodeElement.Element("CharCode").Value.Trim().ToUpper();
+
+					WebPairs.Add(string.Format("{0}/RUB", code));
+					WebPairs.Add(string.Format("RUB/{0}", code));
+				}
+
+				foreach (var Pair in pairs)
+				{
+					Assert.True(WebPairs.Any(WP => WP == Pair.ToString()));
+				}
+
+				foreach (var WebPair in WebPairs)
+				{
+					Assert.True(pairs.Any(P => P.ToString() == WebPair));
+				}
+
+				Assert.True(pairs.Count() == WebPairs.Count);
 			}
-
-			foreach (var Pair in pairs)
-			{
-				Assert.True(WebPairs.Any(WP => WP == Pair.ToString()));
-			}
-
-			foreach (var WebPair in WebPairs)
-			{
-				Assert.True(pairs.Any(P => P.ToString() == WebPair));
-			}
-
-			Assert.True(pairs.Count() == WebPairs.Count);
 		}
 
 		[Fact]
