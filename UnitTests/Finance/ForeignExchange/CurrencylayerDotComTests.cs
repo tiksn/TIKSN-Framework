@@ -23,7 +23,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		//[Fact]
 		public async Task GetCurrencyPairs001()
 		{
-			var exchange = new CurrencylayerDotCom(accessKey, _serviceProvider.GetRequiredService<ILogger<CurrencylayerDotCom>>());
+			var exchange = new CurrencylayerDotCom(accessKey);
 
 			var pairs = await exchange.GetCurrencyPairsAsync(DateTimeOffset.Now);
 
@@ -33,7 +33,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		//[Fact]
 		public async Task GetExchangeRateAsync001()
 		{
-			var exchange = new CurrencylayerDotCom(accessKey, _serviceProvider.GetRequiredService<ILogger<CurrencylayerDotCom>>());
+			var exchange = new CurrencylayerDotCom(accessKey);
 
 			var pair = new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("UAH"));
 
