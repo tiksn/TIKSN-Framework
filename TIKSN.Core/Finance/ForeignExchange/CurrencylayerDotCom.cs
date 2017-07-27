@@ -14,15 +14,13 @@ namespace TIKSN.Finance.ForeignExchange
 		private const string HistoricalBaseURL = "http://apilayer.net/api/historical?";
 		private const string LiveBaseURL = "http://apilayer.net/api/live?";
 		private string accessKey;
-		private readonly ILogger<CurrencylayerDotCom> _logger;
 
-		public CurrencylayerDotCom(string accessKey, ILogger<CurrencylayerDotCom> logger)
+		public CurrencylayerDotCom(string accessKey)
 		{
 			if (string.IsNullOrEmpty(accessKey))
 				throw new ArgumentNullException(nameof(accessKey));
 
 			this.accessKey = accessKey;
-			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
 		}
 
 		public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
@@ -99,8 +97,6 @@ namespace TIKSN.Finance.ForeignExchange
 
 				var responseJsonString = await response.Content.ReadAsStringAsync();
 
-				_logger.LogDebug("Response JSON: ", responseJsonString);
-
 				var jsonSerializerSettings = new JsonSerializerSettings { Culture = CultureInfo.InvariantCulture };
 
 				var responseJsonObject = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseJsonString, jsonSerializerSettings);
@@ -126,8 +122,6 @@ namespace TIKSN.Finance.ForeignExchange
 							var quotePair = new CurrencyPair(quoteBaseCurrency, quoteCounterCurrency);
 
 							result.Add(quotePair, quote.Value);
-
-							_logger.LogDebug("Rate {0} is {1}", quotePair, quote.Value);
 						}
 					}
 
