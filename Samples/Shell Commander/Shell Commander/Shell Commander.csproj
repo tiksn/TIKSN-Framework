@@ -293,23 +293,23 @@
     <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Xml.ReaderWriter.4.3.0\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
     </Reference>
-    <Reference Include="TIKSN.Core, Version=2.0.44.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TIKSN-Framework.2.0.44-rc\lib\net47\TIKSN.Core.dll</HintPath>
+    <Reference Include="TIKSN.Core, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TIKSN-Framework.2.1.0\lib\net47\TIKSN.Core.dll</HintPath>
     </Reference>
-    <Reference Include="TIKSN.Core.Standard.1.5, Version=2.0.44.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TIKSN-Framework.2.0.44-rc\lib\net47\TIKSN.Core.Standard.1.5.dll</HintPath>
+    <Reference Include="TIKSN.Core.Standard.1.5, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TIKSN-Framework.2.1.0\lib\net47\TIKSN.Core.Standard.1.5.dll</HintPath>
     </Reference>
     <Reference Include="TIKSN.Core.Standard.1.6, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TIKSN-Framework.2.0.44-rc\lib\net47\TIKSN.Core.Standard.1.6.dll</HintPath>
+      <HintPath>..\packages\TIKSN-Framework.2.1.0\lib\net47\TIKSN.Core.Standard.1.6.dll</HintPath>
     </Reference>
-    <Reference Include="TIKSN.Framework.Full, Version=2.0.44.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TIKSN-Framework.2.0.44-rc\lib\net47\TIKSN.Framework.Full.dll</HintPath>
+    <Reference Include="TIKSN.Framework.Full, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TIKSN-Framework.2.1.0\lib\net47\TIKSN.Framework.Full.dll</HintPath>
     </Reference>
-    <Reference Include="TIKSN.LanguageLocalization, Version=2.0.44.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TIKSN-Framework.2.0.44-rc\lib\net47\TIKSN.LanguageLocalization.dll</HintPath>
+    <Reference Include="TIKSN.LanguageLocalization, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TIKSN-Framework.2.1.0\lib\net47\TIKSN.LanguageLocalization.dll</HintPath>
     </Reference>
-    <Reference Include="TIKSN.RegionLocalization, Version=2.0.44.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TIKSN-Framework.2.0.44-rc\lib\net47\TIKSN.RegionLocalization.dll</HintPath>
+    <Reference Include="TIKSN.RegionLocalization, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TIKSN-Framework.2.1.0\lib\net47\TIKSN.RegionLocalization.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
