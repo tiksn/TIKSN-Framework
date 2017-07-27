@@ -8,7 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Serilog" Version="2.5.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="1.4.0" />
-    <PackageReference Include="TIKSN-Framework" Version="2.0.40-beta" />
+    <PackageReference Include="TIKSN-Framework" Version="2.0.44-rc" />
   </ItemGroup>
 
 </Project>
