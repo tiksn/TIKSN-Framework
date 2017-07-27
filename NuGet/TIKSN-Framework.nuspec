@@ -16,7 +16,7 @@
     <language />
     <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry, Configuration</tags>
     <frameworkAssemblies>
-      <frameworkAssembly assemblyName="System.Speech" targetFramework=".NETFramework4.6" />
+      <frameworkAssembly assemblyName="System.Speech" targetFramework=".NETFramework4.7" />
     </frameworkAssemblies>
     <dependencies>
       <group targetFramework=".NETFramework4.7">
