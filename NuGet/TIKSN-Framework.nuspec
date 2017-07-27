@@ -20,7 +20,7 @@
     </frameworkAssemblies>
     <dependencies>
       <group targetFramework=".NETFramework4.7">
-        <dependency id="Autofac" version="4.6.0" />
+        <dependency id="Autofac" version="4.6.1" />
         <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
         <dependency id="ConsoleTables" version="2.1.0" />
         <dependency id="Exceptionless.Signed" version="4.0.1955" />
@@ -52,10 +52,10 @@
         <dependency id="System.Reactive.Linq" version="3.1.1" />
         <dependency id="System.Reflection.TypeExtensions" version="4.3.0" />
         <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
-        <dependency id="WindowsAzure.Storage" version="8.2.0" />
+        <dependency id="WindowsAzure.Storage" version="8.2.1" />
       </group>
       <group targetFramework="MonoAndroid403">
-        <dependency id="Autofac" version="4.6.0" />
+        <dependency id="Autofac" version="4.6.1" />
         <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
         <dependency id="ConsoleTables" version="2.1.0" />
         <dependency id="Exceptionless.Signed" version="4.0.1955" />
@@ -81,7 +81,7 @@
         <dependency id="System.Reactive.Interfaces" version="3.1.1" />
         <dependency id="System.Reactive.Linq" version="3.1.1" />
         <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
-        <dependency id="WindowsAzure.Storage" version="8.2.0" />
+        <dependency id="WindowsAzure.Storage" version="8.2.1" />
       </group>
       <group targetFramework="netcoreapp1.1">
         <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
@@ -108,7 +108,7 @@
         <dependency id="System.Reactive.Interfaces" version="3.1.1" />
         <dependency id="System.Reactive.Linq" version="3.1.1" />
         <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
-        <dependency id="WindowsAzure.Storage" version="8.2.0" />
+        <dependency id="WindowsAzure.Storage" version="8.2.1" />
       </group>
       <group targetFramework="netstandard1.3">
         <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
@@ -133,7 +133,7 @@
         <dependency id="System.Reactive.Interfaces" version="3.1.1" />
         <dependency id="System.Reactive.Linq" version="3.1.1" />
         <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
-        <dependency id="WindowsAzure.Storage" version="8.2.0" />
+        <dependency id="WindowsAzure.Storage" version="8.2.1" />
       </group>
       <group targetFramework="netstandard1.5">
         <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
@@ -159,7 +159,7 @@
         <dependency id="System.Reactive.Interfaces" version="3.1.1" />
         <dependency id="System.Reactive.Linq" version="3.1.1" />
         <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
-        <dependency id="WindowsAzure.Storage" version="8.2.0" />
+        <dependency id="WindowsAzure.Storage" version="8.2.1" />
       </group>
       <group targetFramework="netstandard1.6">
         <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
@@ -186,7 +186,7 @@
         <dependency id="System.Reactive.Interfaces" version="3.1.1" />
         <dependency id="System.Reactive.Linq" version="3.1.1" />
         <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
-        <dependency id="WindowsAzure.Storage" version="8.2.0" />
+        <dependency id="WindowsAzure.Storage" version="8.2.1" />
       </group>
       <group targetFramework="uap10.0">
         <!--<dependency id="Microsoft.Azure.Mobile.Crashes" version="0.11.1" />-->
@@ -216,7 +216,7 @@
         <dependency id="System.Reactive.Linq" version="3.1.1" />
         <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
         <dependency id="Template10" version="1.1.12" />
-        <dependency id="WindowsAzure.Storage" version="8.2.0" />
+        <dependency id="WindowsAzure.Storage" version="8.2.1" />
       </group>
     </dependencies>
   </metadata>
