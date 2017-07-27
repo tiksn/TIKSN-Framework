@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -13,13 +14,15 @@ namespace TIKSN.Finance.ForeignExchange
 		private const string HistoricalBaseURL = "http://apilayer.net/api/historical?";
 		private const string LiveBaseURL = "http://apilayer.net/api/live?";
 		private string accessKey;
+		private readonly ILogger<CurrencylayerDotCom> _logger;
 
-		public CurrencylayerDotCom(string accessKey)
+		public CurrencylayerDotCom(string accessKey, ILogger<CurrencylayerDotCom> logger)
 		{
 			if (string.IsNullOrEmpty(accessKey))
 				throw new ArgumentNullException(nameof(accessKey));
 
 			this.accessKey = accessKey;
+			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
 		}
 
 		public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
@@ -96,6 +99,8 @@ namespace TIKSN.Finance.ForeignExchange
 
 				var responseJsonString = await response.Content.ReadAsStringAsync();
 
+				_logger.LogDebug("Response JSON: ", responseJsonString);
+
 				var jsonSerializerSettings = new JsonSerializerSettings { Culture = CultureInfo.InvariantCulture };
 
 				var responseJsonObject = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseJsonString, jsonSerializerSettings);
@@ -106,7 +111,7 @@ namespace TIKSN.Finance.ForeignExchange
 				{
 					var result = new Dictionary<CurrencyPair, decimal>();
 
-					var quotes = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseJsonObject["quotes"].ToString(), jsonSerializerSettings);
+					var quotes = JsonConvert.DeserializeObject<Dictionary<string, decimal>>(responseJsonObject["quotes"].ToString(), jsonSerializerSettings);
 
 					foreach (var quote in quotes)
 					{
@@ -117,11 +122,12 @@ namespace TIKSN.Finance.ForeignExchange
 						{
 							var quoteBaseCurrency = new CurrencyInfo(quoteBaseCurrencyCode);
 							var quoteCounterCurrency = new CurrencyInfo(quoteCounterCurrencyCode);
-							var rate = decimal.Parse(quote.Value.ToString(), CultureInfo.InvariantCulture);
 
 							var quotePair = new CurrencyPair(quoteBaseCurrency, quoteCounterCurrency);
 
-							result.Add(quotePair, rate);
+							result.Add(quotePair, quote.Value);
+
+							_logger.LogDebug("Rate {0} is {1}", quotePair, quote.Value);
 						}
 					}
 
