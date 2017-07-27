@@ -21,7 +21,7 @@
     <PackageReference Include="Microsoft.Extensions.Localization" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.2" />
-    <PackageReference Include="TIKSN-Framework" Version="2.0.40-beta" />
+    <PackageReference Include="TIKSN-Framework" Version="2.1.0" />
     <PackageReference Include="NetEscapades.Configuration.Yaml" Version="1.2.0" />
   </ItemGroup>
 
