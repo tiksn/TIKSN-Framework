@@ -658,6 +658,10 @@
           <source>Custom Search</source>
           <target state="needs-review-translation" state-qualifier="tm-suggestion">Настроюваний пошук</target>
         </trans-unit>
+        <trans-unit id="763272923" translate="yes" xml:space="preserve">
+          <source>Senior Software Engineer</source>
+          <target state="new">Senior Software Engineer</target>
+        </trans-unit>
       </group>
     </body>
   </file>

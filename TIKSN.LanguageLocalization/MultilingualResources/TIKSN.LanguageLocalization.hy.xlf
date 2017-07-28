@@ -658,6 +658,10 @@
           <source>Custom Search</source>
           <target state="translated">Հարմարեցրած որոնում</target>
         </trans-unit>
+        <trans-unit id="763272923" translate="yes" xml:space="preserve">
+          <source>Senior Software Engineer</source>
+          <target state="translated">Ավագ ծրագրավորող</target>
+        </trans-unit>
       </group>
     </body>
   </file>

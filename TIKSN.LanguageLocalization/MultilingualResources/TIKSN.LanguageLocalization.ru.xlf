@@ -658,6 +658,10 @@
           <source>Custom Search</source>
           <target state="translated">Пользовательский поиск</target>
         </trans-unit>
+        <trans-unit id="763272923" translate="yes" xml:space="preserve">
+          <source>Senior Software Engineer</source>
+          <target state="translated">Старший инженер-программист</target>
+        </trans-unit>
       </group>
     </body>
   </file>
