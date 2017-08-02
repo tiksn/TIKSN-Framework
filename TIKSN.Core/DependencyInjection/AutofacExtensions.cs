@@ -13,21 +13,20 @@ namespace TIKSN.DependencyInjection
 		public static IRegistrationBuilder<TService, LightweightAdapterActivatorData, DynamicRegistrationStyle>
 			RegisterMemoryCacheDecorator<TImplementer, TService, TEntity>(this ContainerBuilder builder,
 				Func<IComponentContext, TService, IMemoryCache, IOptions<MemoryCacheDecoratorOptions>,
-				IOptions<MemoryCacheDecoratorOptions<TEntity>>, TService> decorator)
+				IOptions<MemoryCacheDecoratorOptions<TEntity>>, TService> decorator, object fromKey)
 			where TImplementer : TService
 		{
-			builder.RegisterType<TImplementer>().Named<TService>("service");
 			return builder.RegisterSingleLevelDecorator<TImplementer, TService>((c, inner) => decorator(c, inner, c.Resolve<IMemoryCache>(),
 				c.Resolve<IOptions<MemoryCacheDecoratorOptions>>(),
-				c.Resolve<IOptions<MemoryCacheDecoratorOptions<TEntity>>>()));
+				c.Resolve<IOptions<MemoryCacheDecoratorOptions<TEntity>>>()),
+				fromKey);
 		}
 
 		public static IRegistrationBuilder<TService, LightweightAdapterActivatorData, DynamicRegistrationStyle>
-			RegisterSingleLevelDecorator<TImplementer, TService>(this ContainerBuilder builder, Func<IComponentContext, TService, TService> decorator)
+			RegisterSingleLevelDecorator<TImplementer, TService>(this ContainerBuilder builder, Func<IComponentContext, TService, TService> decorator, object fromKey)
 			where TImplementer : TService
 		{
-			builder.RegisterType<TImplementer>().Named<TService>("service");
-			return builder.RegisterDecorator(decorator, "service");
+			return builder.RegisterDecorator(decorator, fromKey);
 		}
 	}
 }

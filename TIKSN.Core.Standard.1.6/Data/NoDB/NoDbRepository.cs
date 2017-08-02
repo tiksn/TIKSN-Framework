@@ -56,6 +56,7 @@ namespace TIKSN.Data.NoDB
 		{
 			return BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, (e, c) => UpdateAsync(e, c));
 		}
+
 		protected Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken)
 		{
 			return _basicQueries.GetAllAsync(_projectId, cancellationToken);
