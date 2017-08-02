@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Data.NoDB
 {
-	public class NoDbRepository<TEntity, TIdentity> : IRepository<TEntity>
+	public class NoDbRepository<TEntity, TIdentity> : IRepository<TEntity>, IQueryRepository<TEntity, TIdentity>
 		where TEntity : class, IEntity<TIdentity>
 		where TIdentity : IEquatable<TIdentity>
 	{
@@ -32,6 +32,11 @@ namespace TIKSN.Data.NoDB
 			return BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, (e, c) => AddAsync(e, c));
 		}
 
+		public Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
+		{
+			return _basicQueries.FetchAsync(_projectId, id.ToString(), cancellationToken);
+		}
+
 		public Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)
 		{
 			return _basicCommands.DeleteAsync(_projectId, entity.ID.ToString(), cancellationToken);
@@ -51,12 +56,6 @@ namespace TIKSN.Data.NoDB
 		{
 			return BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, (e, c) => UpdateAsync(e, c));
 		}
-
-		protected Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
-		{
-			return _basicQueries.FetchAsync(_projectId, id.ToString(), cancellationToken);
-		}
-
 		protected Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken)
 		{
 			return _basicQueries.GetAllAsync(_projectId, cancellationToken);
