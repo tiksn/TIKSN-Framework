@@ -44,7 +44,7 @@ namespace TIKSN.Data.Cache
 			return _memoryCache.GetOrCreateAsync(cacheKey, x => CreateMemoryCacheItemAsync(x, getFromSource));
 		}
 
-		private void SpecifyOptions(ICacheEntry cacheEntry)
+		protected void SpecifyOptions(ICacheEntry cacheEntry)
 		{
 			cacheEntry.AbsoluteExpiration = _specificOptions.Value.AbsoluteExpiration ?? _genericOptions.Value.AbsoluteExpiration;
 			cacheEntry.AbsoluteExpirationRelativeToNow = -_specificOptions.Value.AbsoluteExpirationRelativeToNow ?? _genericOptions.Value.AbsoluteExpirationRelativeToNow;

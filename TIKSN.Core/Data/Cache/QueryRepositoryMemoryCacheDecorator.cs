@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,6 +29,25 @@ namespace TIKSN.Data.Cache
 			var cacheKey = Tuple.Create(entityType, MemoryCacheKeyKind.Entity, id);
 
 			return GetFromMemoryCacheAsync(cacheKey, () => _queryRepository.GetAsync(id, cancellationToken));
+		}
+
+		protected Task<IEnumerable<TEntity>> QueryFromMemoryCacheAsync(Func<Task<IEnumerable<TEntity>>> queryFromSource, CancellationToken cancellationToken)
+		{
+			var cacheKey = Tuple.Create(entityType, MemoryCacheKeyKind.Query);
+
+			return QueryFromMemoryCacheAsync(cacheKey, queryFromSource, cancellationToken);
+		}
+
+		protected Task<IEnumerable<TEntity>> QueryFromMemoryCacheAsync(object cacheKey, Func<Task<IEnumerable<TEntity>>> queryFromSource, CancellationToken cancellationToken)
+		{
+			return _memoryCache.GetOrCreateAsync(cacheKey, x => CreateMemoryCacheQueryAsync(x, queryFromSource));
+		}
+
+		protected Task<IEnumerable<TEntity>> CreateMemoryCacheQueryAsync(ICacheEntry cacheEntry, Func<Task<IEnumerable<TEntity>>> queryFromSource)
+		{
+			SpecifyOptions(cacheEntry);
+
+			return queryFromSource();
 		}
 	}
 }
