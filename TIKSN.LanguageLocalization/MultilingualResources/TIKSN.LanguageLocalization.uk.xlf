@@ -284,7 +284,7 @@
         </trans-unit>
         <trans-unit id="222101134" translate="yes" xml:space="preserve">
           <source>This plan is suitable for medium businesses․</source>
-          <target state="new">This plan is suitable for medium businesses․</target>
+          <target state="translated">Цей план підходить для середнього бізнесу</target>
         </trans-unit>
         <trans-unit id="313662951" translate="yes" xml:space="preserve">
           <source>Basic</source>
