@@ -51,6 +51,7 @@
         <dependency id="System.Reactive.Interfaces" version="3.1.1" />
         <dependency id="System.Reactive.Linq" version="3.1.1" />
         <dependency id="System.Reflection.TypeExtensions" version="4.3.0" />
+        <dependency id="System.Security.SecureString" version="4.3.0 " />
         <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
         <dependency id="WindowsAzure.Storage" version="8.2.1" />
       </group>
@@ -80,6 +81,7 @@
         <dependency id="System.Reactive.Core" version="3.1.1" />
         <dependency id="System.Reactive.Interfaces" version="3.1.1" />
         <dependency id="System.Reactive.Linq" version="3.1.1" />
+        <dependency id="System.Security.SecureString" version="4.3.0 " />
         <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
         <dependency id="WindowsAzure.Storage" version="8.2.1" />
       </group>
@@ -107,6 +109,7 @@
         <dependency id="System.Reactive.Core" version="3.1.1" />
         <dependency id="System.Reactive.Interfaces" version="3.1.1" />
         <dependency id="System.Reactive.Linq" version="3.1.1" />
+        <dependency id="System.Security.SecureString" version="4.3.0 " />
         <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
         <dependency id="WindowsAzure.Storage" version="8.2.1" />
       </group>
@@ -132,6 +135,7 @@
         <dependency id="System.Reactive.Core" version="3.1.1" />
         <dependency id="System.Reactive.Interfaces" version="3.1.1" />
         <dependency id="System.Reactive.Linq" version="3.1.1" />
+        <dependency id="System.Security.SecureString" version="4.3.0 " />
         <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
         <dependency id="WindowsAzure.Storage" version="8.2.1" />
       </group>
@@ -158,6 +162,7 @@
         <dependency id="System.Reactive.Core" version="3.1.1" />
         <dependency id="System.Reactive.Interfaces" version="3.1.1" />
         <dependency id="System.Reactive.Linq" version="3.1.1" />
+        <dependency id="System.Security.SecureString" version="4.3.0 " />
         <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
         <dependency id="WindowsAzure.Storage" version="8.2.1" />
       </group>
@@ -185,6 +190,7 @@
         <dependency id="System.Reactive.Core" version="3.1.1" />
         <dependency id="System.Reactive.Interfaces" version="3.1.1" />
         <dependency id="System.Reactive.Linq" version="3.1.1" />
+        <dependency id="System.Security.SecureString" version="4.3.0 " />
         <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
         <dependency id="WindowsAzure.Storage" version="8.2.1" />
       </group>
@@ -214,6 +220,7 @@
         <dependency id="System.Reactive.Core" version="3.1.1" />
         <dependency id="System.Reactive.Interfaces" version="3.1.1" />
         <dependency id="System.Reactive.Linq" version="3.1.1" />
+        <dependency id="System.Security.SecureString" version="4.3.0 " />
         <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
         <dependency id="Template10" version="1.1.12" />
         <dependency id="WindowsAzure.Storage" version="8.2.1" />
