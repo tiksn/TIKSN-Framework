@@ -57,8 +57,8 @@ namespace TIKSN.Shell
 			if (commandAttribute == null)
 				throw new ArgumentException(_stringLocalizer.GetRequiredString(MustImplementCommandmentAttributeKey, type.FullName, typeof(ShellCommandAttribute).FullName), nameof(type));
 
-			_logger.LogDebug(804856258, $"Checking string localization with key {commandAttribute.CommandNameKey} for '{type.FullName}' command.");
-			_stringLocalizer.GetRequiredString(commandAttribute.CommandNameKey);
+			_logger.LogDebug(804856258, $"Checking command name localization for '{type.FullName}' command.");
+			commandAttribute.GetName(_stringLocalizer);
 
 			var constructors = type.GetConstructors();
 			if (constructors.Length != 1)
@@ -70,8 +70,8 @@ namespace TIKSN.Shell
 				var commandParameterAttribute = propertyInfo.GetCustomAttribute<ShellCommandParameterAttribute>();
 				if (commandParameterAttribute != null)
 				{
-					_logger.LogDebug(804856258, $"Checking string localization with key {commandParameterAttribute.ParameterNameKey} for '{type.FullName}' command's '{propertyInfo.Name}' parameter.");
-					_stringLocalizer.GetRequiredString(commandParameterAttribute.ParameterNameKey);
+					_logger.LogDebug(804856258, $"Checking string localization for '{type.FullName}' command's '{propertyInfo.Name}' parameter.");
+					commandParameterAttribute.GetName(_stringLocalizer);
 
 					properties.Add(new Tuple<ShellCommandParameterAttribute, PropertyInfo>(commandParameterAttribute, propertyInfo));
 				}
@@ -105,8 +105,8 @@ namespace TIKSN.Shell
 					foreach (var commandItem in commands)
 					{
 						helpItems.Add(new ShellCommandHelpItem(
-							NormalizeCommandName(_stringLocalizer.GetRequiredString(commandItem.Item2.CommandNameKey)),
-							commandItem.Item4.Select(item => _stringLocalizer.GetRequiredString(item.Item1.ParameterNameKey))));
+							NormalizeCommandName(commandItem.Item2.GetName(_stringLocalizer)),
+							commandItem.Item4.Select(item => item.Item1.GetName(_stringLocalizer))));
 					}
 
 					helpItems = helpItems.OrderBy(i => i.CommandName).ToList();
@@ -115,7 +115,7 @@ namespace TIKSN.Shell
 				}
 				else
 				{
-					var matches = commands.Where(item => string.Equals(command, NormalizeCommandName(_stringLocalizer.GetRequiredString(item.Item2.CommandNameKey)), StringComparison.OrdinalIgnoreCase));
+					var matches = commands.Where(item => string.Equals(command, NormalizeCommandName(item.Item2.GetName(_stringLocalizer)), StringComparison.OrdinalIgnoreCase));
 
 					switch (matches.Count())
 					{
@@ -153,7 +153,7 @@ namespace TIKSN.Shell
 		{
 			if (property.Item2.PropertyType == typeof(SecureString))
 			{
-				var secureStringParameter = _consoleService.ReadPasswordLine(_stringLocalizer.GetRequiredString(property.Item1.ParameterNameKey), ConsoleColor.Green);
+				var secureStringParameter = _consoleService.ReadPasswordLine(property.Item1.GetName(_stringLocalizer), ConsoleColor.Green);
 				if (secureStringParameter.Length == 0)
 				{
 					if (property.Item1.Mandatory)
@@ -162,7 +162,7 @@ namespace TIKSN.Shell
 				}
 			}
 
-			var stringParameter = _consoleService.ReadLine(_stringLocalizer.GetRequiredString(property.Item1.ParameterNameKey), ConsoleColor.Green);
+			var stringParameter = _consoleService.ReadLine(property.Item1.GetName(_stringLocalizer), ConsoleColor.Green);
 
 			if (string.IsNullOrEmpty(stringParameter))
 			{
@@ -198,7 +198,7 @@ namespace TIKSN.Shell
 					if (parameter != null)
 						property.Item2.SetValue(obj, parameter);
 
-					_logger.LogTrace($"Parameter '{_stringLocalizer.GetRequiredString(property.Item1.ParameterNameKey)}' has value '{property.Item2.GetValue(obj)}'");
+					_logger.LogTrace($"Parameter '{property.Item1.GetName(_stringLocalizer)}' has value '{property.Item2.GetValue(obj)}'");
 				}
 
 				var command = obj as IShellCommand;
