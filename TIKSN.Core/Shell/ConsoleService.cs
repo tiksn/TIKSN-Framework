@@ -42,6 +42,7 @@ namespace TIKSN.Shell
 				var i = Console.ReadKey(true);
 				if (i.Key == ConsoleKey.Enter)
 				{
+					Console.WriteLine();
 					break;
 				}
 				else if (i.Key == ConsoleKey.Backspace)

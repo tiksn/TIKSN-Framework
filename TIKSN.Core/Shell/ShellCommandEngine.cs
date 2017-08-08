@@ -160,6 +160,8 @@ namespace TIKSN.Shell
 						return ReadCommandParameter(property);
 					return null;
 				}
+
+				return secureStringParameter;
 			}
 
 			var stringParameter = _consoleService.ReadLine(property.Item1.GetName(_stringLocalizer), ConsoleColor.Green);
