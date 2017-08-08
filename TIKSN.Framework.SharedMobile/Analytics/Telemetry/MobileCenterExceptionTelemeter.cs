@@ -1,7 +1,6 @@
 ﻿using Microsoft.Azure.Mobile;
 using System;
 using System.Threading.Tasks;
-using TIKSN.Analytics.Telemetry;
 
 namespace TIKSN.Analytics.Telemetry
 {
@@ -26,8 +25,6 @@ namespace TIKSN.Analytics.Telemetry
 					MobileCenterLog.Warn(MobileCenterLog.LogTag, exception.Message, exception);
 					break;
 				case TelemetrySeverityLevel.Error:
-					MobileCenterLog.Error(MobileCenterLog.LogTag, exception.Message, exception);
-					break;
 				case TelemetrySeverityLevel.Critical:
 					MobileCenterLog.Error(MobileCenterLog.LogTag, exception.Message, exception);
 					break;
