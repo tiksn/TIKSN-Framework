@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security;
 using System.Threading.Tasks;
 using TIKSN.Localization;
 
@@ -150,6 +151,17 @@ namespace TIKSN.Shell
 
 		private object ReadCommandParameter(Tuple<ShellCommandParameterAttribute, PropertyInfo> property)
 		{
+			if (property.Item2.PropertyType == typeof(SecureString))
+			{
+				var secureStringParameter = _consoleService.ReadPasswordLine(_stringLocalizer.GetRequiredString(property.Item1.ParameterNameKey), ConsoleColor.Green);
+				if (secureStringParameter.Length == 0)
+				{
+					if (property.Item1.Mandatory)
+						return ReadCommandParameter(property);
+					return null;
+				}
+			}
+
 			var stringParameter = _consoleService.ReadLine(_stringLocalizer.GetRequiredString(property.Item1.ParameterNameKey), ConsoleColor.Green);
 
 			if (string.IsNullOrEmpty(stringParameter))
