@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
+using System;
 using TIKSN.Globalization;
 using TIKSN.Serialization;
 using TIKSN.Shell;
@@ -25,6 +26,7 @@ namespace TIKSN.DependencyInjection
 			services.TryAddSingleton<IResourceNamesCache, ResourceNamesCache>();
 			services.TryAddSingleton<IShellCommandEngine, ShellCommandEngine>();
 			services.TryAddSingleton<ITimeProvider, TimeProvider>();
+			services.TryAddSingleton<Random>();
 
 			services.TryAddSingleton<DotNetXmlDeserializer, DotNetXmlDeserializer>();
 			services.TryAddSingleton<DotNetXmlSerializer, DotNetXmlSerializer>();
