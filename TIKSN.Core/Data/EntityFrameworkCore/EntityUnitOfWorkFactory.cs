@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace TIKSN.Data
+namespace TIKSN.Data.EntityFrameworkCore
 {
 	public class EntityUnitOfWorkFactory<TContext> : IUnitOfWorkFactory where TContext : DbContext
 	{

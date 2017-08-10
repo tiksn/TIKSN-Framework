@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace TIKSN.Data
+namespace TIKSN.Data.EntityFrameworkCore
 {
 	public class EntityRepository<TContext, TEntity> : IRepository<TEntity>
 		where TContext : DbContext

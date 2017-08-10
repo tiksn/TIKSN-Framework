@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TIKSN.Data
+namespace TIKSN.Data.EntityFrameworkCore
 {
     public class EntityUnitOfWork : UnitOfWorkBase
     {
