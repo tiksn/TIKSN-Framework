@@ -154,12 +154,8 @@ namespace TIKSN.Shell
 			if (property.Item2.PropertyType == typeof(SecureString))
 			{
 				var secureStringParameter = _consoleService.ReadPasswordLine(property.Item1.GetName(_stringLocalizer), ConsoleColor.Green);
-				if (secureStringParameter.Length == 0)
-				{
-					if (property.Item1.Mandatory)
-						return ReadCommandParameter(property);
-					return null;
-				}
+				if (property.Item1.Mandatory && secureStringParameter.Length == 0)
+					return ReadCommandParameter(property);
 
 				return secureStringParameter;
 			}
