@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -16,8 +15,6 @@ namespace TIKSN.Data.EntityFrameworkCore
 		{
 			this.dbContext = dbContext;
 		}
-
-		protected IQueryable<TEntity> Entities => dbContext.Set<TEntity>().AsNoTracking();
 
 		public Task AddAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
 		{
