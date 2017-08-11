@@ -4,10 +4,8 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Data.Mongo
 {
-	public interface IMongoRepository<TDocument, TField> : IRepository<TDocument> where TDocument : IEntity<TField> where TField : IEquatable<TField>
+	public interface IMongoRepository<TDocument, TIdentity> : IRepository<TDocument>, IQueryRepository<TDocument, TIdentity> where TDocument : IEntity<TIdentity> where TIdentity : IEquatable<TIdentity>
 	{
 		Task AddOrUpdateAsync(TDocument entity, CancellationToken cancellationToken = default(CancellationToken));
-
-		Task<TDocument> GetAsync(TField id, CancellationToken cancellationToken = default(CancellationToken));
 	}
 }

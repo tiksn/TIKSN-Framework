@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Data.Mongo
 {
-	public class MongoRepository<TDocument, TField> : IMongoRepository<TDocument, TField> where TDocument : IEntity<TField> where TField : IEquatable<TField>
+	public class MongoRepository<TDocument, TIdentity> : IMongoRepository<TDocument, TIdentity> where TDocument : IEntity<TIdentity> where TIdentity : IEquatable<TIdentity>
 	{
 		protected readonly IMongoCollection<TDocument> collection;
 
@@ -24,7 +24,7 @@ namespace TIKSN.Data.Mongo
 
 		public Task AddRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken) => collection.InsertManyAsync(entities, cancellationToken: cancellationToken);
 
-		public Task<TDocument> GetAsync(TField id, CancellationToken cancellationToken) => collection.Find(GetIdentityFilter(id)).SingleOrDefaultAsync(cancellationToken);
+		public Task<TDocument> GetAsync(TIdentity id, CancellationToken cancellationToken) => collection.Find(GetIdentityFilter(id)).SingleOrDefaultAsync(cancellationToken);
 
 		public Task RemoveAsync(TDocument entity, CancellationToken cancellationToken) => collection.DeleteOneAsync(item => item.ID.Equals(entity.ID), cancellationToken: cancellationToken);
 
@@ -46,7 +46,7 @@ namespace TIKSN.Data.Mongo
 
 		public Task UpdateRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken) => BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, UpdateAsync);
 
-		protected static FilterDefinition<TDocument> GetIdentityFilter(TField id)
+		protected static FilterDefinition<TDocument> GetIdentityFilter(TIdentity id)
 		{
 			return Builders<TDocument>.Filter.Eq(item => item.ID, id);
 		}
