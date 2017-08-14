@@ -1,7 +1,7 @@
 ﻿namespace TIKSN.Serialization
 {
-	public interface IDeserializer
+	public interface IDeserializer<TSerial> where TSerial : class
 	{
-		T Deserialize<T>(string text);
+		T Deserialize<T>(TSerial serial);
 	}
 }

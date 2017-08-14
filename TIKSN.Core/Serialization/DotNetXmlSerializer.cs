@@ -4,7 +4,7 @@ using TIKSN.Analytics.Telemetry;
 
 namespace TIKSN.Serialization
 {
-	public class DotNetXmlSerializer : SerializerBase
+	public class DotNetXmlSerializer : SerializerBase<string>
 	{
 		public DotNetXmlSerializer(IExceptionTelemeter exceptionTelemeter) : base(exceptionTelemeter)
 		{
