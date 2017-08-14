@@ -3,7 +3,7 @@ using TIKSN.Analytics.Telemetry;
 
 namespace TIKSN.Serialization
 {
-	public class JsonSerializer : SerializerBase
+	public class JsonSerializer : SerializerBase<string>
 	{
 		public JsonSerializer(IExceptionTelemeter exceptionTelemeter) : base(exceptionTelemeter)
 		{

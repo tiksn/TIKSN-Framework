@@ -3,13 +3,13 @@ using TIKSN.Analytics.Telemetry;
 
 namespace TIKSN.Serialization
 {
-	public abstract class SerializerBase : SerializationBase, ISerializer
+	public abstract class SerializerBase<TSerial> : SerializationBase, ISerializer<TSerial> where TSerial : class
 	{
-		public SerializerBase(IExceptionTelemeter exceptionTelemeter) : base(exceptionTelemeter)
+		protected SerializerBase(IExceptionTelemeter exceptionTelemeter) : base(exceptionTelemeter)
 		{
 		}
 
-		public string Serialize(object obj)
+		public TSerial Serialize(object obj)
 		{
 			try
 			{
@@ -23,6 +23,6 @@ namespace TIKSN.Serialization
 			}
 		}
 
-		protected abstract string SerializeInternal(object obj);
+		protected abstract TSerial SerializeInternal(object obj);
 	}
 }

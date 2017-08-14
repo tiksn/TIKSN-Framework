@@ -7,7 +7,7 @@ namespace TIKSN.Serialization
 	{
 		protected readonly IExceptionTelemeter _exceptionTelemeter;
 
-		public SerializationBase(IExceptionTelemeter exceptionTelemeter)
+		protected SerializationBase(IExceptionTelemeter exceptionTelemeter)
 		{
 			Guard.AgainstNullArgument(nameof(exceptionTelemeter), exceptionTelemeter);
 
