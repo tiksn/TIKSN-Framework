@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +12,13 @@ namespace TIKSN.Localization
 	{
 		private readonly IResourceNamesCache resourceNamesCache;
 		private Lazy<IEnumerable<IStringLocalizer>> localizers;
+		private readonly ILogger<CompositeAssemblyStringLocalizer> _logger;
 
-		protected CompositeAssemblyStringLocalizer(IResourceNamesCache resourceNamesCache)
+		protected CompositeAssemblyStringLocalizer(IResourceNamesCache resourceNamesCache, ILogger<CompositeAssemblyStringLocalizer> logger)
 		{
 			this.resourceNamesCache = resourceNamesCache;
 			localizers = new Lazy<IEnumerable<IStringLocalizer>>(CreateLocalizers, false);
+			_logger = logger;
 		}
 
 		public override IEnumerable<IStringLocalizer> Localizers
@@ -49,7 +52,7 @@ namespace TIKSN.Localization
 					{
 						var resourceName = manifestResourceName.Substring(0, manifestResourceName.Length - 10);
 						var resourceManager = new ResourceManager(resourceName, assembly);
-						result.Add(new ResourceManagerStringLocalizer(resourceManager, assembly, resourceName, resourceNamesCache));
+						result.Add(new ResourceManagerStringLocalizer(resourceManager, assembly, resourceName, resourceNamesCache, _logger));
 					}
 				}
 			}

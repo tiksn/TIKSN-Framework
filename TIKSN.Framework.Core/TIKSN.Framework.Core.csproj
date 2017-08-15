@@ -21,8 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TIKSN.Core.Standard.1.5\TIKSN.Core.Standard.1.5.csproj" />
-    <ProjectReference Include="..\TIKSN.Core.Standard.1.6\TIKSN.Core.Standard.1.6.csproj" />
     <ProjectReference Include="..\TIKSN.Core\TIKSN.Core.csproj" />
     <ProjectReference Include="..\TIKSN.LanguageLocalization\TIKSN.LanguageLocalization.csproj" />
     <ProjectReference Include="..\TIKSN.RegionLocalization\TIKSN.RegionLocalization.csproj" />
@@ -33,7 +31,7 @@
     <PackageReference Include="codecracker.CSharp" Version="1.0.3" />
     <PackageReference Include="ConsoleTables" Version="2.1.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.0.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="1.4.0" />
   </ItemGroup>
 
