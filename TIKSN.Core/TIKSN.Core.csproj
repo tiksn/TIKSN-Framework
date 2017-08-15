@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
     <AssemblyName>TIKSN.Core</AssemblyName>
-    <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
 	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	  <RootNamespace>TIKSN</RootNamespace>
   </PropertyGroup>
