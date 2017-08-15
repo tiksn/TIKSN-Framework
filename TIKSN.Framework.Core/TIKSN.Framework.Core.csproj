@@ -21,8 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TIKSN.Core.Standard.1.5\TIKSN.Core.Standard.1.5.csproj" />
-    <ProjectReference Include="..\TIKSN.Core.Standard.1.6\TIKSN.Core.Standard.1.6.csproj" />
     <ProjectReference Include="..\TIKSN.Core\TIKSN.Core.csproj" />
     <ProjectReference Include="..\TIKSN.LanguageLocalization\TIKSN.LanguageLocalization.csproj" />
     <ProjectReference Include="..\TIKSN.RegionLocalization\TIKSN.RegionLocalization.csproj" />

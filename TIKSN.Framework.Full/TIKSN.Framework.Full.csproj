@@ -274,14 +274,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TIKSN.Core.Standard.1.5\TIKSN.Core.Standard.1.5.csproj">
-      <Project>{a803fb83-4643-4fdd-9313-6c0e037f55cb}</Project>
-      <Name>TIKSN.Core.Standard.1.5</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TIKSN.Core.Standard.1.6\TIKSN.Core.Standard.1.6.csproj">
-      <Project>{1236f079-8a9f-4e3e-9f0b-c1b34333c75c}</Project>
-      <Name>TIKSN.Core.Standard.1.6</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TIKSN.Core\TIKSN.Core.csproj">
       <Project>{d1ecb169-bb57-4751-aeca-415e078e5996}</Project>
       <Name>TIKSN.Core</Name>
