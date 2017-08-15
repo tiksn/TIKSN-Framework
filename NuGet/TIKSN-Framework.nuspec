@@ -322,15 +322,21 @@
     <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard1.0\TIKSN.RegionLocalization.pdb" target="lib\uap10.0" />
 
     <!-- Standard 2.0 -->
-    <file src="..\TIKSN.Core.Standard.2.0\bin\Release\netstandard2.0\TIKSN.Core.Standard.2.0.dll" target="lib\net47" />
-    <file src="..\TIKSN.Core.Standard.2.0\bin\Release\netstandard2.0\TIKSN.Core.Standard.2.0.xml" target="lib\net47" />
-    <file src="..\TIKSN.Core.Standard.2.0\bin\Release\netstandard2.0\TIKSN.Core.Standard.2.0.pdb" target="lib\net47" />
-    <file src="..\TIKSN.Core.Standard.2.0\bin\Release\netstandard2.0\TIKSN.Core.Standard.2.0.dll" target="lib\netcoreapp2.0" />
-    <file src="..\TIKSN.Core.Standard.2.0\bin\Release\netstandard2.0\TIKSN.Core.Standard.2.0.xml" target="lib\netcoreapp2.0" />
-    <file src="..\TIKSN.Core.Standard.2.0\bin\Release\netstandard2.0\TIKSN.Core.Standard.2.0.pdb" target="lib\netcoreapp2.0" />
-    <file src="..\TIKSN.Core.Standard.2.0\bin\Release\netstandard2.0\TIKSN.Core.Standard.2.0.dll" target="lib\netstandard2.0" />
-    <file src="..\TIKSN.Core.Standard.2.0\bin\Release\netstandard2.0\TIKSN.Core.Standard.2.0.xml" target="lib\netstandard2.0" />
-    <file src="..\TIKSN.Core.Standard.2.0\bin\Release\netstandard2.0\TIKSN.Core.Standard.2.0.pdb" target="lib\netstandard2.0" />
+    <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.dll" target="lib\MonoAndroid403" />
+    <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.xml" target="lib\MonoAndroid403" />
+    <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.pdb" target="lib\MonoAndroid403" />
+    <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.dll" target="lib\net47" />
+    <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.xml" target="lib\net47" />
+    <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.pdb" target="lib\net47" />
+    <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.dll" target="lib\netcoreapp2.0" />
+    <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.xml" target="lib\netcoreapp2.0" />
+    <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.pdb" target="lib\netcoreapp2.0" />
+    <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.dll" target="lib\netstandard2.0" />
+    <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.xml" target="lib\netstandard2.0" />
+    <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.pdb" target="lib\netstandard2.0" />
+    <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.dll" target="lib\uap10.0" />
+    <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.xml" target="lib\uap10.0" />
+    <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.pdb" target="lib\uap10.0" />
 
     <!-- Platform: Xamarin Android -->
     <file src="..\TIKSN.Framework.Android\bin\Release\TIKSN.Framework.Android.dll" target="lib\MonoAndroid403" />
@@ -348,9 +354,9 @@
     <file src="..\TIKSN.Framework.Core\bin\Release\netcoreapp2.0\TIKSN.Framework.Core.pdb" target="lib\netcoreapp2.0" />
 
     <!-- Platform: UAP -->
-    <file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.dll" target="lib\uap10.0" />
+    <!--<file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.dll" target="lib\uap10.0" />
     <file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.xml" target="lib\uap10.0" />
-    <file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.pdb" target="lib\uap10.0" />
+    <file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.pdb" target="lib\uap10.0" />-->
 
     <!-- Platform: UWP: x86 -->
     <!--<file src="..\TIKSN.Framework.UWP\bin\x86\Release\TIKSN.Framework.UWP.dll" target="runtimes\win10-x86\lib\uap10.0" />
