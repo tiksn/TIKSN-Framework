@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <AssemblyTitle>TIKSN.Framework.Core</AssemblyTitle>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>TIKSN.Framework.Core</AssemblyName>
 	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	  <RootNamespace>TIKSN</RootNamespace>
