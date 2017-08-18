@@ -7,6 +7,10 @@
 	  <RootNamespace>TIKSN</RootNamespace>
   </PropertyGroup>
 
+	<PropertyGroup>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netstandard1.3\TIKSN.Core.xml</DocumentationFile>
   </PropertyGroup>

@@ -8,6 +8,10 @@
 	  <RootNamespace>TIKSN</RootNamespace>
   </PropertyGroup>
 
+	<PropertyGroup>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netcoreapp1.1\TIKSN.Framework.Core.xml</DocumentationFile>
   </PropertyGroup>
