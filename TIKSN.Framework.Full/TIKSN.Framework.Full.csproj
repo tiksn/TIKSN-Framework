@@ -111,8 +111,8 @@
     <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\packages\Serilog.2.5.0\lib\net46\Serilog.dll</HintPath>
     </Reference>
-    <Reference Include="Serilog.Extensions.Logging, Version=1.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.Extensions.Logging.1.4.0\lib\net46\Serilog.Extensions.Logging.dll</HintPath>
+    <Reference Include="Serilog.Extensions.Logging, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Extensions.Logging.2.0.0\lib\net461\Serilog.Extensions.Logging.dll</HintPath>
     </Reference>
     <Reference Include="ShellProgressBar, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ShellProgressBar.3.0.0.0\lib\NET4\ShellProgressBar.dll</HintPath>

@@ -52,7 +52,7 @@
     <PackageReference Include="MsgPack.Cli" Version="0.8.1" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="NoDb" Version="1.1.2" />
-    <PackageReference Include="Serilog.Extensions.Logging" Version="1.4.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.0" />
     <PackageReference Include="System.Reactive.Core" Version="3.1.1" />
     <PackageReference Include="System.Reactive.Interfaces" Version="3.1.1" />
     <PackageReference Include="System.Reactive.Linq" Version="3.1.1" />
