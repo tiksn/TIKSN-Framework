@@ -14,7 +14,7 @@ namespace TIKSN.Data.Cache.Distributed
 	{
 		protected HashSet<TIdentity> _cachedIdentities;
 
-		protected DistributedCacheRepository(
+		public DistributedCacheRepository(
 			IDistributedCache distributedCache,
 			ISerializer<byte[]> serializer,
 			IDeserializer<byte[]> deserializer,

@@ -11,7 +11,7 @@ namespace TIKSN.Data.Cache.Distributed
 		where TEntity : IEntity<TIdentity>
 		where TIdentity : IEquatable<TIdentity>
 	{
-		protected DistributedCacheQueryRepository(
+		public DistributedCacheQueryRepository(
 			IDistributedCache distributedCache,
 			ISerializer<byte[]> serializer,
 			IDeserializer<byte[]> deserializer,

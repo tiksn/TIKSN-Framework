@@ -15,7 +15,12 @@ namespace TIKSN.Data.Cache.Distributed
 		protected readonly ISerializer<byte[]> _serializer;
 		protected readonly IDeserializer<byte[]> _deserializer;
 
-		protected DistributedCacheDecoratorBase(IDistributedCache distributedCache, ISerializer<byte[]> serializer, IDeserializer<byte[]> deserializer, IOptions<DistributedCacheDecoratorOptions> genericOptions, IOptions<DistributedCacheDecoratorOptions<T>> specificOptions)
+		protected DistributedCacheDecoratorBase(
+			IDistributedCache distributedCache,
+			ISerializer<byte[]> serializer,
+			IDeserializer<byte[]> deserializer,
+			IOptions<DistributedCacheDecoratorOptions> genericOptions,
+			IOptions<DistributedCacheDecoratorOptions<T>> specificOptions)
 		{
 			_distributedCache = distributedCache;
 			_genericOptions = genericOptions;
