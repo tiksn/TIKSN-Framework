@@ -3,15 +3,13 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 
-namespace TIKSN.Data.Cache
+namespace TIKSN.Data.Cache.Memory
 {
-	public abstract class MemoryCacheDecoratorBase<T>
+	public abstract class MemoryCacheDecoratorBase<T> : CacheDecoratorBase<T>
 	{
-		protected static readonly Type entityType = typeof(T);
-
 		protected readonly IMemoryCache _memoryCache;
-		private readonly IOptions<MemoryCacheDecoratorOptions> _genericOptions;
-		private readonly IOptions<MemoryCacheDecoratorOptions<T>> _specificOptions;
+		protected readonly IOptions<MemoryCacheDecoratorOptions> _genericOptions;
+		protected readonly IOptions<MemoryCacheDecoratorOptions<T>> _specificOptions;
 
 		protected MemoryCacheDecoratorBase(IMemoryCache memoryCache, IOptions<MemoryCacheDecoratorOptions> genericOptions, IOptions<MemoryCacheDecoratorOptions<T>> specificOptions)
 		{
@@ -20,9 +18,9 @@ namespace TIKSN.Data.Cache
 			_specificOptions = specificOptions;
 		}
 
-		protected T CreateMemoryCacheItem(ICacheEntry arg, Func<T> getFromSource)
+		protected T CreateMemoryCacheItem(ICacheEntry entry, Func<T> getFromSource)
 		{
-			SpecifyOptions(arg);
+			SpecifyOptions(entry);
 
 			return getFromSource();
 		}
@@ -47,7 +45,7 @@ namespace TIKSN.Data.Cache
 		protected void SpecifyOptions(ICacheEntry cacheEntry)
 		{
 			cacheEntry.AbsoluteExpiration = _specificOptions.Value.AbsoluteExpiration ?? _genericOptions.Value.AbsoluteExpiration;
-			cacheEntry.AbsoluteExpirationRelativeToNow = -_specificOptions.Value.AbsoluteExpirationRelativeToNow ?? _genericOptions.Value.AbsoluteExpirationRelativeToNow;
+			cacheEntry.AbsoluteExpirationRelativeToNow = _specificOptions.Value.AbsoluteExpirationRelativeToNow ?? _genericOptions.Value.AbsoluteExpirationRelativeToNow;
 			cacheEntry.SlidingExpiration = _specificOptions.Value.SlidingExpiration ?? _genericOptions.Value.SlidingExpiration;
 		}
 	}

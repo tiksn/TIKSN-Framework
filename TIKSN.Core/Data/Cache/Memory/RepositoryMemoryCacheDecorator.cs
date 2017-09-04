@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TIKSN.Data.Cache
+namespace TIKSN.Data.Cache.Memory
 {
 	public class RepositoryMemoryCacheDecorator<TEntity, TIdentity>
 		: MemoryCacheDecoratorBase<TEntity>, IRepository<TEntity>
@@ -14,6 +14,7 @@ namespace TIKSN.Data.Cache
 	{
 		protected readonly HashSet<object> _cacheKeychain;
 		protected readonly IRepository<TEntity> _repository;
+
 		public RepositoryMemoryCacheDecorator(IRepository<TEntity> repository,
 			IMemoryCache memoryCache,
 			IOptions<MemoryCacheDecoratorOptions> genericOptions,
@@ -76,7 +77,7 @@ namespace TIKSN.Data.Cache
 
 		protected virtual void InvalidateCacheEntity(TEntity entity)
 		{
-			var cacheKey = Tuple.Create(entityType, MemoryCacheKeyKind.Entity, entity.ID);
+			var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, entity.ID);
 
 			_memoryCache.Remove(cacheKey);
 		}

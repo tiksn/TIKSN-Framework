@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TIKSN.Data.Cache
+namespace TIKSN.Data.Cache.Memory
 {
 	public class QueryRepositoryMemoryCacheDecorator<TEntity, TIdentity>
 	: RepositoryMemoryCacheDecorator<TEntity, TIdentity>, IQueryRepository<TEntity, TIdentity>
@@ -26,14 +26,14 @@ namespace TIKSN.Data.Cache
 
 		public Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
 		{
-			var cacheKey = Tuple.Create(entityType, MemoryCacheKeyKind.Entity, id);
+			var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, id);
 
 			return GetFromMemoryCacheAsync(cacheKey, () => _queryRepository.GetAsync(id, cancellationToken));
 		}
 
 		protected Task<IEnumerable<TEntity>> QueryFromMemoryCacheAsync(Func<Task<IEnumerable<TEntity>>> queryFromSource, CancellationToken cancellationToken)
 		{
-			var cacheKey = Tuple.Create(entityType, MemoryCacheKeyKind.Query);
+			var cacheKey = Tuple.Create(entityType, CacheKeyKind.Query);
 
 			return QueryFromMemoryCacheAsync(cacheKey, queryFromSource, cancellationToken);
 		}
