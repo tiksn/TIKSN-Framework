@@ -7,7 +7,7 @@ using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TIKSN.Data.Cache;
+using TIKSN.Data.Cache.Memory;
 using TIKSN.DependencyInjection.Tests;
 using Xunit;
 using Xunit.Abstractions;

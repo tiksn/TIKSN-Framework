@@ -2,7 +2,7 @@
 using System.Globalization;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using TIKSN.Data.Cache;
+using TIKSN.Data.Cache.Memory;
 
 namespace TIKSN.Globalization
 {
