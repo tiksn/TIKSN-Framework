@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>TIKSN-Framework</id>
-    <version>2.2.0-beta.5</version>
+    <version>2.2.0-beta.7</version>
     <title>TIKSN Framework</title>
     <authors>TIKSN</authors>
     <owners>TIKSN</owners>
@@ -24,6 +24,7 @@
         <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
         <dependency id="ConsoleTables" version="2.1.0" />
         <dependency id="Exceptionless.Signed" version="4.0.1955" />
+        <dependency id="LiteDB" version="3.1.4" />
         <dependency id="LiteGuard" version="1.1.0" />
         <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
         <dependency id="Microsoft.EntityFrameworkCore" version="2.0.0" />
@@ -60,6 +61,7 @@
         <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
         <dependency id="ConsoleTables" version="2.1.0" />
         <dependency id="Exceptionless.Signed" version="4.0.1955" />
+        <dependency id="LiteDB" version="3.1.4" />
         <dependency id="LiteGuard" version="1.1.0" />
         <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
         <dependency id="Microsoft.Azure.Mobile.Analytics" version="0.14.2" />
@@ -90,6 +92,7 @@
         <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
         <dependency id="ConsoleTables" version="2.1.0" />
         <dependency id="Exceptionless.Signed" version="4.0.1955" />
+        <dependency id="LiteDB" version="3.1.4" />
         <dependency id="LiteGuard" version="1.1.0" />
         <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
         <dependency id="Microsoft.EntityFrameworkCore" version="2.0.0" />
@@ -119,6 +122,7 @@
         <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
         <dependency id="ConsoleTables" version="2.1.0" />
         <dependency id="Exceptionless.Signed" version="4.0.1955" />
+        <dependency id="LiteDB" version="3.1.4" />
         <dependency id="LiteGuard" version="1.1.0" />
         <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
         <dependency id="Microsoft.EntityFrameworkCore" version="2.0.0" />
@@ -149,6 +153,7 @@
         <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
         <dependency id="ConsoleTables" version="2.1.0" />
         <dependency id="Exceptionless.Signed" version="4.0.1955" />
+        <dependency id="LiteDB" version="3.1.4" />
         <dependency id="LiteGuard" version="1.1.0" />
         <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
         <dependency id="Microsoft.Azure.Mobile.Analytics" version="0.14.2" />
