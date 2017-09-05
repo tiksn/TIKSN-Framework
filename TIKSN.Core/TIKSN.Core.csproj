@@ -38,6 +38,7 @@
     <PackageReference Include="codecracker.CSharp" Version="1.0.3" />
     <PackageReference Include="ConsoleTables" Version="2.1.0" />
     <PackageReference Include="Exceptionless.Signed" Version="4.0.1955" />
+    <PackageReference Include="LiteDB" Version="3.1.4" />
     <PackageReference Include="LiteGuard" Version="1.1.0" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.4.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="1.1.0" />
