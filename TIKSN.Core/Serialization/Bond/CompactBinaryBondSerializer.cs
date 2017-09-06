@@ -1,6 +1,5 @@
 ﻿using Bond.IO.Safe;
 using Bond.Protocols;
-using Bond;
 using TIKSN.Analytics.Telemetry;
 
 namespace TIKSN.Serialization.Bond
@@ -16,7 +15,7 @@ namespace TIKSN.Serialization.Bond
 			var output = new OutputBuffer();
 			var writer = new CompactBinaryWriter<OutputBuffer>(output);
 
-			Serialize<byte[]>.To(writer, obj);
+			global::Bond.Serialize.To(writer, obj);
 
 			return output.Data.Array;
 		}

@@ -1,6 +1,5 @@
 ﻿using Bond.IO.Safe;
 using Bond.Protocols;
-using Bond;
 using TIKSN.Analytics.Telemetry;
 
 namespace TIKSN.Serialization.Bond
@@ -16,7 +15,7 @@ namespace TIKSN.Serialization.Bond
 			var input = new InputBuffer(serial);
 			var reader = new CompactBinaryReader<InputBuffer>(input);
 
-			return Deserialize<T>.From(reader);
+			return global::Bond.Deserialize<T>.From(reader);
 		}
 	}
 }
