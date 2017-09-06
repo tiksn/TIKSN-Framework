@@ -1,8 +1,6 @@
 ﻿using Bond.IO.Safe;
 using Bond.Protocols;
 using Bond;
-using System.Collections.Generic;
-using System.Text;
 using TIKSN.Analytics.Telemetry;
 
 namespace TIKSN.Serialization.Bond
