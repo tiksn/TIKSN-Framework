@@ -1,13 +1,12 @@
 ﻿using Bond.Protocols;
 using System.IO;
-using System.Xml;
 using TIKSN.Analytics.Telemetry;
 
 namespace TIKSN.Serialization.Bond
 {
-	public class SimpleXmlBondSerializer : SerializerBase<string>
+	public class SimpleJsonBondSerializer : SerializerBase<string>
 	{
-		public SimpleXmlBondSerializer(IExceptionTelemeter exceptionTelemeter) : base(exceptionTelemeter)
+		public SimpleJsonBondSerializer(IExceptionTelemeter exceptionTelemeter) : base(exceptionTelemeter)
 		{
 		}
 
@@ -15,7 +14,7 @@ namespace TIKSN.Serialization.Bond
 		{
 			using (var output = new StringWriter())
 			{
-				var writer = new SimpleXmlWriter(XmlWriter.Create(output));
+				var writer = new SimpleJsonWriter(output);
 
 				global::Bond.Serialize.To(writer, obj);
 
