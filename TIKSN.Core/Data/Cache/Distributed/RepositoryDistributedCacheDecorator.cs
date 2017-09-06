@@ -70,7 +70,7 @@ namespace TIKSN.Data.Cache.Distributed
 			await InvalidateCacheItemsAsync(entities, cancellationToken);
 		}
 
-		protected Task<TEntity> GetQueryFromMemoryCacheAsync(string cacheKey, Func<Task<TEntity>> getFromSource, CancellationToken cancellationToken)
+		protected Task<TEntity> GetQueryFromDistributedCacheAsync(string cacheKey, Func<Task<TEntity>> getFromSource, CancellationToken cancellationToken)
 		{
 			_cacheKeychain.Add(cacheKey);
 
