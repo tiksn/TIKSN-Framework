@@ -2,10 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Serilog;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using TIKSN.Analytics.Logging;
 
 namespace TIKSN.DependencyInjection
 {
@@ -24,40 +24,14 @@ namespace TIKSN.DependencyInjection
 		{
 			var serviceProvider = CreateServiceProviderInternal();
 
-			var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
-
-			ConfigureLoggingInternal(serviceProvider);
+			SetupLogging(serviceProvider);
 
 			ValidateOptions(_services.Value, serviceProvider);
 
 			return serviceProvider;
 		}
 
-		protected virtual void ConfigureLogging(ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
-		{
-			loggerFactory.AddDebug(LogLevel.Trace);
-		}
-
-		protected void ConfigureLoggingInternal(IServiceProvider serviceProvider)
-		{
-			var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
-
-			ConfigureLogging(loggerFactory, serviceProvider);
-
-			var serilogLoggerConfiguration = new LoggerConfiguration()
-				.MinimumLevel.Verbose()
-				.Enrich.FromLogContext();
-
-			ConfigureSerilog(serilogLoggerConfiguration, serviceProvider);
-
-			loggerFactory.AddSerilog(serilogLoggerConfiguration.CreateLogger());
-		}
-
 		protected abstract void ConfigureOptions(IServiceCollection services, IConfigurationRoot configuration);
-
-		protected virtual void ConfigureSerilog(LoggerConfiguration serilogLoggerConfiguration, IServiceProvider serviceProvider)
-		{
-		}
 
 		protected abstract void ConfigureServices(IServiceCollection services);
 
@@ -83,6 +57,11 @@ namespace TIKSN.DependencyInjection
 		protected virtual IServiceCollection GetInitialServiceCollection()
 		{
 			return new ServiceCollection();
+		}
+
+		protected void SetupLogging(IServiceProvider serviceProvider)
+		{
+			serviceProvider.GetRequiredService<LoggingSetupBase>().Setup();
 		}
 
 		protected void ValidateOptions(IServiceCollection services, IServiceProvider serviceProvider)
