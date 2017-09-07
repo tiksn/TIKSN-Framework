@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Xunit.Abstractions;
+using TIKSN.Analytics.Logging;
 
 namespace TIKSN.DependencyInjection.Tests
 {
@@ -12,7 +13,7 @@ namespace TIKSN.DependencyInjection.Tests
 		private readonly Action<IServiceCollection> _configureServices;
 		private readonly Action<IServiceCollection, IConfigurationRoot> _configureOptions;
 
-		public TestCompositionRootSetup(ITestOutputHelper testOutputHelper, Action<IServiceCollection> configureServices = null, Action<IServiceCollection, IConfigurationRoot> configureOptions = null)
+		public TestCompositionRootSetup(ITestOutputHelper testOutputHelper, Action<IServiceCollection> configureServices = null, Action<IServiceCollection, IConfigurationRoot> configureOptions = null) : base(new TestConfigurationRootSetup().CreateConfigurationRoot())
 		{
 			_testOutputHelper = testOutputHelper;
 			_configureServices = configureServices;
@@ -26,14 +27,9 @@ namespace TIKSN.DependencyInjection.Tests
 
 		protected override void ConfigureServices(IServiceCollection services)
 		{
+			services.AddSingleton(_testOutputHelper);
+			services.AddSingleton<LoggingSetupBase, TestSerilogLoggingSetup>();
 			_configureServices?.Invoke(services);
-		}
-
-		protected override void ConfigureSerilog(LoggerConfiguration serilogLoggerConfiguration, IServiceProvider serviceProvider)
-		{
-			serilogLoggerConfiguration.WriteTo.TestOutput(_testOutputHelper);
-
-			base.ConfigureSerilog(serilogLoggerConfiguration, serviceProvider);
 		}
 	}
 }
