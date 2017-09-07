@@ -1,10 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
-using MsgPack.Serialization;
 using System;
 using TIKSN.Globalization;
 using TIKSN.Serialization;
+using TIKSN.Serialization.Bond;
+using TIKSN.Serialization.MessagePack;
 using TIKSN.Shell;
 using TIKSN.Time;
 using TIKSN.Web.Rest;
@@ -28,13 +29,26 @@ namespace TIKSN.DependencyInjection
 			services.TryAddSingleton<IShellCommandEngine, ShellCommandEngine>();
 			services.TryAddSingleton<ITimeProvider, TimeProvider>();
 			services.TryAddSingleton<Random>();
-			services.TryAddSingleton(SerializationContext.Default);
+			services.TryAddSingleton(MsgPack.Serialization.SerializationContext.Default);
 
-			services.TryAddSingleton<DotNetXmlDeserializer, DotNetXmlDeserializer>();
-			services.TryAddSingleton<DotNetXmlSerializer, DotNetXmlSerializer>();
+			services.TryAddSingleton<CompactBinaryBondDeserializer>();
+			services.TryAddSingleton<CompactBinaryBondSerializer>();
+			services.TryAddSingleton<DotNetXmlDeserializer>();
+			services.TryAddSingleton<DotNetXmlSerializer>();
+			services.TryAddSingleton<FastBinaryBondDeserializer>();
+			services.TryAddSingleton<FastBinaryBondSerializer>();
 			services.TryAddSingleton<IRestRequester, RestRequester>();
-			services.TryAddSingleton<JsonDeserializer, JsonDeserializer>();
-			services.TryAddSingleton<JsonSerializer, JsonSerializer>();
+			services.TryAddSingleton<JsonDeserializer>();
+			services.TryAddSingleton<JsonSerializer>();
+			services.TryAddSingleton<MessagePackDeserializer>();
+			services.TryAddSingleton<MessagePackSerializer>();
+			services.TryAddSingleton<SimpleBinaryBondDeserializer>();
+			services.TryAddSingleton<SimpleBinaryBondSerializer>();
+			services.TryAddSingleton<SimpleJsonBondDeserializer>();
+			services.TryAddSingleton<SimpleJsonBondSerializer>();
+			services.TryAddSingleton<SimpleXmlBondDeserializer>();
+			services.TryAddSingleton<SimpleXmlBondSerializer>();
+
 
 			services.TryAddScoped<IShellCommandContext, ShellCommandContext>();
 		}
