@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 
@@ -8,6 +9,11 @@ namespace TIKSN.DependencyInjection
 {
 	public abstract class AutofacCompositionRootSetupBase : CompositionRootSetupBase
 	{
+		protected AutofacCompositionRootSetupBase(IConfigurationRoot configurationRoot) : base(configurationRoot)
+		{
+
+		}
+
 		public IContainer CreateContainer()
 		{
 			var container = CreateContainerInternal();
@@ -15,7 +21,7 @@ namespace TIKSN.DependencyInjection
 
 			ConfigureLoggingInternal(serviceProvider);
 
-			ValidateOptions(services.Value, serviceProvider);
+			ValidateOptions(_services.Value, serviceProvider);
 
 			return container;
 		}
@@ -25,7 +31,7 @@ namespace TIKSN.DependencyInjection
 		protected IContainer CreateContainerInternal()
 		{
 			var builder = new ContainerBuilder();
-			builder.Populate(services.Value);
+			builder.Populate(_services.Value);
 
 			foreach (var module in GetAutofacModules())
 			{
