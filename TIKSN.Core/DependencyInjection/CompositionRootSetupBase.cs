@@ -6,17 +6,18 @@ using Serilog;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
-using Autofac;
 
 namespace TIKSN.DependencyInjection
 {
 	public abstract class CompositionRootSetupBase
 	{
-		protected readonly Lazy<IServiceCollection> services;
+		protected readonly IConfigurationRoot _configurationRoot;
+		protected readonly Lazy<IServiceCollection> _services;
 
-		protected CompositionRootSetupBase()
+		protected CompositionRootSetupBase(IConfigurationRoot configurationRoot)
 		{
-			services = new Lazy<IServiceCollection>(CreateServiceCollection, false);
+			_configurationRoot = configurationRoot;
+			_services = new Lazy<IServiceCollection>(CreateServiceCollection, false);
 		}
 
 		public IServiceProvider CreateServiceProvider()
@@ -27,7 +28,7 @@ namespace TIKSN.DependencyInjection
 
 			ConfigureLoggingInternal(serviceProvider);
 
-			ValidateOptions(services.Value, serviceProvider);
+			ValidateOptions(_services.Value, serviceProvider);
 
 			return serviceProvider;
 		}
@@ -60,11 +61,6 @@ namespace TIKSN.DependencyInjection
 
 		protected abstract void ConfigureServices(IServiceCollection services);
 
-		protected virtual IServiceCollection GetInitialServiceCollection()
-		{
-			return new ServiceCollection();
-		}
-
 		protected IServiceCollection CreateServiceCollection()
 		{
 			var services = GetInitialServiceCollection();
@@ -72,33 +68,21 @@ namespace TIKSN.DependencyInjection
 
 			ConfigureServices(services);
 
-			var configuration = GetConfigurationRoot();
+			ConfigureOptions(services, _configurationRoot);
 
-			ConfigureOptions(services, configuration);
-
-			services.AddSingleton(configuration);
-			services.AddSingleton<IConfiguration>(configuration);
+			services.AddSingleton(_configurationRoot);
 
 			return services;
 		}
 
 		protected virtual IServiceProvider CreateServiceProviderInternal()
 		{
-			return services.Value.BuildServiceProvider();
+			return _services.Value.BuildServiceProvider();
 		}
 
-		protected virtual IConfigurationRoot GetConfigurationRoot()
+		protected virtual IServiceCollection GetInitialServiceCollection()
 		{
-			var builder = new ConfigurationBuilder();
-
-			SetupConfiguration(builder);
-
-			return builder.Build();
-		}
-
-		protected virtual void SetupConfiguration(IConfigurationBuilder builder)
-		{
-			builder.AddInMemoryCollection();
+			return new ServiceCollection();
 		}
 
 		protected void ValidateOptions(IServiceCollection services, IServiceProvider serviceProvider)
