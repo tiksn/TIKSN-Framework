@@ -2,68 +2,38 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Serilog;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
-using Autofac;
+using TIKSN.Analytics.Logging;
 
 namespace TIKSN.DependencyInjection
 {
 	public abstract class CompositionRootSetupBase
 	{
-		protected readonly Lazy<IServiceCollection> services;
+		protected readonly IConfigurationRoot _configurationRoot;
+		protected readonly Lazy<IServiceCollection> _services;
 
-		protected CompositionRootSetupBase()
+		protected CompositionRootSetupBase(IConfigurationRoot configurationRoot)
 		{
-			services = new Lazy<IServiceCollection>(CreateServiceCollection, false);
+			_configurationRoot = configurationRoot;
+			_services = new Lazy<IServiceCollection>(CreateServiceCollection, false);
 		}
 
 		public IServiceProvider CreateServiceProvider()
 		{
 			var serviceProvider = CreateServiceProviderInternal();
 
-			var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+			SetupLogging(serviceProvider);
 
-			ConfigureLoggingInternal(serviceProvider);
-
-			ValidateOptions(services.Value, serviceProvider);
+			ValidateOptions(_services.Value, serviceProvider);
 
 			return serviceProvider;
 		}
 
-		protected virtual void ConfigureLogging(ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
-		{
-			loggerFactory.AddDebug(LogLevel.Trace);
-		}
-
-		protected void ConfigureLoggingInternal(IServiceProvider serviceProvider)
-		{
-			var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
-
-			ConfigureLogging(loggerFactory, serviceProvider);
-
-			var serilogLoggerConfiguration = new LoggerConfiguration()
-				.MinimumLevel.Verbose()
-				.Enrich.FromLogContext();
-
-			ConfigureSerilog(serilogLoggerConfiguration, serviceProvider);
-
-			loggerFactory.AddSerilog(serilogLoggerConfiguration.CreateLogger());
-		}
-
 		protected abstract void ConfigureOptions(IServiceCollection services, IConfigurationRoot configuration);
 
-		protected virtual void ConfigureSerilog(LoggerConfiguration serilogLoggerConfiguration, IServiceProvider serviceProvider)
-		{
-		}
-
 		protected abstract void ConfigureServices(IServiceCollection services);
-
-		protected virtual IServiceCollection GetInitialServiceCollection()
-		{
-			return new ServiceCollection();
-		}
 
 		protected IServiceCollection CreateServiceCollection()
 		{
@@ -72,33 +42,26 @@ namespace TIKSN.DependencyInjection
 
 			ConfigureServices(services);
 
-			var configuration = GetConfigurationRoot();
+			ConfigureOptions(services, _configurationRoot);
 
-			ConfigureOptions(services, configuration);
-
-			services.AddSingleton(configuration);
-			services.AddSingleton<IConfiguration>(configuration);
+			services.AddSingleton(_configurationRoot);
 
 			return services;
 		}
 
 		protected virtual IServiceProvider CreateServiceProviderInternal()
 		{
-			return services.Value.BuildServiceProvider();
+			return _services.Value.BuildServiceProvider();
 		}
 
-		protected virtual IConfigurationRoot GetConfigurationRoot()
+		protected virtual IServiceCollection GetInitialServiceCollection()
 		{
-			var builder = new ConfigurationBuilder();
-
-			SetupConfiguration(builder);
-
-			return builder.Build();
+			return new ServiceCollection();
 		}
 
-		protected virtual void SetupConfiguration(IConfigurationBuilder builder)
+		protected void SetupLogging(IServiceProvider serviceProvider)
 		{
-			builder.AddInMemoryCollection();
+			serviceProvider.GetRequiredService<LoggingSetupBase>().Setup();
 		}
 
 		protected void ValidateOptions(IServiceCollection services, IServiceProvider serviceProvider)
