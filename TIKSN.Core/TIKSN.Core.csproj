@@ -39,6 +39,7 @@
     <PackageReference Include="codecracker.CSharp" Version="1.0.3" />
     <PackageReference Include="ConsoleTables" Version="2.1.0" />
     <PackageReference Include="Exceptionless.Signed" Version="4.0.1955" />
+    <PackageReference Include="FluentValidation" Version="7.1.1" />
     <PackageReference Include="LiteDB" Version="3.1.4" />
     <PackageReference Include="LiteGuard" Version="1.1.0" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.4.0" />
@@ -49,6 +50,7 @@
     <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.0.0" />
     <PackageReference Include="Microsoft.NETCore.Portable.Compatibility" Version="1.0.2" />
     <PackageReference Include="MongoDB.Driver" Version="2.4.4" />
     <PackageReference Include="MsgPack.Cli" Version="0.9.1" />
