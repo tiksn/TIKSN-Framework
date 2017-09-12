@@ -7,7 +7,7 @@ namespace TIKSN.Analytics.Telemetry.Pushalot
 {
 	public class PushalotTraceTelemeter : PushalotTelemeterBase, ITraceTelemeter
 	{
-		public PushalotTraceTelemeter(IConfiguration<PushalotConfiguration> pushalotConfiguration)
+		public PushalotTraceTelemeter(IConfiguration<PushalotOptions> pushalotConfiguration)
 			: base(pushalotConfiguration)
 		{
 		}
@@ -22,12 +22,12 @@ namespace TIKSN.Analytics.Telemetry.Pushalot
 			await SendMessage(string.Format("Trace: {0}", severityLevel), message);
 		}
 
-		protected override IEnumerable<string> GetAuthorizationTokens(PushalotConfiguration pushalotConfiguration)
+		protected override IEnumerable<string> GetAuthorizationTokens(PushalotOptions pushalotConfiguration)
 		{
 			return pushalotConfiguration.TraceAuthorizationTokens;
 		}
 
-		protected override IEnumerable<string> GetAuthorizationTokens(PushalotConfiguration pushalotConfiguration, TelemetrySeverityLevel severityLevel)
+		protected override IEnumerable<string> GetAuthorizationTokens(PushalotOptions pushalotConfiguration, TelemetrySeverityLevel severityLevel)
 		{
 			if (pushalotConfiguration.SeverityLevelTraceAuthorizationTokens.ContainsKey(severityLevel))
 			{

@@ -7,7 +7,7 @@ namespace TIKSN.Analytics.Telemetry.Pushalot
 {
 	public class PushalotEventTelemeter : PushalotTelemeterBase, IEventTelemeter
 	{
-		public PushalotEventTelemeter(IConfiguration<PushalotConfiguration> pushalotConfiguration)
+		public PushalotEventTelemeter(IConfiguration<PushalotOptions> pushalotConfiguration)
 			: base(pushalotConfiguration)
 		{
 		}
@@ -22,12 +22,12 @@ namespace TIKSN.Analytics.Telemetry.Pushalot
 			await SendMessage("Event", $"{name}. {string.Join(" ", properties.Select(item => string.Format("{0} is {1}", item.Key, item.Value)))}");
 		}
 
-		protected override IEnumerable<string> GetAuthorizationTokens(PushalotConfiguration pushalotConfiguration)
+		protected override IEnumerable<string> GetAuthorizationTokens(PushalotOptions pushalotConfiguration)
 		{
 			return pushalotConfiguration.EventAuthorizationTokens;
 		}
 
-		protected override IEnumerable<string> GetAuthorizationTokens(PushalotConfiguration pushalotConfiguration, TelemetrySeverityLevel severityLevel)
+		protected override IEnumerable<string> GetAuthorizationTokens(PushalotOptions pushalotConfiguration, TelemetrySeverityLevel severityLevel)
 		{
 			return Enumerable.Empty<string>();
 		}

@@ -10,18 +10,18 @@ namespace TIKSN.Analytics.Telemetry.Pushalot
 	public abstract class PushalotTelemeterBase
 	{
 		protected readonly Lazy<PushalotClient<TelemetrySeverityLevel>> lazyClient;
-		protected readonly IConfiguration<PushalotConfiguration> pushalotConfiguration;
+		protected readonly IConfiguration<PushalotOptions> pushalotConfiguration;
 
-		public PushalotTelemeterBase(IConfiguration<PushalotConfiguration> pushalotConfiguration)
+		protected PushalotTelemeterBase(IConfiguration<PushalotOptions> pushalotConfiguration)
 		{
 			this.pushalotConfiguration = pushalotConfiguration;
 
 			lazyClient = new Lazy<PushalotClient<TelemetrySeverityLevel>>(CreatePushalotClient);
 		}
 
-		protected abstract IEnumerable<string> GetAuthorizationTokens(PushalotConfiguration pushalotConfiguration);
+		protected abstract IEnumerable<string> GetAuthorizationTokens(PushalotOptions pushalotConfiguration);
 
-		protected abstract IEnumerable<string> GetAuthorizationTokens(PushalotConfiguration pushalotConfiguration, TelemetrySeverityLevel severityLevel);
+		protected abstract IEnumerable<string> GetAuthorizationTokens(PushalotOptions pushalotConfiguration, TelemetrySeverityLevel severityLevel);
 
 		protected async Task SendMessage(string title, string content)
 		{

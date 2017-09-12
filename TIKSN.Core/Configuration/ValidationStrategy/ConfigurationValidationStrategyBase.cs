@@ -1,4 +1,5 @@
 ﻿using System;
+using TIKSN.Configuration.Validator;
 
 namespace TIKSN.Configuration.ValidationStrategy
 {
