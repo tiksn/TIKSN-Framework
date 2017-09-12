@@ -25,6 +25,7 @@
         <dependency id="Bond.CSharp" version="6.0.0" />
         <dependency id="ConsoleTables" version="2.1.0" />
         <dependency id="Exceptionless.Signed" version="4.0.1955" />
+        <dependency id="FluentValidation" version="7.1.1" />
         <dependency id="LiteDB" version="3.1.4" />
         <dependency id="LiteGuard" version="1.1.0" />
         <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
@@ -37,6 +38,7 @@
         <dependency id="Microsoft.Extensions.Localization.Abstractions" version="2.0.0" />
         <dependency id="Microsoft.Extensions.Logging.Abstractions" version="2.0.0" />
         <dependency id="Microsoft.Extensions.Logging.Debug" version="2.0.0" />
+        <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.0.0" />
         <dependency id="Microsoft.PowerShell.3.ReferenceAssemblies" version="1.0.0" />
         <dependency id="Microsoft.Win32.Registry" version="4.4.0" />
         <dependency id="MsgPack.Cli" version="0.9.1" />
@@ -63,6 +65,7 @@
         <dependency id="Bond.CSharp" version="6.0.0" />
         <dependency id="ConsoleTables" version="2.1.0" />
         <dependency id="Exceptionless.Signed" version="4.0.1955" />
+        <dependency id="FluentValidation" version="7.1.1" />
         <dependency id="LiteDB" version="3.1.4" />
         <dependency id="LiteGuard" version="1.1.0" />
         <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
@@ -78,6 +81,7 @@
         <dependency id="Microsoft.Extensions.Logging.Abstractions" version="2.0.0" />
         <dependency id="Microsoft.Extensions.Logging.Debug" version="2.0.0" />
         <dependency id="Microsoft.Extensions.Options" version="2.0.0" />
+        <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.0.0" />
         <dependency id="MsgPack.Cli" version="0.9.1" />
         <dependency id="NETStandard.Library" version="2.0.0" />
         <dependency id="Newtonsoft.Json" version="10.0.3" />
@@ -95,6 +99,7 @@
         <dependency id="Bond.CSharp" version="6.0.0" />
         <dependency id="ConsoleTables" version="2.1.0" />
         <dependency id="Exceptionless.Signed" version="4.0.1955" />
+        <dependency id="FluentValidation" version="7.1.1" />
         <dependency id="LiteDB" version="3.1.4" />
         <dependency id="LiteGuard" version="1.1.0" />
         <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
@@ -107,6 +112,7 @@
         <dependency id="Microsoft.Extensions.Localization.Abstractions" version="2.0.0" />
         <dependency id="Microsoft.Extensions.Logging.Abstractions" version="2.0.0" />
         <dependency id="Microsoft.Extensions.Logging.Debug" version="2.0.0" />
+        <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.0.0" />
         <dependency id="MongoDB.Driver" version="2.4.4" />
         <dependency id="MsgPack.Cli" version="0.9.1" />
         <dependency id="NETStandard.Library" version="2.0.0" />
@@ -126,6 +132,7 @@
         <dependency id="Bond.CSharp" version="6.0.0" />
         <dependency id="ConsoleTables" version="2.1.0" />
         <dependency id="Exceptionless.Signed" version="4.0.1955" />
+        <dependency id="FluentValidation" version="7.1.1" />
         <dependency id="LiteDB" version="3.1.4" />
         <dependency id="LiteGuard" version="1.1.0" />
         <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
@@ -138,6 +145,7 @@
         <dependency id="Microsoft.Extensions.Localization.Abstractions" version="2.0.0" />
         <dependency id="Microsoft.Extensions.Logging.Abstractions" version="2.0.0" />
         <dependency id="Microsoft.Extensions.Logging.Debug" version="2.0.0" />
+        <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.0.0" />
         <dependency id="MongoDB.Driver" version="2.4.4" />
         <dependency id="MsgPack.Cli" version="0.9.1" />
         <dependency id="NETStandard.Library" version="2.0.0" />
@@ -158,6 +166,7 @@
         <dependency id="Bond.CSharp" version="6.0.0" />
         <dependency id="ConsoleTables" version="2.1.0" />
         <dependency id="Exceptionless.Signed" version="4.0.1955" />
+        <dependency id="FluentValidation" version="7.1.1" />
         <dependency id="LiteDB" version="3.1.4" />
         <dependency id="LiteGuard" version="1.1.0" />
         <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
@@ -172,6 +181,7 @@
         <dependency id="Microsoft.Extensions.Localization.Abstractions" version="2.0.0" />
         <dependency id="Microsoft.Extensions.Logging.Abstractions" version="2.0.0" />
         <dependency id="Microsoft.Extensions.Logging.Debug" version="2.0.0" />
+        <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.0.0" />
         <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="5.3.4" />
         <dependency id="MsgPack.Cli" version="0.9.1" />
         <dependency id="NETStandard.Library" version="2.0.0" />
