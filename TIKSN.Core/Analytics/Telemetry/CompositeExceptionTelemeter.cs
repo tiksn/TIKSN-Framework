@@ -8,10 +8,10 @@ namespace TIKSN.Analytics.Telemetry
 {
 	public class CompositeExceptionTelemeter : IExceptionTelemeter
 	{
-		private readonly IConfiguration<CommonConfiguration> commonConfiguration;
+		private readonly IPartialConfiguration<CommonTelemetryOptions> commonConfiguration;
 		private readonly IEnumerable<IExceptionTelemeter> exceptionTelemeters;
 
-		public CompositeExceptionTelemeter(IConfiguration<CommonConfiguration> commonConfiguration, IEnumerable<IExceptionTelemeter> exceptionTelemeters)
+		public CompositeExceptionTelemeter(IPartialConfiguration<CommonTelemetryOptions> commonConfiguration, IEnumerable<IExceptionTelemeter> exceptionTelemeters)
 		{
 			this.commonConfiguration = commonConfiguration;
 			this.exceptionTelemeters = exceptionTelemeters;
