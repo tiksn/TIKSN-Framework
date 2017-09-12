@@ -8,7 +8,7 @@ namespace TIKSN.Analytics.Telemetry.Pushalot
 {
 	public class PushalotExceptionTelemeter : PushalotTelemeterBase, IExceptionTelemeter
 	{
-		public PushalotExceptionTelemeter(IConfiguration<PushalotOptions> pushalotConfiguration)
+		public PushalotExceptionTelemeter(IPartialConfiguration<PushalotOptions> pushalotConfiguration)
 			: base(pushalotConfiguration)
 		{
 		}

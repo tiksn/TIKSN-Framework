@@ -8,10 +8,10 @@ namespace TIKSN.Analytics.Telemetry
 {
 	public class CompositeTraceTelemeter : ITraceTelemeter
 	{
-		private readonly IConfiguration<CommonTelemetryOptions> commonConfiguration;
+		private readonly IPartialConfiguration<CommonTelemetryOptions> commonConfiguration;
 		private readonly IEnumerable<ITraceTelemeter> traceTelemeters;
 
-		public CompositeTraceTelemeter(IConfiguration<CommonTelemetryOptions> commonConfiguration, IEnumerable<ITraceTelemeter> traceTelemeters)
+		public CompositeTraceTelemeter(IPartialConfiguration<CommonTelemetryOptions> commonConfiguration, IEnumerable<ITraceTelemeter> traceTelemeters)
 		{
 			this.commonConfiguration = commonConfiguration;
 			this.traceTelemeters = traceTelemeters;

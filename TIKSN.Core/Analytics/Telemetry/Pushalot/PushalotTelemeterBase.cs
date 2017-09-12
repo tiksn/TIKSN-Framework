@@ -10,9 +10,9 @@ namespace TIKSN.Analytics.Telemetry.Pushalot
 	public abstract class PushalotTelemeterBase
 	{
 		protected readonly Lazy<PushalotClient<TelemetrySeverityLevel>> lazyClient;
-		protected readonly IConfiguration<PushalotOptions> pushalotConfiguration;
+		protected readonly IPartialConfiguration<PushalotOptions> pushalotConfiguration;
 
-		protected PushalotTelemeterBase(IConfiguration<PushalotOptions> pushalotConfiguration)
+		protected PushalotTelemeterBase(IPartialConfiguration<PushalotOptions> pushalotConfiguration)
 		{
 			this.pushalotConfiguration = pushalotConfiguration;
 

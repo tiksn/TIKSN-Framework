@@ -7,7 +7,7 @@ namespace TIKSN.Analytics.Telemetry.Pushalot
 {
 	public class PushalotEventTelemeter : PushalotTelemeterBase, IEventTelemeter
 	{
-		public PushalotEventTelemeter(IConfiguration<PushalotOptions> pushalotConfiguration)
+		public PushalotEventTelemeter(IPartialConfiguration<PushalotOptions> pushalotConfiguration)
 			: base(pushalotConfiguration)
 		{
 		}

@@ -8,10 +8,10 @@ namespace TIKSN.Analytics.Telemetry
 {
 	public class CompositeEventTelemeter : IEventTelemeter
 	{
-		private readonly IConfiguration<CommonTelemetryOptions> commonConfiguration;
+		private readonly IPartialConfiguration<CommonTelemetryOptions> commonConfiguration;
 		private readonly IEnumerable<IEventTelemeter> eventTelemeters;
 
-		public CompositeEventTelemeter(IConfiguration<CommonTelemetryOptions> commonConfiguration, IEnumerable<IEventTelemeter> eventTelemeters)
+		public CompositeEventTelemeter(IPartialConfiguration<CommonTelemetryOptions> commonConfiguration, IEnumerable<IEventTelemeter> eventTelemeters)
 		{
 			this.commonConfiguration = commonConfiguration;
 			this.eventTelemeters = eventTelemeters;

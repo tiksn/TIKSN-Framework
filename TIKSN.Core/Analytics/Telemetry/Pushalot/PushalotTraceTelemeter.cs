@@ -7,7 +7,7 @@ namespace TIKSN.Analytics.Telemetry.Pushalot
 {
 	public class PushalotTraceTelemeter : PushalotTelemeterBase, ITraceTelemeter
 	{
-		public PushalotTraceTelemeter(IConfiguration<PushalotOptions> pushalotConfiguration)
+		public PushalotTraceTelemeter(IPartialConfiguration<PushalotOptions> pushalotConfiguration)
 			: base(pushalotConfiguration)
 		{
 		}
