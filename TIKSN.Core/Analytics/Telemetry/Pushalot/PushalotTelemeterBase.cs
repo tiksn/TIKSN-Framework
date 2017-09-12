@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TIKSN.Configuration;
 
-namespace TIKSN.Analytics.Telemetry
+namespace TIKSN.Analytics.Telemetry.Pushalot
 {
 	public abstract class PushalotTelemeterBase
 	{

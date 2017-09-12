@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TIKSN.Analytics.Telemetry
+namespace TIKSN.Analytics.Telemetry.Pushalot
 {
 	public class PushalotClient
 	{
