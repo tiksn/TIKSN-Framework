@@ -5,23 +5,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using TIKSN.Configuration;
 
-namespace TIKSN.Analytics.Telemetry
+namespace TIKSN.Analytics.Telemetry.Pushalot
 {
 	public abstract class PushalotTelemeterBase
 	{
 		protected readonly Lazy<PushalotClient<TelemetrySeverityLevel>> lazyClient;
-		protected readonly IConfiguration<PushalotConfiguration> pushalotConfiguration;
+		protected readonly IPartialConfiguration<PushalotOptions> pushalotConfiguration;
 
-		public PushalotTelemeterBase(IConfiguration<PushalotConfiguration> pushalotConfiguration)
+		protected PushalotTelemeterBase(IPartialConfiguration<PushalotOptions> pushalotConfiguration)
 		{
 			this.pushalotConfiguration = pushalotConfiguration;
 
 			lazyClient = new Lazy<PushalotClient<TelemetrySeverityLevel>>(CreatePushalotClient);
 		}
 
-		protected abstract IEnumerable<string> GetAuthorizationTokens(PushalotConfiguration pushalotConfiguration);
+		protected abstract IEnumerable<string> GetAuthorizationTokens(PushalotOptions pushalotConfiguration);
 
-		protected abstract IEnumerable<string> GetAuthorizationTokens(PushalotConfiguration pushalotConfiguration, TelemetrySeverityLevel severityLevel);
+		protected abstract IEnumerable<string> GetAuthorizationTokens(PushalotOptions pushalotConfiguration, TelemetrySeverityLevel severityLevel);
 
 		protected async Task SendMessage(string title, string content)
 		{

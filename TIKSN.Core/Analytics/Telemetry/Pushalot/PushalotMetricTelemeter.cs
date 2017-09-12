@@ -3,11 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using TIKSN.Configuration;
 
-namespace TIKSN.Analytics.Telemetry
+namespace TIKSN.Analytics.Telemetry.Pushalot
 {
 	public class PushalotMetricTelemeter : PushalotTelemeterBase, IMetricTelemeter
 	{
-		public PushalotMetricTelemeter(IConfiguration<PushalotConfiguration> pushalotConfiguration)
+		public PushalotMetricTelemeter(IPartialConfiguration<PushalotOptions> pushalotConfiguration)
 			: base(pushalotConfiguration)
 		{
 		}
@@ -17,12 +17,12 @@ namespace TIKSN.Analytics.Telemetry
 			await SendMessage("Metric", string.Format("{0}: {1}", metricName, metricValue));
 		}
 
-		protected override IEnumerable<string> GetAuthorizationTokens(PushalotConfiguration pushalotConfiguration)
+		protected override IEnumerable<string> GetAuthorizationTokens(PushalotOptions pushalotConfiguration)
 		{
 			return pushalotConfiguration.MetricAuthorizationTokens;
 		}
 
-		protected override IEnumerable<string> GetAuthorizationTokens(PushalotConfiguration pushalotConfiguration, TelemetrySeverityLevel severityLevel)
+		protected override IEnumerable<string> GetAuthorizationTokens(PushalotOptions pushalotConfiguration, TelemetrySeverityLevel severityLevel)
 		{
 			return Enumerable.Empty<string>();
 		}

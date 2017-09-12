@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Analytics.Telemetry
+﻿namespace TIKSN.Analytics.Telemetry.Pushalot
 {
 	public class PushalotMessage
 	{

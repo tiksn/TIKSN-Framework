@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using TIKSN.Configuration;
 
-namespace TIKSN.Analytics.Telemetry
+namespace TIKSN.Analytics.Telemetry.Pushalot
 {
 	public class PushalotExceptionTelemeter : PushalotTelemeterBase, IExceptionTelemeter
 	{
-		public PushalotExceptionTelemeter(IConfiguration<PushalotConfiguration> pushalotConfiguration)
+		public PushalotExceptionTelemeter(IPartialConfiguration<PushalotOptions> pushalotConfiguration)
 			: base(pushalotConfiguration)
 		{
 		}
@@ -23,12 +23,12 @@ namespace TIKSN.Analytics.Telemetry
 			await SendMessage(string.Format("{0} - {1}", exception.GetType().FullName, severityLevel), exception.Message + Environment.NewLine + exception.StackTrace);
 		}
 
-		protected override IEnumerable<string> GetAuthorizationTokens(PushalotConfiguration pushalotConfiguration)
+		protected override IEnumerable<string> GetAuthorizationTokens(PushalotOptions pushalotConfiguration)
 		{
 			return pushalotConfiguration.ExceptionAuthorizationTokens;
 		}
 
-		protected override IEnumerable<string> GetAuthorizationTokens(PushalotConfiguration pushalotConfiguration, TelemetrySeverityLevel severityLevel)
+		protected override IEnumerable<string> GetAuthorizationTokens(PushalotOptions pushalotConfiguration, TelemetrySeverityLevel severityLevel)
 		{
 			if (pushalotConfiguration.SeverityLevelExceptionAuthorizationTokens.ContainsKey(severityLevel))
 			{
