@@ -372,7 +372,7 @@
     <file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.xml" target="lib\net47" />
     <file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.pdb" target="lib\net47" />
 
-    <!-- Platform: .NET Core 1.1 -->
+    <!-- Platform: .NET Core -->
     <file src="..\TIKSN.Framework.Core\bin\Release\netcoreapp2.0\TIKSN.Framework.Core.dll" target="lib\netcoreapp2.0" />
     <file src="..\TIKSN.Framework.Core\bin\Release\netcoreapp2.0\TIKSN.Framework.Core.xml" target="lib\netcoreapp2.0" />
     <file src="..\TIKSN.Framework.Core\bin\Release\netcoreapp2.0\TIKSN.Framework.Core.pdb" target="lib\netcoreapp2.0" />
