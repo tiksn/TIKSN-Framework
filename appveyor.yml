@@ -1,4 +1,10 @@
+branches:
+  only:
+    - develop
 configuration: Release
 platform: Any CPU
 image: Visual Studio 2017
 version: '2.2.0-beta.{build}'
+build:
+  project: 'TIKSN Framework.sln'
+  verbosity: minimal
