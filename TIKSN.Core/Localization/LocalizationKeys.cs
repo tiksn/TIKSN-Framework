@@ -111,6 +111,11 @@
 		/// </summary>
 		public const int Key978773261 = 978773261;
 		/// <summary>
+		/// Key: 638306944
+		/// Original Value: TIKSN.Web.Rest.RestRepository.RemoveRangeAsync method is not adviced to use.
+		/// </summary>
+		public const int Key638306944 = 638306944;
+		/// <summary>
 		/// Key: 179741382
 		/// Original Value: Language
 		/// </summary>

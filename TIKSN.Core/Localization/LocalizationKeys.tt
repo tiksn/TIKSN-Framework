@@ -11,7 +11,7 @@
 	var resourceFiles = new [] {
 		@"EnglishOnly.resx",
 		//@"..\Shell\ShellCommand.resx",
-		//@"..\Web\Rest\RestRepository.resx",
+		@"..\Web\Rest\RestRepository.resx",
 		@"..\..\TIKSN.LanguageLocalization\Strings.resx",
 		@"..\..\TIKSN.RegionLocalization\Strings.resx"
 	};
