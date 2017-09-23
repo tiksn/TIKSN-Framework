@@ -18,8 +18,6 @@ namespace TIKSN.Web.Rest
 			where TEntity : IEntity<TIdentity>
 			where TIdentity : IEquatable<TIdentity>
 	{
-		private static readonly Guid RemoveRangeWarningKey = new Guid("a2715b9a-1fca-4408-aa7f-afddf27a6cc7");
-
 		private readonly IDeserializerRestFactory _deserializerRestFactory;
 		private readonly IHttpClientFactory _httpClientFactory;
 		private readonly IOptions<RestRepositoryOptions<TEntity>> _options;
@@ -86,7 +84,7 @@ namespace TIKSN.Web.Rest
 
 		public async Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
 		{
-			await _traceTelemeter.TrackTrace(_stringLocalizer.GetRequiredString(RemoveRangeWarningKey));
+			await _traceTelemeter.TrackTrace(_stringLocalizer.GetRequiredString(LocalizationKeys.Key638306944));
 
 			foreach (var entity in entities)
 				await RemoveAsync(entity, cancellationToken);

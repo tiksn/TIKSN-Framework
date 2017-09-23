@@ -13,14 +13,6 @@ namespace TIKSN.Shell
 {
 	public class ShellCommandEngine : IShellCommandEngine
 	{
-		private static readonly Guid CommandNameKey = new Guid(new byte[] { 0x82, 0x34, 0xf8, 0xb7, 0x7b, 0x59, 0x4b, 0x43, 0xbf, 0x18, 0x1a, 0xbd, 0xee, 0x64, 0x1e, 0x34 });
-		private static readonly Guid CommandNotFoundKey = new Guid(new byte[] { 0xaf, 0x9b, 0x80, 0x0b, 0xc8, 0xfb, 0x94, 0x45, 0x92, 0xf4, 0x07, 0xcf, 0xc4, 0x27, 0x01, 0x0c });
-		private static readonly Guid ExecutedWithExceptionKey = new Guid(new byte[] { 0x2e, 0x76, 0x49, 0x96, 0x41, 0xd4, 0xa0, 0x4f, 0xb7, 0xd5, 0xe9, 0xa3, 0xe4, 0x06, 0xaa, 0x04 });
-		private static readonly Guid ExitKey = new Guid(new byte[] { 0xac, 0x10, 0x5e, 0x02, 0xd0, 0xe0, 0x2c, 0x44, 0xb8, 0x47, 0xe6, 0x72, 0xf2, 0x9b, 0x0a, 0xc5 });
-		private static readonly Guid HelpKey = new Guid(new byte[] { 0x82, 0x9f, 0x32, 0x8c, 0x54, 0x73, 0x49, 0x41, 0x90, 0x57, 0x0c, 0xd4, 0x34, 0xb3, 0xdf, 0xf0 });
-		private static readonly Guid MustImplementCommandmentAttributeKey = new Guid(new byte[] { 0xcf, 0x08, 0x4b, 0x58, 0x6c, 0x38, 0x8a, 0x46, 0xab, 0x33, 0xca, 0xc0, 0x03, 0x0e, 0x8c, 0x9c });
-		private static readonly Guid NotCommandmentKey = new Guid(new byte[] { 0xe2, 0xbd, 0x22, 0xc5, 0x65, 0xfb, 0x0c, 0x42, 0x8c, 0x86, 0xd8, 0x5e, 0xcd, 0xcd, 0x79, 0x0a });
-		private static readonly Guid NotOneConstructorKey = new Guid(new byte[] { 0xd5, 0x8e, 0xe9, 0x6f, 0xc7, 0x53, 0xf6, 0x48, 0xa2, 0xd4, 0x15, 0xc2, 0x2f, 0x41, 0xcb, 0xe8 });
 		private readonly IConsoleService _consoleService;
 		private readonly ILogger<ShellCommandEngine> _logger;
 		private readonly IServiceProvider _serviceProvider;
@@ -51,18 +43,18 @@ namespace TIKSN.Shell
 				return;
 
 			if (!type.GetInterfaces().Contains(typeof(IShellCommand)))
-				throw new ArgumentException(_stringLocalizer.GetRequiredString(NotCommandmentKey, type.FullName, typeof(IShellCommand).FullName), nameof(type));
+				throw new ArgumentException(_stringLocalizer.GetRequiredString(LocalizationKeys.Key588506767, type.FullName, typeof(IShellCommand).FullName), nameof(type));
 
 			var commandAttribute = type.GetTypeInfo().GetCustomAttribute<ShellCommandAttribute>();
 			if (commandAttribute == null)
-				throw new ArgumentException(_stringLocalizer.GetRequiredString(MustImplementCommandmentAttributeKey, type.FullName, typeof(ShellCommandAttribute).FullName), nameof(type));
+				throw new ArgumentException(_stringLocalizer.GetRequiredString(LocalizationKeys.Key491461331, type.FullName, typeof(ShellCommandAttribute).FullName), nameof(type));
 
 			_logger.LogDebug(804856258, $"Checking command name localization for '{type.FullName}' command.");
 			commandAttribute.GetName(_stringLocalizer);
 
 			var constructors = type.GetConstructors();
 			if (constructors.Length != 1)
-				throw new ArgumentException(_stringLocalizer.GetRequiredString(NotOneConstructorKey, type.FullName), nameof(type));
+				throw new ArgumentException(_stringLocalizer.GetRequiredString(LocalizationKeys.Key225262334, type.FullName), nameof(type));
 
 			var properties = new List<Tuple<ShellCommandParameterAttribute, PropertyInfo>>();
 			foreach (var propertyInfo in type.GetProperties())
@@ -85,22 +77,22 @@ namespace TIKSN.Shell
 		{
 			while (true)
 			{
-				var command = _consoleService.ReadLine(_stringLocalizer.GetRequiredString(CommandNameKey), ConsoleColor.Green);
+				var command = _consoleService.ReadLine(_stringLocalizer.GetRequiredString(LocalizationKeys.Key671767216), ConsoleColor.Green);
 
 				if (string.IsNullOrWhiteSpace(command))
 					continue;
 
 				command = NormalizeCommandName(command);
 
-				if (string.Equals(command, _stringLocalizer.GetRequiredString(ExitKey), StringComparison.OrdinalIgnoreCase))
+				if (string.Equals(command, _stringLocalizer.GetRequiredString(LocalizationKeys.Key785393579), StringComparison.OrdinalIgnoreCase))
 					break;
 
-				if (string.Equals(command, _stringLocalizer.GetRequiredString(HelpKey), StringComparison.OrdinalIgnoreCase))
+				if (string.Equals(command, _stringLocalizer.GetRequiredString(LocalizationKeys.Key427524976), StringComparison.OrdinalIgnoreCase))
 				{
 					var helpItems = new List<ShellCommandHelpItem>();
 
-					helpItems.Add(new ShellCommandHelpItem(NormalizeCommandName(_stringLocalizer.GetRequiredString(ExitKey)), Enumerable.Empty<string>()));
-					helpItems.Add(new ShellCommandHelpItem(NormalizeCommandName(_stringLocalizer.GetRequiredString(HelpKey)), Enumerable.Empty<string>()));
+					helpItems.Add(new ShellCommandHelpItem(NormalizeCommandName(_stringLocalizer.GetRequiredString(LocalizationKeys.Key785393579)), Enumerable.Empty<string>()));
+					helpItems.Add(new ShellCommandHelpItem(NormalizeCommandName(_stringLocalizer.GetRequiredString(LocalizationKeys.Key427524976)), Enumerable.Empty<string>()));
 
 					foreach (var commandItem in commands)
 					{
@@ -120,7 +112,7 @@ namespace TIKSN.Shell
 					switch (matches.Count())
 					{
 						case 0:
-							_consoleService.WriteError(_stringLocalizer.GetRequiredString(CommandNotFoundKey));
+							_consoleService.WriteError(_stringLocalizer.GetRequiredString(LocalizationKeys.Key879318823));
 							break;
 
 						case 1:
@@ -208,8 +200,8 @@ namespace TIKSN.Shell
 				catch (ShellCommandSuspendedException) { }
 				catch (Exception ex)
 				{
-					_consoleService.WriteError(_stringLocalizer.GetRequiredString(ExecutedWithExceptionKey));
-					_logger.LogError(1815744366, ex, _stringLocalizer.GetRequiredString(ExecutedWithExceptionKey));
+					_consoleService.WriteError(_stringLocalizer.GetRequiredString(LocalizationKeys.Key163077375));
+					_logger.LogError(1815744366, ex, _stringLocalizer.GetRequiredString(LocalizationKeys.Key163077375));
 				}
 			}
 		}
