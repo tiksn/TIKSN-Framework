@@ -111,6 +111,86 @@
 		/// </summary>
 		public const int Key978773261 = 978773261;
 		/// <summary>
+		/// Key: 132999259
+		/// Original Value: No
+		/// </summary>
+		public const int Key132999259 = 132999259;
+		/// <summary>
+		/// Key: 163077375
+		/// Original Value: Command executed with exception(s).
+		/// </summary>
+		public const int Key163077375 = 163077375;
+		/// <summary>
+		/// Key: 191067042
+		/// Original Value: No to All
+		/// </summary>
+		public const int Key191067042 = 191067042;
+		/// <summary>
+		/// Key: 225262334
+		/// Original Value: {0} class must have single constractor.
+		/// </summary>
+		public const int Key225262334 = 225262334;
+		/// <summary>
+		/// Key: 268507527
+		/// Original Value: Yes to All
+		/// </summary>
+		public const int Key268507527 = 268507527;
+		/// <summary>
+		/// Key: 284914810
+		/// Original Value: Performing the operation "{0}" on target "{1}".
+		/// </summary>
+		public const int Key284914810 = 284914810;
+		/// <summary>
+		/// Key: 427524976
+		/// Original Value: Help
+		/// </summary>
+		public const int Key427524976 = 427524976;
+		/// <summary>
+		/// Key: 439104548
+		/// Original Value: Are you sure you want to perform this action?
+		/// </summary>
+		public const int Key439104548 = 439104548;
+		/// <summary>
+		/// Key: 444677337
+		/// Original Value: : 
+		/// </summary>
+		public const int Key444677337 = 444677337;
+		/// <summary>
+		/// Key: 491461331
+		/// Original Value: {0} class must have {1} attribute.
+		/// </summary>
+		public const int Key491461331 = 491461331;
+		/// <summary>
+		/// Key: 588506767
+		/// Original Value: {0} class must implement {1} interface.
+		/// </summary>
+		public const int Key588506767 = 588506767;
+		/// <summary>
+		/// Key: 592470584
+		/// Original Value: Yes
+		/// </summary>
+		public const int Key592470584 = 592470584;
+		/// <summary>
+		/// Key: 671767216
+		/// Original Value: Command
+		/// </summary>
+		public const int Key671767216 = 671767216;
+		/// <summary>
+		/// Key: 777755530
+		/// Original Value: Suspend
+		/// </summary>
+		public const int Key777755530 = 777755530;
+		/// <summary>
+		/// Key: 785393579
+		/// Original Value: Exit
+		/// </summary>
+		public const int Key785393579 = 785393579;
+		/// <summary>
+		/// Key: 879318823
+		/// Original Value: Command is not found
+		/// </summary>
+		public const int Key879318823 = 879318823;
+		/// <summary>
 		/// Key: 638306944
 		/// Original Value: TIKSN.Web.Rest.RestRepository.RemoveRangeAsync method is not adviced to use.
 		/// </summary>

@@ -10,9 +10,6 @@ namespace TIKSN.Shell
 {
 	public class ConsoleService : IConsoleService
 	{
-		private static readonly Guid InputSeparatorKey = new Guid(new byte[] { 0x9d, 0x93, 0x2e, 0xc0, 0x0a, 0xdb, 0x9e, 0x49, 0x93, 0x9c, 0xc2, 0x04, 0xbe, 0x3f, 0x88, 0xb9 });
-		private static readonly Guid PromptSuffix = new Guid("c02e939d-db0a-499e-939c-c204be3f88b9");
-
 		private readonly IStringLocalizer _stringLocalizer;
 
 		public ConsoleService(IStringLocalizer stringLocalizer)
@@ -29,7 +26,7 @@ namespace TIKSN.Shell
 		private void WritePromptMessage(string promptMessage, ConsoleColor promptForegroundColor)
 		{
 			ConsoleWrite(promptMessage, promptForegroundColor);
-			ConsoleWrite(_stringLocalizer.GetRequiredString(InputSeparatorKey), promptForegroundColor);
+			ConsoleWrite(_stringLocalizer.GetRequiredString(LocalizationKeys.Key444677337), promptForegroundColor);
 		}
 
 		public SecureString ReadPasswordLine(string promptMessage, ConsoleColor promptForegroundColor)
@@ -69,7 +66,7 @@ namespace TIKSN.Shell
 
 			while (true)
 			{
-				ConsoleWrite($"{message} [{string.Join("/", options)}]{_stringLocalizer.GetRequiredString(PromptSuffix)}");
+				ConsoleWrite($"{message} [{string.Join("/", options)}]{_stringLocalizer.GetRequiredString(LocalizationKeys.Key444677337)}");
 
 				var answer = Console.ReadLine();
 
