@@ -15,6 +15,7 @@ namespace TIKSN.DependencyInjection
 			DependencyRegistration.Register(services);
 
 			services.TryAddSingleton<IAntimalwareScanner, AntimalwareScanner>();
+			services.TryAddSingleton<IConsoleService, ConsoleService>();
 			services.TryAddSingleton<INetworkConnectivityService, NetworkConnectivityService>();
 			services.TryAddSingleton<ISettingsService, WindowsRegistrySettingsService>();
 			services.TryAddSingleton<IShellCommandEngine, ShellCommandEngine>();
