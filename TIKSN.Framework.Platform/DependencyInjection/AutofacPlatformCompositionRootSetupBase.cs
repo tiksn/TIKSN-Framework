@@ -2,6 +2,7 @@
 using Autofac.Core;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace TIKSN.DependencyInjection
 {
@@ -13,11 +14,16 @@ namespace TIKSN.DependencyInjection
 
 		protected override IEnumerable<IModule> GetAutofacModules()
 		{
-			var modules =  base.GetAutofacModules().ToList();
+			var modules = base.GetAutofacModules().ToList();
 
 			modules.Add(new PlatformModule());
 
 			return modules;
+		}
+
+		protected override void ConfigureServices(IServiceCollection services)
+		{
+			PlatformDependencyRegistration.Register(services);
 		}
 	}
 }
