@@ -26,11 +26,48 @@ namespace TIKSN.Finance.ForeignExchange.Tests
 		[Fact]
 		public async Task GetCurrencyPairsAsync()
 		{
-			var myCurrencyDotNet = new MyCurrencyDotNet(_serviceProvider.GetRequiredService<ICurrencyFactory>(), _serviceProvider.GetRequiredService<IRegionFactory>());
+			var currencyFactory = _serviceProvider.GetRequiredService<ICurrencyFactory>();
+			var regionFactory = _serviceProvider.GetRequiredService<IRegionFactory>();
+
+			var myCurrencyDotNet = new MyCurrencyDotNet(currencyFactory, regionFactory);
 
 			var pairs = await myCurrencyDotNet.GetCurrencyPairsAsync(DateTimeOffset.Now);
 
 			pairs.Count().Should().BeGreaterThan(0);
+		}
+
+		[Fact]
+		public async Task GetExchangeRateAsync001()
+		{
+			var currencyFactory = _serviceProvider.GetRequiredService<ICurrencyFactory>();
+			var regionFactory = _serviceProvider.GetRequiredService<IRegionFactory>();
+
+			var myCurrencyDotNet = new MyCurrencyDotNet(currencyFactory, regionFactory);
+
+			var amd = currencyFactory.Create("AMD");
+			var usd = currencyFactory.Create("USD");
+			var pair = new CurrencyPair(usd, amd);
+
+			var rate = await myCurrencyDotNet.GetExchangeRateAsync(pair, DateTimeOffset.Now);
+
+			rate.Should().BeGreaterThan(decimal.One);
+		}
+
+		[Fact]
+		public async Task GetExchangeRateAsync002()
+		{
+			var currencyFactory = _serviceProvider.GetRequiredService<ICurrencyFactory>();
+			var regionFactory = _serviceProvider.GetRequiredService<IRegionFactory>();
+
+			var myCurrencyDotNet = new MyCurrencyDotNet(currencyFactory, regionFactory);
+
+			var amd = currencyFactory.Create("AMD");
+			var usd = currencyFactory.Create("USD");
+			var pair = new CurrencyPair(amd, usd);
+
+			var rate = await myCurrencyDotNet.GetExchangeRateAsync(pair, DateTimeOffset.Now);
+
+			rate.Should().BeLessThan(decimal.One);
 		}
 	}
 }
