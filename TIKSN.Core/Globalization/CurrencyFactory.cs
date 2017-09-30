@@ -11,15 +11,26 @@ namespace TIKSN.Globalization
 	{
 		private readonly IRegionFactory _regionFactory;
 		private readonly IOptions<RegionalCurrencyRedirectionOptions> _regionalCurrencyRedirectionOptions;
+		private readonly IOptions<CurrencyUnionRedirectionOptions> _currencyUnionRedirectionOptions;
 
-		public CurrencyFactory(IMemoryCache memoryCache, IRegionFactory regionFactory, IOptions<RegionalCurrencyRedirectionOptions> regionalCurrencyRedirectionOptions, IOptions<MemoryCacheDecoratorOptions> genericOptions, IOptions<MemoryCacheDecoratorOptions<CurrencyInfo>> specificOptions) : base(memoryCache, genericOptions, specificOptions)
+		public CurrencyFactory(
+			IMemoryCache memoryCache,
+			IRegionFactory regionFactory,
+			IOptions<RegionalCurrencyRedirectionOptions> regionalCurrencyRedirectionOptions,
+			IOptions<CurrencyUnionRedirectionOptions> currencyUnionRedirectionOptions,
+			IOptions<MemoryCacheDecoratorOptions> genericOptions,
+			IOptions<MemoryCacheDecoratorOptions<CurrencyInfo>> specificOptions) : base(memoryCache, genericOptions, specificOptions)
 		{
 			_regionFactory = regionFactory;
 			_regionalCurrencyRedirectionOptions = regionalCurrencyRedirectionOptions;
+			_currencyUnionRedirectionOptions = currencyUnionRedirectionOptions;
 		}
 
 		public CurrencyInfo Create(string isoCurrencySymbol)
 		{
+			if (_currencyUnionRedirectionOptions.Value.CurrencyUnionRedirections.TryGetValue(isoCurrencySymbol, out string redirectedRegion))
+				return Create(_regionFactory.Create(redirectedRegion));
+
 			var cacheKey = Tuple.Create(entityType, isoCurrencySymbol.ToUpperInvariant());
 
 			return GetFromMemoryCache(cacheKey, () => new CurrencyInfo(isoCurrencySymbol));
