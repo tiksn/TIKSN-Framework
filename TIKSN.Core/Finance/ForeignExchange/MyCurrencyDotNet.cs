@@ -68,7 +68,10 @@ namespace TIKSN.Finance.ForeignExchange
 
 				var exchangeRates = JsonConvert.DeserializeObject<ExchangeRate[]>(jsonExchangeRates);
 
-				return exchangeRates.Select(item => (currency: _currencyFactory.Create(item.CurrencyCode), rate: item.Rate)).ToArray();
+				return exchangeRates
+					.Select(item => (currency: _currencyFactory.Create(item.CurrencyCode), rate: item.Rate))
+					.Where(item => item.currency != USD)
+					.ToArray();
 			}
 		}
 
