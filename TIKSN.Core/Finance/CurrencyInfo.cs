@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 
 namespace TIKSN.Finance
 {
@@ -124,7 +125,7 @@ namespace TIKSN.Finance
 			{
 				if (!TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA3.xml", isoSymbol, symbol, false, "HstrcCcyTbl", "HstrcCcyNtry"))
 				{
-					throw new CurrencyNotFoundException();
+					throw new CurrencyNotFoundException($"ISO symbol '{isoSymbol}' was not found in resources.");
 				}
 			}
 		}
@@ -149,7 +150,14 @@ namespace TIKSN.Finance
 							this.isoCurrencyNumber = int.Parse(ccyNtryElement.Element("CcyNbr").Value);
 
 							var ccyNmElement = ccyNtryElement.Element("CcyNm");
-							string isFundAttributeValue = ccyNmElement.Attribute("IsFund")?.Value;
+							var isFundAttributeValue = ccyNmElement.Attribute("IsFund")?.Value;
+
+							if (isFundAttributeValue != null)
+							{
+								isFundAttributeValue = isFundAttributeValue.Trim();
+								if (string.Equals(isFundAttributeValue, "0", StringComparison.OrdinalIgnoreCase))
+									isFundAttributeValue = false.ToString();
+							}
 
 							this.isFund = !string.IsNullOrWhiteSpace(isFundAttributeValue) && bool.Parse(isFundAttributeValue);
 
