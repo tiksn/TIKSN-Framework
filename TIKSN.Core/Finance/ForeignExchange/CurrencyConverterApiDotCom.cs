@@ -13,7 +13,7 @@ namespace TIKSN.Finance.ForeignExchange
 	{
 		private const string PaidVersionApiBaseAddress = "https://www.currencyconverterapi.com/";
 		private const string FreeVersionApiBaseAddress = "http://free.currencyconverterapi.com/";
-		private const string CurrencyListApiEndpoint = "api/v3/currencies";
+		private const string CurrencyListApiEndpointFormat = "api/v3/currencies?apiKey={0}";
 		private const string ConverterEndpointFormat = "api/v3/convert?q={0}_{1}&compact=ultra&apiKey={2}";
 
 		private readonly Uri _apiBaseAddress;
@@ -44,7 +44,7 @@ namespace TIKSN.Finance.ForeignExchange
 			{
 				httpClient.BaseAddress = _apiBaseAddress;
 
-				var currenciesJson = await httpClient.GetStringAsync(CurrencyListApiEndpoint);
+				var currenciesJson = await httpClient.GetStringAsync(string.Format(CurrencyListApiEndpointFormat, _apiKey));
 
 				var currencyList = JsonConvert.DeserializeObject<CurrencyList>(currenciesJson);
 
