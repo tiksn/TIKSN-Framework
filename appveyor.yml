@@ -5,6 +5,8 @@ configuration: Release
 platform: Any CPU
 image: Visual Studio 2017
 version: '2.2.0-beta.{build}'
+before_build:
+  - cmd: nuget restore "TIKSN Framework.sln"
 build:
   project: 'TIKSN Framework.sln'
   verbosity: minimal
