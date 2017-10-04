@@ -8,3 +8,6 @@ version: '2.2.0-beta.{build}'
 build:
   project: 'TIKSN Framework.sln'
   verbosity: minimal
+install:
+  - ps: (new-object net.webclient).DownloadFile('https://go.microsoft.com/fwlink/p/?LinkID=245767&clcid=0x409', 'MultilingualAppToolkit.msi')
+  - ps: msiexec /i MultilingualAppToolkit.msi /quiet /qn /norestart /log install.log
