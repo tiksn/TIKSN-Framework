@@ -1,21 +1,21 @@
 ﻿using Microsoft.Extensions.Logging;
 using Serilog;
 
-namespace TIKSN.Analytics.Logging
+namespace TIKSN.Analytics.Logging.Serilog
 {
-	public class SerilogLoggingSetupBase : LoggingSetupBase
+	public class SerilogLoggingSetupBase : ILoggingSetup
 	{
 		protected LoggerConfiguration _loggerConfiguration;
+		private readonly ILoggerFactory _loggerFactory;
 
-		protected SerilogLoggingSetupBase(ILoggerFactory loggerFactory) : base(loggerFactory)
+		protected SerilogLoggingSetupBase(ILoggerFactory loggerFactory)
 		{
 			_loggerConfiguration = new LoggerConfiguration();
+			_loggerFactory = loggerFactory;
 		}
 
-		public override void Setup()
+		public void Setup()
 		{
-			base.Setup();
-
 			SetupSerilog();
 
 			_loggerFactory.AddSerilog(_loggerConfiguration.CreateLogger());
