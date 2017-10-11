@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using TIKSN.Analytics.Logging;
 using Xunit.Abstractions;
 using Serilog;
+using TIKSN.Analytics.Logging.Serilog;
 
 namespace TIKSN.DependencyInjection.Tests
 {

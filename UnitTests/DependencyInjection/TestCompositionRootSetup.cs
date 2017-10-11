@@ -28,7 +28,7 @@ namespace TIKSN.DependencyInjection.Tests
 		protected override void ConfigureServices(IServiceCollection services)
 		{
 			services.AddSingleton(_testOutputHelper);
-			services.AddSingleton<LoggingSetupBase, TestSerilogLoggingSetup>();
+			services.AddSingleton<ILoggingSetup, TestSerilogLoggingSetup>();
 			_configureServices?.Invoke(services);
 		}
 	}
