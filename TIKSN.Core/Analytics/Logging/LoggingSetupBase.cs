@@ -2,7 +2,7 @@
 
 namespace TIKSN.Analytics.Logging
 {
-	public abstract class LoggingSetupBase
+	public abstract class LoggingSetupBase : ILoggingSetup
 	{
 		protected readonly ILoggerFactory _loggerFactory;
 

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Reflection;
 using TIKSN.Analytics.Logging;
 
@@ -61,7 +62,9 @@ namespace TIKSN.DependencyInjection
 
 		protected void SetupLogging(IServiceProvider serviceProvider)
 		{
-			serviceProvider.GetRequiredService<LoggingSetupBase>().Setup();
+			serviceProvider
+				.GetServices<ILoggingSetup>()
+				.Do(item => item.Setup());
 		}
 
 		protected void ValidateOptions(IServiceCollection services, IServiceProvider serviceProvider)
