@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using TIKSN.Globalization;
 
 namespace TIKSN.Finance.ForeignExchange
 {
@@ -14,12 +15,14 @@ namespace TIKSN.Finance.ForeignExchange
 		private DateTimeOffset lastFetchDate;
 		private Dictionary<CurrencyInfo, decimal> oneWayRates;
 		private DateTimeOffset? publicationDate;
+		private readonly ICurrencyFactory _currencyFactory;
 
-		public CentralBankOfArmenia()
+		public CentralBankOfArmenia(ICurrencyFactory currencyFactory)
 		{
 			this.oneWayRates = new Dictionary<CurrencyInfo, decimal>();
 
 			this.lastFetchDate = DateTimeOffset.MinValue;
+			_currencyFactory = currencyFactory;
 		}
 
 		public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
@@ -104,7 +107,7 @@ namespace TIKSN.Finance.ForeignExchange
 						{
 							var rate = counterUnit / baseUnit;
 
-							var currency = new CurrencyInfo(currencyCode);
+							var currency = _currencyFactory.Create(currencyCode);
 							oneWayRates[currency] = rate;
 							result.Add(new ExchangeRate(new CurrencyPair(AMD, currency), publicationDate, rate));
 							result.Add(new ExchangeRate(new CurrencyPair(currency, AMD), publicationDate, baseUnit / counterUnit));
