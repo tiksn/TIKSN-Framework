@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace TIKSN.Finance.ForeignExchange
 {
-	public class CentralBankOfArmenia : ICurrencyConverter
+	public class CentralBankOfArmenia : ICurrencyConverter, IExchangeRateProvider
 	{
 		private const string RSS = "https://www.cba.am/_layouts/rssreader.aspx?rss=280F57B8-763C-4EE4-90E0-8136C13E47DA";
 		private static readonly CurrencyInfo AMD = new CurrencyInfo(new RegionInfo("hy-AM"));
@@ -31,8 +31,45 @@ namespace TIKSN.Finance.ForeignExchange
 			return new Money(counterCurrency, baseMoney.Amount * rate);
 		}
 
-		public async Task FetchAsync()
+		public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
 		{
+			await this.FetchOnDemandAsync(asOn);
+
+			var rates = new List<CurrencyPair>();
+
+			foreach (var rate in this.oneWayRates)
+			{
+				rates.Add(new CurrencyPair(rate.Key, AMD));
+				rates.Add(new CurrencyPair(AMD, rate.Key));
+			}
+
+			return rates;
+		}
+
+		public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
+		{
+			await this.FetchOnDemandAsync(asOn);
+
+			if (pair.CounterCurrency == AMD)
+			{
+				if (this.oneWayRates.ContainsKey(pair.BaseCurrency))
+					return this.oneWayRates[pair.BaseCurrency];
+			}
+			else
+			{
+				if (this.oneWayRates.ContainsKey(pair.CounterCurrency))
+					return decimal.One / this.oneWayRates[pair.CounterCurrency];
+			}
+
+			throw new ArgumentException("Currency pair was not found.");
+		}
+
+		public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn)
+		{
+			ValodateDate(asOn);
+
+			var result = new List<ExchangeRate>();
+
 			using (var httpClient = new HttpClient())
 			{
 				var responseStream = await httpClient.GetStreamAsync(RSS);
@@ -61,15 +98,17 @@ namespace TIKSN.Finance.ForeignExchange
 						if (string.Equals(currencyCode, "SDR", StringComparison.OrdinalIgnoreCase))
 							currencyCode = "XDR";
 
+						var publicationDate = DateTimeOffset.Parse(pubDate.Value, new CultureInfo("en-US"));
+
 						if (baseUnit != decimal.Zero && counterUnit != decimal.Zero)
 						{
-							decimal rate = counterUnit / baseUnit;
+							var rate = counterUnit / baseUnit;
 
 							var currency = new CurrencyInfo(currencyCode);
 							oneWayRates[currency] = rate;
+							result.Add(new ExchangeRate(new CurrencyPair(AMD, currency), publicationDate, rate));
+							result.Add(new ExchangeRate(new CurrencyPair(currency, AMD), publicationDate, baseUnit / counterUnit));
 						}
-
-						var publicationDate = DateTimeOffset.Parse(pubDate.Value, new CultureInfo("en-US"));
 
 						if (!this.publicationDate.HasValue)
 						{
@@ -80,57 +119,29 @@ namespace TIKSN.Finance.ForeignExchange
 					this.lastFetchDate = DateTimeOffset.Now; // this should stay at the end
 				}
 			}
+
+			return result;
 		}
 
-		public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
+		private async Task FetchOnDemandAsync(DateTimeOffset asOn)
 		{
-			await this.FetchOnDemandAsync();
-
-			var rates = new List<CurrencyPair>();
-
-			foreach (var rate in this.oneWayRates)
+			if (!this.publicationDate.HasValue)
 			{
-				rates.Add(new CurrencyPair(rate.Key, AMD));
-				rates.Add(new CurrencyPair(AMD, rate.Key));
+				await this.GetExchangeRatesAsync(asOn);
 			}
-
-			return rates;
+			else if (DateTimeOffset.Now - lastFetchDate > TimeSpan.FromDays(1d))
+			{
+				await this.GetExchangeRatesAsync(asOn);
+			}
 		}
 
-		public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
+		private void ValodateDate(DateTimeOffset asOn)
 		{
-			await this.FetchOnDemandAsync();
-
 			if (asOn > DateTimeOffset.Now)
 				throw new ArgumentException("Exchange rate forecasting are not supported.");
 
 			if (asOn < this.publicationDate.Value)
 				throw new ArgumentException("Exchange rate history are not supported.");
-
-			if (pair.CounterCurrency == AMD)
-			{
-				if (this.oneWayRates.ContainsKey(pair.BaseCurrency))
-					return this.oneWayRates[pair.BaseCurrency];
-			}
-			else
-			{
-				if (this.oneWayRates.ContainsKey(pair.CounterCurrency))
-					return decimal.One / this.oneWayRates[pair.CounterCurrency];
-			}
-
-			throw new ArgumentException("Currency pair was not found.");
-		}
-
-		private async Task FetchOnDemandAsync()
-		{
-			if (!this.publicationDate.HasValue)
-			{
-				await this.FetchAsync();
-			}
-			else if (DateTimeOffset.Now - lastFetchDate > TimeSpan.FromDays(1d))
-			{
-				await this.FetchAsync();
-			}
 		}
 	}
 }

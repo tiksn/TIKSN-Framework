@@ -104,7 +104,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		{
 			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
 
-			await Bank.FetchAsync();
+			await Bank.GetExchangeRatesAsync(DateTimeOffset.Now);
 		}
 
 		[Fact]
