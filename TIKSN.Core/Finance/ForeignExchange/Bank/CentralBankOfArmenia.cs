@@ -8,7 +8,7 @@ using TIKSN.Globalization;
 
 namespace TIKSN.Finance.ForeignExchange.Bank
 {
-	public class CentralBankOfArmenia : ICurrencyConverter, IExchangeRateProvider
+	public class CentralBankOfArmenia : ICurrencyConverter, IExchangeRatesProvider
 	{
 		private const string RSS = "https://www.cba.am/_layouts/rssreader.aspx?rss=280F57B8-763C-4EE4-90E0-8136C13E47DA";
 		private static readonly CurrencyInfo AMD = new CurrencyInfo(new RegionInfo("hy-AM"));

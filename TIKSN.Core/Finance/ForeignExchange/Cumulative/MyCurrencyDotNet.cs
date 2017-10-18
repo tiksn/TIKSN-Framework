@@ -8,7 +8,7 @@ using TIKSN.Globalization;
 
 namespace TIKSN.Finance.ForeignExchange.Cumulative
 {
-	public class MyCurrencyDotNet : ICurrencyConverter, IExchangeRateProvider
+	public class MyCurrencyDotNet : ICurrencyConverter, IExchangeRatesProvider
 	{
 		private const string ResourceUrl = "http://www.mycurrency.net/service/rates";
 		private readonly ICurrencyFactory _currencyFactory;
