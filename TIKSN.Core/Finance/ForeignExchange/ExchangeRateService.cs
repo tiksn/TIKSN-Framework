@@ -18,7 +18,7 @@ namespace TIKSN.Finance.ForeignExchange
             _providers.Add(9596, new CentralBankOfArmenia(currencyFactory));
             _providers.Add(2893, new MyCurrencyDotNet(currencyFactory, regionFactory));
             _providers.Add(2328, new BankOfRussia(currencyFactory));
-
+            _providers.Add(1234, new NationalBankOfUkraine(currencyFactory));
         }
 
         public Task InitializeAsync()
