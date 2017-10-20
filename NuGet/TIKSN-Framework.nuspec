@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>TIKSN-Framework</id>
-    <version>3.0.0-alpha.6</version>
+    <version>3.0.0-alpha.7</version>
     <title>TIKSN Framework</title>
     <authors>TIKSN</authors>
     <owners>TIKSN</owners>
