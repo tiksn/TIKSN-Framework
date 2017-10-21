@@ -9,7 +9,7 @@ using TIKSN.Globalization;
 
 namespace TIKSN.Finance.ForeignExchange.Bank
 {
-    public class FederalReserveSystem : ICurrencyConverter
+    public class FederalReserveSystem : ICurrencyConverter, IExchangeRatesProvider
     {
         private const string DataUrlFormat = "http://www.federalreserve.gov/datadownload/Output.aspx?rel=H10&series=f72f395f2a6b3a4bbc83b2983ad62737&lastObs=7&from={0}&to={1}&filetype=sdmx&label=include&layout=seriescolumn";
 
@@ -72,22 +72,20 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             throw new ArgumentException("Currency pair not supported.");
         }
 
-        private static async Task<Dictionary<CurrencyInfo, decimal>> GetRatesAsync(DateTimeOffset asOn)
+        private async Task<Dictionary<CurrencyInfo, decimal>> GetRatesAsync(DateTimeOffset asOn)
         {
-            var rates = await GetRawRatesAsync(asOn);
+            var rates = await GetExchangeRatesAsync(asOn);
             var result = new Dictionary<CurrencyInfo, decimal>();
 
             foreach (var rawRate in rates)
             {
-                var someCurrency = new CurrencyInfo(rawRate.Key);
-
-                result.Add(someCurrency, rawRate.Value);
+                result.Add(rawRate.Pair.CounterCurrency, rawRate.Rate);
             }
 
             return result;
         }
 
-        private static async Task<Dictionary<string, decimal>> GetRawRatesAsync(DateTimeOffset asOn)
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn)
         {
             string DataUrl = string.Format(DataUrlFormat, DateTimeOffset.Now.AddDays(-10d).ToString("MM/dd/yyyy"), DateTimeOffset.Now.ToString("MM/dd/yyyy"));
 
@@ -97,7 +95,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
                 var xdoc = XDocument.Load(responseStream);
 
-                var result = new Dictionary<string, decimal>();
+                var result = new List<ExchangeRate>();
 
                 foreach (var SeriesElement in xdoc.Element("{http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message}MessageGroup").Element("{http://www.federalreserve.gov/structure/compact/common}DataSet").Elements("{http://www.federalreserve.gov/structure/compact/H10_H10}Series"))
                 {
@@ -127,19 +125,20 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                             rates.Add(Period, obsValueRate);
                         }
 
-                        var rate = rates[rates.Keys.Max()];
+                        var date = rates.Keys.Max();
+                        var rate = rates[date];
 
                         if (FX == "ZAL")
                         {
-                            result.Add(CurrencyCode, rate);
+                            result.Add(new ExchangeRate(new CurrencyPair(UnitedStatesDollar, _currencyFactory.Create(CurrencyCode)), date, rate));
                         }
                         else if (FX == "VEB")
                         {
-                            result.Add("VEF", rate);
+                            result.Add(new ExchangeRate(new CurrencyPair(UnitedStatesDollar, _currencyFactory.Create("VEF")), date, rate));
                         }
                         else
                         {
-                            result.Add(FX, rate);
+                            result.Add(new ExchangeRate(new CurrencyPair(UnitedStatesDollar, _currencyFactory.Create(FX)), date, rate));
                         }
                     }
                 }
