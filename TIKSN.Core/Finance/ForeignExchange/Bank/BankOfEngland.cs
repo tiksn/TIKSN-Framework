@@ -4,14 +4,17 @@ using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using TIKSN.Globalization;
 
 namespace TIKSN.Finance.ForeignExchange.Bank
 {
-    public class BankOfEngland : ICurrencyConverter
+    public class BankOfEngland : ICurrencyConverter, IExchangeRateProvider
     {
         private const string UrlFormat = "http://www.bankofengland.co.uk/boeapps/iadb/fromshowcolumns.asp?CodeVer=new&xml.x=yes&Datefrom={0}&Dateto={1}&SeriesCodes={2}";
 
         private static Dictionary<CurrencyPair, string> SeriesCodes;
+        private readonly ICurrencyFactory _currencyFactory;
+        private readonly IRegionFactory _regionFactory;
 
         static BankOfEngland()
         {
@@ -114,15 +117,15 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             AddSeriesCode("zh-CN", "en-GB", "XUDLBK89");
         }
 
-        public BankOfEngland()
+        public BankOfEngland(ICurrencyFactory currencyFactory, IRegionFactory regionFactory)
         {
+            _currencyFactory = currencyFactory;
+            _regionFactory = regionFactory;
         }
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
         {
-            CurrencyPair pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
-
-            decimal rate = await this.GetExchangeRateAsync(pair, asOn);
+            decimal rate = (await this.GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn)).Rate;
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
@@ -146,10 +149,16 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
         {
+            return (await GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn)).Rate;
+        }
+
+        public async Task<ExchangeRate> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+        {
             if (asOn > DateTimeOffset.Now)
                 throw new ArgumentException("Exchange rate forecasting are not supported.");
 
             string SerieCode;
+            var pair = new CurrencyPair(baseCurrency, counterCurrency);
 
             try
             {
@@ -192,10 +201,11 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                     }
                 }
 
-                if (reverseRate == decimal.Zero)
-                    return decimal.Zero;
-                else
-                    return decimal.One / reverseRate;
+                var rate = decimal.Zero;
+                if (reverseRate != decimal.Zero)
+                    rate = decimal.One / reverseRate;
+
+                return new ExchangeRate(pair, date, rate);
             }
         }
 
