@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using TIKSN.Globalization;
 
 namespace TIKSN.Finance.ForeignExchange.Cumulative
 {
@@ -14,13 +15,15 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
         private const string HistoricalBaseURL = "http://apilayer.net/api/historical?";
         private const string LiveBaseURL = "http://apilayer.net/api/live?";
         private string accessKey;
+        private readonly ICurrencyFactory _currencyFactory;
 
-        public CurrencylayerDotCom(string accessKey)
+        public CurrencylayerDotCom(ICurrencyFactory currencyFactory, string accessKey)
         {
             if (string.IsNullOrEmpty(accessKey))
                 throw new ArgumentNullException(nameof(accessKey));
 
             this.accessKey = accessKey;
+            _currencyFactory = currencyFactory;
         }
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
@@ -59,6 +62,20 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
             var rates = await GetRatesAasync(pair.BaseCurrency, pair.CounterCurrency, asOn);
 
             return rates.Values.Single();
+        }
+
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn)
+        {
+            var rates = await GetRatesAasync(null, null, asOn);
+
+            return rates.Select(item => new ExchangeRate(new CurrencyPair(item.Key.BaseCurrency, item.Key.CounterCurrency), asOn, item.Value)).ToArray();
+        }
+
+        public async Task<ExchangeRate> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+        {
+            var rates = await GetRatesAasync(baseCurrency, counterCurrency, asOn);
+
+            return new ExchangeRate(new CurrencyPair(baseCurrency, counterCurrency), asOn, rates.Single().Value);
         }
 
         private async Task<IDictionary<CurrencyPair, decimal>> GetRatesAasync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn)
@@ -116,8 +133,8 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
 
                         if (IsSupportedCurrency(quoteBaseCurrencyCode) && IsSupportedCurrency(quoteCounterCurrencyCode) && quoteBaseCurrencyCode.ToUpperInvariant() != quoteCounterCurrencyCode.ToUpperInvariant())
                         {
-                            var quoteBaseCurrency = new CurrencyInfo(quoteBaseCurrencyCode);
-                            var quoteCounterCurrency = new CurrencyInfo(quoteCounterCurrencyCode);
+                            var quoteBaseCurrency = _currencyFactory.Create(quoteBaseCurrencyCode);
+                            var quoteCounterCurrency = _currencyFactory.Create(quoteCounterCurrencyCode);
 
                             var quotePair = new CurrencyPair(quoteBaseCurrency, quoteCounterCurrency);
 
