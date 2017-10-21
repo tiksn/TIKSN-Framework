@@ -22,6 +22,7 @@ namespace TIKSN.Finance.ForeignExchange
             _providers.Add(9488, new ReserveBankOfAustralia(currencyFactory));
             _providers.Add(5691, new SwissNationalBank(currencyFactory));
             _providers.Add(1171, new BankOfCanada(currencyFactory));
+            _providers.Add(4010, new EuropeanCentralBank(currencyFactory));
         }
 
         public Task InitializeAsync()
