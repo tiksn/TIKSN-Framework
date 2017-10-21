@@ -6,9 +6,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using TIKSN.Globalization;
 
-namespace TIKSN.Finance.ForeignExchange
+namespace TIKSN.Finance.ForeignExchange.Cumulative
 {
-	public class MyCurrencyDotNet : ICurrencyConverter
+	public class MyCurrencyDotNet : ICurrencyConverter, IExchangeRatesProvider
 	{
 		private const string ResourceUrl = "http://www.mycurrency.net/service/rates";
 		private readonly ICurrencyFactory _currencyFactory;
@@ -33,9 +33,9 @@ namespace TIKSN.Finance.ForeignExchange
 			if (DateTimeOffset.Now.Date != asOn.Date)
 				throw new ArgumentOutOfRangeException(nameof(asOn));
 
-			var exchangeRates = await GetExchangeRatesAsync();
+			var exchangeRates = await GetExchangeRatesAsync(asOn);
 
-			return exchangeRates.Select(item => new CurrencyPair(USD, item.currency)).Concat(exchangeRates.Select(item => new CurrencyPair(item.currency, USD))).ToArray();
+			return exchangeRates.Select(item => item.Pair).ToArray();
 		}
 
 		public Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
@@ -43,36 +43,47 @@ namespace TIKSN.Finance.ForeignExchange
 			return GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn);
 		}
 
-		private async Task<decimal> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+		public async Task<IEnumerable<ForeignExchange.ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn)
 		{
-			if (DateTimeOffset.Now.Date != asOn.Date)
-				throw new ArgumentOutOfRangeException(nameof(asOn));
+			ValidateDate(asOn);
 
-			var exchangeRates = await GetExchangeRatesAsync();
-			decimal exchangeRate;
-			if (baseCurrency == USD)
-				exchangeRate = exchangeRates.First(item => item.currency == counterCurrency).rate;
-			else if (counterCurrency == USD)
-				exchangeRate = decimal.One / exchangeRates.First(item => item.currency == baseCurrency).rate;
-			else
-				throw new NotSupportedException($"Currency pair {baseCurrency}/{counterCurrency} is not supported");
-
-			return exchangeRate;
-		}
-
-		private async Task<(CurrencyInfo currency, decimal rate)[]> GetExchangeRatesAsync()
-		{
 			using (var httpClient = new HttpClient())
 			{
 				var jsonExchangeRates = await httpClient.GetStringAsync(ResourceUrl);
 
 				var exchangeRates = JsonConvert.DeserializeObject<ExchangeRate[]>(jsonExchangeRates);
 
-				return exchangeRates
+				var rates = exchangeRates
 					.Select(item => (currency: _currencyFactory.Create(item.CurrencyCode), rate: item.Rate))
 					.Where(item => item.currency != USD)
 					.ToArray();
+
+				return rates
+					.Select(item => new ForeignExchange.ExchangeRate(new CurrencyPair(USD, item.currency), asOn, item.rate))
+					.Concat(rates
+						.Select(item => new ForeignExchange.ExchangeRate(new CurrencyPair(item.currency, USD), asOn, decimal.One / item.rate)))
+					.ToArray();
 			}
+		}
+
+		private static void ValidateDate(DateTimeOffset asOn)
+		{
+			if (DateTimeOffset.Now.Date != asOn.Date)
+				throw new ArgumentOutOfRangeException(nameof(asOn));
+		}
+
+		private async Task<decimal> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+		{
+			ValidateDate(asOn);
+
+			var exchangeRates = await GetExchangeRatesAsync(asOn);
+
+			var exchangeRate = exchangeRates.SingleOrDefault(item => item.Pair.BaseCurrency == baseCurrency && item.Pair.CounterCurrency == counterCurrency);
+
+			if (exchangeRate == null)
+				throw new NotSupportedException($"Currency pair {baseCurrency}/{counterCurrency} is not supported");
+
+			return exchangeRate.Rate;
 		}
 
 		public class ExchangeRate
@@ -82,6 +93,7 @@ namespace TIKSN.Finance.ForeignExchange
 
 			[JsonProperty("currency_code")]
 			public string CurrencyCode { get; set; }
+
 			[JsonProperty("name")]
 			public string Name { get; set; }
 

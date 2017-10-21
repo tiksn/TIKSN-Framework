@@ -1,18 +1,33 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using TIKSN.Finance.ForeignExchange;
+using TIKSN.Globalization;
 using Xunit;
 
 namespace TIKSN.Finance.Tests.ForeignExchange
 {
 	public class SwissNationalBankTests
 	{
-		[Fact]
+        private readonly ICurrencyFactory _currencyFactory;
+
+        public SwissNationalBankTests()
+        {
+            var services = new ServiceCollection();
+            services.AddMemoryCache();
+            services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
+            services.AddSingleton<IRegionFactory, RegionFactory>();
+
+            var serviceProvider = services.BuildServiceProvider();
+            _currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+        }
+
+        [Fact]
 		public async Task Calculation001()
 		{
-			var Bank = new SwissNationalBank();
+			var Bank = new SwissNationalBank(_currencyFactory);
 
 			var AtTheMoment = DateTimeOffset.Now;
 
@@ -32,7 +47,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		[Fact]
 		public async Task ConvertCurrency001()
 		{
-			var Bank = new SwissNationalBank();
+			var Bank = new SwissNationalBank(_currencyFactory);
 
 			var AtTheMoment = DateTimeOffset.Now;
 
@@ -49,7 +64,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		[Fact]
 		public async Task ConvertCurrency002()
 		{
-			var Bank = new SwissNationalBank();
+			var Bank = new SwissNationalBank(_currencyFactory);
 
 			var moment = DateTimeOffset.Now.AddMinutes(10d);
 
@@ -67,7 +82,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		[Fact]
 		public async Task ConvertCurrency004()
 		{
-			var Bank = new SwissNationalBank();
+			var Bank = new SwissNationalBank(_currencyFactory);
 
 			var moment = DateTimeOffset.Now.AddDays(-10d);
 
@@ -85,7 +100,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		[Fact]
 		public async Task CounterCurrency003()
 		{
-			var Bank = new SwissNationalBank();
+			var Bank = new SwissNationalBank(_currencyFactory);
 
 			RegionInfo AO = new RegionInfo("AO");
 			RegionInfo BW = new RegionInfo("BW");
@@ -103,7 +118,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		[Fact]
 		public async Task GetCurrencyPairs001()
 		{
-			var Bank = new SwissNationalBank();
+			var Bank = new SwissNationalBank(_currencyFactory);
 
 			var moment = DateTimeOffset.Now.AddMinutes(10d);
 
@@ -113,7 +128,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		[Fact]
 		public async Task GetCurrencyPairs002()
 		{
-			var Bank = new SwissNationalBank();
+			var Bank = new SwissNationalBank(_currencyFactory);
 
 			var Pairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
 
@@ -125,7 +140,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		[Fact]
 		public async Task GetCurrencyPairs003()
 		{
-			var Bank = new SwissNationalBank();
+			var Bank = new SwissNationalBank(_currencyFactory);
 
 			var moment = DateTimeOffset.Now.AddDays(-10d);
 
@@ -135,7 +150,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		[Fact]
 		public async Task GetCurrencyPairs004()
 		{
-			var Bank = new SwissNationalBank();
+			var Bank = new SwissNationalBank(_currencyFactory);
 
 			var Pairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
 
@@ -150,7 +165,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		[Fact]
 		public async Task GetCurrencyPairs005()
 		{
-			var Bank = new SwissNationalBank();
+			var Bank = new SwissNationalBank(_currencyFactory);
 
 			var Pairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
 
@@ -170,7 +185,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		[Fact]
 		public async Task GetExchangeRate001()
 		{
-			var Bank = new SwissNationalBank();
+			var Bank = new SwissNationalBank(_currencyFactory);
 
 			var AtTheMoment = DateTimeOffset.Now;
 
@@ -185,7 +200,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		[Fact]
 		public async Task GetExchangeRate002()
 		{
-			var Bank = new SwissNationalBank();
+			var Bank = new SwissNationalBank(_currencyFactory);
 
 			var moment = DateTimeOffset.Now.AddMinutes(10d);
 
@@ -198,7 +213,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		[Fact]
 		public async Task GetExchangeRate003()
 		{
-			var Bank = new SwissNationalBank();
+			var Bank = new SwissNationalBank(_currencyFactory);
 
 			RegionInfo AO = new RegionInfo("AO");
 			RegionInfo BW = new RegionInfo("BW");
@@ -214,7 +229,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 		[Fact]
 		public async Task GetExchangeRate004()
 		{
-			var Bank = new SwissNationalBank();
+			var Bank = new SwissNationalBank(_currencyFactory);
 
 			var moment = DateTimeOffset.Now.AddDays(-10d);
 
