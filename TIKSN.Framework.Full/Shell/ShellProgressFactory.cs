@@ -3,7 +3,7 @@ using TIKSN.Progress;
 
 namespace TIKSN.Shell
 {
-	public class ShellProgressFactory : IOperationProgressFactory
+    public class ShellProgressFactory : IOperationProgressFactory
     {
         private readonly IOptions<ShellProgressFactoryOptions> options;
 

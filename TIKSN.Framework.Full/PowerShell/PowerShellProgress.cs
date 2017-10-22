@@ -4,7 +4,7 @@ using TIKSN.Progress;
 
 namespace TIKSN.PowerShell
 {
-	public class PowerShellProgress : DisposableProgress<OperationProgressReport>
+    public class PowerShellProgress : DisposableProgress<OperationProgressReport>
     {
         private static readonly object activityIdLocker = new object();
         private static int nextActivityId = 0;

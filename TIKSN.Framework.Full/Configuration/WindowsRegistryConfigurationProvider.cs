@@ -5,91 +5,91 @@ using System.Security;
 
 namespace TIKSN.Configuration
 {
-	public class WindowsRegistryConfigurationProvider : ConfigurationProvider
-	{
-		private readonly RegistryView _registryView;
-		private readonly string _rootKey;
+    public class WindowsRegistryConfigurationProvider : ConfigurationProvider
+    {
+        private readonly RegistryView _registryView;
+        private readonly string _rootKey;
 
-		public WindowsRegistryConfigurationProvider(string rootKey, RegistryView registryView)
-		{
-			if (string.IsNullOrWhiteSpace(rootKey))
-				throw new ArgumentException("Parameter is null or white space.", nameof(rootKey));
-			_registryView = registryView;
-			_rootKey = rootKey;
-		}
+        public WindowsRegistryConfigurationProvider(string rootKey, RegistryView registryView)
+        {
+            if (string.IsNullOrWhiteSpace(rootKey))
+                throw new ArgumentException("Parameter is null or white space.", nameof(rootKey));
+            _registryView = registryView;
+            _rootKey = rootKey;
+        }
 
-		public override void Load()
-		{
-			Data.Clear();
+        public override void Load()
+        {
+            Data.Clear();
 
-			try
-			{
-				using (var machineKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, _registryView))
-				{
-					if (machineKey != null)
-						PopulateRootKey(machineKey);
-				}
-			}
-			catch (SecurityException)
-			{
-			}
+            try
+            {
+                using (var machineKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, _registryView))
+                {
+                    if (machineKey != null)
+                        PopulateRootKey(machineKey);
+                }
+            }
+            catch (SecurityException)
+            {
+            }
 
-			try
-			{
-				using (var userKey = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, _registryView))
-				{
-					if (userKey != null)
-						PopulateRootKey(userKey);
-				}
-			}
-			catch (SecurityException)
-			{
-			}
-		}
+            try
+            {
+                using (var userKey = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, _registryView))
+                {
+                    if (userKey != null)
+                        PopulateRootKey(userKey);
+                }
+            }
+            catch (SecurityException)
+            {
+            }
+        }
 
-		private static string CombineConfigurationPath(string parentConfigurationKey, string childConfigurationKey)
-		{
-			if (string.IsNullOrEmpty(parentConfigurationKey))
-				return childConfigurationKey;
+        private static string CombineConfigurationPath(string parentConfigurationKey, string childConfigurationKey)
+        {
+            if (string.IsNullOrEmpty(parentConfigurationKey))
+                return childConfigurationKey;
 
-			return ConfigurationPath.Combine(parentConfigurationKey, childConfigurationKey);
-		}
+            return ConfigurationPath.Combine(parentConfigurationKey, childConfigurationKey);
+        }
 
-		private void PopulateKeys(RegistryKey currentRegistryKey, string parentConfigurationKey)
-		{
-			PopulateValues(currentRegistryKey, parentConfigurationKey);
+        private void PopulateKeys(RegistryKey currentRegistryKey, string parentConfigurationKey)
+        {
+            PopulateValues(currentRegistryKey, parentConfigurationKey);
 
-			var subKeyNames = currentRegistryKey.GetSubKeyNames();
+            var subKeyNames = currentRegistryKey.GetSubKeyNames();
 
-			foreach (var subKeyName in subKeyNames)
-			{
-				using (var registrySubKey = currentRegistryKey.OpenSubKey(subKeyName))
-				{
-					if (registrySubKey != null)
-						PopulateKeys(registrySubKey, CombineConfigurationPath(parentConfigurationKey, subKeyName));
-				}
-			}
-		}
+            foreach (var subKeyName in subKeyNames)
+            {
+                using (var registrySubKey = currentRegistryKey.OpenSubKey(subKeyName))
+                {
+                    if (registrySubKey != null)
+                        PopulateKeys(registrySubKey, CombineConfigurationPath(parentConfigurationKey, subKeyName));
+                }
+            }
+        }
 
-		private void PopulateRootKey(RegistryKey hiveKey)
-		{
-			using (var registryKey = hiveKey.OpenSubKey(_rootKey))
-			{
-				if (registryKey != null)
-					PopulateKeys(registryKey, null);
-			}
-		}
+        private void PopulateRootKey(RegistryKey hiveKey)
+        {
+            using (var registryKey = hiveKey.OpenSubKey(_rootKey))
+            {
+                if (registryKey != null)
+                    PopulateKeys(registryKey, null);
+            }
+        }
 
-		private void PopulateValues(RegistryKey currentRegistryKey, string parentConfigurationKey)
-		{
-			var valueNames = currentRegistryKey.GetValueNames();
+        private void PopulateValues(RegistryKey currentRegistryKey, string parentConfigurationKey)
+        {
+            var valueNames = currentRegistryKey.GetValueNames();
 
-			foreach (var valueName in valueNames)
-			{
-				var valueData = currentRegistryKey.GetValue(valueName);
+            foreach (var valueName in valueNames)
+            {
+                var valueData = currentRegistryKey.GetValue(valueName);
 
-				Set(CombineConfigurationPath(parentConfigurationKey, valueName), valueData.ToString());
-			}
-		}
-	}
+                Set(CombineConfigurationPath(parentConfigurationKey, valueName), valueData.ToString());
+            }
+        }
+    }
 }
