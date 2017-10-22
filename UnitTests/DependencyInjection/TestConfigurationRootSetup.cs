@@ -2,7 +2,7 @@
 
 namespace TIKSN.DependencyInjection.Tests
 {
-	public class TestConfigurationRootSetup : ConfigurationRootSetupBase
-	{
+    public class TestConfigurationRootSetup : ConfigurationRootSetupBase
+    {
     }
 }

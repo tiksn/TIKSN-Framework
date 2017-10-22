@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TIKSN.DependencyInjection.Tests;
-using TIKSN.Finance.ForeignExchange;
 using TIKSN.Finance.ForeignExchange.Cumulative;
 using TIKSN.Globalization;
 using Xunit;

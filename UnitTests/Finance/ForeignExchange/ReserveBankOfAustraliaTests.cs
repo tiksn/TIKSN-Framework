@@ -2,7 +2,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using TIKSN.Finance.ForeignExchange;
 using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Globalization;
 using Xunit;
