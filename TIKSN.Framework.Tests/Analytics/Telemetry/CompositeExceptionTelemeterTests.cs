@@ -2,8 +2,8 @@
 
 namespace TIKSN.Framework.Tests.Analytics.Telemetry
 {
-	[TestClass]
-	public class CompositeExceptionTelemeterTests
-	{
-	}
+    [TestClass]
+    public class CompositeExceptionTelemeterTests
+    {
+    }
 }
