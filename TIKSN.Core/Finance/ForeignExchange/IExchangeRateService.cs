@@ -2,8 +2,8 @@
 
 namespace TIKSN.Finance.ForeignExchange
 {
-	public interface IExchangeRateService
-	{
-		Task InitializeAsync();
-	}
+    public interface IExchangeRateService
+    {
+        Task InitializeAsync();
+    }
 }

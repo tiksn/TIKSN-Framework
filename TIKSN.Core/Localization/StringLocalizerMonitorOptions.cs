@@ -2,8 +2,8 @@
 
 namespace TIKSN.Localization
 {
-	public class StringLocalizerMonitorOptions
-	{
-		public LogLevel LogLevel { get; set; }
-	}
+    public class StringLocalizerMonitorOptions
+    {
+        public LogLevel LogLevel { get; set; }
+    }
 }

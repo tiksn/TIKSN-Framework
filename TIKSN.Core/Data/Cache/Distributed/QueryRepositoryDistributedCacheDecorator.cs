@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -9,37 +8,37 @@ using TIKSN.Serialization;
 
 namespace TIKSN.Data.Cache.Distributed
 {
-	public class QueryRepositoryDistributedCacheDecorator<TEntity, TIdentity>
-	: RepositoryDistributedCacheDecorator<TEntity, TIdentity>, IQueryRepository<TEntity, TIdentity>
-		where TEntity : IEntity<TIdentity>
-		where TIdentity : IEquatable<TIdentity>
-	{
-		protected readonly IQueryRepository<TEntity, TIdentity> _queryRepository;
+    public class QueryRepositoryDistributedCacheDecorator<TEntity, TIdentity>
+    : RepositoryDistributedCacheDecorator<TEntity, TIdentity>, IQueryRepository<TEntity, TIdentity>
+        where TEntity : IEntity<TIdentity>
+        where TIdentity : IEquatable<TIdentity>
+    {
+        protected readonly IQueryRepository<TEntity, TIdentity> _queryRepository;
 
-		public QueryRepositoryDistributedCacheDecorator(IQueryRepository<TEntity, TIdentity> queryRepository,
-			IRepository<TEntity> repository,
-			IDistributedCache distributedCache,
-			ISerializer<byte[]> serializer,
-			IDeserializer<byte[]> deserializer,
-			IOptions<DistributedCacheDecoratorOptions> genericOptions,
-			IOptions<DistributedCacheDecoratorOptions<TEntity>> specificOptions)
-			: base(repository, distributedCache, serializer, deserializer, genericOptions, specificOptions)
-		{
-			_queryRepository = queryRepository;
-		}
+        public QueryRepositoryDistributedCacheDecorator(IQueryRepository<TEntity, TIdentity> queryRepository,
+            IRepository<TEntity> repository,
+            IDistributedCache distributedCache,
+            ISerializer<byte[]> serializer,
+            IDeserializer<byte[]> deserializer,
+            IOptions<DistributedCacheDecoratorOptions> genericOptions,
+            IOptions<DistributedCacheDecoratorOptions<TEntity>> specificOptions)
+            : base(repository, distributedCache, serializer, deserializer, genericOptions, specificOptions)
+        {
+            _queryRepository = queryRepository;
+        }
 
-		public Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
-		{
-			var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, id).ToString();
+        public Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
+        {
+            var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, id).ToString();
 
-			return GetFromDistributedCacheAsync(cacheKey, cancellationToken, () => _queryRepository.GetAsync(id, cancellationToken));
-		}
+            return GetFromDistributedCacheAsync(cacheKey, cancellationToken, () => _queryRepository.GetAsync(id, cancellationToken));
+        }
 
-		protected Task<IEnumerable<TEntity>> QueryFromDistributedCacheAsync(Func<Task<IEnumerable<TEntity>>> queryFromSource, CancellationToken cancellationToken)
-		{
-			var cacheKey = Tuple.Create(entityType, CacheKeyKind.Query).ToString();
+        protected Task<IEnumerable<TEntity>> QueryFromDistributedCacheAsync(Func<Task<IEnumerable<TEntity>>> queryFromSource, CancellationToken cancellationToken)
+        {
+            var cacheKey = Tuple.Create(entityType, CacheKeyKind.Query).ToString();
 
-			return GetFromDistributedCacheAsync(cacheKey, cancellationToken, queryFromSource);
-		}
-	}
+            return GetFromDistributedCacheAsync(cacheKey, cancellationToken, queryFromSource);
+        }
+    }
 }

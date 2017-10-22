@@ -2,18 +2,18 @@
 
 namespace TIKSN.Analytics.Logging
 {
-	public abstract class LoggingSetupBase : ILoggingSetup
-	{
-		protected readonly ILoggerFactory _loggerFactory;
+    public abstract class LoggingSetupBase : ILoggingSetup
+    {
+        protected readonly ILoggerFactory _loggerFactory;
 
-		protected LoggingSetupBase(ILoggerFactory loggerFactory)
-		{
-			_loggerFactory = loggerFactory;
-		}
+        protected LoggingSetupBase(ILoggerFactory loggerFactory)
+        {
+            _loggerFactory = loggerFactory;
+        }
 
-		public virtual void Setup()
-		{
-			_loggerFactory.AddDebug(LogLevel.Trace);
-		}
-	}
+        public virtual void Setup()
+        {
+            _loggerFactory.AddDebug(LogLevel.Trace);
+        }
+    }
 }

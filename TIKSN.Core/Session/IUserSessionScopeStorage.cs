@@ -2,10 +2,10 @@
 
 namespace TIKSN.Session
 {
-	public interface IUserSessionScopeStorage<TIdentity> where TIdentity : IEquatable<TIdentity>
-	{
-		IServiceProvider GetOrAddServiceProvider(TIdentity id);
+    public interface IUserSessionScopeStorage<TIdentity> where TIdentity : IEquatable<TIdentity>
+    {
+        IServiceProvider GetOrAddServiceProvider(TIdentity id);
 
-		bool TryRemoveServiceProvider(TIdentity id);
-	}
+        bool TryRemoveServiceProvider(TIdentity id);
+    }
 }

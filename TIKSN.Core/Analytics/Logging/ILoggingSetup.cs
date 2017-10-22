@@ -1,7 +1,7 @@
 ﻿namespace TIKSN.Analytics.Logging
 {
-	public interface ILoggingSetup
-	{
-		void Setup();
-	}
+    public interface ILoggingSetup
+    {
+        void Setup();
+    }
 }

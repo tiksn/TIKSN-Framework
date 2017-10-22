@@ -4,18 +4,18 @@ using TIKSN.Analytics.Telemetry;
 
 namespace TIKSN.Serialization.Bond
 {
-	public class CompactBinaryBondDeserializer : DeserializerBase<byte[]>
-	{
-		public CompactBinaryBondDeserializer(IExceptionTelemeter exceptionTelemeter) : base(exceptionTelemeter)
-		{
-		}
+    public class CompactBinaryBondDeserializer : DeserializerBase<byte[]>
+    {
+        public CompactBinaryBondDeserializer(IExceptionTelemeter exceptionTelemeter) : base(exceptionTelemeter)
+        {
+        }
 
-		protected override T DeserializeInternal<T>(byte[] serial)
-		{
-			var input = new InputBuffer(serial);
-			var reader = new CompactBinaryReader<InputBuffer>(input);
+        protected override T DeserializeInternal<T>(byte[] serial)
+        {
+            var input = new InputBuffer(serial);
+            var reader = new CompactBinaryReader<InputBuffer>(input);
 
-			return global::Bond.Deserialize<T>.From(reader);
-		}
-	}
+            return global::Bond.Deserialize<T>.From(reader);
+        }
+    }
 }

@@ -12,45 +12,44 @@ using TIKSN.Web.Rest;
 
 namespace TIKSN.DependencyInjection
 {
-	public static class DependencyRegistration
-	{
-		public static void Register(IServiceCollection services)
-		{
-			services.AddLocalization();
-			services.AddLogging();
-			services.AddMemoryCache();
-			services.AddOptions();
+    public static class DependencyRegistration
+    {
+        public static void Register(IServiceCollection services)
+        {
+            services.AddLocalization();
+            services.AddLogging();
+            services.AddMemoryCache();
+            services.AddOptions();
 
-			services.TryAddSingleton<IConsoleService, ConsoleService>();
-			services.TryAddSingleton<ICultureFactory, CultureFactory>();
-			services.TryAddSingleton<ICurrencyFactory, CurrencyFactory>();
-			services.TryAddSingleton<IRegionFactory, RegionFactory>();
-			services.TryAddSingleton<IResourceNamesCache, ResourceNamesCache>();
-			services.TryAddSingleton<IShellCommandEngine, ShellCommandEngine>();
-			services.TryAddSingleton<ITimeProvider, TimeProvider>();
-			services.TryAddSingleton<Random>();
-			services.TryAddSingleton(MsgPack.Serialization.SerializationContext.Default);
+            services.TryAddSingleton<IConsoleService, ConsoleService>();
+            services.TryAddSingleton<ICultureFactory, CultureFactory>();
+            services.TryAddSingleton<ICurrencyFactory, CurrencyFactory>();
+            services.TryAddSingleton<IRegionFactory, RegionFactory>();
+            services.TryAddSingleton<IResourceNamesCache, ResourceNamesCache>();
+            services.TryAddSingleton<IShellCommandEngine, ShellCommandEngine>();
+            services.TryAddSingleton<ITimeProvider, TimeProvider>();
+            services.TryAddSingleton<Random>();
+            services.TryAddSingleton(MsgPack.Serialization.SerializationContext.Default);
 
-			services.TryAddSingleton<CompactBinaryBondDeserializer>();
-			services.TryAddSingleton<CompactBinaryBondSerializer>();
-			services.TryAddSingleton<DotNetXmlDeserializer>();
-			services.TryAddSingleton<DotNetXmlSerializer>();
-			services.TryAddSingleton<FastBinaryBondDeserializer>();
-			services.TryAddSingleton<FastBinaryBondSerializer>();
-			services.TryAddSingleton<IRestRequester, RestRequester>();
-			services.TryAddSingleton<JsonDeserializer>();
-			services.TryAddSingleton<JsonSerializer>();
-			services.TryAddSingleton<MessagePackDeserializer>();
-			services.TryAddSingleton<MessagePackSerializer>();
-			services.TryAddSingleton<SimpleBinaryBondDeserializer>();
-			services.TryAddSingleton<SimpleBinaryBondSerializer>();
-			services.TryAddSingleton<SimpleJsonBondDeserializer>();
-			services.TryAddSingleton<SimpleJsonBondSerializer>();
-			services.TryAddSingleton<SimpleXmlBondDeserializer>();
-			services.TryAddSingleton<SimpleXmlBondSerializer>();
+            services.TryAddSingleton<CompactBinaryBondDeserializer>();
+            services.TryAddSingleton<CompactBinaryBondSerializer>();
+            services.TryAddSingleton<DotNetXmlDeserializer>();
+            services.TryAddSingleton<DotNetXmlSerializer>();
+            services.TryAddSingleton<FastBinaryBondDeserializer>();
+            services.TryAddSingleton<FastBinaryBondSerializer>();
+            services.TryAddSingleton<IRestRequester, RestRequester>();
+            services.TryAddSingleton<JsonDeserializer>();
+            services.TryAddSingleton<JsonSerializer>();
+            services.TryAddSingleton<MessagePackDeserializer>();
+            services.TryAddSingleton<MessagePackSerializer>();
+            services.TryAddSingleton<SimpleBinaryBondDeserializer>();
+            services.TryAddSingleton<SimpleBinaryBondSerializer>();
+            services.TryAddSingleton<SimpleJsonBondDeserializer>();
+            services.TryAddSingleton<SimpleJsonBondSerializer>();
+            services.TryAddSingleton<SimpleXmlBondDeserializer>();
+            services.TryAddSingleton<SimpleXmlBondSerializer>();
 
-
-			services.TryAddScoped<IShellCommandContext, ShellCommandContext>();
-		}
-	}
+            services.TryAddScoped<IShellCommandContext, ShellCommandContext>();
+        }
+    }
 }

@@ -3,15 +3,15 @@ using TIKSN.Analytics.Telemetry;
 
 namespace TIKSN.Serialization
 {
-	public abstract class SerializationBase
-	{
-		protected readonly IExceptionTelemeter _exceptionTelemeter;
+    public abstract class SerializationBase
+    {
+        protected readonly IExceptionTelemeter _exceptionTelemeter;
 
-		protected SerializationBase(IExceptionTelemeter exceptionTelemeter)
-		{
-			Guard.AgainstNullArgument(nameof(exceptionTelemeter), exceptionTelemeter);
+        protected SerializationBase(IExceptionTelemeter exceptionTelemeter)
+        {
+            Guard.AgainstNullArgument(nameof(exceptionTelemeter), exceptionTelemeter);
 
-			_exceptionTelemeter = exceptionTelemeter;
-		}
-	}
+            _exceptionTelemeter = exceptionTelemeter;
+        }
+    }
 }

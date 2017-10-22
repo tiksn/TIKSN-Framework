@@ -6,31 +6,31 @@ using TIKSN.Configuration.Validator;
 
 namespace TIKSN.DependencyInjection
 {
-	public static class PartialConfigurationServiceCollectionExtensions
-	{
-		public static IServiceCollection ConfigurePartial<TOptions>(this IServiceCollection services, IConfiguration config, bool mandatoryValidation = false) where TOptions : class, new()
-		{
-			if (mandatoryValidation)
-			{
-				services.AddSingleton<IConfigurationValidationStrategy<TOptions>, MandatoryConfigurationValidationStrategy<TOptions>>();
-			}
-			else
-			{
-				services.AddSingleton<IConfigurationValidationStrategy<TOptions>, OptionalConfigurationValidationStrategy<TOptions>>();
-			}
+    public static class PartialConfigurationServiceCollectionExtensions
+    {
+        public static IServiceCollection ConfigurePartial<TOptions>(this IServiceCollection services, IConfiguration config, bool mandatoryValidation = false) where TOptions : class, new()
+        {
+            if (mandatoryValidation)
+            {
+                services.AddSingleton<IConfigurationValidationStrategy<TOptions>, MandatoryConfigurationValidationStrategy<TOptions>>();
+            }
+            else
+            {
+                services.AddSingleton<IConfigurationValidationStrategy<TOptions>, OptionalConfigurationValidationStrategy<TOptions>>();
+            }
 
-			services.AddSingleton<IPartialConfiguration<TOptions>, PartialConfiguration<TOptions>>();
+            services.AddSingleton<IPartialConfiguration<TOptions>, PartialConfiguration<TOptions>>();
 
-			return services.Configure<TOptions>(config);
-		}
+            return services.Configure<TOptions>(config);
+        }
 
-		public static IServiceCollection ConfigurePartial<TOptions, TValidator>(this IServiceCollection services, IConfiguration config)
-			where TOptions : class, new()
-			where TValidator : class, IPartialConfigurationValidator<TOptions>
-		{
-			services.AddSingleton<IPartialConfigurationValidator<TOptions>, TValidator>();
+        public static IServiceCollection ConfigurePartial<TOptions, TValidator>(this IServiceCollection services, IConfiguration config)
+            where TOptions : class, new()
+            where TValidator : class, IPartialConfigurationValidator<TOptions>
+        {
+            services.AddSingleton<IPartialConfigurationValidator<TOptions>, TValidator>();
 
-			return services.ConfigurePartial<TOptions>(config, true);
-		}
-	}
+            return services.ConfigurePartial<TOptions>(config, true);
+        }
+    }
 }

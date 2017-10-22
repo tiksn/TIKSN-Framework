@@ -2,20 +2,20 @@
 
 namespace TIKSN.Configuration
 {
-	public abstract class ConfigurationRootSetupBase
-	{
-		public virtual IConfigurationRoot CreateConfigurationRoot()
-		{
-			var builder = new ConfigurationBuilder();
+    public abstract class ConfigurationRootSetupBase
+    {
+        public virtual IConfigurationRoot CreateConfigurationRoot()
+        {
+            var builder = new ConfigurationBuilder();
 
-			SetupConfiguration(builder);
+            SetupConfiguration(builder);
 
-			return builder.Build();
-		}
+            return builder.Build();
+        }
 
-		protected virtual void SetupConfiguration(IConfigurationBuilder builder)
-		{
-			builder.AddInMemoryCollection();
-		}
-	}
+        protected virtual void SetupConfiguration(IConfigurationBuilder builder)
+        {
+            builder.AddInMemoryCollection();
+        }
+    }
 }

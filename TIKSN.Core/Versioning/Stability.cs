@@ -1,8 +1,8 @@
 ﻿namespace TIKSN.Versioning
 {
-	public enum Stability
-	{
-		Stable,
-		Unstable,
-	}
+    public enum Stability
+    {
+        Stable,
+        Unstable,
+    }
 }

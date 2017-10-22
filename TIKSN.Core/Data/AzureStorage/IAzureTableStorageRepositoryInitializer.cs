@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Data.AzureStorage
 {
-	public interface IAzureTableStorageRepositoryInitializer<T> where T : ITableEntity
-	{
-		Task InitializeAsync(CancellationToken cancellationToken = default(CancellationToken));
-	}
+    public interface IAzureTableStorageRepositoryInitializer<T> where T : ITableEntity
+    {
+        Task InitializeAsync(CancellationToken cancellationToken = default(CancellationToken));
+    }
 }
