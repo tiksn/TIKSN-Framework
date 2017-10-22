@@ -2,11 +2,11 @@
 
 namespace TIKSN.DependencyInjection
 {
-	public static class PlatformDependencyRegistration
-	{
-		public static void Register(IServiceCollection services)
-		{
-			DependencyRegistration.Register(services);
-		}
-	}
+    public static class PlatformDependencyRegistration
+    {
+        public static void Register(IServiceCollection services)
+        {
+            DependencyRegistration.Register(services);
+        }
+    }
 }
