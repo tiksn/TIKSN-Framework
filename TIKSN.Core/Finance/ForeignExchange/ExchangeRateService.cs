@@ -1,19 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Finance.ForeignExchange.Cumulative;
+using TIKSN.Finance.ForeignExchange.Data;
 using TIKSN.Globalization;
 
 namespace TIKSN.Finance.ForeignExchange
 {
     public class ExchangeRateService : IExchangeRateService
     {
-        private readonly Dictionary<int, IExchangeRatesProvider> _providers;
+        private readonly Dictionary<int, (IExchangeRatesProvider Provider, int LongNameKey, int ShortNameKey, RegionInfo Country)> _providers;
+        private readonly IExchangeRateRepository _exchangeRateRepository;
+        private readonly IForeignExchangeRepository _foreignExchangeRepository;
 
-        public ExchangeRateService(ICurrencyFactory currencyFactory, IRegionFactory regionFactory)
+        public ExchangeRateService(ICurrencyFactory currencyFactory, IRegionFactory regionFactory, IExchangeRateRepository exchangeRateRepository, IForeignExchangeRepository foreignExchangeRepository)
         {
-            _providers = new Dictionary<int, IExchangeRatesProvider>();
+            _exchangeRateRepository = exchangeRateRepository;
+            _foreignExchangeRepository = foreignExchangeRepository;
+
+            _providers = new Dictionary<int, (IExchangeRatesProvider Provider, int LongNameKey, int ShortNameKey, RegionInfo Country)>();
 
             _providers.Add(9596, new CentralBankOfArmenia(currencyFactory));
             _providers.Add(2893, new MyCurrencyDotNet(currencyFactory, regionFactory));
@@ -26,9 +34,25 @@ namespace TIKSN.Finance.ForeignExchange
             _providers.Add(7761, new FederalReserveSystem(currencyFactory));
         }
 
-        public Task InitializeAsync()
+        public async Task InitializeAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            foreach (var provider in _providers)
+            {
+                var forex = await _foreignExchangeRepository.GetAsync(provider.Key, cancellationToken);
+
+                if(forex == null)
+                {
+                    forex = new ForeignExchangeEntity
+                    {
+                        ID = provider.Key,
+                        LongNameKey = provider.Value.LongNameKey,
+                        ShortNameKey = provider.Value.ShortNameKey,
+                        CountryCode = provider.Value.Country.Name
+                    };
+
+                    await _foreignExchangeRepository.AddAsync(forex, cancellationToken);
+                }
+            }
         }
     }
 }
