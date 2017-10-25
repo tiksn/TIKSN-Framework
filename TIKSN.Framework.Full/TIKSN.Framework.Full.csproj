@@ -276,7 +276,6 @@
     <Compile Include="Configuration\WindowsRegistryConfigurationSource.cs" />
     <Compile Include="DependencyInjection\PlatformDependencyRegistration.cs" />
     <Compile Include="DependencyInjection\PlatformModule.cs" />
-    <Compile Include="FileSystem\KnownFolders.cs" />
     <Compile Include="Network\NetworkConnectivityService.cs" />
     <Compile Include="PowerShell\CommandBase.cs" />
     <Compile Include="PowerShell\PowerShellLogger.cs" />
@@ -333,6 +332,7 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="..\TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems" Label="Shared" />
+  <Import Project="..\TIKSN.Framework.SharedDesktop\TIKSN.Framework.SharedDesktop.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
