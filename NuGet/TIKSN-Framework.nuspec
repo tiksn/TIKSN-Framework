@@ -36,6 +36,7 @@
                 <dependency id="Microsoft.Extensions.DependencyInjection" version="2.0.0" />
                 <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="2.0.0" />
                 <dependency id="Microsoft.Extensions.FileProviders.Abstractions" version="2.0.0" />
+                <dependency id="Microsoft.Extensions.FileProviders.Physical" version="2.0.0" />
                 <dependency id="Microsoft.Extensions.Localization" version="2.0.0" />
                 <dependency id="Microsoft.Extensions.Localization.Abstractions" version="2.0.0" />
                 <dependency id="Microsoft.Extensions.Logging" version="2.0.0" />
