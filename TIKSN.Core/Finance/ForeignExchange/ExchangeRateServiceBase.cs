@@ -49,7 +49,7 @@ namespace TIKSN.Finance.ForeignExchange
                 var dateFrom = new DateTimeOffset(ticksToIntervalRatio, asOn.Offset);
                 var dateTo = new DateTimeOffset((ticksToIntervalRatio + 1) * provider.Value.InvalidationInterval.Ticks, asOn.Offset);
 
-                var rates = await _exchangeRateRepository.SearchAsync(pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, dateFrom, dateTo, cancellationToken);
+                var rates = await _exchangeRateRepository.SearchAsync(provider.Key, pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, dateFrom, dateTo, cancellationToken);
 
                 if (rates.Count == 0)
                 {
@@ -60,7 +60,7 @@ namespace TIKSN.Finance.ForeignExchange
                     else
                         throw new Exception($"{nameof(provider.Value.BatchProvider)} and {nameof(provider.Value.IndividualProvider)} are both null, one of them should be null and other should not.");
 
-                    var rate = await _exchangeRateRepository.GetAsync(pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, asOn, cancellationToken);
+                    var rate = await _exchangeRateRepository.GetAsync(provider.Key, pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, asOn, cancellationToken);
 
                     if (rate != null)
                         combinedRates.Add(rate);
