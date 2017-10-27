@@ -77,9 +77,9 @@
                 <dependency id="LiteDB" version="4.0.0" />
                 <dependency id="LiteGuard" version="2.0.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
-                <dependency id="Microsoft.Azure.Mobile.Analytics" version="0.15.2" />
-                <dependency id="Microsoft.Azure.Mobile.Crashes" version="0.15.2" />
-                <dependency id="Microsoft.Azure.Mobile.Push" version="0.15.2" />
+                <dependency id="Microsoft.Azure.Mobile.Analytics" version="0.16.0" />
+                <dependency id="Microsoft.Azure.Mobile.Crashes" version="0.16.0" />
+                <dependency id="Microsoft.Azure.Mobile.Push" version="0.16.0" />
                 <dependency id="Microsoft.EntityFrameworkCore" version="2.0.0" />
                 <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.0.0" />
                 <dependency id="Microsoft.Extensions.Caching.Memory" version="2.0.0" />
@@ -196,8 +196,8 @@
                 <dependency id="LiteDB" version="4.0.0" />
                 <dependency id="LiteGuard" version="2.0.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
-                <dependency id="Microsoft.Azure.Mobile.Analytics" version="0.15.2" />
-                <dependency id="Microsoft.Azure.Mobile.Push" version="0.15.2" />
+                <dependency id="Microsoft.Azure.Mobile.Analytics" version="0.16.0" />
+                <dependency id="Microsoft.Azure.Mobile.Push" version="0.16.0" />
                 <dependency id="Microsoft.EntityFrameworkCore" version="2.0.0" />
                 <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.0.0" />
                 <dependency id="Microsoft.Extensions.Configuration" version="2.0.0" />
