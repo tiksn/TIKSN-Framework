@@ -39,35 +39,53 @@ namespace TIKSN.Finance.ForeignExchange
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
-        public Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
+            var combinedRates = new List<ExchangeRateEntity>();
+
             foreach (var provider in _providers)
             {
-                var ticksToIntervalRatio = ason.Ticks / interval.Ticks * interval.Ticks;
-                var dateFrom = new DateTimeOffset(ticksToIntervalRatio, ason.Offset);
-                var dateTo = new DateTimeOffset((ticksToIntervalRatio + 1) * interval.Ticks, ason.Offset);
+                var ticksToIntervalRatio = asOn.Ticks / provider.Value.InvalidationInterval.Ticks * provider.Value.InvalidationInterval.Ticks;
+                var dateFrom = new DateTimeOffset(ticksToIntervalRatio, asOn.Offset);
+                var dateTo = new DateTimeOffset((ticksToIntervalRatio + 1) * provider.Value.InvalidationInterval.Ticks, asOn.Offset);
 
-                var rate = await _exchangeRateRepository.GetAsync(pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, dateFrom, dateTo, cancellationToken);
+                var rates = await _exchangeRateRepository.SearchAsync(pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, dateFrom, dateTo, cancellationToken);
 
-                if (rate == null)
+                if (rates.Count == 0)
                 {
-                    await FetchExchangeRatesAsync(pair, asOn, cancellationToken);
+                    if (provider.Value.BatchProvider != null)
+                        await FetchExchangeRatesAsync(provider.Key, provider.Value.BatchProvider, asOn, cancellationToken);
+                    else if (provider.Value.IndividualProvider != null)
+                        await FetchExchangeRatesAsync(provider.Key, provider.Value.IndividualProvider, pair, asOn, cancellationToken);
+                    else
+                        throw new Exception($"{nameof(provider.Value.BatchProvider)} and {nameof(provider.Value.IndividualProvider)} are both null, one of them should be null and other should not.");
+
+                    var rate = await _exchangeRateRepository.GetAsync(pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, asOn, cancellationToken);
+
+                    if (rate != null)
+                        combinedRates.Add(rate);
+                }
+                else
+                {
+                    combinedRates.AddRange(rates);
                 }
             }
+
+            return combinedRates.MinBy(item => Math.Abs((item.AsOn - asOn).Ticks)).First().Rate;
         }
 
-        private async Task FetchExchangeRatesAsync(IExchangeRatesProvider batchProvider, DateTimeOffset asOn, CancellationToken cancellationToken)
+        private async Task FetchExchangeRatesAsync(int foreignExchangeID, IExchangeRatesProvider batchProvider, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             var exchangeRates = await batchProvider.GetExchangeRatesAsync(asOn);
 
-            await SaveExchangeRatesAsync(exchangeRates, cancellationToken);
+            await SaveExchangeRatesAsync(foreignExchangeID, exchangeRates, cancellationToken);
         }
 
-        private async Task FetchExchangeRatesAsync(IExchangeRateProvider individualProvider, CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
+        private async Task FetchExchangeRatesAsync(int foreignExchangeID, IExchangeRateProvider individualProvider, CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             var exchangeRate = await individualProvider.GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn);
 
-            await SaveExchangeRatesAsync(new[] { exchangeRate }, cancellationToken);
+            await SaveExchangeRatesAsync(foreignExchangeID, new[] { exchangeRate }, cancellationToken);
         }
 
         private async Task SaveExchangeRatesAsync(int foreignExchangeID, IEnumerable<ExchangeRate> exchangeRates, CancellationToken cancellationToken)
