@@ -5,19 +5,19 @@ using NLog.Targets;
 
 namespace TIKSN.Analytics.Logging
 {
-	public abstract class NLogLoggingSetupBase : LoggingSetupBase
-	{
+	public abstract class NLogLoggingSetupBase : ILoggingSetup
+    {
 		protected readonly LoggingConfiguration _loggingConfiguration;
+        private readonly ILoggerFactory _loggerFactory;
 
-		protected NLogLoggingSetupBase(ILoggerFactory loggerFactory) : base(loggerFactory)
+        protected NLogLoggingSetupBase(ILoggerFactory loggerFactory)
 		{
 			_loggingConfiguration = new LoggingConfiguration();
-		}
+            _loggerFactory = loggerFactory;
+        }
 
-		public override void Setup()
+		public void Setup()
 		{
-			base.Setup();
-
 			SetupNLog();
 
 			_loggerFactory.AddNLog();
