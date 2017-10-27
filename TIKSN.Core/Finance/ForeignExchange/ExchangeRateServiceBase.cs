@@ -16,8 +16,14 @@ namespace TIKSN.Finance.ForeignExchange
         private readonly IExchangeRateRepository _exchangeRateRepository;
         private readonly IForeignExchangeRepository _foreignExchangeRepository;
         private readonly Dictionary<int, (IExchangeRatesProvider BatchProvider, IExchangeRateProvider IndividualProvider, int LongNameKey, int ShortNameKey, RegionInfo Country, TimeSpan InvalidationInterval)> _providers;
+        private readonly Random _random;
 
-        protected ExchangeRateServiceBase(ICurrencyFactory currencyFactory, IRegionFactory regionFactory, IExchangeRateRepository exchangeRateRepository, IForeignExchangeRepository foreignExchangeRepository)
+        protected ExchangeRateServiceBase(
+            ICurrencyFactory currencyFactory,
+            IRegionFactory regionFactory,
+            IExchangeRateRepository exchangeRateRepository,
+            IForeignExchangeRepository foreignExchangeRepository,
+            Random random)
         {
             _exchangeRateRepository = exchangeRateRepository;
             _foreignExchangeRepository = foreignExchangeRepository;
@@ -28,6 +34,7 @@ namespace TIKSN.Finance.ForeignExchange
             _regionFactory = regionFactory;
 
             SetupProviders();
+            _random = random;
         }
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
@@ -92,7 +99,7 @@ namespace TIKSN.Finance.ForeignExchange
         {
             var entities = exchangeRates.Select(item => new ExchangeRateEntity
             {
-                ID = 0, //TODO generate ID
+                ID = _random.Next(),
                 AsOn = item.AsOn,
                 BaseCurrencyCode = item.Pair.BaseCurrency.ISOCurrencySymbol,
                 CounterCurrencyCode = item.Pair.CounterCurrency.ISOCurrencySymbol,
