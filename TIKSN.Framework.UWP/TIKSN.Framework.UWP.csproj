@@ -185,7 +185,7 @@
       <Version>10.0.3</Version>
     </PackageReference>
     <PackageReference Include="NLog.Extensions.Logging">
-      <Version>1.0.0-rtm-beta7</Version>
+      <Version>1.0.0-rtm-rc2</Version>
     </PackageReference>
     <PackageReference Include="Serilog.Extensions.Logging">
       <Version>2.0.2</Version>
