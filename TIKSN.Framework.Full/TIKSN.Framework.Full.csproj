@@ -277,15 +277,6 @@
     <Compile Include="DependencyInjection\PlatformDependencyRegistration.cs" />
     <Compile Include="DependencyInjection\PlatformModule.cs" />
     <Compile Include="Network\NetworkConnectivityService.cs" />
-    <Compile Include="PowerShell\CommandBase.cs" />
-    <Compile Include="PowerShell\PowerShellLogger.cs" />
-    <Compile Include="PowerShell\PowerShellLoggerFactoryExtensions.cs" />
-    <Compile Include="PowerShell\PowerShellLoggerOptions.cs" />
-    <Compile Include="PowerShell\PowerShellLoggerProvider.cs" />
-    <Compile Include="PowerShell\PowerShellLoggerScopeDisposable.cs" />
-    <Compile Include="PowerShell\PowerShellProgress.cs" />
-    <Compile Include="PowerShell\PowerShellProgressFactory.cs" />
-    <Compile Include="PowerShell\PowerShellUserConfirmation.cs" />
     <Compile Include="Security\Antimalware\AntimalwareScanner.cs" />
     <Compile Include="Security\Antimalware\AntimalwareScannerOptions.cs" />
     <Compile Include="Security\Antimalware\AntimalwareScannerPartialConfigurationValidator.cs" />
@@ -333,6 +324,7 @@
   <ItemGroup />
   <Import Project="..\TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems" Label="Shared" />
   <Import Project="..\TIKSN.Framework.SharedDesktop\TIKSN.Framework.SharedDesktop.projitems" Label="Shared" />
+  <Import Project="..\TIKSN.Framework.PowerShell\TIKSN.Framework.PowerShell.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -341,7 +333,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets'))" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

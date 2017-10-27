@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <ApplicationIcon />
+    <StartupObject />
+    <AssemblyName>PowerShellCoreModule</AssemblyName>
+    <RootNamespace>PowerShellCoreModule</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TIKSN-Framework" Version="3.0.0-alpha.5.pscore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="PowerShellCoreModule.psd1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
