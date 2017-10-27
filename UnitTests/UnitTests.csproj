@@ -24,15 +24,15 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.0.0" />
     <PackageReference Include="Microsoft.NETCore.Portable.Compatibility" Version="1.0.2" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="1.0.0-rtm-beta7" />
-    <PackageReference Include="NSubstitute" Version="3.0.1" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.0.0-rtm-rc2" />
+    <PackageReference Include="NSubstitute" Version="3.1.0" />
     <PackageReference Include="Serilog.Sinks.XUnit" Version="1.0.4" />
     <PackageReference Include="System.Interactive" Version="3.1.1" />
     <PackageReference Include="System.Interactive.Async" Version="3.1.1" />
     <PackageReference Include="xunit.analyzers" Version="0.7.0" />
-    <PackageReference Include="xunit.assert" Version="2.3.0" />
-    <PackageReference Include="xunit.core" Version="2.3.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.0" />
+    <PackageReference Include="xunit.assert" Version="2.3.1" />
+    <PackageReference Include="xunit.core" Version="2.3.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
 
   <ItemGroup>

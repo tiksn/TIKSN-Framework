@@ -35,11 +35,11 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.0" />
-    <PackageReference Include="Bond.CSharp" Version="6.0.0" />
+    <PackageReference Include="Bond.CSharp" Version="7.0.1" />
     <PackageReference Include="codecracker.CSharp" Version="1.0.3" />
     <PackageReference Include="ConsoleTables" Version="2.1.0" />
     <PackageReference Include="Exceptionless.Signed" Version="4.0.1955" />
-    <PackageReference Include="FluentValidation" Version="7.2.0" />
+    <PackageReference Include="FluentValidation" Version="7.2.1" />
     <PackageReference Include="LiteDB" Version="4.0.0" />
     <PackageReference Include="LiteGuard" Version="2.0.0" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.4.0" />
@@ -58,7 +58,7 @@
     <PackageReference Include="MongoDB.Driver" Version="2.4.4" />
     <PackageReference Include="MsgPack.Cli" Version="0.9.2" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="1.0.0-rtm-beta7" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.0.0-rtm-rc2" />
     <PackageReference Include="NoDb" Version="1.1.2" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.2" />
     <PackageReference Include="System.Interactive" Version="3.1.1" />
