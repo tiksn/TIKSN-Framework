@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using TIKSN.Globalization;
 
-namespace TIKSN.Finance.ForeignExchange
+namespace TIKSN.Finance.ForeignExchange.Bank
 {
     public class SwissNationalBank : ICurrencyConverter, IExchangeRatesProvider
     {
