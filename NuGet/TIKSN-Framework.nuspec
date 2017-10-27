@@ -20,6 +20,7 @@
         </frameworkAssemblies>
         <dependencies>
             <group targetFramework=".NETFramework4.7">
+			<dependency id="NLog.Extensions.Logging" version="1.0.0-rtm-beta5" />
                 <dependency id="Autofac" version="4.6.2" />
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
                 <dependency id="Bond.CSharp" version="6.0.0" />
@@ -67,6 +68,7 @@
 				<dependency id="Microsoft.PowerShell.SDK" version="6.0.0-beta.8" />
             </group>
             <group targetFramework="MonoAndroid403">
+			<dependency id="NLog.Extensions.Logging" version="1.0.0-rtm-beta5" />
                 <dependency id="Autofac" version="4.6.2" />
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
                 <dependency id="Bond.CSharp" version="6.0.0" />
@@ -107,6 +109,7 @@
                 <dependency id="WindowsAzure.Storage" version="8.5.0" />
             </group>
             <group targetFramework="netcoreapp2.0">
+			<dependency id="NLog.Extensions.Logging" version="1.0.0-rtm-beta5" />
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
                 <dependency id="Bond.CSharp" version="6.0.0" />
                 <dependency id="ConsoleTables" version="2.1.0" />
@@ -144,6 +147,7 @@
 				<dependency id="Microsoft.PowerShell.SDK" version="6.0.0-beta.8" />
             </group>
             <group targetFramework="netstandard2.0">
+			<dependency id="NLog.Extensions.Logging" version="1.0.0-rtm-beta5" />
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
                 <dependency id="Bond.CSharp" version="6.0.0" />
                 <dependency id="ConsoleTables" version="2.1.0" />
@@ -181,6 +185,7 @@
             </group>
             <group targetFramework="uap10.0">
                 <!--<dependency id="Microsoft.Azure.Mobile.Crashes" version="0.11.1" />-->
+				<dependency id="NLog.Extensions.Logging" version="1.0.0-rtm-beta5" />
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
                 <dependency id="Bond.CSharp" version="6.0.0" />
                 <dependency id="ConsoleTables" version="2.1.0" />
