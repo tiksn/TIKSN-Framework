@@ -45,6 +45,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestRunner.Android", "UnitTestRunner.Android\UnitTestRunner.Android.csproj", "{E1ACF720-CBB6-4193-8AA8-EAA32A920B8A}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TIKSN.Framework.SharedDesktop", "TIKSN.Framework.SharedDesktop\TIKSN.Framework.SharedDesktop.shproj", "{89AF82F5-824B-4EA5-ACD9-8E7974BADDC4}"
+EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TIKSN.Framework.PowerShell", "TIKSN.Framework.PowerShell\TIKSN.Framework.PowerShell.shproj", "{5BD04793-B538-448D-BC23-886198037B74}"
 EndProject
 Global
@@ -55,8 +56,8 @@ Global
 		TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems*{572734f9-e631-44ab-91f0-54735b50d91b}*SharedItemsImports = 4
 		TIKSN.Framework.PowerShell\TIKSN.Framework.PowerShell.projitems*{5bd04793-b538-448d-bc23-886198037b74}*SharedItemsImports = 13
 		TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems*{786b1846-c0a1-46d8-8e17-47cf5cbb0d0d}*SharedItemsImports = 4
-		TIKSN.Framework.SharedDesktop\TIKSN.Framework.SharedDesktop.projitems*{786b1846-c0a1-46d8-8e17-47cf5cbb0d0d}*SharedItemsImports = 4
 		TIKSN.Framework.PowerShell\TIKSN.Framework.PowerShell.projitems*{786b1846-c0a1-46d8-8e17-47cf5cbb0d0d}*SharedItemsImports = 4
+		TIKSN.Framework.SharedDesktop\TIKSN.Framework.SharedDesktop.projitems*{786b1846-c0a1-46d8-8e17-47cf5cbb0d0d}*SharedItemsImports = 4
 		TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems*{7a9b69cb-8abf-4474-a85a-11d5d9f3d005}*SharedItemsImports = 13
 		TIKSN.Framework.SharedDesktop\TIKSN.Framework.SharedDesktop.projitems*{89af82f5-824b-4ea5-acd9-8e7974baddc4}*SharedItemsImports = 13
 		TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems*{b067dd13-e17b-45cc-8b35-d34a1876e0fe}*SharedItemsImports = 13
