@@ -35,7 +35,7 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.0" />
-    <PackageReference Include="Bond.CSharp" Version="6.0.0" />
+    <PackageReference Include="Bond.CSharp" Version="7.0.1" />
     <PackageReference Include="codecracker.CSharp" Version="1.0.3" />
     <PackageReference Include="ConsoleTables" Version="2.1.0" />
     <PackageReference Include="Exceptionless.Signed" Version="4.0.1955" />

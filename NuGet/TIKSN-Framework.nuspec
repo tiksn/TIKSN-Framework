@@ -22,10 +22,10 @@
             <group targetFramework=".NETFramework4.7">
                 <dependency id="Autofac" version="4.6.2" />
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
-                <dependency id="Bond.CSharp" version="6.0.0" />
+                <dependency id="Bond.CSharp" version="7.0.1" />
                 <dependency id="ConsoleTables" version="2.1.0" />
                 <dependency id="Exceptionless.Signed" version="4.0.1955" />
-                <dependency id="FluentValidation" version="7.2.0" />
+                <dependency id="FluentValidation" version="7.2.1" />
                 <dependency id="LiteDB" version="4.0.0" />
                 <dependency id="LiteGuard" version="2.0.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
@@ -70,10 +70,10 @@
             <group targetFramework="MonoAndroid403">
                 <dependency id="Autofac" version="4.6.2" />
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
-                <dependency id="Bond.CSharp" version="6.0.0" />
+                <dependency id="Bond.CSharp" version="7.0.1" />
                 <dependency id="ConsoleTables" version="2.1.0" />
                 <dependency id="Exceptionless.Signed" version="4.0.1955" />
-                <dependency id="FluentValidation" version="7.2.0" />
+                <dependency id="FluentValidation" version="7.2.1" />
                 <dependency id="LiteDB" version="4.0.0" />
                 <dependency id="LiteGuard" version="2.0.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
@@ -111,10 +111,10 @@
             </group>
             <group targetFramework="netcoreapp2.0">
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
-                <dependency id="Bond.CSharp" version="6.0.0" />
+                <dependency id="Bond.CSharp" version="7.0.1" />
                 <dependency id="ConsoleTables" version="2.1.0" />
                 <dependency id="Exceptionless.Signed" version="4.0.1955" />
-                <dependency id="FluentValidation" version="7.2.0" />
+                <dependency id="FluentValidation" version="7.2.1" />
                 <dependency id="LiteDB" version="4.0.0" />
                 <dependency id="LiteGuard" version="2.0.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
@@ -150,10 +150,10 @@
             </group>
             <group targetFramework="netstandard2.0">
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
-                <dependency id="Bond.CSharp" version="6.0.0" />
+                <dependency id="Bond.CSharp" version="7.0.1" />
                 <dependency id="ConsoleTables" version="2.1.0" />
                 <dependency id="Exceptionless.Signed" version="4.0.1955" />
-                <dependency id="FluentValidation" version="7.2.0" />
+                <dependency id="FluentValidation" version="7.2.1" />
                 <dependency id="LiteDB" version="4.0.0" />
                 <dependency id="LiteGuard" version="2.0.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
@@ -189,10 +189,10 @@
             <group targetFramework="uap10.0">
                 <!--<dependency id="Microsoft.Azure.Mobile.Crashes" version="0.11.1" />-->
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
-                <dependency id="Bond.CSharp" version="6.0.0" />
+                <dependency id="Bond.CSharp" version="7.0.1" />
                 <dependency id="ConsoleTables" version="2.1.0" />
                 <dependency id="Exceptionless.Signed" version="4.0.1955" />
-                <dependency id="FluentValidation" version="7.2.0" />
+                <dependency id="FluentValidation" version="7.2.1" />
                 <dependency id="LiteDB" version="4.0.0" />
                 <dependency id="LiteGuard" version="2.0.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
