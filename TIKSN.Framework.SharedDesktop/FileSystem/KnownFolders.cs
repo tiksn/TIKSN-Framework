@@ -26,6 +26,8 @@ namespace TIKSN.FileSystem
 
         private IFileProvider GetFromFolderPath(string folderPath)
         {
+            Directory.CreateDirectory(folderPath);
+
             return new PhysicalFileProvider(folderPath);
         }
 
@@ -36,7 +38,7 @@ namespace TIKSN.FileSystem
             var fileVersionInfo = FileVersionInfo.GetVersionInfo(_mainAssembly.Location);
 
             folderPath = Path.Combine(folderPath, fileVersionInfo.CompanyName);
-            folderPath = Path.Combine(folderPath, fileVersionInfo.ProductVersion);
+            folderPath = Path.Combine(folderPath, fileVersionInfo.ProductName);
 
             switch (_versionConsideration)
             {
