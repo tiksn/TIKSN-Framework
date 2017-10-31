@@ -100,9 +100,11 @@ namespace TIKSN.Finance.ForeignExchange
 
         private async Task SaveExchangeRatesAsync(int foreignExchangeID, IEnumerable<ExchangeRate> exchangeRates, CancellationToken cancellationToken)
         {
+            var id = Interlocked.Increment(ref nextID);
+
             var entities = exchangeRates.Select(item => new ExchangeRateEntity
             {
-                ID = _random.Next(),
+                ID = id,
                 AsOn = item.AsOn,
                 BaseCurrencyCode = item.Pair.BaseCurrency.ISOCurrencySymbol,
                 CounterCurrencyCode = item.Pair.CounterCurrency.ISOCurrencySymbol,
