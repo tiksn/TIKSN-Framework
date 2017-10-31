@@ -26,6 +26,18 @@ namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
                 .First();
         }
 
+        public async Task<int> GetMaximalIdAsync(CancellationToken cancellationToken)
+        {
+            var entity = await Entities
+                .OrderByDescending(item => item.ID)
+                .FirstOrDefaultAsync();
+
+            if (entity == null)
+                return 0;
+
+            return entity.ID;
+        }
+
         public async Task<IReadOnlyCollection<ExchangeRateEntity>> SearchAsync(
             int foreignExchangeID,
             string baseCurrencyCode,
