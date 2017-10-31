@@ -11,6 +11,9 @@ namespace TIKSN.Finance.ForeignExchange
 {
     public abstract class ExchangeRateServiceBase : IExchangeRateService
     {
+        private static int nextID;
+        private static SemaphoreSlim nextIdLocker = new SemaphoreSlim(1, 1);
+
         protected readonly ICurrencyFactory _currencyFactory;
         protected readonly IRegionFactory _regionFactory;
         private readonly IExchangeRateRepository _exchangeRateRepository;
@@ -128,6 +131,16 @@ namespace TIKSN.Finance.ForeignExchange
 
                     await _foreignExchangeRepository.AddAsync(forex, cancellationToken);
                 }
+            }
+
+            await nextIdLocker.WaitAsync();
+            try
+            {
+                nextID = await _exchangeRateRepository.GetMaximalIdAsync(cancellationToken);
+            }
+            finally
+            {
+                nextIdLocker.Release();
             }
         }
 
