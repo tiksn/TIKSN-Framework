@@ -29,7 +29,6 @@ namespace TIKSN.Analytics.Logging
             var nLogViewerTarget = new NLogViewerTarget()
             {
                 IncludeNLogData = options.IncludeNLogData,
-                AppInfo = options.AppInfo,
                 IncludeCallSite = options.IncludeCallSite,
                 IncludeSourceInfo = options.IncludeSourceInfo,
                 IncludeMdc = options.IncludeMdc,
@@ -39,6 +38,9 @@ namespace TIKSN.Analytics.Logging
 
             if (options.Url != null)
                 nLogViewerTarget.Layout = Layout.FromString(options.Url.AbsoluteUri);
+
+            if (!string.IsNullOrWhiteSpace(options.AppInfo))
+                nLogViewerTarget.AppInfo = options.AppInfo;
 
             AddForAllLevels(nLogViewerTarget);
 
