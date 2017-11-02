@@ -9,7 +9,7 @@ namespace TIKSN.Analytics.Logging.NLog
         {
             RuleFor(instance => instance.Url.Scheme)
                 .Must(IsProperScheme)
-                .When(instance => instance != null);
+                .When(instance => instance.Url != null);
         }
 
         private static bool IsProperScheme(string scheme)

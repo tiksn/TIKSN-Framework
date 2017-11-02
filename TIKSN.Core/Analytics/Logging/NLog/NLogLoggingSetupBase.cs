@@ -26,23 +26,25 @@ namespace TIKSN.Analytics.Logging
             SetupNLog();
 
             var options = _remoteNLogViewerOptions.GetConfiguration();
-            var nLogViewerTarget = new NLogViewerTarget()
-            {
-                IncludeNLogData = options.IncludeNLogData,
-                IncludeCallSite = options.IncludeCallSite,
-                IncludeSourceInfo = options.IncludeSourceInfo,
-                IncludeMdc = options.IncludeMdc,
-                IncludeMdlc = options.IncludeMdlc,
-                IncludeNdc = options.IncludeNdc
-            };
 
             if (options.Url != null)
-                nLogViewerTarget.Layout = Layout.FromString(options.Url.AbsoluteUri);
+            {
+                var nLogViewerTarget = new NLogViewerTarget
+                {
+                    IncludeNLogData = options.IncludeNLogData,
+                    IncludeCallSite = options.IncludeCallSite,
+                    IncludeSourceInfo = options.IncludeSourceInfo,
+                    IncludeMdc = options.IncludeMdc,
+                    IncludeMdlc = options.IncludeMdlc,
+                    IncludeNdc = options.IncludeNdc,
+                    Layout = Layout.FromString(options.Url.AbsoluteUri)
+                };
 
-            if (!string.IsNullOrWhiteSpace(options.AppInfo))
-                nLogViewerTarget.AppInfo = options.AppInfo;
+                if (!string.IsNullOrWhiteSpace(options.AppInfo))
+                    nLogViewerTarget.AppInfo = options.AppInfo;
 
-            AddForAllLevels(nLogViewerTarget);
+                AddForAllLevels(nLogViewerTarget);
+            }
 
             _loggerFactory.AddNLog();
             _loggerFactory.ConfigureNLog(_loggingConfiguration);
