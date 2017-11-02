@@ -28,7 +28,7 @@ namespace TIKSN.Analytics.Logging.NLog
 
             if (options.Url != null)
             {
-                var nLogViewerTarget = new NLogViewerTarget
+                var nLogViewerTarget = new NLogViewerTarget("RemoteNLogViewer")
                 {
                     IncludeNLogData = options.IncludeNLogData,
                     IncludeCallSite = options.IncludeCallSite,
