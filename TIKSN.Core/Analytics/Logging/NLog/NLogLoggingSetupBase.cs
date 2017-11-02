@@ -3,10 +3,9 @@ using NLog.Config;
 using NLog.Extensions.Logging;
 using NLog.Layouts;
 using NLog.Targets;
-using TIKSN.Analytics.Logging.NLog;
 using TIKSN.Configuration;
 
-namespace TIKSN.Analytics.Logging
+namespace TIKSN.Analytics.Logging.NLog
 {
     public abstract class NLogLoggingSetupBase : ILoggingSetup
     {

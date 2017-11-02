@@ -1,5 +1,4 @@
-﻿using NLog.Layouts;
-using System;
+﻿using System;
 
 namespace TIKSN.Analytics.Logging.NLog
 {
