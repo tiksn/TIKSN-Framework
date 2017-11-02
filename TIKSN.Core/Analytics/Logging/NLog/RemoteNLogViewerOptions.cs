@@ -4,6 +4,8 @@ namespace TIKSN.Analytics.Logging.NLog
 {
     public class RemoteNLogViewerOptions
     {
+        public const string RemoteNLogViewerConfigurationSection = "RemoteNLogViewer";
+
         private string _address;
         private Uri _url;
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using TIKSN.Analytics.Logging.NLog;
 
 namespace TIKSN.Configuration
 {
@@ -11,9 +12,9 @@ namespace TIKSN.Configuration
         {
             _switchMappings = new Dictionary<string, string>();
 
-            _switchMappings.Add("--nlog-viewer-address", ConfigurationPath.Combine("RemoteNLogViewer", "Address"));
-            _switchMappings.Add("--nlog-viewer-include-call-site", ConfigurationPath.Combine("RemoteNLogViewer", "IncludeCallSite"));
-            _switchMappings.Add("--nlog-viewer-include-source-info", ConfigurationPath.Combine("RemoteNLogViewer", "IncludeSourceInfo"));
+            _switchMappings.Add("--nlog-viewer-address", ConfigurationPath.Combine(RemoteNLogViewerOptions.RemoteNLogViewerConfigurationSection, nameof(RemoteNLogViewerOptions.Address)));
+            _switchMappings.Add("--nlog-viewer-include-call-site", ConfigurationPath.Combine(RemoteNLogViewerOptions.RemoteNLogViewerConfigurationSection, nameof(RemoteNLogViewerOptions.IncludeCallSite)));
+            _switchMappings.Add("--nlog-viewer-include-source-info", ConfigurationPath.Combine(RemoteNLogViewerOptions.RemoteNLogViewerConfigurationSection, nameof(RemoteNLogViewerOptions.IncludeSourceInfo)));
         }
 
         public virtual IConfigurationRoot CreateConfigurationRoot()
