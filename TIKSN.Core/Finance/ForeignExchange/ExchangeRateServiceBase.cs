@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using System.Linq;
 using TIKSN.Finance.ForeignExchange.Data;
 using TIKSN.Globalization;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Localization;
+using TIKSN.Localization;
 
 namespace TIKSN.Finance.ForeignExchange
 {
@@ -16,18 +19,24 @@ namespace TIKSN.Finance.ForeignExchange
 
         protected readonly ICurrencyFactory _currencyFactory;
         protected readonly IRegionFactory _regionFactory;
+        protected readonly ILogger<ExchangeRateServiceBase> _logger;
+        protected readonly IStringLocalizer _stringLocalizer;
         private readonly IExchangeRateRepository _exchangeRateRepository;
         private readonly IForeignExchangeRepository _foreignExchangeRepository;
         private readonly Dictionary<int, (IExchangeRatesProvider BatchProvider, IExchangeRateProvider IndividualProvider, int LongNameKey, int ShortNameKey, RegionInfo Country, TimeSpan InvalidationInterval)> _providers;
         private readonly Random _random;
 
         protected ExchangeRateServiceBase(
+            ILogger<ExchangeRateServiceBase> logger,
+            IStringLocalizer stringLocalizer,
             ICurrencyFactory currencyFactory,
             IRegionFactory regionFactory,
             IExchangeRateRepository exchangeRateRepository,
             IForeignExchangeRepository foreignExchangeRepository,
             Random random)
         {
+            _logger = logger;
+            _stringLocalizer = stringLocalizer;
             _exchangeRateRepository = exchangeRateRepository;
             _foreignExchangeRepository = foreignExchangeRepository;
 
@@ -80,8 +89,13 @@ namespace TIKSN.Finance.ForeignExchange
                     combinedRates.AddRange(rates);
                 }
             }
+            var exchangeRateEntity = combinedRates
+                .MinBy(item => Math.Abs((item.AsOn - asOn).Ticks))
+                .First();
 
-            return combinedRates.MinBy(item => Math.Abs((item.AsOn - asOn).Ticks)).First().Rate;
+            _logger.LogInformation("Exchange rate provided by {0}", _stringLocalizer.GetRequiredString(exchangeRateEntity.ForeignExchange.ShortNameKey));
+
+            return exchangeRateEntity.Rate;
         }
 
         private async Task FetchExchangeRatesAsync(int foreignExchangeID, IExchangeRatesProvider batchProvider, DateTimeOffset asOn, CancellationToken cancellationToken)

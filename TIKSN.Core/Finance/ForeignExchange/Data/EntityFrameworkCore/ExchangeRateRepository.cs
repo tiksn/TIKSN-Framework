@@ -23,6 +23,7 @@ namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
         {
             return Entities
                 .OrderBy(entity => Math.Abs((entity.AsOn - asOn).Ticks))
+                .Include(item => item.ForeignExchange)
                 .First();
         }
 
@@ -52,6 +53,7 @@ namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
                     item.CounterCurrencyCode == counterCurrencyCode &&
                     item.ForeignExchangeID == foreignExchangeID &&
                     item.AsOn >= dateFrom && item.AsOn <= dateTo)
+                .Include(item => item.ForeignExchange)
                 .ToArrayAsync(cancellationToken);
         }
     }
