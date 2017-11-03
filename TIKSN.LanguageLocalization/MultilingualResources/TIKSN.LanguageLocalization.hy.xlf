@@ -662,6 +662,50 @@
           <source>Senior Software Engineer</source>
           <target state="translated">Ավագ ծրագրավորող</target>
         </trans-unit>
+        <trans-unit id="171400643" translate="yes" xml:space="preserve">
+          <source>Central Bank of Armenia</source>
+          <target state="new">Central Bank of Armenia</target>
+        </trans-unit>
+        <trans-unit id="224205610" translate="yes" xml:space="preserve">
+          <source>European Central Bank</source>
+          <target state="new">European Central Bank</target>
+        </trans-unit>
+        <trans-unit id="344909065" translate="yes" xml:space="preserve">
+          <source>National Bank of Ukraine</source>
+          <target state="new">National Bank of Ukraine</target>
+        </trans-unit>
+        <trans-unit id="466192205" translate="yes" xml:space="preserve">
+          <source>Central Bank of Russia</source>
+          <target state="new">Central Bank of Russia</target>
+        </trans-unit>
+        <trans-unit id="645369586" translate="yes" xml:space="preserve">
+          <source>Reserve Bank of Australia</source>
+          <target state="new">Reserve Bank of Australia</target>
+        </trans-unit>
+        <trans-unit id="724813953" translate="yes" xml:space="preserve">
+          <source>Federal Reserve System</source>
+          <target state="new">Federal Reserve System</target>
+        </trans-unit>
+        <trans-unit id="734344590" translate="yes" xml:space="preserve">
+          <source>Bank of Canada</source>
+          <target state="new">Bank of Canada</target>
+        </trans-unit>
+        <trans-unit id="744582913" translate="yes" xml:space="preserve">
+          <source>The Central Bank of the Republic of Armenia</source>
+          <target state="new">The Central Bank of the Republic of Armenia</target>
+        </trans-unit>
+        <trans-unit id="748923176" translate="yes" xml:space="preserve">
+          <source>Swiss National Bank</source>
+          <target state="new">Swiss National Bank</target>
+        </trans-unit>
+        <trans-unit id="758955736" translate="yes" xml:space="preserve">
+          <source>Bank of England</source>
+          <target state="new">Bank of England</target>
+        </trans-unit>
+        <trans-unit id="937230874" translate="yes" xml:space="preserve">
+          <source>The Central Bank of the Russian Federation</source>
+          <target state="new">The Central Bank of the Russian Federation</target>
+        </trans-unit>
       </group>
     </body>
   </file>

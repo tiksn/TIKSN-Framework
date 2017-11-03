@@ -1016,6 +1016,61 @@
 		/// </summary>
 		public const int Key763272923 = 763272923;
 		/// <summary>
+		/// Key: 171400643
+		/// Original Value: Central Bank of Armenia
+		/// </summary>
+		public const int Key171400643 = 171400643;
+		/// <summary>
+		/// Key: 224205610
+		/// Original Value: European Central Bank
+		/// </summary>
+		public const int Key224205610 = 224205610;
+		/// <summary>
+		/// Key: 344909065
+		/// Original Value: National Bank of Ukraine
+		/// </summary>
+		public const int Key344909065 = 344909065;
+		/// <summary>
+		/// Key: 466192205
+		/// Original Value: Central Bank of Russia
+		/// </summary>
+		public const int Key466192205 = 466192205;
+		/// <summary>
+		/// Key: 645369586
+		/// Original Value: Reserve Bank of Australia
+		/// </summary>
+		public const int Key645369586 = 645369586;
+		/// <summary>
+		/// Key: 724813953
+		/// Original Value: Federal Reserve System
+		/// </summary>
+		public const int Key724813953 = 724813953;
+		/// <summary>
+		/// Key: 734344590
+		/// Original Value: Bank of Canada
+		/// </summary>
+		public const int Key734344590 = 734344590;
+		/// <summary>
+		/// Key: 744582913
+		/// Original Value: The Central Bank of the Republic of Armenia
+		/// </summary>
+		public const int Key744582913 = 744582913;
+		/// <summary>
+		/// Key: 748923176
+		/// Original Value: Swiss National Bank
+		/// </summary>
+		public const int Key748923176 = 748923176;
+		/// <summary>
+		/// Key: 758955736
+		/// Original Value: Bank of England
+		/// </summary>
+		public const int Key758955736 = 758955736;
+		/// <summary>
+		/// Key: 937230874
+		/// Original Value: The Central Bank of the Russian Federation
+		/// </summary>
+		public const int Key937230874 = 937230874;
+		/// <summary>
 		/// Key: 289384638
 		/// Original Value: Special drawing rights
 		/// </summary>
