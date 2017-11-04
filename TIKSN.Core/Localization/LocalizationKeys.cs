@@ -1071,6 +1071,26 @@
 		/// </summary>
 		public const int Key937230874 = 937230874;
 		/// <summary>
+		/// Key: 611756663
+		/// Original Value: $ My Currency
+		/// </summary>
+		public const int Key611756663 = 611756663;
+		/// <summary>
+		/// Key: 633405189
+		/// Original Value: $ My Currency (mycurrency.net)
+		/// </summary>
+		public const int Key633405189 = 633405189;
+		/// <summary>
+		/// Key: 692585112
+		/// Original Value: CurrencyConverterApi.com
+		/// </summary>
+		public const int Key692585112 = 692585112;
+		/// <summary>
+		/// Key: 999430243
+		/// Original Value: currencylayer.com
+		/// </summary>
+		public const int Key999430243 = 999430243;
+		/// <summary>
 		/// Key: 289384638
 		/// Original Value: Special drawing rights
 		/// </summary>
