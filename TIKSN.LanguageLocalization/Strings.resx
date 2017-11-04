@@ -642,4 +642,16 @@
   <data name="937230874" xml:space="preserve">
     <value>The Central Bank of the Russian Federation</value>
   </data>
+  <data name="611756663" xml:space="preserve">
+    <value>$ My Currency</value>
+  </data>
+  <data name="633405189" xml:space="preserve">
+    <value>$ My Currency (mycurrency.net)</value>
+  </data>
+  <data name="692585112" xml:space="preserve">
+    <value>CurrencyConverterApi.com</value>
+  </data>
+  <data name="999430243" xml:space="preserve">
+    <value>currencylayer.com</value>
+  </data>
 </root>
