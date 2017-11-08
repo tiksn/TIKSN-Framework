@@ -12,7 +12,7 @@ namespace TIKSN.DependencyInjection.Tests
         private readonly Action<IServiceCollection> _configureServices;
         private readonly Action<IServiceCollection, IConfigurationRoot> _configureOptions;
 
-        public TestCompositionRootSetup(ITestOutputHelper testOutputHelper, Action<IServiceCollection> configureServices = null, Action<IServiceCollection, IConfigurationRoot> configureOptions = null) : base(new TestConfigurationRootSetup().CreateConfigurationRoot())
+        public TestCompositionRootSetup(ITestOutputHelper testOutputHelper, Action<IServiceCollection> configureServices = null, Action<IServiceCollection, IConfigurationRoot> configureOptions = null) : base(new TestConfigurationRootSetup().GetConfigurationRoot())
         {
             _testOutputHelper = testOutputHelper;
             _configureServices = configureServices;
