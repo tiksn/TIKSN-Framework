@@ -66,7 +66,13 @@
     <Reference Include="ConsoleTables, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ConsoleTables.2.1.0\lib\netstandard1.3\ConsoleTables.dll</HintPath>
     </Reference>
+    <Reference Include="Exceptionless.Signed, Version=4.0.1955.0, Culture=neutral, PublicKeyToken=fc181f0a46f65747, processorArchitecture=MSIL">
+      <HintPath>..\packages\Exceptionless.Signed.4.0.1955\lib\netstandard1.5\Exceptionless.Signed.dll</HintPath>
+    </Reference>
     <Reference Include="Java.Interop" />
+    <Reference Include="LiteGuard, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiteGuard.2.0.1\lib\netstandard2.0\LiteGuard.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Azure.Mobile, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Azure.Mobile.0.16.0\lib\MonoAndroid403\Microsoft.Azure.Mobile.dll</HintPath>
     </Reference>
@@ -134,6 +140,9 @@
     <Reference Include="Microsoft.Extensions.Options, Version=2.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Options.2.0.0\lib\netstandard2.0\Microsoft.Extensions.Options.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Extensions.PlatformAbstractions, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.PlatformAbstractions.1.1.0\lib\netstandard1.3\Microsoft.Extensions.PlatformAbstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.Primitives, Version=2.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.2.0.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
@@ -158,6 +167,9 @@
       <HintPath>..\packages\Serilog.Extensions.Logging.2.0.2\lib\netstandard2.0\Serilog.Extensions.Logging.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.AppDomain, Version=2.0.11.0, Culture=neutral, PublicKeyToken=a741d64a8a4710e8, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.AppDomain.2.0.11\lib\netstandard1.3\System.AppDomain.dll</HintPath>
+    </Reference>
     <Reference Include="System.Collections.Immutable, Version=1.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Collections.Immutable.1.4.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
     </Reference>
