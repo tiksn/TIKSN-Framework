@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>TIKSN-Framework</id>
-        <version>3.0.0-alpha.20</version>
+        <version>3.0.0-alpha.21</version>
         <title>TIKSN Framework</title>
         <authors>TIKSN</authors>
         <owners>TIKSN</owners>
@@ -56,7 +56,7 @@
                 <dependency id="NoDb" version="1.1.2" />
                 <dependency id="Serilog" version="2.5.0" />
                 <dependency id="Serilog.Extensions.Logging" version="2.0.2" />
-                <dependency id="ShellProgressBar" version="3.0.0" />
+                <dependency id="ShellProgressBar" version="4.0.0" />
                 <dependency id="System.Interactive" version="3.1.1" />
                 <dependency id="System.Interactive.Async" version="3.1.1" />
                 <dependency id="System.Reactive.Core" version="3.1.1" />
@@ -139,6 +139,7 @@
                 <dependency id="NoDb" version="1.1.2" />
                 <dependency id="Serilog" version="2.5.0" />
                 <dependency id="Serilog.Extensions.Logging" version="2.0.2" />
+                <dependency id="ShellProgressBar" version="4.0.0" />
                 <dependency id="System.Interactive" version="3.1.1" />
                 <dependency id="System.Interactive.Async" version="3.1.1" />
                 <dependency id="System.Reactive.Core" version="3.1.1" />

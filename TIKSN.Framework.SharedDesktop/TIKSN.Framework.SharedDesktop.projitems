@@ -10,5 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)FileSystem\KnownFolders.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shell\ShellProgress.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shell\ShellProgressFactory.cs" />
   </ItemGroup>
 </Project>

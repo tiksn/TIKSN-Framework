@@ -24,7 +24,7 @@ namespace TIKSN.Shell
         {
             base.OnReport(value);
 
-            _progressBar.UpdateMessage($"{value.StatusDescription} {value.CurrentOperation}");
+            _progressBar.Message = $"{value.StatusDescription} {value.CurrentOperation}";
 
             var updatedTicks = EstimateTicks(value.PercentComplete);
 
