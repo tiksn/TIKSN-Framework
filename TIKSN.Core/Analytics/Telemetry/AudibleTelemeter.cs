@@ -1,5 +1,4 @@
-﻿using LiteGuard;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TIKSN.Speech;
@@ -12,9 +11,7 @@ namespace TIKSN.Analytics.Telemetry
 
         public AudibleTelemeter(ITextToSpeechService textToSpeechService)
         {
-            Guard.AgainstNullArgument(nameof(textToSpeechService), textToSpeechService);
-
-            _textToSpeechService = textToSpeechService;
+            _textToSpeechService = textToSpeechService ?? throw new ArgumentNullException(nameof(textToSpeechService));
         }
 
         public Task TrackEvent(string name)
