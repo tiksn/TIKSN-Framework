@@ -1,16 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2CE66F97-5B89-401D-AEE5-BF2228760097}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{38C873E2-88C6-435A-89B3-A3EBD5D4D171}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{D98A9FAA-7292-44A9-BDCA-ADC0C704EF92}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{D98A9FAA-7292-44A9-BDCA-ADC0C704EF92}"
 	ProjectSection(SolutionItems) = preProject
 		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
-		NuGet\TIKSN-Framework.nuspec = NuGet\TIKSN-Framework.nuspec
+		Build\TIKSN-Framework.nuspec = Build\TIKSN-Framework.nuspec
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Core", "TIKSN.Core\TIKSN.Core.csproj", "{D1ECB169-BB57-4751-AECA-415E078E5996}"
@@ -36,6 +36,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2278829B-1466-45C6-862F-FF38DFF07A24}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.LanguageLocalization", "TIKSN.LanguageLocalization\TIKSN.LanguageLocalization.csproj", "{974DB7C5-CE2D-4232-B781-CFCBB1F7784F}"
