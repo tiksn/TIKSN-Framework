@@ -1,5 +1,4 @@
-﻿using LiteGuard;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -22,15 +21,10 @@ namespace TIKSN.Web.Rest
             IDeserializerRestFactory deserializerRestFactory,
             IRestAuthenticationTokenProvider restAuthenticationTokenProvider)
         {
-            Guard.AgainstNullArgument(nameof(httpClientFactory), httpClientFactory);
-            Guard.AgainstNullArgument(nameof(serializerRestFactory), serializerRestFactory);
-            Guard.AgainstNullArgument(nameof(deserializerRestFactory), deserializerRestFactory);
-            Guard.AgainstNullArgument(nameof(restAuthenticationTokenProvider), restAuthenticationTokenProvider);
-
-            _httpClientFactory = httpClientFactory;
-            _serializerRestFactory = serializerRestFactory;
-            _deserializerRestFactory = deserializerRestFactory;
-            _restAuthenticationTokenProvider = restAuthenticationTokenProvider;
+            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            _serializerRestFactory = serializerRestFactory ?? throw new ArgumentNullException(nameof(serializerRestFactory));
+            _deserializerRestFactory = deserializerRestFactory ?? throw new ArgumentNullException(nameof(deserializerRestFactory));
+            _restAuthenticationTokenProvider = restAuthenticationTokenProvider ?? throw new ArgumentNullException(nameof(restAuthenticationTokenProvider));
         }
 
         public async Task<TResult> Request<TResult, TRequest>(TRequest request, CancellationToken cancellationToken)

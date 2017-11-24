@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>TIKSN-Framework</id>
-        <version>3.0.0-alpha.21</version>
+        <version>3.0.0-alpha.22</version>
         <title>TIKSN Framework</title>
         <authors>TIKSN</authors>
         <owners>TIKSN</owners>
@@ -27,7 +27,6 @@
                 <dependency id="Exceptionless.Signed" version="4.0.1955" />
                 <dependency id="FluentValidation" version="7.2.1" />
                 <dependency id="LiteDB" version="4.0.0" />
-                <dependency id="LiteGuard" version="2.0.1" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
                 <dependency id="Microsoft.EntityFrameworkCore" version="2.0.0" />
                 <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.0.0" />
@@ -75,7 +74,6 @@
                 <dependency id="Exceptionless.Signed" version="4.0.1955" />
                 <dependency id="FluentValidation" version="7.2.1" />
                 <dependency id="LiteDB" version="4.0.0" />
-                <dependency id="LiteGuard" version="2.0.1" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
                 <dependency id="Microsoft.Azure.Mobile.Analytics" version="0.16.0" />
                 <dependency id="Microsoft.Azure.Mobile.Crashes" version="0.16.0" />
@@ -116,7 +114,6 @@
                 <dependency id="Exceptionless.Signed" version="4.0.1955" />
                 <dependency id="FluentValidation" version="7.2.1" />
                 <dependency id="LiteDB" version="4.0.0" />
-                <dependency id="LiteGuard" version="2.0.1" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
                 <dependency id="Microsoft.EntityFrameworkCore" version="2.0.0" />
                 <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.0.0" />
@@ -156,7 +153,6 @@
                 <dependency id="Exceptionless.Signed" version="4.0.1955" />
                 <dependency id="FluentValidation" version="7.2.1" />
                 <dependency id="LiteDB" version="4.0.0" />
-                <dependency id="LiteGuard" version="2.0.1" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
                 <dependency id="Microsoft.EntityFrameworkCore" version="2.0.0" />
                 <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.0.0" />
@@ -195,7 +191,6 @@
                 <dependency id="Exceptionless.Signed" version="4.0.1955" />
                 <dependency id="FluentValidation" version="7.2.1" />
                 <dependency id="LiteDB" version="4.0.0" />
-                <dependency id="LiteGuard" version="2.0.1" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
                 <dependency id="Microsoft.Azure.Mobile.Analytics" version="0.16.0" />
                 <dependency id="Microsoft.Azure.Mobile.Push" version="0.16.0" />

@@ -1,5 +1,4 @@
-﻿using LiteGuard;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +29,8 @@ namespace TIKSN.Data.Mongo
 
         public Task RemoveRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken)
         {
-            Guard.AgainstNullArgument(nameof(entities), entities);
+            if (entities == null)
+                throw new ArgumentNullException(nameof(entities));
 
             var filters = entities.Select(item => GetIdentityFilter(item.ID)).ToArray();
 

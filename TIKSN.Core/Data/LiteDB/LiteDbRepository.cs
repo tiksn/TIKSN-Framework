@@ -1,5 +1,4 @@
 ﻿using LiteDB;
-using LiteGuard;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +31,8 @@ namespace TIKSN.Data.LiteDB
 
         public Task RemoveRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken)
         {
-            Guard.AgainstNullArgument(nameof(entities), entities);
+            if (entities == null)
+                throw new ArgumentNullException(nameof(entities));
 
             var ids = entities.Select(item => item.ID).ToArray();
 

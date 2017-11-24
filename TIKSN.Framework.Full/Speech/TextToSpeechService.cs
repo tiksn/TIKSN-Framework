@@ -1,5 +1,4 @@
-﻿using LiteGuard;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using System.Linq;
 using System.Speech.Synthesis;
 using System.Threading.Tasks;
@@ -13,9 +12,7 @@ namespace TIKSN.Speech
 
         public TextToSpeechService(IOptions<TextToSpeechOptions> options)
         {
-            Guard.AgainstNullArgument(nameof(options), options);
-
-            _options = options;
+            _options = options ?? throw new System.ArgumentNullException(nameof(options));
 
             speaker = new SpeechSynthesizer();
         }

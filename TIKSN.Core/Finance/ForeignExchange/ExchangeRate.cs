@@ -1,5 +1,4 @@
-﻿using LiteGuard;
-using System;
+﻿using System;
 
 namespace TIKSN.Finance.ForeignExchange
 {
@@ -7,7 +6,9 @@ namespace TIKSN.Finance.ForeignExchange
     {
         public ExchangeRate(CurrencyPair pair, DateTimeOffset asOn, decimal rate)
         {
-            Guard.AgainstNullArgument(nameof(pair), pair);
+            if (pair == null)
+                throw new ArgumentNullException(nameof(pair));
+
             if (rate <= decimal.Zero) throw new ArgumentOutOfRangeException(nameof(rate), rate, "Rate must be a positive number.");
 
             Pair = pair;
