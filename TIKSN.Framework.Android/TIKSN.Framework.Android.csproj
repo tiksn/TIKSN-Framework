@@ -70,9 +70,6 @@
       <HintPath>..\packages\Exceptionless.Signed.4.0.1955\lib\netstandard1.5\Exceptionless.Signed.dll</HintPath>
     </Reference>
     <Reference Include="Java.Interop" />
-    <Reference Include="LiteGuard, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\LiteGuard.2.0.1\lib\netstandard2.0\LiteGuard.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Azure.Mobile, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Azure.Mobile.0.16.0\lib\MonoAndroid403\Microsoft.Azure.Mobile.dll</HintPath>
     </Reference>
