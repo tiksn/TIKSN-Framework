@@ -10,7 +10,7 @@ Task Publish -Depends Pack {
     nuget push "$packageName" -source nuget.org
 }
 
-Task Pack -Depends Clean, Build {
+Task Pack -Depends Build {
     Remove-Item TIKSN-Framework.*.nupkg
     
     nuget pack .\TIKSN-Framework.nuspec
