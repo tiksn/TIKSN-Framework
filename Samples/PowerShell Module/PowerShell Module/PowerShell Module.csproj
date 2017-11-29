@@ -43,11 +43,13 @@
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\GetSampleCommand.cs" />
     <Compile Include="CompositionRootSetup.cs" />
+    <Compile Include="ConfigurationRootSetup.cs" />
+    <Compile Include="LoggingSetup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="TIKSN-Framework">
-      <Version>2.1.0</Version>
+      <Version>3.0.0-alpha.24</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
