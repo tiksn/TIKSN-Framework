@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TIKSN-Framework" Version="3.0.0-alpha.5.pscore" />
+    <PackageReference Include="TIKSN-Framework" Version="3.0.0-alpha.24" />
   </ItemGroup>
 
   <ItemGroup>
