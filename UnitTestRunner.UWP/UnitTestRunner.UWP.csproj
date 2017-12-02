@@ -145,6 +145,12 @@
     <PackageReference Include="Exceptionless.Signed">
       <Version>4.0.1955</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.AppCenter.Analytics">
+      <Version>1.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AppCenter.Crashes">
+      <Version>1.0.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational">
       <Version>2.0.1</Version>
     </PackageReference>
