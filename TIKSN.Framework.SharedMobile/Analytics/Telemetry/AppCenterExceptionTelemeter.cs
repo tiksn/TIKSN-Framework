@@ -1,10 +1,10 @@
-﻿using Microsoft.Azure.Mobile;
+﻿using Microsoft.AppCenter;
 using System;
 using System.Threading.Tasks;
 
 namespace TIKSN.Analytics.Telemetry
 {
-    public class MobileCenterExceptionTelemeter : IExceptionTelemeter
+    public class AppCenterExceptionTelemeter : IExceptionTelemeter
     {
         public Task TrackException(Exception exception)
         {
@@ -16,20 +16,20 @@ namespace TIKSN.Analytics.Telemetry
             switch (severityLevel)
             {
                 case TelemetrySeverityLevel.Verbose:
-                    MobileCenterLog.Verbose(MobileCenterLog.LogTag, exception.Message, exception);
+                    AppCenterLog.Verbose(AppCenterLog.LogTag, exception.Message, exception);
                     break;
 
                 case TelemetrySeverityLevel.Information:
-                    MobileCenterLog.Info(MobileCenterLog.LogTag, exception.Message, exception);
+                    AppCenterLog.Info(AppCenterLog.LogTag, exception.Message, exception);
                     break;
 
                 case TelemetrySeverityLevel.Warning:
-                    MobileCenterLog.Warn(MobileCenterLog.LogTag, exception.Message, exception);
+                    AppCenterLog.Warn(AppCenterLog.LogTag, exception.Message, exception);
                     break;
 
                 case TelemetrySeverityLevel.Error:
                 case TelemetrySeverityLevel.Critical:
-                    MobileCenterLog.Error(MobileCenterLog.LogTag, exception.Message, exception);
+                    AppCenterLog.Error(AppCenterLog.LogTag, exception.Message, exception);
                     break;
 
                 default:
