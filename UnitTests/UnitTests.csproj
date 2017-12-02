@@ -30,7 +30,7 @@
     <PackageReference Include="Serilog.Sinks.XUnit" Version="1.0.4" />
     <PackageReference Include="System.Interactive" Version="3.1.1" />
     <PackageReference Include="System.Interactive.Async" Version="3.1.1" />
-    <PackageReference Include="xunit.analyzers" Version="0.7.0" />
+    <PackageReference Include="xunit.analyzers" Version="0.8.0" />
     <PackageReference Include="xunit.assert" Version="2.3.1" />
     <PackageReference Include="xunit.core" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
