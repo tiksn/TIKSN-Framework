@@ -26,7 +26,6 @@ namespace UnitTestRunner.Android
 		
 		public static void UpdateIdValues()
 		{
-			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::UnitTestRunner.Android.Resource.Attribute.actionBarSize;
 		}
 		
 		public partial class Animation
