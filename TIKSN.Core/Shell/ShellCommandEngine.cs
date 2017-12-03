@@ -161,7 +161,14 @@ namespace TIKSN.Shell
                 return null;
             }
 
-            return Convert.ChangeType(stringParameter, property.Item2.PropertyType);
+            var typeToConvert = property.Item2.PropertyType;
+
+            if (typeToConvert.IsGenericType && typeToConvert.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                typeToConvert = Nullable.GetUnderlyingType(typeToConvert);
+            }
+
+            return Convert.ChangeType(stringParameter, typeToConvert);
         }
 
         private async Task RunCommandAsync(string commandName, Tuple<Type, ShellCommandAttribute, ConstructorInfo, IEnumerable<Tuple<ShellCommandParameterAttribute, PropertyInfo>>> commandInfo)
