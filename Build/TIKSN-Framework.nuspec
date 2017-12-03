@@ -399,23 +399,23 @@
         <file src="..\TIKSN.Framework.Core\bin\Release\netcoreapp2.0\TIKSN.Framework.Core.pdb" target="lib\netcoreapp2.0" />
 
         <!-- Platform: UAP -->
-        <file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.dll" target="lib\uap10.0" />
+        <!--<file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.dll" target="lib\uap10.0" />
         <file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.xml" target="lib\uap10.0" />
-        <file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.pdb" target="lib\uap10.0" />
+        <file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.pdb" target="lib\uap10.0" />-->
 
         <!-- Platform: UWP: x86 -->
-        <!--<file src="..\TIKSN.Framework.UWP\bin\x86\Release\TIKSN.Framework.UWP.dll" target="runtimes\win10-x86\lib\uap10.0" />
-    <file src="..\TIKSN.Framework.UWP\bin\x86\Release\TIKSN.Framework.UWP.xml" target="runtimes\win10-x86\lib\uap10.0" />
-    <file src="..\TIKSN.Framework.UWP\bin\x86\Release\TIKSN.Framework.UWP.pdb" target="runtimes\win10-x86\lib\uap10.0" />-->
+        <file src="..\TIKSN.Framework.UWP\bin\x86\Release\TIKSN.Framework.UWP.dll" target="runtimes\win10-x86\lib\uap10.0" />
+        <file src="..\TIKSN.Framework.UWP\bin\x86\Release\TIKSN.Framework.UWP.xml" target="runtimes\win10-x86\lib\uap10.0" />
+        <file src="..\TIKSN.Framework.UWP\bin\x86\Release\TIKSN.Framework.UWP.pdb" target="runtimes\win10-x86\lib\uap10.0" />
 
         <!-- Platform: UWP: x64 -->
-        <!--<file src="..\TIKSN.Framework.UWP\bin\x64\Release\TIKSN.Framework.UWP.dll" target="runtimes\win10-x64\lib\uap10.0" />
-    <file src="..\TIKSN.Framework.UWP\bin\x64\Release\TIKSN.Framework.UWP.xml" target="runtimes\win10-x64\lib\uap10.0" />
-    <file src="..\TIKSN.Framework.UWP\bin\x64\Release\TIKSN.Framework.UWP.pdb" target="runtimes\win10-x64\lib\uap10.0" />-->
+        <file src="..\TIKSN.Framework.UWP\bin\x64\Release\TIKSN.Framework.UWP.dll" target="runtimes\win10-x64\lib\uap10.0" />
+        <file src="..\TIKSN.Framework.UWP\bin\x64\Release\TIKSN.Framework.UWP.xml" target="runtimes\win10-x64\lib\uap10.0" />
+        <file src="..\TIKSN.Framework.UWP\bin\x64\Release\TIKSN.Framework.UWP.pdb" target="runtimes\win10-x64\lib\uap10.0" />
 
         <!-- Platform: UWP: ARM -->
-        <!--<file src="..\TIKSN.Framework.UWP\bin\ARM\Release\TIKSN.Framework.UWP.dll" target="runtimes\win10-arm\lib\uap10.0" />
-    <file src="..\TIKSN.Framework.UWP\bin\ARM\Release\TIKSN.Framework.UWP.xml" target="runtimes\win10-arm\lib\uap10.0" />
-    <file src="..\TIKSN.Framework.UWP\bin\ARM\Release\TIKSN.Framework.UWP.pdb" target="runtimes\win10-arm\lib\uap10.0" />-->
+        <file src="..\TIKSN.Framework.UWP\bin\ARM\Release\TIKSN.Framework.UWP.dll" target="runtimes\win10-arm\lib\uap10.0" />
+        <file src="..\TIKSN.Framework.UWP\bin\ARM\Release\TIKSN.Framework.UWP.xml" target="runtimes\win10-arm\lib\uap10.0" />
+        <file src="..\TIKSN.Framework.UWP\bin\ARM\Release\TIKSN.Framework.UWP.pdb" target="runtimes\win10-arm\lib\uap10.0" />
     </files>
 </package>
