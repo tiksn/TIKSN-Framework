@@ -14,7 +14,7 @@ namespace TIKSN.Data.LiteDB
             _liteStorage = databaseProvider.GetDatabase().FileStorage;
         }
 
-        public Task DeleteAsync(string id, CancellationToken cancellationToken)
+        public Task DeleteByIdAsync(string id, CancellationToken cancellationToken = default)
         {
             return Task.Run(() => _liteStorage.Delete(id), cancellationToken);
         }
@@ -46,17 +46,9 @@ namespace TIKSN.Data.LiteDB
             }
         }
 
-        public Task<bool> ExistsAsync(string id, CancellationToken cancellationToken)
+        public Task<bool> ExistsByIdAsync(string id, CancellationToken cancellationToken)
         {
             return Task.Run(() => _liteStorage.Exists(id), cancellationToken);
-        }
-
-        public async Task UploadAsync(string id, string path, byte[] content, CancellationToken cancellationToken)
-        {
-            using (var stream = new MemoryStream(content))
-            {
-                await Task.Run(() => _liteStorage.Upload(id, path, stream), cancellationToken);
-            }
         }
 
         public async Task UploadAsync(string id, string path, byte[] content, TMetadata metadata, CancellationToken cancellationToken = default)
@@ -65,6 +57,14 @@ namespace TIKSN.Data.LiteDB
             {
                 await Task.Run(() => _liteStorage.Upload(id, path, stream), cancellationToken);
                 await Task.Run(() => _liteStorage.SetMetadata(id, BsonMapper.Global.ToDocument(metadata)), cancellationToken);
+            }
+        }
+
+        public async Task UploadByIdAsync(string id, string path, byte[] content, CancellationToken cancellationToken)
+        {
+            using (var stream = new MemoryStream(content))
+            {
+                await Task.Run(() => _liteStorage.Upload(id, path, stream), cancellationToken);
             }
         }
     }
