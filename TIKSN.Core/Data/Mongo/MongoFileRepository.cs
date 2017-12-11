@@ -41,7 +41,7 @@ namespace TIKSN.Data.Mongo
             await _bucket.DeleteAsync(fileInfo.Id, cancellationToken);
         }
 
-        public Task DeleteAsync(TIdentity id, CancellationToken cancellationToken)
+        public Task DeleteByIdAsync(TIdentity id, CancellationToken cancellationToken)
         {
             return _bucket.DeleteAsync(id, cancellationToken);
         }
@@ -85,7 +85,7 @@ namespace TIKSN.Data.Mongo
             return _bucket.Find(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Filename, path)).AnyAsync(cancellationToken);
         }
 
-        public Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken)
+        public Task<bool> ExistsByIdAsync(TIdentity id, CancellationToken cancellationToken)
         {
             return _bucket.Find(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Id, id)).AnyAsync(cancellationToken);
         }
@@ -95,17 +95,17 @@ namespace TIKSN.Data.Mongo
             return _bucketRaw.UploadFromBytesAsync(path, content, null, cancellationToken);
         }
 
-        public Task UploadAsync(TIdentity id, string path, byte[] content, CancellationToken cancellationToken)
-        {
-            return _bucket.UploadFromBytesAsync(id, path, content, null, cancellationToken);
-        }
-
         public Task UploadAsync(TIdentity id, string path, byte[] content, TMetadata metadata, CancellationToken cancellationToken)
         {
             return _bucket.UploadFromBytesAsync(id, path, content, new GridFSUploadOptions
             {
                 Metadata = metadata.ToBsonDocument()
             }, cancellationToken);
+        }
+
+        public Task UploadByIdAsync(TIdentity id, string path, byte[] content, CancellationToken cancellationToken)
+        {
+            return _bucket.UploadFromBytesAsync(id, path, content, null, cancellationToken);
         }
     }
 }
