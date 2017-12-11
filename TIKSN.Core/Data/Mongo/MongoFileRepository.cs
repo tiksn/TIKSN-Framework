@@ -6,7 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace GSec.Data.Mongo
+namespace TIKSN.Data.Mongo
 {
     public class MongoFileRepository<TIdentity, TMetadata> : IFileRepository, IFileRepository<TIdentity>, IFileRepository<TIdentity, TMetadata> where TIdentity : IEquatable<TIdentity>
     {
