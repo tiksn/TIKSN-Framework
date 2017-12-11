@@ -35,7 +35,7 @@ namespace TIKSN.Data.AzureStorage
             return blob.DeleteAsync(DeleteSnapshotsOption.IncludeSnapshots, AccessCondition.GenerateEmptyCondition(), _options, _operationContext, cancellationToken);
         }
 
-        public async Task<byte[]> DownloadAsync(string path, CancellationToken cancellationToken)
+        public async Task<IFile> DownloadAsync(string path, CancellationToken cancellationToken)
         {
             var blob = GetCloudBlobContainer().GetBlobReference(path);
 
@@ -43,7 +43,7 @@ namespace TIKSN.Data.AzureStorage
             {
                 await blob.DownloadToStreamAsync(stream, AccessCondition.GenerateEmptyCondition(), _options, _operationContext, cancellationToken);
 
-                return stream.ToArray();
+                return new File(blob.Name, stream.ToArray());
             }
         }
 
