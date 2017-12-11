@@ -17,13 +17,13 @@ namespace TIKSN.Data
 
     public interface IFileRepository<TIdentity> where TIdentity : IEquatable<TIdentity>
     {
-        Task DeleteAsync(TIdentity id, CancellationToken cancellationToken = default);
+        Task DeleteByIdAsync(TIdentity id, CancellationToken cancellationToken = default);
 
-        Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken = default);
+        Task<bool> ExistsByIdAsync(TIdentity id, CancellationToken cancellationToken = default);
 
         Task<IFile<TIdentity>> DownloadByIdAsync(TIdentity id, CancellationToken cancellationToken = default);
 
-        Task UploadAsync(TIdentity id, string path, byte[] content, CancellationToken cancellationToken = default);
+        Task UploadByIdAsync(TIdentity id, string path, byte[] content, CancellationToken cancellationToken = default);
     }
 
     public interface IFileRepository<TIdentity, TMetadata> where TIdentity : IEquatable<TIdentity>
