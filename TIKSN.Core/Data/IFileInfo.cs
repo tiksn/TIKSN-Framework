@@ -14,8 +14,6 @@ namespace TIKSN.Data
 
     public interface IFileInfo<TIdentity, TMetadata> : IFileInfo<TIdentity> where TIdentity : IEquatable<TIdentity>
     {
-        TIdentity ID { get; }
-
         TMetadata Metadata { get; }
     }
 }
