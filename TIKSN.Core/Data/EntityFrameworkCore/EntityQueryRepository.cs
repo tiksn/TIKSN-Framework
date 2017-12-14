@@ -21,5 +21,10 @@ namespace TIKSN.Data.EntityFrameworkCore
         {
             return Entities.SingleAsync(entity => entity.ID.Equals(id), cancellationToken);
         }
+
+        public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken = default)
+        {
+            return Entities.SingleOrDefaultAsync(entity => entity.ID.Equals(id), cancellationToken);
+        }
     }
 }

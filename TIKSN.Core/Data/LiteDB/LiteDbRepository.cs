@@ -25,7 +25,17 @@ namespace TIKSN.Data.LiteDB
 
         public Task AddRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken) => Task.Run(() => collection.Insert(entities), cancellationToken);
 
-        public Task<TDocument> GetAsync(TIdentity id, CancellationToken cancellationToken) => Task.Run(() => collection.FindOne(item => item.ID.Equals(id)), cancellationToken);
+        public async Task<TDocument> GetAsync(TIdentity id, CancellationToken cancellationToken)
+        {
+            var result = await GetOrDefaultAsync(id, cancellationToken);
+
+            if (result == null)
+                throw new NullReferenceException("Result retrieved from database is null.");
+
+            return result;
+        }
+
+        public Task<TDocument> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken) => Task.Run(() => collection.FindOne(item => item.ID.Equals(id)), cancellationToken);
 
         public Task RemoveAsync(TDocument entity, CancellationToken cancellationToken) => Task.Run(() => collection.Delete(item => item.ID.Equals(entity.ID)), cancellationToken);
 

@@ -9,5 +9,7 @@ namespace TIKSN.Data
         where TIdentity : IEquatable<TIdentity>
     {
         Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken = default);
+
+        Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken = default);
     }
 }

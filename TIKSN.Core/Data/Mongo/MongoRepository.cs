@@ -23,7 +23,9 @@ namespace TIKSN.Data.Mongo
 
         public Task AddRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken) => collection.InsertManyAsync(entities, cancellationToken: cancellationToken);
 
-        public Task<TDocument> GetAsync(TIdentity id, CancellationToken cancellationToken) => collection.Find(GetIdentityFilter(id)).SingleOrDefaultAsync(cancellationToken);
+        public Task<TDocument> GetAsync(TIdentity id, CancellationToken cancellationToken) => collection.Find(GetIdentityFilter(id)).SingleAsync(cancellationToken);
+
+        public Task<TDocument> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken) => collection.Find(GetIdentityFilter(id)).SingleOrDefaultAsync(cancellationToken);
 
         public Task RemoveAsync(TDocument entity, CancellationToken cancellationToken) => collection.DeleteOneAsync(item => item.ID.Equals(entity.ID), cancellationToken: cancellationToken);
 

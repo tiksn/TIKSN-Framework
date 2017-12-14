@@ -20,7 +20,17 @@ namespace TIKSN.Data.Cache.Distributed
         {
         }
 
-        public Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
+        public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
+        {
+            var result = await GetFromDistributedCacheAsync<TEntity>(CreateEntryCacheKey(id), cancellationToken);
+
+            if (result == null)
+                throw new NullReferenceException("Result retrieved from cache or from original source is null.");
+
+            return result;
+        }
+
+        public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken = default)
         {
             return GetFromDistributedCacheAsync<TEntity>(CreateEntryCacheKey(id), cancellationToken);
         }

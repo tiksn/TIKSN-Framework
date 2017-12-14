@@ -107,7 +107,7 @@ namespace TIKSN.Finance.ForeignExchange
             {
                 foreach (var provider in _providers)
                 {
-                    var forex = await _foreignExchangeRepository.GetAsync(provider.Key, cancellationToken);
+                    var forex = await _foreignExchangeRepository.GetOrDefaultAsync(provider.Key, cancellationToken);
 
                     if (forex == null)
                     {

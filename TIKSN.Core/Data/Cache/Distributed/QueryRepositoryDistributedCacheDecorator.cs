@@ -31,6 +31,18 @@ namespace TIKSN.Data.Cache.Distributed
         {
             var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, id).ToString();
 
+            var result = GetFromDistributedCacheAsync(cacheKey, cancellationToken, () => _queryRepository.GetAsync(id, cancellationToken));
+
+            if (result == null)
+                throw new NullReferenceException("Result retrieved from cache or from original source is null.");
+
+            return result;
+        }
+
+        public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken = default)
+        {
+            var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, id).ToString();
+
             return GetFromDistributedCacheAsync(cacheKey, cancellationToken, () => _queryRepository.GetAsync(id, cancellationToken));
         }
 
