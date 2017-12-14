@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -6,21 +7,23 @@ namespace TIKSN.Data.EntityFrameworkCore
 {
     public class EntityUnitOfWork : UnitOfWorkBase
     {
-        private readonly DbContext dbContext;
+        private readonly DbContext[] _dbContexts;
 
-        public EntityUnitOfWork(DbContext dbContext)
+        public EntityUnitOfWork(DbContext[] dbContexts)
         {
-            this.dbContext = dbContext;
+            _dbContexts = dbContexts;
         }
 
-        public override Task CompleteAsync(CancellationToken cancellationToken)
+        public override async Task CompleteAsync(CancellationToken cancellationToken)
         {
-            return dbContext.SaveChangesAsync(cancellationToken);
+            var tasks = _dbContexts.Select(dbContext => dbContext.SaveChangesAsync(cancellationToken)).ToArray();
+
+            await Task.WhenAll(tasks);
         }
 
         protected override bool IsDirty()
         {
-            return dbContext.ChangeTracker.HasChanges();
+            return _dbContexts.Any(dbContext => dbContext.ChangeTracker.HasChanges());
         }
     }
 }

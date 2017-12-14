@@ -1,30 +1,31 @@
-﻿using System;
+﻿using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
+using TIKSN.Data;
 using TIKSN.Finance.ForeignExchange.Data;
 using TIKSN.Globalization;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Localization;
 using TIKSN.Localization;
 
 namespace TIKSN.Finance.ForeignExchange
 {
     public abstract class ExchangeRateServiceBase : IExchangeRateService
     {
+        protected readonly ICurrencyFactory _currencyFactory;
+        protected readonly ILogger<ExchangeRateServiceBase> _logger;
+        protected readonly IRegionFactory _regionFactory;
+        protected readonly IStringLocalizer _stringLocalizer;
         private static int nextID;
         private static SemaphoreSlim nextIdLocker = new SemaphoreSlim(1, 1);
-
-        protected readonly ICurrencyFactory _currencyFactory;
-        protected readonly IRegionFactory _regionFactory;
-        protected readonly ILogger<ExchangeRateServiceBase> _logger;
-        protected readonly IStringLocalizer _stringLocalizer;
         private readonly IExchangeRateRepository _exchangeRateRepository;
         private readonly IForeignExchangeRepository _foreignExchangeRepository;
         private readonly Dictionary<int, (IExchangeRatesProvider BatchProvider, IExchangeRateProvider IndividualProvider, int LongNameKey, int ShortNameKey, RegionInfo Country, TimeSpan InvalidationInterval)> _providers;
         private readonly Random _random;
+        private readonly IUnitOfWorkFactory _unitOfWorkFactory;
 
         protected ExchangeRateServiceBase(
             ILogger<ExchangeRateServiceBase> logger,
@@ -33,6 +34,7 @@ namespace TIKSN.Finance.ForeignExchange
             IRegionFactory regionFactory,
             IExchangeRateRepository exchangeRateRepository,
             IForeignExchangeRepository foreignExchangeRepository,
+            IUnitOfWorkFactory unitOfWorkFactory,
             Random random)
         {
             _logger = logger;
@@ -44,9 +46,10 @@ namespace TIKSN.Finance.ForeignExchange
 
             _currencyFactory = currencyFactory;
             _regionFactory = regionFactory;
+            _random = random;
+            _unitOfWorkFactory = unitOfWorkFactory ?? throw new ArgumentNullException(nameof(unitOfWorkFactory));
 
             SetupProviders();
-            _random = random;
         }
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
@@ -98,54 +101,26 @@ namespace TIKSN.Finance.ForeignExchange
             return exchangeRateEntity.Rate;
         }
 
-        private async Task FetchExchangeRatesAsync(int foreignExchangeID, IExchangeRatesProvider batchProvider, DateTimeOffset asOn, CancellationToken cancellationToken)
-        {
-            var exchangeRates = await batchProvider.GetExchangeRatesAsync(asOn);
-
-            await SaveExchangeRatesAsync(foreignExchangeID, exchangeRates, cancellationToken);
-        }
-
-        private async Task FetchExchangeRatesAsync(int foreignExchangeID, IExchangeRateProvider individualProvider, CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
-        {
-            var exchangeRate = await individualProvider.GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn);
-
-            await SaveExchangeRatesAsync(foreignExchangeID, new[] { exchangeRate }, cancellationToken);
-        }
-
-        private async Task SaveExchangeRatesAsync(int foreignExchangeID, IEnumerable<ExchangeRate> exchangeRates, CancellationToken cancellationToken)
-        {
-            var id = Interlocked.Increment(ref nextID);
-
-            var entities = exchangeRates.Select(item => new ExchangeRateEntity
-            {
-                ID = id,
-                AsOn = item.AsOn,
-                BaseCurrencyCode = item.Pair.BaseCurrency.ISOCurrencySymbol,
-                CounterCurrencyCode = item.Pair.CounterCurrency.ISOCurrencySymbol,
-                ForeignExchangeID = foreignExchangeID,
-                Rate = item.Rate
-            }).ToArray();
-
-            await _exchangeRateRepository.AddRangeAsync(entities, cancellationToken);
-        }
-
         public async Task InitializeAsync(CancellationToken cancellationToken)
         {
-            foreach (var provider in _providers)
+            using (var uow = _unitOfWorkFactory.Create())
             {
-                var forex = await _foreignExchangeRepository.GetAsync(provider.Key, cancellationToken);
-
-                if (forex == null)
+                foreach (var provider in _providers)
                 {
-                    forex = new ForeignExchangeEntity
-                    {
-                        ID = provider.Key,
-                        LongNameKey = provider.Value.LongNameKey,
-                        ShortNameKey = provider.Value.ShortNameKey,
-                        CountryCode = provider.Value.Country.Name
-                    };
+                    var forex = await _foreignExchangeRepository.GetAsync(provider.Key, cancellationToken);
 
-                    await _foreignExchangeRepository.AddAsync(forex, cancellationToken);
+                    if (forex == null)
+                    {
+                        forex = new ForeignExchangeEntity
+                        {
+                            ID = provider.Key,
+                            LongNameKey = provider.Value.LongNameKey,
+                            ShortNameKey = provider.Value.ShortNameKey,
+                            CountryCode = provider.Value.Country.Name
+                        };
+
+                        await _foreignExchangeRepository.AddAsync(forex, cancellationToken);
+                    }
                 }
             }
 
@@ -171,5 +146,41 @@ namespace TIKSN.Finance.ForeignExchange
         }
 
         protected abstract void SetupProviders();
+
+        private async Task FetchExchangeRatesAsync(int foreignExchangeID, IExchangeRatesProvider batchProvider, DateTimeOffset asOn, CancellationToken cancellationToken)
+        {
+            var exchangeRates = await batchProvider.GetExchangeRatesAsync(asOn);
+
+            await SaveExchangeRatesAsync(foreignExchangeID, exchangeRates, cancellationToken);
+        }
+
+        private async Task FetchExchangeRatesAsync(int foreignExchangeID, IExchangeRateProvider individualProvider, CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
+        {
+            var exchangeRate = await individualProvider.GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn);
+
+            await SaveExchangeRatesAsync(foreignExchangeID, new[] { exchangeRate }, cancellationToken);
+        }
+
+        private async Task SaveExchangeRatesAsync(int foreignExchangeID, IEnumerable<ExchangeRate> exchangeRates, CancellationToken cancellationToken)
+        {
+            using (var uow = _unitOfWorkFactory.Create())
+            {
+                var id = Interlocked.Increment(ref nextID);
+
+                var entities = exchangeRates.Select(item => new ExchangeRateEntity
+                {
+                    ID = id,
+                    AsOn = item.AsOn,
+                    BaseCurrencyCode = item.Pair.BaseCurrency.ISOCurrencySymbol,
+                    CounterCurrencyCode = item.Pair.CounterCurrency.ISOCurrencySymbol,
+                    ForeignExchangeID = foreignExchangeID,
+                    Rate = item.Rate
+                }).ToArray();
+
+                await _exchangeRateRepository.AddRangeAsync(entities, cancellationToken);
+
+                await uow.CompleteAsync(cancellationToken);
+            }
+        }
     }
 }
