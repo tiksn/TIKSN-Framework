@@ -4,7 +4,7 @@ using System;
 
 namespace TIKSN.Data.EntityFrameworkCore
 {
-    public abstract class EntityUnitOfWorkFactoryBase
+    public abstract class EntityUnitOfWorkFactoryBase : IUnitOfWorkFactory
     {
         private readonly IServiceProvider serviceProvider;
 
