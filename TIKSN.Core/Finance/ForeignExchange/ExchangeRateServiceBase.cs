@@ -64,8 +64,8 @@ namespace TIKSN.Finance.ForeignExchange
 
             foreach (var provider in _providers)
             {
-                var ticksToIntervalRatio = asOn.Ticks / provider.Value.InvalidationInterval.Ticks * provider.Value.InvalidationInterval.Ticks;
-                var dateFrom = new DateTimeOffset(ticksToIntervalRatio, asOn.Offset);
+                var ticksToIntervalRatio = asOn.Ticks / provider.Value.InvalidationInterval.Ticks;
+                var dateFrom = new DateTimeOffset(ticksToIntervalRatio * provider.Value.InvalidationInterval.Ticks, asOn.Offset);
                 var dateTo = new DateTimeOffset((ticksToIntervalRatio + 1) * provider.Value.InvalidationInterval.Ticks, asOn.Offset);
 
                 var rates = await _exchangeRateRepository.SearchAsync(provider.Key, pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, dateFrom, dateTo, cancellationToken);
