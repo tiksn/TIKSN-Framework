@@ -33,8 +33,7 @@ Task Restore {
 }
 
 Task EstimateNextVersion {
-    $versionString = (Invoke-RestMethod -Uri 'https://api-v2v3search-0.nuget.org/query?q=TIKSN-Framework&prerelease=true&t
-    ake=1&semVerLevel=2.0.0').data[0].Version
+    $versionString = (Invoke-RestMethod -Uri 'https://api-v2v3search-0.nuget.org/query?q=TIKSN-Framework&prerelease=true&take=1&semVerLevel=2.0.0').data[0].Version
 
     $lastDotIndex = $versionString.LastIndexOf('.')
     $prereleaseNumber = [System.Int32]::Parse($versionString.Substring($lastDotIndex + 1))
