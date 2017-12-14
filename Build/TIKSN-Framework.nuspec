@@ -24,8 +24,8 @@
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
                 <dependency id="Bond.CSharp" version="7.0.1" />
                 <dependency id="ConsoleTables" version="2.1.0" />
-                <dependency id="Exceptionless.Signed" version="4.0.1955" />
-                <dependency id="FluentValidation" version="7.2.1" />
+                <dependency id="Exceptionless.Signed" version="4.2.1979" />
+                <dependency id="FluentValidation" version="7.3.1" />
                 <dependency id="LiteDB" version="4.0.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
                 <dependency id="Microsoft.EntityFrameworkCore" version="2.0.1" />
@@ -45,7 +45,7 @@
                 <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.0.0" />
                 <dependency id="Microsoft.PowerShell.3.ReferenceAssemblies" version="1.0.0" />
                 <dependency id="Microsoft.Win32.Registry" version="4.4.0" />
-                <dependency id="MongoDB.Driver.GridFS" version="2.4.4" />
+                <dependency id="MongoDB.Driver.GridFS" version="2.5.0" />
                 <dependency id="MsgPack.Cli" version="0.9.2" />
                 <dependency id="NETStandard.Library" version="2.0.0" />
                 <dependency id="Newtonsoft.Json" version="10.0.3" />
@@ -72,11 +72,11 @@
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
                 <dependency id="Bond.CSharp" version="7.0.1" />
                 <dependency id="ConsoleTables" version="2.1.0" />
-                <dependency id="Exceptionless.Signed" version="4.0.1955" />
-                <dependency id="FluentValidation" version="7.2.1" />
+                <dependency id="Exceptionless.Signed" version="4.2.1979" />
+                <dependency id="FluentValidation" version="7.3.1" />
                 <dependency id="LiteDB" version="4.0.0" />
-                <dependency id="Microsoft.AppCenter.Analytics" version="1.0.1" />
-                <dependency id="Microsoft.AppCenter.Crashes" version="1.0.1" />
+                <dependency id="Microsoft.AppCenter.Analytics" version="1.1.0" />
+                <dependency id="Microsoft.AppCenter.Crashes" version="1.1.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
                 <dependency id="Microsoft.EntityFrameworkCore" version="2.0.1" />
                 <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.0.1" />
@@ -92,7 +92,7 @@
                 <dependency id="Microsoft.Extensions.Logging.Debug" version="2.0.0" />
                 <dependency id="Microsoft.Extensions.Options" version="2.0.0" />
                 <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.0.0" />
-                <dependency id="MongoDB.Driver.GridFS" version="2.4.4" />
+                <dependency id="MongoDB.Driver.GridFS" version="2.5.0" />
                 <dependency id="MsgPack.Cli" version="0.9.2" />
                 <dependency id="NETStandard.Library" version="2.0.0" />
                 <dependency id="Newtonsoft.Json" version="10.0.3" />
@@ -112,8 +112,8 @@
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
                 <dependency id="Bond.CSharp" version="7.0.1" />
                 <dependency id="ConsoleTables" version="2.1.0" />
-                <dependency id="Exceptionless.Signed" version="4.0.1955" />
-                <dependency id="FluentValidation" version="7.2.1" />
+                <dependency id="Exceptionless.Signed" version="4.2.1979" />
+                <dependency id="FluentValidation" version="7.3.1" />
                 <dependency id="LiteDB" version="4.0.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
                 <dependency id="Microsoft.EntityFrameworkCore" version="2.0.1" />
@@ -129,8 +129,8 @@
                 <dependency id="Microsoft.Extensions.Logging.Debug" version="2.0.0" />
                 <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.0.0" />
                 <dependency id="Microsoft.PowerShell.SDK" version="6.0.0-rc" />
-                <dependency id="MongoDB.Driver" version="2.4.4" />
-                <dependency id="MongoDB.Driver.GridFS" version="2.4.4" />
+                <dependency id="MongoDB.Driver" version="2.5.0" />
+                <dependency id="MongoDB.Driver.GridFS" version="2.5.0" />
                 <dependency id="MsgPack.Cli" version="0.9.2" />
                 <dependency id="NETStandard.Library" version="2.0.0" />
                 <dependency id="Newtonsoft.Json" version="10.0.3" />
@@ -152,8 +152,8 @@
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
                 <dependency id="Bond.CSharp" version="7.0.1" />
                 <dependency id="ConsoleTables" version="2.1.0" />
-                <dependency id="Exceptionless.Signed" version="4.0.1955" />
-                <dependency id="FluentValidation" version="7.2.1" />
+                <dependency id="Exceptionless.Signed" version="4.2.1979" />
+                <dependency id="FluentValidation" version="7.3.1" />
                 <dependency id="LiteDB" version="4.0.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
                 <dependency id="Microsoft.EntityFrameworkCore" version="2.0.1" />
@@ -168,8 +168,8 @@
                 <dependency id="Microsoft.Extensions.Logging.Abstractions" version="2.0.0" />
                 <dependency id="Microsoft.Extensions.Logging.Debug" version="2.0.0" />
                 <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.0.0" />
-                <dependency id="MongoDB.Driver" version="2.4.4" />
-                <dependency id="MongoDB.Driver.GridFS" version="2.4.4" />
+                <dependency id="MongoDB.Driver" version="2.5.0" />
+                <dependency id="MongoDB.Driver.GridFS" version="2.5.0" />
                 <dependency id="MsgPack.Cli" version="0.9.2" />
                 <dependency id="NETStandard.Library" version="2.0.0" />
                 <dependency id="Newtonsoft.Json" version="10.0.3" />
@@ -190,11 +190,11 @@
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
                 <dependency id="Bond.CSharp" version="7.0.1" />
                 <dependency id="ConsoleTables" version="2.1.0" />
-                <dependency id="Exceptionless.Signed" version="4.0.1955" />
-                <dependency id="FluentValidation" version="7.2.1" />
+                <dependency id="Exceptionless.Signed" version="4.2.1979" />
+                <dependency id="FluentValidation" version="7.3.1" />
                 <dependency id="LiteDB" version="4.0.0" />
-                <dependency id="Microsoft.AppCenter.Analytics" version="1.0.1" />
-                <dependency id="Microsoft.AppCenter.Crashes" version="1.0.1" />
+                <dependency id="Microsoft.AppCenter.Analytics" version="1.1.0" />
+                <dependency id="Microsoft.AppCenter.Crashes" version="1.1.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
                 <dependency id="Microsoft.EntityFrameworkCore" version="2.0.1" />
                 <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.0.1" />
@@ -208,8 +208,8 @@
                 <dependency id="Microsoft.Extensions.Logging.Abstractions" version="2.0.0" />
                 <dependency id="Microsoft.Extensions.Logging.Debug" version="2.0.0" />
                 <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.0.0" />
-                <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="6.0.4" />
-                <dependency id="MongoDB.Driver.GridFS" version="2.4.4" />
+                <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="6.0.5" />
+                <dependency id="MongoDB.Driver.GridFS" version="2.5.0" />
                 <dependency id="MsgPack.Cli" version="0.9.2" />
                 <dependency id="NETStandard.Library" version="2.0.0" />
                 <dependency id="Newtonsoft.Json" version="10.0.3" />
