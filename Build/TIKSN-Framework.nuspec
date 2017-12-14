@@ -404,9 +404,9 @@
         <file src="..\TIKSN.Framework.Core\bin\Release\netcoreapp2.0\TIKSN.Framework.Core.pdb" target="lib\netcoreapp2.0" />
 
         <!-- Platform: UAP -->
-        <!--<file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.dll" target="lib\uap10.0" />
-        <file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.xml" target="lib\uap10.0" />
-        <file src="..\TIKSN.Framework.UWP\bin\Release\TIKSN.Framework.UWP.pdb" target="lib\uap10.0" />-->
+        <file src="..\TIKSN.Framework.UWP\bin\x64\Release\TIKSN.Framework.UWP.dll" target="ref\uap10.0" />
+        <file src="..\TIKSN.Framework.UWP\bin\x64\Release\TIKSN.Framework.UWP.xml" target="ref\uap10.0" />
+        <file src="..\TIKSN.Framework.UWP\bin\x64\Release\TIKSN.Framework.UWP.pdb" target="ref\uap10.0" />
 
         <!-- Platform: UWP: x86 -->
         <file src="..\TIKSN.Framework.UWP\bin\x86\Release\TIKSN.Framework.UWP.dll" target="runtimes\win10-x86\lib\uap10.0" />
