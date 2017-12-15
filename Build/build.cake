@@ -32,7 +32,35 @@ Task("Build")
         .UseToolVersion(MSBuildToolVersion.VS2017)
         .SetMSBuildPlatform(MSBuildPlatform.x64)
         .SetPlatformTarget(PlatformTarget.MSIL)
-        .WithTarget("Rebuild"));
+        .WithTarget("Rebuild")
+        );
+
+  MSBuild(solution, configurator =>
+    configurator.SetConfiguration("Release")
+        .SetVerbosity(Verbosity.Minimal)
+        .UseToolVersion(MSBuildToolVersion.VS2017)
+        .SetMSBuildPlatform(MSBuildPlatform.x64)
+        .SetPlatformTarget(PlatformTarget.x64)
+        .WithTarget("Rebuild")
+        );
+
+  MSBuild(solution, configurator =>
+    configurator.SetConfiguration("Release")
+        .SetVerbosity(Verbosity.Minimal)
+        .UseToolVersion(MSBuildToolVersion.VS2017)
+        .SetMSBuildPlatform(MSBuildPlatform.x64)
+        .SetPlatformTarget(PlatformTarget.x86)
+        .WithTarget("Rebuild")
+        );
+
+  MSBuild(solution, configurator =>
+    configurator.SetConfiguration("Release")
+        .SetVerbosity(Verbosity.Minimal)
+        .UseToolVersion(MSBuildToolVersion.VS2017)
+        .SetMSBuildPlatform(MSBuildPlatform.x64)
+        .SetPlatformTarget(PlatformTarget.ARM)
+        .WithTarget("Rebuild")
+        );
 });
 
 Task("TextTransform")
@@ -76,14 +104,6 @@ Task("Clean")
   .Description("Cleans all directories that are used during the build process.")
   .Does(() =>
 {
-  MSBuild(solution, configurator =>
-    configurator.SetConfiguration("Release")
-        .SetVerbosity(Verbosity.Minimal)
-        .UseToolVersion(MSBuildToolVersion.VS2017)
-        .SetMSBuildPlatform(MSBuildPlatform.x64)
-        .SetPlatformTarget(PlatformTarget.MSIL)
-        .WithTarget("Clean"));
-
   CleanDirectories("../**/bin/**");
   CleanDirectories("../**/obj/**");
 });
