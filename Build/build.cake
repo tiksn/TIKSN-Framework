@@ -38,8 +38,16 @@ Task("Build")
 Task("TextTransform")
   .Does(() =>
 {
-  var transform = File("../TIKSN.Core/Localization/LocalizationKeys.tt");
-  TransformTemplate(transform);
+  // var transform = File("../TIKSN.Core/Localization/LocalizationKeys.tt");
+  // TransformTemplate(transform);
+
+  using(var process = StartAndReturnProcess("C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/Common7/IDE/TextTransform.exe", new ProcessSettings{ Arguments = "../TIKSN.Core/Localization/LocalizationKeys.tt" }))
+  {
+      process.WaitForExit();
+      var exitCode = process.GetExitCode();
+      if (exitCode != 0)
+        throw new Exception(string.Format("Exit code is {0} which is not a zero.", exitCode));
+  }
 });
 
 
