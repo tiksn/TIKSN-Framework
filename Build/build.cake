@@ -1,6 +1,7 @@
 #addin "Cake.Http"
 #addin "Cake.Json"
 #addin nuget:?package=Newtonsoft.Json&version=9.0.1
+#tool "nuget:?package=Mono.TextTransform"
 
 var target = Argument("target", "Pack");
 var solution = "../TIKSN Framework.sln";
@@ -8,16 +9,21 @@ var nextVersionString = "";
 
 Task("Pack")
   .Description("Pack NuGet package.")
-  //.IsDependentOn("Build")
+  .IsDependentOn("Build")
   .IsDependentOn("EstimateNextVersion")
   .Does(() =>
 {
-  Information(nextVersionString);
+  var nuGetPackSettings = new NuGetPackSettings {
+    Version= nextVersionString
+    };
+
+  NuGetPack("TIKSN-Framework.nuspec", nuGetPackSettings);
 });
 
 Task("Build")
   .IsDependentOn("Clean")
   .IsDependentOn("Restore")
+  .IsDependentOn("TextTransform")
   .Does(() =>
 {
   MSBuild(solution, configurator =>
@@ -28,6 +34,14 @@ Task("Build")
         .SetPlatformTarget(PlatformTarget.MSIL)
         .WithTarget("Rebuild"));
 });
+
+Task("TextTransform")
+  .Does(() =>
+{
+  var transform = File("../TIKSN.Core/Localization/LocalizationKeys.tt");
+  TransformTemplate(transform);
+});
+
 
 Task("EstimateNextVersion")
   .Description("Estimate next version.")
