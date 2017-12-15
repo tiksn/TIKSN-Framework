@@ -32,7 +32,7 @@ Task("Build")
         .UseToolVersion(MSBuildToolVersion.VS2017)
         .SetMSBuildPlatform(MSBuildPlatform.x64)
         .SetPlatformTarget(PlatformTarget.MSIL)
-        .WithTarget("Rebuild")
+        //.WithTarget("Rebuild")
         );
 
   MSBuild(solution, configurator =>
@@ -41,7 +41,7 @@ Task("Build")
         .UseToolVersion(MSBuildToolVersion.VS2017)
         .SetMSBuildPlatform(MSBuildPlatform.x64)
         .SetPlatformTarget(PlatformTarget.x64)
-        .WithTarget("Rebuild")
+        //.WithTarget("Rebuild")
         );
 
   MSBuild(solution, configurator =>
@@ -50,7 +50,7 @@ Task("Build")
         .UseToolVersion(MSBuildToolVersion.VS2017)
         .SetMSBuildPlatform(MSBuildPlatform.x64)
         .SetPlatformTarget(PlatformTarget.x86)
-        .WithTarget("Rebuild")
+        //.WithTarget("Rebuild")
         );
 
   MSBuild(solution, configurator =>
@@ -59,7 +59,7 @@ Task("Build")
         .UseToolVersion(MSBuildToolVersion.VS2017)
         .SetMSBuildPlatform(MSBuildPlatform.x64)
         .SetPlatformTarget(PlatformTarget.ARM)
-        .WithTarget("Rebuild")
+        //.WithTarget("Rebuild")
         );
 });
 
