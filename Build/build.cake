@@ -7,6 +7,17 @@ var target = Argument("target", "Pack");
 var solution = "../TIKSN Framework.sln";
 var nextVersionString = "";
 
+Task("Publish")
+  .Description("Publish NuGet package.")
+  .Does(() =>
+{
+ var package = string.Format("TIKSN-Framework.{0}.nupkg", nextVersionString);
+
+ NuGetPush(package, new NuGetPushSettings {
+     Source = "nuget.org"
+ });
+});
+
 Task("Pack")
   .Description("Pack NuGet package.")
   .IsDependentOn("Build")
