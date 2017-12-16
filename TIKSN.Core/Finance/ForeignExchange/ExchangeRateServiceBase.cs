@@ -122,6 +122,8 @@ namespace TIKSN.Finance.ForeignExchange
                         await _foreignExchangeRepository.AddAsync(forex, cancellationToken);
                     }
                 }
+
+                await uow.CompleteAsync(cancellationToken);
             }
 
             await nextIdLocker.WaitAsync();
