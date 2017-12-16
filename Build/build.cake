@@ -2,16 +2,18 @@
 #addin "Cake.Json"
 #addin nuget:?package=Newtonsoft.Json&version=9.0.1
 #tool "nuget:?package=Mono.TextTransform"
+#tool "nuget:?package=xunit.runner.console"
 
-var target = Argument("target", "Pack");
+var target = Argument("target", "Publish");
 var solution = "../TIKSN Framework.sln";
 var nextVersionString = "";
 
 Task("Publish")
   .Description("Publish NuGet package.")
+  .IsDependentOn("Pack")
   .Does(() =>
 {
- var package = string.Format("TIKSN-Framework.{0}.nupkg", nextVersionString);
+ var package = string.Format("tools/TIKSN-Framework.{0}.nupkg", nextVersionString);
 
  NuGetPush(package, new NuGetPushSettings {
      Source = "nuget.org"
@@ -22,13 +24,23 @@ Task("Pack")
   .Description("Pack NuGet package.")
   .IsDependentOn("Build")
   .IsDependentOn("EstimateNextVersion")
+  //.IsDependentOn("Test")
   .Does(() =>
 {
   var nuGetPackSettings = new NuGetPackSettings {
-    Version= nextVersionString
+    Version = nextVersionString,
+    OutputDirectory = "tools"
     };
 
   NuGetPack("TIKSN-Framework.nuspec", nuGetPackSettings);
+});
+
+Task("Test")
+  .IsDependentOn("Build")
+  .Does(() =>
+{
+  XUnit2("../TIKSN.Framework.Tests/bin/Release/TIKSN.Framework.Tests.dll");
+  XUnit2("../UnitTests/bin/Release/netstandard2.0/UnitTests.dll");
 });
 
 Task("Build")
