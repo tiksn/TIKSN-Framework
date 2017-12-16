@@ -65,33 +65,39 @@ namespace TIKSN.Finance.ForeignExchange
         {
             var combinedRates = new List<ExchangeRateEntity>();
 
-            foreach (var provider in _providers)
+            using (var uow = _unitOfWorkFactory.Create())
             {
-                var ticksToIntervalRatio = asOn.Ticks / provider.Value.InvalidationInterval.Ticks;
-                var dateFrom = new DateTimeOffset(ticksToIntervalRatio * provider.Value.InvalidationInterval.Ticks, asOn.Offset);
-                var dateTo = new DateTimeOffset((ticksToIntervalRatio + 1) * provider.Value.InvalidationInterval.Ticks, asOn.Offset);
-
-                var rates = await _exchangeRateRepository.SearchAsync(provider.Key, pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, dateFrom, dateTo, cancellationToken);
-
-                if (rates.Count == 0)
+                foreach (var provider in _providers)
                 {
-                    if (provider.Value.BatchProvider != null)
-                        await FetchExchangeRatesAsync(provider.Key, provider.Value.BatchProvider, asOn, cancellationToken);
-                    else if (provider.Value.IndividualProvider != null)
-                        await FetchExchangeRatesAsync(provider.Key, provider.Value.IndividualProvider, pair, asOn, cancellationToken);
+                    var ticksToIntervalRatio = asOn.Ticks / provider.Value.InvalidationInterval.Ticks;
+                    var dateFrom = new DateTimeOffset(ticksToIntervalRatio * provider.Value.InvalidationInterval.Ticks, asOn.Offset);
+                    var dateTo = new DateTimeOffset((ticksToIntervalRatio + 1) * provider.Value.InvalidationInterval.Ticks, asOn.Offset);
+
+                    var rates = await _exchangeRateRepository.SearchAsync(provider.Key, pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, dateFrom, dateTo, cancellationToken);
+
+                    if (rates.Count == 0)
+                    {
+                        if (provider.Value.BatchProvider != null)
+                            await FetchExchangeRatesAsync(provider.Key, provider.Value.BatchProvider, asOn, cancellationToken);
+                        else if (provider.Value.IndividualProvider != null)
+                            await FetchExchangeRatesAsync(provider.Key, provider.Value.IndividualProvider, pair, asOn, cancellationToken);
+                        else
+                            throw new Exception($"{nameof(provider.Value.BatchProvider)} and {nameof(provider.Value.IndividualProvider)} are both null, one of them should be null and other should not.");
+
+                        var rate = await _exchangeRateRepository.GetAsync(provider.Key, pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, asOn, cancellationToken);
+
+                        if (rate != null)
+                            combinedRates.Add(rate);
+                    }
                     else
-                        throw new Exception($"{nameof(provider.Value.BatchProvider)} and {nameof(provider.Value.IndividualProvider)} are both null, one of them should be null and other should not.");
-
-                    var rate = await _exchangeRateRepository.GetAsync(provider.Key, pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, asOn, cancellationToken);
-
-                    if (rate != null)
-                        combinedRates.Add(rate);
+                    {
+                        combinedRates.AddRange(rates);
+                    }
                 }
-                else
-                {
-                    combinedRates.AddRange(rates);
-                }
+
+                await uow.CompleteAsync(cancellationToken);
             }
+
             var exchangeRateEntity = combinedRates
                 .MinBy(item => Math.Abs((item.AsOn - asOn).Ticks))
                 .First();
@@ -165,24 +171,19 @@ namespace TIKSN.Finance.ForeignExchange
 
         private async Task SaveExchangeRatesAsync(int foreignExchangeID, IEnumerable<ExchangeRate> exchangeRates, CancellationToken cancellationToken)
         {
-            using (var uow = _unitOfWorkFactory.Create())
+            var id = Interlocked.Increment(ref nextID);
+
+            var entities = exchangeRates.Select(item => new ExchangeRateEntity
             {
-                var id = Interlocked.Increment(ref nextID);
+                ID = id,
+                AsOn = item.AsOn,
+                BaseCurrencyCode = item.Pair.BaseCurrency.ISOCurrencySymbol,
+                CounterCurrencyCode = item.Pair.CounterCurrency.ISOCurrencySymbol,
+                ForeignExchangeID = foreignExchangeID,
+                Rate = item.Rate
+            }).ToArray();
 
-                var entities = exchangeRates.Select(item => new ExchangeRateEntity
-                {
-                    ID = id,
-                    AsOn = item.AsOn,
-                    BaseCurrencyCode = item.Pair.BaseCurrency.ISOCurrencySymbol,
-                    CounterCurrencyCode = item.Pair.CounterCurrency.ISOCurrencySymbol,
-                    ForeignExchangeID = foreignExchangeID,
-                    Rate = item.Rate
-                }).ToArray();
-
-                await _exchangeRateRepository.AddRangeAsync(entities, cancellationToken);
-
-                await uow.CompleteAsync(cancellationToken);
-            }
+            await _exchangeRateRepository.AddRangeAsync(entities, cancellationToken);
         }
     }
 }
