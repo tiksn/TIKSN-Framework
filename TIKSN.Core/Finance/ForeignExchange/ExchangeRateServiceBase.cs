@@ -171,17 +171,22 @@ namespace TIKSN.Finance.ForeignExchange
 
         private async Task SaveExchangeRatesAsync(int foreignExchangeID, IEnumerable<ExchangeRate> exchangeRates, CancellationToken cancellationToken)
         {
-            var id = Interlocked.Increment(ref nextID);
+            var entities = new List<ExchangeRateEntity>();
 
-            var entities = exchangeRates.Select(item => new ExchangeRateEntity
+            foreach (var exchangeRate in exchangeRates)
             {
-                ID = id,
-                AsOn = item.AsOn,
-                BaseCurrencyCode = item.Pair.BaseCurrency.ISOCurrencySymbol,
-                CounterCurrencyCode = item.Pair.CounterCurrency.ISOCurrencySymbol,
-                ForeignExchangeID = foreignExchangeID,
-                Rate = item.Rate
-            }).ToArray();
+                var id = Interlocked.Increment(ref nextID);
+
+                entities.Add(new ExchangeRateEntity
+                {
+                    ID = id,
+                    AsOn = exchangeRate.AsOn,
+                    BaseCurrencyCode = exchangeRate.Pair.BaseCurrency.ISOCurrencySymbol,
+                    CounterCurrencyCode = exchangeRate.Pair.CounterCurrency.ISOCurrencySymbol,
+                    ForeignExchangeID = foreignExchangeID,
+                    Rate = exchangeRate.Rate
+                });
+            }
 
             await _exchangeRateRepository.AddRangeAsync(entities, cancellationToken);
         }
