@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.Management.Automation;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TIKSN.PowerShell
@@ -11,9 +12,17 @@ namespace TIKSN.PowerShell
         private Stopwatch _stopwatch;
 
         protected IServiceProvider ServiceProvider { get; private set; }
+        protected CancellationTokenSource cancellationTokenSource;
+
+        protected CommandBase()
+        {
+            cancellationTokenSource = new CancellationTokenSource();
+        }
 
         protected override void BeginProcessing()
         {
+            cancellationTokenSource = new CancellationTokenSource();
+
             base.BeginProcessing();
             WriteVerbose($"Command started at {DateTime.Now.ToLongTimeString()}.");
             _stopwatch = Stopwatch.StartNew();
@@ -41,9 +50,15 @@ namespace TIKSN.PowerShell
 
         protected sealed override void ProcessRecord()
         {
-            AsyncContext.Run(async () => await ProcessRecordAsync());
+            AsyncContext.Run(async () => await ProcessRecordAsync(cancellationTokenSource.Token));
         }
 
-        protected abstract Task ProcessRecordAsync();
+        protected abstract Task ProcessRecordAsync(CancellationToken cancellationToken);
+
+        protected override void StopProcessing()
+        {
+            cancellationTokenSource.Cancel();
+            base.StopProcessing();
+        }
     }
 }
