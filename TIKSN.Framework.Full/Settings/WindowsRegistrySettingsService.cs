@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 
 namespace TIKSN.Settings
 {
@@ -22,6 +23,16 @@ namespace TIKSN.Settings
         public T GetRoamingSetting<T>(string name, T defaultValue)
         {
             return Process(RegistryHive.LocalMachine, name, defaultValue, GetSetting);
+        }
+
+        public IReadOnlyCollection<string> ListLocalSetting()
+        {
+            return ListNames(RegistryHive.CurrentUser);
+        }
+
+        public IReadOnlyCollection<string> ListRoamingSetting()
+        {
+            return ListNames(RegistryHive.LocalMachine);
         }
 
         public void SetLocalSetting<T>(string name, T value)
@@ -48,6 +59,19 @@ namespace TIKSN.Settings
                 using (var registrySubKey = rootKey.OpenSubKey(_options.Value.SubKey))
                 {
                     return processor(registrySubKey, name, value);
+                }
+            }
+        }
+
+        private IReadOnlyCollection<string> ListNames(RegistryHive hiveKey)
+        {
+            ValidateOptions();
+
+            using (var rootKey = RegistryKey.OpenBaseKey(hiveKey, _options.Value.RegistryView))
+            {
+                using (var registrySubKey = rootKey.OpenSubKey(_options.Value.SubKey))
+                {
+                    return registrySubKey.GetValueNames();
                 }
             }
         }

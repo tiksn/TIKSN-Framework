@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TIKSN.Settings
 {
@@ -29,6 +30,20 @@ namespace TIKSN.Settings
             var preferences = GetRoamingPreferences();
 
             return GetSetting<T>(preferences, name, defaultValue);
+        }
+
+        public IReadOnlyCollection<string> ListLocalSetting()
+        {
+            var preferences = GetLocalPreferences();
+
+            return preferences.All.Keys.ToArray();
+        }
+
+        public IReadOnlyCollection<string> ListRoamingSetting()
+        {
+            var preferences = GetRoamingPreferences();
+
+            return preferences.All.Keys.ToArray();
         }
 
         public void SetLocalSetting<T>(string name, T value)
