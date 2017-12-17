@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TIKSN.Settings
 {
@@ -29,6 +30,34 @@ namespace TIKSN.Settings
             var preferences = GetRoamingPreferences();
 
             return GetSetting<T>(preferences, name, defaultValue);
+        }
+
+        public IReadOnlyCollection<string> ListLocalSetting()
+        {
+            var preferences = GetLocalPreferences();
+
+            return preferences.All.Keys.ToArray();
+        }
+
+        public IReadOnlyCollection<string> ListRoamingSetting()
+        {
+            var preferences = GetRoamingPreferences();
+
+            return preferences.All.Keys.ToArray();
+        }
+
+        public void RemoveLocalSetting(string name)
+        {
+            var preferences = GetLocalPreferences();
+
+            RemoveSetting(preferences, name);
+        }
+
+        public void RemoveRoamingSetting(string name)
+        {
+            var preferences = GetRoamingPreferences();
+
+            RemoveSetting(preferences, name);
         }
 
         public void SetLocalSetting<T>(string name, T value)
@@ -105,6 +134,19 @@ namespace TIKSN.Settings
                 using (var editor = prefs.Edit())
                 {
                     SetSetting(editor, name, value);
+
+                    editor.Commit();
+                }
+            }
+        }
+
+        private void RemoveSetting(ISharedPreferences preferences, string name)
+        {
+            using (var prefs = preferences)
+            {
+                using (var editor = prefs.Edit())
+                {
+                    editor.Remove(name);
 
                     editor.Commit();
                 }

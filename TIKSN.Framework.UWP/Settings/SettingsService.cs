@@ -1,4 +1,6 @@
-﻿using Windows.Storage;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Windows.Storage;
 
 namespace TIKSN.Settings
 {
@@ -12,6 +14,26 @@ namespace TIKSN.Settings
         public T GetRoamingSetting<T>(string name, T defaultValue)
         {
             return GetSetting<T>(ApplicationData.Current.RoamingSettings, name, defaultValue);
+        }
+
+        public IReadOnlyCollection<string> ListLocalSetting()
+        {
+            return ApplicationData.Current.LocalSettings.Values.Keys.ToArray();
+        }
+
+        public IReadOnlyCollection<string> ListRoamingSetting()
+        {
+            return ApplicationData.Current.RoamingSettings.Values.Keys.ToArray();
+        }
+
+        public void RemoveLocalSetting(string name)
+        {
+            RemoveSetting(ApplicationData.Current.LocalSettings, name);
+        }
+
+        public void RemoveRoamingSetting(string name)
+        {
+            RemoveSetting(ApplicationData.Current.RoamingSettings, name);
         }
 
         public void SetLocalSetting<T>(string name, T value)
@@ -34,6 +56,11 @@ namespace TIKSN.Settings
             {
                 return defaultValue;
             }
+        }
+
+        private void RemoveSetting(ApplicationDataContainer container, string name)
+        {
+            container.Values.Remove(name);
         }
 
         private void SetSetting<T>(ApplicationDataContainer container, string name, T value)
