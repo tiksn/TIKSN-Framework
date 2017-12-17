@@ -1,10 +1,16 @@
-﻿namespace TIKSN.Settings
+﻿using System.Collections.Generic;
+
+namespace TIKSN.Settings
 {
     public interface ISettingsService
     {
         T GetLocalSetting<T>(string name, T defaultValue);
 
         T GetRoamingSetting<T>(string name, T defaultValue);
+
+        IReadOnlyCollection<string> ListLocalSetting();
+
+        IReadOnlyCollection<string> ListRoamingSetting();
 
         void SetLocalSetting<T>(string name, T value);
 
