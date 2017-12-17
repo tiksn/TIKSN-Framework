@@ -46,6 +46,20 @@ namespace TIKSN.Settings
             return preferences.All.Keys.ToArray();
         }
 
+        public void RemoveLocalSetting(string name)
+        {
+            var preferences = GetLocalPreferences();
+
+            RemoveSetting(preferences, name);
+        }
+
+        public void RemoveRoamingSetting(string name)
+        {
+            var preferences = GetRoamingPreferences();
+
+            RemoveSetting(preferences, name);
+        }
+
         public void SetLocalSetting<T>(string name, T value)
         {
             var preferences = GetLocalPreferences();
@@ -120,6 +134,19 @@ namespace TIKSN.Settings
                 using (var editor = prefs.Edit())
                 {
                     SetSetting(editor, name, value);
+
+                    editor.Commit();
+                }
+            }
+        }
+
+        private void RemoveSetting(ISharedPreferences preferences, string name)
+        {
+            using (var prefs = preferences)
+            {
+                using (var editor = prefs.Edit())
+                {
+                    editor.Remove(name);
 
                     editor.Commit();
                 }

@@ -35,6 +35,16 @@ namespace TIKSN.Settings
             return ListNames(RegistryHive.LocalMachine);
         }
 
+        public void RemoveLocalSetting(string name)
+        {
+            RemoveSetting(RegistryHive.CurrentUser, name);
+        }
+
+        public void RemoveRoamingSetting(string name)
+        {
+            RemoveSetting(RegistryHive.LocalMachine, name);
+        }
+
         public void SetLocalSetting<T>(string name, T value)
         {
             Process(RegistryHive.CurrentUser, name, value, SetSetting);
@@ -50,6 +60,19 @@ namespace TIKSN.Settings
             return (T)subKey.GetValue(name, defaultValue);
         }
 
+        private IReadOnlyCollection<string> ListNames(RegistryHive hiveKey)
+        {
+            ValidateOptions();
+
+            using (var rootKey = RegistryKey.OpenBaseKey(hiveKey, _options.Value.RegistryView))
+            {
+                using (var registrySubKey = rootKey.OpenSubKey(_options.Value.SubKey))
+                {
+                    return registrySubKey.GetValueNames();
+                }
+            }
+        }
+
         private T Process<T>(RegistryHive hiveKey, string name, T value, Func<RegistryKey, string, T, T> processor)
         {
             ValidateOptions();
@@ -63,7 +86,7 @@ namespace TIKSN.Settings
             }
         }
 
-        private IReadOnlyCollection<string> ListNames(RegistryHive hiveKey)
+        private void RemoveSetting(RegistryHive hiveKey, string name)
         {
             ValidateOptions();
 
@@ -71,7 +94,7 @@ namespace TIKSN.Settings
             {
                 using (var registrySubKey = rootKey.OpenSubKey(_options.Value.SubKey))
                 {
-                    return registrySubKey.GetValueNames();
+                    registrySubKey.DeleteValue(name);
                 }
             }
         }

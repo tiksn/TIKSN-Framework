@@ -26,6 +26,16 @@ namespace TIKSN.Settings
             return ApplicationData.Current.RoamingSettings.Values.Keys.ToArray();
         }
 
+        public void RemoveLocalSetting(string name)
+        {
+            RemoveSetting(ApplicationData.Current.LocalSettings, name);
+        }
+
+        public void RemoveRoamingSetting(string name)
+        {
+            RemoveSetting(ApplicationData.Current.RoamingSettings, name);
+        }
+
         public void SetLocalSetting<T>(string name, T value)
         {
             SetSetting(ApplicationData.Current.LocalSettings, name, value);
@@ -46,6 +56,11 @@ namespace TIKSN.Settings
             {
                 return defaultValue;
             }
+        }
+
+        private void RemoveSetting(ApplicationDataContainer container, string name)
+        {
+            container.Values.Remove(name);
         }
 
         private void SetSetting<T>(ApplicationDataContainer container, string name, T value)
