@@ -14,7 +14,7 @@ namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
         {
         }
 
-        public async Task<ExchangeRateEntity> GetAsync(
+        public async Task<ExchangeRateEntity> GetOrDefaultAsync(
             int foreignExchangeID,
             string baseCurrencyCode,
             string counterCurrencyCode,
@@ -22,9 +22,10 @@ namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
             CancellationToken cancellationToken)
         {
             return Entities
+                .Where(item => item.ForeignExchangeID == foreignExchangeID && item.BaseCurrencyCode == baseCurrencyCode && item.CounterCurrencyCode == counterCurrencyCode)
                 .OrderBy(entity => Math.Abs((entity.AsOn - asOn).Ticks))
                 .Include(item => item.ForeignExchange)
-                .First();
+                .FirstOrDefault();
         }
 
         public async Task<int> GetMaximalIdAsync(CancellationToken cancellationToken)

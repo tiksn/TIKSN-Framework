@@ -8,7 +8,7 @@ namespace TIKSN.Finance.ForeignExchange.Data
 {
     public interface IExchangeRateRepository : IQueryRepository<ExchangeRateEntity, int>, IRepository<ExchangeRateEntity>
     {
-        Task<ExchangeRateEntity> GetAsync(
+        Task<ExchangeRateEntity> GetOrDefaultAsync(
             int foreignExchangeID,
             string baseCurrencyCode,
             string counterCurrencyCode,
