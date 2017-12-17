@@ -26,7 +26,7 @@
                 <dependency id="ConsoleTables" version="2.1.0" />
                 <dependency id="Exceptionless.Signed" version="4.2.1979" />
                 <dependency id="FluentValidation" version="7.3.1" />
-                <dependency id="LiteDB" version="4.0.0" />
+                <dependency id="LiteDB" version="4.1.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
                 <dependency id="Microsoft.EntityFrameworkCore" version="2.0.1" />
                 <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.0.1" />
@@ -65,7 +65,7 @@
                 <dependency id="System.Reflection.TypeExtensions" version="4.4.0" />
                 <dependency id="System.Security.SecureString" version="4.3.0 " />
                 <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
-                <dependency id="WindowsAzure.Storage" version="8.6.0" />
+                <dependency id="WindowsAzure.Storage" version="8.7.0" />
             </group>
             <group targetFramework="MonoAndroid403">
                 <dependency id="Autofac" version="4.6.2" />
@@ -74,7 +74,7 @@
                 <dependency id="ConsoleTables" version="2.1.0" />
                 <dependency id="Exceptionless.Signed" version="4.2.1979" />
                 <dependency id="FluentValidation" version="7.3.1" />
-                <dependency id="LiteDB" version="4.0.0" />
+                <dependency id="LiteDB" version="4.1.0" />
                 <dependency id="Microsoft.AppCenter.Analytics" version="1.1.0" />
                 <dependency id="Microsoft.AppCenter.Crashes" version="1.1.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
@@ -106,7 +106,7 @@
                 <dependency id="System.Reactive.Linq" version="3.1.1" />
                 <dependency id="System.Security.SecureString" version="4.3.0 " />
                 <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
-                <dependency id="WindowsAzure.Storage" version="8.6.0" />
+                <dependency id="WindowsAzure.Storage" version="8.7.0" />
             </group>
             <group targetFramework="netcoreapp2.0">
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
@@ -114,7 +114,7 @@
                 <dependency id="ConsoleTables" version="2.1.0" />
                 <dependency id="Exceptionless.Signed" version="4.2.1979" />
                 <dependency id="FluentValidation" version="7.3.1" />
-                <dependency id="LiteDB" version="4.0.0" />
+                <dependency id="LiteDB" version="4.1.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
                 <dependency id="Microsoft.EntityFrameworkCore" version="2.0.1" />
                 <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.0.1" />
@@ -146,7 +146,7 @@
                 <dependency id="System.Reactive.Linq" version="3.1.1" />
                 <dependency id="System.Security.SecureString" version="4.3.0 " />
                 <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
-                <dependency id="WindowsAzure.Storage" version="8.6.0" />
+                <dependency id="WindowsAzure.Storage" version="8.7.0" />
             </group>
             <group targetFramework="netstandard2.0">
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
@@ -154,7 +154,7 @@
                 <dependency id="ConsoleTables" version="2.1.0" />
                 <dependency id="Exceptionless.Signed" version="4.2.1979" />
                 <dependency id="FluentValidation" version="7.3.1" />
-                <dependency id="LiteDB" version="4.0.0" />
+                <dependency id="LiteDB" version="4.1.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
                 <dependency id="Microsoft.EntityFrameworkCore" version="2.0.1" />
                 <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.0.1" />
@@ -184,7 +184,7 @@
                 <dependency id="System.Reactive.Linq" version="3.1.1" />
                 <dependency id="System.Security.SecureString" version="4.3.0 " />
                 <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
-                <dependency id="WindowsAzure.Storage" version="8.6.0" />
+                <dependency id="WindowsAzure.Storage" version="8.7.0" />
             </group>
             <group targetFramework="uap10.0">
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" />
@@ -192,7 +192,7 @@
                 <dependency id="ConsoleTables" version="2.1.0" />
                 <dependency id="Exceptionless.Signed" version="4.2.1979" />
                 <dependency id="FluentValidation" version="7.3.1" />
-                <dependency id="LiteDB" version="4.0.0" />
+                <dependency id="LiteDB" version="4.1.0" />
                 <dependency id="Microsoft.AppCenter.Analytics" version="1.1.0" />
                 <dependency id="Microsoft.AppCenter.Crashes" version="1.1.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
@@ -224,7 +224,7 @@
                 <dependency id="System.Security.SecureString" version="4.3.0 " />
                 <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
                 <dependency id="Template10" version="1.1.12" />
-                <dependency id="WindowsAzure.Storage" version="8.6.0" />
+                <dependency id="WindowsAzure.Storage" version="8.7.0" />
             </group>
         </dependencies>
     </metadata>
