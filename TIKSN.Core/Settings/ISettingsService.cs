@@ -12,6 +12,10 @@ namespace TIKSN.Settings
 
         IReadOnlyCollection<string> ListRoamingSetting();
 
+        void RemoveLocalSetting(string name);
+
+        void RemoveRoamingSetting(string name);
+
         void SetLocalSetting<T>(string name, T value);
 
         void SetRoamingSetting<T>(string name, T value);
