@@ -408,9 +408,18 @@
         <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.dll" target="lib\netstandard2.0" />
         <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.xml" target="lib\netstandard2.0" />
         <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.pdb" target="lib\netstandard2.0" />
-        <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.dll" target="lib\uap10.0" />
-        <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.xml" target="lib\uap10.0" />
-        <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.pdb" target="lib\uap10.0" />
+        <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.dll" target="ref\uap10.0" />
+        <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.xml" target="ref\uap10.0" />
+        <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.pdb" target="ref\uap10.0" />
+        <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.dll" target="runtimes\win10-x86\lib\uap10.0" />
+        <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.xml" target="runtimes\win10-x86\lib\uap10.0" />
+        <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.pdb" target="runtimes\win10-x86\lib\uap10.0" />
+        <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.dll" target="runtimes\win10-x64\lib\uap10.0" />
+        <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.xml" target="runtimes\win10-x64\lib\uap10.0" />
+        <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.pdb" target="runtimes\win10-x64\lib\uap10.0" />
+        <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.dll" target="runtimes\win10-arm\lib\uap10.0" />
+        <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.xml" target="runtimes\win10-arm\lib\uap10.0" />
+        <file src="..\TIKSN.Core\bin\Release\netstandard2.0\TIKSN.Core.pdb" target="runtimes\win10-arm\lib\uap10.0" />
 
         <!-- Platform: Xamarin Android -->
         <file src="..\TIKSN.Framework.Android\bin\Release\TIKSN.Framework.Android.dll" target="lib\MonoAndroid403" />
