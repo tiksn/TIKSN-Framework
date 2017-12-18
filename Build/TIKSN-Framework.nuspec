@@ -229,7 +229,7 @@
         </dependencies>
     </metadata>
     <files>
-        <!-- Standard 1.0 -->
+        <!-- Standard 2.0 Language and Region Localization -->
         <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard2.0\TIKSN.LanguageLocalization.dll" target="lib\MonoAndroid403" />
         <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard2.0\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\MonoAndroid403\hy" />
         <file src="..\TIKSN.LanguageLocalization\bin\Release\netstandard2.0\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\MonoAndroid403\ru" />
