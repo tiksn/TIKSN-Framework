@@ -13,10 +13,10 @@ Task("Tweet")
   .IsDependentOn("Publish")
   .Does(() =>
 {
-  var oAuthConsumerKey = Argument<string>("TIKSN-Framework-ConsumerKey");
-  var oAuthConsumerSecret = Argument<string>("TIKSN-Framework-ConsumerSecret");
-  var accessToken = Argument<string>("TIKSN-Framework-AccessToken");
-  var accessTokenSecret = Argument<string>("TIKSN-Framework-AccessTokenSecret");
+  var oAuthConsumerKey = EnvironmentVariable("TIKSN-Framework-ConsumerKey");
+  var oAuthConsumerSecret = EnvironmentVariable("TIKSN-Framework-ConsumerSecret");
+  var accessToken = EnvironmentVariable("TIKSN-Framework-AccessToken");
+  var accessTokenSecret = EnvironmentVariable("TIKSN-Framework-AccessTokenSecret");
 
   TwitterSendTweet(oAuthConsumerKey, oAuthConsumerSecret, accessToken, accessTokenSecret, $"TIKSN Framework {nextVersionString} is published https://www.nuget.org/packages/TIKSN-Framework/{nextVersionString}");
 });
@@ -30,7 +30,7 @@ Task("Publish")
 
  NuGetPush(package, new NuGetPushSettings {
      Source = "nuget.org",
-     ApiKey = Argument<string>("TIKSN-Framework-ApiKey")
+     ApiKey = EnvironmentVariable("TIKSN-Framework-ApiKey")
  });
 });
 
