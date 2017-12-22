@@ -1,12 +1,25 @@
 #addin "Cake.Http"
 #addin "Cake.Json"
+#addin nuget:?package=Cake.Twitter&version=0.6.0
 #addin nuget:?package=Newtonsoft.Json&version=9.0.1
 #tool "nuget:?package=Mono.TextTransform"
 #tool "nuget:?package=xunit.runner.console"
 
-var target = Argument("target", "Publish");
+var target = Argument("target", "Tweet");
 var solution = "../TIKSN Framework.sln";
 var nextVersionString = "";
+
+Task("Tweet")
+  .IsDependentOn("Publish")
+  .Does(() =>
+{
+  var oAuthConsumerKey = Argument<string>("TIKSN-Framework-ConsumerKey");
+  var oAuthConsumerSecret = Argument<string>("TIKSN-Framework-ConsumerSecret");
+  var accessToken = Argument<string>("TIKSN-Framework-AccessToken");
+  var accessTokenSecret = Argument<string>("TIKSN-Framework-AccessTokenSecret");
+
+  TwitterSendTweet(oAuthConsumerKey, oAuthConsumerSecret, accessToken, accessTokenSecret, $"TIKSN Framework {nextVersionString} is published https://www.nuget.org/packages/TIKSN-Framework/{nextVersionString}");
+});
 
 Task("Publish")
   .Description("Publish NuGet package.")
@@ -16,7 +29,8 @@ Task("Publish")
  var package = string.Format("tools/TIKSN-Framework.{0}.nupkg", nextVersionString);
 
  NuGetPush(package, new NuGetPushSettings {
-     Source = "nuget.org"
+     Source = "nuget.org",
+     ApiKey = Argument<string>("TIKSN-Framework-ApiKey")
  });
 });
 
