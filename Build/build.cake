@@ -1,13 +1,18 @@
 #addin "Cake.Http"
 #addin "Cake.Json"
+#addin "Cake.ExtendedNuGet"
 #addin nuget:?package=Cake.Twitter&version=0.6.0
 #addin nuget:?package=Newtonsoft.Json&version=9.0.1
+#addin nuget:?package=NuGet.Core&version=2.14.0
 #tool "nuget:?package=Mono.TextTransform"
 #tool "nuget:?package=xunit.runner.console"
 
 var target = Argument("target", "Tweet");
 var solution = "../TIKSN Framework.sln";
+var nuspec = "TIKSN-Framework.nuspec";
 var nextVersionString = "";
+
+using System.Linq;
 
 Task("Tweet")
   .IsDependentOn("Publish")
@@ -46,7 +51,7 @@ Task("Pack")
     OutputDirectory = "tools"
     };
 
-  NuGetPack("TIKSN-Framework.nuspec", nuGetPackSettings);
+  NuGetPack(nuspec, nuGetPackSettings);
 });
 
 Task("Test")
@@ -120,10 +125,12 @@ Task("EstimateNextVersion")
   .Description("Estimate next version.")
   .Does(() =>
 {
-  string responseBody = HttpGet("https://api-v2v3search-0.nuget.org/query?q=TIKSN-Framework&prerelease=true&take=1&semVerLevel=2.0.0");
-  var responseObject = DeserializeJson<dynamic>(responseBody);
-  
-  var versionString = responseObject.data[0].version.ToString();
+  var packageList = NuGetList("TIKSN-Framework", new NuGetListSettings {
+      AllVersions = false,
+      Prerelease = true
+      });
+  var latestPackage = packageList.Single();
+  var versionString = latestPackage.Version;
   var lastDotIndex = versionString.LastIndexOf('.');
   var prereleaseNumber = int.Parse(versionString.Substring(lastDotIndex + 1));
   var nextPrereleaseNumber = prereleaseNumber + 1;
