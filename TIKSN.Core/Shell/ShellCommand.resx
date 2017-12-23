@@ -148,6 +148,9 @@
   <data name="491461331" xml:space="preserve">
     <value>{0} class must have {1} attribute.</value>
   </data>
+  <data name="548430597" xml:space="preserve">
+    <value>Unable to initialize command instance or set parameter(s).</value>
+  </data>
   <data name="588506767" xml:space="preserve">
     <value>{0} class must implement {1} interface.</value>
   </data>

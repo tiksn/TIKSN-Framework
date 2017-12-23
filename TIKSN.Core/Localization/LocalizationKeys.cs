@@ -161,6 +161,11 @@
 		/// </summary>
 		public const int Key491461331 = 491461331;
 		/// <summary>
+		/// Key: 548430597
+		/// Original Value: Unable to initialize command instance or parameter(s).
+		/// </summary>
+		public const int Key548430597 = 548430597;
+		/// <summary>
 		/// Key: 588506767
 		/// Original Value: {0} class must implement {1} interface.
 		/// </summary>
