@@ -82,8 +82,8 @@
       <HintPath>..\packages\Exceptionless.4.2.1979\lib\netstandard2.0\Exceptionless.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Exceptionless.Signed, Version=4.2.1979.0, Culture=neutral, PublicKeyToken=fc181f0a46f65747, processorArchitecture=MSIL">
-      <HintPath>..\packages\Exceptionless.Signed.4.2.1979\lib\netstandard2.0\Exceptionless.Signed.dll</HintPath>
+    <Reference Include="Exceptionless.Signed, Version=4.2.1982.0, Culture=neutral, PublicKeyToken=fc181f0a46f65747, processorArchitecture=MSIL">
+      <HintPath>..\packages\Exceptionless.Signed.4.2.1982\lib\netstandard2.0\Exceptionless.Signed.dll</HintPath>
     </Reference>
     <Reference Include="FluentAssertions, Version=4.19.4.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentAssertions.4.19.4\lib\netstandard1.3\FluentAssertions.dll</HintPath>
