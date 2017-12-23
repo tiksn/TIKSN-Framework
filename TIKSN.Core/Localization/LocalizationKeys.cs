@@ -162,7 +162,7 @@
 		public const int Key491461331 = 491461331;
 		/// <summary>
 		/// Key: 548430597
-		/// Original Value: Unable to initialize command instance or parameter(s).
+		/// Original Value: Unable to initialize command instance or set parameter(s).
 		/// </summary>
 		public const int Key548430597 = 548430597;
 		/// <summary>

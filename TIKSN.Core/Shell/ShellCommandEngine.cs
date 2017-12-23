@@ -127,10 +127,18 @@ namespace TIKSN.Shell
             }
         }
 
-        private void AppendException(StringBuilder messageBuilder, Exception exception)
+        private static void AppendExceptionMessage(StringBuilder messageBuilder, Exception exception)
         {
             messageBuilder.Append(exception.Message);
-            messageBuilder.Append(". ");
+            if (exception.Message.EndsWith(".", StringComparison.OrdinalIgnoreCase))
+                messageBuilder.Append(" ");
+            else
+                messageBuilder.Append(". ");
+        }
+
+        private void AppendException(StringBuilder messageBuilder, Exception exception)
+        {
+            AppendExceptionMessage(messageBuilder, exception);
 
             if (exception.InnerException != null)
                 AppendException(messageBuilder, exception.InnerException);
@@ -154,8 +162,7 @@ namespace TIKSN.Shell
         private void PrintError(EventId eventId, Exception exception, string message)
         {
             var messageBuilder = new StringBuilder();
-            messageBuilder.Append(message);
-            messageBuilder.Append(". ");
+            AppendExceptionMessage(messageBuilder, exception);
 
             AppendException(messageBuilder, exception);
 
