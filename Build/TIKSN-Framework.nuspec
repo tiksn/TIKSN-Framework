@@ -25,7 +25,7 @@
                 <dependency id="Bond.CSharp" version="7.0.1" />
                 <dependency id="ConsoleTables" version="2.1.0" />
                 <dependency id="Exceptionless.Signed" version="4.2.1979" />
-                <dependency id="FluentValidation" version="7.3.1" />
+                <dependency id="FluentValidation" version="7.3.3" />
                 <dependency id="LiteDB" version="4.1.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
                 <dependency id="Microsoft.EntityFrameworkCore" version="2.0.1" />
@@ -73,7 +73,7 @@
                 <dependency id="Bond.CSharp" version="7.0.1" />
                 <dependency id="ConsoleTables" version="2.1.0" />
                 <dependency id="Exceptionless.Signed" version="4.2.1979" />
-                <dependency id="FluentValidation" version="7.3.1" />
+                <dependency id="FluentValidation" version="7.3.3" />
                 <dependency id="LiteDB" version="4.1.0" />
                 <dependency id="Microsoft.AppCenter.Analytics" version="1.1.0" />
                 <dependency id="Microsoft.AppCenter.Crashes" version="1.1.0" />
@@ -113,7 +113,7 @@
                 <dependency id="Bond.CSharp" version="7.0.1" />
                 <dependency id="ConsoleTables" version="2.1.0" />
                 <dependency id="Exceptionless.Signed" version="4.2.1979" />
-                <dependency id="FluentValidation" version="7.3.1" />
+                <dependency id="FluentValidation" version="7.3.3" />
                 <dependency id="LiteDB" version="4.1.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
                 <dependency id="Microsoft.EntityFrameworkCore" version="2.0.1" />
@@ -153,7 +153,7 @@
                 <dependency id="Bond.CSharp" version="7.0.1" />
                 <dependency id="ConsoleTables" version="2.1.0" />
                 <dependency id="Exceptionless.Signed" version="4.2.1979" />
-                <dependency id="FluentValidation" version="7.3.1" />
+                <dependency id="FluentValidation" version="7.3.3" />
                 <dependency id="LiteDB" version="4.1.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.4.0" />
                 <dependency id="Microsoft.EntityFrameworkCore" version="2.0.1" />
@@ -191,7 +191,7 @@
                 <dependency id="Bond.CSharp" version="7.0.1" />
                 <dependency id="ConsoleTables" version="2.1.0" />
                 <dependency id="Exceptionless.Signed" version="4.2.1979" />
-                <dependency id="FluentValidation" version="7.3.1" />
+                <dependency id="FluentValidation" version="7.3.3" />
                 <dependency id="LiteDB" version="4.1.0" />
                 <dependency id="Microsoft.AppCenter.Analytics" version="1.1.0" />
                 <dependency id="Microsoft.AppCenter.Crashes" version="1.1.0" />
