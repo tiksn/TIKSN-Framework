@@ -26,7 +26,7 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.0.0" />
     <PackageReference Include="Microsoft.NETCore.Portable.Compatibility" Version="1.0.2" />
     <PackageReference Include="MongoDB.Driver.GridFS" Version="2.5.0" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="1.0.0-rtm-rc2" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.0.0-rtm-rc5" />
     <PackageReference Include="NSubstitute" Version="3.1.0" />
     <PackageReference Include="Serilog.Sinks.XUnit" Version="1.0.4" />
     <PackageReference Include="System.Interactive" Version="3.1.1" />
