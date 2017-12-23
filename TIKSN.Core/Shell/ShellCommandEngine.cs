@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security;
+using System.Text;
 using System.Threading.Tasks;
 using TIKSN.Localization;
 
@@ -126,6 +127,15 @@ namespace TIKSN.Shell
             }
         }
 
+        private void AppendException(StringBuilder messageBuilder, Exception exception)
+        {
+            messageBuilder.Append(exception.Message);
+            messageBuilder.Append(". ");
+
+            if (exception.InnerException != null)
+                AppendException(messageBuilder, exception.InnerException);
+        }
+
         private string NormalizeCommandName(string command)
         {
             if (command != null)
@@ -139,6 +149,20 @@ namespace TIKSN.Shell
             }
 
             return command;
+        }
+
+        private void PrintError(EventId eventId, Exception exception, string message)
+        {
+            var messageBuilder = new StringBuilder();
+            messageBuilder.Append(message);
+            messageBuilder.Append(". ");
+
+            AppendException(messageBuilder, exception);
+
+            var builtMessage = messageBuilder.ToString();
+
+            _consoleService.WriteError(builtMessage);
+            _logger.LogError(eventId, exception, builtMessage);
         }
 
         private object ReadCommandParameter(Tuple<ShellCommandParameterAttribute, PropertyInfo> property)
@@ -175,40 +199,48 @@ namespace TIKSN.Shell
         {
             using (var commandScope = _serviceProvider.CreateScope())
             {
-                var commandContextStore = commandScope.ServiceProvider.GetRequiredService<IShellCommandContext>() as IShellCommandContextStore;
-
-                commandContextStore.SetCommandName(commandName);
-
-                var args = new List<object>();
-
-                foreach (var parameterInfo in commandInfo.Item3.GetParameters())
-                {
-                    args.Add(commandScope.ServiceProvider.GetRequiredService(parameterInfo.ParameterType));
-                }
-
-                var obj = Activator.CreateInstance(commandInfo.Item1, args.ToArray());
-
-                foreach (var property in commandInfo.Item4)
-                {
-                    var parameter = ReadCommandParameter(property);
-
-                    if (parameter != null)
-                        property.Item2.SetValue(obj, parameter);
-
-                    _logger.LogTrace($"Parameter '{property.Item1.GetName(_stringLocalizer)}' has value '{property.Item2.GetValue(obj)}'");
-                }
-
-                var command = obj as IShellCommand;
-
                 try
                 {
-                    await command.ExecuteAsync();
+                    var commandContextStore = commandScope.ServiceProvider.GetRequiredService<IShellCommandContext>() as IShellCommandContextStore;
+
+                    commandContextStore.SetCommandName(commandName);
+
+                    var args = new List<object>();
+
+                    foreach (var parameterInfo in commandInfo.Item3.GetParameters())
+                    {
+                        args.Add(commandScope.ServiceProvider.GetRequiredService(parameterInfo.ParameterType));
+                    }
+
+                    var obj = Activator.CreateInstance(commandInfo.Item1, args.ToArray());
+
+                    foreach (var property in commandInfo.Item4)
+                    {
+                        var parameter = ReadCommandParameter(property);
+
+                        if (parameter != null)
+                            property.Item2.SetValue(obj, parameter);
+
+                        _logger.LogTrace($"Parameter '{property.Item1.GetName(_stringLocalizer)}' has value '{property.Item2.GetValue(obj)}'");
+                    }
+
+                    var command = obj as IShellCommand;
+
+                    try
+                    {
+                        await command.ExecuteAsync();
+                    }
+#pragma warning disable CC0004 // Catch block cannot be empty
+                    catch (ShellCommandSuspendedException) { }
+#pragma warning restore CC0004 // Catch block cannot be empty
+                    catch (Exception ex)
+                    {
+                        PrintError(1815744366, ex, _stringLocalizer.GetRequiredString(LocalizationKeys.Key163077375));
+                    }
                 }
-                catch (ShellCommandSuspendedException) { }
                 catch (Exception ex)
                 {
-                    _consoleService.WriteError(_stringLocalizer.GetRequiredString(LocalizationKeys.Key163077375));
-                    _logger.LogError(1815744366, ex, _stringLocalizer.GetRequiredString(LocalizationKeys.Key163077375));
+                    PrintError(1999436483, ex, _stringLocalizer.GetRequiredString(LocalizationKeys.Key548430597));
                 }
             }
         }
