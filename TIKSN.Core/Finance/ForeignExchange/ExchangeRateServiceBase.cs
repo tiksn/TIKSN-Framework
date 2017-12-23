@@ -157,16 +157,30 @@ namespace TIKSN.Finance.ForeignExchange
 
         private async Task FetchExchangeRatesAsync(int foreignExchangeID, IExchangeRatesProvider batchProvider, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var exchangeRates = await batchProvider.GetExchangeRatesAsync(asOn);
+            try
+            {
+                var exchangeRates = await batchProvider.GetExchangeRatesAsync(asOn);
 
-            await SaveExchangeRatesAsync(foreignExchangeID, exchangeRates, cancellationToken);
+                await SaveExchangeRatesAsync(foreignExchangeID, exchangeRates, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+            }
         }
 
         private async Task FetchExchangeRatesAsync(int foreignExchangeID, IExchangeRateProvider individualProvider, CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var exchangeRate = await individualProvider.GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn);
+            try
+            {
+                var exchangeRate = await individualProvider.GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn);
 
-            await SaveExchangeRatesAsync(foreignExchangeID, new[] { exchangeRate }, cancellationToken);
+                await SaveExchangeRatesAsync(foreignExchangeID, new[] { exchangeRate }, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+            }
         }
 
         private async Task SaveExchangeRatesAsync(int foreignExchangeID, IEnumerable<ExchangeRate> exchangeRates, CancellationToken cancellationToken)
