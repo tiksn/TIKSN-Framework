@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security;
+using System.Threading;
 
 namespace TIKSN.Shell
 {
@@ -9,6 +10,8 @@ namespace TIKSN.Shell
         string ReadLine(string promptMessage, ConsoleColor promptForegroundColor);
 
         SecureString ReadPasswordLine(string promptMessage, ConsoleColor promptForegroundColor);
+
+        IDisposable RegisterCancellation(CancellationTokenSource cancellationTokenSource);
 
         int UserPrompt(string message, params string[] options);
 
