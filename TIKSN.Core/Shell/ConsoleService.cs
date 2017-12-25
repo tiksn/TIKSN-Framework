@@ -3,7 +3,9 @@ using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Security;
+using System.Threading;
 using TIKSN.Localization;
 
 namespace TIKSN.Shell
@@ -21,12 +23,6 @@ namespace TIKSN.Shell
         {
             WritePromptMessage(promptMessage, promptForegroundColor);
             return Console.ReadLine();
-        }
-
-        private void WritePromptMessage(string promptMessage, ConsoleColor promptForegroundColor)
-        {
-            ConsoleWrite(promptMessage, promptForegroundColor);
-            ConsoleWrite(_stringLocalizer.GetRequiredString(LocalizationKeys.Key444677337), promptForegroundColor);
         }
 
         public SecureString ReadPasswordLine(string promptMessage, ConsoleColor promptForegroundColor)
@@ -57,6 +53,20 @@ namespace TIKSN.Shell
                 }
             }
             return pwd;
+        }
+
+        public IDisposable RegisterCancellation(CancellationTokenSource cancellationTokenSource)
+        {
+            ConsoleCancelEventHandler consoleCancelEventHandler = (sender, e) =>
+            {
+                cancellationTokenSource.Cancel();
+
+                e.Cancel = true;
+            };
+
+            Console.CancelKeyPress += consoleCancelEventHandler;
+
+            return Disposable.Create(() => Console.CancelKeyPress -= consoleCancelEventHandler);
         }
 
         public int UserPrompt(string message, params string[] options)
@@ -119,6 +129,12 @@ namespace TIKSN.Shell
             consoleTable.Options.EnableCount = enableCount;
             consoleTable.Write();
             Console.WriteLine();
+        }
+
+        private void WritePromptMessage(string promptMessage, ConsoleColor promptForegroundColor)
+        {
+            ConsoleWrite(promptMessage, promptForegroundColor);
+            ConsoleWrite(_stringLocalizer.GetRequiredString(LocalizationKeys.Key444677337), promptForegroundColor);
         }
     }
 }
