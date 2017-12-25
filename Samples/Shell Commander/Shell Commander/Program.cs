@@ -1,23 +1,25 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 using TIKSN.Shell;
 
 namespace Shell_Commander
 {
-	internal class Program
-	{
-		private static void Main(string[] args)
-		{
-			var composition = new CompositionRootSetup();
+    internal class Program
+    {
+        private static async Task Main(string[] args)
+        {
+            var config = new ConfigurationRootSetup(args);
+            var composition = new CompositionRootSetup(config.GetConfigurationRoot());
 
-			var serviceProvider = composition.CreateServiceProvider();
+            var serviceProvider = composition.CreateServiceProvider();
 
-			var engine = serviceProvider.GetRequiredService<IShellCommandEngine>();
+            var engine = serviceProvider.GetRequiredService<IShellCommandEngine>();
 
-			var thisAssembly = typeof(Program).Assembly;
+            var thisAssembly = typeof(Program).Assembly;
 
-			engine.AddAssembly(thisAssembly);
+            engine.AddAssembly(thisAssembly);
 
-			engine.RunAsync().Wait();
-		}
-	}
+            await engine.RunAsync();
+        }
+    }
 }

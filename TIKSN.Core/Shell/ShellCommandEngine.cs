@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Localization;
 
@@ -235,7 +236,11 @@ namespace TIKSN.Shell
 
                     try
                     {
-                        await command.ExecuteAsync();
+                        using (var cancellationTokenSource = new CancellationTokenSource())
+                        using (_consoleService.RegisterCancellation(cancellationTokenSource))
+                        {
+                            await command.ExecuteAsync(cancellationTokenSource.Token);
+                        }
                     }
 #pragma warning disable CC0004 // Catch block cannot be empty
                     catch (ShellCommandSuspendedException) { }
