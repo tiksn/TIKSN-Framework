@@ -24,8 +24,7 @@ namespace Shell_Commander.Commands
 
             for (int i = 1; i <= 10; i++)
             {
-                if (cancellationToken.IsCancellationRequested)
-                    break;
+                cancellationToken.ThrowIfCancellationRequested();
 
                 _logger.LogInformation("Attempt {0}", i);
 

@@ -12,8 +12,6 @@ namespace Shell_Commander
         public override void Setup()
         {
             base.Setup();
-
-            _loggerFactory.AddDebug(LogLevel.Debug);
             _loggerFactory.AddConsole(LogLevel.Debug);
         }
     }
