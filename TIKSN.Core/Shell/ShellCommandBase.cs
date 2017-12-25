@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TIKSN.Shell
@@ -7,7 +8,7 @@ namespace TIKSN.Shell
     {
         private readonly IConsoleService _consoleService;
 
-        public abstract Task ExecuteAsync();
+        public abstract Task ExecuteAsync(CancellationToken cancellationToken);
 
         protected ShellCommandBase(IConsoleService consoleService)
         {
