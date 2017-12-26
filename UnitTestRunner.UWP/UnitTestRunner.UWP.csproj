@@ -179,6 +179,9 @@
     <PackageReference Include="NLog.Extensions.Logging">
       <Version>1.0.0-rtm-rc5</Version>
     </PackageReference>
+    <PackageReference Include="NoDb">
+      <Version>1.1.3</Version>
+    </PackageReference>
     <PackageReference Include="System.Interactive">
       <Version>3.1.1</Version>
     </PackageReference>
