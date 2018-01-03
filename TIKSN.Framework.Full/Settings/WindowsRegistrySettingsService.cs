@@ -27,12 +27,12 @@ namespace TIKSN.Settings
 
         public IReadOnlyCollection<string> ListLocalSetting()
         {
-            return ListNames(RegistryHive.CurrentUser);
+            return Process<IReadOnlyCollection<string>>(RegistryHive.CurrentUser, null, null, ListNames);
         }
 
         public IReadOnlyCollection<string> ListRoamingSetting()
         {
-            return ListNames(RegistryHive.LocalMachine);
+            return Process<IReadOnlyCollection<string>>(RegistryHive.LocalMachine, null, null, ListNames);
         }
 
         public void RemoveLocalSetting(string name)
@@ -60,17 +60,9 @@ namespace TIKSN.Settings
             return (T)subKey.GetValue(name, defaultValue);
         }
 
-        private IReadOnlyCollection<string> ListNames(RegistryHive hiveKey)
+        private IReadOnlyCollection<string> ListNames(RegistryKey subKey, string name, IReadOnlyCollection<string> value)
         {
-            ValidateOptions();
-
-            using (var rootKey = RegistryKey.OpenBaseKey(hiveKey, _options.Value.RegistryView))
-            {
-                using (var registrySubKey = rootKey.OpenSubKey(_options.Value.SubKey))
-                {
-                    return registrySubKey.GetValueNames();
-                }
-            }
+            return subKey.GetValueNames();
         }
 
         private T Process<T>(RegistryHive hiveKey, string name, T value, Func<RegistryKey, string, T, T> processor)
