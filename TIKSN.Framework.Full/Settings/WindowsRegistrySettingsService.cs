@@ -37,12 +37,12 @@ namespace TIKSN.Settings
 
         public void RemoveLocalSetting(string name)
         {
-            RemoveSetting(RegistryHive.CurrentUser, name);
+            Process<object>(RegistryHive.CurrentUser, name, null, RemoveSetting);
         }
 
         public void RemoveRoamingSetting(string name)
         {
-            RemoveSetting(RegistryHive.LocalMachine, name);
+            Process<object>(RegistryHive.LocalMachine, name, null, RemoveSetting);
         }
 
         public void SetLocalSetting<T>(string name, T value)
@@ -86,17 +86,11 @@ namespace TIKSN.Settings
             }
         }
 
-        private void RemoveSetting(RegistryHive hiveKey, string name)
+        private T RemoveSetting<T>(RegistryKey subKey, string name, T value)
         {
-            ValidateOptions();
+            subKey.DeleteValue(name);
 
-            using (var rootKey = RegistryKey.OpenBaseKey(hiveKey, _options.Value.RegistryView))
-            {
-                using (var registrySubKey = rootKey.OpenSubKey(_options.Value.SubKey))
-                {
-                    registrySubKey.DeleteValue(name);
-                }
-            }
+            return value;
         }
 
         private T SetSetting<T>(RegistryKey subKey, string name, T value)
