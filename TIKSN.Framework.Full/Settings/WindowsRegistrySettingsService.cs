@@ -27,22 +27,22 @@ namespace TIKSN.Settings
 
         public IReadOnlyCollection<string> ListLocalSetting()
         {
-            return ListNames(RegistryHive.CurrentUser);
+            return Process<IReadOnlyCollection<string>>(RegistryHive.CurrentUser, null, null, ListNames);
         }
 
         public IReadOnlyCollection<string> ListRoamingSetting()
         {
-            return ListNames(RegistryHive.LocalMachine);
+            return Process<IReadOnlyCollection<string>>(RegistryHive.LocalMachine, null, null, ListNames);
         }
 
         public void RemoveLocalSetting(string name)
         {
-            RemoveSetting(RegistryHive.CurrentUser, name);
+            Process<object>(RegistryHive.CurrentUser, name, null, RemoveSetting);
         }
 
         public void RemoveRoamingSetting(string name)
         {
-            RemoveSetting(RegistryHive.LocalMachine, name);
+            Process<object>(RegistryHive.LocalMachine, name, null, RemoveSetting);
         }
 
         public void SetLocalSetting<T>(string name, T value)
@@ -60,43 +60,32 @@ namespace TIKSN.Settings
             return (T)subKey.GetValue(name, defaultValue);
         }
 
-        private IReadOnlyCollection<string> ListNames(RegistryHive hiveKey)
+        private IReadOnlyCollection<string> ListNames(RegistryKey subKey, string name, IReadOnlyCollection<string> value)
         {
-            ValidateOptions();
-
-            using (var rootKey = RegistryKey.OpenBaseKey(hiveKey, _options.Value.RegistryView))
-            {
-                using (var registrySubKey = rootKey.OpenSubKey(_options.Value.SubKey))
-                {
-                    return registrySubKey.GetValueNames();
-                }
-            }
+            return subKey.GetValueNames();
         }
 
         private T Process<T>(RegistryHive hiveKey, string name, T value, Func<RegistryKey, string, T, T> processor)
         {
+            if (processor == null)
+                throw new ArgumentNullException(nameof(processor));
+
             ValidateOptions();
 
             using (var rootKey = RegistryKey.OpenBaseKey(hiveKey, _options.Value.RegistryView))
             {
-                using (var registrySubKey = rootKey.OpenSubKey(_options.Value.SubKey))
+                using (var registrySubKey = rootKey.CreateSubKey(_options.Value.SubKey, writable: true))
                 {
                     return processor(registrySubKey, name, value);
                 }
             }
         }
 
-        private void RemoveSetting(RegistryHive hiveKey, string name)
+        private T RemoveSetting<T>(RegistryKey subKey, string name, T value)
         {
-            ValidateOptions();
+            subKey.DeleteValue(name);
 
-            using (var rootKey = RegistryKey.OpenBaseKey(hiveKey, _options.Value.RegistryView))
-            {
-                using (var registrySubKey = rootKey.OpenSubKey(_options.Value.SubKey))
-                {
-                    registrySubKey.DeleteValue(name);
-                }
-            }
+            return value;
         }
 
         private T SetSetting<T>(RegistryKey subKey, string name, T value)
