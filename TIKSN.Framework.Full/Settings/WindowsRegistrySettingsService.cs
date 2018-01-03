@@ -67,11 +67,14 @@ namespace TIKSN.Settings
 
         private T Process<T>(RegistryHive hiveKey, string name, T value, Func<RegistryKey, string, T, T> processor)
         {
+            if (processor == null)
+                throw new ArgumentNullException(nameof(processor));
+
             ValidateOptions();
 
             using (var rootKey = RegistryKey.OpenBaseKey(hiveKey, _options.Value.RegistryView))
             {
-                using (var registrySubKey = rootKey.OpenSubKey(_options.Value.SubKey))
+                using (var registrySubKey = rootKey.CreateSubKey(_options.Value.SubKey, writable: true))
                 {
                     return processor(registrySubKey, name, value);
                 }
