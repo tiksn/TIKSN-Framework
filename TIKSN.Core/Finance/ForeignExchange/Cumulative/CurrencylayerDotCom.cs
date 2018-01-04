@@ -28,7 +28,7 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var rates = await GetRatesAasync(baseMoney.Currency, counterCurrency, asOn);
+            var rates = await GetRatesAasync(baseMoney.Currency, counterCurrency, asOn, cancellationToken);
 
             var rate = rates.Values.Single();
 
