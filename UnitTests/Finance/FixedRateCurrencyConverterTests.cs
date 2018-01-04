@@ -21,7 +21,7 @@ namespace TIKSN.Finance.Tests
 
             FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
-            Money Final = await converter.ConvertCurrencyAsync(Initial, PoundSterling, DateTime.Now);
+            Money Final = await converter.ConvertCurrencyAsync(Initial, PoundSterling, DateTime.Now, default);
 
             Assert.Equal(PoundSterling, Final.Currency);
             Assert.Equal(200m, Final.Amount);
@@ -43,7 +43,7 @@ namespace TIKSN.Finance.Tests
             FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
             await Assert.ThrowsAsync<ArgumentException>(
-                    async () => await converter.ConvertCurrencyAsync(Initial, Euro, DateTimeOffset.Now));
+                    async () => await converter.ConvertCurrencyAsync(Initial, Euro, DateTimeOffset.Now, default));
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace TIKSN.Finance.Tests
             FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
             await Assert.ThrowsAsync<ArgumentException>(
-                    async () => await converter.ConvertCurrencyAsync(Initial, Euro, DateTimeOffset.Now));
+                    async () => await converter.ConvertCurrencyAsync(Initial, Euro, DateTimeOffset.Now, default));
         }
 
         [Fact]
@@ -122,7 +122,7 @@ namespace TIKSN.Finance.Tests
             Assert.Equal<CurrencyInfo>(USDollar, converter.CurrencyPair.BaseCurrency);
             Assert.Equal<CurrencyInfo>(PoundSterling, converter.CurrencyPair.CounterCurrency);
 
-            Assert.True(object.ReferenceEquals(pair, (await converter.GetCurrencyPairsAsync(DateTimeOffset.Now)).Single()));
+            Assert.True(object.ReferenceEquals(pair, (await converter.GetCurrencyPairsAsync(DateTimeOffset.Now, default)).Single()));
         }
 
         [Fact]
@@ -136,7 +136,7 @@ namespace TIKSN.Finance.Tests
 
             FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
-            Assert.Equal(2m, await converter.GetExchangeRateAsync(new CurrencyPair(USDollar, PoundSterling), DateTimeOffset.Now));
+            Assert.Equal(2m, await converter.GetExchangeRateAsync(new CurrencyPair(USDollar, PoundSterling), DateTimeOffset.Now, default));
         }
 
         [Fact]
@@ -151,7 +151,7 @@ namespace TIKSN.Finance.Tests
             FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
             await Assert.ThrowsAsync<ArgumentException>(
-                    async () => await converter.GetExchangeRateAsync(new CurrencyPair(PoundSterling, USDollar), DateTimeOffset.Now));
+                    async () => await converter.GetExchangeRateAsync(new CurrencyPair(PoundSterling, USDollar), DateTimeOffset.Now, default));
         }
 
         [Fact]
@@ -168,7 +168,7 @@ namespace TIKSN.Finance.Tests
             FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
             await Assert.ThrowsAsync<ArgumentException>(
-                    async () => await converter.GetExchangeRateAsync(new CurrencyPair(Euro, USDollar), DateTimeOffset.Now));
+                    async () => await converter.GetExchangeRateAsync(new CurrencyPair(Euro, USDollar), DateTimeOffset.Now, default));
         }
 
         [Fact]
@@ -185,7 +185,7 @@ namespace TIKSN.Finance.Tests
             FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
             await Assert.ThrowsAsync<ArgumentException>(
-                    async () => await converter.GetExchangeRateAsync(new CurrencyPair(USDollar, Euro), DateTimeOffset.Now));
+                    async () => await converter.GetExchangeRateAsync(new CurrencyPair(USDollar, Euro), DateTimeOffset.Now, default));
         }
 
         [Fact]
@@ -204,8 +204,8 @@ namespace TIKSN.Finance.Tests
             var LastMonth = DateTimeOffset.Now.AddMonths(-1);
             var NextMonth = DateTimeOffset.Now.AddMonths(1);
 
-            decimal RateInLastMonth = await converter.GetExchangeRateAsync(pair, LastMonth);
-            decimal RateInNextMonth = await converter.GetExchangeRateAsync(pair, NextMonth);
+            decimal RateInLastMonth = await converter.GetExchangeRateAsync(pair, LastMonth, default);
+            decimal RateInNextMonth = await converter.GetExchangeRateAsync(pair, NextMonth, default);
 
             Assert.True(RateInLastMonth == RateInNextMonth);
         }
