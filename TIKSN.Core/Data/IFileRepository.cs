@@ -19,18 +19,18 @@ namespace TIKSN.Data
     {
         Task DeleteByIdAsync(TIdentity id, CancellationToken cancellationToken);
 
-        Task<bool> ExistsByIdAsync(TIdentity id, CancellationToken cancellationToken);
-
         Task<IFile<TIdentity>> DownloadByIdAsync(TIdentity id, CancellationToken cancellationToken);
+
+        Task<bool> ExistsByIdAsync(TIdentity id, CancellationToken cancellationToken);
 
         Task UploadByIdAsync(TIdentity id, string path, byte[] content, CancellationToken cancellationToken);
     }
 
     public interface IFileRepository<TIdentity, TMetadata> where TIdentity : IEquatable<TIdentity>
     {
-        Task<IFile<TIdentity, TMetadata>> DownloadWithMetadataAsync(TIdentity id, CancellationToken cancellationToken);
-
         Task<IFileInfo<TIdentity, TMetadata>> DownloadOnlyMetadataAsync(TIdentity id, CancellationToken cancellationToken);
+
+        Task<IFile<TIdentity, TMetadata>> DownloadWithMetadataAsync(TIdentity id, CancellationToken cancellationToken);
 
         Task UploadAsync(TIdentity id, string path, byte[] content, TMetadata metadata, CancellationToken cancellationToken);
     }
