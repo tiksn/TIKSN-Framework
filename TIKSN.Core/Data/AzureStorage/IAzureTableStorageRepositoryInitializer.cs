@@ -6,6 +6,6 @@ namespace TIKSN.Data.AzureStorage
 {
     public interface IAzureTableStorageRepositoryInitializer<T> where T : ITableEntity
     {
-        Task InitializeAsync(CancellationToken cancellationToken = default(CancellationToken));
+        Task InitializeAsync(CancellationToken cancellationToken);
     }
 }

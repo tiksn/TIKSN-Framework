@@ -7,8 +7,8 @@ namespace TIKSN.Data.AzureStorage
 {
     public interface IAzureTableStorageQueryRepository<T> where T : ITableEntity
     {
-        Task<T> RetrieveAsync(string partitionKey, string rowKey, CancellationToken cancellationToken = default(CancellationToken));
+        Task<T> RetrieveAsync(string partitionKey, string rowKey, CancellationToken cancellationToken);
 
-        Task<IEnumerable<T>> SearchAsync(IDictionary<string, object> filters, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IEnumerable<T>> SearchAsync(IDictionary<string, object> filters, CancellationToken cancellationToken);
     }
 }
