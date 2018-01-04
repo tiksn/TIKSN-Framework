@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Globalization;
 
@@ -35,22 +36,22 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             _currencyFactory = currencyFactory;
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
-            var rate = await this.GetExchangeRateAsync(pair, asOn);
+            var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken);
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
-        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn)
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             var result = new List<ExchangeRate>();
 
             var ratesList = new List<Tuple<CurrencyInfo, DateTimeOffset, decimal>>();
 
-            var rawData = await FetchRawDataAsync(RestURL);
+            var rawData = await FetchRawDataAsync(RestURL, cancellationToken);
 
             var asOnDate = GetRatesDate(asOn);
             foreach (var rawItem in rawData)
@@ -77,9 +78,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return result;
         }
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            await FetchOnDemandAsync();
+            await FetchOnDemandAsync(cancellationToken);
 
             if (asOn > DateTime.Now)
                 throw new ArgumentException("Exchange rate forecasting are not supported.");
@@ -95,9 +96,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return result;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
+        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            await FetchOnDemandAsync();
+            await FetchOnDemandAsync(cancellationToken);
 
             if (asOn > DateTimeOffset.Now)
                 throw new ArgumentException("Exchange rate forecasting not supported.");
@@ -112,15 +113,15 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             }
         }
 
-        private async Task FetchOnDemandAsync()
+        private async Task FetchOnDemandAsync(CancellationToken cancellationToken)
         {
             if (DateTimeOffset.Now - lastFetchDate > TimeSpan.FromDays(1d))
             {
-                await GetExchangeRatesAsync(DateTimeOffset.Now);
+                await GetExchangeRatesAsync(DateTimeOffset.Now, cancellationToken);
             }
         }
 
-        private async Task<List<Tuple<string, DateTimeOffset, decimal>>> FetchRawDataAsync(string restUrl)
+        private async Task<List<Tuple<string, DateTimeOffset, decimal>>> FetchRawDataAsync(string restUrl, CancellationToken cancellationToken)
         {
             using (var httpClient = new HttpClient())
             {
