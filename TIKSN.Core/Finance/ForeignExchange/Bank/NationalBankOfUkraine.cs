@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TIKSN.Globalization;
@@ -39,10 +40,11 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         /// <param name="baseMoney">The base money.</param>
         /// <param name="counterCurrency">The counter currency.</param>
         /// <param name="asOn">As on.</param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var rate = await GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn);
+            var rate = await GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken);
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
@@ -52,9 +54,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         /// </summary>
         /// <param name="asOn">As on.</param>
         /// <returns></returns>
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var records = await GetExchangeRatesAsync(asOn);
+            var records = await GetExchangeRatesAsync(asOn, cancellationToken);
 
             return records.Select(item => item.Pair).ToArray();
         }
@@ -64,10 +66,11 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         /// </summary>
         /// <param name="pair">The pair.</param>
         /// <param name="asOn">As on.</param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
+        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            return await GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn);
+            return await GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken);
         }
 
         private Exception CreatePairNotSupportedException(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency)
@@ -80,7 +83,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return ex;
         }
 
-        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn)
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             using (var httpClient = new HttpClient())
             {
@@ -104,15 +107,15 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             }
         }
 
-        private async Task<decimal> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+        private async Task<decimal> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             if (counterCurrency == ukrainianHryvnia)
             {
-                return await GetExchangeRateAsync(baseCurrency, asOn);
+                return await GetExchangeRateAsync(baseCurrency, asOn, cancellationToken);
             }
             else if (baseCurrency == ukrainianHryvnia)
             {
-                var counterRate = await GetExchangeRateAsync(counterCurrency, asOn);
+                var counterRate = await GetExchangeRateAsync(counterCurrency, asOn, cancellationToken);
 
                 return 1m / counterRate;
             }
@@ -122,9 +125,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             }
         }
 
-        private async Task<decimal> GetExchangeRateAsync(CurrencyInfo currency, DateTimeOffset asOn)
+        private async Task<decimal> GetExchangeRateAsync(CurrencyInfo currency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var records = await GetExchangeRatesAsync(asOn);
+            var records = await GetExchangeRatesAsync(asOn, cancellationToken);
             var record = records.SingleOrDefault(item => item.Pair.BaseCurrency == currency);
 
             if (record == null)
