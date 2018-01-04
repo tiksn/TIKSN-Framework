@@ -30,11 +30,11 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         {
             var bank = new BankOfCanada(_currencyFactory);
 
-            foreach (var pair in await bank.GetCurrencyPairsAsync(DateTimeOffset.Now))
+            foreach (var pair in await bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default))
             {
                 Money Before = new Money(pair.BaseCurrency, 10m);
-                decimal rate = await bank.GetExchangeRateAsync(pair, DateTimeOffset.Now);
-                Money After = await bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now);
+                decimal rate = await bank.GetExchangeRateAsync(pair, DateTimeOffset.Now, default);
+                Money After = await bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now, default);
 
                 Assert.True(After.Amount == rate * Before.Amount);
                 Assert.True(After.Currency == pair.CounterCurrency);
@@ -51,7 +51,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
             var BeforeInPound = new Money(PoundSterling, 100m);
 
-            var AfterInDollar = await Bank.ConvertCurrencyAsync(BeforeInPound, CanadianDollar, DateTimeOffset.Now);
+            var AfterInDollar = await Bank.ConvertCurrencyAsync(BeforeInPound, CanadianDollar, DateTimeOffset.Now, default);
 
             Assert.True(BeforeInPound.Amount < AfterInDollar.Amount);
         }
@@ -61,13 +61,13 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         {
             BankOfCanada Bank = new BankOfCanada(_currencyFactory);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
             foreach (CurrencyPair pair in CurrencyPairs)
             {
                 Money Before = new Money(pair.BaseCurrency, decimal.One);
 
-                Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now);
+                Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now, default);
 
                 Assert.True(After.Amount > decimal.Zero);
             }
@@ -78,13 +78,13 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         {
             BankOfCanada Bank = new BankOfCanada(_currencyFactory);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
             foreach (CurrencyPair pair in CurrencyPairs)
             {
                 Money Before = new Money(pair.BaseCurrency, decimal.One);
 
-                Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now);
+                Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now, default);
 
                 Assert.True(After.Currency == pair.CounterCurrency);
             }
@@ -95,15 +95,15 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         {
             BankOfCanada Bank = new BankOfCanada(_currencyFactory);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
             foreach (CurrencyPair pair in CurrencyPairs)
             {
                 Money Before = new Money(pair.BaseCurrency, 10m);
 
-                Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now);
+                Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now, default);
 
-                decimal rate = await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now);
+                decimal rate = await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now, default);
 
                 Assert.True(After.Currency == pair.CounterCurrency);
                 Assert.True(After.Amount == rate * Before.Amount);
@@ -124,7 +124,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
             Money Before = new Money(USD, 100m);
 
             await Assert.ThrowsAsync<ArgumentException>(
-                async () => await Bank.ConvertCurrencyAsync(Before, CAD, DateTimeOffset.Now.AddMinutes(1d)));
+                async () => await Bank.ConvertCurrencyAsync(Before, CAD, DateTimeOffset.Now.AddMinutes(1d), default));
         }
 
         [Fact]
@@ -141,7 +141,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
             Money Before = new Money(AOA, 100m);
 
             await Assert.ThrowsAsync<ArgumentException>(
-                async () => await Bank.ConvertCurrencyAsync(Before, BWP, DateTimeOffset.Now));
+                async () => await Bank.ConvertCurrencyAsync(Before, BWP, DateTimeOffset.Now, default));
         }
 
         [Fact]
@@ -149,59 +149,59 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         {
             BankOfCanada Bank = new BankOfCanada(_currencyFactory);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/USD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/AUD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/BRL"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/CNY"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/EUR"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/HKD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/INR"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/IDR"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/JPY"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/MYR"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/MXN"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/NZD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/NOK"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/PEN"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/RUB"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/SGD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/ZAR"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/KRW"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/SEK"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/CHF"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/TWD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/THB"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/TRY"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/GBP"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/VND"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/USD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/AUD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/BRL");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/CNY");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/EUR");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/HKD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/INR");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/IDR");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/JPY");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/MYR");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/MXN");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/NZD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/NOK");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/PEN");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/RUB");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/SGD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/ZAR");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/KRW");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/SEK");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/CHF");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/TWD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/THB");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/TRY");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/GBP");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/VND");
 
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "USD/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "AUD/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "BRL/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CNY/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "EUR/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "HKD/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "INR/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "IDR/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "JPY/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "MYR/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "MXN/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "NZD/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "NOK/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "PEN/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "RUB/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "SGD/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "ZAR/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "KRW/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "SEK/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "CHF/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "TWD/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "THB/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "TRY/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "GBP/CAD"));
-            Assert.True(CurrencyPairs.Any(C => C.ToString() == "VND/CAD"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "USD/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "AUD/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "BRL/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CNY/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "EUR/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "HKD/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "INR/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "IDR/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "JPY/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "MYR/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "MXN/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "NZD/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "NOK/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "PEN/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "RUB/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "SGD/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "ZAR/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "KRW/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "SEK/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CHF/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "TWD/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "THB/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "TRY/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "GBP/CAD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "VND/CAD");
         }
 
         [Fact]
@@ -209,7 +209,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         {
             BankOfCanada Bank = new BankOfCanada(_currencyFactory);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
             foreach (CurrencyPair pair in CurrencyPairs)
             {
@@ -226,7 +226,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
             var pairSet = new HashSet<CurrencyPair>();
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
             foreach (CurrencyPair pair in CurrencyPairs)
             {
@@ -242,7 +242,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
             BankOfCanada Bank = new BankOfCanada(_currencyFactory);
 
             await Assert.ThrowsAsync<ArgumentException>(
-                async () => await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now.AddDays(10)));
+                async () => await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now.AddDays(10), default));
         }
 
         [Fact]
@@ -250,7 +250,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         {
             var Bank = new BankOfCanada(_currencyFactory);
 
-            await Bank.GetExchangeRatesAsync(DateTimeOffset.Now);
+            await Bank.GetExchangeRatesAsync(DateTimeOffset.Now, default);
         }
 
         [Fact]
@@ -258,11 +258,11 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         {
             BankOfCanada Bank = new BankOfCanada(_currencyFactory);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
             foreach (CurrencyPair pair in CurrencyPairs)
             {
-                decimal rate = await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now);
+                decimal rate = await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now, default);
 
                 Assert.True(rate > decimal.Zero);
             }
@@ -282,7 +282,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
             CurrencyPair pair = new CurrencyPair(CAD, USD);
 
             await Assert.ThrowsAsync<ArgumentException>(
-                async () => await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now.AddMinutes(1d)));
+                async () => await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now.AddMinutes(1d), default));
         }
 
         [Fact]
@@ -299,7 +299,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
             CurrencyPair pair = new CurrencyPair(BWP, AOA);
 
             await Assert.ThrowsAsync<ArgumentException>(
-                async () => await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now));
+                async () => await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now, default));
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TIKSN.Globalization;
@@ -123,20 +124,20 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             _regionFactory = regionFactory;
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            decimal rate = (await this.GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn)).Rate;
+            decimal rate = (await this.GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn,cancellationToken)).Rate;
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             var pairs = new List<CurrencyPair>();
 
             foreach (var pair in SeriesCodes.Keys)
             {
-                decimal rate = await GetExchangeRateAsync(pair, asOn);
+                decimal rate = await GetExchangeRateAsync(pair, asOn, cancellationToken);
 
                 if (rate != decimal.Zero)
                 {
@@ -147,12 +148,12 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return pairs;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
+        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            return (await GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn)).Rate;
+            return (await GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken)).Rate;
         }
 
-        public async Task<ExchangeRate> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+        public async Task<ExchangeRate> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             if (asOn > DateTimeOffset.Now)
                 throw new ArgumentException("Exchange rate forecasting are not supported.");

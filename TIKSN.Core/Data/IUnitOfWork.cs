@@ -6,6 +6,6 @@ namespace TIKSN.Data
 {
     public interface IUnitOfWork : IDisposable
     {
-        Task CompleteAsync(CancellationToken cancellationToken = default(CancellationToken));
+        Task CompleteAsync(CancellationToken cancellationToken);
     }
 }

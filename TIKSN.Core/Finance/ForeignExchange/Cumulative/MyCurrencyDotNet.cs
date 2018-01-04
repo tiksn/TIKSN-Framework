@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Globalization;
 
@@ -21,29 +22,29 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
             _currencyFactory = currencyFactory;
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var rate = await GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn);
+            var rate = await GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken);
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             if (DateTimeOffset.Now.Date != asOn.Date)
                 throw new ArgumentOutOfRangeException(nameof(asOn));
 
-            var exchangeRates = await GetExchangeRatesAsync(asOn);
+            var exchangeRates = await GetExchangeRatesAsync(asOn, cancellationToken);
 
             return exchangeRates.Select(item => item.Pair).ToArray();
         }
 
-        public Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
+        public Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            return GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn);
+            return GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken);
         }
 
-        public async Task<IEnumerable<ForeignExchange.ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn)
+        public async Task<IEnumerable<ForeignExchange.ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             ValidateDate(asOn);
 
@@ -72,11 +73,11 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
                 throw new ArgumentOutOfRangeException(nameof(asOn));
         }
 
-        private async Task<decimal> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+        private async Task<decimal> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             ValidateDate(asOn);
 
-            var exchangeRates = await GetExchangeRatesAsync(asOn);
+            var exchangeRates = await GetExchangeRatesAsync(asOn, cancellationToken);
 
             var exchangeRate = exchangeRates.SingleOrDefault(item => item.Pair.BaseCurrency == baseCurrency && item.Pair.CounterCurrency == counterCurrency);
 

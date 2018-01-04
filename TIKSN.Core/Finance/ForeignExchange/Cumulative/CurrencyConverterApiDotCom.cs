@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Globalization;
 
@@ -29,14 +30,14 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
             _apiKey = apiKey;
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var rate = (await GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn)).Rate;
+            var rate = (await GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken)).Rate;
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             using (var httpClient = new HttpClient())
             {
@@ -67,12 +68,12 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
             }
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
+        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            return (await GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn)).Rate;
+            return (await GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken)).Rate;
         }
 
-        public async Task<ExchangeRate> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+        public async Task<ExchangeRate> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             if (DateTimeOffset.Now.Date != asOn.Date)
                 throw new ArgumentOutOfRangeException(nameof(asOn));

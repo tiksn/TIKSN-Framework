@@ -16,7 +16,7 @@ namespace TIKSN.Finance.Tests
             converter.Add(new FixedRateCurrencyConverter(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("GBP")), 1.13m));
             converter.Add(new FixedRateCurrencyConverter(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("CHF")), 1.14m));
 
-            var pairs = await converter.GetCurrencyPairsAsync(DateTimeOffset.Now);
+            var pairs = await converter.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
             Assert.Equal(3, pairs.Count());
         }
@@ -30,7 +30,7 @@ namespace TIKSN.Finance.Tests
             converter.Add(new FixedRateCurrencyConverter(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("GBP")), 1.13m));
             converter.Add(new FixedRateCurrencyConverter(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("CHF")), 1.14m));
 
-            var rate = await converter.GetExchangeRateAsync(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("EUR")), DateTimeOffset.Now);
+            var rate = await converter.GetExchangeRateAsync(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("EUR")), DateTimeOffset.Now, default);
 
             Assert.Equal(1.12m, rate);
         }

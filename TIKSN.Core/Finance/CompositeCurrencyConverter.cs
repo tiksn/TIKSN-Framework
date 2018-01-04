@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TIKSN.Finance
@@ -9,13 +10,10 @@ namespace TIKSN.Finance
         protected ICurrencyConversionCompositionStrategy compositionStrategy;
         protected List<ICurrencyConverter> converters;
 
-        public CompositeCurrencyConverter(ICurrencyConversionCompositionStrategy compositionStrategy)
+        protected CompositeCurrencyConverter(ICurrencyConversionCompositionStrategy compositionStrategy)
         {
-            if (compositionStrategy == null)
-                throw new ArgumentNullException(nameof(compositionStrategy));
-
-            this.compositionStrategy = compositionStrategy;
-            this.converters = new List<ICurrencyConverter>();
+            this.compositionStrategy = compositionStrategy ?? throw new ArgumentNullException(nameof(compositionStrategy));
+            converters = new List<ICurrencyConverter>();
         }
 
         public void Add(ICurrencyConverter converter)
@@ -23,10 +21,10 @@ namespace TIKSN.Finance
             this.converters.Add(converter);
         }
 
-        public abstract Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn);
+        public abstract Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken);
 
-        public abstract Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn);
+        public abstract Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken);
 
-        public abstract Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn);
+        public abstract Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken);
     }
 }

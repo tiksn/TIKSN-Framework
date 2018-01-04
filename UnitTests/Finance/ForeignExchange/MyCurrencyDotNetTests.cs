@@ -32,7 +32,7 @@ namespace TIKSN.Finance.ForeignExchange.Tests
 
             var myCurrencyDotNet = new MyCurrencyDotNet(currencyFactory, regionFactory);
 
-            var pairs = await myCurrencyDotNet.GetCurrencyPairsAsync(DateTimeOffset.Now);
+            var pairs = await myCurrencyDotNet.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
             pairs.Count().Should().BeGreaterThan(0);
         }
@@ -49,7 +49,7 @@ namespace TIKSN.Finance.ForeignExchange.Tests
             var usd = currencyFactory.Create("USD");
             var pair = new CurrencyPair(usd, amd);
 
-            var rate = await myCurrencyDotNet.GetExchangeRateAsync(pair, DateTimeOffset.Now);
+            var rate = await myCurrencyDotNet.GetExchangeRateAsync(pair, DateTimeOffset.Now, default);
 
             rate.Should().BeGreaterThan(decimal.One);
         }
@@ -66,7 +66,7 @@ namespace TIKSN.Finance.ForeignExchange.Tests
             var usd = currencyFactory.Create("USD");
             var pair = new CurrencyPair(amd, usd);
 
-            var rate = await myCurrencyDotNet.GetExchangeRateAsync(pair, DateTimeOffset.Now);
+            var rate = await myCurrencyDotNet.GetExchangeRateAsync(pair, DateTimeOffset.Now, default);
 
             rate.Should().BeLessThan(decimal.One);
         }

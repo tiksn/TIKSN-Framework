@@ -159,7 +159,7 @@ namespace TIKSN.Finance.ForeignExchange
         {
             try
             {
-                var exchangeRates = await batchProvider.GetExchangeRatesAsync(asOn);
+                var exchangeRates = await batchProvider.GetExchangeRatesAsync(asOn, cancellationToken);
 
                 await SaveExchangeRatesAsync(foreignExchangeID, exchangeRates, cancellationToken);
             }
@@ -173,7 +173,7 @@ namespace TIKSN.Finance.ForeignExchange
         {
             try
             {
-                var exchangeRate = await individualProvider.GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn);
+                var exchangeRate = await individualProvider.GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken);
 
                 await SaveExchangeRatesAsync(foreignExchangeID, new[] { exchangeRate }, cancellationToken);
             }

@@ -27,7 +27,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         {
             var exchange = new CurrencylayerDotCom(_currencyFactory, accessKey);
 
-            var pairs = await exchange.GetCurrencyPairsAsync(DateTimeOffset.Now);
+            var pairs = await exchange.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
             Assert.True(pairs.Count() > 0);
         }
@@ -39,7 +39,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
             var pair = new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("UAH"));
 
-            var rate = await exchange.GetExchangeRateAsync(pair, DateTimeOffset.Now);
+            var rate = await exchange.GetExchangeRateAsync(pair, DateTimeOffset.Now, default);
 
             Assert.True(rate > decimal.Zero);
         }
