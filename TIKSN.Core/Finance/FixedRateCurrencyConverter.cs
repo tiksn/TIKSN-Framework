@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TIKSN.Finance
@@ -38,7 +39,7 @@ namespace TIKSN.Finance
             }
         }
 
-        public Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+        public Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             CurrencyPair requiredPair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
@@ -52,14 +53,14 @@ namespace TIKSN.Finance
             }
         }
 
-        public Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
+        public Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             IEnumerable<CurrencyPair> singleItemList = new List<CurrencyPair>() { this.currencyPair };
 
             return Task.FromResult(singleItemList);
         }
 
-        public Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
+        public Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             if (this.CurrencyPair == pair)
             {
