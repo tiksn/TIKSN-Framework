@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TIKSN.Globalization;
@@ -35,18 +36,18 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             _currencyFactory = currencyFactory;
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            await this.FetchOnDemandAsync(asOn);
+            await this.FetchOnDemandAsync(asOn, cancellationToken);
 
             decimal rate = this.GetRate(baseMoney.Currency, counterCurrency);
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            await this.FetchOnDemandAsync(asOn);
+            await this.FetchOnDemandAsync(asOn, cancellationToken);
 
             var pairs = new List<CurrencyPair>();
 
@@ -59,16 +60,16 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return pairs;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
+        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            await this.FetchOnDemandAsync(asOn);
+            await this.FetchOnDemandAsync(asOn, cancellationToken);
 
             decimal rate = this.GetRate(pair.BaseCurrency, pair.CounterCurrency);
 
             return rate;
         }
 
-        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn)
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             ValidateDate(asOn);
 
@@ -121,14 +122,14 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return result;
         }
 
-        private async Task FetchOnDemandAsync(DateTimeOffset asOn)
+        private async Task FetchOnDemandAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             ValidateDate(asOn);
 
             if (!this.published.HasValue)
-                await this.GetExchangeRatesAsync(asOn);
+                await this.GetExchangeRatesAsync(asOn, cancellationToken);
             else if (this.published.Value != asOn.Date)
-                await this.GetExchangeRatesAsync(asOn);
+                await this.GetExchangeRatesAsync(asOn, cancellationToken);
         }
 
         private static void ValidateDate(DateTimeOffset asOn)
