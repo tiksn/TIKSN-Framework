@@ -11,7 +11,7 @@ namespace TIKSN.Finance
     {
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, IEnumerable<ICurrencyConverter> converters, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var filteredConverters = await CurrencyHelper.FilterConverters(converters, baseMoney.Currency, counterCurrency, asOn);
+            var filteredConverters = await CurrencyHelper.FilterConverters(converters, baseMoney.Currency, counterCurrency, asOn, cancellationToken);
 
             var amounts = new List<decimal>();
 
@@ -32,7 +32,7 @@ namespace TIKSN.Finance
 
         public async Task<decimal> GetExchangeRateAsync(IEnumerable<ICurrencyConverter> converters, CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var filteredConverters = await CurrencyHelper.FilterConverters(converters, pair, asOn);
+            var filteredConverters = await CurrencyHelper.FilterConverters(converters, pair, asOn, cancellationToken);
 
             var rates = new List<decimal>();
 
