@@ -128,7 +128,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             if (DateTimeOffset.Now - lastFetchDate > TimeSpan.FromDays(1d))
             {
-                await this.GetExchangeRatesAsync(DateTimeOffset.Now);
+                await this.GetExchangeRatesAsync(DateTimeOffset.Now, cancellationToken);
             }
         }
 
