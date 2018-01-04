@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TIKSN.Globalization;
@@ -19,24 +20,24 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         public CentralBankOfArmenia(ICurrencyFactory currencyFactory)
         {
-            this.oneWayRates = new Dictionary<CurrencyInfo, decimal>();
+            oneWayRates = new Dictionary<CurrencyInfo, decimal>();
 
-            this.lastFetchDate = DateTimeOffset.MinValue;
+            lastFetchDate = DateTimeOffset.MinValue;
             _currencyFactory = currencyFactory;
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            CurrencyPair pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
+            var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
-            decimal rate = await GetExchangeRateAsync(pair, asOn);
+            var rate = await GetExchangeRateAsync(pair, asOn, cancellationToken);
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            await this.FetchOnDemandAsync(asOn);
+            await FetchOnDemandAsync(asOn, cancellationToken);
 
             var rates = new List<CurrencyPair>();
 
@@ -49,9 +50,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return rates;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
+        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            await this.FetchOnDemandAsync(asOn);
+            await this.FetchOnDemandAsync(asOn, cancellationToken);
 
             if (pair.CounterCurrency == AMD)
             {
@@ -67,7 +68,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             throw new ArgumentException("Currency pair was not found.");
         }
 
-        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn)
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             ValodateDate(asOn);
 
@@ -119,22 +120,22 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                         }
                     }
 
-                    this.lastFetchDate = DateTimeOffset.Now; // this should stay at the end
+                    lastFetchDate = DateTimeOffset.Now; // this should stay at the end
                 }
             }
 
             return result;
         }
 
-        private async Task FetchOnDemandAsync(DateTimeOffset asOn)
+        private async Task FetchOnDemandAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            if (!this.publicationDate.HasValue)
+            if (!publicationDate.HasValue)
             {
-                await this.GetExchangeRatesAsync(asOn);
+                await this.GetExchangeRatesAsync(asOn, cancellationToken);
             }
             else if (DateTimeOffset.Now - lastFetchDate > TimeSpan.FromDays(1d))
             {
-                await this.GetExchangeRatesAsync(asOn);
+                await this.GetExchangeRatesAsync(asOn, cancellationToken);
             }
         }
 
