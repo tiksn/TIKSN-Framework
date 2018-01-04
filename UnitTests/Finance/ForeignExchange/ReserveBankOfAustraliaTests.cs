@@ -33,7 +33,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
             var BeforeInPound = new Money(PoundSterling, 100m);
 
-            var AfterInDollar = await Bank.ConvertCurrencyAsync(BeforeInPound, AustralianDollar, DateTime.Now);
+            var AfterInDollar = await Bank.ConvertCurrencyAsync(BeforeInPound, AustralianDollar, DateTime.Now, default);
 
             Assert.True(BeforeInPound.Amount < AfterInDollar.Amount);
         }
@@ -41,15 +41,15 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConvertCurrency001()
         {
-            ReserveBankOfAustralia Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
             foreach (CurrencyPair pair in CurrencyPairs)
             {
-                Money Before = new Money(pair.BaseCurrency, 10m);
+                var Before = new Money(pair.BaseCurrency, 10m);
 
-                Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTime.Now);
+                var After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTime.Now, default);
 
                 Assert.True(After.Amount > decimal.Zero);
                 Assert.True(After.Currency == pair.CounterCurrency);
@@ -59,17 +59,17 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConvertCurrency002()
         {
-            ReserveBankOfAustralia Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
             foreach (CurrencyPair pair in CurrencyPairs)
             {
-                Money Before = new Money(pair.BaseCurrency, 10m);
+                var Before = new Money(pair.BaseCurrency, 10m);
 
-                decimal rate = await Bank.GetExchangeRateAsync(pair, DateTime.Now);
+                var rate = await Bank.GetExchangeRateAsync(pair, DateTime.Now, default);
 
-                Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTime.Now);
+                var After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTime.Now, default);
 
                 Assert.True(After.Amount == Before.Amount * rate);
             }
@@ -78,147 +78,139 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConvertCurrency003()
         {
-            ReserveBankOfAustralia Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
             foreach (CurrencyPair pair in CurrencyPairs)
             {
-                Money Before = new Money(pair.BaseCurrency, 10m);
+                var Before = new Money(pair.BaseCurrency, 10m);
 
                 await
                     Assert.ThrowsAsync<ArgumentException>(
                         async () =>
-                            await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTime.Now.AddMinutes(1d)));
+                            await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTime.Now.AddMinutes(1d), default));
             }
         }
 
         [Fact]
         public async Task ConvertCurrency004()
         {
-            ReserveBankOfAustralia Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
             foreach (CurrencyPair pair in CurrencyPairs)
             {
-                Money Before = new Money(pair.BaseCurrency, 10m);
+                var Before = new Money(pair.BaseCurrency, 10m);
 
                 await
                     Assert.ThrowsAsync<ArgumentException>(
                         async () =>
-                            await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTime.Now.AddDays(-20d)));
+                            await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTime.Now.AddDays(-20d), default));
             }
         }
 
         [Fact]
         public async Task ConvertCurrency005()
         {
-            ReserveBankOfAustralia Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory);
 
-            System.Globalization.RegionInfo Armenia = new System.Globalization.RegionInfo("AM");
-            System.Globalization.RegionInfo Belarus = new System.Globalization.RegionInfo("BY");
+            var Armenia = new System.Globalization.RegionInfo("AM");
+            var Belarus = new System.Globalization.RegionInfo("BY");
 
-            CurrencyInfo ArmenianDram = new CurrencyInfo(Armenia);
-            CurrencyInfo BelarusianRuble = new CurrencyInfo(Belarus);
+            var ArmenianDram = new CurrencyInfo(Armenia);
+            var BelarusianRuble = new CurrencyInfo(Belarus);
 
-            Money Before = new Money(ArmenianDram, 10m);
+            var Before = new Money(ArmenianDram, 10m);
 
             await
                     Assert.ThrowsAsync<ArgumentException>(
                         async () =>
-                            await Bank.ConvertCurrencyAsync(Before, BelarusianRuble, DateTime.Now));
+                            await Bank.ConvertCurrencyAsync(Before, BelarusianRuble, DateTime.Now, default));
         }
 
         [Fact]
         public async Task Fetch001()
         {
-            ReserveBankOfAustralia Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory);
 
-            await Bank.GetExchangeRatesAsync(DateTimeOffset.Now);
+            await Bank.GetExchangeRatesAsync(DateTimeOffset.Now, default);
         }
 
         [Fact]
         public async Task GetCurrencyPairs001()
         {
-            ReserveBankOfAustralia Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "USD/AUD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "CNY/AUD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "JPY/AUD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "EUR/AUD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "KRW/AUD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "GBP/AUD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "SGD/AUD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "INR/AUD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "THB/AUD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "NZD/AUD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "TWD/AUD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "MYR/AUD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "IDR/AUD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "VND/AUD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "AED/AUD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "HKD/AUD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "CAD/AUD"));
-            //Assert.True(CurrencyPairs.Any(P => P.ToString() == "ZAR/AUD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "CHF/AUD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "PGK/AUD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "XDR/AUD"));
-            //Assert.True(CurrencyPairs.Any(P => P.ToString() == "SEK/AUD"));
-            //Assert.True(CurrencyPairs.Any(P => P.ToString() == "PHP/AUD"));
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "USD/AUD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "CNY/AUD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "JPY/AUD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "EUR/AUD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "KRW/AUD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "GBP/AUD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "SGD/AUD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "INR/AUD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "THB/AUD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "NZD/AUD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "TWD/AUD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "MYR/AUD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "IDR/AUD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "VND/AUD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "AED/AUD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "HKD/AUD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "CAD/AUD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "CHF/AUD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "PGK/AUD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "XDR/AUD");
 
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/USD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/CNY"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/JPY"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/EUR"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/KRW"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/GBP"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/SGD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/INR"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/THB"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/NZD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/TWD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/MYR"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/IDR"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/VND"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/AED"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/HKD"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/CAD"));
-            //Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/ZAR"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/CHF"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/PGK"));
-            Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/XDR"));
-            //Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/SEK"));
-            //Assert.True(CurrencyPairs.Any(P => P.ToString() == "AUD/PHP"));
-
-            //Assert.True(CurrencyPairs.Count() == 38);
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/USD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/CNY");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/JPY");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/EUR");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/KRW");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/GBP");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/SGD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/INR");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/THB");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/NZD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/TWD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/MYR");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/IDR");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/VND");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/AED");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/HKD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/CAD");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/CHF");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/PGK");
+            Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/XDR");
         }
 
         [Fact]
         public async Task GetCurrencyPairs002()
         {
-            ReserveBankOfAustralia Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
             foreach (CurrencyPair pair in CurrencyPairs)
             {
-                CurrencyPair reversedPair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
+                var reversedPair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
 
-                Assert.True(CurrencyPairs.Any(P => P == reversedPair));
+                Assert.Contains(CurrencyPairs, P => P == reversedPair);
             }
         }
 
         [Fact]
         public async Task GetCurrencyPairs003()
         {
-            ReserveBankOfAustralia Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory);
 
-            System.Collections.Generic.HashSet<CurrencyPair> PairSet = new System.Collections.Generic.HashSet<CurrencyPair>();
+            var PairSet = new System.Collections.Generic.HashSet<CurrencyPair>();
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
             foreach (CurrencyPair pair in CurrencyPairs)
             {
@@ -231,77 +223,77 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs004()
         {
-            ReserveBankOfAustralia Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory);
 
             await
                 Assert.ThrowsAsync<ArgumentException>(
                     async () =>
-                        await Bank.GetCurrencyPairsAsync(DateTime.Now.AddMinutes(10)));
+                        await Bank.GetCurrencyPairsAsync(DateTime.Now.AddMinutes(10), default));
         }
 
         [Fact]
         public async Task GetCurrencyPairs005()
         {
-            ReserveBankOfAustralia Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory);
 
             await Assert.ThrowsAsync<ArgumentException>(
                     async () =>
-                        await Bank.GetCurrencyPairsAsync(DateTime.Now.AddDays(-20)));
+                        await Bank.GetCurrencyPairsAsync(DateTime.Now.AddDays(-20), default));
         }
 
         [Fact]
         public async Task GetExchangeRate001()
         {
-            ReserveBankOfAustralia Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
             foreach (CurrencyPair pair in CurrencyPairs)
             {
-                Assert.True(await Bank.GetExchangeRateAsync(pair, DateTime.Now) > decimal.Zero);
+                Assert.True(await Bank.GetExchangeRateAsync(pair, DateTime.Now, default) > decimal.Zero);
             }
         }
 
         [Fact]
         public async Task GetExchangeRate002()
         {
-            ReserveBankOfAustralia Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
             foreach (CurrencyPair pair in CurrencyPairs)
             {
-                await Assert.ThrowsAsync<ArgumentException>(async () => await Bank.GetExchangeRateAsync(pair, DateTime.Now.AddMinutes(1d)));
+                await Assert.ThrowsAsync<ArgumentException>(async () => await Bank.GetExchangeRateAsync(pair, DateTime.Now.AddMinutes(1d), default));
             }
         }
 
         [Fact]
         public async Task GetExchangeRate003()
         {
-            ReserveBankOfAustralia Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
             foreach (CurrencyPair pair in CurrencyPairs)
             {
-                await Assert.ThrowsAsync<ArgumentException>(async () => await Bank.GetExchangeRateAsync(pair, DateTime.Now.AddDays(-20d)));
+                await Assert.ThrowsAsync<ArgumentException>(async () => await Bank.GetExchangeRateAsync(pair, DateTime.Now.AddDays(-20d), default));
             }
         }
 
         [Fact]
         public async Task GetExchangeRate004()
         {
-            ReserveBankOfAustralia Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory);
 
-            System.Globalization.RegionInfo Armenia = new System.Globalization.RegionInfo("AM");
-            System.Globalization.RegionInfo Belarus = new System.Globalization.RegionInfo("BY");
+            var Armenia = new System.Globalization.RegionInfo("AM");
+            var Belarus = new System.Globalization.RegionInfo("BY");
 
-            CurrencyInfo ArmenianDram = new CurrencyInfo(Armenia);
-            CurrencyInfo BelarusianRuble = new CurrencyInfo(Belarus);
+            var ArmenianDram = new CurrencyInfo(Armenia);
+            var BelarusianRuble = new CurrencyInfo(Belarus);
 
-            CurrencyPair pair = new CurrencyPair(ArmenianDram, BelarusianRuble);
+            var pair = new CurrencyPair(ArmenianDram, BelarusianRuble);
 
-            await Assert.ThrowsAsync<ArgumentException>(async () => await Bank.GetExchangeRateAsync(pair, DateTime.Now));
+            await Assert.ThrowsAsync<ArgumentException>(async () => await Bank.GetExchangeRateAsync(pair, DateTime.Now, default));
         }
     }
 }

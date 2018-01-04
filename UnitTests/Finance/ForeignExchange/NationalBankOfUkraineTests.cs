@@ -28,12 +28,12 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         {
             var date = new DateTimeOffset(2016, 05, 06, 0, 0, 0, TimeSpan.Zero);
             var nbu = new NationalBankOfUkraine(_currencyFactory);
-            var pairs = await nbu.GetCurrencyPairsAsync(date);
+            var pairs = await nbu.GetCurrencyPairsAsync(date, default);
 
             foreach (var pair in pairs)
             {
                 var baseMoney = new Money(pair.BaseCurrency, 100);
-                var convertedMoney = await nbu.ConvertCurrencyAsync(baseMoney, pair.CounterCurrency, date);
+                var convertedMoney = await nbu.ConvertCurrencyAsync(baseMoney, pair.CounterCurrency, date, default);
 
                 Assert.Equal(pair.CounterCurrency, convertedMoney.Currency);
                 Assert.True(convertedMoney.Amount > decimal.Zero);
@@ -45,7 +45,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         {
             var nbu = new NationalBankOfUkraine(_currencyFactory);
 
-            var pairs = await nbu.GetCurrencyPairsAsync(new DateTimeOffset(2016, 05, 06, 0, 0, 0, TimeSpan.Zero));
+            var pairs = await nbu.GetCurrencyPairsAsync(new DateTimeOffset(2016, 05, 06, 0, 0, 0, TimeSpan.Zero), default);
 
             Assert.True(pairs.Any());
         }
@@ -55,11 +55,11 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         {
             var date = new DateTimeOffset(2016, 05, 06, 0, 0, 0, TimeSpan.Zero);
             var nbu = new NationalBankOfUkraine(_currencyFactory);
-            var pairs = await nbu.GetCurrencyPairsAsync(date);
+            var pairs = await nbu.GetCurrencyPairsAsync(date, default);
 
             foreach (var pair in pairs)
             {
-                var rate = await nbu.GetExchangeRateAsync(pair, date);
+                var rate = await nbu.GetExchangeRateAsync(pair, date, default);
 
                 Assert.True(rate > decimal.Zero);
             }
