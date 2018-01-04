@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Globalization;
 
@@ -25,7 +26,7 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
             _currencyFactory = currencyFactory;
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             var rates = await GetRatesAasync(baseMoney.Currency, counterCurrency, asOn);
 
@@ -34,9 +35,9 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn)
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var pairsWithRates = await GetRatesAasync(null, null, asOn);
+            var pairsWithRates = await GetRatesAasync(null, null, asOn, cancellationToken);
 
             var currencies = pairsWithRates.Keys.Select(item => item.CounterCurrency);
 
@@ -56,28 +57,28 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
             return pairs;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn)
+        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var rates = await GetRatesAasync(pair.BaseCurrency, pair.CounterCurrency, asOn);
+            var rates = await GetRatesAasync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken);
 
             return rates.Values.Single();
         }
 
-        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn)
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var rates = await GetRatesAasync(null, null, asOn);
+            var rates = await GetRatesAasync(null, null, asOn, cancellationToken);
 
             return rates.Select(item => new ExchangeRate(new CurrencyPair(item.Key.BaseCurrency, item.Key.CounterCurrency), asOn, item.Value)).ToArray();
         }
 
-        public async Task<ExchangeRate> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+        public async Task<ExchangeRate> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var rates = await GetRatesAasync(baseCurrency, counterCurrency, asOn);
+            var rates = await GetRatesAasync(baseCurrency, counterCurrency, asOn, cancellationToken);
 
             return new ExchangeRate(new CurrencyPair(baseCurrency, counterCurrency), asOn, rates.Single().Value);
         }
 
-        private async Task<IDictionary<CurrencyPair, decimal>> GetRatesAasync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+        private async Task<IDictionary<CurrencyPair, decimal>> GetRatesAasync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             using (var client = new HttpClient())
             {
@@ -107,7 +108,7 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
                     requestUrl += string.Format("&currencies={0}", counterCurrency.ISOCurrencySymbol);
                 }
 
-                var response = await client.GetAsync(requestUrl);
+                var response = await client.GetAsync(requestUrl, cancellationToken);
 
                 response.EnsureSuccessStatusCode();
 
