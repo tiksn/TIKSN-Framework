@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Globalization;
+using TIKSN.Time;
 
 namespace TIKSN.Finance.ForeignExchange.Bank
 {
@@ -21,6 +22,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         private DateTimeOffset lastFetchDate;
         private Dictionary<DateTimeOffset, Dictionary<CurrencyInfo, decimal>> rates;
         private readonly ICurrencyFactory _currencyFactory;
+        private readonly ITimeProvider _timeProvider;
 
         static BankOfCanada()
         {
@@ -28,12 +30,13 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             CanadianDollar = new CurrencyInfo(Canada);
         }
 
-        public BankOfCanada(ICurrencyFactory currencyFactory)
+        public BankOfCanada(ICurrencyFactory currencyFactory, ITimeProvider timeProvider)
         {
             rates = new Dictionary<DateTimeOffset, Dictionary<CurrencyInfo, decimal>>();
 
             lastFetchDate = DateTimeOffset.MinValue;
             _currencyFactory = currencyFactory;
+            _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
@@ -73,7 +76,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                 }
             }
 
-            lastFetchDate = DateTime.Now; // must stay at the end
+            lastFetchDate = _timeProvider.GetCurrentTime(); // must stay at the end
 
             return result;
         }
@@ -82,7 +85,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             await FetchOnDemandAsync(cancellationToken);
 
-            if (asOn > DateTime.Now)
+            if (asOn > _timeProvider.GetCurrentTime())
                 throw new ArgumentException("Exchange rate forecasting are not supported.");
 
             var result = new List<CurrencyPair>();
@@ -100,7 +103,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             await FetchOnDemandAsync(cancellationToken);
 
-            if (asOn > DateTimeOffset.Now)
+            if (asOn > _timeProvider.GetCurrentTime())
                 throw new ArgumentException("Exchange rate forecasting not supported.");
 
             if (IsHomeCurrencyPair(pair, asOn))
@@ -115,9 +118,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         private async Task FetchOnDemandAsync(CancellationToken cancellationToken)
         {
-            if (DateTimeOffset.Now - lastFetchDate > TimeSpan.FromDays(1d))
+            if (_timeProvider.GetCurrentTime() - lastFetchDate > TimeSpan.FromDays(1d))
             {
-                await GetExchangeRatesAsync(DateTimeOffset.Now, cancellationToken);
+                await GetExchangeRatesAsync(_timeProvider.GetCurrentTime(), cancellationToken);
             }
         }
 

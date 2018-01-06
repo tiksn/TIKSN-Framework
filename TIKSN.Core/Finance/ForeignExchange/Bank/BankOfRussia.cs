@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TIKSN.Globalization;
+using TIKSN.Time;
 
 namespace TIKSN.Finance.ForeignExchange.Bank
 {
@@ -17,9 +18,10 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         private static readonly CurrencyInfo RussianRuble;
         private static readonly CultureInfo RussianRussia;
 
-        private DateTime? published;
+        private DateTimeOffset? published;
         private Dictionary<CurrencyInfo, decimal> rates;
         private readonly ICurrencyFactory _currencyFactory;
+        private readonly ITimeProvider _timeProvider;
 
         static BankOfRussia()
         {
@@ -29,11 +31,12 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             RussianRussia = new CultureInfo("ru-RU");
         }
 
-        public BankOfRussia(ICurrencyFactory currencyFactory)
+        public BankOfRussia(ICurrencyFactory currencyFactory, ITimeProvider timeProvider)
         {
             this.rates = new Dictionary<CurrencyInfo, decimal>();
             this.published = null;
             _currencyFactory = currencyFactory;
+            _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
@@ -71,7 +74,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            ValidateDate(asOn);
+            ValidateDate(asOn, _timeProvider);
 
             var thatDay = asOn.Date;
 
@@ -124,7 +127,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         private async Task FetchOnDemandAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            ValidateDate(asOn);
+            ValidateDate(asOn, _timeProvider);
 
             if (!this.published.HasValue)
                 await this.GetExchangeRatesAsync(asOn, cancellationToken);
@@ -132,9 +135,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                 await this.GetExchangeRatesAsync(asOn, cancellationToken);
         }
 
-        private static void ValidateDate(DateTimeOffset asOn)
+        private static void ValidateDate(DateTimeOffset asOn, ITimeProvider timeProvider)
         {
-            if (asOn > DateTimeOffset.Now)
+            if (asOn > timeProvider.GetCurrentTime())
                 throw new ArgumentException("Exchange rate forecasting not supported.");
         }
 

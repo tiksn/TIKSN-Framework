@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TIKSN.Globalization;
+using TIKSN.Time;
 
 namespace TIKSN.Finance.ForeignExchange.Bank
 {
@@ -16,6 +17,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         private static Dictionary<CurrencyPair, string> SeriesCodes;
         private readonly ICurrencyFactory _currencyFactory;
         private readonly IRegionFactory _regionFactory;
+        private readonly ITimeProvider _timeProvider;
 
         static BankOfEngland()
         {
@@ -118,10 +120,11 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             AddSeriesCode("zh-CN", "en-GB", "XUDLBK89");
         }
 
-        public BankOfEngland(ICurrencyFactory currencyFactory, IRegionFactory regionFactory)
+        public BankOfEngland(ICurrencyFactory currencyFactory, IRegionFactory regionFactory, ITimeProvider timeProvider)
         {
             _currencyFactory = currencyFactory;
             _regionFactory = regionFactory;
+            _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
@@ -155,7 +158,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         public async Task<ExchangeRate> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            if (asOn > DateTimeOffset.Now)
+            if (asOn > _timeProvider.GetCurrentTime())
                 throw new ArgumentException("Exchange rate forecasting are not supported.");
 
             string SerieCode;

@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TIKSN.Globalization;
+using TIKSN.Time;
 
 namespace TIKSN.Finance.ForeignExchange.Bank
 {
@@ -18,15 +19,17 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         private readonly static CurrencyInfo Euro;
         private readonly ICurrencyFactory _currencyFactory;
+        private readonly ITimeProvider _timeProvider;
 
         static EuropeanCentralBank()
         {
             Euro = new CurrencyInfo(new RegionInfo("de-DE"));
         }
 
-        public EuropeanCentralBank(ICurrencyFactory currencyFactory)
+        public EuropeanCentralBank(ICurrencyFactory currencyFactory, ITimeProvider timeProvider)
         {
             _currencyFactory = currencyFactory;
+            _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
@@ -71,7 +74,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            string requestURL = GetRatesUrl(asOn);
+            string requestURL = GetRatesUrl(asOn, _timeProvider);
 
             using (var httpClient = new HttpClient())
             {
@@ -103,11 +106,11 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             }
         }
 
-        private static string GetRatesUrl(DateTimeOffset asOn)
+        private static string GetRatesUrl(DateTimeOffset asOn, ITimeProvider timeProvider)
         {
-            if (asOn.Date == DateTimeOffset.Now.Date)
+            if (asOn.Date == timeProvider.GetCurrentTime().Date)
                 return DailyRatesUrl;
-            else if (asOn.Date >= DateTimeOffset.Now.AddDays(-90))
+            else if (asOn.Date >= timeProvider.GetCurrentTime().AddDays(-90))
                 return Last90DaysRatesUrl;
             else
                 return Since1999RatesUrl;
@@ -115,7 +118,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         private void VerifyDate(DateTimeOffset asOn)
         {
-            if (asOn > DateTime.Now)
+            if (asOn > _timeProvider.GetCurrentTime())
                 throw new ArgumentException("Exchange rate forecasting are not supported.");
         }
     }
