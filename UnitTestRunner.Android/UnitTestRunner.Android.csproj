@@ -92,7 +92,7 @@
       <HintPath>..\packages\FluentAssertions.4.19.4\lib\netstandard1.3\FluentAssertions.Core.dll</HintPath>
     </Reference>
     <Reference Include="FluentValidation, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentValidation.7.3.3\lib\netstandard2.0\FluentValidation.dll</HintPath>
+      <HintPath>..\packages\FluentValidation.7.3.4\lib\netstandard2.0\FluentValidation.dll</HintPath>
     </Reference>
     <Reference Include="FormsViewGroup, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Xamarin.Forms.2.5.0.121934\lib\MonoAndroid10\FormsViewGroup.dll</HintPath>

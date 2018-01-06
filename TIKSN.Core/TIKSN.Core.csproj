@@ -39,7 +39,7 @@
     <PackageReference Include="codecracker.CSharp" Version="1.0.3" />
     <PackageReference Include="ConsoleTables" Version="2.1.0" />
     <PackageReference Include="Exceptionless.Signed" Version="4.2.1982" />
-    <PackageReference Include="FluentValidation" Version="7.3.3" />
+    <PackageReference Include="FluentValidation" Version="7.3.4" />
     <PackageReference Include="LiteDB" Version="4.1.0" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.4.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="1.1.0" />
