@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Globalization;
+using TIKSN.Time;
 using Xunit;
 
 namespace TIKSN.Finance.Tests.ForeignExchange
@@ -15,6 +16,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
     public class BankOfRussiaTests
     {
         private readonly ICurrencyFactory _currencyFactory;
+        private readonly ITimeProvider _timeProvider;
 
         public BankOfRussiaTests()
         {
@@ -22,15 +24,17 @@ namespace TIKSN.Finance.Tests.ForeignExchange
             services.AddMemoryCache();
             services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
             services.AddSingleton<IRegionFactory, RegionFactory>();
+            services.AddSingleton<ITimeProvider, TimeProvider>();
 
             var serviceProvider = services.BuildServiceProvider();
             _currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+            _timeProvider = serviceProvider.GetRequiredService<ITimeProvider>();
         }
 
         [Fact]
         public async Task Calculate001()
         {
-            var Bank = new BankOfRussia(_currencyFactory);
+            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
 
             foreach (var pair in await Bank.GetCurrencyPairsAsync(DateTime.Now, default))
             {
@@ -46,7 +50,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConvertCurrency001()
         {
-            var Bank = new BankOfRussia(_currencyFactory);
+            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
 
             var Moment = DateTime.Now;
 
@@ -64,7 +68,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConvertCurrency002()
         {
-            var Bank = new BankOfRussia(_currencyFactory);
+            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
 
             System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
             System.Globalization.RegionInfo RU = new System.Globalization.RegionInfo("RU");
@@ -83,7 +87,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConvertCurrency003()
         {
-            var Bank = new BankOfRussia(_currencyFactory);
+            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
 
             System.Globalization.RegionInfo AO = new System.Globalization.RegionInfo("AO");
             System.Globalization.RegionInfo BW = new System.Globalization.RegionInfo("BW");
@@ -102,7 +106,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs001()
         {
-            var Bank = new BankOfRussia(_currencyFactory);
+            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
 
             var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -117,7 +121,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs002()
         {
-            var Bank = new BankOfRussia(_currencyFactory);
+            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
 
             System.Collections.Generic.HashSet<CurrencyPair> pairSet = new System.Collections.Generic.HashSet<CurrencyPair>();
 
@@ -134,7 +138,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs003()
         {
-            var Bank = new BankOfRussia(_currencyFactory);
+            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
 
             await
                     Assert.ThrowsAsync<ArgumentException>(
@@ -145,7 +149,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs004()
         {
-            var Bank = new BankOfRussia(_currencyFactory);
+            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
 
             var pairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -219,7 +223,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs005()
         {
-            var Bank = new BankOfRussia(_currencyFactory);
+            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
 
             var pairs = await Bank.GetCurrencyPairsAsync(new System.DateTime(2010, 01, 01), default);
 
@@ -263,7 +267,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs006()
         {
-            var Bank = new BankOfRussia(_currencyFactory);
+            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
 
             var AtTheMoment = DateTime.Now;
 
@@ -306,7 +310,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs007()
         {
-            var Bank = new BankOfRussia(_currencyFactory);
+            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
 
             for (int year = 1994; year <= DateTime.Now.Year; year++)
             {
@@ -322,7 +326,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate001()
         {
-            var Bank = new BankOfRussia(_currencyFactory);
+            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
 
             foreach (var pair in await Bank.GetCurrencyPairsAsync(DateTime.Now, default))
             {
@@ -335,7 +339,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate002()
         {
-            var Bank = new BankOfRussia(_currencyFactory);
+            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
 
             System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
             System.Globalization.RegionInfo RU = new System.Globalization.RegionInfo("RU");
@@ -354,7 +358,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate003()
         {
-            var Bank = new BankOfRussia(_currencyFactory);
+            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
 
             System.Globalization.RegionInfo AO = new System.Globalization.RegionInfo("AO");
             System.Globalization.RegionInfo BW = new System.Globalization.RegionInfo("BW");
@@ -373,7 +377,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate004()
         {
-            var Bank = new BankOfRussia(_currencyFactory);
+            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
 
             var Moment = DateTime.Now.AddYears(-1);
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Globalization;
+using TIKSN.Time;
 using Xunit;
 
 namespace TIKSN.Finance.Tests.ForeignExchange
@@ -11,6 +12,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
     public class EuropeanCentralBankTests
     {
         private readonly ICurrencyFactory _currencyFactory;
+        private readonly ITimeProvider _timeProvider;
 
         public EuropeanCentralBankTests()
         {
@@ -18,15 +20,17 @@ namespace TIKSN.Finance.Tests.ForeignExchange
             services.AddMemoryCache();
             services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
             services.AddSingleton<IRegionFactory, RegionFactory>();
+            services.AddSingleton<ITimeProvider, TimeProvider>();
 
             var serviceProvider = services.BuildServiceProvider();
             _currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+            _timeProvider = serviceProvider.GetRequiredService<ITimeProvider>();
         }
 
         [Fact]
         public async Task Calculation001()
         {
-            var Bank = new EuropeanCentralBank(_currencyFactory);
+            var Bank = new EuropeanCentralBank(_currencyFactory, _timeProvider);
 
             var pairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -44,7 +48,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task Calculation002()
         {
-            var Bank = new EuropeanCentralBank(_currencyFactory);
+            var Bank = new EuropeanCentralBank(_currencyFactory, _timeProvider);
 
             var OneYearsAgo = DateTime.Now.AddYears(-1);
             var pairs = await Bank.GetCurrencyPairsAsync(OneYearsAgo, default);
@@ -63,7 +67,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConversionDirection001()
         {
-            var Bank = new EuropeanCentralBank(_currencyFactory);
+            var Bank = new EuropeanCentralBank(_currencyFactory, _timeProvider);
 
             var Euro = new CurrencyInfo(new System.Globalization.RegionInfo("DE"));
             var PoundSterling = new CurrencyInfo(new System.Globalization.RegionInfo("GB"));
@@ -78,7 +82,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConvertCurrency001()
         {
-            EuropeanCentralBank Bank = new EuropeanCentralBank(_currencyFactory);
+            EuropeanCentralBank Bank = new EuropeanCentralBank(_currencyFactory, _timeProvider);
 
             var pairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -94,7 +98,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConvertCurrency002()
         {
-            EuropeanCentralBank Bank = new EuropeanCentralBank(_currencyFactory);
+            EuropeanCentralBank Bank = new EuropeanCentralBank(_currencyFactory, _timeProvider);
 
             var pairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -112,7 +116,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConvertCurrency003()
         {
-            EuropeanCentralBank Bank = new EuropeanCentralBank(_currencyFactory);
+            EuropeanCentralBank Bank = new EuropeanCentralBank(_currencyFactory, _timeProvider);
 
             var AMD = new CurrencyInfo(new System.Globalization.RegionInfo("AM"));
             var ALL = new CurrencyInfo(new System.Globalization.RegionInfo("AL"));
@@ -127,7 +131,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs001()
         {
-            var Bank = new EuropeanCentralBank(_currencyFactory);
+            var Bank = new EuropeanCentralBank(_currencyFactory, _timeProvider);
 
             var pairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -142,7 +146,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs002()
         {
-            var Bank = new EuropeanCentralBank(_currencyFactory);
+            var Bank = new EuropeanCentralBank(_currencyFactory, _timeProvider);
 
             var pairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
             var uniquePairs = new System.Collections.Generic.HashSet<CurrencyPair>();
@@ -163,7 +167,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs003()
         {
-            var Bank = new EuropeanCentralBank(_currencyFactory);
+            var Bank = new EuropeanCentralBank(_currencyFactory, _timeProvider);
 
             await Assert.ThrowsAsync<ArgumentException>(
                 async () =>
@@ -173,7 +177,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs004()
         {
-            var Bank = new EuropeanCentralBank(_currencyFactory);
+            var Bank = new EuropeanCentralBank(_currencyFactory, _timeProvider);
 
             var pairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -245,7 +249,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs005()
         {
-            var Bank = new EuropeanCentralBank(_currencyFactory);
+            var Bank = new EuropeanCentralBank(_currencyFactory, _timeProvider);
 
             var pairs = await Bank.GetCurrencyPairsAsync(new System.DateTime(2010, 1, 1), default);
 
@@ -317,7 +321,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate001()
         {
-            var Bank = new EuropeanCentralBank(_currencyFactory);
+            var Bank = new EuropeanCentralBank(_currencyFactory, _timeProvider);
 
             var pairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -332,7 +336,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate002()
         {
-            EuropeanCentralBank Bank = new EuropeanCentralBank(_currencyFactory);
+            EuropeanCentralBank Bank = new EuropeanCentralBank(_currencyFactory, _timeProvider);
 
             var pairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -347,7 +351,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate003()
         {
-            var Bank = new EuropeanCentralBank(_currencyFactory);
+            var Bank = new EuropeanCentralBank(_currencyFactory, _timeProvider);
 
             var pairs = await Bank.GetCurrencyPairsAsync(DateTime.Now.AddYears(-1), default);
 
@@ -362,7 +366,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate004()
         {
-            var Bank = new EuropeanCentralBank(_currencyFactory);
+            var Bank = new EuropeanCentralBank(_currencyFactory, _timeProvider);
 
             var AMD = new CurrencyInfo(new System.Globalization.RegionInfo("AM"));
             var ALL = new CurrencyInfo(new System.Globalization.RegionInfo("AL"));

@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TIKSN.Globalization;
+using TIKSN.Time;
 
 namespace TIKSN.Finance.ForeignExchange.Bank
 {
@@ -17,6 +18,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         private static string RSSURL = "http://www.snb.ch/selector/en/mmr/exfeed/rss";
         private Dictionary<CurrencyInfo, Tuple<DateTimeOffset, decimal>> foreignRates;
         private readonly ICurrencyFactory _currencyFactory;
+        private readonly ITimeProvider _timeProvider;
 
         static SwissNationalBank()
         {
@@ -25,10 +27,11 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             SwissFranc = new CurrencyInfo(Switzerland);
         }
 
-        public SwissNationalBank(ICurrencyFactory currencyFactory)
+        public SwissNationalBank(ICurrencyFactory currencyFactory, ITimeProvider timeProvider)
         {
             this.foreignRates = new Dictionary<CurrencyInfo, Tuple<DateTimeOffset, decimal>>();
             _currencyFactory = currencyFactory;
+            _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
@@ -103,14 +106,14 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         private async Task FetchOnDemandAsync(CancellationToken cancellationToken)
         {
             if (this.foreignRates.Count == 0)
-                await this.GetExchangeRatesAsync(DateTimeOffset.Now, cancellationToken);
-            else if (this.foreignRates.Any(R => R.Value.Item1.Date == DateTimeOffset.Now.Date))
-                await this.GetExchangeRatesAsync(DateTimeOffset.Now, cancellationToken);
+                await this.GetExchangeRatesAsync(_timeProvider.GetCurrentTime(), cancellationToken);
+            else if (this.foreignRates.Any(R => R.Value.Item1.Date == _timeProvider.GetCurrentTime().Date))
+                await this.GetExchangeRatesAsync(_timeProvider.GetCurrentTime(), cancellationToken);
         }
 
         private System.Collections.Generic.Dictionary<CurrencyInfo, decimal> FilterByDate(DateTimeOffset asOn)
         {
-            if (asOn > DateTimeOffset.Now)
+            if (asOn > _timeProvider.GetCurrentTime())
                 throw new System.ArgumentException("Exchange rate forecasting not supported.");
 
             var maxDate = this.foreignRates.Max(R => R.Value.Item1);

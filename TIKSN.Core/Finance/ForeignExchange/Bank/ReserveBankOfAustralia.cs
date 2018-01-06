@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TIKSN.Globalization;
+using TIKSN.Time;
 
 namespace TIKSN.Finance.ForeignExchange.Bank
 {
@@ -20,6 +21,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         private DateTimeOffset lastFetchDate;
         private DateTimeOffset publishedDate;
         private Dictionary<CurrencyInfo, decimal> rates;
+        private readonly ITimeProvider _timeProvider;
 
         static ReserveBankOfAustralia()
         {
@@ -27,7 +29,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             AustralianDollar = new CurrencyInfo(Australia);
         }
 
-        public ReserveBankOfAustralia(ICurrencyFactory currencyFactory)
+        public ReserveBankOfAustralia(ICurrencyFactory currencyFactory, ITimeProvider timeProvider)
         {
             this.publishedDate = DateTimeOffset.MinValue;
 
@@ -36,6 +38,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             this.lastFetchDate = DateTimeOffset.MinValue;
 
             _currencyFactory = currencyFactory;
+            _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
@@ -117,7 +120,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                         result.Add(new ExchangeRate(new CurrencyPair(AustralianDollar, foreignCurrency), period, exchangeRate));
                     }
 
-                    this.lastFetchDate = DateTimeOffset.Now;
+                    this.lastFetchDate = _timeProvider.GetCurrentTime();
                 }
             }
 
@@ -126,15 +129,15 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         private async Task FetchOnDemandAsync(CancellationToken cancellationToken)
         {
-            if (DateTimeOffset.Now - lastFetchDate > TimeSpan.FromDays(1d))
+            if (_timeProvider.GetCurrentTime() - lastFetchDate > TimeSpan.FromDays(1d))
             {
-                await this.GetExchangeRatesAsync(DateTimeOffset.Now, cancellationToken);
+                await this.GetExchangeRatesAsync(_timeProvider.GetCurrentTime(), cancellationToken);
             }
         }
 
         private void VerifyDate(DateTimeOffset asOn)
         {
-            if (asOn > DateTimeOffset.Now)
+            if (asOn > _timeProvider.GetCurrentTime())
                 throw new ArgumentException("Exchange rate forecasting are not supported.");
 
             if (asOn < this.publishedDate)

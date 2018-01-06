@@ -1,5 +1,6 @@
 ﻿using System;
 using TIKSN.Finance.Tests;
+using TIKSN.Time;
 using Xunit;
 
 namespace TIKSN.Finance.Cache.Tests
@@ -14,7 +15,7 @@ namespace TIKSN.Finance.Cache.Tests
             var interval = TimeSpan.FromDays(10);
             int capacity = 20;
 
-            var cachedConverter = new CachedCurrencyConverter(converter, interval, interval, capacity, capacity);
+            var cachedConverter = new CachedCurrencyConverter(converter, new TimeProvider(), interval, interval, capacity, capacity);
 
             Assert.Equal(interval, cachedConverter.RatesCacheInterval);
             Assert.Equal(interval, cachedConverter.CurrencyPairsCacheInterval);
@@ -32,7 +33,7 @@ namespace TIKSN.Finance.Cache.Tests
 
             var interval = TimeSpan.FromDays(10);
 
-            var cachedConverter = new CachedCurrencyConverter(converter, interval, interval);
+            var cachedConverter = new CachedCurrencyConverter(converter, new TimeProvider(), interval, interval);
 
             Assert.Equal(interval, cachedConverter.CurrencyPairsCacheInterval);
             Assert.Equal(interval, cachedConverter.RatesCacheInterval);
@@ -51,7 +52,7 @@ namespace TIKSN.Finance.Cache.Tests
 
             var interval = TimeSpan.FromDays(10);
 
-            var cachedConverter = new CachedCurrencyConverter(converter, interval, interval);
+            var cachedConverter = new CachedCurrencyConverter(converter, new TimeProvider(), interval, interval);
 
             Assert.Equal(0, cachedConverter.RatesCacheSize);
             Assert.Equal(0, cachedConverter.CurrencyPairsCacheSize);
@@ -64,7 +65,7 @@ namespace TIKSN.Finance.Cache.Tests
             int capacity = 20;
 
             Assert.Throws<ArgumentNullException>(
-                () => new CachedCurrencyConverter(null, interval, interval, capacity, capacity));
+                () => new CachedCurrencyConverter(null, new TimeProvider(), interval, interval, capacity, capacity));
         }
 
         [Fact]
@@ -77,7 +78,7 @@ namespace TIKSN.Finance.Cache.Tests
             int positiveCapacity = 10;
 
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => new CachedCurrencyConverter(converter, interval, interval, negativeCapacity, positiveCapacity));
+                () => new CachedCurrencyConverter(converter, new TimeProvider(), interval, interval, negativeCapacity, positiveCapacity));
         }
 
         [Fact]
@@ -90,7 +91,7 @@ namespace TIKSN.Finance.Cache.Tests
             int positiveCapacity = 10;
 
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => new CachedCurrencyConverter(converter, interval, interval, positiveCapacity, negativeCapacity));
+                () => new CachedCurrencyConverter(converter, new TimeProvider(), interval, interval, positiveCapacity, negativeCapacity));
         }
 
         [Fact]
@@ -102,7 +103,7 @@ namespace TIKSN.Finance.Cache.Tests
             var positiveInterval = TimeSpan.FromDays(10);
 
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => new CachedCurrencyConverter(converter, negativeInterval, positiveInterval));
+                () => new CachedCurrencyConverter(converter, new TimeProvider(), negativeInterval, positiveInterval));
         }
 
         [Fact]
@@ -114,7 +115,7 @@ namespace TIKSN.Finance.Cache.Tests
             var positiveInterval = TimeSpan.FromDays(10);
 
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => new CachedCurrencyConverter(converter, positiveInterval, negativeInterval));
+                () => new CachedCurrencyConverter(converter, new TimeProvider(), positiveInterval, negativeInterval));
         }
 
         //TODO: rewrite all commented tests

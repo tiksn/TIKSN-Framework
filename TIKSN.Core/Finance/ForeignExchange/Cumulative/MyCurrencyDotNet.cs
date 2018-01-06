@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Globalization;
+using TIKSN.Time;
 
 namespace TIKSN.Finance.ForeignExchange.Cumulative
 {
@@ -14,12 +15,14 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
         private const string ResourceUrl = "http://www.mycurrency.net/service/rates";
         private readonly ICurrencyFactory _currencyFactory;
         private readonly CurrencyInfo USD;
+        private readonly ITimeProvider _timeProvider;
 
-        public MyCurrencyDotNet(ICurrencyFactory currencyFactory, IRegionFactory regionFactory)
+        public MyCurrencyDotNet(ICurrencyFactory currencyFactory, IRegionFactory regionFactory, ITimeProvider timeProvider)
         {
             var enUS = regionFactory.Create("en-US");
             USD = currencyFactory.Create(enUS);
             _currencyFactory = currencyFactory;
+            _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
@@ -31,7 +34,7 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
 
         public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            if (DateTimeOffset.Now.Date != asOn.Date)
+            if (_timeProvider.GetCurrentTime().Date != asOn.Date)
                 throw new ArgumentOutOfRangeException(nameof(asOn));
 
             var exchangeRates = await GetExchangeRatesAsync(asOn, cancellationToken);
@@ -46,7 +49,7 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
 
         public async Task<IEnumerable<ForeignExchange.ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            ValidateDate(asOn);
+            ValidateDate(asOn, _timeProvider);
 
             using (var httpClient = new HttpClient())
             {
@@ -67,15 +70,15 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
             }
         }
 
-        private static void ValidateDate(DateTimeOffset asOn)
+        private static void ValidateDate(DateTimeOffset asOn, ITimeProvider timeProvider)
         {
-            if (DateTimeOffset.Now.Date != asOn.Date)
+            if (timeProvider.GetCurrentTime().Date != asOn.Date)
                 throw new ArgumentOutOfRangeException(nameof(asOn));
         }
 
         private async Task<decimal> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            ValidateDate(asOn);
+            ValidateDate(asOn, _timeProvider);
 
             var exchangeRates = await GetExchangeRatesAsync(asOn, cancellationToken);
 

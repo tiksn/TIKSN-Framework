@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TIKSN.Globalization;
+using TIKSN.Time;
 
 namespace TIKSN.Finance.ForeignExchange.Bank
 {
@@ -17,13 +18,15 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         private Dictionary<CurrencyInfo, decimal> oneWayRates;
         private DateTimeOffset? publicationDate;
         private readonly ICurrencyFactory _currencyFactory;
+        private readonly ITimeProvider _timeProvider;
 
-        public CentralBankOfArmenia(ICurrencyFactory currencyFactory)
+        public CentralBankOfArmenia(ICurrencyFactory currencyFactory, ITimeProvider timeProvider)
         {
             oneWayRates = new Dictionary<CurrencyInfo, decimal>();
 
             lastFetchDate = DateTimeOffset.MinValue;
             _currencyFactory = currencyFactory;
+            _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
@@ -120,7 +123,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                         }
                     }
 
-                    lastFetchDate = DateTimeOffset.Now; // this should stay at the end
+                    lastFetchDate = _timeProvider.GetCurrentTime(); // this should stay at the end
                 }
             }
 
@@ -133,7 +136,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             {
                 await this.GetExchangeRatesAsync(asOn, cancellationToken);
             }
-            else if (DateTimeOffset.Now - lastFetchDate > TimeSpan.FromDays(1d))
+            else if (_timeProvider.GetCurrentTime() - lastFetchDate > TimeSpan.FromDays(1d))
             {
                 await this.GetExchangeRatesAsync(asOn, cancellationToken);
             }
@@ -141,7 +144,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         private void ValodateDate(DateTimeOffset asOn)
         {
-            if (asOn > DateTimeOffset.Now)
+            if (asOn > _timeProvider.GetCurrentTime())
                 throw new ArgumentException("Exchange rate forecasting are not supported.");
 
             if (asOn < this.publicationDate.Value)

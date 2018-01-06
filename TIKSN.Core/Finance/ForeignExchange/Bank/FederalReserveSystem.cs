@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TIKSN.Globalization;
+using TIKSN.Time;
 
 namespace TIKSN.Finance.ForeignExchange.Bank
 {
@@ -16,15 +17,17 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         private static readonly CurrencyInfo UnitedStatesDollar;
         private readonly ICurrencyFactory _currencyFactory;
+        private readonly ITimeProvider _timeProvider;
 
         static FederalReserveSystem()
         {
             UnitedStatesDollar = new CurrencyInfo(new RegionInfo("en-US"));
         }
 
-        public FederalReserveSystem(ICurrencyFactory currencyFactory)
+        public FederalReserveSystem(ICurrencyFactory currencyFactory, ITimeProvider timeProvider)
         {
             _currencyFactory = currencyFactory;
+            _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
@@ -38,7 +41,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            ValidateDate(asOn);
+            ValidateDate(asOn, _timeProvider);
 
             var result = new List<CurrencyPair>();
 
@@ -55,7 +58,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            ValidateDate(asOn);
+            ValidateDate(asOn, _timeProvider);
 
             var rates = await GetRatesAsync(asOn, cancellationToken);
 
@@ -88,7 +91,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            string DataUrl = string.Format(DataUrlFormat, DateTimeOffset.Now.AddDays(-10d).ToString("MM/dd/yyyy"), DateTimeOffset.Now.ToString("MM/dd/yyyy"));
+            string DataUrl = string.Format(DataUrlFormat, _timeProvider.GetCurrentTime().AddDays(-10d).ToString("MM/dd/yyyy"), _timeProvider.GetCurrentTime().ToString("MM/dd/yyyy"));
 
             using (var httpClient = new HttpClient())
             {
@@ -148,9 +151,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             }
         }
 
-        private static void ValidateDate(DateTimeOffset asOn)
+        private static void ValidateDate(DateTimeOffset asOn, ITimeProvider timeProvider)
         {
-            if (asOn > DateTimeOffset.Now)
+            if (asOn > timeProvider.GetCurrentTime())
                 throw new ArgumentException("Exchange rate forecasting are not supported.");
         }
     }

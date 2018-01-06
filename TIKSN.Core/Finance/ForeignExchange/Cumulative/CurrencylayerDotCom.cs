@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Globalization;
+using TIKSN.Time;
 
 namespace TIKSN.Finance.ForeignExchange.Cumulative
 {
@@ -16,14 +17,16 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
         private const string LiveBaseURL = "http://apilayer.net/api/live?";
         private string accessKey;
         private readonly ICurrencyFactory _currencyFactory;
+        private readonly ITimeProvider _timeProvider;
 
-        public CurrencylayerDotCom(ICurrencyFactory currencyFactory, string accessKey)
+        public CurrencylayerDotCom(ICurrencyFactory currencyFactory, ITimeProvider timeProvider, string accessKey)
         {
             if (string.IsNullOrEmpty(accessKey))
                 throw new ArgumentNullException(nameof(accessKey));
 
             this.accessKey = accessKey;
             _currencyFactory = currencyFactory;
+            _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
@@ -84,7 +87,7 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
             {
                 string requestUrl;
 
-                var difference = DateTimeOffset.Now - asOn;
+                var difference = _timeProvider.GetCurrentTime() - asOn;
 
                 if (difference < TimeSpan.FromDays(1.0))
                 {

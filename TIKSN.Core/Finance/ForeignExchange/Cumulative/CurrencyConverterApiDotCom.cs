@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Globalization;
+using TIKSN.Time;
 
 namespace TIKSN.Finance.ForeignExchange.Cumulative
 {
@@ -18,8 +19,9 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
         private readonly Uri _apiBaseAddress;
         private readonly string _apiKey;
         private readonly ICurrencyFactory _currencyFactory;
+        private readonly ITimeProvider _timeProvider;
 
-        public CurrencyConverterApiDotCom(ICurrencyFactory currencyFactory, bool useFreeVersion = true, string apiKey = "")
+        public CurrencyConverterApiDotCom(ICurrencyFactory currencyFactory, ITimeProvider timeProvider, bool useFreeVersion = true, string apiKey = "")
         {
             _currencyFactory = currencyFactory;
 
@@ -28,6 +30,7 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
             else
                 _apiBaseAddress = new Uri(PaidVersionApiBaseAddress);
             _apiKey = apiKey;
+            _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
@@ -75,7 +78,7 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
 
         public async Task<ExchangeRate> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            if (DateTimeOffset.Now.Date != asOn.Date)
+            if (_timeProvider.GetCurrentTime().Date != asOn.Date)
                 throw new ArgumentOutOfRangeException(nameof(asOn));
 
             using (var httpClient = new HttpClient())
