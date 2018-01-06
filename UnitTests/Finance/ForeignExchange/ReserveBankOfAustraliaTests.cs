@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Globalization;
+using TIKSN.Time;
 using Xunit;
 
 namespace TIKSN.Finance.Tests.ForeignExchange
@@ -11,6 +12,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
     public class ReserveBankOfAustraliaTests
     {
         private readonly ICurrencyFactory _currencyFactory;
+        private readonly ITimeProvider _timeProvider;
 
         public ReserveBankOfAustraliaTests()
         {
@@ -18,15 +20,17 @@ namespace TIKSN.Finance.Tests.ForeignExchange
             services.AddMemoryCache();
             services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
             services.AddSingleton<IRegionFactory, RegionFactory>();
+            services.AddSingleton<ITimeProvider, TimeProvider>();
 
             var serviceProvider = services.BuildServiceProvider();
             _currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+            _timeProvider = serviceProvider.GetRequiredService<ITimeProvider>();
         }
 
         [Fact]
         public async Task ConversionDirection001()
         {
-            var Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory, _timeProvider);
 
             var AustralianDollar = new CurrencyInfo(new System.Globalization.RegionInfo("AU"));
             var PoundSterling = new CurrencyInfo(new System.Globalization.RegionInfo("GB"));
@@ -41,7 +45,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConvertCurrency001()
         {
-            var Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory, _timeProvider);
 
             var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -59,7 +63,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConvertCurrency002()
         {
-            var Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory, _timeProvider);
 
             var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -78,7 +82,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConvertCurrency003()
         {
-            var Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory, _timeProvider);
 
             var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -96,7 +100,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConvertCurrency004()
         {
-            var Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory, _timeProvider);
 
             var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -114,7 +118,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConvertCurrency005()
         {
-            var Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory, _timeProvider);
 
             var Armenia = new System.Globalization.RegionInfo("AM");
             var Belarus = new System.Globalization.RegionInfo("BY");
@@ -133,7 +137,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task Fetch001()
         {
-            var Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory, _timeProvider);
 
             await Bank.GetExchangeRatesAsync(DateTimeOffset.Now, default);
         }
@@ -141,7 +145,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs001()
         {
-            var Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory, _timeProvider);
 
             var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -191,7 +195,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs002()
         {
-            var Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory, _timeProvider);
 
             var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -206,7 +210,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs003()
         {
-            var Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory, _timeProvider);
 
             var PairSet = new System.Collections.Generic.HashSet<CurrencyPair>();
 
@@ -223,7 +227,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs004()
         {
-            var Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory, _timeProvider);
 
             await
                 Assert.ThrowsAsync<ArgumentException>(
@@ -234,7 +238,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs005()
         {
-            var Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory, _timeProvider);
 
             await Assert.ThrowsAsync<ArgumentException>(
                     async () =>
@@ -244,7 +248,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate001()
         {
-            var Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory, _timeProvider);
 
             var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -257,7 +261,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate002()
         {
-            var Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory, _timeProvider);
 
             var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -270,7 +274,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate003()
         {
-            var Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory, _timeProvider);
 
             var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -283,7 +287,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate004()
         {
-            var Bank = new ReserveBankOfAustralia(_currencyFactory);
+            var Bank = new ReserveBankOfAustralia(_currencyFactory, _timeProvider);
 
             var Armenia = new System.Globalization.RegionInfo("AM");
             var Belarus = new System.Globalization.RegionInfo("BY");

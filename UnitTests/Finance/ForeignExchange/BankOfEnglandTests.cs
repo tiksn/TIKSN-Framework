@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Globalization;
+using TIKSN.Time;
 using Xunit;
 
 namespace TIKSN.Finance.Tests.ForeignExchange
@@ -12,6 +13,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
     {
         private readonly ICurrencyFactory _currencyFactory;
         private readonly IRegionFactory _regionFactory;
+        private readonly ITimeProvider _timeProvider;
 
         public BankOfEnglandTests()
         {
@@ -19,16 +21,18 @@ namespace TIKSN.Finance.Tests.ForeignExchange
             services.AddMemoryCache();
             services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
             services.AddSingleton<IRegionFactory, RegionFactory>();
+            services.AddSingleton<ITimeProvider, TimeProvider>();
 
             var serviceProvider = services.BuildServiceProvider();
             _currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
             _regionFactory = serviceProvider.GetRequiredService<IRegionFactory>();
+            _timeProvider = serviceProvider.GetRequiredService<ITimeProvider>();
         }
 
         [Fact]
         public async Task Calculate001()
         {
-            var Bank = new BankOfEngland(_currencyFactory, _regionFactory);
+            var Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
 
             foreach (var pair in await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default))
             {
@@ -45,7 +49,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task Calculate002()
         {
-            var Bank = new BankOfEngland(_currencyFactory, _regionFactory);
+            var Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
             var TenYearsAgo = DateTimeOffset.Now.AddYears(-10);
 
             foreach (var pair in await Bank.GetCurrencyPairsAsync(TenYearsAgo, default))
@@ -63,7 +67,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConversionDirection001()
         {
-            var Bank = new BankOfEngland(_currencyFactory, _regionFactory);
+            var Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
 
             var USDollar = new CurrencyInfo(new System.Globalization.RegionInfo("US"));
             var PoundSterling = new CurrencyInfo(new System.Globalization.RegionInfo("GB"));
@@ -78,7 +82,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConvertCurrency001()
         {
-            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory);
+            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
 
             var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
@@ -95,7 +99,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConvertCurrency002()
         {
-            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory);
+            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
 
             var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
@@ -112,7 +116,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConvertCurrency003()
         {
-            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory);
+            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
 
             CurrencyPair pair = new CurrencyPair(
                 new CurrencyInfo(new System.Globalization.RegionInfo("AM")),
@@ -129,7 +133,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs001()
         {
-            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory);
+            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
 
             var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
@@ -220,7 +224,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs002()
         {
-            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory);
+            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
 
             var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
@@ -237,7 +241,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs003()
         {
-            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory);
+            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
 
             var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now.AddYears(-10), default);
 
@@ -254,7 +258,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate001()
         {
-            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory);
+            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
 
             foreach (CurrencyPair pair in await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default))
             {
@@ -265,7 +269,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate002()
         {
-            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory);
+            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
 
             var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
@@ -278,7 +282,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate003()
         {
-            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory);
+            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
 
             CurrencyPair pair = new CurrencyPair(
                 new CurrencyInfo(new System.Globalization.RegionInfo("AM")),

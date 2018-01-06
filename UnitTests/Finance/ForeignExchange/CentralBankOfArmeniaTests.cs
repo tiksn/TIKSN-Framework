@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Globalization;
+using TIKSN.Time;
 using Xunit;
 
 namespace TIKSN.Finance.Tests.ForeignExchange
@@ -12,6 +13,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
     public class CentralBankOfArmeniaTests
     {
         private readonly ICurrencyFactory _currencyFactory;
+        private readonly ITimeProvider _timeProvider;
 
         public CentralBankOfArmeniaTests()
         {
@@ -19,15 +21,17 @@ namespace TIKSN.Finance.Tests.ForeignExchange
             services.AddMemoryCache();
             services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
             services.AddSingleton<IRegionFactory, RegionFactory>();
+            services.AddSingleton<ITimeProvider, TimeProvider>();
 
             var serviceProvider = services.BuildServiceProvider();
             _currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+            _timeProvider = serviceProvider.GetRequiredService<ITimeProvider>();
         }
 
         [Fact]
         public async Task ConversionDirection001()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory);
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
             var ArmenianDram = new CurrencyInfo(new RegionInfo("AM"));
             var PoundSterling = new CurrencyInfo(new RegionInfo("GB"));
@@ -42,7 +46,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConvertCurrency001()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory);
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
             var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -61,7 +65,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConvertCurrency002()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory);
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
             RegionInfo UnitedStates = new RegionInfo("US");
             RegionInfo Armenia = new RegionInfo("AM");
@@ -80,7 +84,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConvertCurrency003()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory);
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
             RegionInfo UnitedStates = new RegionInfo("US");
             RegionInfo Armenia = new RegionInfo("AM");
@@ -99,7 +103,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task ConvertCurrency004()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory);
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
             RegionInfo UnitedStates = new RegionInfo("US");
             RegionInfo Armenia = new RegionInfo("AM");
@@ -118,7 +122,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task Fetch001()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory);
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
             await Bank.GetExchangeRatesAsync(DateTimeOffset.Now, default);
         }
@@ -140,7 +144,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs001()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory);
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
             System.Collections.Generic.HashSet<CurrencyPair> pairs = new System.Collections.Generic.HashSet<CurrencyPair>();
 
@@ -155,7 +159,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs002()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory);
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
             var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -294,7 +298,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetCurrencyPairs003()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory);
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
             var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -309,7 +313,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate001()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory);
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
             var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -322,7 +326,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate002()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory);
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
             var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -337,7 +341,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate003()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory);
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
             RegionInfo UnitedStates = new RegionInfo("US");
             RegionInfo Armenia = new RegionInfo("AM");
@@ -356,7 +360,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate004()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory);
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
             RegionInfo UnitedStates = new RegionInfo("US");
             RegionInfo Armenia = new RegionInfo("AM");
@@ -375,7 +379,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate005()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory);
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
             RegionInfo UnitedStates = new RegionInfo("US");
             RegionInfo Armenia = new RegionInfo("AM");
@@ -394,7 +398,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate006()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory);
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
             RegionInfo Albania = new RegionInfo("AL");
             RegionInfo Armenia = new RegionInfo("AM");
@@ -413,7 +417,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task GetExchangeRate007()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory);
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
             RegionInfo Albania = new RegionInfo("AL");
             RegionInfo Armenia = new RegionInfo("AM");
