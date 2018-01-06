@@ -3,11 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>TIKSN.Core</AssemblyName>
-	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	  <RootNamespace>TIKSN</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <RootNamespace>TIKSN</RootNamespace>
   </PropertyGroup>
 
-	<PropertyGroup>
+  <PropertyGroup>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
