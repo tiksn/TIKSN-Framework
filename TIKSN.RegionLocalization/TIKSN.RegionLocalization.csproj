@@ -38,13 +38,25 @@
     <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-CA.xlf">
       <Generator>XliffResxGenerator</Generator>
     </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-CH.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-DE.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
     <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-GB.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-GU.xlf">
       <Generator>XliffResxGenerator</Generator>
     </XliffResource>
     <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-IE.xlf">
       <Generator>XliffResxGenerator</Generator>
     </XliffResource>
     <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-NZ.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-PR.xlf">
       <Generator>XliffResxGenerator</Generator>
     </XliffResource>
     <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-SG.xlf">
