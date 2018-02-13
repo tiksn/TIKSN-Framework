@@ -301,9 +301,13 @@
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-150" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-AU\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-AU" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-CA\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-CA" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-CH\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-CH" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-DE\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-DE" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-GB\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-GB" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-GU\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-GU" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-IE" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-NZ" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-PR\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-PR" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-SG" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-US\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-US" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\hy-AM" />
@@ -321,9 +325,13 @@
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-150" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-AU\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-AU" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-CA\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-CA" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-CH\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-CH" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-DE\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-DE" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-GB\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-GB" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-GU\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-GU" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-IE" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-NZ" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-PR\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-PR" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-SG" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-US\TIKSN.RegionLocalization.resources.dll" target="lib\net47\en-US" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\net47\hy-AM" />
@@ -341,9 +349,13 @@
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp2.0\en-150" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-AU\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp2.0\en-AU" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-CA\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp2.0\en-CA" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-CH\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp2.0\en-CH" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-DE\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp2.0\en-DE" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-GB\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp2.0\en-GB" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-GU\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp2.0\en-GU" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp2.0\en-IE" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp2.0\en-NZ" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-PR\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp2.0\en-PR" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp2.0\en-SG" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-US\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp2.0\en-US" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp2.0\hy-AM" />
@@ -361,9 +373,13 @@
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\en-150" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-AU\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\en-AU" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-CA\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\en-CA" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-CH\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\en-CH" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-DE\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\en-DE" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-GB\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\en-GB" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-GU\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\en-GU" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\en-IE" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\en-NZ" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-PR\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\en-PR" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\en-SG" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-US\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\en-US" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\hy-AM" />
@@ -381,9 +397,13 @@
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-150\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-150" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-AU\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-AU" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-CA\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-CA" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-CH\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-CH" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-DE\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-DE" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-GB\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-GB" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-GU\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-GU" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-IE" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-NZ" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-PR\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-PR" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-SG" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-US\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-US" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\hy-AM" />
@@ -401,9 +421,13 @@
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-150\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-150" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-AU\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-AU" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-CA\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-CA" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-CH\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-CH" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-DE\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-DE" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-GB\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-GB" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-GU\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-GU" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-IE" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-NZ" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-PR\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-PR" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-SG" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-US\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-US" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\hy-AM" />
@@ -421,9 +445,13 @@
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-150\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-150" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-AU\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-AU" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-CA\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-CA" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-CH\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-CH" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-DE\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-DE" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-GB\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-GB" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-GU\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-GU" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-IE" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-NZ" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-PR\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-PR" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-SG" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-US\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-US" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\hy-AM" />
@@ -441,9 +469,13 @@
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-150\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-150" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-AU\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-AU" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-CA\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-CA" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-CH\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-CH" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-DE\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-DE" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-GB\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-GB" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-GU\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-GU" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-IE\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-IE" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-NZ\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-NZ" />
+        <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-PR\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-PR" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-SG\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-SG" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\en-US\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-US" />
         <file src="..\TIKSN.RegionLocalization\bin\Release\netstandard2.0\hy-AM\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\hy-AM" />
