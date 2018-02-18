@@ -48,8 +48,6 @@ namespace TIKSN.Finance.ForeignExchange
             _regionFactory = regionFactory;
             _random = random;
             _unitOfWorkFactory = unitOfWorkFactory ?? throw new ArgumentNullException(nameof(unitOfWorkFactory));
-
-            SetupProviders();
         }
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
@@ -152,8 +150,6 @@ namespace TIKSN.Finance.ForeignExchange
         {
             _providers.Add(providerID, (null, provider, longNameKey, shortNameKey, _regionFactory.Create(country), invalidationInterval));
         }
-
-        protected abstract void SetupProviders();
 
         private async Task FetchExchangeRatesAsync(int foreignExchangeID, IExchangeRatesProvider batchProvider, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
