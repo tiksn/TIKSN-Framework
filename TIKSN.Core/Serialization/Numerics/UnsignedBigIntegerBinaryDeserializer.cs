@@ -6,10 +6,10 @@ namespace TIKSN.Serialization.Numerics
     /// <summary>
     /// Custom (specialized or typed) deserializer for unsigned <see cref="BigInteger"/>
     /// </summary>
-    public class IUnsignedBigIntegerBinaryDeserializer : ICustomDeserializer<byte[], BigInteger>
+    public class UnsignedBigIntegerBinaryDeserializer : ICustomDeserializer<byte[], BigInteger>
     {
         /// <summary>
-        /// Deserialize byte array to unsigned <see cref="BigInteger"/>
+        /// Deserializes byte array to unsigned <see cref="BigInteger"/>
         /// </summary>
         /// <param name="serial"></param>
         /// <returns></returns>
