@@ -9,7 +9,7 @@
         /// <summary>
         /// Deserialize from <typeparamref name="TSerial"/> type to <typeparamref name="TModel"/>
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="serial"></param>
         /// <returns></returns>
         TModel Deserialize(TSerial serial);
     }
