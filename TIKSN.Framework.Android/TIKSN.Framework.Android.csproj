@@ -316,6 +316,7 @@
     </Compile>
     <Compile Include="DependencyInjection\PlatformDependencyRegistration.cs" />
     <Compile Include="DependencyInjection\PlatformModule.cs" />
+    <Compile Include="FileSystem\KnownFolders.cs" />
     <Compile Include="Settings\AndroidSettingsOptions.cs" />
     <Compile Include="Settings\SettingsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

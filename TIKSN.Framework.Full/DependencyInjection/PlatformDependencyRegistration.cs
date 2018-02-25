@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using TIKSN.FileSystem;
 using TIKSN.Network;
 using TIKSN.Security.Antimalware;
 using TIKSN.Settings;
@@ -16,6 +17,7 @@ namespace TIKSN.DependencyInjection
 
             services.TryAddSingleton<IAntimalwareScanner, AntimalwareScanner>();
             services.TryAddSingleton<IConsoleService, ConsoleService>();
+            services.TryAddSingleton<IKnownFolders, KnownFolders>();
             services.TryAddSingleton<INetworkConnectivityService, NetworkConnectivityService>();
             services.TryAddSingleton<ISettingsService, WindowsRegistrySettingsService>();
             services.TryAddSingleton<IShellCommandEngine, ShellCommandEngine>();

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using TIKSN.FileSystem;
 
 namespace TIKSN.DependencyInjection
 {
@@ -7,6 +9,8 @@ namespace TIKSN.DependencyInjection
         public static void Register(IServiceCollection services)
         {
             DependencyRegistration.Register(services);
+
+            services.TryAddSingleton<IKnownFolders, KnownFolders>();
         }
     }
 }
