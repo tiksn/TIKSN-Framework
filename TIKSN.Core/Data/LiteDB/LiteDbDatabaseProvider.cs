@@ -4,6 +4,9 @@ using Microsoft.Extensions.FileProviders;
 
 namespace TIKSN.Data.LiteDB
 {
+    /// <summary>
+    /// Create LiteDB database
+    /// </summary>
     public class LiteDbDatabaseProvider : ILiteDbDatabaseProvider
     {
         private readonly IConfigurationRoot _configuration;
@@ -17,7 +20,12 @@ namespace TIKSN.Data.LiteDB
             _fileProvider = fileProvider;
         }
 
-        public LiteDatabase GetDatabase()
+        /// <summary>
+        /// Creates LiteDB database with mapper
+        /// </summary>
+        /// <param name="mapper">Mapper</param>
+        /// <returns></returns>
+        public LiteDatabase GetDatabase(BsonMapper mapper)
         {
             var connectionString = new ConnectionString(_configuration.GetConnectionString(_connectionStringKey));
 
@@ -25,6 +33,15 @@ namespace TIKSN.Data.LiteDB
                 connectionString.Filename = _fileProvider.GetFileInfo(connectionString.Filename).PhysicalPath;
 
             return new LiteDatabase(connectionString);
+        }
+
+        /// <summary>
+        /// Creates LiteDB database
+        /// </summary>
+        /// <returns></returns>
+        public LiteDatabase GetDatabase()
+        {
+            return GetDatabase(null);
         }
     }
 }
