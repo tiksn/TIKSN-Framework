@@ -20,8 +20,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Exceptionless.Signed" Version="4.2.1982" />
-    <PackageReference Include="FluentAssertions" Version="4.19.4" />
+    <PackageReference Include="Exceptionless.Signed" Version="4.2.1989" />
+    <PackageReference Include="FluentAssertions" Version="5.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="2.0.0" />
@@ -33,7 +33,7 @@
     <PackageReference Include="NLog.Extensions.Logging" Version="1.0.0-rtm-rc5" />
     <PackageReference Include="NoDb" Version="1.1.3" />
     <PackageReference Include="NSubstitute" Version="3.1.0" />
-    <PackageReference Include="Serilog.Sinks.XUnit" Version="1.0.4" />
+    <PackageReference Include="Serilog.Sinks.XUnit" Version="1.0.5" />
     <PackageReference Include="System.Interactive" Version="3.1.1" />
     <PackageReference Include="System.Interactive.Async" Version="3.1.1" />
     <PackageReference Include="xunit.analyzers" Version="0.8.0" />
