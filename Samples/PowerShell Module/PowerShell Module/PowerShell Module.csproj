@@ -49,7 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="TIKSN-Framework">
-      <Version>3.0.0-alpha.24</Version>
+      <Version>3.0.0-alpha.83</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
