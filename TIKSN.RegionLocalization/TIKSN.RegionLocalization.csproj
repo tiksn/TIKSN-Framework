@@ -7,16 +7,16 @@
     <SuppressPseudoWarning Condition="'$(Configuration)' == 'Debug'">true</SuppressPseudoWarning>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFramework>netstandard1.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <NeutralLanguage>en-US</NeutralLanguage>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>TIKSN</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard1.0\TIKSN.RegionLocalization.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\TIKSN.RegionLocalization.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard1.0\TIKSN.RegionLocalization.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netstandard2.0\TIKSN.RegionLocalization.xml</DocumentationFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.ResxResources.targets" Label="MultilingualAppToolkit" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\v$(MultilingualAppToolkitVersion)\Microsoft.Multilingual.ResxResources.targets')" />
   <Target Name="MATPrerequisite" BeforeTargets="PrepareForBuild" Condition="!Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.ResxResources.targets')" Label="MultilingualAppToolkit">
@@ -38,13 +38,25 @@
     <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-CA.xlf">
       <Generator>XliffResxGenerator</Generator>
     </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-CH.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-DE.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
     <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-GB.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-GU.xlf">
       <Generator>XliffResxGenerator</Generator>
     </XliffResource>
     <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-IE.xlf">
       <Generator>XliffResxGenerator</Generator>
     </XliffResource>
     <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-NZ.xlf">
+      <Generator>XliffResxGenerator</Generator>
+    </XliffResource>
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-PR.xlf">
       <Generator>XliffResxGenerator</Generator>
     </XliffResource>
     <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-SG.xlf">

@@ -2,8 +2,8 @@
 
 namespace TIKSN.Web.Rest
 {
-	public interface IDeserializerRestFactory
-	{
-		IDeserializer Create(string mediaType);
-	}
+    public interface IDeserializerRestFactory
+    {
+        IDeserializer<string> Create(string mediaType);
+    }
 }

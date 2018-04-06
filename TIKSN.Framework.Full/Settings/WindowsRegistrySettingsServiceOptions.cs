@@ -2,15 +2,15 @@
 
 namespace TIKSN.Settings
 {
-	public class WindowsRegistrySettingsServiceOptions
-	{
-		public WindowsRegistrySettingsServiceOptions()
-		{
-			RegistryView = RegistryView.Default;
-		}
+    public class WindowsRegistrySettingsServiceOptions
+    {
+        public WindowsRegistrySettingsServiceOptions()
+        {
+            RegistryView = RegistryView.Default;
+        }
 
-		public RegistryView RegistryView { get; set; }
+        public RegistryView RegistryView { get; set; }
 
-		public string SubKey { get; set; }
-	}
+        public string SubKey { get; set; }
+    }
 }

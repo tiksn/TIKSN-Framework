@@ -9,8 +9,8 @@
     <Import_RootNamespace>TIKSN.Framework.SharedMobile</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\MobileCenterEventTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\MobileCenterExceptionTelemeter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\MobileCenterTraceTelemeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\AppCenterEventTelemeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\AppCenterExceptionTelemeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\Telemetry\AppCenterTraceTelemeter.cs" />
   </ItemGroup>
 </Project>

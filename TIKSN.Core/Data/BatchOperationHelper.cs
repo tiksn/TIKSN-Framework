@@ -1,5 +1,4 @@
-﻿using LiteGuard;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -7,16 +6,19 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Data
 {
-	public static class BatchOperationHelper
-	{
-		public static Task BatchOperationAsync<T>(IEnumerable<T> entities, CancellationToken cancellationToken, Func<T, CancellationToken, Task> singleOperation)
-		{
-			Guard.AgainstNullArgument(nameof(entities), entities);
-			Guard.AgainstNullArgument(nameof(singleOperation), singleOperation);
+    public static class BatchOperationHelper
+    {
+        public static Task BatchOperationAsync<T>(IEnumerable<T> entities, CancellationToken cancellationToken, Func<T, CancellationToken, Task> singleOperation)
+        {
+            if (entities == null)
+                throw new ArgumentNullException(nameof(entities));
 
-			var tasks = entities.Select(entity => singleOperation?.Invoke(entity, cancellationToken));
+            if (singleOperation == null)
+                throw new ArgumentNullException(nameof(singleOperation));
 
-			return Task.WhenAll(tasks);
-		}
-	}
+            var tasks = entities.Select(entity => singleOperation?.Invoke(entity, cancellationToken));
+
+            return Task.WhenAll(tasks);
+        }
+    }
 }

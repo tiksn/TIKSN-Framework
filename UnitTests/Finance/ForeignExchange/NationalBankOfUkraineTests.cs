@@ -1,53 +1,68 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using TIKSN.Finance.ForeignExchange;
+using TIKSN.Finance.ForeignExchange.Bank;
+using TIKSN.Globalization;
 using Xunit;
 
 namespace TIKSN.Finance.Tests.ForeignExchange
 {
-	public class NationalBankOfUkraineTests
-	{
-		[Fact]
-		public async Task ConvertCurrencyAsync001()
-		{
-			var date = new DateTimeOffset(2016, 05, 06, 0, 0, 0, TimeSpan.Zero);
-			var nbu = new NationalBankOfUkraine();
-			var pairs = await nbu.GetCurrencyPairsAsync(date);
+    public class NationalBankOfUkraineTests
+    {
+        private readonly ICurrencyFactory _currencyFactory;
 
-			foreach (var pair in pairs)
-			{
-				var baseMoney = new Money(pair.BaseCurrency, 100);
-				var convertedMoney = await nbu.ConvertCurrencyAsync(baseMoney, pair.CounterCurrency, date);
+        public NationalBankOfUkraineTests()
+        {
+            var services = new ServiceCollection();
+            services.AddMemoryCache();
+            services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
+            services.AddSingleton<IRegionFactory, RegionFactory>();
 
-				Assert.Equal(pair.CounterCurrency, convertedMoney.Currency);
-				Assert.True(convertedMoney.Amount > decimal.Zero);
-			}
-		}
+            var serviceProvider = services.BuildServiceProvider();
+            _currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+        }
 
-		[Fact]
-		public async Task GetCurrencyPairsAsync001()
-		{
-			var nbu = new NationalBankOfUkraine();
+        [Fact]
+        public async Task ConvertCurrencyAsync001()
+        {
+            var date = new DateTimeOffset(2016, 05, 06, 0, 0, 0, TimeSpan.Zero);
+            var nbu = new NationalBankOfUkraine(_currencyFactory);
+            var pairs = await nbu.GetCurrencyPairsAsync(date, default);
 
-			var pairs = await nbu.GetCurrencyPairsAsync(new DateTimeOffset(2016, 05, 06, 0, 0, 0, TimeSpan.Zero));
+            foreach (var pair in pairs)
+            {
+                var baseMoney = new Money(pair.BaseCurrency, 100);
+                var convertedMoney = await nbu.ConvertCurrencyAsync(baseMoney, pair.CounterCurrency, date, default);
 
-			Assert.True(pairs.Any());
-		}
+                Assert.Equal(pair.CounterCurrency, convertedMoney.Currency);
+                Assert.True(convertedMoney.Amount > decimal.Zero);
+            }
+        }
 
-		[Fact]
-		public async Task GetExchangeRateAsync001()
-		{
-			var date = new DateTimeOffset(2016, 05, 06, 0, 0, 0, TimeSpan.Zero);
-			var nbu = new NationalBankOfUkraine();
-			var pairs = await nbu.GetCurrencyPairsAsync(date);
+        [Fact]
+        public async Task GetCurrencyPairsAsync001()
+        {
+            var nbu = new NationalBankOfUkraine(_currencyFactory);
 
-			foreach (var pair in pairs)
-			{
-				var rate = await nbu.GetExchangeRateAsync(pair, date);
+            var pairs = await nbu.GetCurrencyPairsAsync(new DateTimeOffset(2016, 05, 06, 0, 0, 0, TimeSpan.Zero), default);
 
-				Assert.True(rate > decimal.Zero);
-			}
-		}
-	}
+            Assert.True(pairs.Any());
+        }
+
+        [Fact]
+        public async Task GetExchangeRateAsync001()
+        {
+            var date = new DateTimeOffset(2016, 05, 06, 0, 0, 0, TimeSpan.Zero);
+            var nbu = new NationalBankOfUkraine(_currencyFactory);
+            var pairs = await nbu.GetCurrencyPairsAsync(date, default);
+
+            foreach (var pair in pairs)
+            {
+                var rate = await nbu.GetExchangeRateAsync(pair, date, default);
+
+                Assert.True(rate > decimal.Zero);
+            }
+        }
+    }
 }

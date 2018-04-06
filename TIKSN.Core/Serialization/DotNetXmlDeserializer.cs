@@ -5,24 +5,24 @@ using TIKSN.Analytics.Telemetry;
 
 namespace TIKSN.Serialization
 {
-	public class DotNetXmlDeserializer : DeserializerBase
-	{
-		public DotNetXmlDeserializer(IExceptionTelemeter exceptionTelemeter) : base(exceptionTelemeter)
-		{
-		}
+    public class DotNetXmlDeserializer : DeserializerBase<string>
+    {
+        public DotNetXmlDeserializer(IExceptionTelemeter exceptionTelemeter) : base(exceptionTelemeter)
+        {
+        }
 
-		protected override T DeserializeInternal<T>(string text)
-		{
-			if (string.IsNullOrEmpty(text))
-			{
-				return default(T);
-			}
+        protected override T DeserializeInternal<T>(string serial)
+        {
+            if (string.IsNullOrEmpty(serial))
+            {
+                return default(T);
+            }
 
-			using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-			{
-				var serializer = new XmlSerializer(typeof(T));
-				return (T)serializer.Deserialize(stream);
-			}
-		}
-	}
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(serial)))
+            {
+                var serializer = new XmlSerializer(typeof(T));
+                return (T)serializer.Deserialize(stream);
+            }
+        }
+    }
 }

@@ -1,18 +1,29 @@
-﻿using System.Collections.Generic;
-using Autofac.Core;
+﻿using Autofac.Core;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TIKSN.DependencyInjection
 {
-	public abstract class AutofacPlatformCompositionRootSetupBase : AutofacCompositionRootSetupBase
-	{
-		protected override IEnumerable<IModule> GetAutofacModules()
-		{
-			var modules =  base.GetAutofacModules().ToList();
+    public abstract class AutofacPlatformCompositionRootSetupBase : AutofacCompositionRootSetupBase
+    {
+        protected AutofacPlatformCompositionRootSetupBase(IConfigurationRoot configurationRoot) : base(configurationRoot)
+        {
+        }
 
-			modules.Add(new PlatformModule());
+        protected override IEnumerable<IModule> GetAutofacModules()
+        {
+            var modules = base.GetAutofacModules().ToList();
 
-			return modules;
-		}
-	}
+            modules.Add(new PlatformModule());
+
+            return modules;
+        }
+
+        protected override void ConfigureServices(IServiceCollection services)
+        {
+            PlatformDependencyRegistration.Register(services);
+        }
+    }
 }

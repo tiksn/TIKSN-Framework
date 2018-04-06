@@ -1,420 +1,436 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using TIKSN.Finance.ForeignExchange.Bank;
+using TIKSN.Globalization;
+using TIKSN.Time;
 using Xunit;
 
 namespace TIKSN.Finance.Tests.ForeignExchange
 {
-	public class CentralBankOfArmeniaTests
-	{
-		[Fact]
-		public async Task ConversionDirection001()
-		{
-			var Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
+    public class CentralBankOfArmeniaTests
+    {
+        private readonly ICurrencyFactory _currencyFactory;
+        private readonly ITimeProvider _timeProvider;
 
-			var ArmenianDram = new CurrencyInfo(new RegionInfo("AM"));
-			var PoundSterling = new CurrencyInfo(new RegionInfo("GB"));
-
-			var BeforeInPound = new Money(PoundSterling, 100m);
+        public CentralBankOfArmeniaTests()
+        {
+            var services = new ServiceCollection();
+            services.AddMemoryCache();
+            services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
+            services.AddSingleton<IRegionFactory, RegionFactory>();
+            services.AddSingleton<ITimeProvider, TimeProvider>();
+
+            var serviceProvider = services.BuildServiceProvider();
+            _currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+            _timeProvider = serviceProvider.GetRequiredService<ITimeProvider>();
+        }
+
+        [Fact]
+        public async Task ConversionDirection001()
+        {
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
+
+            var ArmenianDram = new CurrencyInfo(new RegionInfo("AM"));
+            var PoundSterling = new CurrencyInfo(new RegionInfo("GB"));
+
+            var BeforeInPound = new Money(PoundSterling, 100m);
+
+            var AfterInDram = await Bank.ConvertCurrencyAsync(BeforeInPound, ArmenianDram, DateTime.Now, default);
+
+            Assert.True(BeforeInPound.Amount < AfterInDram.Amount);
+        }
 
-			var AfterInDram = await Bank.ConvertCurrencyAsync(BeforeInPound, ArmenianDram, DateTime.Now);
+        [Fact]
+        public async Task ConvertCurrency001()
+        {
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
+
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
-			Assert.True(BeforeInPound.Amount < AfterInDram.Amount);
-		}
+            foreach (var pair in CurrencyPairs)
+            {
+                Money Initial = new Money(pair.BaseCurrency, 10m);
+                decimal rate = await Bank.GetExchangeRateAsync(pair, DateTime.Now, default);
+                Money Result = await Bank.ConvertCurrencyAsync(Initial, pair.CounterCurrency, DateTime.Now, default);
+
+                Assert.True(Result.Currency == pair.CounterCurrency);
+                Assert.True(Result.Amount > 0m);
+                Assert.True(Result.Amount == (rate * Initial.Amount));
+            }
+        }
 
-		[Fact]
-		public async Task ConvertCurrency001()
-		{
-			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
+        [Fact]
+        public async Task ConvertCurrency002()
+        {
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
-			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now);
+            RegionInfo UnitedStates = new RegionInfo("US");
+            RegionInfo Armenia = new RegionInfo("AM");
 
-			foreach (var pair in CurrencyPairs)
-			{
-				Money Initial = new Money(pair.BaseCurrency, 10m);
-				decimal rate = await Bank.GetExchangeRateAsync(pair, DateTime.Now);
-				Money Result = await Bank.ConvertCurrencyAsync(Initial, pair.CounterCurrency, DateTime.Now);
+            CurrencyInfo Dollar = new CurrencyInfo(UnitedStates);
+            CurrencyInfo Dram = new CurrencyInfo(Armenia);
 
-				Assert.True(Result.Currency == pair.CounterCurrency);
-				Assert.True(Result.Amount > 0m);
-				Assert.True(Result.Amount == (rate * Initial.Amount));
-			}
-		}
+            Money Before = new Money(Dollar, 100m);
 
-		[Fact]
-		public async Task ConvertCurrency002()
-		{
-			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
+            await
+                    Assert.ThrowsAsync<ArgumentException>(
+                        async () =>
+                            await Bank.ConvertCurrencyAsync(Before, Dram, DateTime.Now.AddDays(1d), default));
+        }
 
-			RegionInfo UnitedStates = new RegionInfo("US");
-			RegionInfo Armenia = new RegionInfo("AM");
+        [Fact]
+        public async Task ConvertCurrency003()
+        {
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
-			CurrencyInfo Dollar = new CurrencyInfo(UnitedStates);
-			CurrencyInfo Dram = new CurrencyInfo(Armenia);
+            RegionInfo UnitedStates = new RegionInfo("US");
+            RegionInfo Armenia = new RegionInfo("AM");
 
-			Money Before = new Money(Dollar, 100m);
+            CurrencyInfo Dollar = new CurrencyInfo(UnitedStates);
+            CurrencyInfo Dram = new CurrencyInfo(Armenia);
 
-			await
-					Assert.ThrowsAsync<ArgumentException>(
-						async () =>
-							await Bank.ConvertCurrencyAsync(Before, Dram, DateTime.Now.AddDays(1d)));
-		}
+            Money Before = new Money(Dollar, 100m);
 
-		[Fact]
-		public async Task ConvertCurrency003()
-		{
-			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
+            await
+                Assert.ThrowsAsync<ArgumentException>(
+                    async () =>
+                        await Bank.ConvertCurrencyAsync(Before, Dram, DateTime.Now.AddMinutes(1d), default));
+        }
 
-			RegionInfo UnitedStates = new RegionInfo("US");
-			RegionInfo Armenia = new RegionInfo("AM");
+        [Fact]
+        public async Task ConvertCurrency004()
+        {
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
-			CurrencyInfo Dollar = new CurrencyInfo(UnitedStates);
-			CurrencyInfo Dram = new CurrencyInfo(Armenia);
+            RegionInfo UnitedStates = new RegionInfo("US");
+            RegionInfo Armenia = new RegionInfo("AM");
 
-			Money Before = new Money(Dollar, 100m);
+            CurrencyInfo Dollar = new CurrencyInfo(UnitedStates);
+            CurrencyInfo Dram = new CurrencyInfo(Armenia);
 
-			await
-				Assert.ThrowsAsync<ArgumentException>(
-					async () =>
-						await Bank.ConvertCurrencyAsync(Before, Dram, DateTime.Now.AddMinutes(1d)));
-		}
+            Money Before = new Money(Dollar, 100m);
 
-		[Fact]
-		public async Task ConvertCurrency004()
-		{
-			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
+            await
+                Assert.ThrowsAsync<ArgumentException>(
+                    async () =>
+                        await Bank.ConvertCurrencyAsync(Before, Dram, DateTime.Now.AddDays(-20d), default));
+        }
 
-			RegionInfo UnitedStates = new RegionInfo("US");
-			RegionInfo Armenia = new RegionInfo("AM");
+        [Fact]
+        public async Task Fetch001()
+        {
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
-			CurrencyInfo Dollar = new CurrencyInfo(UnitedStates);
-			CurrencyInfo Dram = new CurrencyInfo(Armenia);
+            await Bank.GetExchangeRatesAsync(DateTimeOffset.Now, default);
+        }
 
-			Money Before = new Money(Dollar, 100m);
+        [Fact]
+        public async Task Fetch002()
+        {
+            throw new NotImplementedException();
 
-			await
-				Assert.ThrowsAsync<ArgumentException>(
-					async () =>
-						await Bank.ConvertCurrencyAsync(Before, Dram, DateTime.Now.AddDays(-20d)));
-		}
+            //var ci = new CultureInfo("ru-RU");
+            //Thread.CurrentThread.CurrentCulture = ci;
+            //Thread.CurrentThread.CurrentUICulture = ci;
 
-		[Fact]
-		public async Task Fetch001()
-		{
-			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
+            //Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
 
-			await Bank.FetchAsync();
-		}
+            //await Bank.FetchAsync();
+        }
 
-		[Fact]
-		public async Task Fetch002()
-		{
-			throw new NotImplementedException();
+        [Fact]
+        public async Task GetCurrencyPairs001()
+        {
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
-			//var ci = new CultureInfo("ru-RU");
-			//Thread.CurrentThread.CurrentCulture = ci;
-			//Thread.CurrentThread.CurrentUICulture = ci;
+            System.Collections.Generic.HashSet<CurrencyPair> pairs = new System.Collections.Generic.HashSet<CurrencyPair>();
 
-			//Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
+            foreach (CurrencyPair pair in await Bank.GetCurrencyPairsAsync(DateTime.Now, default))
+            {
+                pairs.Add(pair);
+            }
 
-			//await Bank.FetchAsync();
-		}
+            Assert.True(pairs.Count == (await Bank.GetCurrencyPairsAsync(DateTime.Now, default)).Count());
+        }
 
-		[Fact]
-		public async Task GetCurrencyPairs001()
-		{
-			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
+        [Fact]
+        public async Task GetCurrencyPairs002()
+        {
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
-			System.Collections.Generic.HashSet<CurrencyPair> pairs = new System.Collections.Generic.HashSet<CurrencyPair>();
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
-			foreach (CurrencyPair pair in await Bank.GetCurrencyPairsAsync(DateTime.Now))
-			{
-				pairs.Add(pair);
-			}
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "USD" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "USD");
 
-			Assert.True(pairs.Count == (await Bank.GetCurrencyPairsAsync(DateTime.Now)).Count());
-		}
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "GBP" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "GBP");
 
-		[Fact]
-		public async Task GetCurrencyPairs002()
-		{
-			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AUD" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "AUD");
 
-			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now);
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "ARS" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "ARS");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "USD" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "USD"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "DKK" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "DKK");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "GBP" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "GBP"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "EGP" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "EGP");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AUD" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "AUD"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "EUR" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "EUR");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "ARS" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "ARS"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "TRY" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "TRY");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "DKK" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "DKK"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "IRR" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "IRR");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "EGP" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "EGP"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "ILS" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "ILS");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "EUR" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "EUR"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "PLN" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "PLN");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "TRY" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "TRY"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "LBP" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "LBP");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "IRR" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "IRR"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "CAD" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "CAD");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "ILS" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "ILS"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "INR" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "INR");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "PLN" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "PLN"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "HUF" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "HUF");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "LBP" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "LBP"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "JPY" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "JPY");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "CAD" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "CAD"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "NOK" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "NOK");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "INR" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "INR"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "SEK" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "SEK");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "HUF" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "HUF"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "CHF" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "CHF");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "JPY" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "JPY"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "CZK" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "CZK");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "NOK" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "NOK"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "CNY" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "CNY");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "SEK" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "SEK"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "SGD" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "SGD");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "CHF" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "CHF"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "KRW" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "KRW");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "CZK" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "CZK"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "MXN" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "MXN");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "CNY" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "CNY"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "SAR" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "SAR");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "SGD" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "SGD"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "SYP" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "SYP");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "KRW" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "KRW"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AED" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "AED");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "MXN" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "MXN"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "KWD" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "KWD");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "SAR" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "SAR"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "BGN" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "BGN");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "SYP" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "SYP"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "RON" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "RON");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AED" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "AED"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "ISK" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "ISK");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "KWD" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "KWD"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "KGS" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "KGS");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "BGN" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "BGN"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "KZT" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "KZT");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "RON" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "RON"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "MDL" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "MDL");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "ISK" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "ISK"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "RUB" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "RUB");
 
-			// Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "LVL" &&
-			// C.CounterCurrency.ISOCurrencySymbol == "AMD")); Assert.True(CurrencyPairs.Any(C =>
-			// C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "LVL"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "UAH" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "UAH");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "KGS" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "KGS"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "UZS" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "UZS");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "KZT" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "KZT"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "BYN" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "BYN");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "MDL" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "MDL"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "TJS" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "TJS");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "RUB" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "RUB"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "TMT" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "TMT");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "UAH" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "UAH"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "GEL" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "GEL");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "UZS" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "UZS"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "HKD" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "HKD");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "BYN" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "BYN"));
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "BRL" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
+            Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "BRL");
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "TJS" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "TJS"));
+            //Assert.Equal(88, CurrencyPairs.Count());
+        }
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "TMT" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "TMT"));
+        [Fact]
+        public async Task GetCurrencyPairs003()
+        {
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "GEL" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "GEL"));
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "HKD" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "HKD"));
+            foreach (CurrencyPair pair in CurrencyPairs)
+            {
+                CurrencyPair reverse = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
 
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "BRL" && C.CounterCurrency.ISOCurrencySymbol == "AMD"));
-			Assert.True(CurrencyPairs.Any(C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "BRL"));
+                Assert.Contains(CurrencyPairs, C => C == reverse);
+            }
+        }
 
-			//Assert.Equal(88, CurrencyPairs.Count());
-		}
+        [Fact]
+        public async Task GetExchangeRate001()
+        {
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
-		[Fact]
-		public async Task GetCurrencyPairs003()
-		{
-			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
-			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now);
+            foreach (CurrencyPair pair in CurrencyPairs)
+            {
+                Assert.True(await Bank.GetExchangeRateAsync(pair, DateTime.Now, default) > decimal.Zero);
+            }
+        }
 
-			foreach (CurrencyPair pair in CurrencyPairs)
-			{
-				CurrencyPair reverse = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
+        [Fact]
+        public async Task GetExchangeRate002()
+        {
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
-				Assert.True(CurrencyPairs.Any(C => C == reverse));
-			}
-		}
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
-		[Fact]
-		public async Task GetExchangeRate001()
-		{
-			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
+            foreach (CurrencyPair pair in CurrencyPairs)
+            {
+                CurrencyPair reversePair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
 
-			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now);
+                Assert.Equal<decimal>(decimal.One, System.Math.Round(await Bank.GetExchangeRateAsync(pair, DateTime.Now, default) * await Bank.GetExchangeRateAsync(reversePair, DateTime.Now, default), 5));
+            }
+        }
 
-			foreach (CurrencyPair pair in CurrencyPairs)
-			{
-				Assert.True(await Bank.GetExchangeRateAsync(pair, DateTime.Now) > decimal.Zero);
-			}
-		}
+        [Fact]
+        public async Task GetExchangeRate003()
+        {
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
-		[Fact]
-		public async Task GetExchangeRate002()
-		{
-			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
+            RegionInfo UnitedStates = new RegionInfo("US");
+            RegionInfo Armenia = new RegionInfo("AM");
 
-			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now);
+            CurrencyInfo Dollar = new CurrencyInfo(UnitedStates);
+            CurrencyInfo Dram = new CurrencyInfo(Armenia);
 
-			foreach (CurrencyPair pair in CurrencyPairs)
-			{
-				CurrencyPair reversePair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
+            CurrencyPair DollarPerDram = new CurrencyPair(Dollar, Dram);
 
-				Assert.Equal<decimal>(decimal.One, System.Math.Round(await Bank.GetExchangeRateAsync(pair, DateTime.Now) * await Bank.GetExchangeRateAsync(reversePair, DateTime.Now), 5));
-			}
-		}
+            await
+                Assert.ThrowsAsync<ArgumentException>(
+                    async () =>
+                        await Bank.GetExchangeRateAsync(DollarPerDram, DateTime.Now.AddDays(1d), default));
+        }
 
-		[Fact]
-		public async Task GetExchangeRate003()
-		{
-			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
+        [Fact]
+        public async Task GetExchangeRate004()
+        {
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
-			RegionInfo UnitedStates = new RegionInfo("US");
-			RegionInfo Armenia = new RegionInfo("AM");
+            RegionInfo UnitedStates = new RegionInfo("US");
+            RegionInfo Armenia = new RegionInfo("AM");
 
-			CurrencyInfo Dollar = new CurrencyInfo(UnitedStates);
-			CurrencyInfo Dram = new CurrencyInfo(Armenia);
+            CurrencyInfo Dollar = new CurrencyInfo(UnitedStates);
+            CurrencyInfo Dram = new CurrencyInfo(Armenia);
 
-			CurrencyPair DollarPerDram = new CurrencyPair(Dollar, Dram);
+            CurrencyPair DollarPerDram = new CurrencyPair(Dollar, Dram);
 
-			await
-				Assert.ThrowsAsync<ArgumentException>(
-					async () =>
-						await Bank.GetExchangeRateAsync(DollarPerDram, DateTime.Now.AddDays(1d)));
-		}
+            await
+                Assert.ThrowsAsync<ArgumentException>(
+                    async () =>
+                        await Bank.GetExchangeRateAsync(DollarPerDram, DateTime.Now.AddDays(-20d), default));
+        }
 
-		[Fact]
-		public async Task GetExchangeRate004()
-		{
-			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
+        [Fact]
+        public async Task GetExchangeRate005()
+        {
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
-			RegionInfo UnitedStates = new RegionInfo("US");
-			RegionInfo Armenia = new RegionInfo("AM");
+            RegionInfo UnitedStates = new RegionInfo("US");
+            RegionInfo Armenia = new RegionInfo("AM");
 
-			CurrencyInfo Dollar = new CurrencyInfo(UnitedStates);
-			CurrencyInfo Dram = new CurrencyInfo(Armenia);
+            CurrencyInfo Dollar = new CurrencyInfo(UnitedStates);
+            CurrencyInfo Dram = new CurrencyInfo(Armenia);
 
-			CurrencyPair DollarPerDram = new CurrencyPair(Dollar, Dram);
+            CurrencyPair DollarPerDram = new CurrencyPair(Dollar, Dram);
 
-			await
-				Assert.ThrowsAsync<ArgumentException>(
-					async () =>
-						await Bank.GetExchangeRateAsync(DollarPerDram, DateTime.Now.AddDays(-20d)));
-		}
+            await
+                Assert.ThrowsAsync<ArgumentException>(
+                    async () =>
+                        await Bank.GetExchangeRateAsync(DollarPerDram, DateTime.Now.AddMinutes(1d), default));
+        }
 
-		[Fact]
-		public async Task GetExchangeRate005()
-		{
-			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
+        [Fact]
+        public async Task GetExchangeRate006()
+        {
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
-			RegionInfo UnitedStates = new RegionInfo("US");
-			RegionInfo Armenia = new RegionInfo("AM");
+            RegionInfo Albania = new RegionInfo("AL");
+            RegionInfo Armenia = new RegionInfo("AM");
 
-			CurrencyInfo Dollar = new CurrencyInfo(UnitedStates);
-			CurrencyInfo Dram = new CurrencyInfo(Armenia);
+            CurrencyInfo Lek = new CurrencyInfo(Albania);
+            CurrencyInfo Dram = new CurrencyInfo(Armenia);
 
-			CurrencyPair DollarPerDram = new CurrencyPair(Dollar, Dram);
+            CurrencyPair LekPerDram = new CurrencyPair(Lek, Dram);
 
-			await
-				Assert.ThrowsAsync<ArgumentException>(
-					async () =>
-						await Bank.GetExchangeRateAsync(DollarPerDram, DateTime.Now.AddMinutes(1d)));
-		}
+            await
+                Assert.ThrowsAsync<ArgumentException>(
+                    async () =>
+                        await Bank.GetExchangeRateAsync(LekPerDram, DateTime.Now, default));
+        }
 
-		[Fact]
-		public async Task GetExchangeRate006()
-		{
-			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
+        [Fact]
+        public async Task GetExchangeRate007()
+        {
+            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
 
-			RegionInfo Albania = new RegionInfo("AL");
-			RegionInfo Armenia = new RegionInfo("AM");
+            RegionInfo Albania = new RegionInfo("AL");
+            RegionInfo Armenia = new RegionInfo("AM");
 
-			CurrencyInfo Lek = new CurrencyInfo(Albania);
-			CurrencyInfo Dram = new CurrencyInfo(Armenia);
+            CurrencyInfo Lek = new CurrencyInfo(Albania);
+            CurrencyInfo Dram = new CurrencyInfo(Armenia);
 
-			CurrencyPair LekPerDram = new CurrencyPair(Lek, Dram);
+            CurrencyPair DramPerLek = new CurrencyPair(Dram, Lek);
 
-			await
-				Assert.ThrowsAsync<ArgumentException>(
-					async () =>
-						await Bank.GetExchangeRateAsync(LekPerDram, DateTime.Now));
-		}
-
-		[Fact]
-		public async Task GetExchangeRate007()
-		{
-			Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
-
-			RegionInfo Albania = new RegionInfo("AL");
-			RegionInfo Armenia = new RegionInfo("AM");
-
-			CurrencyInfo Lek = new CurrencyInfo(Albania);
-			CurrencyInfo Dram = new CurrencyInfo(Armenia);
-
-			CurrencyPair DramPerLek = new CurrencyPair(Dram, Lek);
-
-			await
-				Assert.ThrowsAsync<ArgumentException>(
-					async () =>
-						await Bank.GetExchangeRateAsync(DramPerLek, DateTime.Now));
-		}
-	}
+            await
+                Assert.ThrowsAsync<ArgumentException>(
+                    async () =>
+                        await Bank.GetExchangeRateAsync(DramPerLek, DateTime.Now, default));
+        }
+    }
 }

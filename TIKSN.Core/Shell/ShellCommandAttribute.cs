@@ -2,14 +2,15 @@
 
 namespace TIKSN.Shell
 {
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-	public sealed class ShellCommandAttribute : Attribute
-	{
-		public ShellCommandAttribute(string commandNameKey)
-		{
-			CommandNameKey = new Guid(commandNameKey);
-		}
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    public sealed class ShellCommandAttribute : ShellAttributeBase
+    {
+        public ShellCommandAttribute(int nameKey) : base(nameKey)
+        {
+        }
 
-		public Guid CommandNameKey { get; private set; }
-	}
+        public ShellCommandAttribute(string nameKey) : base(nameKey)
+        {
+        }
+    }
 }

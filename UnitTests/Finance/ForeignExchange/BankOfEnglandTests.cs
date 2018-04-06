@@ -1,298 +1,309 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using TIKSN.Finance.ForeignExchange;
+using TIKSN.Finance.ForeignExchange.Bank;
+using TIKSN.Globalization;
+using TIKSN.Time;
 using Xunit;
 
 namespace TIKSN.Finance.Tests.ForeignExchange
 {
-	public class BankOfEnglandTests
-	{
-		[Fact]
-		public async Task Calculate001()
-		{
-			var Bank = new BankOfEngland();
+    public class BankOfEnglandTests
+    {
+        private readonly ICurrencyFactory _currencyFactory;
+        private readonly IRegionFactory _regionFactory;
+        private readonly ITimeProvider _timeProvider;
+
+        public BankOfEnglandTests()
+        {
+            var services = new ServiceCollection();
+            services.AddMemoryCache();
+            services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
+            services.AddSingleton<IRegionFactory, RegionFactory>();
+            services.AddSingleton<ITimeProvider, TimeProvider>();
+
+            var serviceProvider = services.BuildServiceProvider();
+            _currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+            _regionFactory = serviceProvider.GetRequiredService<IRegionFactory>();
+            _timeProvider = serviceProvider.GetRequiredService<ITimeProvider>();
+        }
+
+        [Fact]
+        public async Task Calculate001()
+        {
+            var Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
+
+            foreach (var pair in await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default))
+            {
+                var Before = new Money(pair.BaseCurrency, 10m);
+                decimal rate = await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now, default);
+
+                Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now, default);
 
-			foreach (var pair in await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now))
-			{
-				var Before = new Money(pair.BaseCurrency, 10m);
-				decimal rate = await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now);
+                Assert.True(After.Amount == rate * Before.Amount);
+                Assert.True(After.Currency == pair.CounterCurrency);
+            }
+        }
 
-				Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now);
+        [Fact]
+        public async Task Calculate002()
+        {
+            var Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
+            var TenYearsAgo = DateTimeOffset.Now.AddYears(-10);
 
-				Assert.True(After.Amount == rate * Before.Amount);
-				Assert.True(After.Currency == pair.CounterCurrency);
-			}
-		}
+            foreach (var pair in await Bank.GetCurrencyPairsAsync(TenYearsAgo, default))
+            {
+                var Before = new Money(pair.BaseCurrency, 10m);
+                decimal rate = await Bank.GetExchangeRateAsync(pair, TenYearsAgo, default);
 
-		[Fact]
-		public async Task Calculate002()
-		{
-			var Bank = new BankOfEngland();
-			var TenYearsAgo = DateTimeOffset.Now.AddYears(-10);
+                Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, TenYearsAgo, default);
 
-			foreach (var pair in await Bank.GetCurrencyPairsAsync(TenYearsAgo))
-			{
-				var Before = new Money(pair.BaseCurrency, 10m);
-				decimal rate = await Bank.GetExchangeRateAsync(pair, TenYearsAgo);
+                Assert.True(After.Amount == rate * Before.Amount);
+                Assert.True(After.Currency == pair.CounterCurrency);
+            }
+        }
 
-				Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, TenYearsAgo);
+        [Fact]
+        public async Task ConversionDirection001()
+        {
+            var Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
 
-				Assert.True(After.Amount == rate * Before.Amount);
-				Assert.True(After.Currency == pair.CounterCurrency);
-			}
-		}
+            var USDollar = new CurrencyInfo(new System.Globalization.RegionInfo("US"));
+            var PoundSterling = new CurrencyInfo(new System.Globalization.RegionInfo("GB"));
 
-		[Fact]
-		public async Task ConversionDirection001()
-		{
-			var Bank = new BankOfEngland();
+            var BeforeInPound = new Money(PoundSterling, 100m);
 
-			var USDollar = new CurrencyInfo(new System.Globalization.RegionInfo("US"));
-			var PoundSterling = new CurrencyInfo(new System.Globalization.RegionInfo("GB"));
+            var AfterInDollar = await Bank.ConvertCurrencyAsync(BeforeInPound, USDollar, DateTimeOffset.Now, default);
 
-			var BeforeInPound = new Money(PoundSterling, 100m);
+            Assert.True(BeforeInPound.Amount < AfterInDollar.Amount);
+        }
 
-			var AfterInDollar = await Bank.ConvertCurrencyAsync(BeforeInPound, USDollar, DateTimeOffset.Now);
+        [Fact]
+        public async Task ConvertCurrency001()
+        {
+            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
 
-			Assert.True(BeforeInPound.Amount < AfterInDollar.Amount);
-		}
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
-		[Fact]
-		public async Task ConvertCurrency001()
-		{
-			BankOfEngland Bank = new BankOfEngland();
+            foreach (CurrencyPair pair in CurrencyPairs)
+            {
+                Money Before = new Money(pair.BaseCurrency, 10m);
 
-			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
+                Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now, default);
 
-			foreach (CurrencyPair pair in CurrencyPairs)
-			{
-				Money Before = new Money(pair.BaseCurrency, 10m);
+                Assert.True(After.Amount > decimal.Zero);
+            }
+        }
 
-				Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now);
+        [Fact]
+        public async Task ConvertCurrency002()
+        {
+            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
 
-				Assert.True(After.Amount > decimal.Zero);
-			}
-		}
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
-		[Fact]
-		public async Task ConvertCurrency002()
-		{
-			BankOfEngland Bank = new BankOfEngland();
+            CurrencyPair pair = CurrencyPairs.First();
 
-			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
+            Money Before = new Money(pair.BaseCurrency, 10m);
 
-			CurrencyPair pair = CurrencyPairs.First();
+            await
+                Assert.ThrowsAsync<ArgumentException>(
+                    async () =>
+                        await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now.AddMinutes(1d), default));
+        }
 
-			Money Before = new Money(pair.BaseCurrency, 10m);
+        [Fact]
+        public async Task ConvertCurrency003()
+        {
+            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
 
-			await
-				Assert.ThrowsAsync<ArgumentException>(
-					async () =>
-						await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now.AddMinutes(1d)));
-		}
+            CurrencyPair pair = new CurrencyPair(
+                new CurrencyInfo(new System.Globalization.RegionInfo("AM")),
+                new CurrencyInfo(new System.Globalization.RegionInfo("BY")));
 
-		[Fact]
-		public async Task ConvertCurrency003()
-		{
-			BankOfEngland Bank = new BankOfEngland();
+            Money Before = new Money(pair.BaseCurrency, 10m);
 
-			CurrencyPair pair = new CurrencyPair(
-				new CurrencyInfo(new System.Globalization.RegionInfo("AM")),
-				new CurrencyInfo(new System.Globalization.RegionInfo("BY")));
+            await
+                Assert.ThrowsAsync<ArgumentException>(
+                    async () =>
+                        await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now, default));
+        }
 
-			Money Before = new Money(pair.BaseCurrency, 10m);
+        [Fact]
+        public async Task GetCurrencyPairs001()
+        {
+            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
 
-			await
-				Assert.ThrowsAsync<ArgumentException>(
-					async () =>
-						await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now));
-		}
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
-		[Fact]
-		public async Task GetCurrencyPairs001()
-		{
-			BankOfEngland Bank = new BankOfEngland();
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "AUD/USD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "AUD/GBP");
 
-			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/USD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/GBP");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "AUD/USD"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "AUD/GBP"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CNY/GBP");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CNY/USD");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/USD"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "CAD/GBP"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CZK/USD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CZK/GBP");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CZK/EUR");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "CNY/GBP"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "CNY/USD"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "DKK/GBP");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "DKK/USD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "DKK/EUR");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "CZK/USD"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "CZK/GBP"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "CZK/EUR"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "EUR/USD");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "DKK/GBP"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "DKK/USD"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "DKK/EUR"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "HKD/USD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "HKD/GBP");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "EUR/USD"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "HUF/USD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "HUF/GBP");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "HUF/EUR");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "HKD/USD"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "HKD/GBP"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "INR/GBP");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "INR/USD");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "HUF/USD"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "HUF/GBP"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "HUF/EUR"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "ILS/GBP");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "ILS/USD");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "INR/GBP"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "INR/USD"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "JPY/USD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "JPY/GBP");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "JPY/EUR");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "ILS/GBP"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "ILS/USD"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "MYR/GBP");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "MYR/USD");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "JPY/USD"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "JPY/GBP"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "JPY/EUR"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "NZD/USD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "NZD/GBP");
 
-			//Assert.True(CurrencyPairs.Any(C => C.ToString() == "LVL/USD"));
-			//Assert.True(CurrencyPairs.Any(C => C.ToString() == "LVL/GBP"));
-			//Assert.True(CurrencyPairs.Any(C => C.ToString() == "LVL/EUR"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "NOK/USD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "NOK/GBP");
 
-			//Assert.True(CurrencyPairs.Any(C => C.ToString() == "LTL/USD"));
-			//Assert.True(CurrencyPairs.Any(C => C.ToString() == "LTL/GBP"));
-			//Assert.True(CurrencyPairs.Any(C => C.ToString() == "LTL/EUR"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "PLN/USD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "PLN/EUR");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "PLN/GBP");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "MYR/GBP"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "MYR/USD"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "RUB/GBP");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "RUB/USD");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "NZD/USD"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "NZD/GBP"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "SAR/USD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "SAR/GBP");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "NOK/USD"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "NOK/GBP"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "SGD/USD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "SGD/GBP");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "PLN/USD"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "PLN/EUR"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "PLN/GBP"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "ZAR/USD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "ZAR/GBP");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "RUB/GBP"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "RUB/USD"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "KRW/GBP");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "KRW/USD");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "SAR/USD"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "SAR/GBP"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "GBP/USD");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "SGD/USD"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "SGD/GBP"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "SEK/USD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "SEK/GBP");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "ZAR/USD"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "ZAR/GBP"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CHF/USD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CHF/GBP");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "CHF/EUR");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "KRW/GBP"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "KRW/USD"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "TWD/USD");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "TWD/GBP");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "GBP/USD"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "THB/GBP");
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "THB/USD");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "SEK/USD"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "SEK/GBP"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "TRY/USD");
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "CHF/USD"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "CHF/GBP"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "CHF/EUR"));
+            Assert.Contains(CurrencyPairs, C => C.ToString() == "USD/GBP");
+        }
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "TWD/USD"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "TWD/GBP"));
+        [Fact]
+        public async Task GetCurrencyPairs002()
+        {
+            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "THB/GBP"));
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "THB/USD"));
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "TRY/USD"));
+            var UniquePairs = new System.Collections.Generic.HashSet<CurrencyPair>();
 
-			Assert.True(CurrencyPairs.Any(C => C.ToString() == "USD/GBP"));
+            foreach (var pair in CurrencyPairs)
+            {
+                UniquePairs.Add(pair);
+            }
 
-			//Assert.Equal(61, (await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now)).Count());
-		}
+            Assert.True(UniquePairs.Count == CurrencyPairs.Count());
+        }
 
-		[Fact]
-		public async Task GetCurrencyPairs002()
-		{
-			BankOfEngland Bank = new BankOfEngland();
+        [Fact]
+        public async Task GetCurrencyPairs003()
+        {
+            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
 
-			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now.AddYears(-10), default);
 
-			var UniquePairs = new System.Collections.Generic.HashSet<CurrencyPair>();
+            var UniquePairs = new System.Collections.Generic.HashSet<CurrencyPair>();
 
-			foreach (var pair in CurrencyPairs)
-			{
-				UniquePairs.Add(pair);
-			}
+            foreach (var pair in CurrencyPairs)
+            {
+                UniquePairs.Add(pair);
+            }
 
-			Assert.True(UniquePairs.Count == CurrencyPairs.Count());
-		}
+            Assert.True(UniquePairs.Count == CurrencyPairs.Count());
+        }
 
-		[Fact]
-		public async Task GetCurrencyPairs003()
-		{
-			BankOfEngland Bank = new BankOfEngland();
+        [Fact]
+        public async Task GetExchangeRate001()
+        {
+            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
 
-			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now.AddYears(-10));
+            foreach (CurrencyPair pair in await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default))
+            {
+                Assert.True(await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now, default) > decimal.Zero);
+            }
+        }
 
-			var UniquePairs = new System.Collections.Generic.HashSet<CurrencyPair>();
+        [Fact]
+        public async Task GetExchangeRate002()
+        {
+            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
 
-			foreach (var pair in CurrencyPairs)
-			{
-				UniquePairs.Add(pair);
-			}
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
-			Assert.True(UniquePairs.Count == CurrencyPairs.Count());
-		}
+            await
+                    Assert.ThrowsAsync<ArgumentException>(
+                        async () =>
+                            await Bank.GetExchangeRateAsync(CurrencyPairs.First(), DateTimeOffset.Now.AddMinutes(1d), default));
+        }
 
-		[Fact]
-		public async Task GetExchangeRate001()
-		{
-			BankOfEngland Bank = new BankOfEngland();
+        [Fact]
+        public async Task GetExchangeRate003()
+        {
+            BankOfEngland Bank = new BankOfEngland(_currencyFactory, _regionFactory, _timeProvider);
 
-			foreach (CurrencyPair pair in await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now))
-			{
-				Assert.True(await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now) > decimal.Zero);
-			}
-		}
+            CurrencyPair pair = new CurrencyPair(
+                new CurrencyInfo(new System.Globalization.RegionInfo("AM")),
+                new CurrencyInfo(new System.Globalization.RegionInfo("BY")));
 
-		[Fact]
-		public async Task GetExchangeRate002()
-		{
-			BankOfEngland Bank = new BankOfEngland();
+            await
+                    Assert.ThrowsAsync<ArgumentException>(
+                        async () =>
+                            await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now, default));
+        }
 
-			var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now);
+        [Fact]
+        public async Task KeepCurrenciesPairsUpdated()
+        {
+            // In case or failure, check currency pair information from BOE website and set deadline
+            // up to 3 month.
 
-			await
-					Assert.ThrowsAsync<ArgumentException>(
-						async () =>
-							await Bank.GetExchangeRateAsync(CurrencyPairs.First(), DateTimeOffset.Now.AddMinutes(1d)));
-		}
+            System.DateTimeOffset Deadline = new DateTime(2016, 7, 1);
 
-		[Fact]
-		public async Task GetExchangeRate003()
-		{
-			BankOfEngland Bank = new BankOfEngland();
-
-			CurrencyPair pair = new CurrencyPair(
-				new CurrencyInfo(new System.Globalization.RegionInfo("AM")),
-				new CurrencyInfo(new System.Globalization.RegionInfo("BY")));
-
-			await
-					Assert.ThrowsAsync<ArgumentException>(
-						async () =>
-							await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now));
-		}
-
-		[Fact]
-		public async Task KeepCurrenciesPairsUpdated()
-		{
-			// In case or failure, check currency pair information from BOE website and set deadline
-			// up to 3 month.
-
-			System.DateTimeOffset Deadline = new DateTime(2016, 7, 1);
-
-			if (System.DateTimeOffset.Now > Deadline)
-				throw new Exception("Source is out of date. Please update.");
-		}
-	}
+            if (System.DateTimeOffset.Now > Deadline)
+                throw new Exception("Source is out of date. Please update.");
+        }
+    }
 }

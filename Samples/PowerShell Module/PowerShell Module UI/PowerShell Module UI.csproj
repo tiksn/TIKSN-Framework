@@ -98,7 +98,7 @@
       <Version>0.8.6</Version>
     </PackageReference>
     <PackageReference Include="TIKSN-Framework">
-      <Version>2.1.0</Version>
+      <Version>3.0.0-alpha.83</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

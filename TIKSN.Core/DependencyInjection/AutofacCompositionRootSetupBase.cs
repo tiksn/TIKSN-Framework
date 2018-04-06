@@ -1,50 +1,55 @@
 ﻿using Autofac;
 using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 
 namespace TIKSN.DependencyInjection
 {
-	public abstract class AutofacCompositionRootSetupBase : CompositionRootSetupBase
-	{
-		public IContainer CreateContainer()
-		{
-			var container = CreateContainerInternal();
-			var serviceProvider = new AutofacServiceProvider(container);
+    public abstract class AutofacCompositionRootSetupBase : CompositionRootSetupBase
+    {
+        protected AutofacCompositionRootSetupBase(IConfigurationRoot configurationRoot) : base(configurationRoot)
+        {
+        }
 
-			ConfigureLoggingInternal(serviceProvider);
+        public IContainer CreateContainer()
+        {
+            var container = CreateContainerInternal();
+            var serviceProvider = new AutofacServiceProvider(container);
 
-			ValidateOptions(services.Value, serviceProvider);
+            SetupLogging(serviceProvider);
 
-			return container;
-		}
+            ValidateOptions(_services.Value, serviceProvider);
 
-		protected abstract void ConfigureContainerBuilder(ContainerBuilder builder);
+            return container;
+        }
 
-		protected IContainer CreateContainerInternal()
-		{
-			var builder = new ContainerBuilder();
-			builder.Populate(services.Value);
+        protected abstract void ConfigureContainerBuilder(ContainerBuilder builder);
 
-			foreach (var module in GetAutofacModules())
-			{
-				builder.RegisterModule(module);
-			}
+        protected IContainer CreateContainerInternal()
+        {
+            var builder = new ContainerBuilder();
+            builder.Populate(_services.Value);
 
-			ConfigureContainerBuilder(builder);
+            foreach (var module in GetAutofacModules())
+            {
+                builder.RegisterModule(module);
+            }
 
-			return builder.Build();
-		}
+            ConfigureContainerBuilder(builder);
 
-		protected override IServiceProvider CreateServiceProviderInternal()
-		{
-			return new AutofacServiceProvider(CreateContainerInternal());
-		}
+            return builder.Build();
+        }
 
-		protected virtual IEnumerable<IModule> GetAutofacModules()
-		{
-			yield return new CoreModule();
-		}
-	}
+        protected override IServiceProvider CreateServiceProviderInternal()
+        {
+            return new AutofacServiceProvider(CreateContainerInternal());
+        }
+
+        protected virtual IEnumerable<IModule> GetAutofacModules()
+        {
+            yield return new CoreModule();
+        }
+    }
 }

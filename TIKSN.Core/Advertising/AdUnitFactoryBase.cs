@@ -2,26 +2,26 @@
 
 namespace TIKSN.Advertising
 {
-	public abstract class AdUnitFactoryBase : IAdUnitFactory
-	{
-		protected readonly Dictionary<string, AdUnitBundle> _adUnitBundles;
-		private readonly IAdUnitSelector _adUnitSelector;
+    public abstract class AdUnitFactoryBase : IAdUnitFactory
+    {
+        protected readonly Dictionary<string, AdUnitBundle> _adUnitBundles;
+        private readonly IAdUnitSelector _adUnitSelector;
 
-		protected AdUnitFactoryBase(IAdUnitSelector adUnitSelector)
-		{
-			_adUnitSelector = adUnitSelector;
-			_adUnitBundles = new Dictionary<string, AdUnitBundle>();
+        protected AdUnitFactoryBase(IAdUnitSelector adUnitSelector)
+        {
+            _adUnitSelector = adUnitSelector;
+            _adUnitBundles = new Dictionary<string, AdUnitBundle>();
 
-			Register();
-		}
+            Register();
+        }
 
-		public AdUnit Create(string key)
-		{
-			var adUnitBundle = _adUnitBundles[key];
+        public AdUnit Create(string key)
+        {
+            var adUnitBundle = _adUnitBundles[key];
 
-			return _adUnitSelector.Select(adUnitBundle);
-		}
+            return _adUnitSelector.Select(adUnitBundle);
+        }
 
-		protected abstract void Register();
-	}
+        protected abstract void Register();
+    }
 }

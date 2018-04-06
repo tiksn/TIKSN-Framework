@@ -1,0 +1,38 @@
+﻿using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using TIKSN.Serialization;
+
+namespace TIKSN.Data.Cache.Distributed
+{
+    public class DistributedCacheQueryRepository<TEntity, TIdentity> : DistributedCacheRepository<TEntity, TIdentity>, IQueryRepository<TEntity, TIdentity>
+        where TEntity : IEntity<TIdentity>
+        where TIdentity : IEquatable<TIdentity>
+    {
+        public DistributedCacheQueryRepository(
+            IDistributedCache distributedCache,
+            ISerializer<byte[]> serializer,
+            IDeserializer<byte[]> deserializer,
+            IOptions<DistributedCacheDecoratorOptions> genericOptions,
+            IOptions<DistributedCacheDecoratorOptions<TEntity>> specificOptions) : base(distributedCache, serializer, deserializer, genericOptions, specificOptions)
+        {
+        }
+
+        public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
+        {
+            var result = await GetFromDistributedCacheAsync<TEntity>(CreateEntryCacheKey(id), cancellationToken);
+
+            if (result == null)
+                throw new NullReferenceException("Result retrieved from cache or from original source is null.");
+
+            return result;
+        }
+
+        public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken = default)
+        {
+            return GetFromDistributedCacheAsync<TEntity>(CreateEntryCacheKey(id), cancellationToken);
+        }
+    }
+}

@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Web.Rest
 {
-	public interface IHttpClientFactory
-	{
-		Task<HttpClient> Create(Guid apiKey);
-	}
+    public interface IHttpClientFactory
+    {
+        Task<HttpClient> Create(Guid apiKey);
+    }
 }

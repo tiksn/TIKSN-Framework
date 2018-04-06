@@ -6,62 +6,62 @@ using System.Linq;
 
 namespace TIKSN.Localization
 {
-	public class CompositeStringLocalizer : IStringLocalizer
-	{
-		public CompositeStringLocalizer(IEnumerable<IStringLocalizer> localizers)
-		{
-			Localizers = localizers;
-		}
+    public class CompositeStringLocalizer : IStringLocalizer
+    {
+        public CompositeStringLocalizer(IEnumerable<IStringLocalizer> localizers)
+        {
+            Localizers = localizers;
+        }
 
-		protected CompositeStringLocalizer()
-		{
-		}
+        protected CompositeStringLocalizer()
+        {
+        }
 
-		public virtual IEnumerable<IStringLocalizer> Localizers { get; }
+        public virtual IEnumerable<IStringLocalizer> Localizers { get; }
 
-		public LocalizedString this[string name]
-		{
-			get
-			{
-				return GetLocalizedString(l => l[name]);
-			}
-		}
+        public LocalizedString this[string name]
+        {
+            get
+            {
+                return GetLocalizedString(l => l[name]);
+            }
+        }
 
-		public LocalizedString this[string name, params object[] arguments]
-		{
-			get
-			{
-				return GetLocalizedString(l => l[name, arguments]);
-			}
-		}
+        public LocalizedString this[string name, params object[] arguments]
+        {
+            get
+            {
+                return GetLocalizedString(l => l[name, arguments]);
+            }
+        }
 
-		public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
-		{
-			var localizedStrings = new List<LocalizedString>();
+        public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
+        {
+            var localizedStrings = new List<LocalizedString>();
 
-			foreach (var localizer in Localizers)
-			{
-				localizedStrings.AddRange(localizer.GetAllStrings(includeParentCultures));
-			}
+            foreach (var localizer in Localizers)
+            {
+                localizedStrings.AddRange(localizer.GetAllStrings(includeParentCultures));
+            }
 
-			return localizedStrings;
-		}
+            return localizedStrings;
+        }
 
-		public IStringLocalizer WithCulture(CultureInfo culture)
-		{
-			return new CompositeStringLocalizer(Localizers.Select(item => item.WithCulture(culture)).ToArray());
-		}
+        public IStringLocalizer WithCulture(CultureInfo culture)
+        {
+            return new CompositeStringLocalizer(Localizers.Select(item => item.WithCulture(culture)).ToArray());
+        }
 
-		private LocalizedString GetLocalizedString(Func<IStringLocalizer, LocalizedString> singleLocalizer)
-		{
-			var localizedStrings = Localizers.Select(localizer => singleLocalizer(localizer)).ToArray();
+        private LocalizedString GetLocalizedString(Func<IStringLocalizer, LocalizedString> singleLocalizer)
+        {
+            var localizedStrings = Localizers.Select(localizer => singleLocalizer(localizer)).ToArray();
 
-			var localizableStrings = localizedStrings.Where(item => !item.ResourceNotFound && item.Name != item.Value).ToArray();
+            var localizableStrings = localizedStrings.Where(item => !item.ResourceNotFound && item.Name != item.Value).ToArray();
 
-			if (localizableStrings.Length > 0)
-				return localizableStrings.First();
+            if (localizableStrings.Length > 0)
+                return localizableStrings.First();
 
-			return localizedStrings.First();
-		}
-	}
+            return localizedStrings.First();
+        }
+    }
 }

@@ -658,6 +658,70 @@
           <source>Custom Search</source>
           <target state="translated">Пользовательский поиск</target>
         </trans-unit>
+        <trans-unit id="763272923" translate="yes" xml:space="preserve">
+          <source>Senior Software Engineer</source>
+          <target state="translated">Старший инженер-программист</target>
+        </trans-unit>
+        <trans-unit id="171400643" translate="yes" xml:space="preserve">
+          <source>Central Bank of Armenia</source>
+          <target state="translated">Центра́льный банк Армении</target>
+        </trans-unit>
+        <trans-unit id="224205610" translate="yes" xml:space="preserve">
+          <source>European Central Bank</source>
+          <target state="translated">Европейский центральный банк</target>
+        </trans-unit>
+        <trans-unit id="344909065" translate="yes" xml:space="preserve">
+          <source>National Bank of Ukraine</source>
+          <target state="translated">Национальный банк Украины</target>
+        </trans-unit>
+        <trans-unit id="466192205" translate="yes" xml:space="preserve">
+          <source>Central Bank of Russia</source>
+          <target state="translated">Банк России</target>
+        </trans-unit>
+        <trans-unit id="645369586" translate="yes" xml:space="preserve">
+          <source>Reserve Bank of Australia</source>
+          <target state="translated">Резервный банк Австралии</target>
+        </trans-unit>
+        <trans-unit id="724813953" translate="yes" xml:space="preserve">
+          <source>Federal Reserve System</source>
+          <target state="translated">Федеральная резервная система</target>
+        </trans-unit>
+        <trans-unit id="734344590" translate="yes" xml:space="preserve">
+          <source>Bank of Canada</source>
+          <target state="translated">Банк Канады</target>
+        </trans-unit>
+        <trans-unit id="744582913" translate="yes" xml:space="preserve">
+          <source>The Central Bank of the Republic of Armenia</source>
+          <target state="translated">Центральный банк Республики Армения</target>
+        </trans-unit>
+        <trans-unit id="748923176" translate="yes" xml:space="preserve">
+          <source>Swiss National Bank</source>
+          <target state="translated">Национальный банк Швейцарии</target>
+        </trans-unit>
+        <trans-unit id="758955736" translate="yes" xml:space="preserve">
+          <source>Bank of England</source>
+          <target state="translated">Банк Англии</target>
+        </trans-unit>
+        <trans-unit id="937230874" translate="yes" xml:space="preserve">
+          <source>The Central Bank of the Russian Federation</source>
+          <target state="translated">Центральный банк Российской Федерации</target>
+        </trans-unit>
+        <trans-unit id="611756663" translate="yes" xml:space="preserve">
+          <source>$ My Currency</source>
+          <target state="new">$ My Currency</target>
+        </trans-unit>
+        <trans-unit id="633405189" translate="yes" xml:space="preserve">
+          <source>$ My Currency (mycurrency.net)</source>
+          <target state="new">$ My Currency (mycurrency.net)</target>
+        </trans-unit>
+        <trans-unit id="692585112" translate="yes" xml:space="preserve">
+          <source>CurrencyConverterApi.com</source>
+          <target state="new">CurrencyConverterApi.com</target>
+        </trans-unit>
+        <trans-unit id="999430243" translate="yes" xml:space="preserve">
+          <source>currencylayer.com</source>
+          <target state="new">currencylayer.com</target>
+        </trans-unit>
       </group>
     </body>
   </file>

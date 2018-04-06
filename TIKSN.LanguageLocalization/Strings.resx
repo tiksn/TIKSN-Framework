@@ -606,4 +606,52 @@
   <data name="484534012" xml:space="preserve">
     <value>Custom Search</value>
   </data>
+  <data name="763272923" xml:space="preserve">
+    <value>Senior Software Engineer</value>
+  </data>
+  <data name="171400643" xml:space="preserve">
+    <value>Central Bank of Armenia</value>
+  </data>
+  <data name="224205610" xml:space="preserve">
+    <value>European Central Bank</value>
+  </data>
+  <data name="344909065" xml:space="preserve">
+    <value>National Bank of Ukraine</value>
+  </data>
+  <data name="466192205" xml:space="preserve">
+    <value>Central Bank of Russia</value>
+  </data>
+  <data name="645369586" xml:space="preserve">
+    <value>Reserve Bank of Australia</value>
+  </data>
+  <data name="724813953" xml:space="preserve">
+    <value>Federal Reserve System</value>
+  </data>
+  <data name="734344590" xml:space="preserve">
+    <value>Bank of Canada</value>
+  </data>
+  <data name="744582913" xml:space="preserve">
+    <value>The Central Bank of the Republic of Armenia</value>
+  </data>
+  <data name="748923176" xml:space="preserve">
+    <value>Swiss National Bank</value>
+  </data>
+  <data name="758955736" xml:space="preserve">
+    <value>Bank of England</value>
+  </data>
+  <data name="937230874" xml:space="preserve">
+    <value>The Central Bank of the Russian Federation</value>
+  </data>
+  <data name="611756663" xml:space="preserve">
+    <value>$ My Currency</value>
+  </data>
+  <data name="633405189" xml:space="preserve">
+    <value>$ My Currency (mycurrency.net)</value>
+  </data>
+  <data name="692585112" xml:space="preserve">
+    <value>CurrencyConverterApi.com</value>
+  </data>
+  <data name="999430243" xml:space="preserve">
+    <value>currencylayer.com</value>
+  </data>
 </root>

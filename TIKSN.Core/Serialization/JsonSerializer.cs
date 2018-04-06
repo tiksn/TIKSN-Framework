@@ -3,15 +3,15 @@ using TIKSN.Analytics.Telemetry;
 
 namespace TIKSN.Serialization
 {
-	public class JsonSerializer : SerializerBase
-	{
-		public JsonSerializer(IExceptionTelemeter exceptionTelemeter) : base(exceptionTelemeter)
-		{
-		}
+    public class JsonSerializer : SerializerBase<string>
+    {
+        public JsonSerializer(IExceptionTelemeter exceptionTelemeter) : base(exceptionTelemeter)
+        {
+        }
 
-		protected override string SerializeInternal(object obj)
-		{
-			return JsonConvert.SerializeObject(obj);
-		}
-	}
+        protected override string SerializeInternal(object obj)
+        {
+            return JsonConvert.SerializeObject(obj);
+        }
+    }
 }

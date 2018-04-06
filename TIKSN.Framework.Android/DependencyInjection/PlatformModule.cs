@@ -2,7 +2,7 @@ using Autofac;
 
 namespace TIKSN.DependencyInjection
 {
-	public class PlatformModule : Module
-	{
-	}
+    public class PlatformModule : Module
+    {
+    }
 }

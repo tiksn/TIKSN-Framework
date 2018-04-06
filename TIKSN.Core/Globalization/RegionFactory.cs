@@ -1,22 +1,22 @@
-﻿using System;
-using System.Globalization;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using TIKSN.Data.Cache;
+using System;
+using System.Globalization;
+using TIKSN.Data.Cache.Memory;
 
 namespace TIKSN.Globalization
 {
-	public class RegionFactory : MemoryCacheDecoratorBase<RegionInfo>, IRegionFactory
-	{
-		public RegionFactory(IMemoryCache memoryCache, IOptions<MemoryCacheDecoratorOptions> genericOptions, IOptions<MemoryCacheDecoratorOptions<RegionInfo>> specificOptions) : base(memoryCache, genericOptions, specificOptions)
-		{
-		}
+    public class RegionFactory : MemoryCacheDecoratorBase<RegionInfo>, IRegionFactory
+    {
+        public RegionFactory(IMemoryCache memoryCache, IOptions<MemoryCacheDecoratorOptions> genericOptions, IOptions<MemoryCacheDecoratorOptions<RegionInfo>> specificOptions) : base(memoryCache, genericOptions, specificOptions)
+        {
+        }
 
-		public RegionInfo Create(string name)
-		{
-			var cacheKey = Tuple.Create(entityType, name);
+        public RegionInfo Create(string name)
+        {
+            var cacheKey = Tuple.Create(entityType, name);
 
-			return GetFromMemoryCache(cacheKey, () => new RegionInfo(name));
-		}
-	}
+            return GetFromMemoryCache(cacheKey, () => new RegionInfo(name));
+        }
+    }
 }

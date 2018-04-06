@@ -2,31 +2,30 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Logging;
-using System;
+using TIKSN.Analytics.Logging;
 using TIKSN.DependencyInjection;
 
 namespace Shell_Commander
 {
-	public class CompositionRootSetup : AutofacPlatformCompositionRootSetupBase
-	{
-		protected override void ConfigureContainerBuilder(ContainerBuilder builder)
-		{
-			builder.RegisterType<TextsStringLocalizer>().As<IStringLocalizer>().SingleInstance();
-		}
+    public class CompositionRootSetup : AutofacPlatformCompositionRootSetupBase
+    {
+        public CompositionRootSetup(IConfigurationRoot configurationRoot) : base(configurationRoot)
+        {
+        }
 
-		protected override void ConfigureLogging(ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
-		{
-			loggerFactory.AddConsole();
-		}
+        protected override void ConfigureContainerBuilder(ContainerBuilder builder)
+        {
+            builder.RegisterType<LoggingSetup>().As<ILoggingSetup>().SingleInstance();
+            builder.RegisterType<TextsStringLocalizer>().As<IStringLocalizer>().SingleInstance();
+        }
 
-		protected override void ConfigureOptions(IServiceCollection services, IConfigurationRoot configuration)
-		{
-		}
+        protected override void ConfigureOptions(IServiceCollection services, IConfigurationRoot configuration)
+        {
+        }
 
-		protected override void ConfigureServices(IServiceCollection services)
-		{
-			PlatformDependencyRegistration.Register(services);
-		}
-	}
+        protected override void ConfigureServices(IServiceCollection services)
+        {
+            PlatformDependencyRegistration.Register(services);
+        }
+    }
 }

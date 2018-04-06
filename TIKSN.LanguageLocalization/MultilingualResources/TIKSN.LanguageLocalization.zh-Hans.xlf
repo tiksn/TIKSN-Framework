@@ -8,35 +8,35 @@
       <group id="TIKSN.LANGUAGELOCALIZATION/STRINGS.RESX" datatype="resx">
         <trans-unit id="179741382" translate="yes" xml:space="preserve">
           <source>Language</source>
-          <target state="new">Language</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">语言</target>
         </trans-unit>
         <trans-unit id="365281568" translate="yes" xml:space="preserve">
           <source>About this application</source>
-          <target state="new">About this application</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">关于此应用程序</target>
         </trans-unit>
         <trans-unit id="445651597" translate="yes" xml:space="preserve">
           <source>Dark</source>
-          <target state="new">Dark</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">深色</target>
         </trans-unit>
         <trans-unit id="599209173" translate="yes" xml:space="preserve">
           <source>Settings</source>
-          <target state="new">Settings</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">设置</target>
         </trans-unit>
         <trans-unit id="706106182" translate="yes" xml:space="preserve">
           <source>Privacy Terms</source>
-          <target state="new">Privacy Terms</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">隐私和条款</target>
         </trans-unit>
         <trans-unit id="846795929" translate="yes" xml:space="preserve">
           <source>Light</source>
-          <target state="new">Light</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">浅</target>
         </trans-unit>
         <trans-unit id="931254976" translate="yes" xml:space="preserve">
           <source>Advertisement</source>
-          <target state="new">Advertisement</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">广告</target>
         </trans-unit>
         <trans-unit id="971869905" translate="yes" xml:space="preserve">
           <source>Theme</source>
-          <target state="new">Theme</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">主题...</target>
         </trans-unit>
         <trans-unit id="239441347" translate="yes" xml:space="preserve">
           <source>Available in {0} languages</source>
@@ -652,11 +652,75 @@
         </trans-unit>
         <trans-unit id="977944607" translate="yes" xml:space="preserve">
           <source>Details</source>
-          <target state="new">Details</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">详细信息</target>
         </trans-unit>
         <trans-unit id="484534012" translate="yes" xml:space="preserve">
           <source>Custom Search</source>
-          <target state="new">Custom Search</target>
+          <target state="needs-review-translation" state-qualifier="tm-suggestion">自定义搜索</target>
+        </trans-unit>
+        <trans-unit id="763272923" translate="yes" xml:space="preserve">
+          <source>Senior Software Engineer</source>
+          <target state="new">Senior Software Engineer</target>
+        </trans-unit>
+        <trans-unit id="171400643" translate="yes" xml:space="preserve">
+          <source>Central Bank of Armenia</source>
+          <target state="new">Central Bank of Armenia</target>
+        </trans-unit>
+        <trans-unit id="224205610" translate="yes" xml:space="preserve">
+          <source>European Central Bank</source>
+          <target state="new">European Central Bank</target>
+        </trans-unit>
+        <trans-unit id="344909065" translate="yes" xml:space="preserve">
+          <source>National Bank of Ukraine</source>
+          <target state="new">National Bank of Ukraine</target>
+        </trans-unit>
+        <trans-unit id="466192205" translate="yes" xml:space="preserve">
+          <source>Central Bank of Russia</source>
+          <target state="new">Central Bank of Russia</target>
+        </trans-unit>
+        <trans-unit id="645369586" translate="yes" xml:space="preserve">
+          <source>Reserve Bank of Australia</source>
+          <target state="new">Reserve Bank of Australia</target>
+        </trans-unit>
+        <trans-unit id="724813953" translate="yes" xml:space="preserve">
+          <source>Federal Reserve System</source>
+          <target state="new">Federal Reserve System</target>
+        </trans-unit>
+        <trans-unit id="734344590" translate="yes" xml:space="preserve">
+          <source>Bank of Canada</source>
+          <target state="new">Bank of Canada</target>
+        </trans-unit>
+        <trans-unit id="744582913" translate="yes" xml:space="preserve">
+          <source>The Central Bank of the Republic of Armenia</source>
+          <target state="new">The Central Bank of the Republic of Armenia</target>
+        </trans-unit>
+        <trans-unit id="748923176" translate="yes" xml:space="preserve">
+          <source>Swiss National Bank</source>
+          <target state="new">Swiss National Bank</target>
+        </trans-unit>
+        <trans-unit id="758955736" translate="yes" xml:space="preserve">
+          <source>Bank of England</source>
+          <target state="new">Bank of England</target>
+        </trans-unit>
+        <trans-unit id="937230874" translate="yes" xml:space="preserve">
+          <source>The Central Bank of the Russian Federation</source>
+          <target state="new">The Central Bank of the Russian Federation</target>
+        </trans-unit>
+        <trans-unit id="611756663" translate="yes" xml:space="preserve">
+          <source>$ My Currency</source>
+          <target state="new">$ My Currency</target>
+        </trans-unit>
+        <trans-unit id="633405189" translate="yes" xml:space="preserve">
+          <source>$ My Currency (mycurrency.net)</source>
+          <target state="new">$ My Currency (mycurrency.net)</target>
+        </trans-unit>
+        <trans-unit id="692585112" translate="yes" xml:space="preserve">
+          <source>CurrencyConverterApi.com</source>
+          <target state="new">CurrencyConverterApi.com</target>
+        </trans-unit>
+        <trans-unit id="999430243" translate="yes" xml:space="preserve">
+          <source>currencylayer.com</source>
+          <target state="new">currencylayer.com</target>
         </trans-unit>
       </group>
     </body>

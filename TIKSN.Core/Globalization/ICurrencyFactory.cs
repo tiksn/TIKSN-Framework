@@ -3,10 +3,10 @@ using TIKSN.Finance;
 
 namespace TIKSN.Globalization
 {
-	public interface ICurrencyFactory
+    public interface ICurrencyFactory
     {
-		CurrencyInfo Create(string isoCurrencySymbol);
+        CurrencyInfo Create(string isoCurrencySymbol);
 
-		CurrencyInfo Create(RegionInfo region);
-	}
+        CurrencyInfo Create(RegionInfo region);
+    }
 }

@@ -1,12 +1,12 @@
 ﻿namespace TIKSN.Advertising
 {
-	public class AdUnitSelectorOptions
-	{
-		public AdUnitSelectorOptions()
-		{
-			IsDebuggerSensitive = true;
-		}
+    public class AdUnitSelectorOptions
+    {
+        public AdUnitSelectorOptions()
+        {
+            IsDebuggerSensitive = true;
+        }
 
-		public bool IsDebuggerSensitive { get; set; }
-	}
+        public bool IsDebuggerSensitive { get; set; }
+    }
 }

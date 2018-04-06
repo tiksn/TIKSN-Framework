@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Shell
 {
-	public interface IShellCommandEngine
-	{
-		void AddAssembly(Assembly assembly);
+    public interface IShellCommandEngine
+    {
+        void AddAssembly(Assembly assembly);
 
-		void AddType(Type type);
+        void AddType(Type type);
 
-		Task RunAsync();
-	}
+        Task RunAsync();
+    }
 }

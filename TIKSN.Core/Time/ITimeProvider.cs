@@ -2,8 +2,8 @@
 
 namespace TIKSN.Time
 {
-	public interface ITimeProvider
-	{
-		DateTimeOffset GetCurrentTime();
-	}
+    public interface ITimeProvider
+    {
+        DateTimeOffset GetCurrentTime();
+    }
 }

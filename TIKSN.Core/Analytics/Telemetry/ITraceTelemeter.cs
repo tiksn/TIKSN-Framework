@@ -2,10 +2,10 @@
 
 namespace TIKSN.Analytics.Telemetry
 {
-	public interface ITraceTelemeter
-	{
-		Task TrackTrace(string message);
+    public interface ITraceTelemeter
+    {
+        Task TrackTrace(string message);
 
-		Task TrackTrace(string message, TelemetrySeverityLevel severityLevel);
-	}
+        Task TrackTrace(string message, TelemetrySeverityLevel severityLevel);
+    }
 }
