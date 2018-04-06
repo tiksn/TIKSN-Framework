@@ -67,8 +67,8 @@
     <Reference Include="Bond.Reflection, Version=7.0.1.100, Culture=neutral, PublicKeyToken=87e9ead25a117286, processorArchitecture=MSIL">
       <HintPath>..\packages\Bond.Core.CSharp.7.0.1\lib\netstandard1.6\Bond.Reflection.dll</HintPath>
     </Reference>
-    <Reference Include="ConsoleTables, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ConsoleTables.2.1.0\lib\netstandard1.3\ConsoleTables.dll</HintPath>
+    <Reference Include="ConsoleTables, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ConsoleTables.2.2.0\lib\netstandard1.3\ConsoleTables.dll</HintPath>
     </Reference>
     <Reference Include="DnsClient, Version=1.0.7.0, Culture=neutral, PublicKeyToken=4574bb5573c51424, processorArchitecture=MSIL">
       <HintPath>..\packages\DnsClient.1.0.7\lib\netstandard1.3\DnsClient.dll</HintPath>
@@ -177,7 +177,7 @@
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.5.0\lib\monoandroid44\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.5.1\lib\monoandroid44\NLog.dll</HintPath>
     </Reference>
     <Reference Include="NLog.Extensions.Logging, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.Extensions.Logging.1.0.0\lib\netstandard2.0\NLog.Extensions.Logging.dll</HintPath>

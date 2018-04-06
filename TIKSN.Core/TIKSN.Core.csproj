@@ -37,7 +37,7 @@
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
     <PackageReference Include="Bond.CSharp" Version="7.0.1" />
     <PackageReference Include="codecracker.CSharp" Version="1.0.3" />
-    <PackageReference Include="ConsoleTables" Version="2.1.0" />
+    <PackageReference Include="ConsoleTables" Version="2.2.0" />
     <PackageReference Include="Exceptionless.Signed" Version="4.2.1989" />
     <PackageReference Include="FluentValidation" Version="7.5.2" />
     <PackageReference Include="LiteDB" Version="4.1.2" />
@@ -68,7 +68,7 @@
     <PackageReference Include="System.Reactive.Linq" Version="3.1.1" />
     <PackageReference Include="System.Security.SecureString" Version="4.3.0" />
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
-    <PackageReference Include="WindowsAzure.Storage" Version="9.1.0" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.1.1" />
   </ItemGroup>
 
   <ItemGroup>
