@@ -66,6 +66,7 @@ Task("Build")
   .IsDependentOn("Clean")
   .IsDependentOn("Restore")
   .IsDependentOn("TextTransform")
+  .IsDependentOn("DownloadCurrencyCodes")
   .Does(() =>
 {
   MSBuild(solution, configurator =>
@@ -103,6 +104,13 @@ Task("Build")
         .SetPlatformTarget(PlatformTarget.ARM)
         //.WithTarget("Rebuild")
         );
+});
+
+Task("DownloadCurrencyCodes")
+  .Does(() =>
+{
+  DownloadFile("https://www.currency-iso.org/dam/downloads/lists/list_one.xml", File("../TIKSN.Core/Finance/Resources/TableA1.xml"));
+  DownloadFile("https://www.currency-iso.org/dam/downloads/lists/list_three.xml", File("../TIKSN.Core/Finance/Resources/TableA3.xml"));
 });
 
 Task("TextTransform")
