@@ -327,3 +327,6 @@ ASALocalRun/
 
 ## Cake
 Build/tools/**
+
+## Fody
+Tools/
