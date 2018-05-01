@@ -45,7 +45,7 @@
                 <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.0.1" />
                 <dependency id="Microsoft.PowerShell.3.ReferenceAssemblies" version="1.0.0" />
                 <dependency id="Microsoft.Win32.Registry" version="4.4.0" />
-                <dependency id="MongoDB.Driver.GridFS" version="2.5.1" />
+                <dependency id="MongoDB.Driver.GridFS" version="2.6.0" />
                 <dependency id="MsgPack.Cli" version="0.9.2" />
                 <dependency id="NETStandard.Library" version="2.0.1" />
                 <dependency id="Newtonsoft.Json" version="11.0.2" />
@@ -96,7 +96,7 @@
                 <dependency id="Microsoft.Extensions.Options" version="2.0.0" />
                 <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.0.1" />
                 <dependency id="Microsoft.NETCore.Platforms" version="2.0.2" />
-                <dependency id="MongoDB.Driver.GridFS" version="2.5.1" />
+                <dependency id="MongoDB.Driver.GridFS" version="2.6.0" />
                 <dependency id="MsgPack.Cli" version="0.9.2" />
                 <dependency id="NETStandard.Library" version="2.0.1" />
                 <dependency id="Newtonsoft.Json" version="11.0.2" />
@@ -138,8 +138,8 @@
                 <dependency id="Microsoft.Extensions.Logging.Debug" version="2.0.1" />
                 <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.0.1" />
                 <dependency id="Microsoft.PowerShell.SDK" version="6.0.2" />
-                <dependency id="MongoDB.Driver" version="2.5.1" />
-                <dependency id="MongoDB.Driver.GridFS" version="2.5.1" />
+                <dependency id="MongoDB.Driver" version="2.6.0" />
+                <dependency id="MongoDB.Driver.GridFS" version="2.6.0" />
                 <dependency id="MsgPack.Cli" version="0.9.2" />
                 <dependency id="NETStandard.Library" version="2.0.1" />
                 <dependency id="Newtonsoft.Json" version="11.0.2" />
@@ -177,8 +177,8 @@
                 <dependency id="Microsoft.Extensions.Logging.Abstractions" version="2.0.1" />
                 <dependency id="Microsoft.Extensions.Logging.Debug" version="2.0.1" />
                 <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.0.1" />
-                <dependency id="MongoDB.Driver" version="2.5.1" />
-                <dependency id="MongoDB.Driver.GridFS" version="2.5.1" />
+                <dependency id="MongoDB.Driver" version="2.6.0" />
+                <dependency id="MongoDB.Driver.GridFS" version="2.6.0" />
                 <dependency id="MsgPack.Cli" version="0.9.2" />
                 <dependency id="NETStandard.Library" version="2.0.0" />
                 <dependency id="Newtonsoft.Json" version="11.0.2" />
@@ -217,8 +217,8 @@
                 <dependency id="Microsoft.Extensions.Logging.Abstractions" version="2.0.1" />
                 <dependency id="Microsoft.Extensions.Logging.Debug" version="2.0.1" />
                 <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.0.1" />
-                <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="6.0.8" />
-                <dependency id="MongoDB.Driver.GridFS" version="2.5.1" />
+                <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="6.1.2" />
+                <dependency id="MongoDB.Driver.GridFS" version="2.6.0" />
                 <dependency id="MsgPack.Cli" version="0.9.2" />
                 <dependency id="NETStandard.Library" version="2.0.1" />
                 <dependency id="Newtonsoft.Json" version="11.0.2" />
