@@ -234,6 +234,9 @@
     <Reference Include="System.Reactive.Linq, Version=3.0.3000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Reactive.Linq.3.1.1\lib\netstandard1.3\System.Reactive.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="System.Reactive.PlatformServices, Version=3.0.3000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.PlatformServices.3.1.1\lib\netstandard1.3\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
     <Reference Include="System.Reflection" />
     <Reference Include="System.Reflection.Extensions" />
     <Reference Include="System.Reflection.Primitives" />
