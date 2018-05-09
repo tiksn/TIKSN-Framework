@@ -108,6 +108,7 @@
     <Content Include="Assets\Square310x310Logo.scale-200.png" />
     <Content Include="Assets\Square71x71Logo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-200.png" />
+    <Content Include="FodyWeavers.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
@@ -148,6 +149,9 @@
     </PackageReference>
     <PackageReference Include="Exceptionless.Signed">
       <Version>4.2.1989</Version>
+    </PackageReference>
+    <PackageReference Include="Fody">
+      <Version>3.0.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AppCenter.Analytics">
       <Version>1.6.0</Version>

@@ -22,6 +22,7 @@
   <ItemGroup>
     <PackageReference Include="Exceptionless.Signed" Version="4.2.1989" />
     <PackageReference Include="FluentAssertions" Version="5.3.0" />
+    <PackageReference Include="Fody" Version="3.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.0.3" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="2.0.1" />
