@@ -40,7 +40,6 @@
     <PackageReference Include="ConsoleTables" Version="2.2.0" />
     <PackageReference Include="Exceptionless.Signed" Version="4.3.2004" />
     <PackageReference Include="FluentValidation" Version="7.5.2" />
-    <PackageReference Include="Fody" Version="3.0.3" />
     <PackageReference Include="LiteDB" Version="4.1.2" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.6.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.0" />
