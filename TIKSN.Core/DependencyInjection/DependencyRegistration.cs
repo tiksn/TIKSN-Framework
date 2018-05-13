@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
 using System;
+using TIKSN.Data.Realm;
 using TIKSN.Globalization;
 using TIKSN.Serialization;
 using TIKSN.Serialization.Bond;
@@ -30,6 +31,7 @@ namespace TIKSN.DependencyInjection
             services.TryAddSingleton<ITimeProvider, TimeProvider>();
             services.TryAddSingleton<Random>();
             services.TryAddSingleton(MsgPack.Serialization.SerializationContext.Default);
+            services.TryAddSingleton<IRealmCredentialsProvider, RoamingRealmCredentialsProvider>();
 
             services.TryAddSingleton<CompactBinaryBondDeserializer>();
             services.TryAddSingleton<CompactBinaryBondSerializer>();
