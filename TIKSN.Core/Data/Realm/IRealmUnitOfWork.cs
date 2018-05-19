@@ -1,6 +1,6 @@
 ﻿namespace TIKSN.Data.Realm
 {
-    public interface IRealmUnitOfWork
+    public interface IRealmUnitOfWork : IUnitOfWork
     {
         Realms.Realm Realm { get; }
     }
