@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Realms.Sync;
@@ -29,7 +30,9 @@ namespace TIKSN.Data.Realm
                 _settingsService.SetRoamingSetting(IdentitySettingName, identity);
             }
 
-            return Task.FromResult(Credentials.Custom(ProviderName, identity, null));
+            var userInfo = new Dictionary<string, object>();
+
+            return Task.FromResult(Credentials.Custom(ProviderName, identity, userInfo));
         }
     }
 }
