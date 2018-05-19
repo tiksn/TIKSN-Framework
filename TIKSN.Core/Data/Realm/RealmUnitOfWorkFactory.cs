@@ -6,26 +6,28 @@ using TIKSN.FileSystem;
 
 namespace TIKSN.Data.Realm
 {
-    public abstract class RealmUnitOfWorkFactoryBase<TRealmUnitOfWork> : IRealmUnitOfWorkFactory<TRealmUnitOfWork>
-        where TRealmUnitOfWork : IRealmUnitOfWork
+    public class RealmUnitOfWorkFactory : IRealmUnitOfWorkFactory
     {
         private readonly IKnownFolders _knownFolders;
         private readonly IPartialConfiguration<SyncRealmOptions> _syncRealmOptions;
         private User _user;
 
-        protected RealmUnitOfWorkFactoryBase(IPartialConfiguration<SyncRealmOptions> syncRealmOptions, IKnownFolders knownFolders)
+        protected RealmUnitOfWorkFactory(IPartialConfiguration<SyncRealmOptions> syncRealmOptions, IKnownFolders knownFolders)
         {
             _syncRealmOptions = syncRealmOptions ?? throw new ArgumentNullException(nameof(syncRealmOptions));
             _knownFolders = knownFolders ?? throw new ArgumentNullException(nameof(knownFolders));
         }
 
-        public async Task<TRealmUnitOfWork> CreateAsync()
+        public async Task<IRealmUnitOfWork> CreateAsync()
         {
             var syncRealmOptions = _syncRealmOptions.GetConfiguration();
 
+            if (_user == null)
+                throw new InvalidOperationException("User is not logged int yet.");
+
             var syncConfig = new SyncConfiguration(_user, new Uri(syncRealmOptions.ServerURL), _knownFolders.LocalAppData.GetFileInfo(syncRealmOptions.Path).PhysicalPath);
             var realm = await Realms.Realm.GetInstanceAsync(syncConfig);
-            return await CreateAsync(realm);
+            return new RealmUnitOfWork(realm);
         }
 
         public async Task LoginAsync(Credentials credentials)
@@ -44,7 +46,5 @@ namespace TIKSN.Data.Realm
 
             _user = null;
         }
-
-        protected abstract Task<TRealmUnitOfWork> CreateAsync(Realms.Realm realm);
     }
 }

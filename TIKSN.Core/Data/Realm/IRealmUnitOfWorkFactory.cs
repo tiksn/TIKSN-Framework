@@ -3,13 +3,12 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Data.Realm
 {
-    public interface IRealmUnitOfWorkFactory<TRealmUnitOfWork>
-        where TRealmUnitOfWork : IRealmUnitOfWork
+    public interface IRealmUnitOfWorkFactory
     {
         Task LoginAsync(Credentials credentials);
 
         Task LogoutAsync();
 
-        Task<TRealmUnitOfWork> CreateAsync();
+        Task<IRealmUnitOfWork> CreateAsync();
     }
 }
