@@ -12,7 +12,7 @@ namespace TIKSN.Data.Realm
         private readonly IPartialConfiguration<SyncRealmOptions> _syncRealmOptions;
         private User _user;
 
-        protected RealmUnitOfWorkFactory(IPartialConfiguration<SyncRealmOptions> syncRealmOptions, IKnownFolders knownFolders)
+        public RealmUnitOfWorkFactory(IPartialConfiguration<SyncRealmOptions> syncRealmOptions, IKnownFolders knownFolders)
         {
             _syncRealmOptions = syncRealmOptions ?? throw new ArgumentNullException(nameof(syncRealmOptions));
             _knownFolders = knownFolders ?? throw new ArgumentNullException(nameof(knownFolders));
