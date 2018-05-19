@@ -31,7 +31,6 @@ namespace TIKSN.DependencyInjection
             services.TryAddSingleton<ITimeProvider, TimeProvider>();
             services.TryAddSingleton<Random>();
             services.TryAddSingleton(MsgPack.Serialization.SerializationContext.Default);
-            services.TryAddSingleton<IRealmCredentialsProvider, RoamingRealmCredentialsProvider>();
 
             services.TryAddSingleton<CompactBinaryBondDeserializer>();
             services.TryAddSingleton<CompactBinaryBondSerializer>();
