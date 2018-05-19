@@ -23,7 +23,7 @@ namespace TIKSN.Data.Realm
         {
             var syncRealmOptions = _syncRealmOptions.GetConfiguration();
 
-            var syncConfig = new SyncConfiguration(_user, new Uri(syncRealmOptions.ServerURL), _knownFolders.LocalAppData.GetFileInfo(syncRealmOptions.Path).PhysicalPath);
+            var syncConfig = new SyncConfiguration(_user, new Uri(syncRealmOptions.RealmURI), _knownFolders.LocalAppData.GetFileInfo(syncRealmOptions.Path).PhysicalPath);
             var realm = await Realms.Realm.GetInstanceAsync(syncConfig);
             return await CreateAsync(realm);
         }
