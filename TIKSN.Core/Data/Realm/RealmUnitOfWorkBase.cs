@@ -5,11 +5,11 @@ using Realms;
 
 namespace TIKSN.Data.Realm
 {
-    public class RealmUnitOfWork : UnitOfWorkBase, IRealmUnitOfWork
+    public abstract class RealmUnitOfWorkBase : UnitOfWorkBase, IRealmUnitOfWork
     {
         private readonly Transaction _transaction;
 
-        public RealmUnitOfWork(Realms.Realm realm)
+        protected RealmUnitOfWorkBase(Realms.Realm realm)
         {
             Realm = realm ?? throw new ArgumentNullException(nameof(realm));
             _transaction = realm.BeginWrite();
