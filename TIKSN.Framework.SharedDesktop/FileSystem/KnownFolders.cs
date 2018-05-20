@@ -11,10 +11,10 @@ namespace TIKSN.FileSystem
         private readonly Assembly _mainAssembly;
         private readonly KnownFolderVersionConsideration _versionConsideration;
 
-        public KnownFolders(Assembly mainAssembly, KnownFolderVersionConsideration versionConsideration)
+        public KnownFolders(KnownFoldersConfiguration knownFoldersConfiguration)
         {
-            _mainAssembly = mainAssembly;
-            _versionConsideration = versionConsideration;
+            _mainAssembly = knownFoldersConfiguration.MainAssembly;
+            _versionConsideration = knownFoldersConfiguration.VersionConsideration;
 
             LocalAppData = GetFromSpecialFolder(Environment.SpecialFolder.LocalApplicationData);
             RoamingAppData = GetFromSpecialFolder(Environment.SpecialFolder.ApplicationData);
