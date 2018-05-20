@@ -10,7 +10,7 @@ namespace TIKSN.Data.Realm
         where TIdentity : IEquatable<TIdentity>
         where TEntity : RealmObject, IEntity<TIdentity>
     {
-        private readonly IRealmUnitOfWork _unitOfWork;
+        protected readonly IRealmUnitOfWork _unitOfWork;
 
         public RealmRepository(IRealmUnitOfWork unitOfWork)
         {
