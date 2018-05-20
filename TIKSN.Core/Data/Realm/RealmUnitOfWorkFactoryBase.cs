@@ -7,7 +7,7 @@ using TIKSN.FileSystem;
 namespace TIKSN.Data.Realm
 {
     public abstract class RealmUnitOfWorkFactoryBase<TRealmUnitOfWork> : IRealmUnitOfWorkFactory<TRealmUnitOfWork>
-        where TRealmUnitOfWork : IRealmUnitOfWork
+        where TRealmUnitOfWork : IUnitOfWork
     {
         private readonly IKnownFolders _knownFolders;
         private readonly IPartialConfiguration<SyncRealmOptions> _syncRealmOptions;

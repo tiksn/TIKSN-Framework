@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace TIKSN.Data.Realm
 {
     public interface IRealmUnitOfWorkFactory<TRealmUnitOfWork>
-        where TRealmUnitOfWork : IRealmUnitOfWork
+        where TRealmUnitOfWork : IUnitOfWork
     {
         Task LoginAsync(Credentials credentials);
 
