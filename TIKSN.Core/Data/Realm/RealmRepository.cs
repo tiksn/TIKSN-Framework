@@ -1,6 +1,7 @@
 ﻿using Realms;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,16 +11,18 @@ namespace TIKSN.Data.Realm
         where TIdentity : IEquatable<TIdentity>
         where TEntity : RealmObject, IEntity<TIdentity>
     {
-        protected readonly IRealmUnitOfWork _unitOfWork;
+        private readonly Realms.Realm _realm;
 
-        public RealmRepository(IRealmUnitOfWork unitOfWork)
+        public RealmRepository(Realms.Realm realm)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _realm = realm ?? throw new ArgumentNullException(nameof(realm));
         }
+
+        protected IQueryable<TEntity> Entities => _realm.All<TEntity>();
 
         public Task AddAsync(TEntity entity, CancellationToken cancellationToken)
         {
-            _unitOfWork.Realm.Add(entity);
+            _realm.Add(entity);
 
             return Task.CompletedTask;
         }
@@ -42,17 +45,17 @@ namespace TIKSN.Data.Realm
         public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
         {
             if (id is long iid)
-                return Task.FromResult(_unitOfWork.Realm.Find<TEntity>(iid));
+                return Task.FromResult(_realm.Find<TEntity>(iid));
 
             if (id is string sid)
-                return Task.FromResult(_unitOfWork.Realm.Find<TEntity>(sid));
+                return Task.FromResult(_realm.Find<TEntity>(sid));
 
             return Task.FromException<TEntity>(new InvalidCastException("ID must be either long or string."));
         }
 
         public Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)
         {
-            _unitOfWork.Realm.Remove(entity);
+            _realm.Remove(entity);
 
             return Task.CompletedTask;
         }
@@ -64,7 +67,7 @@ namespace TIKSN.Data.Realm
 
         public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
         {
-            _unitOfWork.Realm.Add(entity, true);
+            _realm.Add(entity, true);
 
             return Task.CompletedTask;
         }
