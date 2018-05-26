@@ -82,8 +82,8 @@
                 <dependency id="FluentValidation" version="7.5.2" />
                 <dependency id="Fody" version="3.0.3" />
                 <dependency id="LiteDB" version="4.1.2" />
-                <dependency id="Microsoft.AppCenter.Analytics" version="1.6.0" />
-                <dependency id="Microsoft.AppCenter.Crashes" version="1.6.0" />
+                <dependency id="Microsoft.AppCenter.Analytics" version="1.6.1" />
+                <dependency id="Microsoft.AppCenter.Crashes" version="1.6.1" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.6.4" />
                 <dependency id="Microsoft.EntityFrameworkCore" version="2.0.3" />
                 <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.0.3" />
@@ -215,8 +215,8 @@
                 <dependency id="Exceptionless.Signed" version="4.3.2004" />
                 <dependency id="FluentValidation" version="7.5.2" />
                 <dependency id="LiteDB" version="4.1.2" />
-                <dependency id="Microsoft.AppCenter.Analytics" version="1.6.0" />
-                <dependency id="Microsoft.AppCenter.Crashes" version="1.6.0" />
+                <dependency id="Microsoft.AppCenter.Analytics" version="1.6.1" />
+                <dependency id="Microsoft.AppCenter.Crashes" version="1.6.1" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.6.4" />
                 <dependency id="Microsoft.EntityFrameworkCore" version="2.0.3" />
                 <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.0.3" />
