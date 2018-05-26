@@ -24,6 +24,8 @@ namespace TIKSN.Data.Realm
             var syncRealmOptions = _syncRealmOptions.GetConfiguration();
 
             var syncConfig = new SyncConfiguration(_user, new Uri(syncRealmOptions.RealmURI), _knownFolders.LocalAppData.GetFileInfo(syncRealmOptions.Path).PhysicalPath);
+            if (syncRealmOptions.EnableSSLValidation.HasValue)
+                syncConfig.EnableSSLValidation = syncRealmOptions.EnableSSLValidation.Value;
             var realm = await Realms.Realm.GetInstanceAsync(syncConfig);
             return await CreateAsync(realm);
         }
