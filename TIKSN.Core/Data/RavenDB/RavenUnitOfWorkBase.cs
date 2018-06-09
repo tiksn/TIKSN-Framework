@@ -35,7 +35,7 @@ namespace TIKSN.Data.RavenDB
         protected override bool IsDirty()
         {
             return false;
-            return _session.Advanced.HasChanges;
+            //return _session.Advanced.HasChanges;
         }
     }
 }
