@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ISO_4217 Pblshd="2018-01-01">
+<ISO_4217 Pblshd="2018-06-04">
 	<CcyTbl>
 		<CcyNtry>
 			<CtryNm>AFGHANISTAN</CtryNm>
@@ -1786,7 +1786,7 @@
 		</CcyNtry>
 		<CcyNtry>
 			<CtryNm>URUGUAY</CtryNm>
-			<CcyNm IsFund="true">Uruguay Peso en Unidades Indexadas (URUIURUI)</CcyNm>
+			<CcyNm IsFund="true">Uruguay Peso en Unidades Indexadas (UI)</CcyNm>
 			<Ccy>UYI</Ccy>
 			<CcyNbr>940</CcyNbr>
 			<CcyMnrUnts>0</CcyMnrUnts>
