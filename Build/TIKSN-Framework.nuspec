@@ -120,7 +120,7 @@
                 <dependency id="WindowsAzure.Storage" version="9.3.0" />
                 <dependency id="Xamarin.Build.Download" version="0.4.11" />
             </group>
-            <group targetFramework="netcoreapp2.0">
+            <group targetFramework="netcoreapp2.1">
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.2" />
                 <dependency id="Bond.CSharp" version="8.0.0" />
                 <dependency id="ConsoleTables" version="2.2.0" />
@@ -540,9 +540,9 @@
         <file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.pdb" target="lib\net47" />
 
         <!-- Platform: .NET Core -->
-        <file src="..\TIKSN.Framework.Core\bin\Release\netcoreapp2.0\TIKSN.Framework.Core.dll" target="lib\netcoreapp2.0" />
-        <file src="..\TIKSN.Framework.Core\bin\Release\netcoreapp2.0\TIKSN.Framework.Core.xml" target="lib\netcoreapp2.0" />
-        <file src="..\TIKSN.Framework.Core\bin\Release\netcoreapp2.0\TIKSN.Framework.Core.pdb" target="lib\netcoreapp2.0" />
+        <file src="..\TIKSN.Framework.Core\bin\Release\netcoreapp2.1\TIKSN.Framework.Core.dll" target="lib\netcoreapp2.1" />
+        <file src="..\TIKSN.Framework.Core\bin\Release\netcoreapp2.1\TIKSN.Framework.Core.xml" target="lib\netcoreapp2.1" />
+        <file src="..\TIKSN.Framework.Core\bin\Release\netcoreapp2.1\TIKSN.Framework.Core.pdb" target="lib\netcoreapp2.1" />
 
         <!-- Platform: UAP -->
         <file src="..\TIKSN.Framework.UWP\bin\x64\Release\TIKSN.Framework.UWP.dll" target="ref\uap10.0" />
