@@ -19,7 +19,7 @@
             <frameworkAssembly assemblyName="System.Speech" targetFramework=".NETFramework4.7" />
         </frameworkAssemblies>
         <dependencies>
-            <group targetFramework=".NETFramework4.7">
+            <group targetFramework=".NETFramework4.7.2">
                 <dependency id="Autofac" version="4.8.1" />
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.2.2" />
                 <dependency id="Bond.CSharp" version="8.0.0" />
@@ -535,9 +535,9 @@
         <file src="..\TIKSN.Framework.Android\bin\Release\TIKSN.Framework.Android.pdb" target="lib\MonoAndroid403" />
 
         <!-- Platform: .NET Framework -->
-        <file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.dll" target="lib\net47" />
-        <file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.xml" target="lib\net47" />
-        <file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.pdb" target="lib\net47" />
+        <file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.dll" target="lib\net472" />
+        <file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.xml" target="lib\net472" />
+        <file src="..\TIKSN.Framework.Full\bin\Release\TIKSN.Framework.Full.pdb" target="lib\net472" />
 
         <!-- Platform: .NET Core -->
         <file src="..\TIKSN.Framework.Core\bin\Release\netcoreapp2.1\TIKSN.Framework.Core.dll" target="lib\netcoreapp2.1" />
