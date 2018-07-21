@@ -16,7 +16,7 @@
         <language />
         <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry, Configuration, Azure Storage, MongoDB, NoDB, Rest, Localization, Dependency Injection</tags>
         <frameworkAssemblies>
-            <frameworkAssembly assemblyName="System.Speech" targetFramework=".NETFramework4.7" />
+            <frameworkAssembly assemblyName="System.Speech" targetFramework=".NETFramework4.7.2" />
         </frameworkAssemblies>
         <dependencies>
             <group targetFramework=".NETFramework4.7.2">
