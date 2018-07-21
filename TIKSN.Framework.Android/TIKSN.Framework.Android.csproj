@@ -195,15 +195,6 @@
     <Reference Include="NoDb, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NoDb.1.1.3\lib\netstandard1.6\NoDb.dll</HintPath>
     </Reference>
-    <Reference Include="Realm, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Realm.Database.3.1.0\lib\netstandard1.4\Realm.dll</HintPath>
-    </Reference>
-    <Reference Include="Realm.DataBinding, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Realm.DataBinding.1.2.0\lib\MonoAndroid44\Realm.DataBinding.dll</HintPath>
-    </Reference>
-    <Reference Include="Realm.Sync, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Realm.3.1.0\lib\netstandard1.4\Realm.Sync.dll</HintPath>
-    </Reference>
     <Reference Include="Remotion.Linq, Version=2.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\packages\Remotion.Linq.2.2.0\lib\portable-net45+win+wpa81+wp80\Remotion.Linq.dll</HintPath>
     </Reference>
@@ -358,9 +349,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="FodyWeavers.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <Analyzer Include="..\packages\codecracker.CSharp.1.1.0\analyzers\dotnet\cs\CodeCracker.CSharp.dll" />
     <Analyzer Include="..\packages\Desktop.Analyzers.1.1.0\analyzers\dotnet\cs\Desktop.Analyzers.dll" />
     <Analyzer Include="..\packages\Desktop.Analyzers.1.1.0\analyzers\dotnet\cs\Desktop.CSharp.Analyzers.dll" />
@@ -384,20 +372,16 @@
   <Import Project="..\TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems" Label="Shared" />
   <Import Project="..\TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
-  <Import Project="..\packages\Fody.3.1.3\build\Fody.targets" Condition="Exists('..\packages\Fody.3.1.3\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Fody.3.1.3\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.3.1.3\build\Fody.targets'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeQuality.Analyzers.2.6.1\build\Microsoft.CodeQuality.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeQuality.Analyzers.2.6.1\build\Microsoft.CodeQuality.Analyzers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.NetCore.Analyzers.2.6.1\build\Microsoft.NetCore.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.NetCore.Analyzers.2.6.1\build\Microsoft.NetCore.Analyzers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.NetFramework.Analyzers.2.6.1\build\Microsoft.NetFramework.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.NetFramework.Analyzers.2.6.1\build\Microsoft.NetFramework.Analyzers.props'))" />
     <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets'))" />
     <Error Condition="!Exists('..\packages\Bond.CSharp.8.0.0\build\Bond.CSharp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Bond.CSharp.8.0.0\build\Bond.CSharp.props'))" />
     <Error Condition="!Exists('..\packages\Bond.CSharp.8.0.0\build\Bond.CSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Bond.CSharp.8.0.0\build\Bond.CSharp.targets'))" />
-    <Error Condition="!Exists('..\packages\Realm.Database.3.1.0\build\Realm.Database.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Realm.Database.3.1.0\build\Realm.Database.targets'))" />
-    <Error Condition="!Exists('..\packages\Realm.3.1.0\build\Realm.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Realm.3.1.0\build\Realm.targets'))" />
     <Error Condition="!Exists('..\packages\Text.Analyzers.2.6.1\build\Text.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Text.Analyzers.2.6.1\build\Text.Analyzers.props'))" />
     <Error Condition="!Exists('..\packages\Xamarin.Android.Support.Annotations.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Annotations.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Android.Support.Annotations.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Annotations.targets'))" />
     <Error Condition="!Exists('..\packages\Xamarin.Android.Arch.Core.Common.1.0.0.1\build\MonoAndroid80\Xamarin.Android.Arch.Core.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Android.Arch.Core.Common.1.0.0.1\build\MonoAndroid80\Xamarin.Android.Arch.Core.Common.targets'))" />
@@ -421,8 +405,6 @@
   </Target>
   <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
   <Import Project="..\packages\Bond.CSharp.8.0.0\build\Bond.CSharp.targets" Condition="Exists('..\packages\Bond.CSharp.8.0.0\build\Bond.CSharp.targets')" />
-  <Import Project="..\packages\Realm.Database.3.1.0\build\Realm.Database.targets" Condition="Exists('..\packages\Realm.Database.3.1.0\build\Realm.Database.targets')" />
-  <Import Project="..\packages\Realm.3.1.0\build\Realm.targets" Condition="Exists('..\packages\Realm.3.1.0\build\Realm.targets')" />
   <Import Project="..\packages\Xamarin.Android.Support.Annotations.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Annotations.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Annotations.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Annotations.targets')" />
   <Import Project="..\packages\Xamarin.Android.Arch.Core.Common.1.0.0.1\build\MonoAndroid80\Xamarin.Android.Arch.Core.Common.targets" Condition="Exists('..\packages\Xamarin.Android.Arch.Core.Common.1.0.0.1\build\MonoAndroid80\Xamarin.Android.Arch.Core.Common.targets')" />
   <Import Project="..\packages\Xamarin.Android.Arch.Lifecycle.Common.1.0.3.1\build\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Common.targets" Condition="Exists('..\packages\Xamarin.Android.Arch.Lifecycle.Common.1.0.3.1\build\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Common.targets')" />
