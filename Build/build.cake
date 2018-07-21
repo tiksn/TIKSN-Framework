@@ -4,6 +4,7 @@
 #addin nuget:?package=Cake.Twitter&version=0.6.0
 #addin nuget:?package=Newtonsoft.Json&version=9.0.1
 #addin nuget:?package=NuGet.Core&version=2.14.0
+#addin nuget:?package=NuGet.Versioning&version=4.6.2
 #tool "nuget:?package=Mono.TextTransform"
 #tool "nuget:?package=xunit.runner.console"
 
@@ -12,7 +13,9 @@ var solution = "../TIKSN Framework.sln";
 var nuspec = "TIKSN-Framework.nuspec";
 var nextVersionString = "";
 
+using System;
 using System.Linq;
+using NuGet.Versioning;
 
 Task("Tweet")
   .IsDependentOn("Publish")
@@ -138,11 +141,22 @@ Task("EstimateNextVersion")
       Prerelease = true
       });
   var latestPackage = packageList.Single();
-  var versionString = latestPackage.Version;
-  var lastDotIndex = versionString.LastIndexOf('.');
-  var prereleaseNumber = int.Parse(versionString.Substring(lastDotIndex + 1));
+  var latestPackageNuGetVersion = new NuGetVersion(latestPackage.Version);
+
+  if(!latestPackageNuGetVersion.IsPrerelease)
+    throw new FormatException("Latest package version is not pre-release version.");
+
+  if(latestPackageNuGetVersion.ReleaseLabels.Count() != 2)
+    throw new FormatException("Latest package version should have exactly 2 pre-release labels.");
+
+  var prereleaseNumber = int.Parse(latestPackageNuGetVersion.ReleaseLabels.ElementAt(1));
   var nextPrereleaseNumber = prereleaseNumber + 1;
-  nextVersionString = versionString.Substring(0, lastDotIndex + 1) + nextPrereleaseNumber;
+
+  var nextReleaseLabels = latestPackageNuGetVersion.ReleaseLabels.ToArray();
+  nextReleaseLabels[1] = nextPrereleaseNumber.ToString();
+  var nextVersion = new NuGetVersion(latestPackageNuGetVersion.Version, nextReleaseLabels, null, null);
+  nextVersionString = nextVersion.ToString();
+  Information("Next version estimated to be " + nextVersionString);
 });
 
 Task("Restore")
