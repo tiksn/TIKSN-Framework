@@ -20,7 +20,6 @@
     <FileAlignment>512</FileAlignment>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -50,8 +49,8 @@
     <Reference Include="Autofac, Version=4.8.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.4.8.1\lib\netstandard1.1\Autofac.dll</HintPath>
     </Reference>
-    <Reference Include="Autofac.Extensions.DependencyInjection, Version=4.2.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.Extensions.DependencyInjection.4.2.2\lib\netstandard1.1\Autofac.Extensions.DependencyInjection.dll</HintPath>
+    <Reference Include="Autofac.Extensions.DependencyInjection, Version=4.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Extensions.DependencyInjection.4.3.0\lib\netstandard2.0\Autofac.Extensions.DependencyInjection.dll</HintPath>
     </Reference>
     <Reference Include="Bond, Version=8.0.0.100, Culture=neutral, PublicKeyToken=87e9ead25a117286, processorArchitecture=MSIL">
       <HintPath>..\packages\Bond.Core.CSharp.8.0.0\lib\netstandard1.6\Bond.dll</HintPath>
@@ -71,8 +70,8 @@
     <Reference Include="ConsoleTables, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ConsoleTables.2.2.0\lib\netstandard1.3\ConsoleTables.dll</HintPath>
     </Reference>
-    <Reference Include="DnsClient, Version=1.1.1.0, Culture=neutral, PublicKeyToken=4574bb5573c51424, processorArchitecture=MSIL">
-      <HintPath>..\packages\DnsClient.1.1.1\lib\netstandard2.0\DnsClient.dll</HintPath>
+    <Reference Include="DnsClient, Version=1.2.0.0, Culture=neutral, PublicKeyToken=4574bb5573c51424, processorArchitecture=MSIL">
+      <HintPath>..\packages\DnsClient.1.2.0\lib\netstandard2.0\DnsClient.dll</HintPath>
     </Reference>
     <Reference Include="Exceptionless.Signed, Version=4.3.2004.0, Culture=neutral, PublicKeyToken=fc181f0a46f65747, processorArchitecture=MSIL">
       <HintPath>..\packages\Exceptionless.Signed.4.3.2004\lib\netstandard2.0\Exceptionless.Signed.dll</HintPath>
@@ -187,10 +186,10 @@
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.5.7\lib\monoandroid44\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.5.8\lib\monoandroid44\NLog.dll</HintPath>
     </Reference>
     <Reference Include="NLog.Extensions.Logging, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.Extensions.Logging.1.2.0\lib\netstandard2.0\NLog.Extensions.Logging.dll</HintPath>
+      <HintPath>..\packages\NLog.Extensions.Logging.1.2.1\lib\netstandard2.0\NLog.Extensions.Logging.dll</HintPath>
     </Reference>
     <Reference Include="NoDb, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NoDb.1.1.3\lib\netstandard1.6\NoDb.dll</HintPath>
@@ -238,8 +237,8 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Primitives" />
     <Reference Include="System.ObjectModel" />
-    <Reference Include="System.Reactive, Version=4.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reactive.4.0.0\lib\netstandard2.0\System.Reactive.dll</HintPath>
+    <Reference Include="System.Reactive, Version=4.1.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.4.1.0\lib\netstandard2.0\System.Reactive.dll</HintPath>
     </Reference>
     <Reference Include="System.Reflection" />
     <Reference Include="System.Reflection.Extensions" />
