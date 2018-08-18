@@ -328,5 +328,8 @@ ASALocalRun/
 ## Cake
 Build/tools/**
 
-## Fody
+## Build
 Tools/
+
+## Wyam
+output/

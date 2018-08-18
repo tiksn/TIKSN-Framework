@@ -5,11 +5,13 @@
 #addin nuget:?package=Newtonsoft.Json&version=9.0.1
 #addin nuget:?package=NuGet.Core&version=2.14.0
 #addin nuget:?package=NuGet.Versioning&version=4.6.2
+#addin "nuget:?package=Cake.Wyam"
 #tool "nuget:?package=Mono.TextTransform"
 #tool "nuget:?package=xunit.runner.console"
+#tool "nuget:?package=Wyam"
 
 var target = Argument("target", "Tweet");
-var solution = "../TIKSN Framework.sln";
+var solution = "TIKSN Framework.sln";
 var nuspec = "TIKSN-Framework.nuspec";
 var nextVersionString = "";
 
@@ -27,6 +29,24 @@ Task("Tweet")
   var accessTokenSecret = EnvironmentVariable("TIKSN-Framework-AccessTokenSecret");
 
   TwitterSendTweet(oAuthConsumerKey, oAuthConsumerSecret, accessToken, accessTokenSecret, $"TIKSN Framework {nextVersionString} is published https://www.nuget.org/packages/TIKSN-Framework/{nextVersionString}");
+});
+
+Task("BuildDocs")
+  .IsDependentOn("Build")
+  .Does(() =>
+{
+    Wyam();        
+});
+    
+Task("PreviewDocs")
+  .IsDependentOn("BuildDocs")
+  .Does(() =>
+{
+    Wyam(new WyamSettings
+    {
+        Preview = true,
+        Watch = true
+    });        
 });
 
 Task("Publish")
@@ -61,8 +81,8 @@ Task("Test")
   .IsDependentOn("Build")
   .Does(() =>
 {
-  XUnit2("../TIKSN.Framework.Tests/bin/Release/TIKSN.Framework.Tests.dll");
-  XUnit2("../UnitTests/bin/Release/netstandard2.0/UnitTests.dll");
+  XUnit2("TIKSN.Framework.Tests/bin/Release/TIKSN.Framework.Tests.dll");
+  XUnit2("UnitTests/bin/Release/netstandard2.0/UnitTests.dll");
 });
 
 Task("Build")
@@ -112,8 +132,8 @@ Task("Build")
 Task("DownloadCurrencyCodes")
   .Does(() =>
 {
-  DownloadFile("https://www.currency-iso.org/dam/downloads/lists/list_one.xml", File("../TIKSN.Core/Finance/Resources/TableA1.xml"));
-  DownloadFile("https://www.currency-iso.org/dam/downloads/lists/list_three.xml", File("../TIKSN.Core/Finance/Resources/TableA3.xml"));
+  DownloadFile("https://www.currency-iso.org/dam/downloads/lists/list_one.xml", File("TIKSN.Core/Finance/Resources/TableA1.xml"));
+  DownloadFile("https://www.currency-iso.org/dam/downloads/lists/list_three.xml", File("TIKSN.Core/Finance/Resources/TableA3.xml"));
 });
 
 Task("TextTransform")
@@ -122,7 +142,7 @@ Task("TextTransform")
   // var transform = File("../TIKSN.Core/Localization/LocalizationKeys.tt");
   // TransformTemplate(transform);
 
-  using(var process = StartAndReturnProcess("C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/Common7/IDE/TextTransform.exe", new ProcessSettings{ Arguments = "../TIKSN.Core/Localization/LocalizationKeys.tt" }))
+  using(var process = StartAndReturnProcess("C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/Common7/IDE/TextTransform.exe", new ProcessSettings{ Arguments = "TIKSN.Core/Localization/LocalizationKeys.tt" }))
   {
       process.WaitForExit();
       var exitCode = process.GetExitCode();
@@ -170,8 +190,8 @@ Task("Clean")
   .Description("Cleans all directories that are used during the build process.")
   .Does(() =>
 {
-  CleanDirectories("../**/bin/**");
-  CleanDirectories("../**/obj/**");
+  CleanDirectories("**/bin/**");
+  CleanDirectories("**/obj/**");
 });
 
 RunTarget(target);
