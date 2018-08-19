@@ -333,3 +333,4 @@ Tools/
 
 ## Wyam
 output/
+config.wyam.*
