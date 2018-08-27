@@ -1,0 +1,2710 @@
+﻿<!DOCTYPE html><html><head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta name="description">
+        <meta name="keywords" content="static content generator,static site generator,static site,HTML,web development,.NET,C#,Razor,Markdown,YAML">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="/assets/img/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/assets/img/favicon.ico" type="image/x-icon">
+        <title>TIKSN Framework Docs - API - LocalizationKeys Class</title>
+        <link href="/assets/css/mermaid.css" rel="stylesheet">
+        <link href="/assets/css/highlight.css" rel="stylesheet">
+        <link href="/assets/css/bootstrap/bootstrap.css" rel="stylesheet">
+        <link href="/assets/css/adminlte/AdminLTE.css" rel="stylesheet">
+        <link href="/assets/css/theme/theme.css" rel="stylesheet">
+        <link href="//fonts.googleapis.com/css?family=Roboto+Mono:400,700|Roboto:400,400i,700,700i" rel="stylesheet">
+        <link href="/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="/assets/css/override.css" rel="stylesheet">
+        <script src="/assets/js/jquery-2.2.3.min.js"></script>
+        <script src="/assets/js/bootstrap.min.js"></script>        
+        <script src="/assets/js/app.min.js"></script>         
+        <script src="/assets/js/highlight.pack.js"></script>   
+        <script src="/assets/js/jquery.slimscroll.min.js"></script>
+        <script src="/assets/js/jquery.sticky-kit.min.js"></script>
+        <script src="/assets/js/mermaid.min.js"></script>
+        <!--[if lt IE 9]>
+        <script src="/assets/js/html5shiv.min.js"></script>
+        <script src="/assets/js/respond.min.js"></script>
+        <![endif]-->  
+
+        
+    </head>
+    <body class="hold-transition wyam layout-boxed  ">    
+        <div class="top-banner"></div>
+        <div class="wrapper with-container">
+            <!-- Header -->
+            <header class="main-header">   
+                     
+                <a href="/" class="logo">
+                            <span>TIKSN Framework Docs</span>
+                </a>   
+                         
+                <nav class="navbar navbar-static-top" role="navigation">
+                    <!-- Sidebar toggle button-->
+                        <a href="#" class="sidebar-toggle visible-xs-block" data-toggle="offcanvas" role="button">
+                            <span class="sr-only">Toggle side menu</span>
+                            <i class="fa fa-chevron-circle-right"></i>
+                        </a>
+                                        
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                            <span class="sr-only">Toggle side menu</span>
+                            <i class="fa fa-chevron-circle-down"></i>
+                        </button>
+                    </div>
+            
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+                        <ul class="nav navbar-nav">                            
+                                    <li><a href="/about">About This Project</a></li>
+        <li><a href="/docs">Docs</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li class="active"><a href="/api">API</a></li>
+ 
+                        </ul>       
+                    </div>
+                    <!-- /.navbar-collapse -->
+                
+                    <!-- Navbar Right Menu -->
+                </nav>
+            </header>
+            
+            <!-- Left side column. contains the logo and sidebar -->
+            <aside class="main-sidebar ">
+                <section class="infobar" data-spy="affix" data-offset-top="60" data-offset-bottom="200"> 
+                    	
+	<div id="infobar-headings"><h6>On This Page</h6><p><a href="#Summary">Summary</a></p>
+<p><a href="#Syntax">Syntax</a></p>
+<p><a href="#fields">Fields</a></p>
+<hr class="infobar-hidden">
+</div>
+
+                </section>
+                <section class="sidebar">    
+                                     
+                    	
+	    <script src="/assets/js/lunr.min.js"></script>
+    <script src="/assets/js/searchIndex.js"></script>
+    <div class="sidebar-form">
+        <div class="input-group">
+            <input type="text" name="search" id="search" class="form-control" placeholder="Search Types...">
+            <span class="input-group-btn">
+                <button class="btn btn-flat"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </div>
+    <div id="search-results">
+    </div>
+    <script>
+        function runSearch(query){
+            $("#search-results").empty();			
+            if( query.length < 2 ){
+                return;
+            }			
+            var results = searchModule.search("*" + query + "*");
+            var listHtml = "<ul class='sidebar-menu'>";	
+            listHtml += "<li class='header'>Type Results</li>";	
+            if(results.length == 0 ){
+                listHtml += "<li>No results found</li>";
+            } else {					
+                for(var i = 0; i < results.length; ++i){
+                    var res = results[i];
+                    listHtml += "<li><a href='" + res.url + "'>" + htmlEscape(res.title) + "</a></li>";
+                }				
+            }
+            listHtml += "</ul>";				
+            $("#search-results").append(listHtml);
+        }
+
+        $(document).ready(function(){
+            $("#search").on('input propertychange paste', function() {
+                runSearch($("#search").val());
+            });
+        });
+
+        function htmlEscape(html) {
+            return document.createElement('div')
+                .appendChild(document.createTextNode(html))
+                .parentNode
+                .innerHTML;
+        }
+    </script>
+	
+    <hr>
+
+                    <ul class="sidebar-menu">
+                        
+			<li class="header">Namespace</li>
+		<li><a href="/api/TIKSN.Localization">TIKSN<wbr>.Localization</a></li>
+		<li role="separator" class="divider"></li>
+			<li class="header">Interface Types</li>
+				<li><a href="/api/TIKSN.Localization/ILocalizationContext">ILocalizationContext</a></li>
+				<li><a href="/api/TIKSN.Localization/ILocalizationSelector">I<wbr>Localization<wbr>Selector</a></li>
+			<li class="header">Class Types</li>
+				<li><a href="/api/TIKSN.Localization/CompositeAssemblyStringLocalizer">Composite<wbr>Assembly<wbr>String<wbr>Localizer</a></li>
+				<li><a href="/api/TIKSN.Localization/CompositeStringLocalizer">Composite<wbr>String<wbr>Localizer</a></li>
+				<li><a href="/api/TIKSN.Localization/LanguageLocalizationParameters">Language<wbr>Localization<wbr>Parameters</a></li>
+				<li><a href="/api/TIKSN.Localization/LocalizationExtensions">Localization<wbr>Extensions</a></li>
+				<li class="selected"><a href="/api/TIKSN.Localization/LocalizationKeys">LocalizationKeys</a></li>
+				<li><a href="/api/TIKSN.Localization/RegionLocalizationParameters">Region<wbr>Localization<wbr>Parameters</a></li>
+				<li><a href="/api/TIKSN.Localization/StringLocalizerMonitor">String<wbr>Localizer<wbr>Monitor</a></li>
+				<li><a href="/api/TIKSN.Localization/StringLocalizerMonitorOptions">String<wbr>Localizer<wbr>Monitor<wbr>Options</a></li>
+				<li><a href="/api/TIKSN.Localization/StringLocalizerSelector">String<wbr>Localizer<wbr>Selector</a></li>
+
+
+                    </ul>
+                            
+                </section>                
+            </aside>
+            
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                
+
+
+
+<section class="content-header">
+	<h1>LocalizationKeys <small>Class</small></h1>
+</section>
+<section class="content">
+	
+	
+		<h1 id="Summary">Summary</h1>
+	<div class="lead">
+    Keys to known localization resources
+    </div>
+
+		<div class="panel panel-default">
+  			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-6">
+						<dl class="dl-horizontal">		
+
+								<dt>Namespace</dt>
+								<dd><a href="/api/TIKSN.Localization">TIKSN<wbr>.Localization</a></dd>
+											
+							
+								<dt>Base Types</dt>
+								<dd>
+									<ul class="list-unstyled">										
+											<li>object</li>								
+									</ul>
+								</dd>				
+							
+							
+						</dl>
+					</div>		
+					<div class="col-md-6">
+						<div class="mermaid">
+							graph TD
+	Base0["object"]--&gt;Type
+	Type["LocalizationKeys"]
+class Type type-node
+
+						</div>
+					</div>
+				</div>
+  			</div>
+		</div>
+
+	<h1 id="Syntax">Syntax</h1>
+	<pre><code>public static class LocalizationKeys</code></pre>
+
+
+
+
+
+
+
+
+			<h1 id="fields">Fields</h1>
+			<div class="box">
+				<div class="box-body no-padding table-responsive">
+					<table class="table table-striped table-hover three-cols">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Constant Value</th>
+								<th>Summary</th>
+							</tr>
+						</thead>
+							<tbody><tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/6EB42629">Key102475419</a></td>
+								<td>102475419</td>
+								<td>
+									<div>
+    Key: 102475419
+    Original Value: {0} languages
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/CD5679F8">Key103927163</a></td>
+								<td>103927163</td>
+								<td>
+									<div>
+    Key: 103927163
+    Original Value: Open-source software
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/14A1B6A5">Key104050983</a></td>
+								<td>104050983</td>
+								<td>
+									<div>
+    Key: 104050983
+    Original Value: Working state
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/6AB32636">Key110601364</a></td>
+								<td>110601364</td>
+								<td>
+									<div>
+    Key: 110601364
+    Original Value: Current
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/3FAA8D20">Key112937225</a></td>
+								<td>112937225</td>
+								<td>
+									<div>
+    Key: 112937225
+    Original Value: Domain Email setup
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/EFE05025">Key115421686</a></td>
+								<td>115421686</td>
+								<td>
+									<div>
+    Key: 115421686
+    Original Value: Me
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/1F3B60A7">Key121714030</a></td>
+								<td>121714030</td>
+								<td>
+									<div>
+    Key: 121714030
+    Original Value: Version {0}
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/BA6FBCE5">Key126334370</a></td>
+								<td>126334370</td>
+								<td>
+									<div>
+    Key: 126334370
+    Original Value: Open source
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/E4017651">Key129408349</a></td>
+								<td>129408349</td>
+								<td>
+									<div>
+    Key: 129408349
+    Original Value: TIKSN Development
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/3C18308E">Key132999259</a></td>
+								<td>132999259</td>
+								<td>
+									<div>
+    Key: 132999259
+    Original Value: No
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/BAF2B83B">Key148524406</a></td>
+								<td>148524406</td>
+								<td>
+									<div>
+    Key: 148524406
+    Original Value: Service-Oriented Application development order
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/A5A64BCD">Key148689082</a></td>
+								<td>148689082</td>
+								<td>
+									<div>
+    Key: 148689082
+    Original Value: E-Mail:
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/860509EC">Key151029036</a></td>
+								<td>151029036</td>
+								<td>
+									<div>
+    Key: 151029036
+    Original Value: Contact Me
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/AC8AA2E7">Key156307418</a></td>
+								<td>156307418</td>
+								<td>
+									<div>
+    Key: 156307418
+    Original Value: Not a valid e-mail address
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/9FCACAE2">Key162454876</a></td>
+								<td>162454876</td>
+								<td>
+									<div>
+    Key: 162454876
+    Original Value: Extensible Localization
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/E8C10522">Key163077375</a></td>
+								<td>163077375</td>
+								<td>
+									<div>
+    Key: 163077375
+    Original Value: Command executed with exception(s).
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/FD42D309">Key171400643</a></td>
+								<td>171400643</td>
+								<td>
+									<div>
+    Key: 171400643
+    Original Value: Central Bank of Armenia
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/E002ED2C">Key179741382</a></td>
+								<td>179741382</td>
+								<td>
+									<div>
+    Key: 179741382
+    Original Value: Language
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/F7366E9A">Key182422283</a></td>
+								<td>182422283</td>
+								<td>
+									<div>
+    Key: 182422283
+    Original Value: Yes
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/28BA872E">Key185637040</a></td>
+								<td>185637040</td>
+								<td>
+									<div>
+    Key: 185637040
+    Original Value: American University of Armenia
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/B9A59F0B">Key188347036</a></td>
+								<td>188347036</td>
+								<td>
+									<div>
+    Key: 188347036
+    Original Value: Search
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/E493D5E6">Key191067042</a></td>
+								<td>191067042</td>
+								<td>
+									<div>
+    Key: 191067042
+    Original Value: No to All
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/6DD746DF">Key198239125</a></td>
+								<td>198239125</td>
+								<td>
+									<div>
+    Key: 198239125
+    Original Value: Service-Oriented Application
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/4B9465DB">Key204811466</a></td>
+								<td>204811466</td>
+								<td>
+									<div>
+    Key: 204811466
+    Original Value: Source model
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/ECE64CCA">Key208622504</a></td>
+								<td>208622504</td>
+								<td>
+									<div>
+    Key: 208622504
+    Original Value: Education
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/CA9425BB">Key208760457</a></td>
+								<td>208760457</td>
+								<td>
+									<div>
+    Key: 208760457
+    Original Value: Office app development
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/C7ECE921">Key212549668</a></td>
+								<td>212549668</td>
+								<td>
+									<div>
+    Key: 212549668
+    Original Value: Web API development order
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/FC54A715">Key215349550</a></td>
+								<td>215349550</td>
+								<td>
+									<div>
+    Key: 215349550
+    Original Value: Technologies used
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/F6894D75">Key222101134</a></td>
+								<td>222101134</td>
+								<td>
+									<div>
+    Key: 222101134
+    Original Value: This plan is suitable for medium businesses․
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/2BE97F2F">Key224205610</a></td>
+								<td>224205610</td>
+								<td>
+									<div>
+    Key: 224205610
+    Original Value: European Central Bank
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/F64B0FA8">Key225262334</a></td>
+								<td>225262334</td>
+								<td>
+									<div>
+    Key: 225262334
+    Original Value: {0} class must have single constractor.
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/494B4BDD">Key237037289</a></td>
+								<td>237037289</td>
+								<td>
+									<div>
+    Key: 237037289
+    Original Value: Windows Service development
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/F2F961CB">Key239441347</a></td>
+								<td>239441347</td>
+								<td>
+									<div>
+    Key: 239441347
+    Original Value: Available in {0} languages
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/892B1838">Key245098873</a></td>
+								<td>245098873</td>
+								<td>
+									<div>
+    Key: 245098873
+    Original Value: Scope
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/AF0D966C">Key268507527</a></td>
+								<td>268507527</td>
+								<td>
+									<div>
+    Key: 268507527
+    Original Value: Yes to All
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/E0A67357">Key268545567</a></td>
+								<td>268545567</td>
+								<td>
+									<div>
+    Key: 268545567
+    Original Value: Software and Services
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/8B787717">Key268933415</a></td>
+								<td>268933415</td>
+								<td>
+									<div>
+    Key: 268933415
+    Original Value: Visual C#, Visual Basic.NET
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/7473C5AB">Key269773285</a></td>
+								<td>269773285</td>
+								<td>
+									<div>
+    Key: 269773285
+    Original Value: Maintenance {0} per month
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/05CEB242">Key271231827</a></td>
+								<td>271231827</td>
+								<td>
+									<div>
+    Key: 271231827
+    Original Value: Russian
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/8F15D0CE">Key274121967</a></td>
+								<td>274121967</td>
+								<td>
+									<div>
+    Key: 274121967
+    Original Value: Economy
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/8CF1BC84">Key284143358</a></td>
+								<td>284143358</td>
+								<td>
+									<div>
+    Key: 284143358
+    Original Value: Skills
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/FF663A5B">Key284914810</a></td>
+								<td>284914810</td>
+								<td>
+									<div>
+    Key: 284914810
+    Original Value: Performing the operation "{0}" on target "{1}".
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/E1D0BC19">Key288886816</a></td>
+								<td>288886816</td>
+								<td>
+									<div>
+    Key: 288886816
+    Original Value: Required
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/928115A0">Key289384638</a></td>
+								<td>289384638</td>
+								<td>
+									<div>
+    Key: 289384638
+    Original Value: Special drawing rights
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/B559806C">Key291840828</a></td>
+								<td>291840828</td>
+								<td>
+									<div>
+    Key: 291840828
+    Original Value: Error occurred while system were trying to send an email.
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/EF8F9E67">Key306641101</a></td>
+								<td>306641101</td>
+								<td>
+									<div>
+    Key: 306641101
+    Original Value: Data-Centric Business Application development order
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/13567731">Key308178739</a></td>
+								<td>308178739</td>
+								<td>
+									<div>
+    Key: 308178739
+    Original Value: Windows CE/Mobule application development
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/97D0369A">Key309453572</a></td>
+								<td>309453572</td>
+								<td>
+									<div>
+    Key: 309453572
+    Original Value: TIKSN Blog
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/8E1653A3">Key311561578</a></td>
+								<td>311561578</td>
+								<td>
+									<div></div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/A5F91DE2">Key313662951</a></td>
+								<td>313662951</td>
+								<td>
+									<div>
+    Key: 313662951
+    Original Value: Basic
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/3EC38A8E">Key317093501</a></td>
+								<td>317093501</td>
+								<td>
+									<div>
+    Key: 317093501
+    Original Value: This plan is suitable for start-ups and small businesses.
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/51BD125A">Key318230625</a></td>
+								<td>318230625</td>
+								<td>
+									<div>
+    Key: 318230625
+    Original Value: Microsoft .NET Framework
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/730850E0">Key324264316</a></td>
+								<td>324264316</td>
+								<td>
+									<div>
+    Key: 324264316
+    Original Value: No
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/0D5BCD41">Key330429385</a></td>
+								<td>330429385</td>
+								<td>
+									<div>
+    Key: 330429385
+    Original Value: Services
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/2E4A087E">Key330870993</a></td>
+								<td>330870993</td>
+								<td>
+									<div>
+    Key: 330870993
+    Original Value: Small business
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/61966631">Key332401553</a></td>
+								<td>332401553</td>
+								<td>
+									<div>
+    Key: 332401553
+    Original Value: Windows Communication Foundation
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/876B0EFC">Key334947186</a></td>
+								<td>334947186</td>
+								<td>
+									<div>
+    Key: 334947186
+    Original Value: Ukrainian
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/6EA5DCE5">Key344909065</a></td>
+								<td>344909065</td>
+								<td>
+									<div>
+    Key: 344909065
+    Original Value: National Bank of Ukraine
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/68D816E6">Key349904862</a></td>
+								<td>349904862</td>
+								<td>
+									<div>
+    Key: 349904862
+    Original Value: Last name:
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/570FA0B4">Key355868753</a></td>
+								<td>355868753</td>
+								<td>
+									<div>
+    Key: 355868753
+    Original Value: For Windows 10
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/0593E8D1">Key359138423</a></td>
+								<td>359138423</td>
+								<td>
+									<div>
+    Key: 359138423
+    Original Value: Contacts
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/1C84F7E6">Key365281568</a></td>
+								<td>365281568</td>
+								<td>
+									<div>
+    Key: 365281568
+    Original Value: About this application
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/25BD3EA7">Key371024018</a></td>
+								<td>371024018</td>
+								<td>
+									<div>
+    Key: 371024018
+    Original Value: Windows Service development order
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/42BE3E06">Key378313905</a></td>
+								<td>378313905</td>
+								<td>
+									<div>
+    Key: 378313905
+    Original Value: Armenian
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/FED81748">Key381036885</a></td>
+								<td>381036885</td>
+								<td>
+									<div>
+    Key: 381036885
+    Original Value: Synonyms
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/FC7195CD">Key383838876</a></td>
+								<td>383838876</td>
+								<td>
+									<div>
+    Key: 383838876
+    Original Value: Available in one language
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/AAFB0693">Key385087868</a></td>
+								<td>385087868</td>
+								<td>
+									<div>
+    Key: 385087868
+    Original Value: Desktop Application development order
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/2553C2D0">Key392278142</a></td>
+								<td>392278142</td>
+								<td>
+									<div>
+    Key: 392278142
+    Original Value: Search Engine Optimization order
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/3D744432">Key403152561</a></td>
+								<td>403152561</td>
+								<td>
+									<div>
+    Key: 403152561
+    Original Value: E-Mail
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/C8CD2BA4">Key408289614</a></td>
+								<td>408289614</td>
+								<td>
+									<div>
+    Key: 408289614
+    Original Value: Message:
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/A9CC3B98">Key423457627</a></td>
+								<td>423457627</td>
+								<td>
+									<div>
+    Key: 423457627
+    Original Value: Spelling suggestions
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/0FCB9106">Key427524976</a></td>
+								<td>427524976</td>
+								<td>
+									<div>
+    Key: 427524976
+    Original Value: Help
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/E69736E0">Key434690284</a></td>
+								<td>434690284</td>
+								<td>
+									<div>
+    Key: 434690284
+    Original Value: Modern UI Design
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/1A26DABE">Key439104548</a></td>
+								<td>439104548</td>
+								<td>
+									<div>
+    Key: 439104548
+    Original Value: Are you sure you want to perform this action?
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/61FA2BB3">Key444677337</a></td>
+								<td>444677337</td>
+								<td>
+									<div>
+    Key: 444677337
+    Original Value: : 
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/6578E31B">Key445070316</a></td>
+								<td>445070316</td>
+								<td>
+									<div>
+    Key: 445070316
+    Original Value: Windows Presentation Foundation
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/516995B4">Key445651597</a></td>
+								<td>445651597</td>
+								<td>
+									<div>
+    Key: 445651597
+    Original Value: Dark
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/1542296E">Key451047948</a></td>
+								<td>451047948</td>
+								<td>
+									<div>
+    Key: 451047948
+    Original Value: Closed source
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/C62C0038">Key462896969</a></td>
+								<td>462896969</td>
+								<td>
+									<div>
+    Key: 462896969
+    Original Value: Powered by Bing®
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/06CA9B37">Key466192205</a></td>
+								<td>466192205</td>
+								<td>
+									<div>
+    Key: 466192205
+    Original Value: Central Bank of Russia
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/6B4E0C0E">Key469078176</a></td>
+								<td>469078176</td>
+								<td>
+									<div>
+    Key: 469078176
+    Original Value: Italian
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/3E916F01">Key475539585</a></td>
+								<td>475539585</td>
+								<td>
+									<div>
+    Key: 475539585
+    Original Value: Send
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/7F28DCDC">Key476889407</a></td>
+								<td>476889407</td>
+								<td>
+									<div>
+    Key: 476889407
+    Original Value: Software Engineer
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/FABC3FC5">Key484534012</a></td>
+								<td>484534012</td>
+								<td>
+									<div>
+    Key: 484534012
+    Original Value: Custom Search
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/4813B671">Key488609985</a></td>
+								<td>488609985</td>
+								<td>
+									<div>
+    Key: 488609985
+    Original Value: Basic UI Design
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/45B2B6C6">Key491461331</a></td>
+								<td>491461331</td>
+								<td>
+									<div>
+    Key: 491461331
+    Original Value: {0} class must have {1} attribute.
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/BB9FA5E6">Key503335681</a></td>
+								<td>503335681</td>
+								<td>
+									<div>
+    Key: 503335681
+    Original Value: Git, VSTS, TFVC
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/D80734E9">Key507606425</a></td>
+								<td>507606425</td>
+								<td>
+									<div>
+    Key: 507606425
+    Original Value: Initial release
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/80FE0142">Key513669504</a></td>
+								<td>513669504</td>
+								<td>
+									<div>
+    Key: 513669504
+    Original Value: Website development order
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/5866F727">Key514218975</a></td>
+								<td>514218975</td>
+								<td>
+									<div>
+    Key: 514218975
+    Original Value: Microsoft .NET Framework
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/E6A2E63B">Key515817850</a></td>
+								<td>515817850</td>
+								<td>
+									<div>
+    Key: 515817850
+    Original Value: Visual Studio LightSwitch
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/51ACD316">Key520543650</a></td>
+								<td>520543650</td>
+								<td>
+									<div>
+    Key: 520543650
+    Original Value: Service-Oriented Application development
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/F9C1584C">Key523855489</a></td>
+								<td>523855489</td>
+								<td>
+									<div>
+    Key: 523855489
+    Original Value: Art of Living
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/8E03751C">Key528269093</a></td>
+								<td>528269093</td>
+								<td>
+									<div>
+    Key: 528269093
+    Original Value: Technologies
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/EA17B88E">Key529324189</a></td>
+								<td>529324189</td>
+								<td>
+									<div>
+    Key: 529324189
+    Original Value: The Weather of Westeros
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/80B5561F">Key538968287</a></td>
+								<td>538968287</td>
+								<td>
+									<div>
+    Key: 538968287
+    Original Value: Visit
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/9D18E18A">Key543312789</a></td>
+								<td>543312789</td>
+								<td>
+									<div>
+    Key: 543312789
+    Original Value: Windows Store App
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/1C2F0DB8">Key548430597</a></td>
+								<td>548430597</td>
+								<td>
+									<div>
+    Key: 548430597
+    Original Value: Unable to initialize command instance or set parameter(s).
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/4F6EC05D">Key554412405</a></td>
+								<td>554412405</td>
+								<td>
+									<div>
+    Key: 554412405
+    Original Value: Hello, world!
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/00AB7EE7">Key558930340</a></td>
+								<td>558930340</td>
+								<td>
+									<div>
+    Key: 558930340
+    Original Value: Maintenance
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/3D9ECA0B">Key559506575</a></td>
+								<td>559506575</td>
+								<td>
+									<div>
+    Key: 559506575
+    Original Value: English (World)
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/BE388ED4">Key564698540</a></td>
+								<td>564698540</td>
+								<td>
+									<div>
+    Key: 564698540
+    Original Value: Deployment
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/73A13501">Key564771585</a></td>
+								<td>564771585</td>
+								<td>
+									<div>
+    Key: 564771585
+    Original Value: Welcome to my website.
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/0979DAC4">Key573149082</a></td>
+								<td>573149082</td>
+								<td>
+									<div>
+    Key: 573149082
+    Original Value: Maintained
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/0B03C0DB">Key576421501</a></td>
+								<td>576421501</td>
+								<td>
+									<div>
+    Key: 576421501
+    Original Value: Clean UI Design
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/F2891967">Key577995861</a></td>
+								<td>577995861</td>
+								<td>
+									<div>
+    Key: 577995861
+    Original Value: All rights reserved.
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/FC1EB998">Key578512547</a></td>
+								<td>578512547</td>
+								<td>
+									<div>
+    Key: 578512547
+    Original Value: Windows Service
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/45BA47AA">Key584660593</a></td>
+								<td>584660593</td>
+								<td>
+									<div>
+    Key: 584660593
+    Original Value: Translations
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/5B0429C2">Key588506767</a></td>
+								<td>588506767</td>
+								<td>
+									<div>
+    Key: 588506767
+    Original Value: {0} class must implement {1} interface.
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/B8A3EAF2">Key592470584</a></td>
+								<td>592470584</td>
+								<td>
+									<div>
+    Key: 592470584
+    Original Value: Yes
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/74D4FBD5">Key594903907</a></td>
+								<td>594903907</td>
+								<td>
+									<div>
+    Key: 594903907
+    Original Value: For Windows 8.1 and earlier
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/28477C61">Key597321719</a></td>
+								<td>597321719</td>
+								<td>
+									<div>
+    Key: 597321719
+    Original Value: Unity Container, Autofac, .NET Core DI
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/75A669F7">Key599209173</a></td>
+								<td>599209173</td>
+								<td>
+									<div>
+    Key: 599209173
+    Original Value: Settings
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/B6DE56E9">Key603429657</a></td>
+								<td>603429657</td>
+								<td>
+									<div>
+    Key: 603429657
+    Original Value: Your first name
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/2DF562BC">Key604857687</a></td>
+								<td>604857687</td>
+								<td>
+									<div>
+    Key: 604857687
+    Original Value: Doing Science
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/51A95BC1">Key604953315</a></td>
+								<td>604953315</td>
+								<td>
+									<div>
+    Key: 604953315
+    Original Value: ASP.NET MVC
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/F7842E7C">Key607754997</a></td>
+								<td>607754997</td>
+								<td>
+									<div>
+    Key: 607754997
+    Original Value: Denomination Calculator
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/33E6F4F2">Key611756663</a></td>
+								<td>611756663</td>
+								<td>
+									<div>
+    Key: 611756663
+    Original Value: $ My Currency
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/1FD90471">Key614034682</a></td>
+								<td>614034682</td>
+								<td>
+									<div>
+    Key: 614034682
+    Original Value: Grocery Checklist
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/4E854CAE">Key623577100</a></td>
+								<td>623577100</td>
+								<td>
+									<div>
+    Key: 623577100
+    Original Value: TIKSN Framework
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/1351B674">Key626508219</a></td>
+								<td>626508219</td>
+								<td>
+									<div>
+    Key: 626508219
+    Original Value: Windows Phone App development
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/0C059FAD">Key627036953</a></td>
+								<td>627036953</td>
+								<td>
+									<div>
+    Key: 627036953
+    Original Value: Contact
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/B17DC589">Key627226462</a></td>
+								<td>627226462</td>
+								<td>
+									<div>
+    Key: 627226462
+    Original Value: Windows Phone App
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/42709600">Key633405189</a></td>
+								<td>633405189</td>
+								<td>
+									<div>
+    Key: 633405189
+    Original Value: $ My Currency (mycurrency.net)
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/5A9458B0">Key635603959</a></td>
+								<td>635603959</td>
+								<td>
+									<div>
+    Key: 635603959
+    Original Value: STOZE
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/5DE77F8E">Key636584069</a></td>
+								<td>636584069</td>
+								<td>
+									<div>
+    Key: 636584069
+    Original Value: Search results
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/E7D936D1">Key638306944</a></td>
+								<td>638306944</td>
+								<td>
+									<div>
+    Key: 638306944
+    Original Value: TIKSN.Web.Rest.RestRepository.RemoveRangeAsync method is not adviced to use.
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/369A958B">Key638649280</a></td>
+								<td>638649280</td>
+								<td>
+									<div>
+    Key: 638649280
+    Original Value: TIKSN Lab
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/8C83A626">Key645369586</a></td>
+								<td>645369586</td>
+								<td>
+									<div>
+    Key: 645369586
+    Original Value: Reserve Bank of Australia
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/05C1CE74">Key649290117</a></td>
+								<td>649290117</td>
+								<td>
+									<div></div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/3CD0A194">Key655862457</a></td>
+								<td>655862457</td>
+								<td>
+									<div>
+    Key: 655862457
+    Original Value: Desktop Application
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/E2039F92">Key660079096</a></td>
+								<td>660079096</td>
+								<td>
+									<div>
+    Key: 660079096
+    Original Value: More
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/DFDF5795">Key668677371</a></td>
+								<td>668677371</td>
+								<td>
+									<div>
+    Key: 668677371
+    Original Value: License
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/9538A5F3">Key671767216</a></td>
+								<td>671767216</td>
+								<td>
+									<div>
+    Key: 671767216
+    Original Value: Command
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/6EB7ED84">Key683932751</a></td>
+								<td>683932751</td>
+								<td>
+									<div>
+    Key: 683932751
+    Original Value: Once
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/9B9D1D8A">Key692585112</a></td>
+								<td>692585112</td>
+								<td>
+									<div>
+    Key: 692585112
+    Original Value: CurrencyConverterApi.com
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/B990202A">Key694286924</a></td>
+								<td>694286924</td>
+								<td>
+									<div>
+    Key: 694286924
+    Original Value: Proprietary software
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/E942483D">Key695998028</a></td>
+								<td>695998028</td>
+								<td>
+									<div>
+    Key: 695998028
+    Original Value: Tigran TIKSN Torosyan
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/13DA9F12">Key696323782</a></td>
+								<td>696323782</td>
+								<td>
+									<div>
+    Key: 696323782
+    Original Value: Java
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/1009EEC6">Key698722217</a></td>
+								<td>698722217</td>
+								<td>
+									<div>
+    Key: 698722217
+    Original Value: Microsoft Enterprise Library
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/90ABF01E">Key706106182</a></td>
+								<td>706106182</td>
+								<td>
+									<div>
+    Key: 706106182
+    Original Value: Privacy Terms
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/42117236">Key706410578</a></td>
+								<td>706410578</td>
+								<td>
+									<div>
+    Key: 706410578
+    Original Value: Website development
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/1F541953">Key711406928</a></td>
+								<td>711406928</td>
+								<td>
+									<div>
+    Key: 711406928
+    Original Value: PowerShell module development order
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/ED2A412A">Key724813953</a></td>
+								<td>724813953</td>
+								<td>
+									<div>
+    Key: 724813953
+    Original Value: Federal Reserve System
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/274C1025">Key724854542</a></td>
+								<td>724854542</td>
+								<td>
+									<div>
+    Key: 724854542
+    Original Value: Age
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/BF8011FB">Key727951503</a></td>
+								<td>727951503</td>
+								<td>
+									<div>
+    Key: 727951503
+    Original Value: ADO.NET Entity Framework
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/0F2AFD76">Key732728254</a></td>
+								<td>732728254</td>
+								<td>
+									<div>
+    Key: 732728254
+    Original Value: Twitter
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/27FC5633">Key733244108</a></td>
+								<td>733244108</td>
+								<td>
+									<div>
+    Key: 733244108
+    Original Value: Search Engine Optimization
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/AB8ABDE5">Key734344590</a></td>
+								<td>734344590</td>
+								<td>
+									<div>
+    Key: 734344590
+    Original Value: Bank of Canada
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/30A64D0A">Key737791768</a></td>
+								<td>737791768</td>
+								<td>
+									<div>
+    Key: 737791768
+    Original Value: Web API
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/A4F07081">Key744582913</a></td>
+								<td>744582913</td>
+								<td>
+									<div>
+    Key: 744582913
+    Original Value: The Central Bank of the Republic of Armenia
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/DE273DEB">Key748923176</a></td>
+								<td>748923176</td>
+								<td>
+									<div>
+    Key: 748923176
+    Original Value: Swiss National Bank
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/02E3A96C">Key754333962</a></td>
+								<td>754333962</td>
+								<td>
+									<div>
+    Key: 754333962
+    Original Value: No results found.
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/31469092">Key754732611</a></td>
+								<td>754732611</td>
+								<td>
+									<div>
+    Key: 754732611
+    Original Value: Master of Computer Information Science, Computer Science
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/2A4EE6BC">Key754876063</a></td>
+								<td>754876063</td>
+								<td>
+									<div>
+    Key: 754876063
+    Original Value: Your email address
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/9F621959">Key756612413</a></td>
+								<td>756612413</td>
+								<td>
+									<div>
+    Key: 756612413
+    Original Value: Service
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/F34735C5">Key757024408</a></td>
+								<td>757024408</td>
+								<td>
+									<div>
+    Key: 757024408
+    Original Value: Order
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/3A1D3DD0">Key758955736</a></td>
+								<td>758955736</td>
+								<td>
+									<div>
+    Key: 758955736
+    Original Value: Bank of England
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/29BE76CE">Key762797472</a></td>
+								<td>762797472</td>
+								<td>
+									<div>
+    Key: 762797472
+    Original Value: Products
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/FD3D8AB2">Key763272923</a></td>
+								<td>763272923</td>
+								<td>
+									<div>
+    Key: 763272923
+    Original Value: Senior Software Engineer
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/062C477F">Key764935327</a></td>
+								<td>764935327</td>
+								<td>
+									<div>
+    Key: 764935327
+    Original Value: Medium business
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/67D4966B">Key774579166</a></td>
+								<td>774579166</td>
+								<td>
+									<div>
+    Key: 774579166
+    Original Value: Latest and Greatest Technologies
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/857ABDB4">Key777755530</a></td>
+								<td>777755530</td>
+								<td>
+									<div>
+    Key: 777755530
+    Original Value: Suspend
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/00D1A84D">Key779269722</a></td>
+								<td>779269722</td>
+								<td>
+									<div>
+    Key: 779269722
+    Original Value: 1 language (non-localizable)
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/05BE66BC">Key781252660</a></td>
+								<td>781252660</td>
+								<td>
+									<div>
+    Key: 781252660
+    Original Value: Consultancy
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/6EEA25F9">Key782621841</a></td>
+								<td>782621841</td>
+								<td>
+									<div>
+    Key: 782621841
+    Original Value: Discontinued
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/425F8AF0">Key785283399</a></td>
+								<td>785283399</td>
+								<td>
+									<div>
+    Key: 785283399
+    Original Value: Your last name
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/6BF4B89C">Key785393579</a></td>
+								<td>785393579</td>
+								<td>
+									<div>
+    Key: 785393579
+    Original Value: Exit
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/62EB1879">Key795089363</a></td>
+								<td>795089363</td>
+								<td>
+									<div>
+    Key: 795089363
+    Original Value: Desktop Application development
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/3234E5DA">Key802024377</a></td>
+								<td>802024377</td>
+								<td>
+									<div>
+    Key: 802024377
+    Original Value: Algorithms
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/CAD2C330">Key803042279</a></td>
+								<td>803042279</td>
+								<td>
+									<div>
+    Key: 803042279
+    Original Value: Visual Studio LightSwitch
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/023C9E49">Key804677234</a></td>
+								<td>804677234</td>
+								<td>
+									<div>
+    Key: 804677234
+    Original Value: Occupation
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/836E808A">Key813577219</a></td>
+								<td>813577219</td>
+								<td>
+									<div>
+    Key: 813577219
+    Original Value: Bachelor of Informatics and Applied Mathematics, Computer Science
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/A2E8DC64">Key816611612</a></td>
+								<td>816611612</td>
+								<td>
+									<div>
+    Key: 816611612
+    Original Value: BleepMe
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/FD0D3BAD">Key829543091</a></td>
+								<td>829543091</td>
+								<td>
+									<div>
+    Key: 829543091
+    Original Value: Developing for Developers
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/C1694906">Key832476750</a></td>
+								<td>832476750</td>
+								<td>
+									<div>
+    Key: 832476750
+    Original Value: Web Application development order
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/4564F22A">Key837013265</a></td>
+								<td>837013265</td>
+								<td>
+									<div>
+    Key: 837013265
+    Original Value: Languages
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/448E9065">Key840204093</a></td>
+								<td>840204093</td>
+								<td>
+									<div>
+    Key: 840204093
+    Original Value: Monthly
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/A8784E0B">Key843366643</a></td>
+								<td>843366643</td>
+								<td>
+									<div>
+    Key: 843366643
+    Original Value: ASP.NET Web API
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/8324D1EF">Key846795929</a></td>
+								<td>846795929</td>
+								<td>
+									<div>
+    Key: 846795929
+    Original Value: Light
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/2ACAE1BC">Key847898437</a></td>
+								<td>847898437</td>
+								<td>
+									<div>
+    Key: 847898437
+    Original Value: Data
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/1D2B941F">Key851949420</a></td>
+								<td>851949420</td>
+								<td>
+									<div>
+    Key: 851949420
+    Original Value: Software Library
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/43F10223">Key854735407</a></td>
+								<td>854735407</td>
+								<td>
+									<div>
+    Key: 854735407
+    Original Value: First name:
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/AF5EFE79">Key867886502</a></td>
+								<td>867886502</td>
+								<td>
+									<div>
+    Key: 867886502
+    Original Value: Microsoft SQL Server
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/9E15D2F3">Key870549797</a></td>
+								<td>870549797</td>
+								<td>
+									<div>
+    Key: 870549797
+    Original Value: Up to {0} pages
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/BE40150A">Key874180444</a></td>
+								<td>874180444</td>
+								<td>
+									<div>
+    Key: 874180444
+    Original Value: Latest release
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/AA018A2F">Key879318823</a></td>
+								<td>879318823</td>
+								<td>
+									<div>
+    Key: 879318823
+    Original Value: Command is not found
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/A6A1E9A5">Key880877990</a></td>
+								<td>880877990</td>
+								<td>
+									<div>
+    Key: 880877990
+    Original Value: Yerevan State University
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/C1BEC6FE">Key881097258</a></td>
+								<td>881097258</td>
+								<td>
+									<div>
+    Key: 881097258
+    Original Value: Search ...
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/B0D9F8B6">Key881908374</a></td>
+								<td>881908374</td>
+								<td>
+									<div>
+    Key: 881908374
+    Original Value: Data-Centric Business Application development
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/EB33DBAB">Key885406747</a></td>
+								<td>885406747</td>
+								<td>
+									<div>
+    Key: 885406747
+    Original Value: C/C++/Visual C++
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/CAD75513">Key897347270</a></td>
+								<td>897347270</td>
+								<td>
+									<div>
+    Key: 897347270
+    Original Value: Advanced
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/39D84145">Key899831985</a></td>
+								<td>899831985</td>
+								<td>
+									<div>
+    Key: 899831985
+    Original Value: Web Application development
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/496587EB">Key900398722</a></td>
+								<td>900398722</td>
+								<td>
+									<div>
+    Key: 900398722
+    Original Value: This plan is suitable for personal websites.
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/1A49256D">Key902123282</a></td>
+								<td>902123282</td>
+								<td>
+									<div>
+    Key: 902123282
+    Original Value: Web API development
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/BE7E89B8">Key903097948</a></td>
+								<td>903097948</td>
+								<td>
+									<div>
+    Key: 903097948
+    Original Value: PowerShell module development
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/8818E919">Key904176767</a></td>
+								<td>904176767</td>
+								<td>
+									<div>
+    Key: 904176767
+    Original Value: Windows Phone App development order
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/EB8F8D92">Key907431629</a></td>
+								<td>907431629</td>
+								<td>
+									<div>
+    Key: 907431629
+    Original Value: Personal
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/93542EF4">Key914899034</a></td>
+								<td>914899034</td>
+								<td>
+									<div>
+    Key: 914899034
+    Original Value: English
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/DF539D1B">Key923565547</a></td>
+								<td>923565547</td>
+								<td>
+									<div>
+    Key: 923565547
+    Original Value: SharePoint app development
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/54F581F7">Key931254976</a></td>
+								<td>931254976</td>
+								<td>
+									<div>
+    Key: 931254976
+    Original Value: Advertisement
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/82A9BF7B">Key937230874</a></td>
+								<td>937230874</td>
+								<td>
+									<div>
+    Key: 937230874
+    Original Value: The Central Bank of the Russian Federation
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/4E86EDA7">Key950501550</a></td>
+								<td>950501550</td>
+								<td>
+									<div>
+    Key: 950501550
+    Original Value: Web
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/8437D7CE">Key962082254</a></td>
+								<td>962082254</td>
+								<td>
+									<div>
+    Key: 962082254
+    Original Value: WinUtils
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/CF658A4F">Key966065986</a></td>
+								<td>966065986</td>
+								<td>
+									<div>
+    Key: 966065986
+    Original Value: Client Applications
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/D9FCE2CE">Key971793314</a></td>
+								<td>971793314</td>
+								<td>
+									<div>
+    Key: 971793314
+    Original Value: Deprecated
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/B8BDD2B1">Key971869905</a></td>
+								<td>971869905</td>
+								<td>
+									<div>
+    Key: 971869905
+    Original Value: Theme
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/CD088AB5">Key974269746</a></td>
+								<td>974269746</td>
+								<td>
+									<div>
+    Key: 974269746
+    Original Value: Concierge
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/8CE1256F">Key976146344</a></td>
+								<td>976146344</td>
+								<td>
+									<div>
+    Key: 976146344
+    Original Value: Web Application
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/CB1B7DE5">Key976833174</a></td>
+								<td>976833174</td>
+								<td>
+									<div>
+    Key: 976833174
+    Original Value: Windows Store App development order
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/8BF6A674">Key977944607</a></td>
+								<td>977944607</td>
+								<td>
+									<div>
+    Key: 977944607
+    Original Value: Details
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/140FA3DA">Key978773261</a></td>
+								<td>978773261</td>
+								<td>
+									<div>
+    Key: 978773261
+    Original Value: TIKSN Research
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/860C9776">Key986035763</a></td>
+								<td>986035763</td>
+								<td>
+									<div>
+    Key: 986035763
+    Original Value: Website
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/C59575E6">Key989199644</a></td>
+								<td>989199644</td>
+								<td>
+									<div>
+    Key: 989199644
+    Original Value: TIKSN
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/6FEFD3F9">Key992400356</a></td>
+								<td>992400356</td>
+								<td>
+									<div>
+    Key: 992400356
+    Original Value: See also
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/7850C72E">Key993427659</a></td>
+								<td>993427659</td>
+								<td>
+									<div>
+    Key: 993427659
+    Original Value: Custom Order
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/01F09C0F">Key996647881</a></td>
+								<td>996647881</td>
+								<td>
+									<div>
+    Key: 996647881
+    Original Value: Powered by Microsoft® Translator
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/614BB044">Key997851654</a></td>
+								<td>997851654</td>
+								<td>
+									<div>
+    Key: 997851654
+    Original Value: Tigran Torosyan
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/972E002A">Key997898627</a></td>
+								<td>997898627</td>
+								<td>
+									<div>
+    Key: 997898627
+    Original Value: Windows Store App development
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/api/TIKSN.Localization/LocalizationKeys/BC6EC7D4">Key999430243</a></td>
+								<td>999430243</td>
+								<td>
+									<div>
+    Key: 999430243
+    Original Value: currencylayer.com
+    </div>
+											<div><small><em>static</em></small></div>
+								</td>
+							</tr>
+					</tbody></table>
+				</div>
+			</div>
+		
+
+
+
+
+
+	
+</section>
+                
+            </div>           
+            
+            <!-- Footer -->
+            <footer class="main-footer">
+            </footer>
+            
+        </div>
+        <div class="wrapper bottom-wrapper">
+            <footer class="bottom-footer">
+                Generated by <a href="https://wyam.io">Wyam</a>
+            </footer>
+        </div>
+        <a href="javascript:" id="return-to-top"><i class="fa fa-chevron-up"></i></a>
+        
+        <script>           
+            // Close the sidebar if we select an anchor link
+            $(".main-sidebar a[href^='#']:not('.expand')").click(function(){
+                $(document.body).removeClass('sidebar-open');
+            });
+            
+            $(document).load(function() {
+                mermaid.initialize(
+                {
+                    flowchart:
+                    {
+                        htmlLabels: false,
+                        useMaxWidth:false
+                    }
+                });  
+                mermaid.init(undefined, ".mermaid")
+                $('svg').addClass('img-responsive');
+                
+                $('pre code').each(function(i, block) {
+                    hljs.highlightBlock(block);
+                });  
+            });
+            hljs.initHighlightingOnLoad();
+
+            // Back to top
+            $(window).scroll(function() {
+                if ($(this).scrollTop() >= 200) {        // If page is scrolled more than 50px
+                    $('#return-to-top').fadeIn(1000);    // Fade in the arrow
+                } else {
+                    $('#return-to-top').fadeOut(1000);   // Else fade out the arrow
+                }
+            });
+            $('#return-to-top').click(function() {      // When arrow is clicked
+                $('body,html').animate({
+                    scrollTop : 0                       // Scroll to top of body
+                }, 500);
+            });
+        </script>
+    
+</body></html>

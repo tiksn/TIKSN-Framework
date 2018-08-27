@@ -68,6 +68,7 @@ Task("Pack")
   .Description("Pack NuGet package.")
   .IsDependentOn("Build")
   .IsDependentOn("EstimateNextVersion")
+  .IsDependentOn("BuildDocs")
   //.IsDependentOn("Test")
   .Does(() =>
 {
