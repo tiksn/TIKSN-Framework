@@ -181,9 +181,9 @@
 								<dt>Implementing Types</dt>
 								<dd>
 									<ul class="list-unstyled">
-											<li><a href="/api/TIKSN.PowerShell/PowerShellProgressFactory">Power<wbr>Shell<wbr>Progress<wbr>Factory</a></li>								
-											<li><a href="/api/TIKSN.Progress/SilentOperationProgressFactory">Silent<wbr>Operation<wbr>Progress<wbr>Factory</a></li>								
 											<li><a href="/api/TIKSN.Shell/ShellProgressFactory">ShellProgressFactory</a></li>								
+											<li><a href="/api/TIKSN.Progress/SilentOperationProgressFactory">Silent<wbr>Operation<wbr>Progress<wbr>Factory</a></li>								
+											<li><a href="/api/TIKSN.PowerShell/PowerShellProgressFactory">Power<wbr>Shell<wbr>Progress<wbr>Factory</a></li>								
 									</ul>
 								</dd>				
 						</dl>
@@ -193,12 +193,12 @@
 							graph TD
 	Type["IOperationProgressFactory"]
 class Type type-node
-	Type-.-&gt;Implementing0["PowerShellProgressFactory"]
-	click Implementing0 "/api/TIKSN.PowerShell/PowerShellProgressFactory"
+	Type-.-&gt;Implementing0["ShellProgressFactory"]
+	click Implementing0 "/api/TIKSN.Shell/ShellProgressFactory"
 	Type-.-&gt;Implementing1["SilentOperationProgressFactory"]
 	click Implementing1 "/api/TIKSN.Progress/SilentOperationProgressFactory"
-	Type-.-&gt;Implementing2["ShellProgressFactory"]
-	click Implementing2 "/api/TIKSN.Shell/ShellProgressFactory"
+	Type-.-&gt;Implementing2["PowerShellProgressFactory"]
+	click Implementing2 "/api/TIKSN.PowerShell/PowerShellProgressFactory"
 
 						</div>
 					</div>

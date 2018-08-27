@@ -186,11 +186,11 @@
 								<dt>Derived Types</dt>
 								<dd>
 									<ul class="list-unstyled">
-											<li><a href="/api/TIKSN.Globalization/RegionFactory">RegionFactory</a></li>								
-											<li><a href="/api/TIKSN.Globalization/CurrencyFactory">CurrencyFactory</a></li>								
 											<li><a href="/api/TIKSN.Data.Cache.Memory/RepositoryMemoryCacheDecorator_2">Repository<wbr>Memory<wbr>Cache<wbr>Decorator<wbr>&lt;TEntity, <wbr>TIdentity&gt;<wbr></a></li>								
-											<li><a href="/api/TIKSN.Globalization/CultureFactory">CultureFactory</a></li>								
+											<li><a href="/api/TIKSN.Globalization/RegionFactory">RegionFactory</a></li>								
 											<li><a href="/api/TIKSN.Finance.Cache/MemoryCachedCurrencyConverter">Memory<wbr>Cached<wbr>Currency<wbr>Converter</a></li>								
+											<li><a href="/api/TIKSN.Globalization/CultureFactory">CultureFactory</a></li>								
+											<li><a href="/api/TIKSN.Globalization/CurrencyFactory">CurrencyFactory</a></li>								
 									</ul>
 								</dd>			
 							
@@ -204,16 +204,16 @@
 	Base1["object"]--&gt;Base0
 	Type["MemoryCacheDecoratorBase&lt;T&gt;"]
 class Type type-node
-	Type--&gt;Derived0["RegionFactory"]
-	click Derived0 "/api/TIKSN.Globalization/RegionFactory"
-	Type--&gt;Derived1["CurrencyFactory"]
-	click Derived1 "/api/TIKSN.Globalization/CurrencyFactory"
-	Type--&gt;Derived2["RepositoryMemoryCacheDecorator&lt;TEntity, TIdentity&gt;"]
-	click Derived2 "/api/TIKSN.Data.Cache.Memory/RepositoryMemoryCacheDecorator_2"
+	Type--&gt;Derived0["RepositoryMemoryCacheDecorator&lt;TEntity, TIdentity&gt;"]
+	click Derived0 "/api/TIKSN.Data.Cache.Memory/RepositoryMemoryCacheDecorator_2"
+	Type--&gt;Derived1["RegionFactory"]
+	click Derived1 "/api/TIKSN.Globalization/RegionFactory"
+	Type--&gt;Derived2["MemoryCachedCurrencyConverter"]
+	click Derived2 "/api/TIKSN.Finance.Cache/MemoryCachedCurrencyConverter"
 	Type--&gt;Derived3["CultureFactory"]
 	click Derived3 "/api/TIKSN.Globalization/CultureFactory"
-	Type--&gt;Derived4["MemoryCachedCurrencyConverter"]
-	click Derived4 "/api/TIKSN.Finance.Cache/MemoryCachedCurrencyConverter"
+	Type--&gt;Derived4["CurrencyFactory"]
+	click Derived4 "/api/TIKSN.Globalization/CurrencyFactory"
 
 						</div>
 					</div>

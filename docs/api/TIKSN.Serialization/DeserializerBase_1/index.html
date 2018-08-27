@@ -139,11 +139,6 @@
 			<li class="header">Namespace</li>
 		<li><a href="/api/TIKSN.Serialization">TIKSN<wbr>.Serialization</a></li>
 		<li role="separator" class="divider"></li>
-			<li class="header">Interface Types</li>
-				<li><a href="/api/TIKSN.Serialization/ICustomDeserializer_2">ICustomDeserializer<wbr>&lt;TSerial, <wbr>TModel&gt;<wbr></a></li>
-				<li><a href="/api/TIKSN.Serialization/ICustomSerializer_2">ICustomSerializer<wbr>&lt;TSerial, <wbr>TModel&gt;<wbr></a></li>
-				<li><a href="/api/TIKSN.Serialization/IDeserializer_1">IDeserializer<wbr>&lt;TSerial&gt;<wbr></a></li>
-				<li><a href="/api/TIKSN.Serialization/ISerializer_1">ISerializer<wbr>&lt;TSerial&gt;<wbr></a></li>
 			<li class="header">Class Types</li>
 				<li class="selected"><a href="/api/TIKSN.Serialization/DeserializerBase_1">DeserializerBase<wbr>&lt;TSerial&gt;<wbr></a></li>
 				<li><a href="/api/TIKSN.Serialization/DotNetXmlDeserializer">Dot<wbr>Net<wbr>Xml<wbr>Deserializer</a></li>
@@ -152,6 +147,11 @@
 				<li><a href="/api/TIKSN.Serialization/JsonSerializer">JsonSerializer</a></li>
 				<li><a href="/api/TIKSN.Serialization/SerializationBase">SerializationBase</a></li>
 				<li><a href="/api/TIKSN.Serialization/SerializerBase_1">SerializerBase<wbr>&lt;TSerial&gt;<wbr></a></li>
+			<li class="header">Interface Types</li>
+				<li><a href="/api/TIKSN.Serialization/ICustomDeserializer_2">ICustomDeserializer<wbr>&lt;TSerial, <wbr>TModel&gt;<wbr></a></li>
+				<li><a href="/api/TIKSN.Serialization/ICustomSerializer_2">ICustomSerializer<wbr>&lt;TSerial, <wbr>TModel&gt;<wbr></a></li>
+				<li><a href="/api/TIKSN.Serialization/IDeserializer_1">IDeserializer<wbr>&lt;TSerial&gt;<wbr></a></li>
+				<li><a href="/api/TIKSN.Serialization/ISerializer_1">ISerializer<wbr>&lt;TSerial&gt;<wbr></a></li>
 
 
                     </ul>
@@ -199,14 +199,14 @@
 								<dt>Derived Types</dt>
 								<dd>
 									<ul class="list-unstyled">
-											<li><a href="/api/TIKSN.Serialization.Bond/SimpleXmlBondDeserializer">Simple<wbr>Xml<wbr>Bond<wbr>Deserializer</a></li>								
+											<li><a href="/api/TIKSN.Serialization.Bond/SimpleBinaryBondDeserializer">Simple<wbr>Binary<wbr>Bond<wbr>Deserializer</a></li>								
 											<li><a href="/api/TIKSN.Serialization.Bond/SimpleJsonBondDeserializer">Simple<wbr>Json<wbr>Bond<wbr>Deserializer</a></li>								
 											<li><a href="/api/TIKSN.Serialization.Bond/FastBinaryBondDeserializer">Fast<wbr>Binary<wbr>Bond<wbr>Deserializer</a></li>								
-											<li><a href="/api/TIKSN.Serialization/DotNetXmlDeserializer">Dot<wbr>Net<wbr>Xml<wbr>Deserializer</a></li>								
-											<li><a href="/api/TIKSN.Serialization.MessagePack/MessagePackDeserializer">Message<wbr>Pack<wbr>Deserializer</a></li>								
 											<li><a href="/api/TIKSN.Serialization.Bond/CompactBinaryBondDeserializer">Compact<wbr>Binary<wbr>Bond<wbr>Deserializer</a></li>								
-											<li><a href="/api/TIKSN.Serialization.Bond/SimpleBinaryBondDeserializer">Simple<wbr>Binary<wbr>Bond<wbr>Deserializer</a></li>								
 											<li><a href="/api/TIKSN.Serialization/JsonDeserializer">JsonDeserializer</a></li>								
+											<li><a href="/api/TIKSN.Serialization.Bond/SimpleXmlBondDeserializer">Simple<wbr>Xml<wbr>Bond<wbr>Deserializer</a></li>								
+											<li><a href="/api/TIKSN.Serialization.MessagePack/MessagePackDeserializer">Message<wbr>Pack<wbr>Deserializer</a></li>								
+											<li><a href="/api/TIKSN.Serialization/DotNetXmlDeserializer">Dot<wbr>Net<wbr>Xml<wbr>Deserializer</a></li>								
 									</ul>
 								</dd>			
 							
@@ -222,22 +222,22 @@
 	click Interface0 "/api/TIKSN.Serialization/IDeserializer_1"
 	Type["DeserializerBase&lt;TSerial&gt;"]
 class Type type-node
-	Type--&gt;Derived0["SimpleXmlBondDeserializer"]
-	click Derived0 "/api/TIKSN.Serialization.Bond/SimpleXmlBondDeserializer"
+	Type--&gt;Derived0["SimpleBinaryBondDeserializer"]
+	click Derived0 "/api/TIKSN.Serialization.Bond/SimpleBinaryBondDeserializer"
 	Type--&gt;Derived1["SimpleJsonBondDeserializer"]
 	click Derived1 "/api/TIKSN.Serialization.Bond/SimpleJsonBondDeserializer"
 	Type--&gt;Derived2["FastBinaryBondDeserializer"]
 	click Derived2 "/api/TIKSN.Serialization.Bond/FastBinaryBondDeserializer"
-	Type--&gt;Derived3["DotNetXmlDeserializer"]
-	click Derived3 "/api/TIKSN.Serialization/DotNetXmlDeserializer"
-	Type--&gt;Derived4["MessagePackDeserializer"]
-	click Derived4 "/api/TIKSN.Serialization.MessagePack/MessagePackDeserializer"
-	Type--&gt;Derived5["CompactBinaryBondDeserializer"]
-	click Derived5 "/api/TIKSN.Serialization.Bond/CompactBinaryBondDeserializer"
-	Type--&gt;Derived6["SimpleBinaryBondDeserializer"]
-	click Derived6 "/api/TIKSN.Serialization.Bond/SimpleBinaryBondDeserializer"
-	Type--&gt;Derived7["JsonDeserializer"]
-	click Derived7 "/api/TIKSN.Serialization/JsonDeserializer"
+	Type--&gt;Derived3["CompactBinaryBondDeserializer"]
+	click Derived3 "/api/TIKSN.Serialization.Bond/CompactBinaryBondDeserializer"
+	Type--&gt;Derived4["JsonDeserializer"]
+	click Derived4 "/api/TIKSN.Serialization/JsonDeserializer"
+	Type--&gt;Derived5["SimpleXmlBondDeserializer"]
+	click Derived5 "/api/TIKSN.Serialization.Bond/SimpleXmlBondDeserializer"
+	Type--&gt;Derived6["MessagePackDeserializer"]
+	click Derived6 "/api/TIKSN.Serialization.MessagePack/MessagePackDeserializer"
+	Type--&gt;Derived7["DotNetXmlDeserializer"]
+	click Derived7 "/api/TIKSN.Serialization/DotNetXmlDeserializer"
 
 						</div>
 					</div>

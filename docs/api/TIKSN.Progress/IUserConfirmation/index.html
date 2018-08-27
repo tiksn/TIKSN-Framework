@@ -181,9 +181,9 @@
 								<dt>Implementing Types</dt>
 								<dd>
 									<ul class="list-unstyled">
-											<li><a href="/api/TIKSN.PowerShell/PowerShellUserConfirmation">Power<wbr>Shell<wbr>User<wbr>Confirmation</a></li>								
 											<li><a href="/api/TIKSN.Shell/ShellUserConfirmation">Shell<wbr>User<wbr>Confirmation</a></li>								
 											<li><a href="/api/TIKSN.Progress/SilentUserConfirmation">Silent<wbr>User<wbr>Confirmation</a></li>								
+											<li><a href="/api/TIKSN.PowerShell/PowerShellUserConfirmation">Power<wbr>Shell<wbr>User<wbr>Confirmation</a></li>								
 									</ul>
 								</dd>				
 						</dl>
@@ -193,12 +193,12 @@
 							graph TD
 	Type["IUserConfirmation"]
 class Type type-node
-	Type-.-&gt;Implementing0["PowerShellUserConfirmation"]
-	click Implementing0 "/api/TIKSN.PowerShell/PowerShellUserConfirmation"
-	Type-.-&gt;Implementing1["ShellUserConfirmation"]
-	click Implementing1 "/api/TIKSN.Shell/ShellUserConfirmation"
-	Type-.-&gt;Implementing2["SilentUserConfirmation"]
-	click Implementing2 "/api/TIKSN.Progress/SilentUserConfirmation"
+	Type-.-&gt;Implementing0["ShellUserConfirmation"]
+	click Implementing0 "/api/TIKSN.Shell/ShellUserConfirmation"
+	Type-.-&gt;Implementing1["SilentUserConfirmation"]
+	click Implementing1 "/api/TIKSN.Progress/SilentUserConfirmation"
+	Type-.-&gt;Implementing2["PowerShellUserConfirmation"]
+	click Implementing2 "/api/TIKSN.PowerShell/PowerShellUserConfirmation"
 
 						</div>
 					</div>

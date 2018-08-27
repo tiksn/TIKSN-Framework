@@ -136,6 +136,16 @@
 			<li class="header">Namespace</li>
 		<li><a href="/api/TIKSN.Data">TIKSN<wbr>.Data</a></li>
 		<li role="separator" class="divider"></li>
+			<li class="header">Class Types</li>
+				<li><a href="/api/TIKSN.Data/BatchOperationHelper">BatchOperationHelper</a></li>
+				<li><a href="/api/TIKSN.Data/Entity_1">Entity<wbr>&lt;T&gt;<wbr></a></li>
+				<li><a href="/api/TIKSN.Data/File">File</a></li>
+				<li><a href="/api/TIKSN.Data/File_1">File<wbr>&lt;TIdentity&gt;<wbr></a></li>
+				<li><a href="/api/TIKSN.Data/File_2">File<wbr>&lt;TIdentity, <wbr>TMetadata&gt;<wbr></a></li>
+				<li><a href="/api/TIKSN.Data/FileInfo">FileInfo</a></li>
+				<li><a href="/api/TIKSN.Data/FileInfo_1">FileInfo<wbr>&lt;TIdentity&gt;<wbr></a></li>
+				<li><a href="/api/TIKSN.Data/FileInfo_2">FileInfo<wbr>&lt;TIdentity, <wbr>TMetadata&gt;<wbr></a></li>
+				<li><a href="/api/TIKSN.Data/UnitOfWorkBase">UnitOfWorkBase</a></li>
 			<li class="header">Interface Types</li>
 				<li><a href="/api/TIKSN.Data/IEntity_1">IEntity<wbr>&lt;T&gt;<wbr></a></li>
 				<li><a href="/api/TIKSN.Data/IFile">IFile</a></li>
@@ -152,16 +162,6 @@
 				<li><a href="/api/TIKSN.Data/IRepository_1">IRepository<wbr>&lt;T&gt;<wbr></a></li>
 				<li><a href="/api/TIKSN.Data/IUnitOfWork">IUnitOfWork</a></li>
 				<li><a href="/api/TIKSN.Data/IUnitOfWorkFactory">IUnitOfWorkFactory</a></li>
-			<li class="header">Class Types</li>
-				<li><a href="/api/TIKSN.Data/BatchOperationHelper">BatchOperationHelper</a></li>
-				<li><a href="/api/TIKSN.Data/Entity_1">Entity<wbr>&lt;T&gt;<wbr></a></li>
-				<li><a href="/api/TIKSN.Data/File">File</a></li>
-				<li><a href="/api/TIKSN.Data/File_1">File<wbr>&lt;TIdentity&gt;<wbr></a></li>
-				<li><a href="/api/TIKSN.Data/File_2">File<wbr>&lt;TIdentity, <wbr>TMetadata&gt;<wbr></a></li>
-				<li><a href="/api/TIKSN.Data/FileInfo">FileInfo</a></li>
-				<li><a href="/api/TIKSN.Data/FileInfo_1">FileInfo<wbr>&lt;TIdentity&gt;<wbr></a></li>
-				<li><a href="/api/TIKSN.Data/FileInfo_2">FileInfo<wbr>&lt;TIdentity, <wbr>TMetadata&gt;<wbr></a></li>
-				<li><a href="/api/TIKSN.Data/UnitOfWorkBase">UnitOfWorkBase</a></li>
 
 
                     </ul>
@@ -197,9 +197,9 @@
 								<dt>Implementing Types</dt>
 								<dd>
 									<ul class="list-unstyled">
-											<li><a href="/api/TIKSN.Data.AzureStorage/AzureBlobStorageRepository">Azure<wbr>Blob<wbr>Storage<wbr>Repository</a></li>								
 											<li><a href="/api/TIKSN.Data.Mongo/MongoFileRepository_2">MongoFileRepository<wbr>&lt;TIdentity, <wbr>TMetadata&gt;<wbr></a></li>								
 											<li><a href="/api/TIKSN.Data.AzureStorage/IAzureBlobStorageRepository">I<wbr>Azure<wbr>Blob<wbr>Storage<wbr>Repository</a></li>								
+											<li><a href="/api/TIKSN.Data.AzureStorage/AzureBlobStorageRepository">Azure<wbr>Blob<wbr>Storage<wbr>Repository</a></li>								
 									</ul>
 								</dd>				
 						</dl>
@@ -209,12 +209,12 @@
 							graph TD
 	Type["IFileRepository"]
 class Type type-node
-	Type-.-&gt;Implementing0["AzureBlobStorageRepository"]
-	click Implementing0 "/api/TIKSN.Data.AzureStorage/AzureBlobStorageRepository"
-	Type-.-&gt;Implementing1["MongoFileRepository&lt;TIdentity, TMetadata&gt;"]
-	click Implementing1 "/api/TIKSN.Data.Mongo/MongoFileRepository_2"
-	Type-.-&gt;Implementing2["IAzureBlobStorageRepository"]
-	click Implementing2 "/api/TIKSN.Data.AzureStorage/IAzureBlobStorageRepository"
+	Type-.-&gt;Implementing0["MongoFileRepository&lt;TIdentity, TMetadata&gt;"]
+	click Implementing0 "/api/TIKSN.Data.Mongo/MongoFileRepository_2"
+	Type-.-&gt;Implementing1["IAzureBlobStorageRepository"]
+	click Implementing1 "/api/TIKSN.Data.AzureStorage/IAzureBlobStorageRepository"
+	Type-.-&gt;Implementing2["AzureBlobStorageRepository"]
+	click Implementing2 "/api/TIKSN.Data.AzureStorage/AzureBlobStorageRepository"
 
 						</div>
 					</div>
