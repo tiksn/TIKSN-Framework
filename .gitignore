@@ -332,5 +332,4 @@ Build/tools/**
 Tools/
 
 ## Wyam
-output/
 config.wyam.*

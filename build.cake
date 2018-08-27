@@ -35,7 +35,9 @@ Task("BuildDocs")
   .IsDependentOn("Build")
   .Does(() =>
 {
-    Wyam();        
+    Wyam(new WyamSettings {
+      OutputPath = Directory("./docs/")
+    });
 });
     
 Task("PreviewDocs")
