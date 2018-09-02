@@ -197,8 +197,8 @@
 								<dt>Implementing Types</dt>
 								<dd>
 									<ul class="list-unstyled">
-											<li><a href="/api/TIKSN.Data.Mongo/MongoFileRepository_2">MongoFileRepository<wbr>&lt;TIdentity, <wbr>TMetadata&gt;<wbr></a></li>								
 											<li><a href="/api/TIKSN.Data.AzureStorage/IAzureBlobStorageRepository">I<wbr>Azure<wbr>Blob<wbr>Storage<wbr>Repository</a></li>								
+											<li><a href="/api/TIKSN.Data.Mongo/MongoFileRepository_2">MongoFileRepository<wbr>&lt;TIdentity, <wbr>TMetadata&gt;<wbr></a></li>								
 											<li><a href="/api/TIKSN.Data.AzureStorage/AzureBlobStorageRepository">Azure<wbr>Blob<wbr>Storage<wbr>Repository</a></li>								
 									</ul>
 								</dd>				
@@ -209,10 +209,10 @@
 							graph TD
 	Type["IFileRepository"]
 class Type type-node
-	Type-.-&gt;Implementing0["MongoFileRepository&lt;TIdentity, TMetadata&gt;"]
-	click Implementing0 "/api/TIKSN.Data.Mongo/MongoFileRepository_2"
-	Type-.-&gt;Implementing1["IAzureBlobStorageRepository"]
-	click Implementing1 "/api/TIKSN.Data.AzureStorage/IAzureBlobStorageRepository"
+	Type-.-&gt;Implementing0["IAzureBlobStorageRepository"]
+	click Implementing0 "/api/TIKSN.Data.AzureStorage/IAzureBlobStorageRepository"
+	Type-.-&gt;Implementing1["MongoFileRepository&lt;TIdentity, TMetadata&gt;"]
+	click Implementing1 "/api/TIKSN.Data.Mongo/MongoFileRepository_2"
 	Type-.-&gt;Implementing2["AzureBlobStorageRepository"]
 	click Implementing2 "/api/TIKSN.Data.AzureStorage/AzureBlobStorageRepository"
 
