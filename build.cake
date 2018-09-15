@@ -6,6 +6,8 @@
 #addin nuget:?package=NuGet.Core&version=2.14.0
 #addin nuget:?package=NuGet.Versioning&version=4.6.2
 #addin "nuget:?package=Cake.Wyam"
+#addin nuget:?package=Cake.Git
+#addin nuget:?package=TIKSN-Cake&loaddependencies=true
 #tool "nuget:?package=Mono.TextTransform"
 #tool "nuget:?package=xunit.runner.console"
 #tool "nuget:?package=Wyam"
@@ -19,6 +21,15 @@ using System;
 using System.Linq;
 using NuGet.Versioning;
 
+Setup(context =>
+{
+    SetTrashParentDirectory(GitFindRootFromPath("."));
+});
+
+Teardown(context =>
+{
+});
+
 Task("Tweet")
   .IsDependentOn("Publish")
   .Does(() =>
@@ -27,8 +38,9 @@ Task("Tweet")
   var oAuthConsumerSecret = EnvironmentVariable("TIKSN-Framework-ConsumerSecret");
   var accessToken = EnvironmentVariable("TIKSN-Framework-AccessToken");
   var accessTokenSecret = EnvironmentVariable("TIKSN-Framework-AccessTokenSecret");
+  var nuGetPackageId = GetNuGetPackageId(nuspec);
 
-  TwitterSendTweet(oAuthConsumerKey, oAuthConsumerSecret, accessToken, accessTokenSecret, $"TIKSN Framework {nextVersionString} is published https://www.nuget.org/packages/TIKSN-Framework/{nextVersionString}");
+  TwitterSendTweet(oAuthConsumerKey, oAuthConsumerSecret, accessToken, accessTokenSecret, $"TIKSN Framework {nextVersionString} is published https://www.nuget.org/packages/{nuGetPackageId}/{nextVersionString}");
 });
 
 Task("BuildDocs")
@@ -56,12 +68,13 @@ Task("Publish")
   .IsDependentOn("Pack")
   .Does(() =>
 {
- var package = string.Format("tools/TIKSN-Framework.{0}.nupkg", nextVersionString);
+  var nuGetPackageId = GetNuGetPackageId(nuspec);
+  var package = string.Format("{0}/{1}.{2}.nupkg", GetTrashDirectory(), nuGetPackageId, nextVersionString);
 
- NuGetPush(package, new NuGetPushSettings {
+  NuGetPush(package, new NuGetPushSettings {
      Source = "nuget.org",
      ApiKey = EnvironmentVariable("TIKSN-Framework-ApiKey")
- });
+  });
 });
 
 Task("Pack")
@@ -74,7 +87,7 @@ Task("Pack")
 {
   var nuGetPackSettings = new NuGetPackSettings {
     Version = nextVersionString,
-    OutputDirectory = "tools"
+    OutputDirectory = GetTrashDirectory()
     };
 
   NuGetPack(nuspec, nuGetPackSettings);
@@ -159,7 +172,8 @@ Task("EstimateNextVersion")
   .Description("Estimate next version.")
   .Does(() =>
 {
-  var packageList = NuGetList("TIKSN-Framework", new NuGetListSettings {
+  var nuGetPackageId = GetNuGetPackageId(nuspec);
+  var packageList = NuGetList(nuGetPackageId, new NuGetListSettings {
       AllVersions = false,
       Prerelease = true
       });
