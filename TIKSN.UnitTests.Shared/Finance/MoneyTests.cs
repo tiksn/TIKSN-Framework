@@ -916,319 +916,55 @@ namespace TIKSN.Finance.Tests
             Assert.Equal<decimal>(99.36m, Wallet.Amount);
         }
 
-        [Fact]
-        public void ToString001()
+        [Theory]
+        [InlineData("US", "16.6", "en-US", "$16.60")]
+        [InlineData("US", "24.4", "en-GB", "$24.40")]
+        [InlineData("US", "62.68", "de-DE", "62,68 $")]
+        [InlineData("US", "12.36", "ga-IE", "$12.36")]
+        [InlineData("US", "5.6", "nl-NL", "$ 5,60")]
+        [InlineData("US", "36.6", "hy-AM", "36.60 $")]
+        [InlineData("DE", "58.7", "en-US", "€58.70")]
+        [InlineData("DE", "12.4", "en-GB", "€12.40")]
+        [InlineData("DE", "14.24", "ga-IE", "€14.24")]
+        [InlineData("DE", "16.6", "nl-NL", "€ 16,60")]
+        [InlineData("DE", "14.5", "hy-AM", "14.50 €")]
+        [InlineData("DE", "16.5", "de-DE", "16,50 €")]
+        public void ToStringInDifferentCultures(string countryCode, string amount, string culture, string expected)
         {
             var stringValue = string.Empty;
 
             var thread = new Thread(() =>
             {
-                var USA = new RegionInfo("US");
-                var Dollar = new CurrencyInfo(USA);
+                var country = new RegionInfo(countryCode);
+                var currency = new CurrencyInfo(country);
 
-                var Price = new Money(Dollar, 16.6m);
+                var price = new Money(currency, decimal.Parse(amount, CultureInfo.InvariantCulture));
 
-                var CI = new CultureInfo("en-US");
-                Thread.CurrentThread.CurrentCulture = CI;
-                stringValue = Price.ToString();
+                var ci = new CultureInfo(culture);
+                Thread.CurrentThread.CurrentCulture = ci;
+                stringValue = price.ToString();
             });
 
             thread.Start();
             thread.Join();
 
-            Assert.Equal("$16.60", stringValue);
+            Assert.Equal(expected, stringValue);
         }
 
-        [Fact]
-        public void ToString002()
+        [Theory]
+        [InlineData("GB", "56.42", "en-US", "S", "£56.42")]
+        [InlineData("GB", "14.6", "en-GB", "S2", "£14.60")]
+        [InlineData("GB", "25.96", "de-DE", "S5", "25,96000 £")]
+        public void ToStringWithFormat(string countryCode, string amount, string culture, string format, string expected)
         {
-            var stringValue = string.Empty;
+            var country = new RegionInfo(countryCode);
+            var currency = new CurrencyInfo(country);
 
-            var thread = new Thread(() =>
-            {
-                var USA = new RegionInfo("US");
-                var Dollar = new CurrencyInfo(USA);
+            var price = new Money(currency, decimal.Parse(amount, CultureInfo.InvariantCulture));
 
-                var Price = new Money(Dollar, 24.4m);
+            var ci = new CultureInfo(culture);
 
-                var CI = new CultureInfo("en-GB");
-                Thread.CurrentThread.CurrentCulture = CI;
-                stringValue = Price.ToString();
-            });
-
-            thread.Start();
-            thread.Join();
-
-            Assert.Equal("$24.40", stringValue);
-        }
-
-        [Fact]
-        public void ToString003()
-        {
-            var stringValue = string.Empty;
-
-            var thread = new Thread(() =>
-            {
-                var USA = new RegionInfo("US");
-                var Dollar = new CurrencyInfo(USA);
-
-                var Price = new Money(Dollar, 62.68m);
-
-                var CI = new CultureInfo("de-DE");
-                Thread.CurrentThread.CurrentCulture = CI;
-                stringValue = Price.ToString();
-            });
-
-            thread.Start();
-            thread.Join();
-
-            Assert.Equal("62,68 $", stringValue);
-        }
-
-        [Fact]
-        public void ToString004()
-        {
-            var stringValue = string.Empty;
-
-            var thread = new Thread(() =>
-            {
-                var USA = new RegionInfo("US");
-                var Dollar = new CurrencyInfo(USA);
-
-                var Price = new Money(Dollar, 12.36m);
-
-                var CI = new CultureInfo("ga-IE");
-                Thread.CurrentThread.CurrentCulture = CI;
-                stringValue = Price.ToString();
-            });
-
-            thread.Start();
-            thread.Join();
-
-            Assert.Equal("$12.36", stringValue);
-        }
-
-        [Fact]
-        public void ToString005()
-        {
-            var stringValue = string.Empty;
-
-            var thread = new Thread(() =>
-            {
-                var USA = new RegionInfo("US");
-                var Dollar = new CurrencyInfo(USA);
-
-                var Price = new Money(Dollar, 5.6m);
-
-                var CI = new CultureInfo("nl-NL");
-                Thread.CurrentThread.CurrentCulture = CI;
-                stringValue = Price.ToString();
-            });
-
-            thread.Start();
-            thread.Join();
-
-            Assert.Equal("$ 5,60", stringValue);
-        }
-
-        [Fact]
-        public void ToString006()
-        {
-            var stringValue = string.Empty;
-
-            var thread = new Thread(() =>
-            {
-                var USA = new RegionInfo("US");
-                var Dollar = new CurrencyInfo(USA);
-
-                var Price = new Money(Dollar, 36.6m);
-
-                var CI = new CultureInfo("hy-AM");
-                Thread.CurrentThread.CurrentCulture = CI;
-                stringValue = Price.ToString();
-            });
-
-            thread.Start();
-            thread.Join();
-
-            Assert.Equal("36.60 $", stringValue);
-        }
-
-        [Fact]
-        public void ToString007()
-        {
-            var stringValue = string.Empty;
-
-            var thread = new Thread(() =>
-            {
-                var Germany = new RegionInfo("DE");
-                var Euro = new CurrencyInfo(Germany);
-
-                var Price = new Money(Euro, 58.7m);
-
-                var CI = new CultureInfo("en-US");
-                Thread.CurrentThread.CurrentCulture = CI;
-                stringValue = Price.ToString();
-            });
-
-            thread.Start();
-            thread.Join();
-
-            Assert.Equal("€58.70", stringValue);
-        }
-
-        [Fact]
-        public void ToString008()
-        {
-            var stringValue = string.Empty;
-
-            var thread = new Thread(() =>
-            {
-                var Germany = new RegionInfo("DE");
-                var Euro = new CurrencyInfo(Germany);
-
-                var Price = new Money(Euro, 12.4m);
-
-                var CI = new CultureInfo("en-GB");
-                Thread.CurrentThread.CurrentCulture = CI;
-                stringValue = Price.ToString();
-            });
-
-            thread.Start();
-            thread.Join();
-
-            Assert.Equal("€12.40", stringValue);
-        }
-
-        [Fact]
-        public void ToString009()
-        {
-            var stringValue = string.Empty;
-
-            var thread = new Thread(() =>
-            {
-                var Germany = new RegionInfo("DE");
-                var Euro = new CurrencyInfo(Germany);
-
-                var Price = new Money(Euro, 14.24m);
-
-                var CI = new CultureInfo("ga-IE");
-                Thread.CurrentThread.CurrentCulture = CI;
-                stringValue = Price.ToString();
-            });
-
-            thread.Start();
-            thread.Join();
-
-            Assert.Equal("€14.24", stringValue);
-        }
-
-        [Fact]
-        public void ToString010()
-        {
-            var stringValue = string.Empty;
-
-            var thread = new Thread(() =>
-            {
-                var Germany = new RegionInfo("DE");
-                var Euro = new CurrencyInfo(Germany);
-
-                var Price = new Money(Euro, 16.6m);
-
-                var CI = new CultureInfo("nl-NL");
-                Thread.CurrentThread.CurrentCulture = CI;
-                stringValue = Price.ToString();
-            });
-
-            thread.Start();
-            thread.Join();
-
-            Assert.Equal("€ 16,60", stringValue);
-        }
-
-        [Fact]
-        public void ToString011()
-        {
-            var stringValue = string.Empty;
-
-            var thread = new Thread(() =>
-            {
-                var Germany = new RegionInfo("DE");
-                var Euro = new CurrencyInfo(Germany);
-
-                var Price = new Money(Euro, 14.5m);
-
-                var CI = new CultureInfo("hy-AM");
-                Thread.CurrentThread.CurrentCulture = CI;
-                stringValue = Price.ToString();
-            });
-
-            thread.Start();
-            thread.Join();
-
-            Assert.Equal("14.50 €", stringValue);
-        }
-
-        [Fact]
-        public void ToString012()
-        {
-            var stringValue = string.Empty;
-
-            var thread = new Thread(() =>
-            {
-                var Germany = new RegionInfo("DE");
-                var Euro = new CurrencyInfo(Germany);
-
-                var Price = new Money(Euro, 16.5m);
-
-                var CI = new CultureInfo("de-DE");
-                Thread.CurrentThread.CurrentCulture = CI;
-                stringValue = Price.ToString();
-            });
-
-            thread.Start();
-            thread.Join();
-
-            Assert.Equal("16,50 €", stringValue);
-        }
-
-        [Fact]
-        public void ToString013()
-        {
-            System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-            CurrencyInfo Pound = new CurrencyInfo(UnitedKingdom);
-
-            Money Price = new Money(Pound, 56.42m);
-
-            System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("en-US");
-
-            Assert.Equal("£56.42", Price.ToString("S", CI));
-        }
-
-        [Fact]
-        public void ToString014()
-        {
-            System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-            CurrencyInfo Pound = new CurrencyInfo(UnitedKingdom);
-
-            Money Price = new Money(Pound, 14.6m);
-
-            System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("en-GB");
-
-            Assert.Equal("£14.60", Price.ToString("S2", CI));
-        }
-
-        [Fact]
-        public void ToString015()
-        {
-            System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-            CurrencyInfo Pound = new CurrencyInfo(UnitedKingdom);
-
-            Money Price = new Money(Pound, 25.96m);
-
-            System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("de-DE");
-
-            Assert.Equal("25,96000 £", Price.ToString("S5", CI));
+            Assert.Equal(expected, price.ToString(format, ci));
         }
 
         [Fact]
