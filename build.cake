@@ -103,8 +103,15 @@ Task("Test")
   .IsDependentOn("Build")
   .Does(() =>
 {
-  XUnit2("TIKSN.Framework.Tests/bin/Release/TIKSN.Framework.Tests.dll");
-  XUnit2("UnitTests/bin/Release/netstandard2.0/UnitTests.dll");
+  XUnit2(new [] {
+    anyBuildArtifactsDir.CombineWithFilePath("TIKSN.UnitTests.dll")
+     },
+     new XUnit2Settings {
+        Parallelism = ParallelismOption.All,
+        HtmlReport = true,
+        NoAppDomain = true,
+        OutputDirectory = CreateTrashSubDirectory("test-results")
+    });
 });
 
 Task("Build")
