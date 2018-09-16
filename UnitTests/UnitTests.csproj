@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="Exceptionless.Signed" Version="4.3.2004" />
-    <PackageReference Include="FluentAssertions" Version="5.4.1" />
+    <PackageReference Include="FluentAssertions" Version="5.4.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="2.1.1" />
