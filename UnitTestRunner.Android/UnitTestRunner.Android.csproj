@@ -14,7 +14,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TIKSN.UnitTestRunner.Android</RootNamespace>
-    <AssemblyName>UnitTestRunner.Android</AssemblyName>
+    <AssemblyName>TIKSN.UnitTestRunner.Android</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <AndroidApplication>true</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
