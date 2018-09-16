@@ -13,6 +13,7 @@
 #tool "nuget:?package=Wyam"
 
 var target = Argument("target", "Tweet");
+var configuration = Argument("configuration", "Release");
 var solution = "TIKSN Framework.sln";
 var nuspec = "TIKSN-Framework.nuspec";
 var nuGetPackageId = "TIKSN-Framework";
@@ -126,40 +127,44 @@ Task("Build")
 
   x86BuildArtifactsDir = buildArtifactsDir.Combine("x86");
   EnsureDirectoryExists(x86BuildArtifactsDir);
-  
+
   MSBuild(solution, configurator =>
-    configurator.SetConfiguration("Release")
+    configurator.SetConfiguration(configuration)
         .SetVerbosity(Verbosity.Minimal)
         .UseToolVersion(MSBuildToolVersion.VS2017)
         .SetMSBuildPlatform(MSBuildPlatform.x64)
         .SetPlatformTarget(PlatformTarget.MSIL)
+        .WithProperty("OutDir", anyBuildArtifactsDir.FullPath)
         //.WithTarget("Rebuild")
         );
 
   MSBuild(solution, configurator =>
-    configurator.SetConfiguration("Release")
+    configurator.SetConfiguration(configuration)
         .SetVerbosity(Verbosity.Minimal)
         .UseToolVersion(MSBuildToolVersion.VS2017)
         .SetMSBuildPlatform(MSBuildPlatform.x64)
         .SetPlatformTarget(PlatformTarget.x64)
+        .WithProperty("OutDir", x64BuildArtifactsDir.FullPath)
         //.WithTarget("Rebuild")
         );
 
   MSBuild(solution, configurator =>
-    configurator.SetConfiguration("Release")
+    configurator.SetConfiguration(configuration)
         .SetVerbosity(Verbosity.Minimal)
         .UseToolVersion(MSBuildToolVersion.VS2017)
         .SetMSBuildPlatform(MSBuildPlatform.x64)
         .SetPlatformTarget(PlatformTarget.x86)
+        .WithProperty("OutDir", x86BuildArtifactsDir.FullPath)
         //.WithTarget("Rebuild")
         );
 
   MSBuild(solution, configurator =>
-    configurator.SetConfiguration("Release")
+    configurator.SetConfiguration(configuration)
         .SetVerbosity(Verbosity.Minimal)
         .UseToolVersion(MSBuildToolVersion.VS2017)
         .SetMSBuildPlatform(MSBuildPlatform.x64)
         .SetPlatformTarget(PlatformTarget.ARM)
+        .WithProperty("OutDir", armBuildArtifactsDir.FullPath)
         //.WithTarget("Rebuild")
         );
 });
