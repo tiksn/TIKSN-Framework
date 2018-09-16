@@ -87,8 +87,8 @@ Task("Pack")
   .Description("Pack NuGet package.")
   .IsDependentOn("Build")
   .IsDependentOn("EstimateNextVersion")
+  .IsDependentOn("Test")
   .IsDependentOn("BuildDocs")
-  //.IsDependentOn("Test")
   .Does(() =>
 {
   var nuGetPackSettings = new NuGetPackSettings {
@@ -109,6 +109,7 @@ Task("Test")
      new XUnit2Settings {
         Parallelism = ParallelismOption.All,
         HtmlReport = true,
+        XmlReport = true,
         NoAppDomain = true,
         OutputDirectory = CreateTrashSubDirectory("test-results")
     });
