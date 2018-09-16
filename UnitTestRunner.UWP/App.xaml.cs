@@ -17,8 +17,6 @@ namespace TIKSN.Framework.UnitTestRunner.UWP
             InitializeDependencies();
 
             AddTestAssembly(GetType().GetTypeInfo().Assembly);
-
-            AddTestAssembly(typeof(SitemapTests).GetTypeInfo().Assembly);
         }
 
         private void InitializeDependencies()

@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TIKSN.Framework.Tests</RootNamespace>
     <AssemblyName>TIKSN.Framework.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -356,10 +356,6 @@
     <ProjectReference Include="..\TIKSN.Framework.Full\TIKSN.Framework.Full.csproj">
       <Project>{786b1846-c0a1-46d8-8e17-47cf5cbb0d0d}</Project>
       <Name>TIKSN.Framework.Full</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\UnitTests\UnitTests.csproj">
-      <Project>{70dd4c39-7d1d-4dd3-87d5-059842a27c20}</Project>
-      <Name>UnitTests</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

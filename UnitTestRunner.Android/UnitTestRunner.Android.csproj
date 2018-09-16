@@ -77,10 +77,6 @@
     <Reference Include="DnsClient, Version=1.2.0.0, Culture=neutral, PublicKeyToken=4574bb5573c51424, processorArchitecture=MSIL">
       <HintPath>..\packages\DnsClient.1.2.0\lib\netstandard2.0\DnsClient.dll</HintPath>
     </Reference>
-    <Reference Include="Exceptionless">
-      <HintPath>..\packages\Exceptionless.4.2.1979\lib\netstandard2.0\Exceptionless.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Exceptionless.Signed, Version=4.3.2004.0, Culture=neutral, PublicKeyToken=fc181f0a46f65747, processorArchitecture=MSIL">
       <HintPath>..\packages\Exceptionless.Signed.4.3.2004\lib\netstandard2.0\Exceptionless.Signed.dll</HintPath>
     </Reference>
@@ -456,10 +452,6 @@
       <Project>{572734f9-e631-44ab-91f0-54735b50d91b}</Project>
       <Name>TIKSN.Framework.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UnitTests\UnitTests.csproj">
-      <Project>{70dd4c39-7d1d-4dd3-87d5-059842a27c20}</Project>
-      <Name>UnitTests</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
@@ -467,6 +459,7 @@
   <ItemGroup>
     <Content Include="MainActivity.cs.txt" />
   </ItemGroup>
+  <Import Project="..\TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
