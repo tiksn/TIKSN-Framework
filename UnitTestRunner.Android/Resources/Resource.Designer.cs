@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("UnitTestRunner.Android.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("TIKSN.UnitTestRunner.Android.Resource", IsApplication=true)]
 
-namespace UnitTestRunner.Android
+namespace TIKSN.UnitTestRunner.Android
 {
 	
 	
@@ -26,7 +26,7 @@ namespace UnitTestRunner.Android
 		
 		public static void UpdateIdValues()
 		{
-			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::UnitTestRunner.Android.Resource.Attribute.actionBarSize;
+			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::TIKSN.UnitTestRunner.Android.Resource.Attribute.actionBarSize;
 		}
 		
 		public partial class Animation

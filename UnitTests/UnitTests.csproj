@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>UnitTests</AssemblyName>
+    <AssemblyName>TIKSN.UnitTests</AssemblyName>
     <PackageId>UnitTests</PackageId>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
@@ -17,6 +17,7 @@
 
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
+    <RootNamespace>TIKSN.UnitTests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

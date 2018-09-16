@@ -8,7 +8,7 @@
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TIKSN.Framework.UnitTestRunner.UWP</RootNamespace>
-    <AssemblyName>UnitTestRunner.UWP</AssemblyName>
+    <AssemblyName>TIKSN.UnitTestRunner.UWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.17134.0</TargetPlatformVersion>

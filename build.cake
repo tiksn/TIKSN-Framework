@@ -13,6 +13,7 @@
 #tool "nuget:?package=Wyam"
 
 var target = Argument("target", "Tweet");
+var configuration = Argument("configuration", "Release");
 var solution = "TIKSN Framework.sln";
 var nuspec = "TIKSN-Framework.nuspec";
 var nuGetPackageId = "TIKSN-Framework";
@@ -21,6 +22,12 @@ var nextVersionString = "";
 using System;
 using System.Linq;
 using NuGet.Versioning;
+
+DirectoryPath buildArtifactsDir;
+DirectoryPath anyBuildArtifactsDir;
+DirectoryPath armBuildArtifactsDir;
+DirectoryPath x64BuildArtifactsDir;
+DirectoryPath x86BuildArtifactsDir;
 
 Setup(context =>
 {
@@ -107,39 +114,57 @@ Task("Build")
   .IsDependentOn("DownloadCurrencyCodes")
   .Does(() =>
 {
+  buildArtifactsDir = CreateTrashSubDirectory("artifacts");
+
+  anyBuildArtifactsDir = buildArtifactsDir.Combine("any");
+  EnsureDirectoryExists(anyBuildArtifactsDir);
+
+  armBuildArtifactsDir = buildArtifactsDir.Combine("arm");
+  EnsureDirectoryExists(armBuildArtifactsDir);
+
+  x64BuildArtifactsDir = buildArtifactsDir.Combine("x64");
+  EnsureDirectoryExists(x64BuildArtifactsDir);
+
+  x86BuildArtifactsDir = buildArtifactsDir.Combine("x86");
+  EnsureDirectoryExists(x86BuildArtifactsDir);
+
   MSBuild(solution, configurator =>
-    configurator.SetConfiguration("Release")
+    configurator.SetConfiguration(configuration)
         .SetVerbosity(Verbosity.Minimal)
         .UseToolVersion(MSBuildToolVersion.VS2017)
         .SetMSBuildPlatform(MSBuildPlatform.x64)
         .SetPlatformTarget(PlatformTarget.MSIL)
+        .WithProperty("OutDir", anyBuildArtifactsDir.FullPath)
         //.WithTarget("Rebuild")
         );
 
   MSBuild(solution, configurator =>
-    configurator.SetConfiguration("Release")
+    configurator.SetConfiguration(configuration)
         .SetVerbosity(Verbosity.Minimal)
         .UseToolVersion(MSBuildToolVersion.VS2017)
         .SetMSBuildPlatform(MSBuildPlatform.x64)
         .SetPlatformTarget(PlatformTarget.x64)
+        .WithProperty("OutDir", x64BuildArtifactsDir.FullPath)
         //.WithTarget("Rebuild")
         );
 
   MSBuild(solution, configurator =>
-    configurator.SetConfiguration("Release")
+    configurator.SetConfiguration(configuration)
         .SetVerbosity(Verbosity.Minimal)
         .UseToolVersion(MSBuildToolVersion.VS2017)
         .SetMSBuildPlatform(MSBuildPlatform.x64)
         .SetPlatformTarget(PlatformTarget.x86)
+        .WithProperty("OutDir", x86BuildArtifactsDir.FullPath)
         //.WithTarget("Rebuild")
         );
 
   MSBuild(solution, configurator =>
-    configurator.SetConfiguration("Release")
+    configurator.SetConfiguration(configuration)
         .SetVerbosity(Verbosity.Minimal)
         .UseToolVersion(MSBuildToolVersion.VS2017)
         .SetMSBuildPlatform(MSBuildPlatform.x64)
         .SetPlatformTarget(PlatformTarget.ARM)
+        .WithProperty("OutDir", armBuildArtifactsDir.FullPath)
         //.WithTarget("Rebuild")
         );
 });
