@@ -104,7 +104,7 @@ Task("Test")
   .Does(() =>
 {
   XUnit2(new [] {
-    anyBuildArtifactsDir.CombineWithFilePath("TIKSN.UnitTests.dll")
+    anyBuildArtifactsDir.CombineWithFilePath("TIKSN.Framework.Core.Tests.dll")
      },
      new XUnit2Settings {
         Parallelism = ParallelismOption.All,
