@@ -15,6 +15,7 @@
 var target = Argument("target", "Tweet");
 var solution = "TIKSN Framework.sln";
 var nuspec = "TIKSN-Framework.nuspec";
+var nuGetPackageId = "TIKSN-Framework";
 var nextVersionString = "";
 
 using System;
@@ -38,7 +39,6 @@ Task("Tweet")
   var oAuthConsumerSecret = EnvironmentVariable("TIKSN-Framework-ConsumerSecret");
   var accessToken = EnvironmentVariable("TIKSN-Framework-AccessToken");
   var accessTokenSecret = EnvironmentVariable("TIKSN-Framework-AccessTokenSecret");
-  var nuGetPackageId = GetNuGetPackageId(nuspec);
 
   TwitterSendTweet(oAuthConsumerKey, oAuthConsumerSecret, accessToken, accessTokenSecret, $"TIKSN Framework {nextVersionString} is published https://www.nuget.org/packages/{nuGetPackageId}/{nextVersionString}");
 });
@@ -68,7 +68,6 @@ Task("Publish")
   .IsDependentOn("Pack")
   .Does(() =>
 {
-  var nuGetPackageId = GetNuGetPackageId(nuspec);
   var package = string.Format("{0}/{1}.{2}.nupkg", GetTrashDirectory(), nuGetPackageId, nextVersionString);
 
   NuGetPush(package, new NuGetPushSettings {
@@ -172,7 +171,6 @@ Task("EstimateNextVersion")
   .Description("Estimate next version.")
   .Does(() =>
 {
-  var nuGetPackageId = GetNuGetPackageId(nuspec);
   var packageList = NuGetList(nuGetPackageId, new NuGetListSettings {
       AllVersions = false,
       Prerelease = true
