@@ -64,12 +64,14 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             var rates = await GetExchangeRatesAsync(asOn, cancellationToken);
 
             var rate = rates.SingleOrDefault(item => item.Pair == pair);
-            if (rate == null)
-            {
-                throw new ArgumentException($"Currency pair '{pair}' is not found.");
-            }
+            if (rate != null)
+                return rate.Rate;
 
-            return rate.Rate;
+            var reverseRate = rates.SingleOrDefault(item => item.Pair.Reverse() == pair);
+            if (reverseRate != null)
+                return reverseRate.Reverse().Rate;
+
+            throw new ArgumentException($"Currency pair '{pair}' is not found.");
         }
 
         public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)

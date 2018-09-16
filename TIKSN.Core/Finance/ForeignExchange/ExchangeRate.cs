@@ -16,8 +16,15 @@ namespace TIKSN.Finance.ForeignExchange
             Rate = rate;
         }
 
-        public CurrencyPair Pair { get; }
-        public decimal Rate { get; }
         public DateTimeOffset AsOn { get; }
+
+        public CurrencyPair Pair { get; }
+
+        public decimal Rate { get; }
+
+        public ExchangeRate Reverse()
+        {
+            return new ExchangeRate(Pair.Reverse(), AsOn, decimal.One / Rate);
+        }
     }
 }
