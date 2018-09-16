@@ -16,6 +16,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
     /// <seealso cref="TIKSN.Finance.ICurrencyConverter"/>
     public class NationalBankOfUkraine : ICurrencyConverter, IExchangeRatesProvider
     {
+        private static readonly string[] ignoreList = new[] { "___" };
         private const string WebServiceUrlFormat = "http://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date={0:yyyyMMdd}";
         private static readonly RegionInfo ukraine;
         private static readonly CultureInfo ukrainianCulture;
@@ -53,6 +54,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         /// Gets the currency pairs asynchronous.
         /// </summary>
         /// <param name="asOn">As on.</param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
@@ -68,9 +70,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         /// <param name="asOn">As on.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
+        public Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            return await GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken);
+            return GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken);
         }
 
         private Exception CreatePairNotSupportedException(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency)
@@ -94,6 +96,10 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                 foreach (var currencyElement in xdocument.Element("exchange").Elements("currency"))
                 {
                     var currencyCode = currencyElement.Element("cc").Value;
+
+                    if (ignoreList.Contains(currencyCode, StringComparer.OrdinalIgnoreCase))
+                        continue;
+
                     var rate = decimal.Parse(currencyElement.Element("rate").Value, CultureInfo.InvariantCulture);
 
                     if (!string.IsNullOrEmpty(currencyCode))
