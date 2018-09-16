@@ -17,7 +17,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         private const string Last90DaysRatesUrl = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml";
         private const string Since1999RatesUrl = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.xml";
 
-        private readonly static CurrencyInfo Euro;
+        private static readonly CurrencyInfo Euro;
         private readonly ICurrencyFactory _currencyFactory;
         private readonly ITimeProvider _timeProvider;
 
@@ -66,7 +66,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             var rate = rates.SingleOrDefault(item => item.Pair == pair);
             if (rate == null)
             {
-                throw new ArgumentException("Currency pair is not found.");
+                throw new ArgumentException($"Currency pair '{pair}' is not found.");
             }
 
             return rate.Rate;

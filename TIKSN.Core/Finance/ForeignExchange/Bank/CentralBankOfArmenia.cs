@@ -147,7 +147,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             if (asOn > _timeProvider.GetCurrentTime())
                 throw new ArgumentException("Exchange rate forecasting are not supported.");
 
-            if (asOn < this.publicationDate.Value)
+            if (this.publicationDate.HasValue && asOn < this.publicationDate.Value)
                 throw new ArgumentException("Exchange rate history are not supported.");
         }
     }
