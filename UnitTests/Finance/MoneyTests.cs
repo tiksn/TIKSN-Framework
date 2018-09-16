@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Threading;
 using Xunit;
 
 namespace TIKSN.Finance.Tests
@@ -917,18 +919,24 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void ToString001()
         {
-            throw new NotImplementedException();
-            //System.Globalization.RegionInfo USA = new System.Globalization.RegionInfo("US");
-            //CurrencyInfo Dollar = new CurrencyInfo(USA);
+            var stringValue = string.Empty;
 
-            //Money Price = new Money(Dollar, 16.6m);
+            var thread = new Thread(() =>
+            {
+                var USA = new RegionInfo("US");
+                var Dollar = new CurrencyInfo(USA);
 
-            //System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("en-US");
-            //System.Threading.Thread.CurrentThread.CurrentCulture = CI;
+                var Price = new Money(Dollar, 16.6m);
 
-            //Assert.Equal("en-US", System.Globalization.CultureInfo.CurrentCulture.Name);
+                var CI = new CultureInfo("en-US");
+                Thread.CurrentThread.CurrentCulture = CI;
+                stringValue = Price.ToString();
+            });
 
-            //Assert.Equal("$16.60", Price.ToString());
+            thread.Start();
+            thread.Join();
+
+            Assert.Equal("$16.60", stringValue);
         }
 
         [Fact]
