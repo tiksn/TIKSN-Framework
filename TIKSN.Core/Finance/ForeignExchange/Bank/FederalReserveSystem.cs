@@ -73,7 +73,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                     return decimal.One / rates[pair.BaseCurrency];
             }
 
-            throw new ArgumentException("Currency pair not supported.");
+            throw new ArgumentException($"Currency pair '{pair}' not supported.");
         }
 
         private async Task<Dictionary<CurrencyInfo, decimal>> GetRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
