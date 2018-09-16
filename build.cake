@@ -22,6 +22,12 @@ using System;
 using System.Linq;
 using NuGet.Versioning;
 
+DirectoryPath buildArtifactsDir;
+DirectoryPath anyBuildArtifactsDir;
+DirectoryPath armBuildArtifactsDir;
+DirectoryPath x64BuildArtifactsDir;
+DirectoryPath x86BuildArtifactsDir;
+
 Setup(context =>
 {
     SetTrashParentDirectory(GitFindRootFromPath("."));
@@ -107,6 +113,20 @@ Task("Build")
   .IsDependentOn("DownloadCurrencyCodes")
   .Does(() =>
 {
+  buildArtifactsDir = CreateTrashSubDirectory("artifacts");
+
+  anyBuildArtifactsDir = buildArtifactsDir.Combine("any");
+  EnsureDirectoryExists(anyBuildArtifactsDir);
+
+  armBuildArtifactsDir = buildArtifactsDir.Combine("arm");
+  EnsureDirectoryExists(armBuildArtifactsDir);
+
+  x64BuildArtifactsDir = buildArtifactsDir.Combine("x64");
+  EnsureDirectoryExists(x64BuildArtifactsDir);
+
+  x86BuildArtifactsDir = buildArtifactsDir.Combine("x86");
+  EnsureDirectoryExists(x86BuildArtifactsDir);
+  
   MSBuild(solution, configurator =>
     configurator.SetConfiguration("Release")
         .SetVerbosity(Verbosity.Minimal)
