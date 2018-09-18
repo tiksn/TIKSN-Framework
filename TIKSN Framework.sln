@@ -41,9 +41,11 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TIKSN.Framework.SharedDeskt
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TIKSN.Framework.PowerShell", "TIKSN.Framework.PowerShell\TIKSN.Framework.PowerShell.shproj", "{5BD04793-B538-448D-BC23-886198037B74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Framework.Core.Tests", "TIKSN.Framework.Core.Tests\TIKSN.Framework.Core.Tests.csproj", "{31DBB0CE-8360-41FD-A874-F4C6D907C5EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Framework.Core.Tests", "TIKSN.Framework.Core.Tests\TIKSN.Framework.Core.Tests.csproj", "{31DBB0CE-8360-41FD-A874-F4C6D907C5EE}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TIKSN.UnitTests.Shared", "TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.shproj", "{04326875-E3E6-4F1F-881D-4046D83913FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Framework.Full.Tests", "TIKSN.Framework.Full.Tests\TIKSN.Framework.Full.Tests.csproj", "{9C9BF5AE-95BD-49D6-B093-F707E7AE9969}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -58,6 +60,7 @@ Global
 		TIKSN.Framework.SharedDesktop\TIKSN.Framework.SharedDesktop.projitems*{786b1846-c0a1-46d8-8e17-47cf5cbb0d0d}*SharedItemsImports = 4
 		TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems*{7a9b69cb-8abf-4474-a85a-11d5d9f3d005}*SharedItemsImports = 13
 		TIKSN.Framework.SharedDesktop\TIKSN.Framework.SharedDesktop.projitems*{89af82f5-824b-4ea5-acd9-8e7974baddc4}*SharedItemsImports = 13
+		TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.projitems*{9c9bf5ae-95bd-49d6-b093-f707e7ae9969}*SharedItemsImports = 4
 		TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems*{b067dd13-e17b-45cc-8b35-d34a1876e0fe}*SharedItemsImports = 13
 		TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.projitems*{d906abe6-13f2-4ab0-bde2-e63f77cf54e9}*SharedItemsImports = 4
 		TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.projitems*{e1acf720-cbb6-4193-8aa8-eaa32a920b8a}*SharedItemsImports = 4
@@ -265,6 +268,22 @@ Global
 		{31DBB0CE-8360-41FD-A874-F4C6D907C5EE}.Release|x64.Build.0 = Release|Any CPU
 		{31DBB0CE-8360-41FD-A874-F4C6D907C5EE}.Release|x86.ActiveCfg = Release|Any CPU
 		{31DBB0CE-8360-41FD-A874-F4C6D907C5EE}.Release|x86.Build.0 = Release|Any CPU
+		{9C9BF5AE-95BD-49D6-B093-F707E7AE9969}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C9BF5AE-95BD-49D6-B093-F707E7AE9969}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C9BF5AE-95BD-49D6-B093-F707E7AE9969}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{9C9BF5AE-95BD-49D6-B093-F707E7AE9969}.Debug|ARM.Build.0 = Debug|Any CPU
+		{9C9BF5AE-95BD-49D6-B093-F707E7AE9969}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9C9BF5AE-95BD-49D6-B093-F707E7AE9969}.Debug|x64.Build.0 = Debug|Any CPU
+		{9C9BF5AE-95BD-49D6-B093-F707E7AE9969}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9C9BF5AE-95BD-49D6-B093-F707E7AE9969}.Debug|x86.Build.0 = Debug|Any CPU
+		{9C9BF5AE-95BD-49D6-B093-F707E7AE9969}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C9BF5AE-95BD-49D6-B093-F707E7AE9969}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C9BF5AE-95BD-49D6-B093-F707E7AE9969}.Release|ARM.ActiveCfg = Release|Any CPU
+		{9C9BF5AE-95BD-49D6-B093-F707E7AE9969}.Release|ARM.Build.0 = Release|Any CPU
+		{9C9BF5AE-95BD-49D6-B093-F707E7AE9969}.Release|x64.ActiveCfg = Release|Any CPU
+		{9C9BF5AE-95BD-49D6-B093-F707E7AE9969}.Release|x64.Build.0 = Release|Any CPU
+		{9C9BF5AE-95BD-49D6-B093-F707E7AE9969}.Release|x86.ActiveCfg = Release|Any CPU
+		{9C9BF5AE-95BD-49D6-B093-F707E7AE9969}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -286,6 +305,7 @@ Global
 		{5BD04793-B538-448D-BC23-886198037B74} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{31DBB0CE-8360-41FD-A874-F4C6D907C5EE} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
 		{04326875-E3E6-4F1F-881D-4046D83913FC} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
+		{9C9BF5AE-95BD-49D6-B093-F707E7AE9969} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3E79495C-F7F4-477F-BDCB-6260ECFD8B4E}
