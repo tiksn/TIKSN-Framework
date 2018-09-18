@@ -955,6 +955,12 @@ namespace TIKSN.Finance.Tests
         [InlineData("GB", "56.42", "en-US", "S", "£56.42")]
         [InlineData("GB", "14.6", "en-GB", "S2", "£14.60")]
         [InlineData("GB", "25.96", "de-DE", "S5", "25,96000 £")]
+        [InlineData("GB", "12.21", "ga-IE", "S1", "£12.2")]
+        [InlineData("GB", "16.36", "nl-NL", "S1", "£ 16,4")]
+        [InlineData("GB", "66.326", "hy-AM", "S1", "66.3 £")]
+        [InlineData("GB", "162.2", "el-GR", "", "162,20 £")]
+        [InlineData("GB", "142.26", "it-IT", "", "£ 142,26")]
+        [InlineData("GB", "66.32", "sv-SE", null, "66,32 £")]
         public void ToStringWithFormat(string countryCode, string amount, string culture, string format, string expected)
         {
             var country = new RegionInfo(countryCode);
@@ -965,84 +971,6 @@ namespace TIKSN.Finance.Tests
             var ci = new CultureInfo(culture);
 
             Assert.Equal(expected, price.ToString(format, ci));
-        }
-
-        [Fact]
-        public void ToString016()
-        {
-            System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-            CurrencyInfo Pound = new CurrencyInfo(UnitedKingdom);
-
-            Money Price = new Money(Pound, 12.21m);
-
-            System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("ga-IE");
-
-            Assert.Equal("£12.2", Price.ToString("S1", CI));
-        }
-
-        [Fact]
-        public void ToString017()
-        {
-            System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-            CurrencyInfo Pound = new CurrencyInfo(UnitedKingdom);
-
-            Money Price = new Money(Pound, 16.36m);
-
-            System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("nl-NL");
-
-            Assert.Equal("£ 16,4", Price.ToString("S1", CI));
-        }
-
-        [Fact]
-        public void ToString018()
-        {
-            System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-            CurrencyInfo Pound = new CurrencyInfo(UnitedKingdom);
-
-            Money Price = new Money(Pound, 66.326m);
-
-            System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("hy-AM");
-
-            Assert.Equal("66.3 £", Price.ToString("S1", CI));
-        }
-
-        [Fact]
-        public void ToString019()
-        {
-            System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-            CurrencyInfo Pound = new CurrencyInfo(UnitedKingdom);
-
-            Money Price = new Money(Pound, 162.2m);
-
-            System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("el-GR");
-
-            Assert.Equal("162,20 £", Price.ToString("", CI));
-        }
-
-        [Fact]
-        public void ToString020()
-        {
-            System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-            CurrencyInfo Pound = new CurrencyInfo(UnitedKingdom);
-
-            Money Price = new Money(Pound, 142.26m);
-
-            System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("it-IT");
-
-            Assert.Equal("£ 142,26", Price.ToString(string.Empty, CI));
-        }
-
-        [Fact]
-        public void ToString021()
-        {
-            System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-            CurrencyInfo Pound = new CurrencyInfo(UnitedKingdom);
-
-            Money Price = new Money(Pound, 66.32m);
-
-            System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("sv-SE");
-
-            Assert.Equal("66,32 £", Price.ToString(null, CI));
         }
 
         [Fact]
