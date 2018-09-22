@@ -216,8 +216,6 @@ namespace TIKSN.Finance.Tests.ForeignExchange
             Assert.Contains(pairs, C => C.ToString() == "USD/TWD");
             Assert.Contains(pairs, C => C.ToString() == "USD/THB");
             Assert.Contains(pairs, C => C.ToString() == "USD/GBP");
-
-            Assert.Equal(23 * 2, pairs.Count());
         }
 
         [Fact]
