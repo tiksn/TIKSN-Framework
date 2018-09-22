@@ -87,8 +87,8 @@ Task("Pack")
   .Description("Pack NuGet package.")
   .IsDependentOn("Build")
   .IsDependentOn("EstimateNextVersion")
+  .IsDependentOn("Test")
   .IsDependentOn("BuildDocs")
-  //.IsDependentOn("Test")
   .Does(() =>
 {
   var nuGetPackSettings = new NuGetPackSettings {
@@ -103,8 +103,16 @@ Task("Test")
   .IsDependentOn("Build")
   .Does(() =>
 {
-  XUnit2("TIKSN.Framework.Tests/bin/Release/TIKSN.Framework.Tests.dll");
-  XUnit2("UnitTests/bin/Release/netstandard2.0/UnitTests.dll");
+  XUnit2(new [] {
+    anyBuildArtifactsDir.CombineWithFilePath("TIKSN.Framework.Full.Tests.dll")
+     },
+     new XUnit2Settings {
+        Parallelism = ParallelismOption.All,
+        HtmlReport = true,
+        XmlReport = true,
+        NoAppDomain = true,
+        OutputDirectory = CreateTrashSubDirectory("test-results")
+    });
 });
 
 Task("Build")

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Threading;
 using Xunit;
 
 namespace TIKSN.Finance.Tests
@@ -914,332 +916,64 @@ namespace TIKSN.Finance.Tests
             Assert.Equal<decimal>(99.36m, Wallet.Amount);
         }
 
-        [Fact]
-        public void ToString001()
+        [Theory]
+        [InlineData("US", "16.6", "en-US", "$16.60")]
+        [InlineData("US", "24.4", "en-GB", "$24.40")]
+        [InlineData("US", "62.68", "de-DE", "62,68 $")]
+        [InlineData("US", "12.36", "ga-IE", "$12.36")]
+        [InlineData("US", "5.6", "nl-NL", "$ 5,60")]
+        [InlineData("US", "36.6", "hy-AM", "36.60 $")]
+        [InlineData("DE", "58.7", "en-US", "€58.70")]
+        [InlineData("DE", "12.4", "en-GB", "€12.40")]
+        [InlineData("DE", "14.24", "ga-IE", "€14.24")]
+        [InlineData("DE", "16.6", "nl-NL", "€ 16,60")]
+        [InlineData("DE", "14.5", "hy-AM", "14.50 €")]
+        [InlineData("DE", "16.5", "de-DE", "16,50 €")]
+        [InlineData("AM", "2500.24", "de-DE", "2.500,24 ֏")]
+        public void ToStringInDifferentCultures(string countryCode, string amount, string culture, string expected)
         {
-            throw new NotImplementedException();
-            //System.Globalization.RegionInfo USA = new System.Globalization.RegionInfo("US");
-            //CurrencyInfo Dollar = new CurrencyInfo(USA);
+            var stringValue = string.Empty;
 
-            //Money Price = new Money(Dollar, 16.6m);
+            var thread = new Thread(() =>
+            {
+                var country = new RegionInfo(countryCode);
+                var currency = new CurrencyInfo(country);
 
-            //System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("en-US");
-            //System.Threading.Thread.CurrentThread.CurrentCulture = CI;
+                var price = new Money(currency, decimal.Parse(amount, CultureInfo.InvariantCulture));
 
-            //Assert.Equal("en-US", System.Globalization.CultureInfo.CurrentCulture.Name);
+                var ci = new CultureInfo(culture);
+                Thread.CurrentThread.CurrentCulture = ci;
+                stringValue = price.ToString();
+            });
 
-            //Assert.Equal("$16.60", Price.ToString());
+            thread.Start();
+            thread.Join();
+
+            Assert.Equal(expected, stringValue);
         }
 
-        [Fact]
-        public void ToString002()
+        [Theory]
+        [InlineData("GB", "56.42", "en-US", "S", "£56.42")]
+        [InlineData("GB", "14.6", "en-GB", "S2", "£14.60")]
+        [InlineData("GB", "25.96", "de-DE", "S5", "25,96000 £")]
+        [InlineData("GB", "12.21", "ga-IE", "S1", "£12.2")]
+        [InlineData("GB", "16.36", "nl-NL", "S1", "£ 16,4")]
+        [InlineData("GB", "66.326", "hy-AM", "S1", "66.3 £")]
+        [InlineData("GB", "162.2", "el-GR", "", "162,20 £")]
+        [InlineData("GB", "142.26", "it-IT", "", "142,26 £")]
+        [InlineData("GB", "66.32", "sv-SE", null, "66,32 £")]
+        [InlineData("AM", "2500", "en-US", "I", "AMD2,500.00")]
+        [InlineData("AM", "2500.2", "en-GB", "I3", "AMD2,500.200")]
+        public void ToStringWithFormat(string countryCode, string amount, string culture, string format, string expected)
         {
-            throw new NotImplementedException();
-            //         System.Globalization.RegionInfo USA = new System.Globalization.RegionInfo("US");
-            //CurrencyInfo Dollar = new CurrencyInfo(USA);
+            var country = new RegionInfo(countryCode);
+            var currency = new CurrencyInfo(country);
 
-            //Money Price = new Money(Dollar, 24.4m);
+            var price = new Money(currency, decimal.Parse(amount, CultureInfo.InvariantCulture));
 
-            //System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("en-GB");
-            //System.Threading.Thread.CurrentThread.CurrentCulture = CI;
+            var ci = new CultureInfo(culture);
 
-            //Assert.Equal("en-GB", System.Globalization.CultureInfo.CurrentCulture.Name);
-
-            //Assert.Equal("$24.40", Price.ToString());
-        }
-
-        [Fact]
-        public void ToString003()
-        {
-            throw new NotImplementedException();
-            //         System.Globalization.RegionInfo USA = new System.Globalization.RegionInfo("US");
-            //CurrencyInfo Dollar = new CurrencyInfo(USA);
-
-            //Money Price = new Money(Dollar, 62.68m);
-
-            //System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("de-DE");
-            //System.Threading.Thread.CurrentThread.CurrentCulture = CI;
-
-            //Assert.Equal("de-DE", System.Globalization.CultureInfo.CurrentCulture.Name);
-
-            //Assert.Equal("62,68 $", Price.ToString());
-        }
-
-        [Fact]
-        public void ToString004()
-        {
-            throw new NotImplementedException();
-            //         System.Globalization.RegionInfo USA = new System.Globalization.RegionInfo("US");
-            //CurrencyInfo Dollar = new CurrencyInfo(USA);
-
-            //Money Price = new Money(Dollar, 12.36m);
-
-            //System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("ga-IE");
-            //System.Threading.Thread.CurrentThread.CurrentCulture = CI;
-
-            //Assert.Equal("ga-IE", System.Globalization.CultureInfo.CurrentCulture.Name);
-
-            //Assert.Equal("$12.36", Price.ToString());
-        }
-
-        [Fact]
-        public void ToString005()
-        {
-            throw new NotImplementedException();
-
-            //         System.Globalization.RegionInfo USA = new System.Globalization.RegionInfo("US");
-            //CurrencyInfo Dollar = new CurrencyInfo(USA);
-
-            //Money Price = new Money(Dollar, 5.6m);
-
-            //System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("nl-NL");
-            //System.Threading.Thread.CurrentThread.CurrentCulture = CI;
-
-            //Assert.Equal("nl-NL", System.Globalization.CultureInfo.CurrentCulture.Name);
-
-            //Assert.Equal("$ 5,60", Price.ToString());
-        }
-
-        [Fact]
-        public void ToString006()
-        {
-            throw new NotImplementedException();
-            //         System.Globalization.RegionInfo USA = new System.Globalization.RegionInfo("US");
-            //CurrencyInfo Dollar = new CurrencyInfo(USA);
-
-            //Money Price = new Money(Dollar, 36.6m);
-
-            //System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("hy-AM");
-            //System.Threading.Thread.CurrentThread.CurrentCulture = CI;
-
-            //Assert.Equal("hy-AM", System.Globalization.CultureInfo.CurrentCulture.Name);
-
-            //Assert.Equal("36.60 $", Price.ToString());
-        }
-
-        [Fact]
-        public void ToString007()
-        {
-            throw new NotImplementedException();
-
-            //         System.Globalization.RegionInfo Germany = new System.Globalization.RegionInfo("DE");
-            //CurrencyInfo Euro = new CurrencyInfo(Germany);
-
-            //Money Price = new Money(Euro, 58.7m);
-
-            //System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("en-US");
-            //System.Threading.Thread.CurrentThread.CurrentCulture = CI;
-
-            //Assert.Equal("en-US", System.Globalization.CultureInfo.CurrentCulture.Name);
-
-            //Assert.Equal("€58.70", Price.ToString());
-        }
-
-        [Fact]
-        public void ToString008()
-        {
-            throw new NotImplementedException();
-
-            //         System.Globalization.RegionInfo Germany = new System.Globalization.RegionInfo("DE");
-            //CurrencyInfo Euro = new CurrencyInfo(Germany);
-
-            //Money Price = new Money(Euro, 12.4m);
-
-            //System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("en-GB");
-            //System.Threading.Thread.CurrentThread.CurrentCulture = CI;
-
-            //Assert.Equal("en-GB", System.Globalization.CultureInfo.CurrentCulture.Name);
-
-            //Assert.Equal("€12.40", Price.ToString());
-        }
-
-        [Fact]
-        public void ToString009()
-        {
-            throw new NotImplementedException();
-
-            //         System.Globalization.RegionInfo Germany = new System.Globalization.RegionInfo("DE");
-            //CurrencyInfo Euro = new CurrencyInfo(Germany);
-
-            //Money Price = new Money(Euro, 14.24m);
-
-            //System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("ga-IE");
-            //System.Threading.Thread.CurrentThread.CurrentCulture = CI;
-
-            //Assert.Equal("ga-IE", System.Globalization.CultureInfo.CurrentCulture.Name);
-
-            //Assert.Equal("€14.24", Price.ToString());
-        }
-
-        [Fact]
-        public void ToString010()
-        {
-            throw new NotImplementedException();
-
-            //         System.Globalization.RegionInfo Germany = new System.Globalization.RegionInfo("DE");
-            //CurrencyInfo Euro = new CurrencyInfo(Germany);
-
-            //Money Price = new Money(Euro, 16.6m);
-
-            //System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("nl-NL");
-            //System.Threading.Thread.CurrentThread.CurrentCulture = CI;
-
-            //Assert.Equal("nl-NL", System.Globalization.CultureInfo.CurrentCulture.Name);
-
-            //Assert.Equal("€ 16,60", Price.ToString());
-        }
-
-        [Fact]
-        public void ToString011()
-        {
-            throw new NotImplementedException();
-
-            //         System.Globalization.RegionInfo Germany = new System.Globalization.RegionInfo("DE");
-            //CurrencyInfo Euro = new CurrencyInfo(Germany);
-
-            //Money Price = new Money(Euro, 14.5m);
-
-            //System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("hy-AM");
-            //System.Threading.Thread.CurrentThread.CurrentCulture = CI;
-
-            //Assert.Equal("hy-AM", System.Globalization.CultureInfo.CurrentCulture.Name);
-
-            //Assert.Equal("14.50 €", Price.ToString());
-        }
-
-        [Fact]
-        public void ToString012()
-        {
-            throw new NotImplementedException();
-
-            //         System.Globalization.RegionInfo Germany = new System.Globalization.RegionInfo("DE");
-            //CurrencyInfo Euro = new CurrencyInfo(Germany);
-
-            //Money Price = new Money(Euro, 16.5m);
-
-            //System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("de-DE");
-            //System.Threading.Thread.CurrentThread.CurrentCulture = CI;
-
-            //Assert.Equal("de-DE", System.Globalization.CultureInfo.CurrentCulture.Name);
-
-            //Assert.Equal("16,50 €", Price.ToString());
-        }
-
-        [Fact]
-        public void ToString013()
-        {
-            System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-            CurrencyInfo Pound = new CurrencyInfo(UnitedKingdom);
-
-            Money Price = new Money(Pound, 56.42m);
-
-            System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("en-US");
-
-            Assert.Equal("£56.42", Price.ToString("S", CI));
-        }
-
-        [Fact]
-        public void ToString014()
-        {
-            System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-            CurrencyInfo Pound = new CurrencyInfo(UnitedKingdom);
-
-            Money Price = new Money(Pound, 14.6m);
-
-            System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("en-GB");
-
-            Assert.Equal("£14.60", Price.ToString("S2", CI));
-        }
-
-        [Fact]
-        public void ToString015()
-        {
-            System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-            CurrencyInfo Pound = new CurrencyInfo(UnitedKingdom);
-
-            Money Price = new Money(Pound, 25.96m);
-
-            System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("de-DE");
-
-            Assert.Equal("25,96000 £", Price.ToString("S5", CI));
-        }
-
-        [Fact]
-        public void ToString016()
-        {
-            System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-            CurrencyInfo Pound = new CurrencyInfo(UnitedKingdom);
-
-            Money Price = new Money(Pound, 12.21m);
-
-            System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("ga-IE");
-
-            Assert.Equal("£12.2", Price.ToString("S1", CI));
-        }
-
-        [Fact]
-        public void ToString017()
-        {
-            System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-            CurrencyInfo Pound = new CurrencyInfo(UnitedKingdom);
-
-            Money Price = new Money(Pound, 16.36m);
-
-            System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("nl-NL");
-
-            Assert.Equal("£ 16,4", Price.ToString("S1", CI));
-        }
-
-        [Fact]
-        public void ToString018()
-        {
-            System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-            CurrencyInfo Pound = new CurrencyInfo(UnitedKingdom);
-
-            Money Price = new Money(Pound, 66.326m);
-
-            System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("hy-AM");
-
-            Assert.Equal("66.3 £", Price.ToString("S1", CI));
-        }
-
-        [Fact]
-        public void ToString019()
-        {
-            System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-            CurrencyInfo Pound = new CurrencyInfo(UnitedKingdom);
-
-            Money Price = new Money(Pound, 162.2m);
-
-            System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("el-GR");
-
-            Assert.Equal("162,20 £", Price.ToString("", CI));
-        }
-
-        [Fact]
-        public void ToString020()
-        {
-            System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-            CurrencyInfo Pound = new CurrencyInfo(UnitedKingdom);
-
-            Money Price = new Money(Pound, 142.26m);
-
-            System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("it-IT");
-
-            Assert.Equal("£ 142,26", Price.ToString(string.Empty, CI));
-        }
-
-        [Fact]
-        public void ToString021()
-        {
-            System.Globalization.RegionInfo UnitedKingdom = new System.Globalization.RegionInfo("GB");
-            CurrencyInfo Pound = new CurrencyInfo(UnitedKingdom);
-
-            Money Price = new Money(Pound, 66.32m);
-
-            System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("sv-SE");
-
-            Assert.Equal("66,32 £", Price.ToString(null, CI));
+            Assert.Equal(expected, price.ToString(format, ci));
         }
 
         [Fact]
@@ -1255,49 +989,6 @@ namespace TIKSN.Finance.Tests
             Assert.Throws<FormatException>(
                    () =>
                         Price.ToString("K", CI));
-        }
-
-        [Fact]
-        public void ToString023()
-        {
-            System.Globalization.RegionInfo Armenia = new System.Globalization.RegionInfo("AM");
-            CurrencyInfo Dram = new CurrencyInfo(Armenia);
-
-            Money Price = new Money(Dram, 2500m);
-
-            System.Globalization.CultureInfo DispalyCulture = new System.Globalization.CultureInfo("en-US");
-
-            Assert.Equal("AMD2,500.00", Price.ToString("I", DispalyCulture));
-        }
-
-        [Fact]
-        public void ToString024()
-        {
-            System.Globalization.RegionInfo Armenia = new System.Globalization.RegionInfo("AM");
-            CurrencyInfo Dram = new CurrencyInfo(Armenia);
-
-            Money Price = new Money(Dram, 2500.2m);
-
-            System.Globalization.CultureInfo DispalyCulture = new System.Globalization.CultureInfo("en-GB");
-
-            Assert.Equal("AMD2,500.200", Price.ToString("I3", DispalyCulture));
-        }
-
-        [Fact]
-        public void ToString025()
-        {
-            throw new NotImplementedException();
-
-            //         System.Globalization.RegionInfo Armenia = new System.Globalization.RegionInfo("AM");
-            //CurrencyInfo Dram = new CurrencyInfo(Armenia);
-
-            //Money Price = new Money(Dram, 2500.24m);
-
-            //System.Globalization.CultureInfo DispalyCulture = new System.Globalization.CultureInfo("de-DE");
-            //System.Threading.Thread.CurrentThread.CurrentCulture = DispalyCulture;
-
-            //Assert.Equal("de-DE", System.Globalization.CultureInfo.CurrentCulture.Name);
-            //Assert.Equal("2.500,2 AMD", Price.ToString("I1"));
         }
 
         [Fact]

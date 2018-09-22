@@ -12,13 +12,14 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.17134.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.17134.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>UnitTestRunner.UWP_TemporaryKey.pfx</PackageCertificateKeyFile>
     <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
-    <PackageCertificateThumbprint>2EA11C36735581801A48C0AEF55FCED2A7C92299</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>C40A076DB451E2DB29C9A8C98B7C42CDE9AC0D61</PackageCertificateThumbprint>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -30,6 +31,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -42,6 +44,7 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>false</UseDotNetNativeToolchain>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -53,6 +56,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
     <OutputPath>bin\ARM\Release\</OutputPath>
@@ -65,6 +69,7 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>false</UseDotNetNativeToolchain>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -76,6 +81,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -88,6 +94,7 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>false</UseDotNetNativeToolchain>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs">
@@ -102,7 +109,6 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="UnitTestRunner.UWP_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Square310x310Logo.scale-200.png" />
@@ -137,10 +143,6 @@
       <Project>{9d8726cc-ac22-4597-90db-a2809e22500c}</Project>
       <Name>TIKSN.RegionLocalization</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UnitTests\UnitTests.csproj">
-      <Project>{70dd4c39-7d1d-4dd3-87d5-059842a27c20}</Project>
-      <Name>UnitTests</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ConsoleTables">
@@ -148,6 +150,9 @@
     </PackageReference>
     <PackageReference Include="Exceptionless.Signed">
       <Version>4.3.2004</Version>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions">
+      <Version>5.4.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AppCenter.Analytics">
       <Version>1.8.0</Version>
@@ -182,6 +187,12 @@
     <PackageReference Include="NoDb">
       <Version>1.1.3</Version>
     </PackageReference>
+    <PackageReference Include="NSubstitute">
+      <Version>3.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="Serilog.Sinks.XUnit">
+      <Version>1.0.6</Version>
+    </PackageReference>
     <PackageReference Include="System.Interactive">
       <Version>3.2.0</Version>
     </PackageReference>
@@ -191,10 +202,26 @@
     <PackageReference Include="System.Reactive">
       <Version>4.1.0</Version>
     </PackageReference>
+    <PackageReference Include="xunit">
+      <Version>2.4.0</Version>
+    </PackageReference>
+    <PackageReference Include="xunit.analyzers">
+      <Version>0.10.0</Version>
+    </PackageReference>
+    <PackageReference Include="xunit.assert">
+      <Version>2.4.0</Version>
+    </PackageReference>
+    <PackageReference Include="xunit.core">
+      <Version>2.4.0</Version>
+    </PackageReference>
     <PackageReference Include="xunit.runner.devices">
       <Version>2.4.48</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="UnitTestRunner.UWP_TemporaryKey.pfx" />
+  </ItemGroup>
+  <Import Project="..\TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

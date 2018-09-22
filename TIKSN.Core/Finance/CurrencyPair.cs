@@ -57,6 +57,11 @@
             return this.ToString().GetHashCode();
         }
 
+        public CurrencyPair Reverse()
+        {
+            return new CurrencyPair(CounterCurrency, BaseCurrency);
+        }
+
         public override string ToString()
         {
             return string.Format("{0}/{1}", this.BaseCurrency.ToString(), this.CounterCurrency.ToString());

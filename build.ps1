@@ -56,6 +56,14 @@ Param(
     [string[]]$ScriptArgs
 )
 
+$currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+$isInAdminRole = $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+if(-NOT $isInAdminRole) {
+    Write-Error "PowerShell is not running as an Administrator."
+    exit
+}
+
 [Reflection.Assembly]::LoadWithPartialName("System.Security") | Out-Null
 function MD5HashFile([string] $filePath)
 {

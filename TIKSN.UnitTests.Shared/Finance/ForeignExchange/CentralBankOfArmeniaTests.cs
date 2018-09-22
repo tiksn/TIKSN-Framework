@@ -2,6 +2,7 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Globalization;
@@ -130,15 +131,24 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         [Fact]
         public async Task Fetch002()
         {
-            throw new NotImplementedException();
+            var passed = false;
 
-            //var ci = new CultureInfo("ru-RU");
-            //Thread.CurrentThread.CurrentCulture = ci;
-            //Thread.CurrentThread.CurrentUICulture = ci;
+            var stringValue = string.Empty;
 
-            //Finance.ForeignExchange.CentralBankOfArmenia Bank = new Finance.ForeignExchange.CentralBankOfArmenia();
+            await Task.Run(async () =>
+            {
+                var ci = new CultureInfo("ru-RU");
+                Thread.CurrentThread.CurrentCulture = ci;
+                Thread.CurrentThread.CurrentUICulture = ci;
 
-            //await Bank.FetchAsync();
+                var bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
+
+                await bank.GetExchangeRatesAsync(_timeProvider.GetCurrentTime(), default);
+
+                passed = true;
+            });
+
+            Assert.Equal(true, passed);
         }
 
         [Fact]

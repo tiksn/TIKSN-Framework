@@ -330,6 +330,7 @@ Build/tools/**
 
 ## Build
 Tools/
+.trash/
 
 ## Wyam
 config.wyam.*
