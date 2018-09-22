@@ -929,6 +929,7 @@ namespace TIKSN.Finance.Tests
         [InlineData("DE", "16.6", "nl-NL", "€ 16,60")]
         [InlineData("DE", "14.5", "hy-AM", "14.50 €")]
         [InlineData("DE", "16.5", "de-DE", "16,50 €")]
+        [InlineData("AM", "2500.24", "de-DE", "2.500,24 ֏")]
         public void ToStringInDifferentCultures(string countryCode, string amount, string culture, string expected)
         {
             var stringValue = string.Empty;
@@ -988,29 +989,6 @@ namespace TIKSN.Finance.Tests
             Assert.Throws<FormatException>(
                    () =>
                         Price.ToString("K", CI));
-        }
-
-        [Fact]
-        public void ToString025()
-        {
-            var stringValue = string.Empty;
-
-            var thread = new Thread(() =>
-            {
-                var Armenia = new RegionInfo("AM");
-                var Dram = new CurrencyInfo(Armenia);
-
-                var Price = new Money(Dram, 2500.24m);
-
-                var CI = new CultureInfo("de-DE");
-                Thread.CurrentThread.CurrentCulture = CI;
-                stringValue = Price.ToString();
-            });
-
-            thread.Start();
-            thread.Join();
-
-            Assert.Equal("2.500,2 AMD", stringValue);
         }
 
         [Fact]
