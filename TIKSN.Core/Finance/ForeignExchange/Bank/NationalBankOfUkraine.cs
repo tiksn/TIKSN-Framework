@@ -91,7 +91,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             {
                 var response = await httpClient.GetStringAsync(string.Format(WebServiceUrlFormat, asOn));
                 var xdocument = XDocument.Parse(response);
-                var result = new List<ExchangeRate>();
+                var result = new HashSet<ExchangeRate>();
 
                 foreach (var currencyElement in xdocument.Element("exchange").Elements("currency"))
                 {
