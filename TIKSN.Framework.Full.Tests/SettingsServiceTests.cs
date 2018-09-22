@@ -9,6 +9,10 @@ namespace TIKSN.Framework.UnitTests.Settings
         partial void SetupDenepdencies()
         {
             Dependencies.ServiceCollection.AddOptions();
+            Dependencies.ServiceCollection.Configure<WindowsRegistrySettingsServiceOptions>(options =>
+            {
+                options.SubKey = "Software";
+            });
             Dependencies.ServiceCollection.AddSingleton<ISettingsService, WindowsRegistrySettingsService>();
         }
     }
