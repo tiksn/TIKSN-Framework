@@ -961,6 +961,8 @@ namespace TIKSN.Finance.Tests
         [InlineData("GB", "162.2", "el-GR", "", "162,20 £")]
         [InlineData("GB", "142.26", "it-IT", "", "£ 142,26")]
         [InlineData("GB", "66.32", "sv-SE", null, "66,32 £")]
+        [InlineData("AM", "2500", "en-US", "I", "AMD2,500.00")]
+        [InlineData("AM", "2500.2", "en-GB", "I3", "AMD2,500.200")]
         public void ToStringWithFormat(string countryCode, string amount, string culture, string format, string expected)
         {
             var country = new RegionInfo(countryCode);
@@ -986,32 +988,6 @@ namespace TIKSN.Finance.Tests
             Assert.Throws<FormatException>(
                    () =>
                         Price.ToString("K", CI));
-        }
-
-        [Fact]
-        public void ToString023()
-        {
-            System.Globalization.RegionInfo Armenia = new System.Globalization.RegionInfo("AM");
-            CurrencyInfo Dram = new CurrencyInfo(Armenia);
-
-            Money Price = new Money(Dram, 2500m);
-
-            System.Globalization.CultureInfo DispalyCulture = new System.Globalization.CultureInfo("en-US");
-
-            Assert.Equal("AMD2,500.00", Price.ToString("I", DispalyCulture));
-        }
-
-        [Fact]
-        public void ToString024()
-        {
-            System.Globalization.RegionInfo Armenia = new System.Globalization.RegionInfo("AM");
-            CurrencyInfo Dram = new CurrencyInfo(Armenia);
-
-            Money Price = new Money(Dram, 2500.2m);
-
-            System.Globalization.CultureInfo DispalyCulture = new System.Globalization.CultureInfo("en-GB");
-
-            Assert.Equal("AMD2,500.200", Price.ToString("I3", DispalyCulture));
         }
 
         [Fact]
