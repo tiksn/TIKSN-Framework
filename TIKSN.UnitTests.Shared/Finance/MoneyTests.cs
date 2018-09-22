@@ -960,7 +960,7 @@ namespace TIKSN.Finance.Tests
         [InlineData("GB", "16.36", "nl-NL", "S1", "£ 16,4")]
         [InlineData("GB", "66.326", "hy-AM", "S1", "66.3 £")]
         [InlineData("GB", "162.2", "el-GR", "", "162,20 £")]
-        [InlineData("GB", "142.26", "it-IT", "", "£ 142,26")]
+        [InlineData("GB", "142.26", "it-IT", "", "142,26 £")]
         [InlineData("GB", "66.32", "sv-SE", null, "66,32 £")]
         [InlineData("AM", "2500", "en-US", "I", "AMD2,500.00")]
         [InlineData("AM", "2500.2", "en-GB", "I3", "AMD2,500.200")]
