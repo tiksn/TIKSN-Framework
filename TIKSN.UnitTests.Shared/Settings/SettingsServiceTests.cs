@@ -6,14 +6,17 @@ using Xunit;
 
 namespace TIKSN.Framework.UnitTests.Settings
 {
-    public class SettingsServiceTests
+    public partial class SettingsServiceTests
     {
         private readonly ISettingsService settingsService;
 
         public SettingsServiceTests()
         {
+            SetupDenepdencies();
             settingsService = Dependencies.ServiceProvider.GetRequiredService<ISettingsService>();
         }
+
+        partial void SetupDenepdencies();
 
         [Fact]
         public void LocalSettingsIntegerTest()
