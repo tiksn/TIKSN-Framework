@@ -2,7 +2,7 @@
 using TIKSN.Framework.UnitTests.DI;
 using TIKSN.Settings;
 
-namespace TIKSN.Framework.Full.Tests
+namespace TIKSN.Framework.UnitTests.Settings
 {
     public partial class SettingsServiceTests
     {
