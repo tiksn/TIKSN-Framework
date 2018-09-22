@@ -193,7 +193,6 @@ namespace TIKSN.Finance.Tests.ForeignExchange
             Assert.Contains(pairs, C => C.ToString() == "TWD/USD");
             Assert.Contains(pairs, C => C.ToString() == "THB/USD");
             Assert.Contains(pairs, C => C.ToString() == "GBP/USD");
-            Assert.Contains(pairs, C => C.ToString() == "VEF/USD");
 
             Assert.Contains(pairs, C => C.ToString() == "USD/AUD");
             Assert.Contains(pairs, C => C.ToString() == "USD/BRL");
@@ -217,7 +216,6 @@ namespace TIKSN.Finance.Tests.ForeignExchange
             Assert.Contains(pairs, C => C.ToString() == "USD/TWD");
             Assert.Contains(pairs, C => C.ToString() == "USD/THB");
             Assert.Contains(pairs, C => C.ToString() == "USD/GBP");
-            Assert.Contains(pairs, C => C.ToString() == "USD/VEF");
 
             Assert.Equal(23 * 2, pairs.Count());
         }
