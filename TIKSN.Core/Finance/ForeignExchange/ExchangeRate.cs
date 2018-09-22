@@ -2,7 +2,7 @@
 
 namespace TIKSN.Finance.ForeignExchange
 {
-    public class ExchangeRate
+    public class ExchangeRate : IEquatable<ExchangeRate>
     {
         public ExchangeRate(CurrencyPair pair, DateTimeOffset asOn, decimal rate)
         {
@@ -22,9 +22,29 @@ namespace TIKSN.Finance.ForeignExchange
 
         public decimal Rate { get; }
 
+        public bool Equals(ExchangeRate other)
+        {
+            if (other == null)
+                return false;
+
+            return AsOn == other.AsOn
+                && Pair == other.Pair
+                && Rate == other.Rate;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as ExchangeRate);
+        }
+
         public ExchangeRate Reverse()
         {
             return new ExchangeRate(Pair.Reverse(), AsOn, decimal.One / Rate);
+        }
+
+        public override int GetHashCode()
+        {
+            return AsOn.GetHashCode() ^ Pair.GetHashCode() ^ Rate.GetHashCode();
         }
     }
 }
