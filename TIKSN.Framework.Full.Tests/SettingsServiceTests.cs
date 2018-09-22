@@ -6,8 +6,9 @@ namespace TIKSN.Framework.UnitTests.Settings
 {
     public partial class SettingsServiceTests
     {
-        private void SetupDenepdencies()
+        partial void SetupDenepdencies()
         {
+            Dependencies.ServiceCollection.AddOptions();
             Dependencies.ServiceCollection.AddSingleton<ISettingsService, WindowsRegistrySettingsService>();
         }
     }
