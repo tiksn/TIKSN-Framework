@@ -192,6 +192,7 @@ Task("GenerateLocalizationKeys")
     Directory("TIKSN.Core/Localization"),
     File("TIKSN.Core/Localization/EnglishOnly.resx"),
     File("TIKSN.Core/Shell/ShellCommand.resx"),
+    File("TIKSN.Core/Web/Rest/RestRepository.resx"),
     File("TIKSN.LanguageLocalization/Strings.resx"),
     File("TIKSN.RegionLocalization/Strings.resx"));
 });

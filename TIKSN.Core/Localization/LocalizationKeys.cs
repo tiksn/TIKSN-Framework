@@ -40,6 +40,7 @@ namespace TIKSN.Localization
         public const int Key777755530 = 777755530;
         public const int Key785393579 = 785393579;
         public const int Key879318823 = 879318823;
+        public const int Key638306944 = 638306944;
         public const int Key179741382 = 179741382;
         public const int Key365281568 = 365281568;
         public const int Key445651597 = 445651597;
