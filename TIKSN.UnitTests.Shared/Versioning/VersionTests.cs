@@ -55,7 +55,7 @@ namespace TIKSN.Versioning.Tests
         public void EqualsOperator001()
         {
             Version V1 = new Version(10, 20, Milestone.ReleaseCandidate, 2);
-            Version V2 = new Version(10, 20, Milestone.PreAlpha, 2);
+            Version V2 = new Version(10, 20, Milestone.Alpha, 2);
 
             Assert.True(!(V1 == V2));
         }
@@ -145,7 +145,7 @@ namespace TIKSN.Versioning.Tests
         public void NotEqualsOperator001()
         {
             Version V1 = new Version(10, 20, Milestone.ReleaseCandidate, 2);
-            Version V2 = new Version(10, 20, Milestone.PreAlpha, 2);
+            Version V2 = new Version(10, 20, Milestone.Alpha, 2);
 
             Assert.True(V1 != V2);
         }
@@ -176,9 +176,9 @@ namespace TIKSN.Versioning.Tests
         [Fact]
         public void ToPrereleaseString001()
         {
-            Version V = new Version(1, 2, 3, 4, Milestone.PreAlpha, 5);
+            Version V = new Version(1, 2, 3, 4, Milestone.Alpha, 5);
 
-            Assert.Equal("1.2.3.4-pre-alpha.5", V.ToString());
+            Assert.Equal("1.2.3.4-alpha.5", V.ToString());
         }
 
         [Fact]
@@ -869,10 +869,10 @@ namespace TIKSN.Versioning.Tests
         [Theory]
         [InlineData("1.2.3", "1.2.3")]
         [InlineData("1.2.3", "1.2.3-_pre_alpha.1")]
-        [InlineData("1.2.3-beta.4", "1.2.3-_pre_alpha.1")]
+        [InlineData("1.2.3-beta.4", "1.2.3-alpha.1")]
         [InlineData("1.2.3-beta.4", "1.2.3-beta.1")]
         [InlineData("1.2.3-beta.4", "1.2.3-rc.1")]
-        [InlineData("1.2.3-_pre_alpha.4", "1.2.3-rc.1")]
+        [InlineData("1.2.3-alpha.4", "1.2.3-rc.1")]
         public void EqualityAndComparisonCheckWithNuGet(string v1, string v2)
         {
             var nv1 = new NuGetVersion(v1);

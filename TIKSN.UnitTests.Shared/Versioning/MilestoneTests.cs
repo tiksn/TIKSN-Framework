@@ -5,12 +5,6 @@ namespace TIKSN.Versioning.Tests
     public class MilestoneTests
     {
         [Fact]
-        public void Test1()
-        {
-            Assert.True(Milestone.PreAlpha < Milestone.Alpha);
-        }
-
-        [Fact]
         public void Test2()
         {
             Assert.True(Milestone.Alpha < Milestone.Beta);

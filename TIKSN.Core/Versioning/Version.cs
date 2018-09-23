@@ -487,9 +487,6 @@ namespace TIKSN.Versioning
 
             switch (milestoneTag.ToLowerInvariant())
             {
-                case "_pre_alpha":
-                    return (Milestone.PreAlpha, prereleaseNumber);
-
                 case "alpha":
                     return (Milestone.Alpha, prereleaseNumber);
 
@@ -518,10 +515,6 @@ namespace TIKSN.Versioning
 
             switch (version.milestone)
             {
-                case Milestone.PreAlpha:
-                    milestoneTag = "_pre_alpha";
-                    break;
-
                 case Milestone.Alpha:
                     milestoneTag = "alpha";
                     break;
