@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FluentAssertions;
+using NuGet.Versioning;
+using System;
 using Xunit;
 
 namespace TIKSN.Versioning.Tests
@@ -833,6 +835,35 @@ namespace TIKSN.Versioning.Tests
             Assert.Equal(Stability.Unstable, V.Stability);
             Assert.True(V.ReleaseDate.HasValue);
             Assert.Equal(1985, V.ReleaseDate.Value.Year);
+        }
+
+        [Theory]
+        [InlineData("1.2.3")]
+        [InlineData("1.2.3.4")]
+        [InlineData("1.2.3.4-alpha.1")]
+        [InlineData("1.2.3.4-beta.2")]
+        [InlineData("1.2.3.4-rc.3")]
+        [InlineData("1.2.3.4-pre-alpha.3")]
+        public void NuGetVersionConvertToVersionString(string nugetVersion)
+        {
+            var nVersion = new NuGetVersion(nugetVersion);
+            var version = (Version)nVersion;
+
+            version.ToString().Should().Be(nVersion.ToString());
+        }
+
+        [Theory]
+        [InlineData("1.2.3")]
+        [InlineData("1.2.3-alpha.1")]
+        [InlineData("1.2.3-beta.2")]
+        [InlineData("1.2.3-rc.3")]
+        [InlineData("1.2.3-pre-alpha.3")]
+        public void SemanticVersionConvertToVersionString(string semVersion)
+        {
+            var nVersion = SemanticVersion.Parse(semVersion);
+            var version = (Version)nVersion;
+
+            version.ToString().Should().Be(nVersion.ToString());
         }
     }
 }
