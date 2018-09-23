@@ -25,13 +25,7 @@ namespace TIKSN.Versioning.Tests
         [Fact]
         public void Test4()
         {
-            Assert.True(Milestone.ReleaseCandidate < Milestone.RTM);
-        }
-
-        [Fact]
-        public void Test5()
-        {
-            Assert.True(Milestone.RTM < Milestone.GA);
+            Assert.True(Milestone.ReleaseCandidate < Milestone.Release);
         }
     }
 }

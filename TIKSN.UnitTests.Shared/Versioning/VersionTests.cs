@@ -176,7 +176,7 @@ namespace TIKSN.Versioning.Tests
         {
             Version V = new Version(1, 2, 3, 4, Milestone.PreAlpha, 5);
 
-            Assert.Equal("pre-alpha5", V.ToPrereleaseString());
+            Assert.Equal("1.2.3.4-pre-alpha.5", V.ToString());
         }
 
         [Fact]
@@ -184,7 +184,7 @@ namespace TIKSN.Versioning.Tests
         {
             Version V = new Version(1, 2, 3, 4, Milestone.Alpha, 5);
 
-            Assert.Equal("alpha5", V.ToPrereleaseString());
+            Assert.Equal("1.2.3.4-alpha.5", V.ToString());
         }
 
         [Fact]
@@ -192,7 +192,7 @@ namespace TIKSN.Versioning.Tests
         {
             Version V = new Version(1, 2, 3, 4, Milestone.Beta, 5);
 
-            Assert.Equal("beta5", V.ToPrereleaseString());
+            Assert.Equal("1.2.3.4-beta.5", V.ToString());
         }
 
         [Fact]
@@ -200,31 +200,23 @@ namespace TIKSN.Versioning.Tests
         {
             Version V = new Version(1, 2, 3, 4, Milestone.ReleaseCandidate, 5);
 
-            Assert.Equal("rc5", V.ToPrereleaseString());
-        }
-
-        [Fact]
-        public void ToPrereleaseString005()
-        {
-            Version V = new Version(1, 2, 3, 4, Milestone.RTM, 5);
-
-            Assert.Equal("rtm5", V.ToPrereleaseString());
+            Assert.Equal("1.2.3.4-rc.5", V.ToString());
         }
 
         [Fact]
         public void ToPrereleaseString006()
         {
-            Version V = new Version(1, 2, 3, 4, Milestone.GA, 5);
+            Version V = new Version(1, 2, 3, 4, Milestone.Release);
 
-            Assert.Equal("ga5", V.ToPrereleaseString());
+            Assert.Equal("1.2.3.4", V.ToString());
         }
 
         [Fact]
         public void ToPrereleaseString007()
         {
-            Version V = new Version(1, 2, 3, 4, Milestone.GA);
+            Version V = new Version(1, 2, 3, 4, Milestone.Release);
 
-            Assert.Equal("ga", V.ToPrereleaseString());
+            Assert.Equal("1.2.3.4", V.ToString());
         }
 
         [Fact]
@@ -454,7 +446,7 @@ namespace TIKSN.Versioning.Tests
         {
             Version V = new Version(10, 20, Milestone.ReleaseCandidate, 2);
 
-            Assert.Equal("10.20-rc2", V.ToString());
+            Assert.Equal("10.20-rc.2", V.ToString());
         }
 
         [Fact]
@@ -462,7 +454,7 @@ namespace TIKSN.Versioning.Tests
         {
             Version V = new Version(10, 20, 30, Milestone.ReleaseCandidate, 2);
 
-            Assert.Equal("10.20.30-rc2", V.ToString());
+            Assert.Equal("10.20.30-rc.2", V.ToString());
         }
 
         [Fact]
@@ -470,7 +462,7 @@ namespace TIKSN.Versioning.Tests
         {
             Version V = new Version(10, 20, 30, 40, Milestone.ReleaseCandidate, 2);
 
-            Assert.Equal("10.20.30.40-rc2", V.ToString());
+            Assert.Equal("10.20.30.40-rc.2", V.ToString());
         }
 
         [Fact]
@@ -478,7 +470,7 @@ namespace TIKSN.Versioning.Tests
         {
             Version V = new Version(new System.Version(1, 2, 3, 4), Milestone.ReleaseCandidate, 2);
 
-            Assert.Equal("1.2.3.4-rc2", V.ToString());
+            Assert.Equal("1.2.3.4-rc.2", V.ToString());
         }
 
         [Fact]
@@ -490,7 +482,7 @@ namespace TIKSN.Versioning.Tests
             Assert.Equal(3, V.Release.Minor);
             Assert.Equal(-1, V.Release.Build);
             Assert.Equal(-1, V.Release.Revision);
-            Assert.Equal(Milestone.GA, V.Milestone);
+            Assert.Equal(Milestone.Release, V.Milestone);
             Assert.Equal(-1, V.PrereleaseNumber);
             Assert.Equal(Stability.Stable, V.Stability);
             Assert.False(V.ReleaseDate.HasValue);
@@ -505,7 +497,7 @@ namespace TIKSN.Versioning.Tests
             Assert.Equal(3, V.Release.Minor);
             Assert.Equal(5, V.Release.Build);
             Assert.Equal(-1, V.Release.Revision);
-            Assert.Equal(Milestone.GA, V.Milestone);
+            Assert.Equal(Milestone.Release, V.Milestone);
             Assert.Equal(-1, V.PrereleaseNumber);
             Assert.Equal(Stability.Stable, V.Stability);
             Assert.False(V.ReleaseDate.HasValue);
@@ -520,7 +512,7 @@ namespace TIKSN.Versioning.Tests
             Assert.Equal(3, V.Release.Minor);
             Assert.Equal(5, V.Release.Build);
             Assert.Equal(7, V.Release.Revision);
-            Assert.Equal(Milestone.GA, V.Milestone);
+            Assert.Equal(Milestone.Release, V.Milestone);
             Assert.Equal(-1, V.PrereleaseNumber);
             Assert.Equal(Stability.Stable, V.Stability);
             Assert.False(V.ReleaseDate.HasValue);
@@ -535,7 +527,7 @@ namespace TIKSN.Versioning.Tests
             Assert.Equal(3, V.Release.Minor);
             Assert.Equal(5, V.Release.Build);
             Assert.Equal(7, V.Release.Revision);
-            Assert.Equal(Milestone.GA, V.Milestone);
+            Assert.Equal(Milestone.Release, V.Milestone);
             Assert.Equal(-1, V.PrereleaseNumber);
             Assert.Equal(Stability.Stable, V.Stability);
             Assert.False(V.ReleaseDate.HasValue);
@@ -678,7 +670,7 @@ namespace TIKSN.Versioning.Tests
             Assert.Equal(3, V.Release.Minor);
             Assert.Equal(5, V.Release.Build);
             Assert.Equal(7, V.Release.Revision);
-            Assert.Equal(Milestone.GA, V.Milestone);
+            Assert.Equal(Milestone.Release, V.Milestone);
             Assert.Equal(-1, V.PrereleaseNumber);
             Assert.Equal(Stability.Stable, V.Stability);
             Assert.True(V.ReleaseDate.HasValue);
@@ -694,7 +686,7 @@ namespace TIKSN.Versioning.Tests
             Assert.Equal(3, V.Release.Minor);
             Assert.Equal(5, V.Release.Build);
             Assert.Equal(7, V.Release.Revision);
-            Assert.Equal(Milestone.GA, V.Milestone);
+            Assert.Equal(Milestone.Release, V.Milestone);
             Assert.Equal(-1, V.PrereleaseNumber);
             Assert.Equal(Stability.Stable, V.Stability);
             Assert.True(V.ReleaseDate.HasValue);
@@ -710,7 +702,7 @@ namespace TIKSN.Versioning.Tests
             Assert.Equal(3, V.Release.Minor);
             Assert.Equal(5, V.Release.Build);
             Assert.Equal(-1, V.Release.Revision);
-            Assert.Equal(Milestone.GA, V.Milestone);
+            Assert.Equal(Milestone.Release, V.Milestone);
             Assert.Equal(-1, V.PrereleaseNumber);
             Assert.Equal(Stability.Stable, V.Stability);
             Assert.True(V.ReleaseDate.HasValue);
@@ -726,7 +718,7 @@ namespace TIKSN.Versioning.Tests
             Assert.Equal(3, V.Release.Minor);
             Assert.Equal(-1, V.Release.Build);
             Assert.Equal(-1, V.Release.Revision);
-            Assert.Equal(Milestone.GA, V.Milestone);
+            Assert.Equal(Milestone.Release, V.Milestone);
             Assert.Equal(-1, V.PrereleaseNumber);
             Assert.Equal(Stability.Stable, V.Stability);
             Assert.True(V.ReleaseDate.HasValue);
@@ -736,13 +728,13 @@ namespace TIKSN.Versioning.Tests
         [Fact]
         public void Version021()
         {
-            Version V = new Version(2, 3, Milestone.RTM, new System.DateTime(1985, 11, 20));
+            Version V = new Version(2, 3, Milestone.Release, new System.DateTime(1985, 11, 20));
 
             Assert.Equal(2, V.Release.Major);
             Assert.Equal(3, V.Release.Minor);
             Assert.Equal(-1, V.Release.Build);
             Assert.Equal(-1, V.Release.Revision);
-            Assert.Equal(Milestone.RTM, V.Milestone);
+            Assert.Equal(Milestone.Release, V.Milestone);
             Assert.Equal(-1, V.PrereleaseNumber);
             Assert.Equal(Stability.Stable, V.Stability);
             Assert.True(V.ReleaseDate.HasValue);
@@ -752,13 +744,13 @@ namespace TIKSN.Versioning.Tests
         [Fact]
         public void Version022()
         {
-            Version V = new Version(2, 3, 5, Milestone.RTM, new System.DateTime(1985, 11, 20));
+            Version V = new Version(2, 3, 5, Milestone.Release, new System.DateTime(1985, 11, 20));
 
             Assert.Equal(2, V.Release.Major);
             Assert.Equal(3, V.Release.Minor);
             Assert.Equal(5, V.Release.Build);
             Assert.Equal(-1, V.Release.Revision);
-            Assert.Equal(Milestone.RTM, V.Milestone);
+            Assert.Equal(Milestone.Release, V.Milestone);
             Assert.Equal(-1, V.PrereleaseNumber);
             Assert.Equal(Stability.Stable, V.Stability);
             Assert.True(V.ReleaseDate.HasValue);
@@ -768,13 +760,13 @@ namespace TIKSN.Versioning.Tests
         [Fact]
         public void Version023()
         {
-            Version V = new Version(2, 3, 5, 7, Milestone.RTM, new System.DateTime(1985, 11, 20));
+            Version V = new Version(2, 3, 5, 7, Milestone.Release, new System.DateTime(1985, 11, 20));
 
             Assert.Equal(2, V.Release.Major);
             Assert.Equal(3, V.Release.Minor);
             Assert.Equal(5, V.Release.Build);
             Assert.Equal(7, V.Release.Revision);
-            Assert.Equal(Milestone.RTM, V.Milestone);
+            Assert.Equal(Milestone.Release, V.Milestone);
             Assert.Equal(-1, V.PrereleaseNumber);
             Assert.Equal(Stability.Stable, V.Stability);
             Assert.True(V.ReleaseDate.HasValue);
@@ -784,13 +776,13 @@ namespace TIKSN.Versioning.Tests
         [Fact]
         public void Version024()
         {
-            Version V = new Version(new System.Version(2, 3, 5, 7), Milestone.RTM, new System.DateTime(1985, 11, 20));
+            Version V = new Version(new System.Version(2, 3, 5, 7), Milestone.Release, new System.DateTime(1985, 11, 20));
 
             Assert.Equal(2, V.Release.Major);
             Assert.Equal(3, V.Release.Minor);
             Assert.Equal(5, V.Release.Build);
             Assert.Equal(7, V.Release.Revision);
-            Assert.Equal(Milestone.RTM, V.Milestone);
+            Assert.Equal(Milestone.Release, V.Milestone);
             Assert.Equal(-1, V.PrereleaseNumber);
             Assert.Equal(Stability.Stable, V.Stability);
             Assert.True(V.ReleaseDate.HasValue);
@@ -800,14 +792,13 @@ namespace TIKSN.Versioning.Tests
         [Fact]
         public void Version025()
         {
-            Version V = new Version(new System.Version(2, 3, 5, 7), Milestone.RTM, 1, new System.DateTime(1985, 11, 20));
+            Version V = new Version(new System.Version(2, 3, 5, 7), Milestone.Release, new System.DateTime(1985, 11, 20));
 
             Assert.Equal(2, V.Release.Major);
             Assert.Equal(3, V.Release.Minor);
             Assert.Equal(5, V.Release.Build);
             Assert.Equal(7, V.Release.Revision);
-            Assert.Equal(Milestone.RTM, V.Milestone);
-            Assert.Equal(1, V.PrereleaseNumber);
+            Assert.Equal(Milestone.Release, V.Milestone);
             Assert.Equal(Stability.Stable, V.Stability);
             Assert.True(V.ReleaseDate.HasValue);
             Assert.Equal(1985, V.ReleaseDate.Value.Year);
@@ -816,14 +807,13 @@ namespace TIKSN.Versioning.Tests
         [Fact]
         public void Version026()
         {
-            Version V = new Version(2, 3, 5, 7, Milestone.RTM, 1, new System.DateTime(1985, 11, 20));
+            Version V = new Version(2, 3, 5, 7, Milestone.Release, new System.DateTime(1985, 11, 20));
 
             Assert.Equal(2, V.Release.Major);
             Assert.Equal(3, V.Release.Minor);
             Assert.Equal(5, V.Release.Build);
             Assert.Equal(7, V.Release.Revision);
-            Assert.Equal(Milestone.RTM, V.Milestone);
-            Assert.Equal(1, V.PrereleaseNumber);
+            Assert.Equal(Milestone.Release, V.Milestone);
             Assert.Equal(Stability.Stable, V.Stability);
             Assert.True(V.ReleaseDate.HasValue);
             Assert.Equal(1985, V.ReleaseDate.Value.Year);
@@ -832,31 +822,15 @@ namespace TIKSN.Versioning.Tests
         [Fact]
         public void Version027()
         {
-            Version V = new Version(2, 3, 5, Milestone.RTM, 1, new System.DateTime(1985, 11, 20));
+            Version V = new Version(2, 3, 5, Milestone.ReleaseCandidate, 1, new System.DateTime(1985, 11, 20));
 
             Assert.Equal(2, V.Release.Major);
             Assert.Equal(3, V.Release.Minor);
             Assert.Equal(5, V.Release.Build);
             Assert.Equal(-1, V.Release.Revision);
-            Assert.Equal(Milestone.RTM, V.Milestone);
+            Assert.Equal(Milestone.ReleaseCandidate, V.Milestone);
             Assert.Equal(1, V.PrereleaseNumber);
-            Assert.Equal(Stability.Stable, V.Stability);
-            Assert.True(V.ReleaseDate.HasValue);
-            Assert.Equal(1985, V.ReleaseDate.Value.Year);
-        }
-
-        [Fact]
-        public void Version028()
-        {
-            Version V = new Version(2, 3, Milestone.RTM, 1, new System.DateTime(1985, 11, 20));
-
-            Assert.Equal(2, V.Release.Major);
-            Assert.Equal(3, V.Release.Minor);
-            Assert.Equal(-1, V.Release.Build);
-            Assert.Equal(-1, V.Release.Revision);
-            Assert.Equal(Milestone.RTM, V.Milestone);
-            Assert.Equal(1, V.PrereleaseNumber);
-            Assert.Equal(Stability.Stable, V.Stability);
+            Assert.Equal(Stability.Unstable, V.Stability);
             Assert.True(V.ReleaseDate.HasValue);
             Assert.Equal(1985, V.ReleaseDate.Value.Year);
         }
