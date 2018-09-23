@@ -55,7 +55,7 @@ Task("BuildDocs")
 {
     Wyam(new WyamSettings {
       OutputPath = Directory("./docs/output"),
-      InputPaths = new[] { Directory("./docs/input") }
+      InputPaths = new DirectoryPath[] { Directory("./docs/input") }
     });
 });
     
@@ -66,7 +66,7 @@ Task("PreviewDocs")
     Wyam(new WyamSettings
     {
         OutputPath = Directory("./docs/output"),
-        InputPaths = new[] { Directory("./docs/input") }
+        InputPaths = new DirectoryPath[] { Directory("./docs/input") },
         Preview = true,
         Watch = true
     });        
