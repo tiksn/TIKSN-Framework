@@ -54,7 +54,8 @@ Task("BuildDocs")
   .Does(() =>
 {
     Wyam(new WyamSettings {
-      OutputPath = Directory("./docs/")
+      OutputPath = Directory("./docs/output"),
+      InputPaths = new[] { Directory("./docs/input") }
     });
 });
     
@@ -64,6 +65,8 @@ Task("PreviewDocs")
 {
     Wyam(new WyamSettings
     {
+        OutputPath = Directory("./docs/output"),
+        InputPaths = new[] { Directory("./docs/input") }
         Preview = true,
         Watch = true
     });        
@@ -87,7 +90,6 @@ Task("Pack")
   .IsDependentOn("Build")
   .IsDependentOn("EstimateNextVersion")
   .IsDependentOn("Test")
-  .IsDependentOn("BuildDocs")
   .Does(() =>
 {
   var nuGetPackSettings = new NuGetPackSettings {
