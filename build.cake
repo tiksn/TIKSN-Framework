@@ -8,7 +8,6 @@
 #addin "nuget:?package=Cake.Wyam"
 #addin nuget:?package=Cake.Git
 #addin nuget:?package=TIKSN-Cake&loaddependencies=true
-#tool "nuget:?package=Mono.TextTransform"
 #tool "nuget:?package=xunit.runner.console"
 #tool "nuget:?package=Wyam"
 
@@ -118,7 +117,7 @@ Task("Test")
 Task("Build")
   .IsDependentOn("Clean")
   .IsDependentOn("Restore")
-  .IsDependentOn("TextTransform")
+  .IsDependentOn("GenerateLocalizationKeys")
   .IsDependentOn("DownloadCurrencyCodes")
   .Does(() =>
 {
@@ -184,19 +183,17 @@ Task("DownloadCurrencyCodes")
   DownloadFile("https://www.currency-iso.org/dam/downloads/lists/list_three.xml", File("TIKSN.Core/Finance/Resources/TableA3.xml"));
 });
 
-Task("TextTransform")
+Task("GenerateLocalizationKeys")
   .Does(() =>
 {
-  // var transform = File("../TIKSN.Core/Localization/LocalizationKeys.tt");
-  // TransformTemplate(transform);
-
-  using(var process = StartAndReturnProcess("C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/Common7/IDE/TextTransform.exe", new ProcessSettings{ Arguments = "TIKSN.Core/Localization/LocalizationKeys.tt" }))
-  {
-      process.WaitForExit();
-      var exitCode = process.GetExitCode();
-      if (exitCode != 0)
-        throw new Exception(string.Format("Exit code is {0} which is not a zero.", exitCode));
-  }
+  GenerateLocalizationKeys(
+    "TIKSN.Localization",
+    "LocalizationKeys",
+    Directory("TIKSN.Core/Localization"),
+    File("TIKSN.Core/Localization/EnglishOnly.resx"),
+    File("TIKSN.Core/Shell/ShellCommand.resx"),
+    File("TIKSN.LanguageLocalization/Strings.resx"),
+    File("TIKSN.RegionLocalization/Strings.resx"));
 });
 
 
