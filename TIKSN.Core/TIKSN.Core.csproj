@@ -38,13 +38,13 @@
     <PackageReference Include="Bond.CSharp" Version="8.0.0" />
     <PackageReference Include="codecracker.CSharp" Version="1.1.0" />
     <PackageReference Include="ConsoleTables" Version="2.2.0" />
-    <PackageReference Include="Exceptionless.Signed" Version="4.3.2004" />
-    <PackageReference Include="FluentValidation" Version="8.0.0" />
+    <PackageReference Include="Exceptionless.Signed" Version="4.3.2012" />
+    <PackageReference Include="FluentValidation" Version="8.0.100" />
     <PackageReference Include="LiteDB" Version="4.1.4" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.7.2" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="2.1.1" />
@@ -58,16 +58,16 @@
     <PackageReference Include="MongoDB.Driver.GridFS" Version="2.7.0" />
     <PackageReference Include="MsgPack.Cli" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="1.2.1" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.3.0" />
     <PackageReference Include="NoDb" Version="1.1.3" />
-    <PackageReference Include="RavenDB.Client" Version="4.0.6" />
+    <PackageReference Include="RavenDB.Client" Version="4.1.1" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.2" />
     <PackageReference Include="System.Interactive" Version="3.2.0" />
     <PackageReference Include="System.Interactive.Async" Version="3.2.0" />
     <PackageReference Include="System.Reactive" Version="4.1.0" />
     <PackageReference Include="System.Security.SecureString" Version="4.3.0" />
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
-    <PackageReference Include="WindowsAzure.Storage" Version="9.3.1" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.2" />
   </ItemGroup>
 
   <ItemGroup>
