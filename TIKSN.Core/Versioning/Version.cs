@@ -2,15 +2,15 @@
 
 namespace TIKSN.Versioning
 {
-    public class Version : System.IComparable<Version>, System.IEquatable<Version>
+    public sealed class Version : IComparable<Version>, IEquatable<Version>
     {
-        private const Milestone DefaultMilestone = Milestone.GA;
+        private const Milestone DefaultMilestone = Milestone.Release;
         private const int DefaultPrereleaseNumber = -1;
 
         private Milestone milestone;
         private int prereleaseNumber;
         private System.Version release;
-        private System.DateTime? releaseDate;
+        private DateTimeOffset? releaseDate;
 
         public Version(int ReleaseMajor, int ReleaseMinor)
         {
@@ -20,7 +20,7 @@ namespace TIKSN.Versioning
             this.releaseDate = null;
         }
 
-        public Version(int ReleaseMajor, int ReleaseMinor, System.DateTime ReleaseDate)
+        public Version(int ReleaseMajor, int ReleaseMinor, DateTimeOffset ReleaseDate)
         {
             this.release = new System.Version(ReleaseMajor, ReleaseMinor);
             this.milestone = DefaultMilestone;
@@ -36,7 +36,7 @@ namespace TIKSN.Versioning
             this.releaseDate = null;
         }
 
-        public Version(int ReleaseMajor, int ReleaseMinor, int ReleaseBuild, System.DateTime ReleaseDate)
+        public Version(int ReleaseMajor, int ReleaseMinor, int ReleaseBuild, DateTimeOffset ReleaseDate)
         {
             this.release = new System.Version(ReleaseMajor, ReleaseMinor, ReleaseBuild);
             this.milestone = DefaultMilestone;
@@ -52,7 +52,7 @@ namespace TIKSN.Versioning
             this.releaseDate = null;
         }
 
-        public Version(int ReleaseMajor, int ReleaseMinor, int ReleaseBuild, int ReleaseRevision, System.DateTime ReleaseDate)
+        public Version(int ReleaseMajor, int ReleaseMinor, int ReleaseBuild, int ReleaseRevision, DateTimeOffset ReleaseDate)
         {
             this.release = new System.Version(ReleaseMajor, ReleaseMinor, ReleaseBuild, ReleaseRevision);
             this.milestone = DefaultMilestone;
@@ -68,7 +68,7 @@ namespace TIKSN.Versioning
             this.releaseDate = null;
         }
 
-        public Version(System.Version Release, System.DateTime ReleaseDate)
+        public Version(System.Version Release, DateTimeOffset ReleaseDate)
         {
             this.release = Release;
             this.milestone = DefaultMilestone;
@@ -86,7 +86,7 @@ namespace TIKSN.Versioning
             ValidateMilestone();
         }
 
-        public Version(int ReleaseMajor, int ReleaseMinor, Milestone Milestone, System.DateTime ReleaseDate)
+        public Version(int ReleaseMajor, int ReleaseMinor, Milestone Milestone, DateTimeOffset ReleaseDate)
         {
             this.release = new System.Version(ReleaseMajor, ReleaseMinor);
             this.milestone = Milestone;
@@ -106,7 +106,7 @@ namespace TIKSN.Versioning
             ValidateMilestone();
         }
 
-        public Version(int ReleaseMajor, int ReleaseMinor, int ReleaseBuild, Milestone Milestone, System.DateTime ReleaseDate)
+        public Version(int ReleaseMajor, int ReleaseMinor, int ReleaseBuild, Milestone Milestone, DateTimeOffset ReleaseDate)
         {
             this.release = new System.Version(ReleaseMajor, ReleaseMinor, ReleaseBuild);
             this.milestone = Milestone;
@@ -126,7 +126,7 @@ namespace TIKSN.Versioning
             ValidateMilestone();
         }
 
-        public Version(int ReleaseMajor, int ReleaseMinor, int ReleaseBuild, int ReleaseRevision, Milestone Milestone, System.DateTime ReleaseDate)
+        public Version(int ReleaseMajor, int ReleaseMinor, int ReleaseBuild, int ReleaseRevision, Milestone Milestone, DateTimeOffset ReleaseDate)
         {
             this.release = new System.Version(ReleaseMajor, ReleaseMinor, ReleaseBuild, ReleaseRevision);
             this.milestone = Milestone;
@@ -146,7 +146,7 @@ namespace TIKSN.Versioning
             ValidateMilestone();
         }
 
-        public Version(System.Version Release, Milestone Milestone, System.DateTime ReleaseDate)
+        public Version(System.Version Release, Milestone Milestone, DateTimeOffset ReleaseDate)
         {
             this.release = Release;
             this.milestone = Milestone;
@@ -166,7 +166,7 @@ namespace TIKSN.Versioning
             ValidateMilestone();
         }
 
-        public Version(int ReleaseMajor, int ReleaseMinor, Milestone Milestone, int PrereleaseNumber, System.DateTime ReleaseDate)
+        public Version(int ReleaseMajor, int ReleaseMinor, Milestone Milestone, int PrereleaseNumber, DateTimeOffset ReleaseDate)
         {
             this.release = new System.Version(ReleaseMajor, ReleaseMinor);
             this.milestone = Milestone;
@@ -186,7 +186,7 @@ namespace TIKSN.Versioning
             ValidateMilestone();
         }
 
-        public Version(int ReleaseMajor, int ReleaseMinor, int ReleaseBuild, Milestone Milestone, int PrereleaseNumber, System.DateTime ReleaseDate)
+        public Version(int ReleaseMajor, int ReleaseMinor, int ReleaseBuild, Milestone Milestone, int PrereleaseNumber, DateTimeOffset ReleaseDate)
         {
             this.release = new System.Version(ReleaseMajor, ReleaseMinor, ReleaseBuild);
             this.milestone = Milestone;
@@ -206,7 +206,7 @@ namespace TIKSN.Versioning
             ValidateMilestone();
         }
 
-        public Version(int ReleaseMajor, int ReleaseMinor, int ReleaseBuild, int ReleaseRevision, Milestone Milestone, int PrereleaseNumber, System.DateTime ReleaseDate)
+        public Version(int ReleaseMajor, int ReleaseMinor, int ReleaseBuild, int ReleaseRevision, Milestone Milestone, int PrereleaseNumber, DateTimeOffset ReleaseDate)
         {
             this.release = new System.Version(ReleaseMajor, ReleaseMinor, ReleaseBuild, ReleaseRevision);
             this.milestone = Milestone;
@@ -226,7 +226,7 @@ namespace TIKSN.Versioning
             ValidateMilestone();
         }
 
-        public Version(System.Version Release, Milestone Milestone, int PrereleaseNumber, System.DateTime ReleaseDate)
+        public Version(System.Version Release, Milestone Milestone, int PrereleaseNumber, DateTimeOffset ReleaseDate)
         {
             this.release = Release;
             this.milestone = Milestone;
@@ -244,13 +244,6 @@ namespace TIKSN.Versioning
             }
         }
 
-        //public Version(string ReleaseVersion, Milestone Milestone, int PrereleaseNumber, System.DateTime ReleaseDate)
-        //{
-        //    this.release = new System.Version(ReleaseVersion);
-        //    this.milestone = Milestone;
-        //    this.PrereleaseNumber = PrereleaseNumber;
-        //    this.releaseDate = ReleaseDate;
-        //}
         public int PrereleaseNumber
         {
             get
@@ -261,7 +254,7 @@ namespace TIKSN.Versioning
             {
                 if (value < -1)
                 {
-                    throw new System.ArgumentOutOfRangeException("PrereleaseNumber");
+                    throw new ArgumentOutOfRangeException(nameof(PrereleaseNumber));
                 }
                 else
                 {
@@ -270,13 +263,6 @@ namespace TIKSN.Versioning
             }
         }
 
-        //public Version(string ReleaseVersion, Milestone Milestone, int PrereleaseNumber)
-        //{
-        //    this.release = new System.Version(ReleaseVersion);
-        //    this.milestone = Milestone;
-        //    this.PrereleaseNumber = PrereleaseNumber;
-        //    this.releaseDate = null;
-        //}
         public System.Version Release
         {
             get
@@ -285,14 +271,7 @@ namespace TIKSN.Versioning
             }
         }
 
-        //public Version(string ReleaseVersion, Milestone Milestone, System.DateTime ReleaseDate)
-        //{
-        //    this.release = new System.Version(ReleaseVersion);
-        //    this.milestone = Milestone;
-        //    this.prereleaseNumber = DefaultPrereleaseNumber;
-        //    this.releaseDate = ReleaseDate;
-        //}
-        public System.DateTime? ReleaseDate
+        public DateTimeOffset? ReleaseDate
         {
             get
             {
@@ -300,47 +279,26 @@ namespace TIKSN.Versioning
             }
         }
 
-        //public Version(string ReleaseVersion, Milestone Milestone)
-        //{
-        //    this.release = new System.Version(ReleaseVersion);
-        //    this.milestone = Milestone;
-        //    this.prereleaseNumber = DefaultPrereleaseNumber;
-        //    this.releaseDate = null;
-        //}
         public Stability Stability
         {
             get
             {
-                if (this.milestone >= Milestone.RTM)
+                if (this.milestone >= Milestone.Release)
                 {
-                    return Versioning.Stability.Stable;
+                    return Stability.Stable;
                 }
                 else
                 {
-                    return Versioning.Stability.Unstable;
+                    return Stability.Unstable;
                 }
             }
         }
 
-        //public Version(string ReleaseVersion, System.DateTime ReleaseDate)
-        //{
-        //    this.release = new System.Version(ReleaseVersion);
-        //    this.milestone = DefaultMilestone;
-        //    this.prereleaseNumber = DefaultPrereleaseNumber;
-        //    this.releaseDate = ReleaseDate;
-        //}
         public static bool operator !=(Version v1, Version v2)
         {
             return v1.CompareTo(v2) != 0;
         }
 
-        //public Version(string ReleaseVersion)
-        //{
-        //    this.release = new System.Version(ReleaseVersion);
-        //    this.milestone = DefaultMilestone;
-        //    this.prereleaseNumber = DefaultPrereleaseNumber;
-        //    this.releaseDate = null;
-        //}
         public static bool operator <(Version v1, Version v2)
         {
             return v1.CompareTo(v2) < 0;
@@ -368,7 +326,7 @@ namespace TIKSN.Versioning
 
         public int CompareTo(Version that)
         {
-            if (object.ReferenceEquals(this, that))
+            if (ReferenceEquals(this, that))
             {
                 return 0;
             }
@@ -427,45 +385,41 @@ namespace TIKSN.Versioning
 
         public string ToPrereleaseString()
         {
-            string MilestoneTag = string.Empty;
+            string milestoneTag;
 
             switch (this.milestone)
             {
                 case Milestone.PreAlpha:
-                    MilestoneTag = "pre-alpha";
+                    milestoneTag = "pre-alpha";
                     break;
 
                 case Milestone.Alpha:
-                    MilestoneTag = "alpha";
+                    milestoneTag = "alpha";
                     break;
 
                 case Milestone.Beta:
-                    MilestoneTag = "beta";
+                    milestoneTag = "beta";
                     break;
 
                 case Milestone.ReleaseCandidate:
-                    MilestoneTag = "rc";
+                    milestoneTag = "rc";
                     break;
 
-                case Milestone.RTM:
-                    MilestoneTag = "rtm";
-                    break;
-
-                case Versioning.Milestone.GA:
-                    MilestoneTag = "ga";
+                case Milestone.Release:
+                    milestoneTag = null;
                     break;
 
                 default:
-                    throw new System.NotSupportedException("Unsupported milestone name.");
+                    throw new NotSupportedException("Unsupported milestone name.");
             }
 
             if (this.prereleaseNumber == DefaultPrereleaseNumber)
             {
-                return MilestoneTag;
+                return milestoneTag;
             }
             else
             {
-                return string.Format("{0}{1}", MilestoneTag, this.prereleaseNumber);
+                return string.Format("{0}{1}", milestoneTag, this.prereleaseNumber);
             }
         }
 

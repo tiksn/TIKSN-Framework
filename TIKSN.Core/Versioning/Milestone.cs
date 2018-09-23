@@ -10,8 +10,6 @@
         ReleaseCandidate = 3,
 
         // Stable
-        RTM = 4, // Release to manufacturing OR Release to marketing
-
-        GA = 5, // General availability
+        Release = 4,
     }
 }
