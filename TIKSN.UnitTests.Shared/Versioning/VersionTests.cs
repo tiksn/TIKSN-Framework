@@ -843,7 +843,7 @@ namespace TIKSN.Versioning.Tests
         [InlineData("1.2.3.4-alpha.1")]
         [InlineData("1.2.3.4-beta.2")]
         [InlineData("1.2.3.4-rc.3")]
-        [InlineData("1.2.3.4-pre-alpha.3")]
+        [InlineData("1.2.3.4-alpha.3")]
         public void NuGetVersionConvertToVersionString(string nugetVersion)
         {
             var nVersion = new NuGetVersion(nugetVersion);
@@ -857,7 +857,7 @@ namespace TIKSN.Versioning.Tests
         [InlineData("1.2.3-alpha.1")]
         [InlineData("1.2.3-beta.2")]
         [InlineData("1.2.3-rc.3")]
-        [InlineData("1.2.3-pre-alpha.3")]
+        [InlineData("1.2.3-alpha.3")]
         public void SemanticVersionConvertToVersionString(string semVersion)
         {
             var nVersion = SemanticVersion.Parse(semVersion);

@@ -373,7 +373,7 @@ namespace TIKSN.Versioning
 
         public static bool operator >=(Version v1, Version v2)
         {
-            return v2.CompareTo(v2) >= 0;
+            return v1.CompareTo(v2) >= 0;
         }
 
         public int CompareTo(Version that)
@@ -497,7 +497,7 @@ namespace TIKSN.Versioning
                     return (Milestone.ReleaseCandidate, prereleaseNumber);
 
                 default:
-                    throw new FormatException("Unknown milestone tag.");
+                    throw new FormatException($"Unknown milestone tag '{milestoneTag}'.");
             }
         }
 
