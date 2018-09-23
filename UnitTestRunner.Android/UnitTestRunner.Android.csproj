@@ -237,6 +237,9 @@
     <Reference Include="NSubstitute, Version=3.1.0.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
       <HintPath>..\packages\NSubstitute.3.1.0\lib\netstandard1.3\NSubstitute.dll</HintPath>
     </Reference>
+    <Reference Include="NuGet.Versioning, Version=4.8.0.6, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\NuGet.Versioning.4.8.0\lib\netstandard1.6\NuGet.Versioning.dll</HintPath>
+    </Reference>
     <Reference Include="Raven.Client, Version=4.1.1.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Client.4.1.1\lib\netstandard2.0\Raven.Client.dll</HintPath>
     </Reference>
