@@ -865,5 +865,29 @@ namespace TIKSN.Versioning.Tests
 
             version.ToString().Should().Be(nVersion.ToString());
         }
+
+        [Theory]
+        [InlineData("1.2.3", "1.2.3")]
+        [InlineData("1.2.3", "1.2.3-_pre_alpha.1")]
+        [InlineData("1.2.3-beta.4", "1.2.3-_pre_alpha.1")]
+        [InlineData("1.2.3-beta.4", "1.2.3-beta.1")]
+        [InlineData("1.2.3-beta.4", "1.2.3-rc.1")]
+        [InlineData("1.2.3-_pre_alpha.4", "1.2.3-rc.1")]
+        public void EqualityAndComparisonCheckWithNuGet(string v1, string v2)
+        {
+            var nv1 = new NuGetVersion(v1);
+            var nv2 = new NuGetVersion(v2);
+            var version1 = (Version)nv1;
+            var version2 = (Version)nv2;
+
+            var nequals = nv1 == nv2;
+            var versionEquals = version1 == version2;
+
+            versionEquals.Should().Be(nequals);
+            (version1 > version2).Should().Be(nv1 > nv2);
+            (version1 >= version2).Should().Be(nv1 >= nv2);
+            (version1 < version2).Should().Be(nv1 < nv2);
+            (version1 <= version2).Should().Be(nv1 <= nv2);
+        }
     }
 }

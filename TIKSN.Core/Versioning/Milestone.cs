@@ -3,8 +3,6 @@
     public enum Milestone
     {
         // Unstable
-        PreAlpha = 0,
-
         Alpha = 1,
         Beta = 2,
         ReleaseCandidate = 3,
