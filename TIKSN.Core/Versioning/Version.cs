@@ -1,6 +1,8 @@
 ﻿using NuGet.Versioning;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace TIKSN.Versioning
 {
@@ -285,7 +287,7 @@ namespace TIKSN.Versioning
         {
             get
             {
-                if (this.milestone >= Milestone.Release)
+                if (this.milestone == Milestone.Release)
                 {
                     return Stability.Stable;
                 }
@@ -326,7 +328,7 @@ namespace TIKSN.Versioning
 
         public static explicit operator Version(NuGetVersion nuGetVersion)
         {
-            var (milestone, prereleaseNumber) = GetMilestoneAndPrereleaseNumber(nuGetVersion.IsPrerelease, nuGetVersion.ReleaseLabels);
+            var (milestone, prereleaseNumber) = GetMilestoneAndPrereleaseNumber(nuGetVersion.IsPrerelease, nuGetVersion.ReleaseLabels.ToArray());
 
             if (nuGetVersion.HasMetadata)
                 return new Version(nuGetVersion.Version, milestone, prereleaseNumber, GetReleaseDate(nuGetVersion.Metadata));
@@ -336,7 +338,7 @@ namespace TIKSN.Versioning
 
         public static explicit operator Version(SemanticVersion semanticVersion)
         {
-            var (milestone, prereleaseNumber) = GetMilestoneAndPrereleaseNumber(semanticVersion.IsPrerelease, semanticVersion.ReleaseLabels);
+            var (milestone, prereleaseNumber) = GetMilestoneAndPrereleaseNumber(semanticVersion.IsPrerelease, semanticVersion.ReleaseLabels.ToArray());
 
             if (semanticVersion.HasMetadata)
                 return new Version(semanticVersion.Major, semanticVersion.Minor, semanticVersion.Patch, milestone, prereleaseNumber, GetReleaseDate(semanticVersion.Metadata));
@@ -461,7 +463,7 @@ namespace TIKSN.Versioning
             }
             else
             {
-                return string.Format("{0}-{1}", this.ToShortReleaseString(), this.ToPrereleaseString());
+                return $"{ToShortReleaseString()}-{string.Join(".", GetReleaseLabels(this))}";
             }
         }
 
@@ -470,10 +472,36 @@ namespace TIKSN.Versioning
             return version.ReleaseDate?.ToString("s");
         }
 
-        private static (Milestone milestone, int prereleaseNumber) GetMilestoneAndPrereleaseNumber(bool isPrerelease, IEnumerable<string> releaseLabels)
+        private static (Milestone milestone, int prereleaseNumber) GetMilestoneAndPrereleaseNumber(bool isPrerelease, string[] releaseLabels)
         {
-            if (!isPrerelease)
+            if (!isPrerelease || releaseLabels.Length == 0)
                 return (Milestone.Release, DefaultPrereleaseNumber);
+
+            if (releaseLabels.Length > 2)
+                throw new FormatException("Release labels passed are more than 2.");
+
+            var prereleaseNumber = releaseLabels.Length == 2 ? int.Parse(releaseLabels[1], CultureInfo.InvariantCulture) : DefaultPrereleaseNumber;
+
+            var milestoneTag = releaseLabels.ElementAt(0);
+            var milestone = Milestone.Release;
+
+            switch (milestoneTag.ToLowerInvariant())
+            {
+                case "pre-alpha":
+                    return (Milestone.PreAlpha, prereleaseNumber);
+
+                case "alpha":
+                    return (Milestone.Alpha, prereleaseNumber);
+
+                case "beta":
+                    return (Milestone.Beta, prereleaseNumber);
+
+                case "rc":
+                    return (Milestone.ReleaseCandidate, prereleaseNumber);
+
+                default:
+                    throw new FormatException("Unknown milestone tag.");
+            }
         }
 
         private static DateTimeOffset GetReleaseDate(string metadata)
