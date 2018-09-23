@@ -868,7 +868,7 @@ namespace TIKSN.Versioning.Tests
 
         [Theory]
         [InlineData("1.2.3", "1.2.3")]
-        [InlineData("1.2.3", "1.2.3-_pre_alpha.1")]
+        [InlineData("1.2.3", "1.2.3-alpha.1")]
         [InlineData("1.2.3-beta.4", "1.2.3-alpha.1")]
         [InlineData("1.2.3-beta.4", "1.2.3-beta.1")]
         [InlineData("1.2.3-beta.4", "1.2.3-rc.1")]
