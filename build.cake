@@ -94,7 +94,8 @@ Task("Pack")
 {
   var nuGetPackSettings = new NuGetPackSettings {
     Version = nextVersionString,
-    OutputDirectory = GetTrashDirectory()
+    OutputDirectory = GetTrashDirectory(),
+    BasePath = buildArtifactsDir
     };
 
   NuGetPack(nuspec, nuGetPackSettings);
@@ -117,10 +118,130 @@ Task("Test")
 });
 
 Task("Build")
-  .IsDependentOn("Clean")
-  .IsDependentOn("Restore")
+  .IsDependentOn("BuildCommonCore")
+  .IsDependentOn("BuildNetCore")
+  .IsDependentOn("BuildNetFramework")
+  .IsDependentOn("BuildAndroid")
+  .IsDependentOn("BuildUWP")
+  .IsDependentOn("BuildNetFrameworkTests")
+  .Does(() =>
+{
+});
+
+Task("BuildNetFrameworkTests")
+  .IsDependentOn("CreateBuildDirectories")
+  .Does(() =>
+{
+  MSBuild("TIKSN.Framework.Full.Tests/TIKSN.Framework.Full.Tests.csproj", configurator =>
+    configurator.SetConfiguration(configuration)
+        .SetVerbosity(Verbosity.Minimal)
+        .UseToolVersion(MSBuildToolVersion.VS2017)
+        .SetMSBuildPlatform(MSBuildPlatform.x64)
+        .SetPlatformTarget(PlatformTarget.MSIL)
+        .WithProperty("OutDir", anyBuildArtifactsDir.FullPath)
+        //.WithTarget("Rebuild")
+        );
+});
+
+Task("BuildUWP")
+  .IsDependentOn("CreateBuildDirectories")
+  .Does(() =>
+{
+  MSBuild("TIKSN.Framework.UWP/TIKSN.Framework.UWP.csproj", configurator =>
+    configurator.SetConfiguration(configuration)
+        .SetVerbosity(Verbosity.Minimal)
+        .UseToolVersion(MSBuildToolVersion.VS2017)
+        .SetMSBuildPlatform(MSBuildPlatform.x64)
+        .SetPlatformTarget(PlatformTarget.x64)
+        .WithProperty("OutDir", x64BuildArtifactsDir.FullPath)
+        //.WithTarget("Rebuild")
+        );
+
+  MSBuild("TIKSN.Framework.UWP/TIKSN.Framework.UWP.csproj", configurator =>
+    configurator.SetConfiguration(configuration)
+        .SetVerbosity(Verbosity.Minimal)
+        .UseToolVersion(MSBuildToolVersion.VS2017)
+        .SetMSBuildPlatform(MSBuildPlatform.x64)
+        .SetPlatformTarget(PlatformTarget.x86)
+        .WithProperty("OutDir", x86BuildArtifactsDir.FullPath)
+        //.WithTarget("Rebuild")
+        );
+
+  MSBuild("TIKSN.Framework.UWP/TIKSN.Framework.UWP.csproj", configurator =>
+    configurator.SetConfiguration(configuration)
+        .SetVerbosity(Verbosity.Minimal)
+        .UseToolVersion(MSBuildToolVersion.VS2017)
+        .SetMSBuildPlatform(MSBuildPlatform.x64)
+        .SetPlatformTarget(PlatformTarget.ARM)
+        .WithProperty("OutDir", armBuildArtifactsDir.FullPath)
+        //.WithTarget("Rebuild")
+        );
+});
+
+Task("BuildAndroid")
+  .IsDependentOn("CreateBuildDirectories")
+  .Does(() =>
+{
+  MSBuild("TIKSN.Framework.Android/TIKSN.Framework.Android.csproj", configurator =>
+    configurator.SetConfiguration(configuration)
+        .SetVerbosity(Verbosity.Minimal)
+        .UseToolVersion(MSBuildToolVersion.VS2017)
+        .SetMSBuildPlatform(MSBuildPlatform.x64)
+        .SetPlatformTarget(PlatformTarget.MSIL)
+        .WithProperty("OutDir", anyBuildArtifactsDir.FullPath)
+        //.WithTarget("Rebuild")
+        );
+});
+
+Task("BuildNetFramework")
+  .IsDependentOn("CreateBuildDirectories")
+  .Does(() =>
+{
+  MSBuild("TIKSN.Framework.Full/TIKSN.Framework.Full.csproj", configurator =>
+    configurator.SetConfiguration(configuration)
+        .SetVerbosity(Verbosity.Minimal)
+        .UseToolVersion(MSBuildToolVersion.VS2017)
+        .SetMSBuildPlatform(MSBuildPlatform.x64)
+        .SetPlatformTarget(PlatformTarget.MSIL)
+        .WithProperty("OutDir", anyBuildArtifactsDir.FullPath)
+        //.WithTarget("Rebuild")
+        );
+});
+
+Task("BuildNetCore")
+  .IsDependentOn("CreateBuildDirectories")
+  .Does(() =>
+{
+  MSBuild("TIKSN.Framework.Core/TIKSN.Framework.Core.csproj", configurator =>
+    configurator.SetConfiguration(configuration)
+        .SetVerbosity(Verbosity.Minimal)
+        .UseToolVersion(MSBuildToolVersion.VS2017)
+        .SetMSBuildPlatform(MSBuildPlatform.x64)
+        .SetPlatformTarget(PlatformTarget.MSIL)
+        .WithProperty("OutDir", anyBuildArtifactsDir.FullPath)
+        //.WithTarget("Rebuild")
+        );
+});
+
+Task("BuildCommonCore")
+  .IsDependentOn("CreateBuildDirectories")
   .IsDependentOn("GenerateLocalizationKeys")
   .IsDependentOn("DownloadCurrencyCodes")
+  .Does(() =>
+{
+  MSBuild("TIKSN.Core/TIKSN.Core.csproj", configurator =>
+    configurator.SetConfiguration(configuration)
+        .SetVerbosity(Verbosity.Minimal)
+        .UseToolVersion(MSBuildToolVersion.VS2017)
+        .SetMSBuildPlatform(MSBuildPlatform.x64)
+        .SetPlatformTarget(PlatformTarget.MSIL)
+        .WithProperty("OutDir", anyBuildArtifactsDir.FullPath)
+        //.WithTarget("Rebuild")
+        );
+});
+
+Task("CreateBuildDirectories")
+  .IsDependentOn("Restore")
   .Does(() =>
 {
   buildArtifactsDir = CreateTrashSubDirectory("artifacts");
@@ -136,46 +257,6 @@ Task("Build")
 
   x86BuildArtifactsDir = buildArtifactsDir.Combine("x86");
   EnsureDirectoryExists(x86BuildArtifactsDir);
-
-  MSBuild(solution, configurator =>
-    configurator.SetConfiguration(configuration)
-        .SetVerbosity(Verbosity.Minimal)
-        .UseToolVersion(MSBuildToolVersion.VS2017)
-        .SetMSBuildPlatform(MSBuildPlatform.x64)
-        .SetPlatformTarget(PlatformTarget.MSIL)
-        .WithProperty("OutDir", anyBuildArtifactsDir.FullPath)
-        //.WithTarget("Rebuild")
-        );
-
-  MSBuild(solution, configurator =>
-    configurator.SetConfiguration(configuration)
-        .SetVerbosity(Verbosity.Minimal)
-        .UseToolVersion(MSBuildToolVersion.VS2017)
-        .SetMSBuildPlatform(MSBuildPlatform.x64)
-        .SetPlatformTarget(PlatformTarget.x64)
-        .WithProperty("OutDir", x64BuildArtifactsDir.FullPath)
-        //.WithTarget("Rebuild")
-        );
-
-  MSBuild(solution, configurator =>
-    configurator.SetConfiguration(configuration)
-        .SetVerbosity(Verbosity.Minimal)
-        .UseToolVersion(MSBuildToolVersion.VS2017)
-        .SetMSBuildPlatform(MSBuildPlatform.x64)
-        .SetPlatformTarget(PlatformTarget.x86)
-        .WithProperty("OutDir", x86BuildArtifactsDir.FullPath)
-        //.WithTarget("Rebuild")
-        );
-
-  MSBuild(solution, configurator =>
-    configurator.SetConfiguration(configuration)
-        .SetVerbosity(Verbosity.Minimal)
-        .UseToolVersion(MSBuildToolVersion.VS2017)
-        .SetMSBuildPlatform(MSBuildPlatform.x64)
-        .SetPlatformTarget(PlatformTarget.ARM)
-        .WithProperty("OutDir", armBuildArtifactsDir.FullPath)
-        //.WithTarget("Rebuild")
-        );
 });
 
 Task("DownloadCurrencyCodes")
@@ -228,6 +309,7 @@ Task("EstimateNextVersion")
 });
 
 Task("Restore")
+  .IsDependentOn("Clean")
   .Description("Restores packages.")
   .Does(() =>
 {
