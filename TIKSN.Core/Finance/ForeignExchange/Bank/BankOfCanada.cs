@@ -172,7 +172,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             }
         }
 
-        private DateTimeOffset GetRatesDate(DateTimeOffset asOn)
+        private DateTime GetRatesDate(DateTimeOffset asOn)
         {
             var date = ConvertToBankTimeZone(asOn).Date;
 
@@ -188,7 +188,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             var date = GetRatesDate(asOn);
 
-            return rates[date.Date];
+            return rates[date];
         }
 
         private bool IsHomeCurrencyPair(CurrencyPair Pair, DateTimeOffset asOn)
