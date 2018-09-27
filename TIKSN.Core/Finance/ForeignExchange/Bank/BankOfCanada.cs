@@ -131,13 +131,6 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             }
         }
 
-        private static DateTimeOffset ParseDateExactForBankTimeZone(string dateTime)
-        {
-            var parsedDateLocal = DateTimeOffset.ParseExact(dateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-            var tzOffset = bankTimeZone.GetUtcOffset(parsedDateLocal.DateTime);
-            return new DateTimeOffset(parsedDateLocal.DateTime, tzOffset);
-        }
-
         private async Task<List<Tuple<string, DateTime, decimal>>> FetchRawDataAsync(string restUrl, CancellationToken cancellationToken)
         {
             using (var httpClient = new HttpClient())
