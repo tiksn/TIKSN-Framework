@@ -18,9 +18,10 @@ namespace TIKSN.Finance.ForeignExchange.Bank
     {
         private const string RestURL = "https://www.bankofcanada.ca/valet/observations/group/FX_RATES_DAILY/json";
         private static CurrencyInfo CanadianDollar;
+        private static TimeZoneInfo bankTimeZone;
 
         private DateTimeOffset lastFetchDate;
-        private Dictionary<DateTimeOffset, Dictionary<CurrencyInfo, decimal>> rates;
+        private Dictionary<DateTime, Dictionary<CurrencyInfo, decimal>> rates;
         private readonly ICurrencyFactory _currencyFactory;
         private readonly ITimeProvider _timeProvider;
 
@@ -28,11 +29,12 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             var Canada = new RegionInfo("en-CA");
             CanadianDollar = new CurrencyInfo(Canada);
+            bankTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
         }
 
         public BankOfCanada(ICurrencyFactory currencyFactory, ITimeProvider timeProvider)
         {
-            rates = new Dictionary<DateTimeOffset, Dictionary<CurrencyInfo, decimal>>();
+            rates = new Dictionary<DateTime, Dictionary<CurrencyInfo, decimal>>();
 
             lastFetchDate = DateTimeOffset.MinValue;
             _currencyFactory = currencyFactory;
@@ -52,7 +54,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             var result = new List<ExchangeRate>();
 
-            var ratesList = new List<Tuple<CurrencyInfo, DateTimeOffset, decimal>>();
+            var ratesList = new List<Tuple<CurrencyInfo, DateTime, decimal>>();
 
             var rawData = await FetchRawDataAsync(RestURL, cancellationToken);
 
@@ -63,7 +65,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
                 if (asOnDate == rawItem.Item2.Date)
                     result.Add(new ExchangeRate(new CurrencyPair(currency, CanadianDollar), rawItem.Item2, rawItem.Item3));
-                ratesList.Add(new Tuple<CurrencyInfo, DateTimeOffset, decimal>(currency, rawItem.Item2, rawItem.Item3));
+                ratesList.Add(new Tuple<CurrencyInfo, DateTime, decimal>(currency, rawItem.Item2, rawItem.Item3));
             }
 
             lock (rates)
@@ -79,6 +81,11 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             lastFetchDate = _timeProvider.GetCurrentTime(); // must stay at the end
 
             return result;
+        }
+
+        private static DateTimeOffset ConvertToBankTimeZone(DateTimeOffset date)
+        {
+            return TimeZoneInfo.ConvertTime(date, bankTimeZone);
         }
 
         public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
@@ -124,7 +131,14 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             }
         }
 
-        private async Task<List<Tuple<string, DateTimeOffset, decimal>>> FetchRawDataAsync(string restUrl, CancellationToken cancellationToken)
+        private static DateTimeOffset ParseDateExactForBankTimeZone(string dateTime)
+        {
+            var parsedDateLocal = DateTimeOffset.ParseExact(dateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            var tzOffset = bankTimeZone.GetUtcOffset(parsedDateLocal.DateTime);
+            return new DateTimeOffset(parsedDateLocal.DateTime, tzOffset);
+        }
+
+        private async Task<List<Tuple<string, DateTime, decimal>>> FetchRawDataAsync(string restUrl, CancellationToken cancellationToken)
         {
             using (var httpClient = new HttpClient())
             {
@@ -134,11 +148,11 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                 {
                     var jsonDoc = (JObject)JsonConvert.DeserializeObject(await streamReader.ReadToEndAsync());
 
-                    var result = new List<Tuple<string, DateTimeOffset, decimal>>();
+                    var result = new List<Tuple<string, DateTime, decimal>>();
 
                     foreach (var observation in jsonDoc.Children().Single(item => string.Equals(item.Path, "observations", StringComparison.OrdinalIgnoreCase)).Children().Single().Children())
                     {
-                        var asOn = new DateTimeOffset(observation.Value<DateTime>("d"));
+                        var asOn = observation.Value<DateTime>("d");
 
                         foreach (JProperty observationProperty in observation.Children())
                         {
@@ -154,7 +168,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                                 {
                                     var rate = (decimal)valueObject.Value;
 
-                                    result.Add(new Tuple<string, DateTimeOffset, decimal>(targetCurrencyCode, asOn, rate));
+                                    result.Add(new Tuple<string, DateTime, decimal>(targetCurrencyCode, asOn, rate));
                                 }
                             }
                         }
@@ -167,7 +181,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         private DateTimeOffset GetRatesDate(DateTimeOffset asOn)
         {
-            var date = asOn.Date;
+            var date = ConvertToBankTimeZone(asOn).Date;
 
             if (date.DayOfWeek == DayOfWeek.Saturday)
                 date = date.AddDays(-1);
@@ -181,7 +195,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             var date = GetRatesDate(asOn);
 
-            return rates[date];
+            return rates[date.Date];
         }
 
         private bool IsHomeCurrencyPair(CurrencyPair Pair, DateTimeOffset asOn)
