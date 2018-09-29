@@ -1,6 +1,6 @@
 <Query Kind="Program">
   <Output>DataGrids</Output>
-  <NuGetReference>TIKSN-Framework</NuGetReference>
+  <NuGetReference Prerelease="true">TIKSN-Framework</NuGetReference>
   <Namespace>Autofac</Namespace>
   <Namespace>Autofac.Core</Namespace>
   <Namespace>Microsoft.Extensions.Configuration</Namespace>
