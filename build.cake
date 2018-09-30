@@ -30,6 +30,7 @@ DirectoryPath x86BuildArtifactsDir;
 
 Setup(context =>
 {
+    context.Tools.RegisterFile("C:/Program Files (x86)/Microsoft SDKs/Windows/v10.0A/bin/NETFX 4.7.2 Tools/CorFlags.exe");
     SetTrashParentDirectory(GitFindRootFromPath("."));
 });
 
@@ -123,6 +124,7 @@ Task("Build")
   .IsDependentOn("BuildNetFramework")
   .IsDependentOn("BuildAndroid")
   .IsDependentOn("BuildUWP")
+  .IsDependentOn("CreateReferenceAssembliesForUWP")
   .IsDependentOn("BuildNetFrameworkTests")
   .Does(() =>
 {
@@ -141,6 +143,30 @@ Task("BuildNetFrameworkTests")
         .WithProperty("OutDir", anyBuildArtifactsDir.FullPath)
         //.WithTarget("Rebuild")
         );
+});
+
+Task("CreateReferenceAssembliesForUWP")
+  .IsDependentOn("BuildUWP")
+  .Does(() =>
+{
+  var sourceFilePath = x86BuildArtifactsDir.Combine("TIKSN.Framework.UWP").CombineWithFilePath("TIKSN.Framework.UWP.dll");
+  var destinationFilePath = anyBuildArtifactsDir.CombineWithFilePath("TIKSN.Framework.UWP.dll");
+
+  CopyFile(sourceFilePath, destinationFilePath);
+  CopyFile(
+    x86BuildArtifactsDir.Combine("TIKSN.Framework.UWP").CombineWithFilePath("TIKSN.Framework.UWP.xml"),
+    anyBuildArtifactsDir.CombineWithFilePath("TIKSN.Framework.UWP.xml"));
+
+  var corFlagsPath = Context.Tools.Resolve("CorFlags.exe");
+
+  var exitCode = StartProcess(corFlagsPath, new ProcessSettings {
+        Arguments = new ProcessArgumentBuilder()
+            .Append("/32BITREQ-")
+            .Append(destinationFilePath.FullPath)
+        });
+  
+  if(exitCode != 0)
+    throw new Exception($"CorFlags exit code '{exitCode}' is not indicating success.");
 });
 
 Task("BuildUWP")
