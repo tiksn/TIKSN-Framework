@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PowerShell_Module</RootNamespace>
     <AssemblyName>PowerShell_Module</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="TIKSN-Framework">
-      <Version>3.0.0-alpha.83</Version>
+      <Version>3.1.0-alpha.32</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

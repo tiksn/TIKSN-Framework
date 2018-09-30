@@ -9,8 +9,6 @@ namespace TIKSN.Data
             Content = content ?? throw new ArgumentNullException(nameof(content));
         }
 
-        public string Path { get; }
-
         public byte[] Content { get; }
     }
 

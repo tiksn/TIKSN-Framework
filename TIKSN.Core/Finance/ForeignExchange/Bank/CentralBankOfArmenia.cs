@@ -93,8 +93,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                         string[] titleParts = title.Value.Split('-');
 
                         string currencyCode = titleParts[0].Trim().ToUpper();
-                        decimal baseUnit = decimal.Parse(titleParts[1]);
-                        decimal counterUnit = decimal.Parse(titleParts[2]);
+                        decimal baseUnit = decimal.Parse(titleParts[1], CultureInfo.InvariantCulture);
+                        decimal counterUnit = decimal.Parse(titleParts[2], CultureInfo.InvariantCulture);
 
                         if (currencyCode == "BRC")
                             currencyCode = "BRL";
@@ -147,7 +147,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             if (asOn > _timeProvider.GetCurrentTime())
                 throw new ArgumentException("Exchange rate forecasting are not supported.");
 
-            if (asOn < this.publicationDate.Value)
+            if ((publicationDate.HasValue && asOn < publicationDate.Value) || asOn < _timeProvider.GetCurrentTime().AddDays(-1))
                 throw new ArgumentException("Exchange rate history are not supported.");
         }
     }

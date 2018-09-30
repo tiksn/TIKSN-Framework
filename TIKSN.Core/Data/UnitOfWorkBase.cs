@@ -8,7 +8,7 @@ namespace TIKSN.Data
     {
         public abstract Task CompleteAsync(CancellationToken cancellationToken);
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             if (IsDirty())
                 throw new InvalidOperationException("Unit of work disposed without completion.");

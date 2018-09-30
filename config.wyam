@@ -1,0 +1,8 @@
+#recipe Docs
+
+// Customize your settings and add new ones here
+Settings[Keys.Host] = "tiksn.com";
+Settings[DocsKeys.Title] = "TIKSN Framework Docs";
+Settings[DocsKeys.SourceFiles] = new[] { "../**/{!bin,!obj,!packages,!*.Tests,!UnitTestRunner*,!UnitTest*,!Samples,}/**/*.cs" };
+
+// Add any pipeline customizations here

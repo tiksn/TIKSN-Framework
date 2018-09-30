@@ -17,7 +17,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         private const string Last90DaysRatesUrl = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml";
         private const string Since1999RatesUrl = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.xml";
 
-        private readonly static CurrencyInfo Euro;
+        private static readonly CurrencyInfo Euro;
         private readonly ICurrencyFactory _currencyFactory;
         private readonly ITimeProvider _timeProvider;
 
@@ -64,12 +64,14 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             var rates = await GetExchangeRatesAsync(asOn, cancellationToken);
 
             var rate = rates.SingleOrDefault(item => item.Pair == pair);
-            if (rate == null)
-            {
-                throw new ArgumentException("Currency pair is not found.");
-            }
+            if (rate != null)
+                return rate.Rate;
 
-            return rate.Rate;
+            var reverseRate = rates.SingleOrDefault(item => item.Pair.Reverse() == pair);
+            if (reverseRate != null)
+                return reverseRate.Reverse().Rate;
+
+            throw new ArgumentException($"Currency pair '{pair}' is not found.");
         }
 
         public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
