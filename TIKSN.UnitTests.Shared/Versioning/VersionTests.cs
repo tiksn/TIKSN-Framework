@@ -52,6 +52,14 @@ namespace TIKSN.Versioning.Tests
         }
 
         [Fact]
+        public void Equals006()
+        {
+            Version v = new Version(2, 4);
+
+            Assert.False(v.Equals(null));
+        }
+
+        [Fact]
         public void EqualsOperator001()
         {
             Version V1 = new Version(10, 20, Milestone.ReleaseCandidate, 2);
