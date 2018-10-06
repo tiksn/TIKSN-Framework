@@ -16,7 +16,6 @@ var configuration = Argument("configuration", "Release");
 var solution = "TIKSN Framework.sln";
 var nuspec = "TIKSN-Framework.nuspec";
 var nuGetPackageId = "TIKSN-Framework";
-var nextVersionString = "";
 
 using System;
 using System.Linq;
@@ -78,7 +77,7 @@ Task("Publish")
   .IsDependentOn("Pack")
   .Does(() =>
 {
-  var package = string.Format("{0}/{1}.{2}.nupkg", GetTrashDirectory(), nuGetPackageId, nextVersionString);
+  var package = string.Format("{0}/{1}.{2}.nupkg", GetTrashDirectory(), nuGetPackageId, (NuGetVersion)GetNextEstimatedVersion());
 
   NuGetPush(package, new NuGetPushSettings {
      Source = "nuget.org",
@@ -315,23 +314,8 @@ Task("EstimateNextVersion")
       AllVersions = false,
       Prerelease = true
       });
-  var latestPackage = packageList.Single();
-  var latestPackageNuGetVersion = new NuGetVersion(latestPackage.Version);
-
-  if(!latestPackageNuGetVersion.IsPrerelease)
-    throw new FormatException("Latest package version is not pre-release version.");
-
-  if(latestPackageNuGetVersion.ReleaseLabels.Count() != 2)
-    throw new FormatException("Latest package version should have exactly 2 pre-release labels.");
-
-  var prereleaseNumber = int.Parse(latestPackageNuGetVersion.ReleaseLabels.ElementAt(1));
-  var nextPrereleaseNumber = prereleaseNumber + 1;
-
-  var nextReleaseLabels = latestPackageNuGetVersion.ReleaseLabels.ToArray();
-  nextReleaseLabels[1] = nextPrereleaseNumber.ToString();
-  var nextVersion = new NuGetVersion(latestPackageNuGetVersion.Version, nextReleaseLabels, null, null);
-  nextVersionString = nextVersion.ToString();
-  Information("Next version estimated to be " + nextVersionString);
+  SetPublishedVersions(packageList.Select(v => new NuGetVersion(v.Version)));
+  Information("Next version estimated to be " + GetNextEstimatedVersion());
 });
 
 Task("Restore")
