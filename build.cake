@@ -45,6 +45,7 @@ Task("Tweet")
   var oAuthConsumerSecret = EnvironmentVariable("TIKSN-Framework-ConsumerSecret");
   var accessToken = EnvironmentVariable("TIKSN-Framework-AccessToken");
   var accessTokenSecret = EnvironmentVariable("TIKSN-Framework-AccessTokenSecret");
+  var nextVersionString = ((NuGetVersion)GetNextEstimatedVersion()).ToString();
 
   TwitterSendTweet(oAuthConsumerKey, oAuthConsumerSecret, accessToken, accessTokenSecret, $"TIKSN Framework {nextVersionString} is published https://www.nuget.org/packages/{nuGetPackageId}/{nextVersionString}");
 });
@@ -93,7 +94,7 @@ Task("Pack")
   .Does(() =>
 {
   var nuGetPackSettings = new NuGetPackSettings {
-    Version = nextVersionString,
+    Version = GetNextEstimatedVersion().ToString(),
     OutputDirectory = GetTrashDirectory(),
     BasePath = buildArtifactsDir
     };
