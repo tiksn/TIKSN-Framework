@@ -90,8 +90,8 @@
       <HintPath>..\packages\Xamarin.Forms.3.4.0.1008975\lib\MonoAndroid10\FormsViewGroup.dll</HintPath>
     </Reference>
     <Reference Include="Java.Interop" />
-    <Reference Include="Lambda2Js.Signed, Version=3.1.1.0, Culture=neutral, PublicKeyToken=9ba16f7edfc48fe6, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lambda2Js.Signed.3.1.1\lib\netstandard1.0\Lambda2Js.Signed.dll</HintPath>
+    <Reference Include="Lambda2Js.Signed, Version=3.1.2.0, Culture=neutral, PublicKeyToken=9ba16f7edfc48fe6, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lambda2Js.Signed.3.1.2\lib\netstandard1.0\Lambda2Js.Signed.dll</HintPath>
     </Reference>
     <Reference Include="LiteDB, Version=4.1.4.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
       <HintPath>..\packages\LiteDB.4.1.4\lib\netstandard2.0\LiteDB.dll</HintPath>
