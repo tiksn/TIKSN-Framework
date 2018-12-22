@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ISO_4217 Pblshd="2018-08-20">
 	<HstrcCcyTbl>
 		<HstrcCcyNtry>
@@ -1041,7 +1041,7 @@
 			<CtryNm>YUGOSLAVIA</CtryNm>
 			<CcyNm>New Yugoslavian Dinar</CcyNm>
 			<Ccy>YUD</Ccy>
-			<CcyNbr>891</CcyNbr>
+			<CcyNbr>890</CcyNbr>
 			<WthdrwlDt>1990-01</WthdrwlDt>
 		</HstrcCcyNtry>
 		<HstrcCcyNtry>

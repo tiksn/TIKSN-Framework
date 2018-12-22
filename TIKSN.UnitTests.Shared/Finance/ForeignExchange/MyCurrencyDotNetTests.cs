@@ -28,7 +28,7 @@ namespace TIKSN.Finance.ForeignExchange.Tests
             _timeProvider = _serviceProvider.GetRequiredService<ITimeProvider>();
         }
 
-        [Fact]
+        [Fact(Skip = "Service is temporarily unavailable")]
         public async Task GetCurrencyPairsAsync()
         {
             var currencyFactory = _serviceProvider.GetRequiredService<ICurrencyFactory>();
@@ -41,7 +41,7 @@ namespace TIKSN.Finance.ForeignExchange.Tests
             pairs.Count().Should().BeGreaterThan(0);
         }
 
-        [Fact]
+        [Fact(Skip = "Service is temporarily unavailable")]
         public async Task GetExchangeRateAsync001()
         {
             var currencyFactory = _serviceProvider.GetRequiredService<ICurrencyFactory>();
@@ -58,7 +58,7 @@ namespace TIKSN.Finance.ForeignExchange.Tests
             rate.Should().BeGreaterThan(decimal.One);
         }
 
-        [Fact]
+        [Fact(Skip = "Service is temporarily unavailable")]
         public async Task GetExchangeRateAsync002()
         {
             var currencyFactory = _serviceProvider.GetRequiredService<ICurrencyFactory>();
