@@ -5,7 +5,7 @@ using TIKSN.Web.Tests;
 using Xunit.Runners.UI;
 using Xunit.Sdk;
 
-namespace UnitTestRunner.Android
+namespace TIKSN.UnitTestRunner.Android
 {
     [Activity(Label = "UnitTestRunner.Android", MainLauncher = true, Icon = "@drawable/icon")]
     //[Activity(Label = "xUnit Android Runner", MainLauncher = true, Theme = "@android:style/Theme.Material.Light")]
