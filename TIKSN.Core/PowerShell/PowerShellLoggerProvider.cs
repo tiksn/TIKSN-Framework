@@ -1,20 +1,20 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Concurrent;
-using System.Management.Automation;
 
 namespace TIKSN.PowerShell
 {
     public class PowerShellLoggerProvider : ILoggerProvider
     {
+        private readonly ICurrentCommandProvider _currentCommandProvider;
         private readonly ConcurrentDictionary<string, PowerShellLogger> _loggers = new ConcurrentDictionary<string, PowerShellLogger>();
-        private readonly Cmdlet cmdlet;
         private readonly IOptions<PowerShellLoggerOptions> options;
 
-        public PowerShellLoggerProvider(Cmdlet cmdlet, IOptions<PowerShellLoggerOptions> options)
+        public PowerShellLoggerProvider(ICurrentCommandProvider currentCommandProvider, IOptions<PowerShellLoggerOptions> options)
         {
-            this.cmdlet = cmdlet;
             this.options = options;
+            _currentCommandProvider = currentCommandProvider ?? throw new ArgumentNullException(nameof(currentCommandProvider));
         }
 
         public ILogger CreateLogger(string categoryName)
@@ -28,7 +28,7 @@ namespace TIKSN.PowerShell
 
         private PowerShellLogger CreateLoggerImplementation(string name)
         {
-            return new PowerShellLogger(cmdlet, options, name);
+            return new PowerShellLogger(_currentCommandProvider, options, name);
         }
     }
 }
