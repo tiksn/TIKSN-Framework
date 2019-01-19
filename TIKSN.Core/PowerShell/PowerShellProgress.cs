@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Management.Automation;
 using TIKSN.Progress;
 
@@ -9,23 +10,23 @@ namespace TIKSN.PowerShell
         private static readonly object activityIdLocker = new object();
         private static int nextActivityId = 0;
 
-        private readonly Cmdlet cmdlet;
+        private readonly ICurrentCommandProvider _currentCommandProvider;
         private readonly ProgressRecord progressRecord;
         private Stopwatch stopwatch;
 
-        public PowerShellProgress(Cmdlet cmdlet, string activity, string statusDescription)
+        public PowerShellProgress(ICurrentCommandProvider currentCommandProvider, string activity, string statusDescription)
         {
-            this.cmdlet = cmdlet;
             this.progressRecord = new ProgressRecord(GenerateNextActivityId(), activity, statusDescription);
 
             stopwatch = Stopwatch.StartNew();
             progressRecord.RecordType = ProgressRecordType.Processing;
-            cmdlet.WriteProgress(progressRecord);
+            _currentCommandProvider = currentCommandProvider ?? throw new ArgumentNullException(nameof(currentCommandProvider));
+            _currentCommandProvider.GetCurrentCommand().WriteProgress(progressRecord);
         }
 
         public PowerShellProgress CreateChildProgress(string activity, string statusDescription)
         {
-            var childProgress = new PowerShellProgress(cmdlet, activity, statusDescription);
+            var childProgress = new PowerShellProgress(_currentCommandProvider, activity, statusDescription);
 
             childProgress.progressRecord.ParentActivityId = progressRecord.ActivityId;
 
@@ -36,7 +37,7 @@ namespace TIKSN.PowerShell
         {
             stopwatch.Stop();
             progressRecord.RecordType = ProgressRecordType.Completed;
-            cmdlet.WriteProgress(progressRecord);
+            _currentCommandProvider.GetCurrentCommand().WriteProgress(progressRecord);
         }
 
         protected override void OnReport(OperationProgressReport value)
@@ -56,7 +57,7 @@ namespace TIKSN.PowerShell
                 progressRecord.StatusDescription = value.StatusDescription;
             }
 
-            cmdlet.WriteProgress(progressRecord);
+            _currentCommandProvider.GetCurrentCommand().WriteProgress(progressRecord);
             base.OnReport(value);
         }
 
