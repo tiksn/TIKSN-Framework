@@ -142,7 +142,6 @@
                 <dependency id="Microsoft.Extensions.Logging.Abstractions" version="2.2.0" />
                 <dependency id="Microsoft.Extensions.Logging.Debug" version="2.2.0" />
                 <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.2.0" />
-                <dependency id="Microsoft.PowerShell.SDK" version="6.1.1" />
                 <dependency id="MongoDB.Driver" version="2.7.2" />
                 <dependency id="MongoDB.Driver.GridFS" version="2.7.2" />
                 <dependency id="MsgPack.Cli" version="1.0.0" />
