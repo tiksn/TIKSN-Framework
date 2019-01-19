@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
-using System.Management.Automation;
 
 namespace TIKSN.PowerShell
 {
@@ -10,7 +9,7 @@ namespace TIKSN.PowerShell
     {
         public static ILoggerFactory AddPowerShell(this ILoggerFactory factory, IServiceProvider serviceProvider)
         {
-            factory.AddProvider(new PowerShellLoggerProvider(serviceProvider.GetRequiredService<Cmdlet>(), serviceProvider.GetRequiredService<IOptions<PowerShellLoggerOptions>>()));
+            factory.AddProvider(new PowerShellLoggerProvider(serviceProvider.GetRequiredService<ICurrentCommandProvider>(), serviceProvider.GetRequiredService<IOptions<PowerShellLoggerOptions>>()));
 
             return factory;
         }

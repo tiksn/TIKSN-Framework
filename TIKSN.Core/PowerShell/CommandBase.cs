@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Nito.AsyncEx;
 using System;
 using System.Management.Automation;
@@ -28,6 +29,12 @@ namespace TIKSN.PowerShell
             var topServiceProvider = GetServiceProvider();
             serviceScope = topServiceProvider.CreateScope();
             ServiceProvider.GetRequiredService<ICurrentCommandStore>().SetCurrentCommand(this);
+            ConfigureLogger(ServiceProvider.GetRequiredService<ILoggerFactory>());
+        }
+
+        protected virtual void ConfigureLogger(ILoggerFactory loggerFactory)
+        {
+            loggerFactory.AddPowerShell(ServiceProvider);
         }
 
         protected abstract IServiceProvider GetServiceProvider();
