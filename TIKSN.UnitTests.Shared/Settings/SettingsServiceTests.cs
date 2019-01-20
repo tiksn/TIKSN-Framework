@@ -78,7 +78,7 @@ namespace TIKSN.Settings.Tests
             settingsService.SetRoamingSetting("RoamingString", $"{Guid.NewGuid()}---{rng.Next()}");
             settingsService.SetRoamingSetting("RoamingGuid", Guid.NewGuid());
 
-            var names = settingsService.ListLocalSetting();
+            var names = settingsService.ListRoamingSetting();
 
             names.Should().BeEquivalentTo(new[] { "RoamingInteger", "RoamingString", "RoamingGuid" });
         }
