@@ -1,22 +1,21 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using TIKSN.Framework.UnitTests.DI;
-using TIKSN.Settings;
 using Xunit;
 
-namespace TIKSN.Framework.UnitTests.Settings
+namespace TIKSN.Settings.Tests
 {
     public partial class SettingsServiceTests
     {
+        private readonly ServiceCollection services;
         private readonly ISettingsService settingsService;
 
         public SettingsServiceTests()
         {
+            services = new ServiceCollection();
             SetupDenepdencies();
-            settingsService = Dependencies.ServiceProvider.GetRequiredService<ISettingsService>();
+            var serviceProvider = services.BuildServiceProvider();
+            settingsService = serviceProvider.GetRequiredService<ISettingsService>();
         }
-
-        partial void SetupDenepdencies();
 
         [Fact]
         public void LocalSettingsIntegerTest()
@@ -67,5 +66,7 @@ namespace TIKSN.Framework.UnitTests.Settings
 
             Assert.Equal(expectedValue, actualValue);
         }
+
+        partial void SetupDenepdencies();
     }
 }
