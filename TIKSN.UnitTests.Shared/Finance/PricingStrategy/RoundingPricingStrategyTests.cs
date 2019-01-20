@@ -2,7 +2,7 @@
 using TIKSN.Finance.PricingStrategy;
 using Xunit;
 
-namespace TIKSN.Finance.Tests.PricingStrategy
+namespace TIKSN.Finance.PricingStrategy.Tests
 {
     public class RoundingPricingStrategyTests
     {
