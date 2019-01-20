@@ -28,6 +28,12 @@ namespace TIKSN.Settings.Tests
             var actualValue = settingsService.GetLocalSetting("LocalInteger", expectedValue + 10);
 
             Assert.Equal(expectedValue, actualValue);
+
+            settingsService.RemoveLocalSetting("LocalInteger");
+
+            actualValue = settingsService.GetLocalSetting("LocalInteger", expectedValue + 120);
+
+            Assert.Equal(expectedValue + 120, actualValue);
         }
 
         [Fact]
@@ -40,6 +46,12 @@ namespace TIKSN.Settings.Tests
             var actualValue = settingsService.GetLocalSetting("LocalString", expectedValue + 10);
 
             Assert.Equal(expectedValue, actualValue);
+
+            settingsService.RemoveLocalSetting("LocalString");
+
+            actualValue = settingsService.GetLocalSetting("LocalString", expectedValue + 120);
+
+            Assert.Equal(expectedValue + 120, actualValue);
         }
 
         [Fact]
@@ -53,6 +65,12 @@ namespace TIKSN.Settings.Tests
             var actualValue = settingsService.GetRoamingSetting("RoamingInteger", expectedValue + 10);
 
             Assert.Equal(expectedValue, actualValue);
+
+            settingsService.RemoveRoamingSetting("RoamingInteger");
+
+            actualValue = settingsService.GetRoamingSetting("RoamingInteger", expectedValue + 120);
+
+            Assert.Equal(expectedValue + 120, actualValue);
         }
 
         [Fact]
@@ -65,6 +83,12 @@ namespace TIKSN.Settings.Tests
             var actualValue = settingsService.GetRoamingSetting("RoamingString", expectedValue + 10);
 
             Assert.Equal(expectedValue, actualValue);
+
+            settingsService.RemoveRoamingSetting("RoamingString");
+
+            actualValue = settingsService.GetRoamingSetting("RoamingString", expectedValue + 120);
+
+            Assert.Equal(expectedValue + 120, actualValue);
         }
 
         partial void SetupDenepdencies();
