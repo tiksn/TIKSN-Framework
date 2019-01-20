@@ -6,6 +6,12 @@
     <IsPackable>false</IsPackable>
 
     <LangVersion>latest</LangVersion>
+
+    <Company>TIKSN Development</Company>
+
+    <Product>TIKSN Framework Tests</Product>
+
+    <Authors>TIKSN Development</Authors>
   </PropertyGroup>
 
   <ItemGroup>
