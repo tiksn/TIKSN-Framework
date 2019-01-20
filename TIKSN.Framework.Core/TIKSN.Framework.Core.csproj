@@ -10,6 +10,7 @@
 
 	<PropertyGroup>
     <LangVersion>latest</LangVersion>
+    <Authors>TIKSN Development</Authors>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

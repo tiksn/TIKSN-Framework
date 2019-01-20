@@ -16,7 +16,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\TestConfigurationRootSetup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\TestOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\TestSerilogLoggingSetup.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DI\Dependencies.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Finance\Cache\CachedCurrencyConverterTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Finance\Cache\MemoryCachedCurrencyConverterTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Finance\CompositeCrossCurrencyConverterTests.cs" />
