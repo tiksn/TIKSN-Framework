@@ -1,19 +1,17 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using TIKSN.Framework.UnitTests.DI;
-using TIKSN.Settings;
 
-namespace TIKSN.Framework.UnitTests.Settings
+namespace TIKSN.Settings.Tests
 {
     public partial class SettingsServiceTests
     {
         partial void SetupDenepdencies()
         {
-            Dependencies.ServiceCollection.AddOptions();
-            Dependencies.ServiceCollection.Configure<WindowsRegistrySettingsServiceOptions>(options =>
+            services.AddOptions();
+            services.Configure<WindowsRegistrySettingsServiceOptions>(options =>
             {
                 options.SubKey = "Software";
             });
-            Dependencies.ServiceCollection.AddSingleton<ISettingsService, WindowsRegistrySettingsService>();
+            services.AddSingleton<ISettingsService, WindowsRegistrySettingsService>();
         }
     }
 }
