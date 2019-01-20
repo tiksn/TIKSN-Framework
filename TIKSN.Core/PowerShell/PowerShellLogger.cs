@@ -9,19 +9,19 @@ namespace TIKSN.PowerShell
 {
     public class PowerShellLogger : ILogger
     {
-        private readonly Cmdlet cmdlet;
+        private readonly ICurrentCommandProvider _currentCommandProvider;
         private readonly string name;
         private readonly IOptions<PowerShellLoggerOptions> options;
         private readonly PowerShellLoggerScopeDisposable scopeDisposable;
         private readonly ConcurrentStack<object> scopes;
 
-        public PowerShellLogger(Cmdlet cmdlet, IOptions<PowerShellLoggerOptions> options, string name)
+        public PowerShellLogger(ICurrentCommandProvider currentCommandProvider, IOptions<PowerShellLoggerOptions> options, string name)
         {
             this.options = options;
             scopes = new ConcurrentStack<object>();
             scopeDisposable = new PowerShellLoggerScopeDisposable(scopes);
             this.name = name;
-            this.cmdlet = cmdlet;
+            _currentCommandProvider = currentCommandProvider;
         }
 
         public IDisposable BeginScope<TState>(TState state)
@@ -117,20 +117,20 @@ namespace TIKSN.PowerShell
             {
                 case LogLevel.Trace:
                 case LogLevel.Information:
-                    cmdlet.WriteVerbose(logBuilder.ToString());
+                    _currentCommandProvider.GetCurrentCommand().WriteVerbose(logBuilder.ToString());
                     break;
 
                 case LogLevel.Debug:
-                    cmdlet.WriteDebug(logBuilder.ToString());
+                    _currentCommandProvider.GetCurrentCommand().WriteDebug(logBuilder.ToString());
                     break;
 
                 case LogLevel.Warning:
-                    cmdlet.WriteWarning(logBuilder.ToString());
+                    _currentCommandProvider.GetCurrentCommand().WriteWarning(logBuilder.ToString());
                     break;
 
                 case LogLevel.Error:
                 case LogLevel.Critical:
-                    cmdlet.WriteError(new ErrorRecord(new Exception(logBuilder.ToString(), exception), eventId.ToString(), ErrorCategory.InvalidOperation, null));
+                    _currentCommandProvider.GetCurrentCommand().WriteError(new ErrorRecord(new Exception(logBuilder.ToString(), exception), eventId.ToString(), ErrorCategory.InvalidOperation, null));
                     break;
 
                 default:

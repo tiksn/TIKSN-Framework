@@ -1,20 +1,20 @@
-﻿using System.Management.Automation;
+﻿using System;
 using TIKSN.Progress;
 
 namespace TIKSN.PowerShell
 {
     public class PowerShellProgressFactory : IOperationProgressFactory
     {
-        private readonly Cmdlet cmdlet;
+        private readonly ICurrentCommandProvider _currentCommandProvider;
 
-        public PowerShellProgressFactory(Cmdlet cmdlet)
+        public PowerShellProgressFactory(ICurrentCommandProvider currentCommandProvider)
         {
-            this.cmdlet = cmdlet;
+            _currentCommandProvider = currentCommandProvider ?? throw new ArgumentNullException(nameof(currentCommandProvider));
         }
 
         public DisposableProgress<OperationProgressReport> Create(string activity, string statusDescription)
         {
-            return new PowerShellProgress(cmdlet, activity, statusDescription);
+            return new PowerShellProgress(_currentCommandProvider, activity, statusDescription);
         }
     }
 }

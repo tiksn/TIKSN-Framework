@@ -1,4 +1,6 @@
-﻿using Nito.AsyncEx;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Nito.AsyncEx;
 using System;
 using System.Management.Automation;
 using System.Threading;
@@ -8,13 +10,15 @@ namespace TIKSN.PowerShell
 {
     public abstract class CommandBase : PSCmdlet
     {
-        protected IServiceProvider ServiceProvider { get; private set; }
         protected CancellationTokenSource cancellationTokenSource;
+        private IServiceScope serviceScope;
 
         protected CommandBase()
         {
             cancellationTokenSource = new CancellationTokenSource();
         }
+
+        protected IServiceProvider ServiceProvider => serviceScope.ServiceProvider;
 
         protected override void BeginProcessing()
         {
@@ -22,10 +26,18 @@ namespace TIKSN.PowerShell
 
             base.BeginProcessing();
 
-            ServiceProvider = CreateServiceProvider();
+            var topServiceProvider = GetServiceProvider();
+            serviceScope = topServiceProvider.CreateScope();
+            ServiceProvider.GetRequiredService<ICurrentCommandStore>().SetCurrentCommand(this);
+            ConfigureLogger(ServiceProvider.GetRequiredService<ILoggerFactory>());
         }
 
-        protected abstract IServiceProvider CreateServiceProvider();
+        protected virtual void ConfigureLogger(ILoggerFactory loggerFactory)
+        {
+            loggerFactory.AddPowerShell(ServiceProvider);
+        }
+
+        protected abstract IServiceProvider GetServiceProvider();
 
         protected sealed override void ProcessRecord()
         {
@@ -38,6 +50,7 @@ namespace TIKSN.PowerShell
         {
             cancellationTokenSource.Cancel();
             base.StopProcessing();
+            serviceScope.Dispose();
         }
     }
 }

@@ -4,6 +4,7 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using TIKSN.PowerShell;
 
 namespace TIKSN.DependencyInjection
 {
@@ -50,6 +51,7 @@ namespace TIKSN.DependencyInjection
         protected virtual IEnumerable<IModule> GetAutofacModules()
         {
             yield return new CoreModule();
+            yield return new PowerShellModule();
         }
     }
 }

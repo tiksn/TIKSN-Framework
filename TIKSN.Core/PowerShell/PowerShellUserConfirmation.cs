@@ -1,40 +1,40 @@
-﻿using System.Management.Automation;
+﻿using System;
 using TIKSN.Progress;
 
 namespace TIKSN.PowerShell
 {
     public class PowerShellUserConfirmation : IUserConfirmation
     {
-        private readonly Cmdlet cmdlet;
+        private readonly ICurrentCommandProvider _currentCommandProvider;
 
-        public PowerShellUserConfirmation(Cmdlet cmdlet)
+        public PowerShellUserConfirmation(ICurrentCommandProvider currentCommandProvider)
         {
-            this.cmdlet = cmdlet;
+            _currentCommandProvider = currentCommandProvider ?? throw new ArgumentNullException(nameof(currentCommandProvider));
         }
 
         public bool ShouldContinue(string query, string caption)
         {
-            return cmdlet.ShouldContinue(query, caption);
+            return _currentCommandProvider.GetCurrentCommand().ShouldContinue(query, caption);
         }
 
         public bool ShouldContinue(string query, string caption, ref bool yesToAll, ref bool noToAll)
         {
-            return cmdlet.ShouldContinue(query, caption, ref yesToAll, ref noToAll);
+            return _currentCommandProvider.GetCurrentCommand().ShouldContinue(query, caption, ref yesToAll, ref noToAll);
         }
 
         public bool ShouldProcess(string target)
         {
-            return cmdlet.ShouldProcess(target);
+            return _currentCommandProvider.GetCurrentCommand().ShouldProcess(target);
         }
 
         public bool ShouldProcess(string target, string action)
         {
-            return cmdlet.ShouldProcess(target, action);
+            return _currentCommandProvider.GetCurrentCommand().ShouldProcess(target, action);
         }
 
         public bool ShouldProcess(string verboseDescription, string verboseWarning, string caption)
         {
-            return cmdlet.ShouldProcess(verboseDescription, verboseDescription, caption);
+            return _currentCommandProvider.GetCurrentCommand().ShouldProcess(verboseDescription, verboseDescription, caption);
         }
     }
 }
