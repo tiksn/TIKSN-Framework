@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using Xunit;
 
@@ -37,6 +38,20 @@ namespace TIKSN.Settings.Tests
         }
 
         [Fact]
+        public void LocalSettingsListingTest()
+        {
+            var rng = new Random();
+
+            settingsService.SetLocalSetting("LocalInteger", rng.Next());
+            settingsService.SetLocalSetting("LocalString", $"{Guid.NewGuid()}---{rng.Next()}");
+            settingsService.SetLocalSetting("LocalGuid", Guid.NewGuid());
+
+            var names = settingsService.ListLocalSetting();
+
+            names.Should().BeEquivalentTo(new[] { "LocalInteger", "LocalString", "LocalGuid" });
+        }
+
+        [Fact]
         public void LocalSettingsStringTest()
         {
             var expectedValue = Guid.NewGuid().ToString();
@@ -52,6 +67,20 @@ namespace TIKSN.Settings.Tests
             actualValue = settingsService.GetLocalSetting("LocalString", expectedValue + 120);
 
             Assert.Equal(expectedValue + 120, actualValue);
+        }
+
+        [Fact]
+        public void RoamingSettingsListingTest()
+        {
+            var rng = new Random();
+
+            settingsService.SetRoamingSetting("RoamingInteger", rng.Next());
+            settingsService.SetRoamingSetting("RoamingString", $"{Guid.NewGuid()}---{rng.Next()}");
+            settingsService.SetRoamingSetting("RoamingGuid", Guid.NewGuid());
+
+            var names = settingsService.ListLocalSetting();
+
+            names.Should().BeEquivalentTo(new[] { "RoamingInteger", "RoamingString", "RoamingGuid" });
         }
 
         [Fact]
