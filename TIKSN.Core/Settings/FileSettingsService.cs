@@ -2,6 +2,7 @@
 using Microsoft.Extensions.FileProviders;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TIKSN.Configuration;
 using TIKSN.FileSystem;
 
@@ -30,12 +31,12 @@ namespace TIKSN.Settings
 
         public IReadOnlyCollection<string> ListLocalSetting()
         {
-            throw new NotImplementedException();
+            return ListNames(_knownFolders.LocalAppData);
         }
 
         public IReadOnlyCollection<string> ListRoamingSetting()
         {
-            throw new NotImplementedException();
+            return ListNames(_knownFolders.RoamingAppData);
         }
 
         public void RemoveLocalSetting(string name)
@@ -60,6 +61,18 @@ namespace TIKSN.Settings
 
         private T Apply<T>(IFileProvider fileProvider, string name, T value, Func<BsonDocument, string, T, T> processor)
         {
+            using (var db = GetDatabase(fileProvider, out LiteCollection<BsonDocument> settingsCollection, out BsonDocument bsonDocument))
+            {
+                var result = processor(bsonDocument, name, value);
+
+                settingsCollection.Update(bsonDocument);
+
+                return result;
+            }
+        }
+
+        private LiteDatabase GetDatabase(IFileProvider fileProvider, out LiteCollection<BsonDocument> settingsCollection, out BsonDocument bsonDocument)
+        {
             var fileInfo = fileProvider.GetFileInfo(_configuration.GetConfiguration().RelativePath);
 
             var connectionString = new ConnectionString
@@ -67,24 +80,17 @@ namespace TIKSN.Settings
                 Filename = fileInfo.PhysicalPath
             };
 
-            using (var db = new LiteDatabase(connectionString))
+            var db = new LiteDatabase(connectionString);
+
+            settingsCollection = db.GetCollection("Settings");
+            bsonDocument = settingsCollection.FindOne(x => true);
+            if (bsonDocument == null)
             {
-                var settingsCollection = db.GetCollection("Settings");
-
-                var bsonDocument = settingsCollection.FindOne(x => true);
-
-                if (bsonDocument == null)
-                {
-                    bsonDocument = new BsonDocument();
-                    settingsCollection.Insert(bsonDocument);
-                }
-
-                var result = processor(bsonDocument, name, value);
-
-                settingsCollection.Update(bsonDocument);
-
-                return result;
+                bsonDocument = new BsonDocument();
+                settingsCollection.Insert(bsonDocument);
             }
+
+            return db;
         }
 
         private T GetterProcessor<T>(BsonDocument document, string name, T defaultValue)
@@ -98,6 +104,14 @@ namespace TIKSN.Settings
             }
 
             return defaultValue;
+        }
+
+        private IReadOnlyCollection<string> ListNames(IFileProvider fileProvider)
+        {
+            using (var db = GetDatabase(fileProvider, out LiteCollection<BsonDocument> settingsCollection, out BsonDocument bsonDocument))
+            {
+                return bsonDocument.Keys.Where(n => !string.Equals(n, "_id", StringComparison.OrdinalIgnoreCase)).ToArray();
+            }
         }
 
         private T RemovalProcessor<T>(BsonDocument document, string name, T value)
