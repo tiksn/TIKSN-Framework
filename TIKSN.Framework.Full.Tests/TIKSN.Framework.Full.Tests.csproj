@@ -49,7 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SettingsServiceTests.cs" />
+    <Compile Include="Settings\SettingsServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
