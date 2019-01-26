@@ -11,7 +11,7 @@
 #tool "nuget:?package=xunit.runner.console"
 #tool "nuget:?package=Wyam"
 
-var target = Argument("target", "Tweet");
+var target = Argument("target", "Build");
 var configuration = Argument("configuration", "Release");
 var solution = "TIKSN Framework.sln";
 var nuspec = "TIKSN-Framework.nuspec";
