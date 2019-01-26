@@ -58,8 +58,6 @@
                 <dependency id="PowerShellStandard.Library" version="5.1.0" />
                 <dependency id="RavenDB.Client" version="4.1.3" />
                 <dependency id="ReactiveUI" version="9.8.22" />
-                <dependency id="ReactiveUI.AndroidSupport" version="9.8.22" />
-                <dependency id="ReactiveUI.XamForms" version="9.8.22" />
                 <dependency id="Remotion.Linq" version="2.2.0" />
                 <dependency id="Serilog" version="2.8.0" />
                 <dependency id="Serilog.Extensions.Logging" version="2.0.2" />
@@ -112,6 +110,8 @@
                 <dependency id="PowerShellStandard.Library" version="5.1.0" />
                 <dependency id="RavenDB.Client" version="4.1.3" />
                 <dependency id="ReactiveUI" version="9.8.22" />
+                <dependency id="ReactiveUI.AndroidSupport" version="9.8.22" />
+                <dependency id="ReactiveUI.XamForms" version="9.8.22" />
                 <dependency id="Remotion.Linq" version="2.2.0" />
                 <dependency id="Serilog" version="2.8.0" />
                 <dependency id="Serilog.Extensions.Logging" version="2.0.2" />
