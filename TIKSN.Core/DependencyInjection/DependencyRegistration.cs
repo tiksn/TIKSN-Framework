@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
+using ReactiveUI;
 using System;
 using TIKSN.Globalization;
 using TIKSN.Serialization;
@@ -50,6 +51,8 @@ namespace TIKSN.DependencyInjection
             services.TryAddSingleton<SimpleXmlBondSerializer>();
 
             services.TryAddScoped<IShellCommandContext, ShellCommandContext>();
+
+            services.AddSingleton(MessageBus.Current);
         }
     }
 }

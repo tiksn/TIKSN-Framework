@@ -10,11 +10,14 @@
         <projectUrl>http://www.tiksn.com/Framework</projectUrl>
         <iconUrl>http://www.tiksn.com/Images/Logo.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <license type="expression">MIT</license>
+        <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
         <description>This is a .NET Framework enhancement framework. Main features are Versioning, Finance, Currency, Foreign Exchange, Money, Pricing strategy, Telemetry, Composite Weighted Progress, Repository and Unity of Wok pattern implementation with Entity Framework Core, Network Connectivity Service and Triggering, Settings, Windows Registry configuration source, Azure Storage Repository, MongoDB Repository, NoDB Repository, Lingual and Regional Localization, Serialization, Rest Requester, Rest Repository, Dependency Injection, Composition Root Setup base classes.</description>
-        <copyright>Copyright © 2018, TIKSN Lab</copyright>
+        <copyright>Copyright © 2019, TIKSN Lab</copyright>
         <releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/milestone/10 </releaseNotes>
         <language />
         <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry, Configuration, Azure Storage, MongoDB, NoDB, Rest, Localization, Dependency Injection</tags>
+        <repository type="git" url="https://github.com/tiksn/TIKSN-Framework" />
         <frameworkAssemblies>
             <frameworkAssembly assemblyName="System.Speech" targetFramework=".NETFramework4.7.2" />
         </frameworkAssemblies>
@@ -57,6 +60,7 @@
                 <dependency id="NuGet.Versioning" version="4.9.3" />
                 <dependency id="PowerShellStandard.Library" version="5.1.0" />
                 <dependency id="RavenDB.Client" version="4.1.3" />
+                <dependency id="ReactiveUI" version="9.8.22" />
                 <dependency id="Remotion.Linq" version="2.2.0" />
                 <dependency id="Serilog" version="2.8.0" />
                 <dependency id="Serilog.Extensions.Logging" version="2.0.2" />
@@ -70,7 +74,7 @@
                 <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
                 <dependency id="WindowsAzure.Storage" version="9.3.3" />
             </group>
-            <group targetFramework="MonoAndroid403">
+            <group targetFramework="MonoAndroid8.1">
                 <dependency id="Autofac" version="4.8.1" />
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.3.1" />
                 <dependency id="Bond.CSharp" version="8.0.0" />
@@ -108,6 +112,9 @@
                 <dependency id="NuGet.Versioning" version="4.9.3" />
                 <dependency id="PowerShellStandard.Library" version="5.1.0" />
                 <dependency id="RavenDB.Client" version="4.1.3" />
+                <dependency id="ReactiveUI" version="9.8.22" />
+                <dependency id="ReactiveUI.AndroidSupport" version="9.8.22" />
+                <dependency id="ReactiveUI.XamForms" version="9.8.22" />
                 <dependency id="Remotion.Linq" version="2.2.0" />
                 <dependency id="Serilog" version="2.8.0" />
                 <dependency id="Serilog.Extensions.Logging" version="2.0.2" />
@@ -152,6 +159,7 @@
                 <dependency id="NuGet.Versioning" version="4.9.3" />
                 <dependency id="PowerShellStandard.Library" version="5.1.0" />
                 <dependency id="RavenDB.Client" version="4.1.3" />
+                <dependency id="ReactiveUI" version="9.8.22" />
                 <dependency id="Serilog" version="2.8.0" />
                 <dependency id="Serilog.Extensions.Logging" version="2.0.2" />
                 <dependency id="ShellProgressBar" version="4.2.0" />
@@ -194,6 +202,7 @@
                 <dependency id="NuGet.Versioning" version="4.9.3" />
                 <dependency id="PowerShellStandard.Library" version="5.1.0" />
                 <dependency id="RavenDB.Client" version="4.1.3" />
+                <dependency id="ReactiveUI" version="9.8.22" />
                 <dependency id="Serilog" version="2.8.0" />
                 <dependency id="Serilog.Extensions.Logging" version="2.0.2" />
                 <dependency id="System.Interactive" version="3.2.0" />
@@ -203,7 +212,7 @@
                 <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
                 <dependency id="WindowsAzure.Storage" version="9.3.3" />
             </group>
-            <group targetFramework="uap10.0">
+            <group targetFramework="uap10.0.17134">
                 <dependency id="Autofac.Extensions.DependencyInjection" version="4.3.1" />
                 <dependency id="Bond.CSharp" version="8.0.0" />
                 <dependency id="ConsoleTables" version="2.2.0" />
@@ -237,6 +246,8 @@
                 <dependency id="NuGet.Versioning" version="4.9.3" />
                 <dependency id="PowerShellStandard.Library" version="5.1.0" />
                 <dependency id="RavenDB.Client" version="4.1.3" />
+                <dependency id="ReactiveUI" version="9.8.22" />
+                <dependency id="ReactiveUI.XamForms" version="9.8.22" />
                 <dependency id="Serilog" version="2.8.0" />
                 <dependency id="Serilog.Extensions.Logging" version="2.0.2" />
                 <dependency id="System.Interactive" version="3.2.0" />

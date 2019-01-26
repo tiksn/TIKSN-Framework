@@ -20,6 +20,7 @@
     <PackageReference Include="Nito.AsyncEx.Context" Version="1.1.0" />
     <PackageReference Include="NSubstitute" Version="3.1.0" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" />
+    <PackageReference Include="ReactiveUI" Version="9.8.22" />
     <PackageReference Include="Serilog.Sinks.XUnit" Version="1.0.7" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.analyzers" Version="0.10.0" />

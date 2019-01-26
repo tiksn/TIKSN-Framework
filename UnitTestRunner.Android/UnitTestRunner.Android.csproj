@@ -77,6 +77,9 @@
     <Reference Include="DnsClient, Version=1.2.0.0, Culture=neutral, PublicKeyToken=4574bb5573c51424, processorArchitecture=MSIL">
       <HintPath>..\packages\DnsClient.1.2.0\lib\netstandard2.0\DnsClient.dll</HintPath>
     </Reference>
+    <Reference Include="DynamicData, Version=6.7.1.2534, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DynamicData.6.7.1.2534\lib\netstandard2.0\DynamicData.dll</HintPath>
+    </Reference>
     <Reference Include="Exceptionless.Signed, Version=4.3.2018.0, Culture=neutral, PublicKeyToken=fc181f0a46f65747, processorArchitecture=MSIL">
       <HintPath>..\packages\Exceptionless.Signed.4.3.2018\lib\netstandard2.0\Exceptionless.Signed.dll</HintPath>
     </Reference>
@@ -252,6 +255,15 @@
     <Reference Include="Raven.Client, Version=4.1.3.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Client.4.1.3\lib\netstandard2.0\Raven.Client.dll</HintPath>
     </Reference>
+    <Reference Include="ReactiveUI, Version=9.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ReactiveUI.9.8.22\lib\monoandroid81\ReactiveUI.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI.AndroidSupport, Version=9.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ReactiveUI.AndroidSupport.9.8.22\lib\monoandroid81\ReactiveUI.AndroidSupport.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI.XamForms, Version=9.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ReactiveUI.XamForms.9.8.22\lib\netstandard2.0\ReactiveUI.XamForms.dll</HintPath>
+    </Reference>
     <Reference Include="Remotion.Linq, Version=2.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\packages\Remotion.Linq.2.2.0\lib\portable-net45+win+wpa81+wp80\Remotion.Linq.dll</HintPath>
     </Reference>
@@ -263,6 +275,9 @@
     </Reference>
     <Reference Include="Sparrow, Version=4.1.3.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Client.4.1.3\lib\netstandard2.0\Sparrow.dll</HintPath>
+    </Reference>
+    <Reference Include="Splat, Version=6.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Splat.6.1.7\lib\monoandroid81\Splat.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppDomain, Version=2.0.11.0, Culture=neutral, PublicKeyToken=a741d64a8a4710e8, processorArchitecture=MSIL">
@@ -307,6 +322,21 @@
     <Reference Include="System.ObjectModel" />
     <Reference Include="System.Reactive, Version=4.1.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Reactive.4.1.2\lib\netstandard2.0\System.Reactive.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Core, Version=3.0.6000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Core.4.1.2\lib\netstandard2.0\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=3.0.6000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Interfaces.4.1.2\lib\netstandard2.0\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq, Version=3.0.6000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Linq.4.1.2\lib\netstandard2.0\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices, Version=3.0.6000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.PlatformServices.4.1.2\lib\netstandard2.0\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Providers, Version=3.0.6000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Providers.4.1.2\lib\netstandard2.0\System.Reactive.Providers.dll</HintPath>
     </Reference>
     <Reference Include="System.Reflection" />
     <Reference Include="System.Reflection.Extensions" />
