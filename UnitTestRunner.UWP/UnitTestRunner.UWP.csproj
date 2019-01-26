@@ -212,6 +212,9 @@
     <PackageReference Include="System.Reactive">
       <Version>4.1.2</Version>
     </PackageReference>
+    <PackageReference Include="System.Threading.Tasks.Extensions">
+      <Version>4.5.2</Version>
+    </PackageReference>
     <PackageReference Include="xunit">
       <Version>2.4.1</Version>
     </PackageReference>
