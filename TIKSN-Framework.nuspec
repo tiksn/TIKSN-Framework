@@ -8,6 +8,7 @@
         <authors>TIKSN</authors>
         <owners>TIKSN</owners>
         <projectUrl>http://www.tiksn.com/Framework</projectUrl>
+        <repository type="git" url="https://github.com/tiksn/TIKSN-Framework" />
         <iconUrl>http://www.tiksn.com/Images/Logo.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <license type="expression">MIT</license>
