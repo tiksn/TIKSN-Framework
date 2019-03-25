@@ -35,6 +35,8 @@ https://cakebuild.net
 
 #>
 
+#Requires -RunAsAdministrator
+
 [CmdletBinding()]
 Param(
     [string]$Script = "build.cake",
@@ -63,16 +65,6 @@ try {
   } catch {
     Write-Output 'Unable to set PowerShell to use TLS 1.2 and TLS 1.1 due to old .NET Framework installed. If you see underlying connection closed or trust errors, you may need to upgrade to .NET Framework 4.5+ and PowerShell v3'
   }
-
-[Reflection.Assembly]::LoadWithPartialName("System.Security") | Out-Null
-
-$currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-$isInAdminRole = $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-
-if(-NOT $isInAdminRole) {
-    Write-Error "PowerShell is not running as an Administrator."
-    exit
-}
 
 function MD5HashFile([string] $filePath)
 {
