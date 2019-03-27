@@ -12,16 +12,16 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
 {
     public class CurrencyConverterApiDotCom : ICurrencyConverter, IExchangeRateProvider
     {
-        private const string ConverterEndpointFormat = "api/v3/convert?q={0}_{1}&compact=ultra&apiKey={2}";
-        private const string CurrencyListApiEndpointFormat = "api/v3/currencies?apiKey={0}";
-        private const string FreeVersionApiBaseAddress = "http://free.currencyconverterapi.com/";
+        private const string ConverterEndpointFormat = "api/v6/convert?q={0}_{1}&compact=ultra&apiKey={2}";
+        private const string CurrencyListApiEndpointFormat = "api/v6/currencies?apiKey={0}";
+        private const string FreeVersionApiBaseAddress = "https://free.currencyconverterapi.com/";
         private const string PaidVersionApiBaseAddress = "https://www.currencyconverterapi.com/";
         private readonly Uri _apiBaseAddress;
         private readonly string _apiKey;
         private readonly ICurrencyFactory _currencyFactory;
         private readonly ITimeProvider _timeProvider;
 
-        public CurrencyConverterApiDotCom(ICurrencyFactory currencyFactory, ITimeProvider timeProvider, bool useFreeVersion = true, string apiKey = "")
+        public CurrencyConverterApiDotCom(ICurrencyFactory currencyFactory, ITimeProvider timeProvider, bool useFreeVersion, string apiKey)
         {
             _currencyFactory = currencyFactory;
 
