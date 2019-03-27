@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace TIKSN.Finance.ForeignExchange.Tests
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly ITimeProvider _timeProvider;
+        private readonly string _currencyConverterApiKey;
 
         public CurrencyConverterApiDotComTests(ITestOutputHelper testOutputHelper)
         {
@@ -26,6 +28,7 @@ namespace TIKSN.Finance.ForeignExchange.Tests
                 services.AddSingleton<ITimeProvider, TimeProvider>();
             }).CreateServiceProvider();
             _timeProvider = _serviceProvider.GetRequiredService<ITimeProvider>();
+            _currencyConverterApiKey = _serviceProvider.GetRequiredService<IConfigurationRoot>().GetValue<string>("CurrencyConverterApiKey");
         }
 
         [Fact]
@@ -34,7 +37,7 @@ namespace TIKSN.Finance.ForeignExchange.Tests
             var currencyFactory = _serviceProvider.GetRequiredService<ICurrencyFactory>();
             var regionFactory = _serviceProvider.GetRequiredService<IRegionFactory>();
 
-            var myCurrencyDotNet = new CurrencyConverterApiDotCom(currencyFactory, _timeProvider);
+            var myCurrencyDotNet = new CurrencyConverterApiDotCom(currencyFactory, _timeProvider, useFreeVersion: true, _currencyConverterApiKey);
 
             var pairs = await myCurrencyDotNet.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
@@ -47,7 +50,7 @@ namespace TIKSN.Finance.ForeignExchange.Tests
             var currencyFactory = _serviceProvider.GetRequiredService<ICurrencyFactory>();
             var regionFactory = _serviceProvider.GetRequiredService<IRegionFactory>();
 
-            var myCurrencyDotNet = new CurrencyConverterApiDotCom(currencyFactory, _timeProvider);
+            var myCurrencyDotNet = new CurrencyConverterApiDotCom(currencyFactory, _timeProvider, useFreeVersion: true, _currencyConverterApiKey);
 
             var amd = currencyFactory.Create("AMD");
             var usd = currencyFactory.Create("USD");
@@ -64,7 +67,7 @@ namespace TIKSN.Finance.ForeignExchange.Tests
             var currencyFactory = _serviceProvider.GetRequiredService<ICurrencyFactory>();
             var regionFactory = _serviceProvider.GetRequiredService<IRegionFactory>();
 
-            var myCurrencyDotNet = new CurrencyConverterApiDotCom(currencyFactory, _timeProvider);
+            var myCurrencyDotNet = new CurrencyConverterApiDotCom(currencyFactory, _timeProvider, useFreeVersion: true, _currencyConverterApiKey);
 
             var amd = currencyFactory.Create("AMD");
             var usd = currencyFactory.Create("USD");
