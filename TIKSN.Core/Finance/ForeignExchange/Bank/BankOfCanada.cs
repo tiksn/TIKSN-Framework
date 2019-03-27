@@ -178,8 +178,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
             if (rates.ContainsKey(date))
                 return rates[date];
-            else if (nowInBuilding.Date == date && nowInBuilding.TimeOfDay < TimeSpan.FromHours(12))
-                return rates[nowInBuilding.AddHours(-12).Date];
+            else if (nowInBuilding.Date == date && nowInBuilding.TimeOfDay < TimeSpan.FromDays(1))
+                return rates[nowInBuilding.AddDays(-1).Date];
 
             return rates[date]; // Exception will be thrown
         }
