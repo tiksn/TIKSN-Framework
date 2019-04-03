@@ -72,22 +72,22 @@
       <Version>2.2.0</Version>
     </PackageReference>
     <PackageReference Include="Nito.AsyncEx.Context">
-      <Version>1.1.0</Version>
+      <Version>5.0.0</Version>
     </PackageReference>
     <PackageReference Include="NSubstitute">
-      <Version>3.1.0</Version>
+      <Version>4.0.0</Version>
     </PackageReference>
     <PackageReference Include="NuGet.Versioning">
-      <Version>4.9.3</Version>
+      <Version>4.9.4</Version>
     </PackageReference>
     <PackageReference Include="PowerShellStandard.Library">
       <Version>5.1.0</Version>
     </PackageReference>
     <PackageReference Include="ReactiveUI">
-      <Version>9.8.22</Version>
+      <Version>9.12.1</Version>
     </PackageReference>
     <PackageReference Include="Serilog.Sinks.XUnit">
-      <Version>1.0.7</Version>
+      <Version>1.0.8</Version>
     </PackageReference>
     <PackageReference Include="xunit">
       <Version>2.4.1</Version>

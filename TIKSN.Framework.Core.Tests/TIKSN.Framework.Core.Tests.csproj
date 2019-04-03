@@ -17,12 +17,12 @@
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.6.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="2.2.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
-    <PackageReference Include="Nito.AsyncEx.Context" Version="1.1.0" />
-    <PackageReference Include="NSubstitute" Version="3.1.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Include="Nito.AsyncEx.Context" Version="5.0.0" />
+    <PackageReference Include="NSubstitute" Version="4.0.0" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" />
-    <PackageReference Include="ReactiveUI" Version="9.8.22" />
-    <PackageReference Include="Serilog.Sinks.XUnit" Version="1.0.7" />
+    <PackageReference Include="ReactiveUI" Version="9.12.1" />
+    <PackageReference Include="Serilog.Sinks.XUnit" Version="1.0.8" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.analyzers" Version="0.10.0" />
     <PackageReference Include="xunit.assert" Version="2.4.1" />
