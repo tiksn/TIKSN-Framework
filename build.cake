@@ -59,7 +59,7 @@ Task("BuildDocs")
       InputPaths = new DirectoryPath[] { Directory("./docs/input") }
     });
 });
-    
+
 Task("PreviewDocs")
   .IsDependentOn("BuildDocs")
   .Does(() =>
@@ -70,7 +70,7 @@ Task("PreviewDocs")
         InputPaths = new DirectoryPath[] { Directory("./docs/input") },
         Preview = true,
         Watch = true
-    });        
+    });
 });
 
 Task("Publish")
@@ -119,6 +119,8 @@ Task("Test")
 });
 
 Task("Build")
+  .IsDependentOn("BuildLanguageLocalization")
+  .IsDependentOn("BuildRegionLocalization")
   .IsDependentOn("BuildCommonCore")
   .IsDependentOn("BuildNetCore")
   .IsDependentOn("BuildNetFramework")
@@ -164,7 +166,7 @@ Task("CreateReferenceAssembliesForUWP")
             .Append("/32BITREQ-")
             .Append(destinationFilePath.FullPath)
         });
-  
+
   if(exitCode != 0)
     throw new Exception($"CorFlags exit code '{exitCode}' is not indicating success.");
 });
@@ -239,6 +241,36 @@ Task("BuildNetCore")
   .Does(() =>
 {
   MSBuild("TIKSN.Framework.Core/TIKSN.Framework.Core.csproj", configurator =>
+    configurator.SetConfiguration(configuration)
+        .SetVerbosity(Verbosity.Minimal)
+        .UseToolVersion(MSBuildToolVersion.VS2017)
+        .SetMSBuildPlatform(MSBuildPlatform.x64)
+        .SetPlatformTarget(PlatformTarget.MSIL)
+        .WithProperty("OutDir", anyBuildArtifactsDir.FullPath)
+        //.WithTarget("Rebuild")
+        );
+});
+
+Task("BuildLanguageLocalization")
+  .IsDependentOn("CreateBuildDirectories")
+  .Does(() =>
+{
+  MSBuild("TIKSN.LanguageLocalization/TIKSN.LanguageLocalization.csproj", configurator =>
+    configurator.SetConfiguration(configuration)
+        .SetVerbosity(Verbosity.Minimal)
+        .UseToolVersion(MSBuildToolVersion.VS2017)
+        .SetMSBuildPlatform(MSBuildPlatform.x64)
+        .SetPlatformTarget(PlatformTarget.MSIL)
+        .WithProperty("OutDir", anyBuildArtifactsDir.FullPath)
+        //.WithTarget("Rebuild")
+        );
+});
+
+Task("BuildRegionLocalization")
+  .IsDependentOn("CreateBuildDirectories")
+  .Does(() =>
+{
+  MSBuild("TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj", configurator =>
     configurator.SetConfiguration(configuration)
         .SetVerbosity(Verbosity.Minimal)
         .UseToolVersion(MSBuildToolVersion.VS2017)
