@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using NLog;
 using NLog.Config;
 using NLog.Extensions.Logging;
 using NLog.Layouts;
@@ -10,17 +11,15 @@ namespace TIKSN.Analytics.Logging.NLog
     public abstract class NLogLoggingSetupBase : ILoggingSetup
     {
         protected readonly LoggingConfiguration _loggingConfiguration;
-        private readonly ILoggerFactory _loggerFactory;
         private readonly IPartialConfiguration<RemoteNLogViewerOptions> _remoteNLogViewerOptions;
 
-        protected NLogLoggingSetupBase(ILoggerFactory loggerFactory, IPartialConfiguration<RemoteNLogViewerOptions> remoteNLogViewerOptions)
+        protected NLogLoggingSetupBase(IPartialConfiguration<RemoteNLogViewerOptions> remoteNLogViewerOptions)
         {
             _loggingConfiguration = new LoggingConfiguration();
-            _loggerFactory = loggerFactory;
             _remoteNLogViewerOptions = remoteNLogViewerOptions;
         }
 
-        public void Setup()
+        public void Setup(ILoggingBuilder loggingBuilder)
         {
             SetupNLog();
 
@@ -45,11 +44,9 @@ namespace TIKSN.Analytics.Logging.NLog
                 AddForAllLevels(nLogViewerTarget);
             }
 
-            _loggerFactory.AddNLog();
-            _loggerFactory.ConfigureNLog(_loggingConfiguration);
+            loggingBuilder.AddNLog();
+            LogManager.Configuration = _loggingConfiguration;
         }
-
-        protected abstract void SetupNLog();
 
         protected void AddForAllLevels(Target target)
         {
@@ -62,5 +59,7 @@ namespace TIKSN.Analytics.Logging.NLog
             _loggingConfiguration.AddTarget(target);
             _loggingConfiguration.AddRuleForOneLevel(level, target);
         }
+
+        protected abstract void SetupNLog();
     }
 }

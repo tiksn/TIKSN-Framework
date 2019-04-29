@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Serilog;
+﻿using Serilog;
 using TIKSN.Analytics.Logging.Serilog;
 using Xunit.Abstractions;
 
@@ -9,7 +8,7 @@ namespace TIKSN.DependencyInjection.Tests
     {
         private readonly ITestOutputHelper _testOutputHelper;
 
-        public TestSerilogLoggingSetup(ITestOutputHelper testOutputHelper, ILoggerFactory loggerFactory) : base(loggerFactory)
+        public TestSerilogLoggingSetup(ITestOutputHelper testOutputHelper) : base()
         {
             _testOutputHelper = testOutputHelper;
         }

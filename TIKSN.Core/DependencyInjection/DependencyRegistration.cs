@@ -18,7 +18,6 @@ namespace TIKSN.DependencyInjection
         public static void Register(IServiceCollection services)
         {
             services.AddLocalization();
-            services.AddLogging();
             services.AddMemoryCache();
             services.AddOptions();
 

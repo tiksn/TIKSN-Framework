@@ -6,19 +6,17 @@ namespace TIKSN.Analytics.Logging.Serilog
     public class SerilogLoggingSetupBase : ILoggingSetup
     {
         protected LoggerConfiguration _loggerConfiguration;
-        private readonly ILoggerFactory _loggerFactory;
 
-        protected SerilogLoggingSetupBase(ILoggerFactory loggerFactory)
+        protected SerilogLoggingSetupBase()
         {
             _loggerConfiguration = new LoggerConfiguration();
-            _loggerFactory = loggerFactory;
         }
 
-        public void Setup()
+        public void Setup(ILoggingBuilder loggingBuilder)
         {
             SetupSerilog();
 
-            _loggerFactory.AddSerilog(_loggerConfiguration.CreateLogger());
+            loggingBuilder.AddSerilog(_loggerConfiguration.CreateLogger(), dispose: true);
         }
 
         protected virtual void SetupSerilog()
