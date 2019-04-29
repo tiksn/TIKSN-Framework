@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using TIKSN.Analytics.Logging;
 using Xunit.Abstractions;
 
@@ -26,9 +27,12 @@ namespace TIKSN.DependencyInjection.Tests
 
         protected override void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton(_testOutputHelper);
-            services.AddSingleton<ILoggingSetup, TestSerilogLoggingSetup>();
             _configureServices?.Invoke(services);
+        }
+
+        protected override IEnumerable<ILoggingSetup> GetLoggingSetups()
+        {
+            yield return new TestSerilogLoggingSetup(_testOutputHelper);
         }
     }
 }
