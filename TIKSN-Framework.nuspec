@@ -27,11 +27,11 @@
                 <dependency id="Bond.CSharp" version="8.1.0" />
                 <dependency id="ConsoleTables" version="2.3.0" />
                 <dependency id="Exceptionless.Signed" version="4.3.2027" />
-                <dependency id="FluentValidation" version="8.2.0" />
+                <dependency id="FluentValidation" version="8.3.0" />
                 <dependency id="LiteDB" version="4.1.4" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.9.1" />
-                <dependency id="Microsoft.EntityFrameworkCore" version="2.2.3" />
-                <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.2.3" />
+                <dependency id="Microsoft.EntityFrameworkCore" version="2.2.4" />
+                <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.2.4" />
                 <dependency id="Microsoft.Extensions.Caching.Memory" version="2.2.0" />
                 <dependency id="Microsoft.Extensions.Configuration" version="2.2.0" />
                 <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="2.2.0" />
@@ -49,25 +49,25 @@
                 <dependency id="MongoDB.Driver.GridFS" version="2.8.0" />
                 <dependency id="MsgPack.Cli" version="1.0.1" />
                 <dependency id="NETStandard.Library" version="2.0.1" />
-                <dependency id="Newtonsoft.Json" version="12.0.1" />
+                <dependency id="Newtonsoft.Json" version="12.0.2" />
                 <dependency id="Nito.AsyncEx.Context" version="5.0.0" />
                 <dependency id="Nito.AsyncEx.Tasks" version="1.1.0" />
                 <dependency id="Nito.Disposables" version="1.2.3" />
                 <dependency id="NLog" version="4.6.2" />
                 <dependency id="NLog.Extensions.Logging" version="1.4.0" />
-                <dependency id="NoDb" version="1.2.1" />
-                <dependency id="NuGet.Versioning" version="4.9.4" />
+                <dependency id="NoDb" version="1.2.2" />
+                <dependency id="NuGet.Versioning" version="5.0.0" />
                 <dependency id="PowerShellStandard.Library" version="5.1.0" />
-                <dependency id="RavenDB.Client" version="4.1.4" />
-                <dependency id="ReactiveUI" version="9.12.1" />
+                <dependency id="RavenDB.Client" version="4.1.5" />
+                <dependency id="ReactiveUI" version="9.13.1" />
                 <dependency id="Remotion.Linq" version="2.2.0" />
                 <dependency id="Serilog" version="2.8.0" />
-                <dependency id="Serilog.Extensions.Logging" version="2.0.2" />
+                <dependency id="Serilog.Extensions.Logging" version="2.0.4" />
                 <dependency id="ShellProgressBar" version="4.1.1" />
                 <dependency id="System.Console" version="4.3.1" />
                 <dependency id="System.Interactive" version="3.2.0" />
                 <dependency id="System.Interactive.Async" version="3.2.0" />
-                <dependency id="System.Reactive" version="4.1.3" />
+                <dependency id="System.Reactive" version="4.1.5" />
                 <dependency id="System.Reflection.TypeExtensions" version="4.4.0" />
                 <dependency id="System.Security.SecureString" version="4.3.0 " />
                 <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
@@ -79,13 +79,13 @@
                 <dependency id="Bond.CSharp" version="8.1.0" />
                 <dependency id="ConsoleTables" version="2.3.0" />
                 <dependency id="Exceptionless.Signed" version="4.3.2027" />
-                <dependency id="FluentValidation" version="8.2.0" />
+                <dependency id="FluentValidation" version="8.3.0" />
                 <dependency id="LiteDB" version="4.1.4" />
                 <dependency id="Microsoft.AppCenter.Analytics" version="1.14.0" />
                 <dependency id="Microsoft.AppCenter.Crashes" version="1.14.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.9.1" />
-                <dependency id="Microsoft.EntityFrameworkCore" version="2.2.3" />
-                <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.2.3" />
+                <dependency id="Microsoft.EntityFrameworkCore" version="2.2.4" />
+                <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.2.4" />
                 <dependency id="Microsoft.Extensions.Caching.Memory" version="2.2.0" />
                 <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="2.2.0" />
                 <dependency id="Microsoft.Extensions.DependencyInjection" version="2.2.0" />
@@ -103,24 +103,24 @@
                 <dependency id="MongoDB.Driver.GridFS" version="2.8.0" />
                 <dependency id="MsgPack.Cli" version="1.0.1" />
                 <dependency id="NETStandard.Library" version="2.0.1" />
-                <dependency id="Newtonsoft.Json" version="12.0.1" />
+                <dependency id="Newtonsoft.Json" version="12.0.2" />
                 <dependency id="Nito.AsyncEx.Context" version="5.0.0" />
                 <dependency id="NLog" version="4.6.2" />
                 <dependency id="NLog.Extensions.Logging" version="1.4.0" />
-                <dependency id="NoDb" version="1.2.1" />
-                <dependency id="NuGet.Versioning" version="4.9.4" />
+                <dependency id="NoDb" version="1.2.2" />
+                <dependency id="NuGet.Versioning" version="5.0.0" />
                 <dependency id="PowerShellStandard.Library" version="5.1.0" />
-                <dependency id="RavenDB.Client" version="4.1.4" />
-                <dependency id="ReactiveUI" version="9.12.1" />
-                <dependency id="ReactiveUI.AndroidSupport" version="9.12.1" />
-                <dependency id="ReactiveUI.XamForms" version="9.12.1" />
+                <dependency id="RavenDB.Client" version="4.1.5" />
+                <dependency id="ReactiveUI" version="9.13.1" />
+                <dependency id="ReactiveUI.AndroidSupport" version="9.13.1" />
+                <dependency id="ReactiveUI.XamForms" version="9.13.1" />
                 <dependency id="Remotion.Linq" version="2.2.0" />
                 <dependency id="Serilog" version="2.8.0" />
-                <dependency id="Serilog.Extensions.Logging" version="2.0.2" />
+                <dependency id="Serilog.Extensions.Logging" version="2.0.4" />
                 <dependency id="System.Console" version="4.3.1" />
                 <dependency id="System.Interactive" version="3.2.0" />
                 <dependency id="System.Interactive.Async" version="3.2.0" />
-                <dependency id="System.Reactive" version="4.1.3" />
+                <dependency id="System.Reactive" version="4.1.5" />
                 <dependency id="System.Security.SecureString" version="4.3.0 " />
                 <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
                 <dependency id="WindowsAzure.Storage" version="9.3.3" />
@@ -131,11 +131,11 @@
                 <dependency id="Bond.CSharp" version="8.1.0" />
                 <dependency id="ConsoleTables" version="2.3.0" />
                 <dependency id="Exceptionless.Signed" version="4.3.2027" />
-                <dependency id="FluentValidation" version="8.2.0" />
+                <dependency id="FluentValidation" version="8.3.0" />
                 <dependency id="LiteDB" version="4.1.4" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.9.1" />
-                <dependency id="Microsoft.EntityFrameworkCore" version="2.2.3" />
-                <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.2.3" />
+                <dependency id="Microsoft.EntityFrameworkCore" version="2.2.4" />
+                <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.2.4" />
                 <dependency id="Microsoft.Extensions.Configuration" version="2.2.0" />
                 <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="2.2.0" />
                 <dependency id="Microsoft.Extensions.DependencyInjection" version="2.2.0" />
@@ -151,20 +151,20 @@
                 <dependency id="MongoDB.Driver.GridFS" version="2.8.0" />
                 <dependency id="MsgPack.Cli" version="1.0.1" />
                 <dependency id="NETStandard.Library" version="2.0.3" />
-                <dependency id="Newtonsoft.Json" version="12.0.1" />
+                <dependency id="Newtonsoft.Json" version="12.0.2" />
                 <dependency id="Nito.AsyncEx.Context" version="5.0.0" />
                 <dependency id="NLog.Extensions.Logging" version="1.4.0" />
-                <dependency id="NoDb" version="1.2.1" />
-                <dependency id="NuGet.Versioning" version="4.9.4" />
+                <dependency id="NoDb" version="1.2.2" />
+                <dependency id="NuGet.Versioning" version="5.0.0" />
                 <dependency id="PowerShellStandard.Library" version="5.1.0" />
-                <dependency id="RavenDB.Client" version="4.1.4" />
-                <dependency id="ReactiveUI" version="9.12.1" />
+                <dependency id="RavenDB.Client" version="4.1.5" />
+                <dependency id="ReactiveUI" version="9.13.1" />
                 <dependency id="Serilog" version="2.8.0" />
-                <dependency id="Serilog.Extensions.Logging" version="2.0.2" />
+                <dependency id="Serilog.Extensions.Logging" version="2.0.4" />
                 <dependency id="ShellProgressBar" version="4.2.0" />
                 <dependency id="System.Interactive" version="3.2.0" />
                 <dependency id="System.Interactive.Async" version="3.2.0" />
-                <dependency id="System.Reactive" version="4.1.3" />
+                <dependency id="System.Reactive" version="4.1.5" />
                 <dependency id="System.Security.SecureString" version="4.3.0 " />
                 <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
                 <dependency id="WindowsAzure.Storage" version="9.3.3" />
@@ -174,11 +174,11 @@
                 <dependency id="Bond.CSharp" version="8.1.0" />
                 <dependency id="ConsoleTables" version="2.3.0" />
                 <dependency id="Exceptionless.Signed" version="4.3.2027" />
-                <dependency id="FluentValidation" version="8.2.0" />
+                <dependency id="FluentValidation" version="8.3.0" />
                 <dependency id="LiteDB" version="4.1.4" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.9.1" />
-                <dependency id="Microsoft.EntityFrameworkCore" version="2.2.3" />
-                <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.2.3" />
+                <dependency id="Microsoft.EntityFrameworkCore" version="2.2.4" />
+                <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.2.4" />
                 <dependency id="Microsoft.Extensions.Configuration" version="2.2.0" />
                 <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="2.2.0" />
                 <dependency id="Microsoft.Extensions.DependencyInjection" version="2.2.0" />
@@ -194,19 +194,19 @@
                 <dependency id="MongoDB.Driver.GridFS" version="2.8.0" />
                 <dependency id="MsgPack.Cli" version="1.0.1" />
                 <dependency id="NETStandard.Library" version="2.0.0" />
-                <dependency id="Newtonsoft.Json" version="12.0.1" />
+                <dependency id="Newtonsoft.Json" version="12.0.2" />
                 <dependency id="Nito.AsyncEx.Context" version="5.0.0" />
                 <dependency id="NLog.Extensions.Logging" version="1.4.0" />
-                <dependency id="NoDb" version="1.2.1" />
-                <dependency id="NuGet.Versioning" version="4.9.4" />
+                <dependency id="NoDb" version="1.2.2" />
+                <dependency id="NuGet.Versioning" version="5.0.0" />
                 <dependency id="PowerShellStandard.Library" version="5.1.0" />
-                <dependency id="RavenDB.Client" version="4.1.4" />
-                <dependency id="ReactiveUI" version="9.12.1" />
+                <dependency id="RavenDB.Client" version="4.1.5" />
+                <dependency id="ReactiveUI" version="9.13.1" />
                 <dependency id="Serilog" version="2.8.0" />
-                <dependency id="Serilog.Extensions.Logging" version="2.0.2" />
+                <dependency id="Serilog.Extensions.Logging" version="2.0.4" />
                 <dependency id="System.Interactive" version="3.2.0" />
                 <dependency id="System.Interactive.Async" version="3.2.0" />
-                <dependency id="System.Reactive" version="4.1.3" />
+                <dependency id="System.Reactive" version="4.1.5" />
                 <dependency id="System.Security.SecureString" version="4.3.0 " />
                 <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
                 <dependency id="WindowsAzure.Storage" version="9.3.3" />
@@ -216,13 +216,13 @@
                 <dependency id="Bond.CSharp" version="8.1.0" />
                 <dependency id="ConsoleTables" version="2.3.0" />
                 <dependency id="Exceptionless.Signed" version="4.3.2027" />
-                <dependency id="FluentValidation" version="8.2.0" />
+                <dependency id="FluentValidation" version="8.3.0" />
                 <dependency id="LiteDB" version="4.1.4" />
                 <dependency id="Microsoft.AppCenter.Analytics" version="1.14.0" />
                 <dependency id="Microsoft.AppCenter.Crashes" version="1.14.0" />
                 <dependency id="Microsoft.ApplicationInsights" version="2.9.1" />
-                <dependency id="Microsoft.EntityFrameworkCore" version="2.2.3" />
-                <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.2.3" />
+                <dependency id="Microsoft.EntityFrameworkCore" version="2.2.4" />
+                <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.2.4" />
                 <dependency id="Microsoft.Extensions.Configuration" version="2.2.0" />
                 <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="2.2.0" />
                 <dependency id="Microsoft.Extensions.DependencyInjection" version="2.2.0" />
@@ -238,20 +238,20 @@
                 <dependency id="MongoDB.Driver.GridFS" version="2.8.0" />
                 <dependency id="MsgPack.Cli" version="1.0.1" />
                 <dependency id="NETStandard.Library" version="2.0.1" />
-                <dependency id="Newtonsoft.Json" version="12.0.1" />
+                <dependency id="Newtonsoft.Json" version="12.0.2" />
                 <dependency id="Nito.AsyncEx.Context" version="5.0.0" />
                 <dependency id="NLog.Extensions.Logging" version="1.4.0" />
-                <dependency id="NoDb" version="1.2.1" />
-                <dependency id="NuGet.Versioning" version="4.9.4" />
+                <dependency id="NoDb" version="1.2.2" />
+                <dependency id="NuGet.Versioning" version="5.0.0" />
                 <dependency id="PowerShellStandard.Library" version="5.1.0" />
-                <dependency id="RavenDB.Client" version="4.1.4" />
-                <dependency id="ReactiveUI" version="9.12.1" />
-                <dependency id="ReactiveUI.XamForms" version="9.12.1" />
+                <dependency id="RavenDB.Client" version="4.1.5" />
+                <dependency id="ReactiveUI" version="9.13.1" />
+                <dependency id="ReactiveUI.XamForms" version="9.13.1" />
                 <dependency id="Serilog" version="2.8.0" />
-                <dependency id="Serilog.Extensions.Logging" version="2.0.2" />
+                <dependency id="Serilog.Extensions.Logging" version="2.0.4" />
                 <dependency id="System.Interactive" version="3.2.0" />
                 <dependency id="System.Interactive.Async" version="3.2.0" />
-                <dependency id="System.Reactive" version="4.1.3" />
+                <dependency id="System.Reactive" version="4.1.5" />
                 <dependency id="System.Security.SecureString" version="4.3.0 " />
                 <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
                 <dependency id="Template10" version="1.1.12" />
