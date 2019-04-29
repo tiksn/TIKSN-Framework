@@ -9,7 +9,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Shell_Commander</RootNamespace>
     <AssemblyName>Shell Commander</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -484,16 +484,16 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="TIKSN.Core, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TIKSN-Framework.3.1.0-alpha.32\lib\net472\TIKSN.Core.dll</HintPath>
+      <HintPath>..\packages\TIKSN-Framework.3.1.0-alpha.32\lib\net48\TIKSN.Core.dll</HintPath>
     </Reference>
     <Reference Include="TIKSN.Framework.Full, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TIKSN-Framework.3.1.0-alpha.32\lib\net472\TIKSN.Framework.Full.dll</HintPath>
+      <HintPath>..\packages\TIKSN-Framework.3.1.0-alpha.32\lib\net48\TIKSN.Framework.Full.dll</HintPath>
     </Reference>
     <Reference Include="TIKSN.LanguageLocalization, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TIKSN-Framework.3.1.0-alpha.32\lib\net472\TIKSN.LanguageLocalization.dll</HintPath>
+      <HintPath>..\packages\TIKSN-Framework.3.1.0-alpha.32\lib\net48\TIKSN.LanguageLocalization.dll</HintPath>
     </Reference>
     <Reference Include="TIKSN.RegionLocalization, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TIKSN-Framework.3.1.0-alpha.32\lib\net472\TIKSN.RegionLocalization.dll</HintPath>
+      <HintPath>..\packages\TIKSN-Framework.3.1.0-alpha.32\lib\net48\TIKSN.RegionLocalization.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>

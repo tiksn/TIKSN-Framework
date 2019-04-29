@@ -29,7 +29,7 @@ DirectoryPath x86BuildArtifactsDir;
 
 Setup(context =>
 {
-    context.Tools.RegisterFile("C:/Program Files (x86)/Microsoft SDKs/Windows/v10.0A/bin/NETFX 4.7.2 Tools/CorFlags.exe");
+    context.Tools.RegisterFile("C:/Program Files (x86)/Microsoft SDKs/Windows/v10.0A/bin/NETFX 4.8 Tools/CorFlags.exe");
     SetTrashParentDirectory(GitFindRootFromPath("."));
 });
 
