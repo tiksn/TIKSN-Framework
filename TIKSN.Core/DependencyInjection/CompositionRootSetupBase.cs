@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using TIKSN.Analytics.Logging;
@@ -31,6 +32,14 @@ namespace TIKSN.DependencyInjection
             return serviceProvider;
         }
 
+        protected virtual void ConfigureLoggingBuilder(ILoggingBuilder loggingBuilder)
+        {
+            foreach (var loggingSetup in GetLoggingSetups())
+            {
+                loggingSetup.Setup(loggingBuilder);
+            }
+        }
+
         protected abstract void ConfigureOptions(IServiceCollection services, IConfigurationRoot configuration);
 
         protected abstract void ConfigureServices(IServiceCollection services);
@@ -39,6 +48,7 @@ namespace TIKSN.DependencyInjection
         {
             var services = GetInitialServiceCollection();
             DependencyRegistration.Register(services);
+            services.AddLogging(ConfigureLoggingBuilder);
 
             ConfigureServices(services);
 
@@ -59,13 +69,7 @@ namespace TIKSN.DependencyInjection
             return new ServiceCollection();
         }
 
-        protected void SetupLogging(IServiceProvider serviceProvider)
-        {
-            foreach (var loggingSetup in serviceProvider.GetServices<ILoggingSetup>())
-            {
-                loggingSetup.Setup();
-            }
-        }
+        protected abstract IEnumerable<ILoggingSetup> GetLoggingSetups();
 
         protected void ValidateOptions(IServiceCollection services, IServiceProvider serviceProvider)
         {
