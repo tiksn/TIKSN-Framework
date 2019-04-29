@@ -25,8 +25,6 @@ namespace TIKSN.DependencyInjection
         {
             var serviceProvider = CreateServiceProviderInternal();
 
-            SetupLogging(serviceProvider);
-
             ValidateOptions(_services.Value, serviceProvider);
 
             return serviceProvider;
