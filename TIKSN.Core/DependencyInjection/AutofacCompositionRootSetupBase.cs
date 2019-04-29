@@ -19,8 +19,6 @@ namespace TIKSN.DependencyInjection
             var container = CreateContainerInternal();
             var serviceProvider = new AutofacServiceProvider(container);
 
-            SetupLogging(serviceProvider);
-
             ValidateOptions(_services.Value, serviceProvider);
 
             return container;
