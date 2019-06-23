@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
 using ReactiveUI;
 using System;
+using TIKSN.FileSystem;
 using TIKSN.Globalization;
 using TIKSN.Serialization;
 using TIKSN.Serialization.Bond;
@@ -30,6 +31,7 @@ namespace TIKSN.DependencyInjection
             services.TryAddSingleton<ITimeProvider, TimeProvider>();
             services.TryAddSingleton<Random>();
             services.TryAddSingleton(MsgPack.Serialization.SerializationContext.Default);
+            services.TryAddSingleton<IKnownFolders, KnownFolders>();
 
             services.TryAddSingleton<CompactBinaryBondDeserializer>();
             services.TryAddSingleton<CompactBinaryBondSerializer>();
