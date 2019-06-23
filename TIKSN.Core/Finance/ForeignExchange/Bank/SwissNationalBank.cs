@@ -79,7 +79,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
                 lock (this.foreignRates)
                 {
-                    foreach (var ItemElement in xdoc.Element("{http://www.w3.org/1999/02/22-rdf-syntax-ns#}RDF").Elements("{http://purl.org/rss/1.0/}item"))
+                    foreach (var ItemElement in xdoc.Element("rss").Element("channel").Elements("item"))
                     {
                         var dateElement = ItemElement.Element("{http://purl.org/dc/elements/1.1/}date");
                         var exchangeRateElement = ItemElement.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}statistics").Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}exchangeRate");
