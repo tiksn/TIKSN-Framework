@@ -9,8 +9,6 @@
     <Import_RootNamespace>TIKSN.Framework.SharedDesktop</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)FileSystem\KnownFolders.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)FileSystem\KnownFoldersConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shell\ShellProgress.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shell\ShellProgressFactory.cs" />
   </ItemGroup>
