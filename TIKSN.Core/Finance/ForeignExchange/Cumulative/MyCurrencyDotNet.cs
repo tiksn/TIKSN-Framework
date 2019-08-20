@@ -12,15 +12,12 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
 {
     public class MyCurrencyDotNet : ICurrencyConverter, IExchangeRatesProvider
     {
-        private const string ResourceUrl = "http://www.mycurrency.net/service/rates";
+        private const string ResourceUrl = "https://www.mycurrency.net/US.json";
         private readonly ICurrencyFactory _currencyFactory;
-        private readonly CurrencyInfo USD;
         private readonly ITimeProvider _timeProvider;
 
-        public MyCurrencyDotNet(ICurrencyFactory currencyFactory, IRegionFactory regionFactory, ITimeProvider timeProvider)
+        public MyCurrencyDotNet(ICurrencyFactory currencyFactory, ITimeProvider timeProvider)
         {
-            var enUS = regionFactory.Create("en-US");
-            USD = currencyFactory.Create(enUS);
             _currencyFactory = currencyFactory;
             _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
@@ -55,17 +52,20 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
             {
                 var jsonExchangeRates = await httpClient.GetStringAsync(ResourceUrl);
 
-                var exchangeRates = JsonConvert.DeserializeObject<ExchangeRate[]>(jsonExchangeRates);
+                var exchangeResponse = JsonConvert.DeserializeObject<ExchangeResponse>(jsonExchangeRates);
+                var exchangeRates = exchangeResponse.Rates;
+
+                var baseCurrency = _currencyFactory.Create(exchangeResponse.BaseCurrency);
 
                 var rates = exchangeRates
                     .Select(item => (currency: _currencyFactory.Create(item.CurrencyCode), rate: item.Rate))
-                    .Where(item => item.currency != USD)
+                    .Where(item => item.currency != baseCurrency)
                     .ToArray();
 
                 return rates
-                    .Select(item => new ForeignExchange.ExchangeRate(new CurrencyPair(USD, item.currency), asOn, item.rate))
+                    .Select(item => new ForeignExchange.ExchangeRate(new CurrencyPair(baseCurrency, item.currency), asOn, item.rate))
                     .Concat(rates
-                        .Select(item => new ForeignExchange.ExchangeRate(new CurrencyPair(item.currency, USD), asOn, decimal.One / item.rate)))
+                        .Select(item => new ForeignExchange.ExchangeRate(new CurrencyPair(item.currency, baseCurrency), asOn, decimal.One / item.rate)))
                     .ToArray();
             }
         }
@@ -103,6 +103,15 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
 
             [JsonProperty("rate")]
             public decimal Rate { get; set; }
+        }
+
+        public class ExchangeResponse
+        {
+            [JsonProperty("baseCurrency")]
+            public string BaseCurrency { get; set; }
+
+            [JsonProperty("rates")]
+            public ExchangeRate[] Rates { get; set; }
         }
     }
 }
