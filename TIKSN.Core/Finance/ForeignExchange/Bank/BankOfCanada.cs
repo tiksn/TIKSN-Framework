@@ -185,6 +185,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             else if (date.DayOfWeek == DayOfWeek.Monday && rates.ContainsKey(date.AddDays(-3).Date))
                 return rates[date.AddDays(-3).Date];
 
+            if (rates.ContainsKey(date.AddDays(-1).Date))
+                return rates[date.AddDays(-1).Date];
+
             return rates[date]; // Exception will be thrown
         }
 

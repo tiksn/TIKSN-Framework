@@ -9,7 +9,7 @@ namespace TIKSN.Settings.Tests
     {
         partial void SetupDenepdencies()
         {
-            PlatformDependencyRegistration.Register(services);
+            services.AddFrameworkPlatform();
             services.AddSingleton<ISettingsService, FileSettingsService>();
             services.AddSingleton(new KnownFoldersConfiguration(GetType().Assembly, KnownFolderVersionConsideration.None));
 

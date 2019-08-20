@@ -45,7 +45,7 @@ namespace TIKSN.DependencyInjection
         protected IServiceCollection CreateServiceCollection()
         {
             var services = GetInitialServiceCollection();
-            DependencyRegistration.Register(services);
+            services.AddFrameworkCore();
             services.AddLogging(ConfigureLoggingBuilder);
 
             ConfigureServices(services);

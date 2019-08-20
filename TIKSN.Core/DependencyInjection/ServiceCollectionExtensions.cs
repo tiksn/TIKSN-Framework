@@ -14,9 +14,9 @@ using TIKSN.Web.Rest;
 
 namespace TIKSN.DependencyInjection
 {
-    public static class DependencyRegistration
+    public static class ServiceCollectionExtensions
     {
-        public static void Register(IServiceCollection services)
+        public static IServiceCollection AddFrameworkCore(this IServiceCollection services)
         {
             services.AddLocalization();
             services.AddMemoryCache();
@@ -54,6 +54,8 @@ namespace TIKSN.DependencyInjection
             services.TryAddScoped<IShellCommandContext, ShellCommandContext>();
 
             services.AddSingleton(MessageBus.Current);
+
+            return services;
         }
     }
 }

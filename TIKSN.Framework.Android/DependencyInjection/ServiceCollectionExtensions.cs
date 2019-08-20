@@ -4,13 +4,15 @@ using TIKSN.FileSystem;
 
 namespace TIKSN.DependencyInjection
 {
-    public static class PlatformDependencyRegistration
+    public static class ServiceCollectionExtensions
     {
-        public static void Register(IServiceCollection services)
+        public static IServiceCollection AddFrameworkPlatform(this IServiceCollection services)
         {
-            DependencyRegistration.Register(services);
+            services.AddFrameworkCore();
 
             services.TryAddSingleton<IKnownFolders, KnownFolders>();
+
+            return services;
         }
     }
 }

@@ -9,11 +9,11 @@ using TIKSN.Speech;
 
 namespace TIKSN.DependencyInjection
 {
-    public static class PlatformDependencyRegistration
+    public static class ServiceCollectionExtensions
     {
-        public static void Register(IServiceCollection services)
+        public static IServiceCollection AddFrameworkPlatform(this IServiceCollection services)
         {
-            DependencyRegistration.Register(services);
+            services.AddFrameworkCore();
 
             services.TryAddSingleton<IAntimalwareScanner, AntimalwareScanner>();
             services.TryAddSingleton<IConsoleService, ConsoleService>();
@@ -22,6 +22,8 @@ namespace TIKSN.DependencyInjection
             services.TryAddSingleton<ISettingsService, WindowsRegistrySettingsService>();
             services.TryAddSingleton<IShellCommandEngine, ShellCommandEngine>();
             services.TryAddSingleton<ITextToSpeechService, TextToSpeechService>();
+
+            return services;
         }
     }
 }

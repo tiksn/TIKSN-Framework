@@ -7,16 +7,18 @@ using TIKSN.Settings;
 
 namespace TIKSN.DependencyInjection
 {
-    public static class PlatformDependencyRegistration
+    public static class ServiceCollectionExtensions
     {
-        public static void Register(IServiceCollection services)
+        public static IServiceCollection AddFrameworkPlatform(this IServiceCollection services)
         {
-            DependencyRegistration.Register(services);
+            services.AddFrameworkCore();
 
             services.TryAddSingleton<IAdUnitSelector, AdUnitSelector>();
             services.TryAddSingleton<IKnownFolders, KnownFolders>();
             services.TryAddSingleton<INetworkConnectivityService, NetworkConnectivityService>();
             services.TryAddSingleton<ISettingsService, SettingsService>();
+
+            return services;
         }
     }
 }
