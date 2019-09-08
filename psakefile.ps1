@@ -4,8 +4,17 @@ Task Publish -depends Pack {
 Task Pack -depends Build {
 }
 
-Task Build -depends EstimateVersions {
+Task Build -depends BuildLanguageLocalization, BuildRegionLocalization, BuildCommonCore, BuildNetCore, BuildNetFramework, BuildAndroid, BuildUWP, CreateReferenceAssembliesForUWP {
 }
+
+Task BuildLanguageLocalization -depends EstimateVersions
+Task BuildRegionLocalization -depends EstimateVersions
+Task BuildCommonCore -depends EstimateVersions
+Task BuildNetCore -depends EstimateVersions
+Task BuildNetFramework -depends EstimateVersions
+Task BuildAndroid -depends EstimateVersions
+Task BuildUWP -depends EstimateVersions
+Task CreateReferenceAssembliesForUWP -depends EstimateVersions
 
 Task EstimateVersions -depends Clean {
 }
