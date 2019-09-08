@@ -1,99 +1,41 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9C9BF5AE-95BD-49D6-B093-F707E7AE9969}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>TIKSN.Framework.Full.Tests</RootNamespace>
-    <AssemblyName>TIKSN.Framework.Full.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>net48</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
+    <AssemblyTitle>TIKSN.Framework.Full.Tests</AssemblyTitle>
+    <Product>TIKSN.Framework.Full.Tests</Product>
+    <Copyright>Copyright ©  2018</Copyright>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <Import Project="..\TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.projitems" Label="Shared" />
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings\SettingsServiceTests.cs" />
+    <ProjectReference Include="..\TIKSN.Core\TIKSN.Core.csproj" />
+    <ProjectReference Include="..\TIKSN.Framework.Full\TIKSN.Framework.Full.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <PackageReference Include="FluentAssertions" Version="5.6.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="2.2.0" />
+    <PackageReference Include="Nito.AsyncEx.Context" Version="5.0.0" />
+    <PackageReference Include="NSubstitute" Version="4.0.0" />
+    <PackageReference Include="NuGet.Versioning" Version="5.0.0" />
+    <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" />
+    <PackageReference Include="ReactiveUI" Version="9.13.1" />
+    <PackageReference Include="Serilog.Sinks.XUnit" Version="1.0.8" />
+    <PackageReference Include="xunit" Version="2.4.1" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TIKSN.Core\TIKSN.Core.csproj">
-      <Project>{d1ecb169-bb57-4751-aeca-415e078e5996}</Project>
-      <Name>TIKSN.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TIKSN.Framework.Full\TIKSN.Framework.Full.csproj">
-      <Project>{786b1846-c0a1-46d8-8e17-47cf5cbb0d0d}</Project>
-      <Name>TIKSN.Framework.Full</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="FluentAssertions">
-      <Version>5.6.0</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets">
-      <Version>2.2.0</Version>
-    </PackageReference>
-    <PackageReference Include="Nito.AsyncEx.Context">
-      <Version>5.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="NSubstitute">
-      <Version>4.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="NuGet.Versioning">
-      <Version>5.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="PowerShellStandard.Library">
-      <Version>5.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="ReactiveUI">
-      <Version>9.13.1</Version>
-    </PackageReference>
-    <PackageReference Include="Serilog.Sinks.XUnit">
-      <Version>1.0.8</Version>
-    </PackageReference>
-    <PackageReference Include="xunit">
-      <Version>2.4.1</Version>
-    </PackageReference>
-  </ItemGroup>
-  <Import Project="..\TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.projitems" Label="Shared" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
