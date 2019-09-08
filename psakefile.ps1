@@ -7,7 +7,7 @@ Task Pack -depends Build {
 Task Build -depends EstimateVersions {
 }
 
-Task EstimateVersions Clean {
+Task EstimateVersions -depends Clean {
 }
 
 Task Clean -depends Init {
