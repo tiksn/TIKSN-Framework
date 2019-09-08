@@ -1,13 +1,13 @@
 Task Publish -depends Pack {
 }
 
-Task Pack -depends Build, EstimateVersions {
+Task Pack -depends Build {
 }
 
-Task EstimateVersions {
+Task Build -depends EstimateVersions {
 }
 
-Task Build -depends Clean {
+Task EstimateVersions Clean {
 }
 
 Task Clean -depends Init {
