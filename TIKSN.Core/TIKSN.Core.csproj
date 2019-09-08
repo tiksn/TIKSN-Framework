@@ -1,38 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>TIKSN.Core</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>TIKSN</RootNamespace>
+    <DocumentationFile>bin\$(Configuration)\netstandard2.0\TIKSN.Core.xml</DocumentationFile>
   </PropertyGroup>
-
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard2.0\TIKSN.Core.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\TIKSN.Core.xml</DocumentationFile>
-  </PropertyGroup>
-
   <ItemGroup>
     <None Remove="Finance\Resources\TableA1.xml" />
     <None Remove="Finance\Resources\TableA3.xml" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Include="Finance\Resources\TableA1.xml" />
     <EmbeddedResource Include="Finance\Resources\TableA3.xml" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.4.0" />
     <PackageReference Include="Bond.CSharp" Version="8.1.0" />
@@ -44,7 +30,6 @@
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.9.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.2">
       <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.4" />
@@ -76,16 +61,13 @@
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\TIKSN.LanguageLocalization\TIKSN.LanguageLocalization.csproj" />
     <ProjectReference Include="..\TIKSN.RegionLocalization\TIKSN.RegionLocalization.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Update="Localization\LocalizationKeys.cs">
       <DesignTime>True</DesignTime>
@@ -93,12 +75,10 @@
       <DependentUpon>LocalizationKeys.tt</DependentUpon>
     </Compile>
   </ItemGroup>
-
   <ItemGroup>
     <None Update="Localization\LocalizationKeys.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>LocalizationKeys.cs</LastGenOutput>
     </None>
   </ItemGroup>
-
 </Project>
