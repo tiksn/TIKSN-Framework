@@ -11,6 +11,42 @@ Task Publish -depends Pack {
 Task Pack -depends Build, Test {
     $temporaryNuspec = Join-Path -Path $script:trashFolder -ChildPath '.\TIKSN-Framework.nuspec'
     Copy-Item -Path '.\TIKSN-Framework.nuspec' -Destination $temporaryNuspec
+
+    $packages = @{
+        Standdard = New-Object System.Collections.Specialized.OrderedDictionary
+        Core      = New-Object System.Collections.Specialized.OrderedDictionary
+        Legacy    = New-Object System.Collections.Specialized.OrderedDictionary
+        UWP       = New-Object System.Collections.Specialized.OrderedDictionary
+        Android   = New-Object System.Collections.Specialized.OrderedDictionary
+    }
+
+    $projectMap = @(
+        @{PackageGroups = @($packages.Standdard, $packages.Core, $packages.Legacy, $packages.UWP, $packages.Android); ProjectFile = '.\TIKSN.Core\TIKSN.Core.csproj' }
+    )
+
+    foreach ($projectMapEntry in $projectMap) {
+        $project = [xml](Get-Content -Path $projectMapEntry.ProjectFile -Raw)
+
+        foreach ($packageReference in $project.SelectNodes('//PackageReference')) {
+            $packageId = $packageReference.Include
+            $packageVersion = $packageReference.Version
+
+            if ($null -ne $packageVersion) {
+                foreach ($packageGroup in $projectMapEntry.PackageGroups) {
+                    if ($packageGroup.Contains($packageId)) {
+                        $existingVersion = $packageGroup[$packageId]
+                        if ($existingVersion -ne $packageVersion) {
+                            throw "There was a package mismatch. ($existingVersion, $packageVersion)"
+                        }
+                    }
+                    else {
+                        $packageGroup[$packageId] = $packageVersion
+                    }
+
+                }
+            }
+        }
+    }
 }
 
 Task Test -depends Build
