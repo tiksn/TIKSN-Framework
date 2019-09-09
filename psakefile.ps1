@@ -24,7 +24,7 @@ Task BuildRegionLocalization -depends EstimateVersions {
     Exec { dotnet build $project /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
 
-Task BuildCommonCore -depends EstimateVersions {
+Task BuildCommonCore -depends DownloadCurrencyCodes, EstimateVersions {
     $project = Resolve-Path -Path 'TIKSN.Core/TIKSN.Core.csproj'
 
     Exec { dotnet build $project /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
@@ -78,6 +78,11 @@ Task EstimateVersions -depends Restore {
 
         $Script:NextVersion = [System.Management.Automation.SemanticVersion]::New($latestPackageVersion.Major, $latestPackageVersion.Minor, $latestPackageVersion.Patch, $latestPackageVersion.PreReleaseLabel, $nextBuildLabel)
     }
+}
+
+Task DownloadCurrencyCodes -depends Clean {
+    Invoke-WebRequest -Uri 'https://www.currency-iso.org/dam/downloads/lists/list_one.xml' -OutFile 'TIKSN.Core/Finance/Resources/TableA1.xml'
+    Invoke-WebRequest -Uri 'https://www.currency-iso.org/dam/downloads/lists/list_three.xml' -OutFile 'TIKSN.Core/Finance/Resources/TableA3.xml'
 }
 
 Task Restore -depends Clean {
