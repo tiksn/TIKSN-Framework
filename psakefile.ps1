@@ -1,3 +1,5 @@
+Framework "4.6"
+
 Properties {
     $PackageId = 'TIKSN-Framework'
 }
