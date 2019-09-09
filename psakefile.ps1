@@ -11,7 +11,12 @@ Task Pack -depends Build {
 Task Build -depends BuildLanguageLocalization, BuildRegionLocalization, BuildCommonCore, BuildNetCore, BuildNetFramework, BuildAndroid, BuildUWP, CreateReferenceAssembliesForUWP {
 }
 
-Task BuildLanguageLocalization -depends EstimateVersions
+Task BuildLanguageLocalization -depends EstimateVersions {
+    $project = Resolve-Path -Path 'TIKSN.LanguageLocalization/TIKSN.LanguageLocalization.csproj'
+
+    Exec { dotnet build $project /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+}
+
 Task BuildRegionLocalization -depends EstimateVersions
 Task BuildCommonCore -depends EstimateVersions
 Task BuildNetCore -depends EstimateVersions
@@ -20,7 +25,7 @@ Task BuildAndroid -depends EstimateVersions
 Task BuildUWP -depends EstimateVersions
 Task CreateReferenceAssembliesForUWP -depends EstimateVersions
 
-Task EstimateVersions -depends Clean {
+Task EstimateVersions -depends Restore {
     if ($Version) {
         $Script:NextVersion = $Version
     }
@@ -41,6 +46,11 @@ Task EstimateVersions -depends Clean {
     }
 }
 
+Task Restore -depends Clean {
+    $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+    Exec { dotnet restore $solution }
+}
+
 Task Clean -depends Init {
 }
 
@@ -55,11 +65,11 @@ Task Init {
     $script:buildArtifactsFolder = Join-Path -Path $script:trashFolder -ChildPath "artifacts"
     New-Item -Path $script:buildArtifactsFolder -ItemType Directory | Out-Null
 
-    $script:armBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath "any"
-    New-Item -Path $script:armBuildArtifactsFolder -ItemType Directory | Out-Null
-
-    $script:anyBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath "arm"
+    $script:anyBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath "any"
     New-Item -Path $script:anyBuildArtifactsFolder -ItemType Directory | Out-Null
+
+    $script:armBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath "arm"
+    New-Item -Path $script:armBuildArtifactsFolder -ItemType Directory | Out-Null
 
     $script:x64BuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath "x64"
     New-Item -Path $script:x64BuildArtifactsFolder -ItemType Directory | Out-Null
