@@ -38,16 +38,23 @@ Task BuildNetCore -depends EstimateVersions {
 Task BuildNetFramework -depends EstimateVersions {
     $project = Resolve-Path -Path 'TIKSN.Framework.Full/TIKSN.Framework.Full.csproj'
 
-    Exec { msbuild $project /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+    Exec { dotnet msbuild $project /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
 
 Task BuildAndroid -depends EstimateVersions {
     $project = Resolve-Path -Path 'TIKSN.Framework.Android/TIKSN.Framework.Android.csproj'
 
-    Exec { msbuild $project /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+    Exec { dotnet msbuild $project /p:VisualStudioVersion=16.0 /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
 
-Task BuildUWP -depends EstimateVersions
+Task BuildUWP -depends EstimateVersions {
+    $project = Resolve-Path -Path 'TIKSN.Framework.UWP/TIKSN.Framework.UWP.csproj'
+
+    Exec { msbuild $project /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=x64 /p:OutDir=$script:x64BuildArtifactsFolder }
+    Exec { msbuild $project /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=x86 /p:OutDir=$script:x86BuildArtifactsFolder }
+    Exec { msbuild $project /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=arm /p:OutDir=$script:armBuildArtifactsFolder }
+}
+
 Task CreateReferenceAssembliesForUWP -depends EstimateVersions
 
 Task EstimateVersions -depends Restore {
