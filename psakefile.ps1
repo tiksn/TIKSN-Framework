@@ -17,9 +17,24 @@ Task BuildLanguageLocalization -depends EstimateVersions {
     Exec { dotnet build $project /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
 
-Task BuildRegionLocalization -depends EstimateVersions
-Task BuildCommonCore -depends EstimateVersions
-Task BuildNetCore -depends EstimateVersions
+Task BuildRegionLocalization -depends EstimateVersions {
+    $project = Resolve-Path -Path 'TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj'
+
+    Exec { dotnet build $project /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+}
+
+Task BuildCommonCore -depends EstimateVersions {
+    $project = Resolve-Path -Path 'TIKSN.Core/TIKSN.Core.csproj'
+
+    Exec { dotnet build $project /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+}
+
+Task BuildNetCore -depends EstimateVersions {
+    $project = Resolve-Path -Path 'TIKSN.Framework.Core/TIKSN.Framework.Core.csproj'
+
+    Exec { dotnet build $project /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+}
+
 Task BuildNetFramework -depends EstimateVersions
 Task BuildAndroid -depends EstimateVersions
 Task BuildUWP -depends EstimateVersions
