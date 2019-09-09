@@ -57,7 +57,8 @@ Task BuildUWP -depends EstimateVersions {
     Exec { & $msbuild $project /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=arm /p:OutDir=$script:armBuildArtifactsFolder }
 }
 
-Task CreateReferenceAssembliesForUWP -depends EstimateVersions
+Task CreateReferenceAssembliesForUWP -depends EstimateVersions, BuildUWP {
+}
 
 Task EstimateVersions -depends Restore {
     if ($Version) {
