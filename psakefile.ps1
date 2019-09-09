@@ -47,6 +47,29 @@ Task Pack -depends Build, Test {
             }
         }
     }
+
+    $dependencyGroups = @(
+        @{Packages = $packages.Standdard; TargetFramework = 'netstandard2.0' }
+    )
+
+    $nuspec = [xml](Get-Content -Path $temporaryNuspec -Raw)
+
+    foreach ($dependencyGroup in $dependencyGroups) {
+        $group = $nuspec.CreateElement("group", $nuspec.DocumentElement.NamespaceURI)
+        $group.SetAttribute('targetFramework', $dependencyGroup.TargetFramework)
+
+        foreach ($key in $dependencyGroup.Packages.Keys) {
+            $dependency = $nuspec.CreateElement("dependency", $nuspec.DocumentElement.NamespaceURI)
+            $dependency.SetAttribute('id', $key)
+            $dependency.SetAttribute('version', $dependencyGroup.Packages[$key])
+            $dependency.SetAttribute('exclude', 'Build,Analyzers')
+            $group.AppendChild($dependency) | Out-Null
+        }
+
+        $nuspec.package.metadata.dependencies.AppendChild($group) | Out-Null
+    }
+
+    $nuspec.Save($temporaryNuspec)
 }
 
 Task Test -depends Build
