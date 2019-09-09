@@ -35,8 +35,18 @@ Task BuildNetCore -depends EstimateVersions {
     Exec { dotnet build $project /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
 
-Task BuildNetFramework -depends EstimateVersions
-Task BuildAndroid -depends EstimateVersions
+Task BuildNetFramework -depends EstimateVersions {
+    $project = Resolve-Path -Path 'TIKSN.Framework.Full/TIKSN.Framework.Full.csproj'
+
+    Exec { msbuild $project /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+}
+
+Task BuildAndroid -depends EstimateVersions {
+    $project = Resolve-Path -Path 'TIKSN.Framework.Android/TIKSN.Framework.Android.csproj'
+
+    Exec { msbuild $project /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+}
+
 Task BuildUWP -depends EstimateVersions
 Task CreateReferenceAssembliesForUWP -depends EstimateVersions
 
