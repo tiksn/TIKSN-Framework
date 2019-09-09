@@ -9,6 +9,8 @@ Task Publish -depends Pack {
 }
 
 Task Pack -depends Build, Test {
+    $temporaryNuspec = Join-Path -Path $script:trashFolder -ChildPath '.\TIKSN-Framework.nuspec'
+    Copy-Item -Path '.\TIKSN-Framework.nuspec' -Destination $temporaryNuspec
 }
 
 Task Test -depends Build
