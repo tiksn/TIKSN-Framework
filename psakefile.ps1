@@ -49,7 +49,8 @@ Task Pack -depends Build, Test {
     }
 
     $dependencyGroups = @(
-        @{Packages = $packages.Standdard; TargetFramework = 'netstandard2.0' }
+        @{Packages = $packages.Standdard; TargetFramework = 'netstandard2.0' },
+        @{Packages = $packages.Core; TargetFramework = 'netcoreapp2.2' }
     )
 
     $nuspec = [xml](Get-Content -Path $temporaryNuspec -Raw)
