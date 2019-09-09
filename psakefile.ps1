@@ -3,11 +3,15 @@ Properties {
     $msbuild = Resolve-MSBuild.ps1
 }
 
+Task Tweet -depends Publish
+
 Task Publish -depends Pack {
 }
 
-Task Pack -depends Build {
+Task Pack -depends Build, Test {
 }
+
+Task Test -depends Build
 
 Task Build -depends BuildLanguageLocalization, BuildRegionLocalization, BuildCommonCore, BuildNetCore, BuildNetFramework, BuildAndroid, BuildUWP, CreateReferenceAssembliesForUWP {
 }
