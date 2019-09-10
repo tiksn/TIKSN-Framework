@@ -21,7 +21,8 @@ Task Pack -depends Build, Test {
     }
 
     $projectMap = @(
-        @{PackageGroups = @($packages.Standdard, $packages.Core, $packages.Legacy, $packages.UWP, $packages.Android); ProjectFile = '.\TIKSN.Core\TIKSN.Core.csproj' }
+        @{PackageGroups = @($packages.Standdard, $packages.Core, $packages.Legacy, $packages.UWP, $packages.Android); ProjectFile = '.\TIKSN.Core\TIKSN.Core.csproj' },
+        @{PackageGroups = @($packages.Core); ProjectFile = '.\TIKSN.Core\TIKSN.Core.csproj' }
     )
 
     foreach ($projectMapEntry in $projectMap) {
