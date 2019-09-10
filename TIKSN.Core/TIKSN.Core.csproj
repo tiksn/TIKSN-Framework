@@ -51,7 +51,7 @@
     <PackageReference Include="NuGet.Versioning" Version="5.0.0" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" />
     <PackageReference Include="RavenDB.Client" Version="4.1.5" />
-    <PackageReference Include="ReactiveUI" Version="9.13.1" />
+    <PackageReference Include="ReactiveUI" Version="10.1.6" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.4" />
     <PackageReference Include="System.Interactive" Version="3.2.0" />
     <PackageReference Include="System.Interactive.Async" Version="3.2.0" />
