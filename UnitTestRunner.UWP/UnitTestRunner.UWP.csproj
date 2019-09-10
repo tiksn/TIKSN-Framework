@@ -210,7 +210,7 @@
       <Version>10.1.6</Version>
     </PackageReference>
     <PackageReference Include="Serilog.Sinks.XUnit">
-      <Version>1.0.8</Version>
+      <Version>1.0.21</Version>
     </PackageReference>
     <PackageReference Include="System.Interactive">
       <Version>3.2.0</Version>
