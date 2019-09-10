@@ -129,7 +129,7 @@
     <PackageReference Include="System.Reactive.Linq" Version="4.1.5" />
     <PackageReference Include="System.Reactive.PlatformServices" Version="4.1.5" />
     <PackageReference Include="System.Reactive.Providers" Version="4.1.6" />
-    <PackageReference Include="System.Reactive.Runtime.Remoting" Version="4.1.5" />
+    <PackageReference Include="System.Reactive.Runtime.Remoting" Version="4.1.6" />
     <PackageReference Include="System.Reactive.Windows.Forms" Version="4.1.5" />
     <PackageReference Include="System.Reactive.Windows.Threading" Version="4.1.5" />
     <PackageReference Include="System.Reflection" Version="4.3.0" />
