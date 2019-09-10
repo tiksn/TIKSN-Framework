@@ -3,9 +3,20 @@ Properties {
     $msbuild = Resolve-MSBuild.ps1
 }
 
-Task Tweet -depends Publish
+Task Tweet -depends Publish {
+    Set-TwitterOAuthSettings `
+    -ApiKey [Environment]::GetEnvironmentVariable('TIKSN-Framework-ConsumerKey') `
+    -ApiSecret [Environment]::GetEnvironmentVariable('TIKSN-Framework-ConsumerSecret') `
+    -AccessToken [Environment]::GetEnvironmentVariable('TIKSN-Framework-AccessToken') `
+    -AccessTokenSecret [Environment]::GetEnvironmentVariable('TIKSN-Framework-AccessTokenSecret')
+
+    Send-TwitterStatuses_Update "TIKSN Framework $Script:NextVersion is published https://www.nuget.org/packages/$PackageId/$Script:NextVersion"
+}
 
 Task Publish -depends Pack {
+    $packageName = Join-Path -Path $script:trashFolder -Destination 'TIKSN-Framework.nupkg'
+
+    Exec { nuget push $packageName }
 }
 
 Task Pack -depends Build, Test {
