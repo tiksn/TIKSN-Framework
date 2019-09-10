@@ -17,9 +17,6 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.9.2" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.4.0" />
-    <PackageReference Include="codecracker.CSharp" Version="1.1.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="ConsoleTables" Version="2.3.0" />
     <PackageReference Include="Desktop.Analyzers" Version="1.1.0" />
     <PackageReference Include="DnsClient" Version="1.2.0" />
