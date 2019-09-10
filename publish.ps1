@@ -1,5 +1,5 @@
 Param(
-    [string[]]$ScriptArgs
+    [string]$Version
 )
 
-.\build.ps1 -Target "Tweet" $ScriptArgs
+Invoke-psake -buildFile .\psakefile.ps1 -taskList Tweet
