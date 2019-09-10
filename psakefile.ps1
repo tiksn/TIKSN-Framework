@@ -76,7 +76,7 @@ Task Pack -depends Build, Test {
 
     $nuspec.Save($temporaryNuspec)
 
-    Exec { nuget pack $temporaryNuspec -Version $Script:NextVersion -BasePath $script:buildArtifactsFolder -OutputDirectory $script:trashFolder }
+    Exec { nuget pack $temporaryNuspec -Version $Script:NextVersion -BasePath $script:buildArtifactsFolder -OutputDirectory $script:trashFolder -OutputFileNamesWithoutVersion }
 }
 
 Task Test -depends Build
