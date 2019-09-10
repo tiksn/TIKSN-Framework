@@ -51,8 +51,9 @@ Task Pack -depends Build, Test {
     $dependencyGroups = @(
         @{Packages = $packages.Standdard; TargetFramework = 'netstandard2.0' },
         @{Packages = $packages.Core; TargetFramework = 'netcoreapp2.2' },
-        @{Packages = $packages.Legacy; TargetFramework = '.NETFramework4.8' },
-        @{Packages = $packages.UWP; TargetFramework = 'uap10.0.17134' }
+        @{Packages = $packages.Legacy; TargetFramework = 'net48' },
+        @{Packages = $packages.UWP; TargetFramework = 'uap10.0.17134' },
+        @{Packages = $packages.Android; TargetFramework = 'MonoAndroid8.1' }
     )
 
     $nuspec = [xml](Get-Content -Path $temporaryNuspec -Raw)
@@ -83,46 +84,46 @@ Task Build -depends BuildLanguageLocalization, BuildRegionLocalization, BuildCom
 Task BuildLanguageLocalization -depends EstimateVersions {
     $project = Resolve-Path -Path 'TIKSN.LanguageLocalization/TIKSN.LanguageLocalization.csproj'
 
-    Exec { dotnet build $project /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
 
 Task BuildRegionLocalization -depends EstimateVersions {
     $project = Resolve-Path -Path 'TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj'
 
-    Exec { dotnet build $project /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
 
 Task BuildCommonCore -depends DownloadCurrencyCodes, EstimateVersions {
     $project = Resolve-Path -Path 'TIKSN.Core/TIKSN.Core.csproj'
 
-    Exec { dotnet build $project /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
 
 Task BuildNetCore -depends EstimateVersions {
     $project = Resolve-Path -Path 'TIKSN.Framework.Core/TIKSN.Framework.Core.csproj'
 
-    Exec { dotnet build $project /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
 
 Task BuildNetFramework -depends EstimateVersions {
     $project = Resolve-Path -Path 'TIKSN.Framework.Full/TIKSN.Framework.Full.csproj'
 
-    Exec { dotnet msbuild $project /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+    Exec { dotnet msbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
 
 Task BuildAndroid -depends EstimateVersions {
     $project = Resolve-Path -Path 'TIKSN.Framework.Android/TIKSN.Framework.Android.csproj'
 
-    Exec { & $msbuild $project /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+    Exec { & $msbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
 
 Task BuildUWP -depends EstimateVersions {
     $project = Resolve-Path -Path 'TIKSN.Framework.UWP/TIKSN.Framework.UWP.csproj'
 
 
-    Exec { & $msbuild $project /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=x64 /p:OutDir=$script:x64BuildArtifactsFolder }
-    Exec { & $msbuild $project /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=x86 /p:OutDir=$script:x86BuildArtifactsFolder }
-    Exec { & $msbuild $project /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=arm /p:OutDir=$script:armBuildArtifactsFolder }
+    Exec { & $msbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=x64 /p:OutDir=$script:x64BuildArtifactsFolder }
+    Exec { & $msbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=x86 /p:OutDir=$script:x86BuildArtifactsFolder }
+    Exec { & $msbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=arm /p:OutDir=$script:armBuildArtifactsFolder }
 }
 
 Task CreateReferenceAssembliesForUWP -depends EstimateVersions, BuildUWP {
