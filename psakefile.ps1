@@ -17,7 +17,7 @@ Task Publish -depends Pack {
     $packageName = Join-Path -Path $script:trashFolder -ChildPath 'TIKSN-Framework.nupkg'
     $apiKey = [Environment]::GetEnvironmentVariable('TIKSN-Framework-ApiKey')
 
-    Exec { nuget push $packageName -ApiKey $apiKey }
+    Exec { nuget push $packageName -ApiKey $apiKey -Source https://api.nuget.org/v3/index.json }
 }
 
 Task Pack -depends Build, Test {
