@@ -22,7 +22,7 @@ Task Pack -depends Build, Test {
 
     $projectMap = @(
         @{PackageGroups = @($packages.Standdard, $packages.Core, $packages.Legacy, $packages.UWP, $packages.Android); ProjectFile = '.\TIKSN.Core\TIKSN.Core.csproj' },
-        @{PackageGroups = @($packages.Core); ProjectFile = '.\TIKSN.Core\TIKSN.Core.csproj' }
+        @{PackageGroups = @($packages.Core); ProjectFile = '.\TIKSN.Framework.Core\TIKSN.Framework.Core.csproj' }
     )
 
     foreach ($projectMapEntry in $projectMap) {
@@ -75,6 +75,8 @@ Task Pack -depends Build, Test {
     }
 
     $nuspec.Save($temporaryNuspec)
+
+    Exec { nuget pack $temporaryNuspec -BasePath $script:buildArtifactsFolder -OutputDirectory $script:trashFolder }
 }
 
 Task Test -depends Build
