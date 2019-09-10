@@ -60,7 +60,7 @@
     <PackageReference Include="Microsoft.NetCore.Analyzers" Version="2.9.4">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NETCore.Platforms" Version="2.2.0" />
+    <PackageReference Include="Microsoft.NETCore.Platforms" Version="2.2.2" />
     <PackageReference Include="Microsoft.NetFramework.Analyzers" Version="2.9.4">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
