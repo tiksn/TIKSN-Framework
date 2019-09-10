@@ -5,18 +5,19 @@ Properties {
 
 Task Tweet -depends Publish {
     Set-TwitterOAuthSettings `
-    -ApiKey [Environment]::GetEnvironmentVariable('TIKSN-Framework-ConsumerKey') `
-    -ApiSecret [Environment]::GetEnvironmentVariable('TIKSN-Framework-ConsumerSecret') `
-    -AccessToken [Environment]::GetEnvironmentVariable('TIKSN-Framework-AccessToken') `
-    -AccessTokenSecret [Environment]::GetEnvironmentVariable('TIKSN-Framework-AccessTokenSecret')
+        -ApiKey [Environment]::GetEnvironmentVariable('TIKSN-Framework-ConsumerKey') `
+        -ApiSecret [Environment]::GetEnvironmentVariable('TIKSN-Framework-ConsumerSecret') `
+        -AccessToken [Environment]::GetEnvironmentVariable('TIKSN-Framework-AccessToken') `
+        -AccessTokenSecret [Environment]::GetEnvironmentVariable('TIKSN-Framework-AccessTokenSecret')
 
     Send-TwitterStatuses_Update "TIKSN Framework $Script:NextVersion is published https://www.nuget.org/packages/$PackageId/$Script:NextVersion"
 }
 
 Task Publish -depends Pack {
-    $packageName = Join-Path -Path $script:trashFolder -Destination 'TIKSN-Framework.nupkg'
+    $packageName = Join-Path -Path $script:trashFolder -ChildPath 'TIKSN-Framework.nupkg'
+    $apiKey = [Environment]::GetEnvironmentVariable('TIKSN-Framework-ApiKey')
 
-    Exec { nuget push $packageName }
+    Exec { nuget push $packageName -ApiKey $apiKey }
 }
 
 Task Pack -depends Build, Test {
