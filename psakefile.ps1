@@ -76,7 +76,7 @@ Task Pack -depends Build, Test {
 
     $nuspec.Save($temporaryNuspec)
 
-    Exec { nuget pack $temporaryNuspec -BasePath $script:buildArtifactsFolder -OutputDirectory $script:trashFolder }
+    Exec { nuget pack $temporaryNuspec -Version $Script:NextVersion -BasePath $script:buildArtifactsFolder -OutputDirectory $script:trashFolder }
 }
 
 Task Test -depends Build
@@ -130,6 +130,16 @@ Task BuildUWP -depends EstimateVersions {
 }
 
 Task CreateReferenceAssembliesForUWP -depends EstimateVersions, BuildUWP {
+    $sourceFilePath = Join-Path -Path $script:x86BuildArtifactsFolder -ChildPath "TIKSN.Framework.UWP\TIKSN.Framework.UWP.dll"
+    $destinationFilePath = Join-Path -Path $script:anyBuildArtifactsFolder -ChildPath "TIKSN.Framework.UWP.dll"
+
+    Copy-Item -Path $sourceFilePath -Destination $destinationFilePath
+    #TODO: Patch DLL
+
+    $sourceFilePath = Join-Path -Path $script:x86BuildArtifactsFolder -ChildPath "TIKSN.Framework.UWP\TIKSN.Framework.UWP.xml"
+    $destinationFilePath = Join-Path -Path $script:anyBuildArtifactsFolder -ChildPath "TIKSN.Framework.UWP.xml"
+
+    Copy-Item -Path $sourceFilePath -Destination $destinationFilePath
 }
 
 Task EstimateVersions -depends Restore {
