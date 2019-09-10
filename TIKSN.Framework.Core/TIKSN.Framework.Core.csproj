@@ -40,7 +40,7 @@
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" />
     <PackageReference Include="ReactiveUI" Version="9.13.1" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.4" />
-    <PackageReference Include="ShellProgressBar" Version="4.2.0" />
+    <PackageReference Include="ShellProgressBar" Version="4.3.0" />
     <PackageReference Include="System.Interactive" Version="3.2.0" />
     <PackageReference Include="System.Interactive.Async" Version="3.2.0" />
     <PackageReference Include="System.Reactive" Version="4.1.5" />
