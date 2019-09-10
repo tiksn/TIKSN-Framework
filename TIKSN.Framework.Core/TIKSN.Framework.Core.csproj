@@ -33,7 +33,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
     <PackageReference Include="MongoDB.Driver.GridFS" Version="2.9.1" />
     <PackageReference Include="Nito.AsyncEx.Context" Version="5.0.0" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="1.4.0" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.5.4" />
     <PackageReference Include="NoDb" Version="1.2.2" />
     <PackageReference Include="NuGet.Versioning" Version="5.0.0" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" />
