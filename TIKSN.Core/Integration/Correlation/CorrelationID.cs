@@ -22,11 +22,19 @@ namespace TIKSN.Integration.Correlation
             _byteArrayRepresentation = byteArrayRepresentation ?? throw new ArgumentNullException(nameof(byteArrayRepresentation));
         }
 
+        /// <summary>
+        /// Implicitly convert <see cref="CorrelationID"/> to byte array.
+        /// </summary>
+        /// <param name="correlationId"></param>
         public static implicit operator byte[](CorrelationID correlationId)
         {
             return correlationId._byteArrayRepresentation;
         }
 
+        /// <summary>
+        /// Implicitly convert <see cref="CorrelationID"/> to string.
+        /// </summary>
+        /// <param name="correlationId"></param>
         public static implicit operator string(CorrelationID correlationId)
         {
             return correlationId._stringRepresentation;
