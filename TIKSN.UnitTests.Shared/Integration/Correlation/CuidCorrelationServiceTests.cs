@@ -29,5 +29,11 @@ namespace TIKSN.Integration.Correlation.Tests
             correlationIDFromBytes.Should().Be(correlationID);
             correlationIDFromString.Should().Be(correlationIDFromBytes);
         }
+
+        [Fact]
+        public void ParseExample()
+        {
+            var cuid = _correlationService.Create("ch72gsb320000udocl363eofy");
+        }
     }
 }
