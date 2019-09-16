@@ -23,6 +23,13 @@ namespace TIKSN.Integration.Correlation.Tests
         }
 
         [Fact]
+        public void GenerateCoupleOfIds()
+        {
+            LogOutput(_correlationService.Generate(), "Correlation ID 1");
+            LogOutput(_correlationService.Generate(), "Correlation ID 2");
+            LogOutput(_correlationService.Generate(), "Correlation ID 3");
+        }
+        [Fact]
         public void GenerateAndParse()
         {
             var correlationID = _correlationService.Generate();
@@ -41,6 +48,7 @@ namespace TIKSN.Integration.Correlation.Tests
             _testOutputHelper.WriteLine(name);
             _testOutputHelper.WriteLine(correlationID.ToString());
             _testOutputHelper.WriteLine(BitConverter.ToString(correlationID.ToByteArray()));
+            _testOutputHelper.WriteLine("");
         }
 
         [Fact]
