@@ -50,11 +50,30 @@ namespace TIKSN.Integration.Correlation
         public override bool Equals(object obj)
         {
             if (obj == null || !(obj is CorrelationID))
+            {
                 return false;
+            }
 
             var other = (CorrelationID)obj;
 
             return Equals(other);
+        }
+
+        /// <summary>
+        /// Returns the hash code for this instance.
+        /// </summary>
+        /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 27;
+                for (int i = 0; i < _byteArrayRepresentation.Length && i < 4; i++)
+                {
+                    hash = (13 * hash) + _byteArrayRepresentation[i].GetHashCode();
+                }
+                return hash;
+            }
         }
 
         /// <summary>
