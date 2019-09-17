@@ -28,18 +28,37 @@ namespace TIKSN.Integration.Correlation
 
         public CorrelationID Create(string stringRepresentation)
         {
-            throw new NotImplementedException();
+            if (stringRepresentation is null)
+            {
+                throw new ArgumentNullException(nameof(stringRepresentation));
+            }
+
+            char[] charArrayRepresentation = stringRepresentation.ToCharArray();
+            byte[] byteArrayRepresentation = CreateByteArray();
+
+            CreateChunks(ref charArrayRepresentation, ref byteArrayRepresentation);
+
+            return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
         }
 
         public CorrelationID Create(byte[] byteArrayRepresentation)
         {
-            throw new NotImplementedException();
+            if (byteArrayRepresentation is null)
+            {
+                throw new ArgumentNullException(nameof(byteArrayRepresentation));
+            }
+
+            char[] charArrayRepresentation = CreateCharsArray();
+
+            CreateChunks(ref charArrayRepresentation, ref byteArrayRepresentation);
+
+            return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
         }
 
         public CorrelationID Generate()
         {
-            char[] charArrayRepresentation = new char[1 + 8 + 4 + 2 + 2 + 4 + 4];
-            byte[] byteArrayRepresentation = new byte[6 + 3 + 2 + 2 + 4 + 4];
+            char[] charArrayRepresentation = CreateCharsArray();
+            byte[] byteArrayRepresentation = CreateByteArray();
 
             var chars = charArrayRepresentation.AsSpan();
             var bytes = byteArrayRepresentation.AsSpan();
@@ -70,6 +89,34 @@ namespace TIKSN.Integration.Correlation
             WriteBase36(randomNumber2, chars.Slice(1 + 8 + 4 + 2 + 2 + 4, 4), bytes.Slice(6 + 3 + 2 + 2 + 4, 4));
 
             return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
+        }
+
+        private byte[] CreateByteArray()
+        {
+            return new byte[6 + 3 + 2 + 2 + 4 + 4];
+        }
+
+        private char[] CreateCharsArray()
+        {
+            return new char[1 + 8 + 4 + 2 + 2 + 4 + 4];
+        }
+
+        private void CreateChunks(
+            ref char[] charArrayRepresentation,
+            ref byte[] byteArrayRepresentation)
+        {
+            if (charArrayRepresentation is null)
+            {
+                charArrayRepresentation = CreateCharsArray();
+            }
+
+            if (byteArrayRepresentation is null)
+            {
+                byteArrayRepresentation = CreateByteArray();
+            }
+
+            var chars = charArrayRepresentation.AsSpan();
+            var bytes = byteArrayRepresentation.AsSpan();
         }
 
         private string GetHostname()
