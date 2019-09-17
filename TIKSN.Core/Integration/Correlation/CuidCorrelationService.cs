@@ -42,7 +42,9 @@ namespace TIKSN.Integration.Correlation
                 ref charArrayRepresentation,
                 ref byteArrayRepresentation,
                 out Span<char> timestampChars,
-                out Span<byte> timestampBytes);
+                out Span<byte> timestampBytes,
+                out Span<char> counterChars,
+                out Span<byte> counterBytes);
 
             return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
         }
@@ -60,7 +62,9 @@ namespace TIKSN.Integration.Correlation
                 ref charArrayRepresentation,
                 ref byteArrayRepresentation,
                 out Span<char> timestampChars,
-                out Span<byte> timestampBytes);
+                out Span<byte> timestampBytes,
+                out Span<char> counterChars,
+                out Span<byte> counterBytes);
 
             return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
         }
@@ -74,7 +78,9 @@ namespace TIKSN.Integration.Correlation
                 ref charArrayRepresentation,
                 ref byteArrayRepresentation,
                 out Span<char> timestampChars,
-                out Span<byte> timestampBytes);
+                out Span<byte> timestampBytes,
+                out Span<char> counterChars,
+                out Span<byte> counterBytes);
 
             var chars = charArrayRepresentation.AsSpan();
             var bytes = byteArrayRepresentation.AsSpan();
@@ -96,7 +102,7 @@ namespace TIKSN.Integration.Correlation
             var randomNumber2 = _random.Next() % QuartetteUpperBoundary;
 
             WriteBase36(timestamp, timestampChars, timestampBytes);
-            WriteBase36(counter, chars.Slice(1 + 8, 4), bytes.Slice(6, 3));
+            WriteBase36(counter, counterChars, counterBytes);
             WriteBase36(pid, chars.Slice(1 + 8 + 4, 2), bytes.Slice(6 + 3, 2));
             WriteBase36(hostnameHash, chars.Slice(1 + 8 + 4 + 2, 2), bytes.Slice(6 + 3 + 2, 2));
             WriteBase36(randomNumber1, chars.Slice(1 + 8 + 4 + 2 + 2, 4), bytes.Slice(6 + 3 + 2 + 2, 4));
@@ -121,7 +127,9 @@ namespace TIKSN.Integration.Correlation
             ref char[] charArrayRepresentation,
             ref byte[] byteArrayRepresentation,
             out Span<char> timestampChars,
-            out Span<byte> timestampBytes)
+            out Span<byte> timestampBytes,
+            out Span<char> counterChars,
+            out Span<byte> counterBytes)
         {
             if (charArrayRepresentation is null)
             {
@@ -157,6 +165,9 @@ namespace TIKSN.Integration.Correlation
 
             timestampChars = chars.Slice(1, 8);
             timestampBytes = bytes.Slice(0, 6);
+
+            counterChars = chars.Slice(1 + 8, 4);
+            counterBytes = bytes.Slice(6, 3);
         }
 
         private string GetHostname()
