@@ -38,7 +38,11 @@ namespace TIKSN.Integration.Correlation
             char[] charArrayRepresentation = stringRepresentation.ToCharArray();
             byte[] byteArrayRepresentation = CreateByteArray();
 
-            CreateChunks(ref charArrayRepresentation, ref byteArrayRepresentation);
+            CreateChunks(
+                ref charArrayRepresentation,
+                ref byteArrayRepresentation,
+                out Span<char> timestampChars,
+                out Span<byte> timestampBytes);
 
             return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
         }
@@ -52,7 +56,11 @@ namespace TIKSN.Integration.Correlation
 
             char[] charArrayRepresentation = CreateCharsArray();
 
-            CreateChunks(ref charArrayRepresentation, ref byteArrayRepresentation);
+            CreateChunks(
+                ref charArrayRepresentation,
+                ref byteArrayRepresentation,
+                out Span<char> timestampChars,
+                out Span<byte> timestampBytes);
 
             return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
         }
@@ -62,7 +70,11 @@ namespace TIKSN.Integration.Correlation
             char[] charArrayRepresentation = CreateCharsArray();
             byte[] byteArrayRepresentation = CreateByteArray();
 
-            CreateChunks(ref charArrayRepresentation, ref byteArrayRepresentation);
+            CreateChunks(
+                ref charArrayRepresentation,
+                ref byteArrayRepresentation,
+                out Span<char> timestampChars,
+                out Span<byte> timestampBytes);
 
             var chars = charArrayRepresentation.AsSpan();
             var bytes = byteArrayRepresentation.AsSpan();
@@ -83,7 +95,7 @@ namespace TIKSN.Integration.Correlation
             var randomNumber1 = _random.Next() % QuartetteUpperBoundary;
             var randomNumber2 = _random.Next() % QuartetteUpperBoundary;
 
-            WriteBase36(timestamp, chars.Slice(1, 8), bytes.Slice(0, 6));
+            WriteBase36(timestamp, timestampChars, timestampBytes);
             WriteBase36(counter, chars.Slice(1 + 8, 4), bytes.Slice(6, 3));
             WriteBase36(pid, chars.Slice(1 + 8 + 4, 2), bytes.Slice(6 + 3, 2));
             WriteBase36(hostnameHash, chars.Slice(1 + 8 + 4 + 2, 2), bytes.Slice(6 + 3 + 2, 2));
@@ -107,7 +119,9 @@ namespace TIKSN.Integration.Correlation
 
         private void CreateChunks(
             ref char[] charArrayRepresentation,
-            ref byte[] byteArrayRepresentation)
+            ref byte[] byteArrayRepresentation,
+            out Span<char> timestampChars,
+            out Span<byte> timestampBytes)
         {
             if (charArrayRepresentation is null)
             {
@@ -140,6 +154,9 @@ namespace TIKSN.Integration.Correlation
 
             var chars = charArrayRepresentation.AsSpan();
             var bytes = byteArrayRepresentation.AsSpan();
+
+            timestampChars = chars.Slice(1, 8);
+            timestampBytes = bytes.Slice(0, 6);
         }
 
         private string GetHostname()
