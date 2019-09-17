@@ -65,8 +65,6 @@ namespace TIKSN.Integration.Correlation
             var chars = charArrayRepresentation.AsSpan();
             var bytes = byteArrayRepresentation.AsSpan();
 
-            chars[0] = 'c';
-
             var timestamp = _timeProvider.GetCurrentTime().ToUnixTimeMilliseconds();
 
             int counter;
@@ -110,11 +108,31 @@ namespace TIKSN.Integration.Correlation
             if (charArrayRepresentation is null)
             {
                 charArrayRepresentation = CreateCharsArray();
+                charArrayRepresentation[0] = 'c';
+            }
+            else
+            {
+                if (charArrayRepresentation.Length != CharsArraySize)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(charArrayRepresentation), "CUID string representation contains invalid number of characters.");
+                }
+
+                if (charArrayRepresentation[0] != 'c')
+                {
+                    throw new ArgumentException("CUID string representation should start with 'c' character.", nameof(charArrayRepresentation));
+                }
             }
 
             if (byteArrayRepresentation is null)
             {
                 byteArrayRepresentation = CreateByteArray();
+            }
+            else
+            {
+                if (byteArrayRepresentation.Length != ByteArraySize)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(byteArrayRepresentation), "CUID byte array representation contains invalid number of characters.");
+                }
             }
 
             var chars = charArrayRepresentation.AsSpan();
@@ -123,8 +141,6 @@ namespace TIKSN.Integration.Correlation
 
         private string GetHostname()
         {
-            const int padding = 2;
-
             if (_hostname == null)
             {
                 lock (_locker)
