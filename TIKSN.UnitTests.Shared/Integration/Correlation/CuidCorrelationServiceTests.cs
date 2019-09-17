@@ -54,7 +54,9 @@ namespace TIKSN.Integration.Correlation.Tests
         [Fact]
         public void ParseExample()
         {
-            var cuid = _correlationService.Create("ch72gsb320000udocl363eofy");
+            var correlationID = _correlationService.Create("ch72gsb320000udocl363eofy");
+
+            LogOutput(correlationID, nameof(correlationID));
         }
     }
 }
