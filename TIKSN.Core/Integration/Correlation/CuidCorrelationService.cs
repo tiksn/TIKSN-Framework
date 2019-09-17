@@ -9,6 +9,8 @@ namespace TIKSN.Integration.Correlation
     public class CuidCorrelationService : ICorrelationService
     {
         private const string Alphabet = "0123456789abcdefghijklmnopqrstuvwxyz";
+        private const int ByteArraySize = 6 + 3 + 2 + 2 + 4 + 4;
+        private const int CharsArraySize = 1 + 8 + 4 + 2 + 2 + 4 + 4;
         private const int QuartetteUpperBoundary = 36 * 36 * 36 * 36;
         private const int Radix = 36;
 
@@ -93,12 +95,12 @@ namespace TIKSN.Integration.Correlation
 
         private byte[] CreateByteArray()
         {
-            return new byte[6 + 3 + 2 + 2 + 4 + 4];
+            return new byte[ByteArraySize];
         }
 
         private char[] CreateCharsArray()
         {
-            return new char[1 + 8 + 4 + 2 + 2 + 4 + 4];
+            return new char[CharsArraySize];
         }
 
         private void CreateChunks(
