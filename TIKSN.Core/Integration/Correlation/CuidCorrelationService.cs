@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -13,12 +14,34 @@ namespace TIKSN.Integration.Correlation
         private const int CharsArraySize = 1 + 8 + 4 + 2 + 2 + 4 + 4;
         private const int QuartetteUpperBoundary = 36 * 36 * 36 * 36;
         private const int Radix = 36;
-
+        private static readonly IReadOnlyDictionary<char, int> CodeMap;
         private readonly object _locker;
         private readonly Random _random;
         private readonly ITimeProvider _timeProvider;
         private int _counter;
         private string _hostname;
+
+        static CuidCorrelationService()
+        {
+            var codeMap = new Dictionary<char, int>();
+
+            "0123456789"
+                .ToCharArray()
+                .Do(x => codeMap.Add(x, x - '0'))
+                .ToArray();
+
+            "abcdefghijklmnopqrstuvwxyz"
+                .ToCharArray()
+                .Do(x => codeMap.Add(x, x - 'a' + 10))
+                .ToArray();
+
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                .ToCharArray()
+                .Do(x => codeMap.Add(x, x - 'A' + 10))
+                .ToArray();
+
+            CodeMap = codeMap;
+        }
 
         public CuidCorrelationService(ITimeProvider timeProvider, Random random)
         {
@@ -53,6 +76,8 @@ namespace TIKSN.Integration.Correlation
                 out Span<byte> randomNumber1Bytes,
                 out Span<char> randomNumber2Chars,
                 out Span<byte> randomNumber2Bytes);
+
+            ConvertCharsToBytes(timestampChars, timestampBytes);
 
             return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
         }
@@ -133,6 +158,18 @@ namespace TIKSN.Integration.Correlation
             WriteBase36(randomNumber2, randomNumber2Chars, randomNumber2Bytes);
 
             return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
+        }
+
+        private void ConvertCharsToBytes(Span<char> chars, Span<byte> bytes)
+        {
+            int carry=0;
+            int j = bytes.Length - 1;
+
+            for (int i = chars.Length - 1; i >= 0; i--)
+            {
+                int code = CodeMap[chars[i]];
+            }
+            throw new NotImplementedException();
         }
 
         private byte[] CreateByteArray()
