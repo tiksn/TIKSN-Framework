@@ -62,6 +62,8 @@ namespace TIKSN.Integration.Correlation
             char[] charArrayRepresentation = CreateCharsArray();
             byte[] byteArrayRepresentation = CreateByteArray();
 
+            CreateChunks(ref charArrayRepresentation, ref byteArrayRepresentation);
+
             var chars = charArrayRepresentation.AsSpan();
             var bytes = byteArrayRepresentation.AsSpan();
 
@@ -98,7 +100,9 @@ namespace TIKSN.Integration.Correlation
 
         private char[] CreateCharsArray()
         {
-            return new char[CharsArraySize];
+            var chars = new char[CharsArraySize];
+            chars[0] = 'c';
+            return chars;
         }
 
         private void CreateChunks(
@@ -108,7 +112,6 @@ namespace TIKSN.Integration.Correlation
             if (charArrayRepresentation is null)
             {
                 charArrayRepresentation = CreateCharsArray();
-                charArrayRepresentation[0] = 'c';
             }
             else
             {
