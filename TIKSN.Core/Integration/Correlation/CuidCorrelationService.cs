@@ -50,7 +50,9 @@ namespace TIKSN.Integration.Correlation
                 out Span<char> hostnameChars,
                 out Span<byte> hostnameBytes,
                 out Span<char> randomNumber1Chars,
-                out Span<byte> randomNumber1Bytes);
+                out Span<byte> randomNumber1Bytes,
+                out Span<char> randomNumber2Chars,
+                out Span<byte> randomNumber2Bytes);
 
             return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
         }
@@ -76,7 +78,9 @@ namespace TIKSN.Integration.Correlation
                 out Span<char> hostnameChars,
                 out Span<byte> hostnameBytes,
                 out Span<char> randomNumber1Chars,
-                out Span<byte> randomNumber1Bytes);
+                out Span<byte> randomNumber1Bytes,
+                out Span<char> randomNumber2Chars,
+                out Span<byte> randomNumber2Bytes);
 
             return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
         }
@@ -98,7 +102,9 @@ namespace TIKSN.Integration.Correlation
                 out Span<char> hostnameChars,
                 out Span<byte> hostnameBytes,
                 out Span<char> randomNumber1Chars,
-                out Span<byte> randomNumber1Bytes);
+                out Span<byte> randomNumber1Bytes,
+                out Span<char> randomNumber2Chars,
+                out Span<byte> randomNumber2Bytes);
 
             var chars = charArrayRepresentation.AsSpan();
             var bytes = byteArrayRepresentation.AsSpan();
@@ -124,7 +130,7 @@ namespace TIKSN.Integration.Correlation
             WriteBase36(pid, pidChars, pidBytes);
             WriteBase36(hostnameHash, hostnameChars, hostnameBytes);
             WriteBase36(randomNumber1, randomNumber1Chars, randomNumber1Bytes);
-            WriteBase36(randomNumber2, chars.Slice(1 + 8 + 4 + 2 + 2 + 4, 4), bytes.Slice(6 + 3 + 2 + 2 + 4, 4));
+            WriteBase36(randomNumber2, randomNumber2Chars, randomNumber2Bytes);
 
             return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
         }
@@ -153,7 +159,9 @@ namespace TIKSN.Integration.Correlation
             out Span<char> hostnameChars,
             out Span<byte> hostnameBytes,
             out Span<char> randomNumber1Chars,
-            out Span<byte> randomNumber1Bytes)
+            out Span<byte> randomNumber1Bytes,
+            out Span<char> randomNumber2Chars,
+            out Span<byte> randomNumber2Bytes)
         {
             if (charArrayRepresentation is null)
             {
@@ -201,6 +209,9 @@ namespace TIKSN.Integration.Correlation
 
             randomNumber1Chars = chars.Slice(1 + 8 + 4 + 2 + 2, 4);
             randomNumber1Bytes = bytes.Slice(6 + 3 + 2 + 2, 4);
+
+            randomNumber2Chars = chars.Slice(1 + 8 + 4 + 2 + 2 + 4, 4);
+            randomNumber2Bytes = bytes.Slice(6 + 3 + 2 + 2 + 4, 4);
         }
 
         private string GetHostname()
