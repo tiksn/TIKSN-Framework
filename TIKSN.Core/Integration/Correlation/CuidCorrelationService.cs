@@ -44,7 +44,13 @@ namespace TIKSN.Integration.Correlation
                 out Span<char> timestampChars,
                 out Span<byte> timestampBytes,
                 out Span<char> counterChars,
-                out Span<byte> counterBytes);
+                out Span<byte> counterBytes,
+                out Span<char> pidChars,
+                out Span<byte> pidBytes,
+                out Span<char> hostnameChars,
+                out Span<byte> hostnameBytes,
+                out Span<char> randomNumber1Chars,
+                out Span<byte> randomNumber1Bytes);
 
             return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
         }
@@ -64,7 +70,13 @@ namespace TIKSN.Integration.Correlation
                 out Span<char> timestampChars,
                 out Span<byte> timestampBytes,
                 out Span<char> counterChars,
-                out Span<byte> counterBytes);
+                out Span<byte> counterBytes,
+                out Span<char> pidChars,
+                out Span<byte> pidBytes,
+                out Span<char> hostnameChars,
+                out Span<byte> hostnameBytes,
+                out Span<char> randomNumber1Chars,
+                out Span<byte> randomNumber1Bytes);
 
             return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
         }
@@ -80,7 +92,13 @@ namespace TIKSN.Integration.Correlation
                 out Span<char> timestampChars,
                 out Span<byte> timestampBytes,
                 out Span<char> counterChars,
-                out Span<byte> counterBytes);
+                out Span<byte> counterBytes,
+                out Span<char> pidChars,
+                out Span<byte> pidBytes,
+                out Span<char> hostnameChars,
+                out Span<byte> hostnameBytes,
+                out Span<char> randomNumber1Chars,
+                out Span<byte> randomNumber1Bytes);
 
             var chars = charArrayRepresentation.AsSpan();
             var bytes = byteArrayRepresentation.AsSpan();
@@ -103,9 +121,9 @@ namespace TIKSN.Integration.Correlation
 
             WriteBase36(timestamp, timestampChars, timestampBytes);
             WriteBase36(counter, counterChars, counterBytes);
-            WriteBase36(pid, chars.Slice(1 + 8 + 4, 2), bytes.Slice(6 + 3, 2));
-            WriteBase36(hostnameHash, chars.Slice(1 + 8 + 4 + 2, 2), bytes.Slice(6 + 3 + 2, 2));
-            WriteBase36(randomNumber1, chars.Slice(1 + 8 + 4 + 2 + 2, 4), bytes.Slice(6 + 3 + 2 + 2, 4));
+            WriteBase36(pid, pidChars, pidBytes);
+            WriteBase36(hostnameHash, hostnameChars, hostnameBytes);
+            WriteBase36(randomNumber1, randomNumber1Chars, randomNumber1Bytes);
             WriteBase36(randomNumber2, chars.Slice(1 + 8 + 4 + 2 + 2 + 4, 4), bytes.Slice(6 + 3 + 2 + 2 + 4, 4));
 
             return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
@@ -129,7 +147,13 @@ namespace TIKSN.Integration.Correlation
             out Span<char> timestampChars,
             out Span<byte> timestampBytes,
             out Span<char> counterChars,
-            out Span<byte> counterBytes)
+            out Span<byte> counterBytes,
+            out Span<char> pidChars,
+            out Span<byte> pidBytes,
+            out Span<char> hostnameChars,
+            out Span<byte> hostnameBytes,
+            out Span<char> randomNumber1Chars,
+            out Span<byte> randomNumber1Bytes)
         {
             if (charArrayRepresentation is null)
             {
@@ -168,6 +192,15 @@ namespace TIKSN.Integration.Correlation
 
             counterChars = chars.Slice(1 + 8, 4);
             counterBytes = bytes.Slice(6, 3);
+
+            pidChars = chars.Slice(1 + 8 + 4, 2);
+            pidBytes = bytes.Slice(6 + 3, 2);
+
+            hostnameChars = chars.Slice(1 + 8 + 4 + 2, 2);
+            hostnameBytes = bytes.Slice(6 + 3 + 2, 2);
+
+            randomNumber1Chars = chars.Slice(1 + 8 + 4 + 2 + 2, 4);
+            randomNumber1Bytes = bytes.Slice(6 + 3 + 2 + 2, 4);
         }
 
         private string GetHostname()
