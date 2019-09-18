@@ -200,7 +200,15 @@ namespace TIKSN.Integration.Correlation
 
         private void ConvertBytesToChars(Span<char> chars, Span<byte> bytes)
         {
-            throw new NotImplementedException();
+            long value = 0L;
+
+            for (int i = bytes.Length - 1; i >= 0; i--)
+            {
+                value *= 256;
+                value += bytes[i];
+            }
+
+            WriteBase36(value, chars);
         }
 
         private void ConvertCharsToBytes(Span<char> chars, Span<byte> bytes)
