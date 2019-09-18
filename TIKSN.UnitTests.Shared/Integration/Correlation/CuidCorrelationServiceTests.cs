@@ -35,7 +35,9 @@ namespace TIKSN.Integration.Correlation.Tests
             var correlationID = _correlationService.Generate();
             LogOutput(correlationID, nameof(correlationID));
             var correlationIDFromString = _correlationService.Create(correlationID.ToString());
+            LogOutput(correlationIDFromString, nameof(correlationIDFromString));
             var correlationIDFromBytes = _correlationService.Create(correlationID.ToByteArray());
+            LogOutput(correlationIDFromBytes, nameof(correlationIDFromBytes));
 
             correlationIDFromString.Should().Be(correlationID);
             correlationIDFromBytes.Should().Be(correlationID);
