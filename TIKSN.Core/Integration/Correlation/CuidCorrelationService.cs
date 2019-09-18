@@ -202,7 +202,7 @@ namespace TIKSN.Integration.Correlation
         {
             long value = 0L;
 
-            for (int i = bytes.Length - 1; i >= 0; i--)
+            for (int i = 0; i < bytes.Length; i++)
             {
                 value *= 256;
                 value += bytes[i];
@@ -215,7 +215,7 @@ namespace TIKSN.Integration.Correlation
         {
             long value = 0L;
 
-            for (int i = chars.Length - 1; i >= 0; i--)
+            for (int i = 0; i < chars.Length; i++)
             {
                 int code = CodeMap[chars[i]];
                 value *= Radix;
