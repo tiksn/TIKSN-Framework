@@ -78,6 +78,11 @@ namespace TIKSN.Integration.Correlation
                 out Span<byte> randomNumber2Bytes);
 
             ConvertCharsToBytes(timestampChars, timestampBytes);
+            ConvertCharsToBytes(counterChars, counterBytes);
+            ConvertCharsToBytes(pidChars, pidBytes);
+            ConvertCharsToBytes(hostnameChars, hostnameBytes);
+            ConvertCharsToBytes(randomNumber1Chars, randomNumber1Bytes);
+            ConvertCharsToBytes(randomNumber2Chars, randomNumber2Bytes);
 
             return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
         }
@@ -160,16 +165,44 @@ namespace TIKSN.Integration.Correlation
             return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
         }
 
+        private static void WriteBase36(long value, Span<char> chars)
+        {
+            for (int i = chars.Length - 1; i >= 0; i--)
+            {
+                chars[i] = Alphabet[(int)(value % Radix)];
+                value /= Radix;
+            }
+        }
+
+        private static void WriteBase36(long value, Span<byte> bytes)
+        {
+            var valueBytes = BitConverter.GetBytes(value).AsSpan();
+            if (BitConverter.IsLittleEndian)
+            {
+                valueBytes.Reverse();
+            }
+
+            valueBytes.Slice(valueBytes.Length - bytes.Length).CopyTo(bytes);
+        }
+
+        private static void WriteBase36(long value, Span<char> chars, Span<byte> bytes)
+        {
+            WriteBase36(value, bytes);
+            WriteBase36(value, chars);
+        }
+
         private void ConvertCharsToBytes(Span<char> chars, Span<byte> bytes)
         {
-            int carry=0;
-            int j = bytes.Length - 1;
+            long value = 0L;
 
             for (int i = chars.Length - 1; i >= 0; i--)
             {
                 int code = CodeMap[chars[i]];
+                value *= Radix;
+                value += code;
             }
-            throw new NotImplementedException();
+
+            WriteBase36(value, bytes);
         }
 
         private byte[] CreateByteArray()
@@ -272,23 +305,6 @@ namespace TIKSN.Integration.Correlation
             }
 
             return _hostname;
-        }
-
-        private void WriteBase36(long value, Span<char> chars, Span<byte> bytes)
-        {
-            var valueBytes = BitConverter.GetBytes(value).AsSpan();
-            if (BitConverter.IsLittleEndian)
-            {
-                valueBytes.Reverse();
-            }
-
-            valueBytes.Slice(valueBytes.Length - bytes.Length).CopyTo(bytes);
-
-            for (int i = chars.Length - 1; i >= 0; i--)
-            {
-                chars[i] = Alphabet[(int)(value % Radix)];
-                value /= Radix;
-            }
         }
     }
 }
