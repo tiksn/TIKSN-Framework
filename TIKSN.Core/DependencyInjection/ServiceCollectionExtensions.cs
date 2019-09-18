@@ -1,5 +1,4 @@
-﻿using Base62;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
 using ReactiveUI;
@@ -55,7 +54,6 @@ namespace TIKSN.DependencyInjection
             services.TryAddSingleton<SimpleJsonBondSerializer>();
             services.TryAddSingleton<SimpleXmlBondDeserializer>();
             services.TryAddSingleton<SimpleXmlBondSerializer>();
-            services.TryAddSingleton<Base62Converter>();
 
             services.TryAddScoped<IShellCommandContext, ShellCommandContext>();
 
