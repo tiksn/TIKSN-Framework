@@ -32,6 +32,11 @@ namespace TIKSN.Integration.Correlation.Tests
         [Fact]
         public void GenerateAndParse()
         {
+            for (int i = 0; i < 10; i++)
+            {
+                _correlationService.Generate();
+            }
+
             var correlationID = _correlationService.Generate();
             LogOutput(correlationID, nameof(correlationID));
             var correlationIDFromString = _correlationService.Create(correlationID.ToString());
