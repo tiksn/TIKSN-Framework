@@ -19,7 +19,7 @@ namespace TIKSN.Integration.Correlation.Tests
             services.AddSingleton<ICorrelationService, CuidCorrelationService>();
             var serviceProvider = services.BuildServiceProvider();
             _correlationService = serviceProvider.GetRequiredService<ICorrelationService>();
-            _testOutputHelper = testOutputHelper ?? throw new System.ArgumentNullException(nameof(testOutputHelper));
+            _testOutputHelper = testOutputHelper ?? throw new ArgumentNullException(nameof(testOutputHelper));
         }
 
         [Fact]
