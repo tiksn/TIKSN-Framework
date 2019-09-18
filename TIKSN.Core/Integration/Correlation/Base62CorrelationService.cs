@@ -31,7 +31,8 @@ namespace TIKSN.Integration.Correlation
 
         public CorrelationID Create(string stringRepresentation)
         {
-            var number = BigInteger.Parse(_base62Converter.Decode(stringRepresentation), CultureInfo.InvariantCulture);
+            var numberToParse = _base62Converter.Decode(stringRepresentation);
+            var number = BigInteger.Parse(numberToParse, CultureInfo.InvariantCulture);
             byte[] byteArrayRepresentation = _bigIntegerBinarySerializer.Serialize(number);
             return new CorrelationID(stringRepresentation, byteArrayRepresentation);
         }
