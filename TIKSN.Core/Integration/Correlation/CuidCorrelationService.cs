@@ -112,6 +112,13 @@ namespace TIKSN.Integration.Correlation
                 out Span<char> randomNumber2Chars,
                 out Span<byte> randomNumber2Bytes);
 
+            ConvertBytesToChars(timestampChars, timestampBytes);
+            ConvertBytesToChars(counterChars, counterBytes);
+            ConvertBytesToChars(pidChars, pidBytes);
+            ConvertBytesToChars(hostnameChars, hostnameBytes);
+            ConvertBytesToChars(randomNumber1Chars, randomNumber1Bytes);
+            ConvertBytesToChars(randomNumber2Chars, randomNumber2Bytes);
+
             return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
         }
 
@@ -189,6 +196,11 @@ namespace TIKSN.Integration.Correlation
         {
             WriteBase36(value, bytes);
             WriteBase36(value, chars);
+        }
+
+        private void ConvertBytesToChars(Span<char> chars, Span<byte> bytes)
+        {
+            throw new NotImplementedException();
         }
 
         private void ConvertCharsToBytes(Span<char> chars, Span<byte> bytes)
