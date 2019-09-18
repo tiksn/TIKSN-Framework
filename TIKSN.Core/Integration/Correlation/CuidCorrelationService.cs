@@ -12,6 +12,7 @@ namespace TIKSN.Integration.Correlation
         private const string Alphabet = "0123456789abcdefghijklmnopqrstuvwxyz";
         private const int ByteArraySize = 6 + 3 + 2 + 2 + 4 + 4;
         private const int CharsArraySize = 1 + 8 + 4 + 2 + 2 + 4 + 4;
+        private const int DuetteUpperBoundary = 36 * 36;
         private const int QuartetteUpperBoundary = 36 * 36 * 36 * 36;
         private const int Radix = 36;
         private static readonly IReadOnlyDictionary<char, int> CodeMap;
@@ -156,9 +157,9 @@ namespace TIKSN.Integration.Correlation
                 _counter = (_counter == QuartetteUpperBoundary) ? 0 : _counter + 1;
             }
 
-            var pid = Process.GetCurrentProcess().Id;
+            var pid = Process.GetCurrentProcess().Id % DuetteUpperBoundary;
             var hostname = GetHostname();
-            var hostnameHash = hostname.Split().Aggregate(hostname.Length + 36, (prev, c) => prev + c[0]);
+            var hostnameHash = hostname.Split().Aggregate(hostname.Length + 36, (prev, c) => prev + c[0]) % DuetteUpperBoundary;
             var randomNumber1 = _random.Next() % QuartetteUpperBoundary;
             var randomNumber2 = _random.Next() % QuartetteUpperBoundary;
 
