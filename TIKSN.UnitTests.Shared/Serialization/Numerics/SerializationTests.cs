@@ -14,16 +14,20 @@ namespace TIKSN.Serialization.Numerics.Tests
             UnsignedBigIntegerBinarySerializer serializer = new UnsignedBigIntegerBinarySerializer();
             UnsignedBigIntegerBinaryDeserializer deserializer = new UnsignedBigIntegerBinaryDeserializer();
 
-            var number = BigInteger.One;
-            number *= rng.Next();
-            number *= rng.Next();
-            number *= rng.Next();
-            number *= rng.Next();
+            for (int i = 0; i < 10; i++)
+            {
+                var number = BigInteger.One;
+                number *= rng.Next();
+                number *= rng.Next();
+                number *= rng.Next();
+                number *= rng.Next();
 
-            var bytes = serializer.Serialize(number);
-            var recovered = deserializer.Deserialize(bytes);
-
-            recovered.Should().Be(number);
+                var bytes = serializer.Serialize(number);
+                var recovered = deserializer.Deserialize(bytes);
+                var recoveredBytes = serializer.Serialize(recovered);
+                recovered.Should().Be(number);
+                recoveredBytes.Should().BeEquivalentTo(bytes);
+            }
         }
     }
 }
