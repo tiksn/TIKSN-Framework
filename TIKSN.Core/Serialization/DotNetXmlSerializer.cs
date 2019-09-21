@@ -1,15 +1,10 @@
 using System.IO;
 using System.Xml.Serialization;
-using TIKSN.Analytics.Telemetry;
 
 namespace TIKSN.Serialization
 {
     public class DotNetXmlSerializer : SerializerBase<string>
     {
-        public DotNetXmlSerializer(IExceptionTelemeter exceptionTelemeter) : base(exceptionTelemeter)
-        {
-        }
-
         protected override string SerializeInternal(object obj)
         {
             var serializer = new XmlSerializer(obj.GetType());
