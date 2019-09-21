@@ -1,14 +1,9 @@
 ﻿using System;
-using TIKSN.Analytics.Telemetry;
 
 namespace TIKSN.Serialization
 {
-    public abstract class DeserializerBase<TSerial> : SerializationBase, IDeserializer<TSerial> where TSerial : class
+    public abstract class DeserializerBase<TSerial> : IDeserializer<TSerial> where TSerial : class
     {
-        protected DeserializerBase(IExceptionTelemeter exceptionTelemeter) : base(exceptionTelemeter)
-        {
-        }
-
         public T Deserialize<T>(TSerial serial)
         {
             try
@@ -17,9 +12,7 @@ namespace TIKSN.Serialization
             }
             catch (Exception ex)
             {
-                _exceptionTelemeter.TrackException(ex);
-
-                return default(T);
+                throw new DeserializerException("Deserialization failed.", ex);
             }
         }
 
