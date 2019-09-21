@@ -6,9 +6,6 @@ namespace TIKSN.Serialization
     {
         public TSerial Serialize(object obj)
         {
-            if (obj == null)
-                return null;
-
             try
             {
                 return SerializeInternal(obj);
