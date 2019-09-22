@@ -11,6 +11,6 @@
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        TSerial Serialize(object obj);
+        TSerial Serialize<T>(T obj);
     }
 }

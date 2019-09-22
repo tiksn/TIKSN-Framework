@@ -6,7 +6,7 @@ namespace TIKSN.Serialization.Bond
 {
     public class SimpleXmlBondSerializer : SerializerBase<string>
     {
-        protected override string SerializeInternal(object obj)
+        protected override string SerializeInternal<T>(T obj)
         {
             using (var output = new StringWriter())
             {

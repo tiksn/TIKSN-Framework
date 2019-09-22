@@ -12,9 +12,9 @@ namespace TIKSN.Serialization.MessagePack
             _serializationContext = serializationContext;
         }
 
-        protected override byte[] SerializeInternal(object obj)
+        protected override byte[] SerializeInternal<T>(T obj)
         {
-            var serializer = _serializationContext.GetSerializer(obj.GetType());
+            var serializer = _serializationContext.GetSerializer<T>();
 
             using (var stream = new MemoryStream())
             {

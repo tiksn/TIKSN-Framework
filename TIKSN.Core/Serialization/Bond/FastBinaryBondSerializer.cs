@@ -5,7 +5,7 @@ namespace TIKSN.Serialization.Bond
 {
     public class FastBinaryBondSerializer : SerializerBase<byte[]>
     {
-        protected override byte[] SerializeInternal(object obj)
+        protected override byte[] SerializeInternal<T>(T obj)
         {
             var output = new OutputBuffer();
             var writer = new FastBinaryWriter<OutputBuffer>(output);
