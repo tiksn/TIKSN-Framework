@@ -5,7 +5,7 @@ namespace TIKSN.Serialization
 {
     public class DotNetXmlSerializer : SerializerBase<string>
     {
-        protected override string SerializeInternal(object obj)
+        protected override string SerializeInternal<T>(T obj)
         {
             var serializer = new XmlSerializer(obj.GetType());
             var writer = new StringWriter();
