@@ -4,7 +4,7 @@ namespace TIKSN.Serialization
 {
     public abstract class SerializerBase<TSerial> : ISerializer<TSerial> where TSerial : class
     {
-        public TSerial Serialize(object obj)
+        public TSerial Serialize<T>(T obj)
         {
             try
             {
@@ -16,6 +16,6 @@ namespace TIKSN.Serialization
             }
         }
 
-        protected abstract TSerial SerializeInternal(object obj);
+        protected abstract TSerial SerializeInternal<T>(T obj);
     }
 }
