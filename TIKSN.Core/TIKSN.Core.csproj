@@ -20,7 +20,7 @@
     <EmbeddedResource Include="Finance\Resources\TableA3.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.4.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.0" />
     <PackageReference Include="Bond.CSharp" Version="8.1.0" />
     <PackageReference Include="ConsoleTables" Version="2.3.0" />
     <PackageReference Include="Exceptionless.Signed" Version="4.3.2027" />
