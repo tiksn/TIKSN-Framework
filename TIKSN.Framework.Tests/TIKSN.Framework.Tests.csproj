@@ -18,7 +18,7 @@
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <ItemGroup>
     <PackageReference Include="DnsClient" Version="1.2.0" />
-    <PackageReference Include="DynamicData" Version="6.13.1" />
+    <PackageReference Include="DynamicData" Version="6.13.8" />
     <PackageReference Include="Exceptionless.Signed" Version="4.3.2027" />
     <PackageReference Include="FluentAssertions" Version="5.9.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
