@@ -45,7 +45,7 @@
     <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Primitives" Version="3.0.0" />
     <PackageReference Include="Microsoft.NETCore.Platforms" Version="3.0.0" />
