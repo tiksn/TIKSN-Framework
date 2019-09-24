@@ -30,7 +30,7 @@
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="MongoDB.Driver.GridFS" Version="2.9.1" />
     <PackageReference Include="Nito.AsyncEx.Context" Version="5.0.0" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.5.4" />

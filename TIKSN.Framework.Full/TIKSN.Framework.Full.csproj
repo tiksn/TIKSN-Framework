@@ -54,7 +54,7 @@
     <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Primitives" Version="3.0.0" />
     <PackageReference Include="Microsoft.NetCore.Analyzers" Version="2.9.4">
