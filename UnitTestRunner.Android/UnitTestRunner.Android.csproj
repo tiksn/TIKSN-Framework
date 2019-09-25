@@ -493,10 +493,6 @@
       <Project>{d1ecb169-bb57-4751-aeca-415e078e5996}</Project>
       <Name>TIKSN.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TIKSN.Framework.Android\TIKSN.Framework.Android.csproj">
-      <Project>{572734f9-e631-44ab-91f0-54735b50d91b}</Project>
-      <Name>TIKSN.Framework.Android</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />

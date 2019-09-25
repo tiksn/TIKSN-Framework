@@ -128,7 +128,7 @@ Task BuildNetFramework -depends EstimateVersions {
     Exec { dotnet msbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
 
-Task BuildAndroid -depends EstimateVersions {
+Task BuildAndroid -depends EstimateVersions -precondition { $false } {
     $project = Resolve-Path -Path 'TIKSN.Framework.Android/TIKSN.Framework.Android.csproj'
 
     Exec { & $msbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
