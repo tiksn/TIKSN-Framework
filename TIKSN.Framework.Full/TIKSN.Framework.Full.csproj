@@ -20,7 +20,7 @@
     <PackageReference Include="ConsoleTables" Version="2.3.0" />
     <PackageReference Include="Desktop.Analyzers" Version="1.1.0" />
     <PackageReference Include="DnsClient" Version="1.2.0" />
-    <PackageReference Include="DynamicData" Version="6.13.1" />
+    <PackageReference Include="DynamicData" Version="6.13.8" />
     <PackageReference Include="Exceptionless.Signed" Version="4.3.2027" />
     <PackageReference Include="FluentValidation" Version="8.4.0" />
     <PackageReference Include="Microsoft.AnalyzerPowerPack" Version="1.1.0" />
@@ -78,14 +78,14 @@
     <PackageReference Include="NLog" Version="4.6.7" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.5.4" />
     <PackageReference Include="NoDb" Version="1.2.2" />
-    <PackageReference Include="NuGet.Versioning" Version="5.0.0" />
+    <PackageReference Include="NuGet.Versioning" Version="5.3.0" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" />
-    <PackageReference Include="ReactiveUI" Version="10.1.7" />
+    <PackageReference Include="ReactiveUI" Version="10.3.1" />
     <PackageReference Include="Remotion.Linq" Version="2.2.0" />
     <PackageReference Include="Serilog" Version="2.8.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
     <PackageReference Include="ShellProgressBar" Version="4.3.0" />
-    <PackageReference Include="Splat" Version="8.3.1" />
+    <PackageReference Include="Splat" Version="9.0.5" />
     <PackageReference Include="System.AppContext" Version="4.3.0" />
     <PackageReference Include="System.Buffers" Version="4.5.0" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
@@ -96,7 +96,7 @@
     <PackageReference Include="System.ComponentModel.Primitives" Version="4.3.0" />
     <PackageReference Include="System.Console" Version="4.3.1" />
     <PackageReference Include="System.Diagnostics.Debug" Version="4.3.0" />
-    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.5.1" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.6.0" />
     <PackageReference Include="System.Diagnostics.Tools" Version="4.3.0" />
     <PackageReference Include="System.Diagnostics.Tracing" Version="4.3.0" />
     <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />

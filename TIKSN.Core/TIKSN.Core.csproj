@@ -26,7 +26,7 @@
     <PackageReference Include="Exceptionless.Signed" Version="4.3.2027" />
     <PackageReference Include="FluentValidation" Version="8.4.0" />
     <PackageReference Include="LiteDB" Version="4.1.4" />
-    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.10.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.11.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.4">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -49,10 +49,10 @@
     <PackageReference Include="Nito.AsyncEx.Context" Version="5.0.0" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.5.4" />
     <PackageReference Include="NoDb" Version="1.2.2" />
-    <PackageReference Include="NuGet.Versioning" Version="5.0.0" />
+    <PackageReference Include="NuGet.Versioning" Version="5.3.0" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" />
     <PackageReference Include="RavenDB.Client" Version="4.2.3" />
-    <PackageReference Include="ReactiveUI" Version="10.1.7" />
+    <PackageReference Include="ReactiveUI" Version="10.3.1" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
     <PackageReference Include="System.Interactive" Version="3.2.0" />
     <PackageReference Include="System.Interactive.Async" Version="3.2.0" />
