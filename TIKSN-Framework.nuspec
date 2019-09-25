@@ -310,9 +310,9 @@
         <file src="any\TIKSN.Core.pdb" target="runtimes\win10-arm\lib\uap10.0" />
 
         <!-- Platform: Xamarin Android -->
-        <file src="any\TIKSN.Framework.Android.dll" target="lib\MonoAndroid403" />
+        <!-- <file src="any\TIKSN.Framework.Android.dll" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.Framework.Android.xml" target="lib\MonoAndroid403" />
-        <file src="any\TIKSN.Framework.Android.pdb" target="lib\MonoAndroid403" />
+        <file src="any\TIKSN.Framework.Android.pdb" target="lib\MonoAndroid403" /> -->
 
         <!-- Platform: .NET Framework -->
         <file src="any\TIKSN.Framework.Full.dll" target="lib\net48" />
