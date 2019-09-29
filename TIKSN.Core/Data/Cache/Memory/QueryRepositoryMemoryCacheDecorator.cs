@@ -38,7 +38,9 @@ namespace TIKSN.Data.Cache.Memory
             var result = await GetFromMemoryCacheAsync(cacheKey, () => _queryRepository.GetAsync(id, cancellationToken));
 
             if (result == null)
+            {
                 throw new NullReferenceException("Result retrieved from cache or from original source is null.");
+            }
 
             return result;
         }
