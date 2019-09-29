@@ -1,6 +1,9 @@
-﻿using Raven.Client.Documents.Session;
+﻿using Raven.Client.Documents;
+using Raven.Client.Documents.Linq;
+using Raven.Client.Documents.Session;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -47,6 +50,13 @@ namespace TIKSN.Data.RavenDB
         public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
         {
             return _session.LoadAsync<TEntity>(id.ToString(), cancellationToken);
+        }
+
+        public async Task<IEnumerable<TEntity>> ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken)
+        {
+            return await _session.Query<TEntity>()
+                .Where(entity => ids.Contains(entity.ID))
+                .ToListAsync(cancellationToken);
         }
 
         public Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)
