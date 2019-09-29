@@ -85,5 +85,15 @@ namespace TIKSN.Data.Mongo
         {
             return Builders<TDocument>.Filter.Eq(item => item.ID, id);
         }
+
+        protected static FilterDefinition<TDocument> GetIdentitiesFilter(IEnumerable<TIdentity> ids)
+        {
+            return Builders<TDocument>.Filter.In(item => item.ID, ids);
+        }
+
+        public async Task<IEnumerable<TDocument>> ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken)
+        {
+            return await collection.Find(GetIdentitiesFilter(ids)).ToListAsync(cancellationToken);
+        }
     }
 }
