@@ -54,6 +54,11 @@ namespace TIKSN.Data.NoDB
             return _basicQueries.FetchAsync(_projectId, id.ToString(), cancellationToken);
         }
 
+        public async Task<IEnumerable<TEntity>> ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken)
+        {
+            return await BatchOperationHelper.BatchOperationAsync(ids, cancellationToken, (id, c) => GetAsync(id, c));
+        }
+
         public Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)
         {
             return _basicCommands.DeleteAsync(_projectId, entity.ID.ToString(), cancellationToken);
