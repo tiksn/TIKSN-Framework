@@ -55,12 +55,12 @@ namespace TIKSN.Data.LiteDB
 
         public Task<TDocument> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
         {
-            return Task.FromResult(collection.FindOne(item => item.ID.Equals(id));
+            return Task.FromResult(collection.FindOne(item => item.ID.Equals(id)));
         }
 
         public Task RemoveAsync(TDocument entity, CancellationToken cancellationToken)
         {
-            return Task.FromResult(collection.Delete(item => item.ID.Equals(entity.ID));
+            return Task.FromResult(collection.Delete(item => item.ID.Equals(entity.ID)));
         }
 
         public Task RemoveRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken)
