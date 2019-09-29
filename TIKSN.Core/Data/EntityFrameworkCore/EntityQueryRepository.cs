@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,6 +31,11 @@ namespace TIKSN.Data.EntityFrameworkCore
         public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
         {
             return Entities.SingleOrDefaultAsync(entity => entity.ID.Equals(id), cancellationToken);
+        }
+
+        public async Task<IEnumerable<TEntity>> ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken)
+        {
+            return await Entities.Where(entity => ids.Contains(entity.ID)).ToListAsync(cancellationToken);
         }
     }
 }
