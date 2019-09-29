@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Serialization;
@@ -42,6 +43,11 @@ namespace TIKSN.Data.Cache.Distributed
         public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
         {
             return GetFromDistributedCacheAsync<TEntity>(CreateEntryCacheKey(id), cancellationToken);
+        }
+
+        public async Task<IEnumerable<TEntity>> ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken)
+        {
+            return await BatchOperationHelper.BatchOperationAsync(ids, cancellationToken, (id, ct) => GetAsync(id, ct));
         }
     }
 }
