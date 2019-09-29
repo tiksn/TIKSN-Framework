@@ -27,12 +27,19 @@ namespace TIKSN.Data.RavenDB
             return BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, AddAsync);
         }
 
+        public Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken)
+        {
+            return _session.Advanced.ExistsAsync(id.ToString(), cancellationToken);
+        }
+
         public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
         {
             var entity = await GetOrDefaultAsync(id, cancellationToken);
 
             if (ReferenceEquals(entity, null))
+            {
                 throw new NullReferenceException($"Entity with ID '{id}' is not found.");
+            }
 
             return entity;
         }
