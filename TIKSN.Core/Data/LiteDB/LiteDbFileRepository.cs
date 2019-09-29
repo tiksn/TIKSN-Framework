@@ -7,7 +7,7 @@ namespace TIKSN.Data.LiteDB
 {
     public class LiteDbFileRepository<TMetadata> : IFileRepository<string>, IFileRepository<string, TMetadata>
     {
-        private LiteStorage _liteStorage;
+        private readonly LiteStorage _liteStorage;
 
         public LiteDbFileRepository(ILiteDbDatabaseProvider databaseProvider)
         {
@@ -16,14 +16,14 @@ namespace TIKSN.Data.LiteDB
 
         public Task DeleteByIdAsync(string id, CancellationToken cancellationToken)
         {
-            return Task.Run(() => _liteStorage.Delete(id), cancellationToken);
+            return Task.FromResult(_liteStorage.Delete(id));
         }
 
         public async Task<IFile<string>> DownloadByIdAsync(string id, CancellationToken cancellationToken)
         {
             using (var stream = new MemoryStream())
             {
-                var fileInfo = await Task.Run(() => _liteStorage.Download(id, stream), cancellationToken);
+                var fileInfo = _liteStorage.Download(id, stream);
 
                 return new File<string>(fileInfo.Id, fileInfo.Filename, stream.ToArray());
             }
@@ -31,7 +31,7 @@ namespace TIKSN.Data.LiteDB
 
         public async Task<IFileInfo<string, TMetadata>> DownloadOnlyMetadataAsync(string id, CancellationToken cancellationToken)
         {
-            var fileInfo = await Task.Run(() => _liteStorage.FindById(id), cancellationToken);
+            var fileInfo = _liteStorage.FindById(id);
 
             return new FileInfo<string, TMetadata>(fileInfo.Id, fileInfo.Filename, BsonMapper.Global.ToObject<TMetadata>(fileInfo.Metadata));
         }
@@ -40,7 +40,7 @@ namespace TIKSN.Data.LiteDB
         {
             using (var stream = new MemoryStream())
             {
-                var fileInfo = await Task.Run(() => _liteStorage.Download(id, stream), cancellationToken);
+                var fileInfo = _liteStorage.Download(id, stream);
 
                 return new File<string, TMetadata>(fileInfo.Id, fileInfo.Filename, BsonMapper.Global.ToObject<TMetadata>(fileInfo.Metadata), stream.ToArray());
             }
@@ -48,15 +48,15 @@ namespace TIKSN.Data.LiteDB
 
         public Task<bool> ExistsByIdAsync(string id, CancellationToken cancellationToken)
         {
-            return Task.Run(() => _liteStorage.Exists(id), cancellationToken);
+            return Task.FromResult(_liteStorage.Exists(id));
         }
 
         public async Task UploadAsync(string id, string path, byte[] content, TMetadata metadata, CancellationToken cancellationToken)
         {
             using (var stream = new MemoryStream(content))
             {
-                await Task.Run(() => _liteStorage.Upload(id, path, stream), cancellationToken);
-                await Task.Run(() => _liteStorage.SetMetadata(id, BsonMapper.Global.ToDocument(metadata)), cancellationToken);
+                _liteStorage.Upload(id, path, stream);
+                _liteStorage.SetMetadata(id, BsonMapper.Global.ToDocument(metadata));
             }
         }
 
@@ -64,7 +64,7 @@ namespace TIKSN.Data.LiteDB
         {
             using (var stream = new MemoryStream(content))
             {
-                await Task.Run(() => _liteStorage.Upload(id, path, stream), cancellationToken);
+                _liteStorage.Upload(id, path, stream);
             }
         }
     }
