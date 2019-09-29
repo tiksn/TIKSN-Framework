@@ -63,6 +63,11 @@ namespace TIKSN.Data.LiteDB
             return Task.FromResult(collection.FindOne(item => item.ID.Equals(id)));
         }
 
+        public Task<IEnumerable<TDocument>> ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken)
+        {
+            return Task.FromResult<IEnumerable<TDocument>>(collection.Find(item => ids.Contains(item.ID)).ToArray());
+        }
+
         public Task RemoveAsync(TDocument entity, CancellationToken cancellationToken)
         {
             return Task.FromResult(collection.Delete(item => item.ID.Equals(entity.ID)));
