@@ -67,7 +67,7 @@ namespace TIKSN.Data.Cache.Memory
             InvalidateCacheItems(entities);
         }
 
-        protected Task<TEntity> GetQueryFromMemoryCacheAsync(object cacheKey, Func<Task<TEntity>> getFromSource)
+        protected Task<TResult> GetQueryFromMemoryCacheAsync<TResult>(object cacheKey, Func<Task<TResult>> getFromSource)
         {
             _cacheKeychain.Add(cacheKey);
 
