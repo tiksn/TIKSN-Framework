@@ -38,13 +38,16 @@ namespace TIKSN.Data.Cache.Distributed
 
         protected async Task<TResult> GetFromDistributedCacheAsync<TResult>(string cacheKey, CancellationToken cancellationToken, Func<Task<TResult>> getFromSource = null)
         {
-            var cachedBytes = await _distributedCache.GetAsync(cacheKey);
+            var cachedBytes = await _distributedCache.GetAsync(cacheKey, cancellationToken);
 
             TResult result;
 
             if (cachedBytes == null)
             {
-                if (getFromSource == null) return default;
+                if (getFromSource == null)
+                {
+                    return default;
+                }
 
                 result = await getFromSource();
 
