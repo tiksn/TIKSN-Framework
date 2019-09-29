@@ -39,7 +39,7 @@ namespace TIKSN.Data.Cache.Distributed
             return result;
         }
 
-        public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken = default)
+        public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
         {
             var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, id).ToString();
 

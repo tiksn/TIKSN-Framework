@@ -8,7 +8,7 @@ namespace TIKSN.Data.AzureStorage
     public static class AzureTableStorageExtensions
     {
         public static Task<IEnumerable<T>> RetrieveAllAsync<T>(this IAzureTableStorageQueryRepository<T> repository,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
             where T : ITableEntity
         {
             if (repository == null)
@@ -22,7 +22,7 @@ namespace TIKSN.Data.AzureStorage
         public static Task<IEnumerable<T>> SearchAsync<T>(this IAzureTableStorageQueryRepository<T> repository,
             string fieldName,
             object givenValue,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
             where T : ITableEntity
         {
             if (repository == null)

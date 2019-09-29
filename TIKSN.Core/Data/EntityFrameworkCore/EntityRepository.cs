@@ -16,28 +16,28 @@ namespace TIKSN.Data.EntityFrameworkCore
             this.dbContext = dbContext;
         }
 
-        public Task AddAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
+        public Task AddAsync(TEntity entity, CancellationToken cancellationToken)
         {
             dbContext.Add(entity);
 
             return Task.FromResult<object>(null);
         }
 
-        public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default(CancellationToken))
+        public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
             dbContext.AddRange(entities);
 
             return Task.FromResult<object>(null);
         }
 
-        public Task RemoveAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
+        public Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)
         {
             dbContext.Entry(entity).State = EntityState.Deleted;
 
             return Task.FromResult<object>(null);
         }
 
-        public Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default(CancellationToken))
+        public Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
             foreach (var entity in entities)
                 dbContext.Entry(entity).State = EntityState.Deleted;
@@ -45,14 +45,14 @@ namespace TIKSN.Data.EntityFrameworkCore
             return Task.FromResult<object>(null);
         }
 
-        public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
+        public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
         {
             dbContext.Entry(entity).State = EntityState.Modified;
 
             return Task.FromResult<object>(null);
         }
 
-        public Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default(CancellationToken))
+        public Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
             foreach (var entity in entities)
                 dbContext.Entry(entity).State = EntityState.Modified;

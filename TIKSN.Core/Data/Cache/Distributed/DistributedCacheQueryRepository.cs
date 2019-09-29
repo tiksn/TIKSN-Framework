@@ -30,7 +30,7 @@ namespace TIKSN.Data.Cache.Distributed
             return result;
         }
 
-        public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken = default)
+        public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
         {
             return GetFromDistributedCacheAsync<TEntity>(CreateEntryCacheKey(id), cancellationToken);
         }
