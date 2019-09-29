@@ -24,6 +24,13 @@ namespace TIKSN.Data.Cache.Memory
             _queryRepository = queryRepository;
         }
 
+        public Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken)
+        {
+            var cacheKey = Tuple.Create(entityType, CacheKeyKind.Query, id);
+
+            return GetQueryFromMemoryCacheAsync(cacheKey, () => _queryRepository.ExistsAsync(id, cancellationToken));
+        }
+
         public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
         {
             var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, id);
