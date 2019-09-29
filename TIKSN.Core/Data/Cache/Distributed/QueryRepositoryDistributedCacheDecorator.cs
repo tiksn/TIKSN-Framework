@@ -27,6 +27,12 @@ namespace TIKSN.Data.Cache.Distributed
             _queryRepository = queryRepository;
         }
 
+        public async Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken)
+        {
+            var entity = await GetOrDefaultAsync(id, cancellationToken);
+            return entity != default;
+        }
+
         public Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
         {
             var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, id).ToString();
@@ -34,7 +40,9 @@ namespace TIKSN.Data.Cache.Distributed
             var result = GetFromDistributedCacheAsync(cacheKey, cancellationToken, () => _queryRepository.GetAsync(id, cancellationToken));
 
             if (result == null)
+            {
                 throw new NullReferenceException("Result retrieved from cache or from original source is null.");
+            }
 
             return result;
         }
