@@ -42,7 +42,7 @@ namespace TIKSN.Data.NoDB
             return result;
         }
 
-        public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken = default)
+        public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
         {
             return _basicQueries.FetchAsync(_projectId, id.ToString(), cancellationToken);
         }
