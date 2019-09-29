@@ -41,6 +41,11 @@ namespace TIKSN.Data.LiteDB
             return Task.CompletedTask;
         }
 
+        public Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(collection.Exists(item => item.ID.Equals(id)));
+        }
+
         public async Task<TDocument> GetAsync(TIdentity id, CancellationToken cancellationToken)
         {
             var result = await GetOrDefaultAsync(id, cancellationToken);
