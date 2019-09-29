@@ -21,16 +21,16 @@
     <ProjectReference Include="..\TIKSN.RegionLocalization\TIKSN.RegionLocalization.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.4.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.0" />
     <PackageReference Include="ConsoleTables" Version="2.3.0" />
     <PackageReference Include="Exceptionless.Signed" Version="4.3.2027" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.4">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.6" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="MongoDB.Driver.GridFS" Version="2.9.1" />
     <PackageReference Include="Nito.AsyncEx.Context" Version="5.0.0" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.5.4" />
@@ -40,8 +40,8 @@
     <PackageReference Include="ReactiveUI" Version="10.3.1" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
     <PackageReference Include="ShellProgressBar" Version="4.3.0" />
-    <PackageReference Include="System.Interactive" Version="3.2.0" />
-    <PackageReference Include="System.Interactive.Async" Version="3.2.0" />
+    <PackageReference Include="System.Interactive" Version="4.0.0" />
+    <PackageReference Include="System.Interactive.Async" Version="4.0.0" />
     <PackageReference Include="System.Reactive" Version="4.1.6" />
   </ItemGroup>
 </Project>
