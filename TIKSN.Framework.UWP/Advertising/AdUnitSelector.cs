@@ -17,7 +17,7 @@ namespace TIKSN.Advertising
 
         public AdUnit Select(AdUnitBundle adUnitBundle)
         {
-            if (_options.Value.IsDebuggerSensitive && Debugger.IsAttached)
+            if (_options.Value.IsDebug || _options.Value.IsDebuggerSensitive && Debugger.IsAttached)
             {
                 return adUnitBundle.DesignTime;
             }
