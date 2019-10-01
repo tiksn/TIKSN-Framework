@@ -198,9 +198,6 @@
     <PackageReference Include="System.Reactive">
       <Version>4.1.6</Version>
     </PackageReference>
-    <PackageReference Include="Template10">
-      <Version>1.1.12</Version>
-    </PackageReference>
   </ItemGroup>
   <Import Project="..\TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems" Label="Shared" />
   <Import Project="..\TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems" Label="Shared" />
