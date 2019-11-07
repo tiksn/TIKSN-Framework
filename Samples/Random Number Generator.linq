@@ -8,6 +8,7 @@
   <Namespace>Microsoft.Extensions.Configuration</Namespace>
   <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>
   <Namespace>Microsoft.Extensions.Hosting</Namespace>
+  <Namespace>System.Windows</Namespace>
   <Namespace>TIKSN.Configuration</Namespace>
   <Namespace>TIKSN.DependencyInjection</Namespace>
 </Query>
@@ -29,6 +30,8 @@ void Main()
 	var rng = serviceProvider.GetRequiredService<Random>();
 	
 	var randomNumber = rng.Next();
+	
+	Clipboard.SetData(DataFormats.Text, randomNumber.ToString());
 	
 	randomNumber.Dump();
 }
