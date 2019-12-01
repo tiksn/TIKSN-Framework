@@ -16,7 +16,7 @@
   <Import Project="..\TIKSN.Framework.SharedDesktop\TIKSN.Framework.SharedDesktop.projitems" Label="Shared" />
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.9.4" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
     <PackageReference Include="ConsoleTables" Version="2.3.0" />
     <PackageReference Include="Desktop.Analyzers" Version="1.1.0" />
     <PackageReference Include="DnsClient" Version="1.2.0" />
@@ -27,7 +27,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.0.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -41,25 +41,25 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="2.2.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="3.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.6" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Primitives" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Primitives" Version="3.0.1" />
     <PackageReference Include="Microsoft.NetCore.Analyzers" Version="2.9.8">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

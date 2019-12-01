@@ -20,7 +20,7 @@
     <EmbeddedResource Include="Finance\Resources\TableA3.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
     <PackageReference Include="Bond.CSharp" Version="8.2.0" />
     <PackageReference Include="ConsoleTables" Version="2.3.0" />
     <PackageReference Include="Exceptionless.Signed" Version="4.3.2027" />
@@ -32,14 +32,14 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.6" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Localization" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.0.1" />
     <PackageReference Include="Microsoft.NETCore.Portable.Compatibility" Version="1.0.2" />
     <PackageReference Include="MongoDB.Driver" Version="2.9.3" />
     <PackageReference Include="MongoDB.Driver.GridFS" Version="2.9.3" />
