@@ -22,7 +22,7 @@
     <PackageReference Include="DnsClient" Version="1.2.0" />
     <PackageReference Include="DynamicData" Version="6.13.21" />
     <PackageReference Include="Exceptionless.Signed" Version="4.3.2027" />
-    <PackageReference Include="FluentValidation" Version="8.5.0" />
+    <PackageReference Include="FluentValidation" Version="8.5.1" />
     <PackageReference Include="Microsoft.AnalyzerPowerPack" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions" Version="2.2.0" />
@@ -74,18 +74,18 @@
     <PackageReference Include="MongoDB.Driver.Core" Version="2.9.3" />
     <PackageReference Include="MongoDB.Driver.GridFS" Version="2.9.3" />
     <PackageReference Include="NETStandard.Library" Version="2.0.3" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Nito.AsyncEx.Context" Version="5.0.0" />
     <PackageReference Include="Nito.AsyncEx.Tasks" Version="5.0.0" />
     <PackageReference Include="Nito.Disposables" Version="2.0.1" />
-    <PackageReference Include="NLog" Version="4.6.7" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="1.5.4" />
+    <PackageReference Include="NLog" Version="4.6.8" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.6.1" />
     <PackageReference Include="NoDb" Version="1.2.2" />
-    <PackageReference Include="NuGet.Versioning" Version="5.3.0" />
+    <PackageReference Include="NuGet.Versioning" Version="5.3.1" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" />
     <PackageReference Include="ReactiveUI" Version="10.5.31" />
     <PackageReference Include="Remotion.Linq" Version="2.2.0" />
-    <PackageReference Include="Serilog" Version="2.8.0" />
+    <PackageReference Include="Serilog" Version="2.9.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
     <PackageReference Include="ShellProgressBar" Version="4.3.0" />
     <PackageReference Include="Splat" Version="9.2.11" />
