@@ -63,7 +63,7 @@ Task Pack -depends Build, Test {
 
     $dependencyGroups = @(
         @{Packages = $packages.Standdard; TargetFramework = 'netstandard2.0' },
-        @{Packages = $packages.Core; TargetFramework = 'netcoreapp2.2' },
+        @{Packages = $packages.Core; TargetFramework = 'netcoreapp3.0' },
         @{Packages = $packages.Legacy; TargetFramework = 'net48' },
         @{Packages = $packages.UWP; TargetFramework = 'uap10.0.17134' },
         @{Packages = $packages.Android; TargetFramework = 'MonoAndroid8.1' }
@@ -189,6 +189,7 @@ Task DownloadCurrencyCodes -depends Clean {
 Task Restore -depends Clean {
     $solution = Resolve-Path -Path 'TIKSN Framework.sln'
     Exec { dotnet restore $solution }
+    Exec { nuget restore $solution }
 }
 
 Task Clean -depends Init {

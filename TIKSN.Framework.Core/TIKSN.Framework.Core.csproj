@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyTitle>TIKSN.Framework.Core</AssemblyTitle>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>TIKSN</RootNamespace>
-    <DocumentationFile>bin\$(Configuration)\netcoreapp2.2\TIKSN.Framework.Core.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\netcoreapp3.0\TIKSN.Framework.Core.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
