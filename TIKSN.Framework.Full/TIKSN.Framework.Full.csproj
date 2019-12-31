@@ -69,7 +69,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Win32.Primitives" Version="4.3.0" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="4.6.0" />
-    <PackageReference Include="MongoDB.Bson" Version="2.9.3" />
+    <PackageReference Include="MongoDB.Bson" Version="2.10.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.9.3" />
     <PackageReference Include="MongoDB.Driver.Core" Version="2.9.3" />
     <PackageReference Include="MongoDB.Driver.GridFS" Version="2.9.3" />
