@@ -30,7 +30,7 @@ namespace TIKSN.Data.Cache.Distributed
         public async Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken)
         {
             var entity = await GetOrDefaultAsync(id, cancellationToken);
-            return entity != default;
+            return entity != null;
         }
 
         public Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
