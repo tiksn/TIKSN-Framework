@@ -1,5 +1,6 @@
 Properties {
     $PackageId = 'TIKSN-Framework'
+    # Install-Script -Name Resolve-MSBuild
     $msbuild = Resolve-MSBuild.ps1
 }
 
