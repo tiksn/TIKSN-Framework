@@ -17,7 +17,9 @@ namespace TIKSN.Finance.ForeignExchange.Data.LiteDB
         public Task<int> GetMaximalIdAsync(CancellationToken cancellationToken)
         {
             if (collection.Count() == 0)
+            {
                 return Task.FromResult(0);
+            }
 
             var maxValue = collection.Max(x => x.ID);
 
