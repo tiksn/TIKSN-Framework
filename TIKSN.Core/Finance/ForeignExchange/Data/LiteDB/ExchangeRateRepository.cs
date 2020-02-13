@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LiteDB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -9,18 +10,18 @@ namespace TIKSN.Finance.ForeignExchange.Data.LiteDB
 {
     public class ExchangeRateRepository : LiteDbRepository<ExchangeRateEntity, int>, IExchangeRateRepository
     {
-        public ExchangeRateRepository(ILiteDbDatabaseProvider databaseProvider) : base(databaseProvider, "ExchangeRates")
+        public ExchangeRateRepository(ILiteDbDatabaseProvider databaseProvider) : base(databaseProvider, "ExchangeRates", x => new BsonValue(x))
         {
         }
 
         public Task<int> GetMaximalIdAsync(CancellationToken cancellationToken)
         {
+            if (collection.Count() == 0)
+                return Task.FromResult(0);
+
             var maxValue = collection.Max(x => x.ID);
 
-            if (maxValue.IsInt32)
-                return Task.FromResult(maxValue.AsInt32);
-
-            return Task.FromResult(0);
+            return Task.FromResult(maxValue);
         }
 
         public Task<ExchangeRateEntity> GetOrDefaultAsync(int foreignExchangeID, string baseCurrencyCode, string counterCurrencyCode, DateTimeOffset asOn, CancellationToken cancellationToken)
