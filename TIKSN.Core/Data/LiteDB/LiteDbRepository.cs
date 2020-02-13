@@ -9,12 +9,14 @@ namespace TIKSN.Data.LiteDB
 {
     public class LiteDbRepository<TDocument, TIdentity> : ILiteDbRepository<TDocument, TIdentity> where TDocument : IEntity<TIdentity> where TIdentity : IEquatable<TIdentity>
     {
-        protected readonly LiteCollection<TDocument> collection;
+        protected readonly ILiteCollection<TDocument> collection;
+        protected readonly Func<TIdentity, BsonValue> convertToBsonValue;
 
-        protected LiteDbRepository(ILiteDbDatabaseProvider databaseProvider, string collectionName)
+        protected LiteDbRepository(ILiteDbDatabaseProvider databaseProvider, string collectionName, Func<TIdentity, BsonValue> convertToBsonValue)
         {
             var database = databaseProvider.GetDatabase();
             collection = database.GetCollection<TDocument>(collectionName);
+            this.convertToBsonValue = convertToBsonValue ?? throw new ArgumentNullException(nameof(convertToBsonValue));
         }
 
         public Task AddAsync(TDocument entity, CancellationToken cancellationToken)
@@ -70,7 +72,7 @@ namespace TIKSN.Data.LiteDB
 
         public Task RemoveAsync(TDocument entity, CancellationToken cancellationToken)
         {
-            return Task.FromResult(collection.Delete(item => item.ID.Equals(entity.ID)));
+            return Task.FromResult(collection.Delete(convertToBsonValue(entity.ID)));
         }
 
         public Task RemoveRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken)
@@ -82,7 +84,7 @@ namespace TIKSN.Data.LiteDB
 
             var ids = entities.Select(item => item.ID).ToArray();
 
-            collection.Delete(item => ids.Contains(item.ID));
+            collection.DeleteMany(item => ids.Contains(item.ID));
             return Task.CompletedTask;
         }
 

@@ -61,7 +61,7 @@ namespace TIKSN.Settings
 
         private T Apply<T>(IFileProvider fileProvider, string name, T value, Func<BsonDocument, string, T, T> processor)
         {
-            using (var db = GetDatabase(fileProvider, out LiteCollection<BsonDocument> settingsCollection, out BsonDocument bsonDocument))
+            using (var db = GetDatabase(fileProvider, out ILiteCollection<BsonDocument> settingsCollection, out BsonDocument bsonDocument))
             {
                 var result = processor(bsonDocument, name, value);
 
@@ -71,7 +71,7 @@ namespace TIKSN.Settings
             }
         }
 
-        private LiteDatabase GetDatabase(IFileProvider fileProvider, out LiteCollection<BsonDocument> settingsCollection, out BsonDocument bsonDocument)
+        private LiteDatabase GetDatabase(IFileProvider fileProvider, out ILiteCollection<BsonDocument> settingsCollection, out BsonDocument bsonDocument)
         {
             var fileInfo = fileProvider.GetFileInfo(_configuration.GetConfiguration().RelativePath);
 
@@ -100,7 +100,46 @@ namespace TIKSN.Settings
                 if (bsonValue.IsNull)
                     return defaultValue;
 
-                return (T)bsonValue.RawValue;
+                var typeCode = Type.GetTypeCode(typeof(T));
+
+                void CheckType(BsonType bsonType)
+                {
+                    if (bsonValue.Type != bsonType)
+                    {
+                        throw new ArgumentException($"Expected type was '{bsonType}' whitch is not matching with actual type '{bsonValue.Type}'.");
+                    }
+                }
+
+                switch (typeCode)
+                {
+                    case TypeCode.Boolean:
+                        CheckType(BsonType.Boolean);
+                        return (T)(object)bsonValue.AsBoolean;
+                    case TypeCode.Byte:
+                    case TypeCode.Char:
+                    case TypeCode.Int16:
+                    case TypeCode.Int32:
+                    case TypeCode.SByte:
+                    case TypeCode.UInt16:
+                        return (T)(object)bsonValue.AsInt32;
+                    case TypeCode.DateTime:
+                        return (T)(object)bsonValue.AsDateTime;
+                    case TypeCode.Decimal:
+                    case TypeCode.UInt64:
+                        return (T)(object)bsonValue.AsDecimal;
+                    case TypeCode.Double:
+                    case TypeCode.Single:
+                        return (T)(object)bsonValue.AsDouble;
+                    case TypeCode.Empty:
+                        return defaultValue;
+                    case TypeCode.Int64:
+                    case TypeCode.UInt32:
+                        return (T)(object)bsonValue.AsInt64;
+                    case TypeCode.String:
+                        return (T)(object)bsonValue.AsString;
+                    default:
+                        throw new NotSupportedException("Type is not supported.");
+                }
             }
 
             return defaultValue;
@@ -108,7 +147,7 @@ namespace TIKSN.Settings
 
         private IReadOnlyCollection<string> ListNames(IFileProvider fileProvider)
         {
-            using (var db = GetDatabase(fileProvider, out LiteCollection<BsonDocument> settingsCollection, out BsonDocument bsonDocument))
+            using (var db = GetDatabase(fileProvider, out ILiteCollection<BsonDocument> settingsCollection, out BsonDocument bsonDocument))
             {
                 return bsonDocument.Keys.Where(n => !string.Equals(n, "_id", StringComparison.OrdinalIgnoreCase)).ToArray();
             }
@@ -123,7 +162,61 @@ namespace TIKSN.Settings
 
         private T SetterProcessor<T>(BsonDocument document, string name, T value)
         {
-            document.Set(name, new BsonValue(value));
+            object valueObject = value;
+
+            switch (Type.GetTypeCode(typeof(T)))
+            {
+                case TypeCode.Boolean:
+                    document[name] = new BsonValue((bool)valueObject);
+                    break;
+                case TypeCode.Byte:
+                    document[name] = new BsonValue((byte)valueObject);
+                    break;
+                case TypeCode.Char:
+                    document[name] = new BsonValue((char)valueObject);
+                    break;
+                case TypeCode.DateTime:
+                    document[name] = new BsonValue((DateTime)valueObject);
+                    break;
+                case TypeCode.Decimal:
+                    document[name] = new BsonValue((decimal)valueObject);
+                    break;
+                case TypeCode.Double:
+                    document[name] = new BsonValue((double)valueObject);
+                    break;
+                case TypeCode.Empty:
+                    document[name] = BsonValue.Null;
+                    break;
+                case TypeCode.Int16:
+                    document[name] = new BsonValue((short)valueObject);
+                    break;
+                case TypeCode.Int32:
+                    document[name] = new BsonValue((int)valueObject);
+                    break;
+                case TypeCode.Int64:
+                    document[name] = new BsonValue((long)valueObject);
+                    break;
+                case TypeCode.SByte:
+                    document[name] = new BsonValue((sbyte)valueObject);
+                    break;
+                case TypeCode.Single:
+                    document[name] = new BsonValue((float)valueObject);
+                    break;
+                case TypeCode.String:
+                    document[name] = new BsonValue((string)valueObject);
+                    break;
+                case TypeCode.UInt16:
+                    document[name] = new BsonValue((ushort)valueObject);
+                    break;
+                case TypeCode.UInt32:
+                    document[name] = new BsonValue((uint)valueObject);
+                    break;
+                case TypeCode.UInt64:
+                    document[name] = new BsonValue((decimal)valueObject);
+                    break;
+                default:
+                    throw new NotSupportedException("Type is not supported.");
+            }
             return value;
         }
     }
