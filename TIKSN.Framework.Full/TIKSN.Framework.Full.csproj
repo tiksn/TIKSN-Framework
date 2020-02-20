@@ -53,7 +53,7 @@
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="3.1.1" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="3.1.2" />
     <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="3.1.2" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.2" />
     <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="3.1.2" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.2" />
