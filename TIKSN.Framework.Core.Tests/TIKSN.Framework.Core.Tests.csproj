@@ -9,7 +9,7 @@
   </PropertyGroup>
   <Import Project="..\TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.projitems" Label="Shared" />
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="5.10.2" />
+    <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="Nito.AsyncEx.Context" Version="5.0.0" />
