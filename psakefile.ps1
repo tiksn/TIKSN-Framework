@@ -98,7 +98,7 @@ Task Test -depends Build {
     Exec { dotnet test '.\TIKSN.Framework.Core.Tests\TIKSN.Framework.Core.Tests.csproj' }
 }
 
-Task Build -depends BuildLanguageLocalization, BuildRegionLocalization, BuildCommonCore, BuildNetCore, BuildNetFramework, BuildAndroid, BuildUWP, CreateReferenceAssembliesForUWP {
+Task Build -depends BuildLanguageLocalization, BuildRegionLocalization, BuildCommonCore, BuildNetCore, BuildAndroid, BuildUWP, CreateReferenceAssembliesForUWP {
 }
 
 Task BuildLanguageLocalization -depends EstimateVersions {
@@ -123,12 +123,6 @@ Task BuildNetCore -depends EstimateVersions {
     $project = Resolve-Path -Path 'TIKSN.Framework.Core/TIKSN.Framework.Core.csproj'
 
     Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
-}
-
-Task BuildNetFramework -depends EstimateVersions {
-    $project = Resolve-Path -Path 'TIKSN.Framework.Full/TIKSN.Framework.Full.csproj'
-
-    Exec { dotnet msbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
 
 Task BuildAndroid -depends EstimateVersions -precondition { $false } {
