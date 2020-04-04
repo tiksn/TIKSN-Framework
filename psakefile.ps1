@@ -1,7 +1,9 @@
 Properties {
     $PackageId = 'TIKSN-Framework'
-    # Install-Script -Name Resolve-MSBuild
-    $msbuild = Resolve-MSBuild.ps1
+    Import-Module -Name VSSetup
+    $vsinstance = Get-VSSetupInstance -All | Select-VSSetupInstance -Product * -Latest
+    $msbuildPath = Join-Path -Path $vsinstance.InstallationPath -ChildPath 'MSBuild\Current\Bin\MSBuild.exe'
+    Set-Alias -Name xmsbuild -Value $msbuildPath -Scope "Script"
 }
 
 Task Tweet -depends Publish {
@@ -132,16 +134,16 @@ Task BuildNetFramework -depends EstimateVersions {
 Task BuildAndroid -depends EstimateVersions -precondition { $false } {
     $project = Resolve-Path -Path 'TIKSN.Framework.Android/TIKSN.Framework.Android.csproj'
 
-    Exec { & $msbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+    Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
 
 Task BuildUWP -depends EstimateVersions {
     $project = Resolve-Path -Path 'TIKSN.Framework.UWP/TIKSN.Framework.UWP.csproj'
 
 
-    Exec { & $msbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=x64 /p:OutDir=$script:x64BuildArtifactsFolder }
-    Exec { & $msbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=x86 /p:OutDir=$script:x86BuildArtifactsFolder }
-    Exec { & $msbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=arm /p:OutDir=$script:armBuildArtifactsFolder }
+    Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=x64 /p:OutDir=$script:x64BuildArtifactsFolder }
+    Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=x86 /p:OutDir=$script:x86BuildArtifactsFolder }
+    Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=arm /p:OutDir=$script:armBuildArtifactsFolder }
 }
 
 Task CreateReferenceAssembliesForUWP -depends EstimateVersions, BuildUWP {
