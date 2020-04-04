@@ -144,10 +144,7 @@ Task CreateReferenceAssembliesForUWP -depends EstimateVersions, BuildUWP {
 
     Copy-Item -Path $sourceFilePath -Destination $destinationFilePath
     #TODO: Patch DLL
-
-    $sourceFilePath = Join-Path -Path $script:x86BuildArtifactsFolder -ChildPath "TIKSN.Framework.UWP\TIKSN.Framework.UWP.xml"
-    $destinationFilePath = Join-Path -Path $script:anyBuildArtifactsFolder -ChildPath "TIKSN.Framework.UWP.xml"
-
+    
     Copy-Item -Path $sourceFilePath -Destination $destinationFilePath
 }
 
