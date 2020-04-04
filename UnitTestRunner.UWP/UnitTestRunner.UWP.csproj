@@ -6,7 +6,6 @@
         <Compile Include="App.xaml.cs">
             <DependentUpon>App.xaml</DependentUpon>
         </Compile>
-        <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Settings\SettingsServiceTests.cs" />
     </ItemGroup>
     <ItemGroup>
