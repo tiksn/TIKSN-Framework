@@ -11,7 +11,6 @@
     <Authors>TIKSN Development</Authors>
   </PropertyGroup>
   <Import Project="..\TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems" Label="Shared" />
-  <Import Project="..\TIKSN.Framework.SharedDesktop\TIKSN.Framework.SharedDesktop.projitems" Label="Shared" />
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
   </ItemGroup>
