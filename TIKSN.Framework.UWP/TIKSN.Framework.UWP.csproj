@@ -196,7 +196,7 @@
       <Version>4.1.1</Version>
     </PackageReference>
     <PackageReference Include="System.Reactive">
-      <Version>4.3.2</Version>
+      <Version>4.4.1</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="..\TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems" Label="Shared" />
