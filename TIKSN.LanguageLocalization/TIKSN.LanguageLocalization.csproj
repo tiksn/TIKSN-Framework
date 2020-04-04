@@ -17,9 +17,6 @@
     <Warning Text="$(MSBuildProjectFile) is Multilingual build enabled, but the Multilingual App Toolkit is unavailable during the build. If building with Visual Studio, please check to ensure that toolkit is properly installed." />
   </Target>
   <ItemGroup>
-    <Compile Include="..\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <XliffResource Include="MultilingualResources\TIKSN.LanguageLocalization.hy.xlf">
       <Generator>XliffResxGenerator</Generator>
     </XliffResource>
