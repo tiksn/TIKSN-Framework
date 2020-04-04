@@ -1,7 +1,7 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.54">
     <PropertyGroup>
         <TargetFramework>uap10.0.18362</TargetFramework>
-        <DocumentationFile>bin\$(Configuration)\TIKSN.Framework.Core.xml</DocumentationFile>
+        <DocumentationFile>bin\$(Configuration)\TIKSN.Framework.UWP.xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
         <EmbeddedResource Include="Properties\TIKSN.Framework.UWP.rd.xml" />
