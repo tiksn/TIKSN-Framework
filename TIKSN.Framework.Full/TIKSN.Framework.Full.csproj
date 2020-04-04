@@ -13,7 +13,6 @@
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
   <Import Project="..\TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems" Label="Shared" />
-  <Import Project="..\TIKSN.Framework.SharedDesktop\TIKSN.Framework.SharedDesktop.projitems" Label="Shared" />
   <ItemGroup>
     <PackageReference Include="Autofac" Version="5.1.2" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
