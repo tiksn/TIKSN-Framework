@@ -12,9 +12,6 @@
   </PropertyGroup>
   <Import Project="..\TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems" Label="Shared" />
   <ItemGroup>
-    <Compile Include="..\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\TIKSN.Core\TIKSN.Core.csproj" />
     <ProjectReference Include="..\TIKSN.LanguageLocalization\TIKSN.LanguageLocalization.csproj" />
     <ProjectReference Include="..\TIKSN.RegionLocalization\TIKSN.RegionLocalization.csproj" />
