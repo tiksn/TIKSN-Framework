@@ -17,9 +17,6 @@
         <releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/milestone/10 </releaseNotes>
         <language />
         <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry, Configuration, Azure Storage, MongoDB, NoDB, Rest, Localization, Dependency Injection</tags>
-        <frameworkAssemblies>
-            <frameworkAssembly assemblyName="System.Speech" targetFramework=".NETFramework4.8" />
-        </frameworkAssemblies>
         <dependencies>
             <!-- will be propagated by build script-->
         </dependencies>
@@ -34,14 +31,6 @@
         <file src="any\zh-Hant\TIKSN.LanguageLocalization.resources.dll" target="lib\MonoAndroid403\zh-Hant" />
         <file src="any\TIKSN.LanguageLocalization.xml" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.LanguageLocalization.pdb" target="lib\MonoAndroid403" />
-        <file src="any\TIKSN.LanguageLocalization.dll" target="lib\net48" />
-        <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\net48\hy" />
-        <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\net48\ru" />
-        <file src="any\uk\TIKSN.LanguageLocalization.resources.dll" target="lib\net48\uk" />
-        <file src="any\zh-Hans\TIKSN.LanguageLocalization.resources.dll" target="lib\net48\zh-Hans" />
-        <file src="any\zh-Hant\TIKSN.LanguageLocalization.resources.dll" target="lib\net48\zh-Hant" />
-        <file src="any\TIKSN.LanguageLocalization.xml" target="lib\net48" />
-        <file src="any\TIKSN.LanguageLocalization.pdb" target="lib\net48" />
         <file src="any\TIKSN.LanguageLocalization.dll" target="lib\netcoreapp3.1" />
         <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\netcoreapp3.1\hy" />
         <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\netcoreapp3.1\ru" />
@@ -114,30 +103,6 @@
         <file src="any\zh-SG\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\zh-SG" />
         <file src="any\TIKSN.RegionLocalization.xml" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.RegionLocalization.pdb" target="lib\MonoAndroid403" />
-        <file src="any\TIKSN.RegionLocalization.dll" target="lib\net48" />
-        <file src="any\en-001\TIKSN.RegionLocalization.resources.dll" target="lib\net48\en-001" />
-        <file src="any\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\net48\en-150" />
-        <file src="any\en-AU\TIKSN.RegionLocalization.resources.dll" target="lib\net48\en-AU" />
-        <file src="any\en-CA\TIKSN.RegionLocalization.resources.dll" target="lib\net48\en-CA" />
-        <file src="any\en-CH\TIKSN.RegionLocalization.resources.dll" target="lib\net48\en-CH" />
-        <file src="any\en-DE\TIKSN.RegionLocalization.resources.dll" target="lib\net48\en-DE" />
-        <file src="any\en-GB\TIKSN.RegionLocalization.resources.dll" target="lib\net48\en-GB" />
-        <file src="any\en-GU\TIKSN.RegionLocalization.resources.dll" target="lib\net48\en-GU" />
-        <file src="any\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\net48\en-IE" />
-        <file src="any\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\net48\en-NZ" />
-        <file src="any\en-PR\TIKSN.RegionLocalization.resources.dll" target="lib\net48\en-PR" />
-        <file src="any\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\net48\en-SG" />
-        <file src="any\en-US\TIKSN.RegionLocalization.resources.dll" target="lib\net48\en-US" />
-        <file src="any\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\net48\hy-AM" />
-        <file src="any\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\net48\ru-BY" />
-        <file src="any\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\net48\ru-KZ" />
-        <file src="any\ru-RU\TIKSN.RegionLocalization.resources.dll" target="lib\net48\ru-RU" />
-        <file src="any\ru-UA\TIKSN.RegionLocalization.resources.dll" target="lib\net48\ru-UA" />
-        <file src="any\uk-UA\TIKSN.RegionLocalization.resources.dll" target="lib\net48\uk-UA" />
-        <file src="any\zh-CN\TIKSN.RegionLocalization.resources.dll" target="lib\net48\zh-CN" />
-        <file src="any\zh-SG\TIKSN.RegionLocalization.resources.dll" target="lib\net48\zh-SG" />
-        <file src="any\TIKSN.RegionLocalization.xml" target="lib\net48" />
-        <file src="any\TIKSN.RegionLocalization.pdb" target="lib\net48" />
         <file src="any\TIKSN.RegionLocalization.dll" target="lib\netcoreapp3.1" />
         <file src="any\en-001\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\en-001" />
         <file src="any\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\en-150" />
@@ -287,9 +252,6 @@
         <file src="any\TIKSN.Core.dll" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.Core.xml" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.Core.pdb" target="lib\MonoAndroid403" />
-        <file src="any\TIKSN.Core.dll" target="lib\net48" />
-        <file src="any\TIKSN.Core.xml" target="lib\net48" />
-        <file src="any\TIKSN.Core.pdb" target="lib\net48" />
         <file src="any\TIKSN.Core.dll" target="lib\netcoreapp3.1" />
         <file src="any\TIKSN.Core.xml" target="lib\netcoreapp3.1" />
         <file src="any\TIKSN.Core.pdb" target="lib\netcoreapp3.1" />
@@ -313,11 +275,6 @@
         <!-- <file src="any\TIKSN.Framework.Android.dll" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.Framework.Android.xml" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.Framework.Android.pdb" target="lib\MonoAndroid403" /> -->
-
-        <!-- Platform: .NET Framework -->
-        <file src="any\TIKSN.Framework.Full.dll" target="lib\net48" />
-        <file src="any\TIKSN.Framework.Full.xml" target="lib\net48" />
-        <file src="any\TIKSN.Framework.Full.pdb" target="lib\net48" />
 
         <!-- Platform: .NET Core -->
         <file src="any\TIKSN.Framework.Core.dll" target="lib\netcoreapp3.1" />

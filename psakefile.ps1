@@ -1,7 +1,9 @@
 Properties {
     $PackageId = 'TIKSN-Framework'
-    # Install-Script -Name Resolve-MSBuild
-    $msbuild = Resolve-MSBuild.ps1
+    Import-Module -Name VSSetup
+    $vsinstance = Get-VSSetupInstance -All | Select-VSSetupInstance -Product * -Latest
+    $msbuildPath = Join-Path -Path $vsinstance.InstallationPath -ChildPath 'MSBuild\Current\Bin\MSBuild.exe'
+    Set-Alias -Name xmsbuild -Value $msbuildPath -Scope "Script"
 }
 
 Task Tweet -depends Publish {
@@ -28,13 +30,12 @@ Task Pack -depends Build, Test {
     $packages = @{
         Standdard = New-Object System.Collections.Specialized.OrderedDictionary
         Core      = New-Object System.Collections.Specialized.OrderedDictionary
-        Legacy    = New-Object System.Collections.Specialized.OrderedDictionary
         UWP       = New-Object System.Collections.Specialized.OrderedDictionary
         Android   = New-Object System.Collections.Specialized.OrderedDictionary
     }
 
     $projectMap = @(
-        @{PackageGroups = @($packages.Standdard, $packages.Core, $packages.Legacy, $packages.UWP, $packages.Android); ProjectFile = '.\TIKSN.Core\TIKSN.Core.csproj' },
+        @{PackageGroups = @($packages.Standdard, $packages.Core, $packages.UWP, $packages.Android); ProjectFile = '.\TIKSN.Core\TIKSN.Core.csproj' },
         @{PackageGroups = @($packages.Core); ProjectFile = '.\TIKSN.Framework.Core\TIKSN.Framework.Core.csproj' }
     )
 
@@ -65,8 +66,7 @@ Task Pack -depends Build, Test {
     $dependencyGroups = @(
         @{Packages = $packages.Standdard; TargetFramework = 'netstandard2.0' },
         @{Packages = $packages.Core; TargetFramework = 'netcoreapp3.1' },
-        @{Packages = $packages.Legacy; TargetFramework = 'net48' },
-        @{Packages = $packages.UWP; TargetFramework = 'uap10.0.17134' },
+        @{Packages = $packages.UWP; TargetFramework = 'uap10.0.18362' },
         @{Packages = $packages.Android; TargetFramework = 'MonoAndroid8.1' }
     )
 
@@ -96,7 +96,7 @@ Task Test -depends Build {
     Exec { dotnet test '.\TIKSN.Framework.Core.Tests\TIKSN.Framework.Core.Tests.csproj' }
 }
 
-Task Build -depends BuildLanguageLocalization, BuildRegionLocalization, BuildCommonCore, BuildNetCore, BuildNetFramework, BuildAndroid, BuildUWP, CreateReferenceAssembliesForUWP {
+Task Build -depends BuildLanguageLocalization, BuildRegionLocalization, BuildCommonCore, BuildNetCore, BuildAndroid, BuildUWP, CreateReferenceAssembliesForUWP {
 }
 
 Task BuildLanguageLocalization -depends EstimateVersions {
@@ -123,25 +123,19 @@ Task BuildNetCore -depends EstimateVersions {
     Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
 
-Task BuildNetFramework -depends EstimateVersions {
-    $project = Resolve-Path -Path 'TIKSN.Framework.Full/TIKSN.Framework.Full.csproj'
-
-    Exec { dotnet msbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
-}
-
 Task BuildAndroid -depends EstimateVersions -precondition { $false } {
     $project = Resolve-Path -Path 'TIKSN.Framework.Android/TIKSN.Framework.Android.csproj'
 
-    Exec { & $msbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+    Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
 
 Task BuildUWP -depends EstimateVersions {
     $project = Resolve-Path -Path 'TIKSN.Framework.UWP/TIKSN.Framework.UWP.csproj'
 
 
-    Exec { & $msbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=x64 /p:OutDir=$script:x64BuildArtifactsFolder }
-    Exec { & $msbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=x86 /p:OutDir=$script:x86BuildArtifactsFolder }
-    Exec { & $msbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=arm /p:OutDir=$script:armBuildArtifactsFolder }
+    Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=x64 /p:OutDir=$script:x64BuildArtifactsFolder }
+    Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=x86 /p:OutDir=$script:x86BuildArtifactsFolder }
+    Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=arm /p:OutDir=$script:armBuildArtifactsFolder }
 }
 
 Task CreateReferenceAssembliesForUWP -depends EstimateVersions, BuildUWP {
@@ -150,7 +144,7 @@ Task CreateReferenceAssembliesForUWP -depends EstimateVersions, BuildUWP {
 
     Copy-Item -Path $sourceFilePath -Destination $destinationFilePath
     #TODO: Patch DLL
-
+    
     $sourceFilePath = Join-Path -Path $script:x86BuildArtifactsFolder -ChildPath "TIKSN.Framework.UWP\TIKSN.Framework.UWP.xml"
     $destinationFilePath = Join-Path -Path $script:anyBuildArtifactsFolder -ChildPath "TIKSN.Framework.UWP.xml"
 
