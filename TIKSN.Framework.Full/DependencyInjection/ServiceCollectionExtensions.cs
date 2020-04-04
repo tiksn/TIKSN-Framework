@@ -15,11 +15,9 @@ namespace TIKSN.DependencyInjection
         {
             services.AddFrameworkCore();
 
-            services.TryAddSingleton<IAntimalwareScanner, AntimalwareScanner>();
             services.TryAddSingleton<IConsoleService, ConsoleService>();
             services.TryAddSingleton<IKnownFolders, KnownFolders>();
             services.TryAddSingleton<INetworkConnectivityService, NetworkConnectivityService>();
-            services.TryAddSingleton<ISettingsService, WindowsRegistrySettingsService>();
             services.TryAddSingleton<IShellCommandEngine, ShellCommandEngine>();
             services.TryAddSingleton<ITextToSpeechService, TextToSpeechService>();
 
