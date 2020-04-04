@@ -30,13 +30,12 @@ Task Pack -depends Build, Test {
     $packages = @{
         Standdard = New-Object System.Collections.Specialized.OrderedDictionary
         Core      = New-Object System.Collections.Specialized.OrderedDictionary
-        Legacy    = New-Object System.Collections.Specialized.OrderedDictionary
         UWP       = New-Object System.Collections.Specialized.OrderedDictionary
         Android   = New-Object System.Collections.Specialized.OrderedDictionary
     }
 
     $projectMap = @(
-        @{PackageGroups = @($packages.Standdard, $packages.Core, $packages.Legacy, $packages.UWP, $packages.Android); ProjectFile = '.\TIKSN.Core\TIKSN.Core.csproj' },
+        @{PackageGroups = @($packages.Standdard, $packages.Core, $packages.UWP, $packages.Android); ProjectFile = '.\TIKSN.Core\TIKSN.Core.csproj' },
         @{PackageGroups = @($packages.Core); ProjectFile = '.\TIKSN.Framework.Core\TIKSN.Framework.Core.csproj' }
     )
 
@@ -67,8 +66,7 @@ Task Pack -depends Build, Test {
     $dependencyGroups = @(
         @{Packages = $packages.Standdard; TargetFramework = 'netstandard2.0' },
         @{Packages = $packages.Core; TargetFramework = 'netcoreapp3.1' },
-        @{Packages = $packages.Legacy; TargetFramework = 'net48' },
-        @{Packages = $packages.UWP; TargetFramework = 'uap10.0.17134' },
+        @{Packages = $packages.UWP; TargetFramework = 'uap10.0.18362' },
         @{Packages = $packages.Android; TargetFramework = 'MonoAndroid8.1' }
     )
 
