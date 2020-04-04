@@ -9,9 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Core", "TIKSN.Core\TIKSN.Core.csproj", "{D1ECB169-BB57-4751-AECA-415E078E5996}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Framework.UWP", "TIKSN.Framework.UWP\TIKSN.Framework.UWP.csproj", "{3D7B87C7-B00C-4691-9BBD-F5836011345A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Framework.UWP", "TIKSN.Framework.UWP\TIKSN.Framework.UWP.csproj", "{3D7B87C7-B00C-4691-9BBD-F5836011345A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestRunner.UWP", "UnitTestRunner.UWP\UnitTestRunner.UWP.csproj", "{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestRunner.UWP", "UnitTestRunner.UWP\UnitTestRunner.UWP.csproj", "{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Framework.Core", "TIKSN.Framework.Core\TIKSN.Framework.Core.csproj", "{ED598E91-6D8E-4132-A73D-A1A9A402F395}"
 EndProject
@@ -22,7 +22,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2278829B-1466-45C6-862F-FF38DFF07A24}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 		TIKSN-Framework.nuspec = TIKSN-Framework.nuspec
 	EndProjectSection
 EndProject
