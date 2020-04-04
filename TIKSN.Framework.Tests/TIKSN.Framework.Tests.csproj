@@ -162,6 +162,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TIKSN.Core\TIKSN.Core.csproj" />
-    <ProjectReference Include="..\TIKSN.Framework.Full\TIKSN.Framework.Full.csproj" />
   </ItemGroup>
 </Project>
