@@ -9,8 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Core", "TIKSN.Core\TIKSN.Core.csproj", "{D1ECB169-BB57-4751-AECA-415E078E5996}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Framework.Full", "TIKSN.Framework.Full\TIKSN.Framework.Full.csproj", "{786B1846-C0A1-46D8-8E17-47CF5CBB0D0D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Framework.UWP", "TIKSN.Framework.UWP\TIKSN.Framework.UWP.csproj", "{3D7B87C7-B00C-4691-9BBD-F5836011345A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Framework.Tests", "TIKSN.Framework.Tests\TIKSN.Framework.Tests.csproj", "{0413E49E-9396-4A37-8222-3636285B13A4}"
@@ -34,8 +32,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.LanguageLocalization"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.RegionLocalization", "TIKSN.RegionLocalization\TIKSN.RegionLocalization.csproj", "{9D8726CC-AC22-4597-90DB-A2809E22500C}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TIKSN.Framework.SharedDesktop", "TIKSN.Framework.SharedDesktop\TIKSN.Framework.SharedDesktop.shproj", "{89AF82F5-824B-4EA5-ACD9-8E7974BADDC4}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Framework.Core.Tests", "TIKSN.Framework.Core.Tests\TIKSN.Framework.Core.Tests.csproj", "{31DBB0CE-8360-41FD-A874-F4C6D907C5EE}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TIKSN.UnitTests.Shared", "TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.shproj", "{04326875-E3E6-4F1F-881D-4046D83913FC}"
@@ -46,14 +42,10 @@ Global
 		TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.projitems*{31dbb0ce-8360-41fd-a874-f4c6d907c5ee}*SharedItemsImports = 5
 		TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems*{3d7b87c7-b00c-4691-9bbd-f5836011345a}*SharedItemsImports = 4
 		TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems*{3d7b87c7-b00c-4691-9bbd-f5836011345a}*SharedItemsImports = 4
-		TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems*{786b1846-c0a1-46d8-8e17-47cf5cbb0d0d}*SharedItemsImports = 5
-		TIKSN.Framework.SharedDesktop\TIKSN.Framework.SharedDesktop.projitems*{786b1846-c0a1-46d8-8e17-47cf5cbb0d0d}*SharedItemsImports = 5
 		TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems*{7a9b69cb-8abf-4474-a85a-11d5d9f3d005}*SharedItemsImports = 13
-		TIKSN.Framework.SharedDesktop\TIKSN.Framework.SharedDesktop.projitems*{89af82f5-824b-4ea5-acd9-8e7974baddc4}*SharedItemsImports = 13
 		TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems*{b067dd13-e17b-45cc-8b35-d34a1876e0fe}*SharedItemsImports = 13
 		TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.projitems*{d906abe6-13f2-4ab0-bde2-e63f77cf54e9}*SharedItemsImports = 4
 		TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems*{ed598e91-6d8e-4132-a73d-a1a9a402f395}*SharedItemsImports = 5
-		TIKSN.Framework.SharedDesktop\TIKSN.Framework.SharedDesktop.projitems*{ed598e91-6d8e-4132-a73d-a1a9a402f395}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,22 +74,6 @@ Global
 		{D1ECB169-BB57-4751-AECA-415E078E5996}.Release|x64.Build.0 = Release|Any CPU
 		{D1ECB169-BB57-4751-AECA-415E078E5996}.Release|x86.ActiveCfg = Release|Any CPU
 		{D1ECB169-BB57-4751-AECA-415E078E5996}.Release|x86.Build.0 = Release|Any CPU
-		{786B1846-C0A1-46D8-8E17-47CF5CBB0D0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{786B1846-C0A1-46D8-8E17-47CF5CBB0D0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{786B1846-C0A1-46D8-8E17-47CF5CBB0D0D}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{786B1846-C0A1-46D8-8E17-47CF5CBB0D0D}.Debug|ARM.Build.0 = Debug|Any CPU
-		{786B1846-C0A1-46D8-8E17-47CF5CBB0D0D}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{786B1846-C0A1-46D8-8E17-47CF5CBB0D0D}.Debug|x64.Build.0 = Debug|Any CPU
-		{786B1846-C0A1-46D8-8E17-47CF5CBB0D0D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{786B1846-C0A1-46D8-8E17-47CF5CBB0D0D}.Debug|x86.Build.0 = Debug|Any CPU
-		{786B1846-C0A1-46D8-8E17-47CF5CBB0D0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{786B1846-C0A1-46D8-8E17-47CF5CBB0D0D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{786B1846-C0A1-46D8-8E17-47CF5CBB0D0D}.Release|ARM.ActiveCfg = Release|Any CPU
-		{786B1846-C0A1-46D8-8E17-47CF5CBB0D0D}.Release|ARM.Build.0 = Release|Any CPU
-		{786B1846-C0A1-46D8-8E17-47CF5CBB0D0D}.Release|x64.ActiveCfg = Release|Any CPU
-		{786B1846-C0A1-46D8-8E17-47CF5CBB0D0D}.Release|x64.Build.0 = Release|Any CPU
-		{786B1846-C0A1-46D8-8E17-47CF5CBB0D0D}.Release|x86.ActiveCfg = Release|Any CPU
-		{786B1846-C0A1-46D8-8E17-47CF5CBB0D0D}.Release|x86.Build.0 = Release|Any CPU
 		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Debug|Any CPU.Build.0 = Debug|x64
 		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Debug|ARM.ActiveCfg = Debug|ARM
@@ -224,7 +200,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D1ECB169-BB57-4751-AECA-415E078E5996} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
-		{786B1846-C0A1-46D8-8E17-47CF5CBB0D0D} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{3D7B87C7-B00C-4691-9BBD-F5836011345A} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{0413E49E-9396-4A37-8222-3636285B13A4} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
 		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
@@ -233,7 +208,6 @@ Global
 		{B067DD13-E17B-45CC-8B35-D34A1876E0FE} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{974DB7C5-CE2D-4232-B781-CFCBB1F7784F} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{9D8726CC-AC22-4597-90DB-A2809E22500C} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
-		{89AF82F5-824B-4EA5-ACD9-8E7974BADDC4} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{31DBB0CE-8360-41FD-A874-F4C6D907C5EE} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
 		{04326875-E3E6-4F1F-881D-4046D83913FC} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
 	EndGlobalSection
