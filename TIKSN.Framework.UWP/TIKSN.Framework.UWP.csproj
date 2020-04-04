@@ -3,9 +3,6 @@
         <TargetFramework>uap10.0.18362</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="..\SharedAssemblyInfo.cs">
-            <Link>Properties\SharedAssemblyInfo.cs</Link>
-        </Compile>
         <EmbeddedResource Include="Properties\TIKSN.Framework.UWP.rd.xml" />
     </ItemGroup>
     <ItemGroup>
@@ -103,5 +100,4 @@
     </ItemGroup>
     <Import Project="..\TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems" Label="Shared" />
     <Import Project="..\TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems" Label="Shared" />
-    <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
 </Project>
