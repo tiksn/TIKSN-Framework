@@ -6,13 +6,6 @@
         <Compile Include="..\SharedAssemblyInfo.cs">
             <Link>Properties\SharedAssemblyInfo.cs</Link>
         </Compile>
-        <Compile Include="Advertising\AdUnitSelector.cs" />
-        <Compile Include="DependencyInjection\PlatformModule.cs" />
-        <Compile Include="DependencyInjection\ServiceCollectionExtensions.cs" />
-        <Compile Include="FileSystem\KnownFolders.cs" />
-        <Compile Include="Network\NetworkConnectivityService.cs" />
-        <Compile Include="Settings\SettingsService.cs" />
-        <Compile Include="Properties\AssemblyInfo.cs" />
         <EmbeddedResource Include="Properties\TIKSN.Framework.UWP.rd.xml" />
     </ItemGroup>
     <ItemGroup>
