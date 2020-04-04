@@ -360,10 +360,6 @@ Build/tools/**
 Tools/
 .trash/
 
-## Wyam
-config.wyam.*
-docs/output/
-
 ## ionide
 .ionide/symbolCache.db
 
