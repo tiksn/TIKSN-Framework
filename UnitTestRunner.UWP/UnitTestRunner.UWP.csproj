@@ -3,9 +3,6 @@
         <TargetFramework>uap10.0.18362</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="..\SharedAssemblyInfo.cs">
-            <Link>Properties\SharedAssemblyInfo.cs</Link>
-        </Compile>
         <Compile Include="App.xaml.cs">
             <DependentUpon>App.xaml</DependentUpon>
         </Compile>
@@ -147,5 +144,4 @@
         <None Include="UnitTestRunner.UWP_TemporaryKey.pfx" />
     </ItemGroup>
     <Import Project="..\TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.projitems" Label="Shared" />
-    <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
 </Project>
