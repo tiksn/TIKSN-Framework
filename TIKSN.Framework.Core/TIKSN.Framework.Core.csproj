@@ -34,7 +34,7 @@
     <PackageReference Include="NoDb" Version="1.2.2" />
     <PackageReference Include="NuGet.Versioning" Version="5.3.1" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" />
-    <PackageReference Include="ReactiveUI" Version="11.3.1" />
+    <PackageReference Include="ReactiveUI" Version="11.3.7" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
     <PackageReference Include="ShellProgressBar" Version="5.0.0" />
     <PackageReference Include="System.Interactive" Version="4.1.1" />
