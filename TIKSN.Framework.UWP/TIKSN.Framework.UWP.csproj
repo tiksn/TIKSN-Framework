@@ -69,7 +69,7 @@
             <Version>12.0.3</Version>
         </PackageReference>
         <PackageReference Include="NLog.Extensions.Logging">
-            <Version>1.6.3</Version>
+            <Version>1.6.4</Version>
         </PackageReference>
         <PackageReference Include="NoDb">
             <Version>1.2.2</Version>
