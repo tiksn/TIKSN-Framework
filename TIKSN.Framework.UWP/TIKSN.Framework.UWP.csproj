@@ -31,7 +31,7 @@
             <Version>4.3.2027</Version>
         </PackageReference>
         <PackageReference Include="Microsoft.AppCenter.Analytics">
-            <Version>3.2.1</Version>
+            <Version>3.2.2</Version>
         </PackageReference>
         <PackageReference Include="Microsoft.AppCenter.Crashes">
             <Version>3.2.2</Version>
