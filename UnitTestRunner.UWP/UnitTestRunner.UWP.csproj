@@ -3,12 +3,6 @@
         <TargetFramework>uap10.0.18362</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="App.xaml.cs">
-            <DependentUpon>App.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="Settings\SettingsServiceTests.cs" />
-    </ItemGroup>
-    <ItemGroup>
         <AppxManifest Include="Package.appxmanifest">
             <SubType>Designer</SubType>
         </AppxManifest>
