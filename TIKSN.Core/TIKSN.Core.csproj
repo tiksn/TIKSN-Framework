@@ -21,7 +21,7 @@
     <PackageReference Include="Bond.CSharp" Version="9.0.0" />
     <PackageReference Include="ConsoleTables" Version="2.4.2" />
     <PackageReference Include="Exceptionless.Signed" Version="4.3.2027" />
-    <PackageReference Include="FluentValidation" Version="9.0.0" />
+    <PackageReference Include="FluentValidation" Version="9.0.1" />
     <PackageReference Include="LiteDB" Version="5.0.8" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.14.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
