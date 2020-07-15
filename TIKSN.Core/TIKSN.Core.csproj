@@ -30,7 +30,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.5" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.5" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="3.1.6" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="3.1.5" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="3.1.5" />
     <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="3.1.5" />
