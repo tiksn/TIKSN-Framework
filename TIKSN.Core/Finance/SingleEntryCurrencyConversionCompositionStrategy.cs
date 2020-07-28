@@ -24,7 +24,7 @@ namespace TIKSN.Finance
 
             var converter = filteredConverters.Single();
 
-            return await converter.GetExchangeRateAsync(pair, asOn,cancellationToken);
+            return await converter.GetExchangeRateAsync(pair, asOn, cancellationToken);
         }
     }
 }
