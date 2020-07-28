@@ -9,7 +9,6 @@ namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
 
         public ExchangeRatesContext(DbContextOptions<ExchangeRatesContext> dbContextOptions) : base(dbContextOptions)
         {
-
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
