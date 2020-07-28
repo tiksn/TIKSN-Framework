@@ -1,14 +1,15 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.WindowsAzure.Storage.Table;
+﻿using Microsoft.Azure.Cosmos.Table;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using TIKSN.Data.CosmosTable;
 
 namespace TIKSN.Data.AzureStorage
 {
     public class AzureTableStorageRepository<T> :
-        AzureStorageBase,
+        CosmosTableBase,
         IAzureTableStorageRepository<T>,
         IAzureTableStorageQueryRepository<T>,
         IAzureTableStorageRepositoryInitializer<T> where T : TableEntity, new()
@@ -91,7 +92,7 @@ namespace TIKSN.Data.AzureStorage
 
             if (retrivalResult.Result == null)
             {
-                return null;
+                return default;
             }
             return (T)retrivalResult.Result;
         }
