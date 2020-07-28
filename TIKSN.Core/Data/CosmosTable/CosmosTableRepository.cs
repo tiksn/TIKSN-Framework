@@ -8,15 +8,15 @@ using TIKSN.Data.CosmosTable;
 
 namespace TIKSN.Data.CosmosTable
 {
-    public class AzureTableStorageRepository<T> :
+    public class CosmosTableRepository<T> :
         CosmosTableBase,
-        IAzureTableStorageRepository<T>,
-        IAzureTableStorageQueryRepository<T>,
-        IAzureTableStorageRepositoryInitializer<T> where T : TableEntity, new()
+        ICosmosTableRepository<T>,
+        ICosmosTableQueryRepository<T>,
+        ICosmosTableRepositoryInitializer<T> where T : TableEntity, new()
     {
         private readonly string _tableName;
 
-        protected AzureTableStorageRepository(string tableName, IConfigurationRoot configuration, string connectionStringKey) : base(configuration, connectionStringKey)
+        protected CosmosTableRepository(string tableName, IConfigurationRoot configuration, string connectionStringKey) : base(configuration, connectionStringKey)
         {
             _tableName = tableName;
         }
