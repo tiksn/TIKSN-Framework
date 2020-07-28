@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Data.CosmosTable
 {
-    public interface IAzureTableStorageQueryRepository<T> where T : ITableEntity
+    public interface ICosmosTableQueryRepository<T> where T : ITableEntity
     {
         Task<T> RetrieveAsync(string partitionKey, string rowKey, CancellationToken cancellationToken);
 
