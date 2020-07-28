@@ -10,6 +10,5 @@
 
         public bool IsDebuggerSensitive { get; set; }
         public bool IsDebug { get; set; }
-
     }
 }
