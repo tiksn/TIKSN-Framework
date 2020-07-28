@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Data.CosmosTable;
 
-namespace TIKSN.Data.AzureStorage
+namespace TIKSN.Data.CosmosTable
 {
     public class AzureTableStorageRepository<T> :
         CosmosTableBase,
