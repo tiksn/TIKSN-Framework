@@ -4,7 +4,9 @@
     {
         // Unstable
         Alpha = 1,
+
         Beta = 2,
+
         ReleaseCandidate = 3,
 
         // Stable
