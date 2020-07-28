@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using TIKSN.Data.CosmosTable;
 
 namespace TIKSN.Data.CosmosTable
 {
