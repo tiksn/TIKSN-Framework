@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Data.CosmosTable
 {
-    public class AzureTableStorageRepositoryAdapter<T> : IRepository<T> where T : ITableEntity
+    public class CosmosTableRepositoryAdapter<T> : IRepository<T> where T : ITableEntity
     {
-        private readonly IAzureTableStorageRepository<T> _azureTableStorageRepository;
-        private readonly IOptions<AzureTableStorageRepositoryAdapterOptions> _options;
+        private readonly ICosmosTableRepository<T> _azureTableStorageRepository;
+        private readonly IOptions<CosmosTableRepositoryAdapterOptions> _options;
 
-        public AzureTableStorageRepositoryAdapter(IAzureTableStorageRepository<T> azureTableStorageRepository, IOptions<AzureTableStorageRepositoryAdapterOptions> options)
+        public CosmosTableRepositoryAdapter(ICosmosTableRepository<T> azureTableStorageRepository, IOptions<CosmosTableRepositoryAdapterOptions> options)
         {
             _azureTableStorageRepository = azureTableStorageRepository;
             _options = options;
@@ -22,13 +22,13 @@ namespace TIKSN.Data.CosmosTable
         {
             switch (_options.Value.AddOption)
             {
-                case AzureTableStorageRepositoryAdapterOptions.AddOptions.Add:
+                case CosmosTableRepositoryAdapterOptions.AddOptions.Add:
                     return _azureTableStorageRepository.AddAsync(entity, cancellationToken);
 
-                case AzureTableStorageRepositoryAdapterOptions.AddOptions.AddOrMerge:
+                case CosmosTableRepositoryAdapterOptions.AddOptions.AddOrMerge:
                     return _azureTableStorageRepository.AddOrMergeAsync(entity, cancellationToken);
 
-                case AzureTableStorageRepositoryAdapterOptions.AddOptions.AddOrReplace:
+                case CosmosTableRepositoryAdapterOptions.AddOptions.AddOrReplace:
                     return _azureTableStorageRepository.AddOrReplaceAsync(entity, cancellationToken);
 
                 default:
@@ -55,10 +55,10 @@ namespace TIKSN.Data.CosmosTable
         {
             switch (_options.Value.UpdateOption)
             {
-                case AzureTableStorageRepositoryAdapterOptions.UpdateOptions.Merge:
+                case CosmosTableRepositoryAdapterOptions.UpdateOptions.Merge:
                     return _azureTableStorageRepository.MergeAsync(entity, cancellationToken);
 
-                case AzureTableStorageRepositoryAdapterOptions.UpdateOptions.Replace:
+                case CosmosTableRepositoryAdapterOptions.UpdateOptions.Replace:
                     return _azureTableStorageRepository.ReplaceAsync(entity, cancellationToken);
 
                 default:
@@ -73,13 +73,13 @@ namespace TIKSN.Data.CosmosTable
     }
 
     public class AzureTableStorageRepositoryAdapter<TBusinessEntity, TDataEntity>
-        : AzureTableStorageRepositoryAdapter<TDataEntity>, IRepository<TBusinessEntity> where TDataEntity : class, ITableEntity where TBusinessEntity : class
+        : CosmosTableRepositoryAdapter<TDataEntity>, IRepository<TBusinessEntity> where TDataEntity : class, ITableEntity where TBusinessEntity : class
     {
         private readonly IMapper<TBusinessEntity, TDataEntity> _mapper;
 
         public AzureTableStorageRepositoryAdapter(
-            IAzureTableStorageRepository<TDataEntity> azureTableStorageRepository,
-            IOptions<AzureTableStorageRepositoryAdapterOptions> options,
+            ICosmosTableRepository<TDataEntity> azureTableStorageRepository,
+            IOptions<CosmosTableRepositoryAdapterOptions> options,
             IMapper<TBusinessEntity, TDataEntity> mapper) : base(azureTableStorageRepository, options)
         {
             _mapper = mapper;
