@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TIKSN.Data.AzureStorage
+namespace TIKSN.Data.CosmosTable
 {
     public interface IAzureTableStorageRepositoryInitializer<T> where T : ITableEntity
     {
