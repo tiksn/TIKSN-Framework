@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Data.AzureStorage
+﻿namespace TIKSN.Data.CosmosTable
 {
     public class AzureTableStorageRepositoryAdapterOptions
     {
