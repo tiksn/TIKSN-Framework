@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Data.CosmosTable
 {
-    public interface IAzureTableStorageRepositoryInitializer<T> where T : ITableEntity
+    public interface ICosmosTableRepositoryInitializer<T> where T : ITableEntity
     {
         Task InitializeAsync(CancellationToken cancellationToken);
     }
