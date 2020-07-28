@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TIKSN.Data.AzureStorage
+namespace TIKSN.Data.CosmosTable
 {
     public class AzureTableStorageRepositoryAdapter<T> : IRepository<T> where T : ITableEntity
     {
