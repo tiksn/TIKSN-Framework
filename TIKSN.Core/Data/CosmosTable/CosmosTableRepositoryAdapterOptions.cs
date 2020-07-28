@@ -1,8 +1,8 @@
 ﻿namespace TIKSN.Data.CosmosTable
 {
-    public class AzureTableStorageRepositoryAdapterOptions
+    public class CosmosTableRepositoryAdapterOptions
     {
-        public AzureTableStorageRepositoryAdapterOptions()
+        public CosmosTableRepositoryAdapterOptions()
         {
             AddOption = AddOptions.Add;
         }
