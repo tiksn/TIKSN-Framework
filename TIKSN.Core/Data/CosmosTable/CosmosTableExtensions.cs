@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Data.CosmosTable
 {
-    public static class AzureTableStorageExtensions
+    public static class CosmosTableExtensions
     {
-        public static Task<IEnumerable<T>> RetrieveAllAsync<T>(this IAzureTableStorageQueryRepository<T> repository,
+        public static Task<IEnumerable<T>> RetrieveAllAsync<T>(this ICosmosTableQueryRepository<T> repository,
             CancellationToken cancellationToken)
             where T : ITableEntity
         {
@@ -19,7 +19,7 @@ namespace TIKSN.Data.CosmosTable
             return repository.SearchAsync(filters, cancellationToken);
         }
 
-        public static Task<IEnumerable<T>> SearchAsync<T>(this IAzureTableStorageQueryRepository<T> repository,
+        public static Task<IEnumerable<T>> SearchAsync<T>(this ICosmosTableQueryRepository<T> repository,
             string fieldName,
             object givenValue,
             CancellationToken cancellationToken)
