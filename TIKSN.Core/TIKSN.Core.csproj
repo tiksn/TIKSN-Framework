@@ -38,7 +38,7 @@
     <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="3.1.7" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.7" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.7" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.7" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.7.54" />
     <PackageReference Include="MongoDB.Driver" Version="2.11.0" />
     <PackageReference Include="MongoDB.Driver.GridFS" Version="2.11.0" />
