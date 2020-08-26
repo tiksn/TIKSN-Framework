@@ -29,7 +29,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.7" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.7.54" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="3.1.1" />
-    <PackageReference Include="MongoDB.Driver.GridFS" Version="2.11.0" />
+    <PackageReference Include="MongoDB.Driver.GridFS" Version="2.11.1" />
     <PackageReference Include="Nito.AsyncEx.Context" Version="5.0.0" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.6.4" />
     <PackageReference Include="NoDb" Version="1.2.2" />
