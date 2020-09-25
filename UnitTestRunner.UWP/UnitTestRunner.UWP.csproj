@@ -55,7 +55,7 @@
             <Version>3.4.2</Version>
         </PackageReference>
         <PackageReference Include="Microsoft.AppCenter.Crashes">
-            <Version>3.4.1</Version>
+            <Version>3.4.2</Version>
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational">
             <Version>3.1.8</Version>
