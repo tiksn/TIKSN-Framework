@@ -59,7 +59,7 @@
         <PackageReference Include="Microsoft.Extensions.Logging.Debug">
             <Version>3.1.9</Version>
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.8.50" />
+        <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.8.51" />
         <PackageReference Include="MongoDB.Driver.GridFS">
             <Version>2.11.3</Version>
         </PackageReference>
