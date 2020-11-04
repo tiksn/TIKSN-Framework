@@ -40,7 +40,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.9" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.9" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.8.51" />
-    <PackageReference Include="MongoDB.Driver" Version="2.11.3" />
+    <PackageReference Include="MongoDB.Driver" Version="2.11.4" />
     <PackageReference Include="MongoDB.Driver.GridFS" Version="2.11.3" />
     <PackageReference Include="MsgPack.Cli" Version="1.0.1" />
     <PackageReference Include="Multiformats.Base" Version="2.0.2" />
