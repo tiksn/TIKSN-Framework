@@ -363,3 +363,5 @@ Tools/
 ## ionide
 .ionide/symbolCache.db
 
+
+.ionide
