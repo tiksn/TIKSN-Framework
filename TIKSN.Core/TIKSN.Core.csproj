@@ -53,7 +53,7 @@
     <PackageReference Include="RavenDB.Client" Version="5.0.4" />
     <PackageReference Include="ReactiveUI" Version="12.1.5" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
-    <PackageReference Include="System.Interactive" Version="4.1.1" />
+    <PackageReference Include="System.Interactive" Version="5.0.0" />
     <PackageReference Include="System.Interactive.Async" Version="5.0.0" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
     <PackageReference Include="System.Security.SecureString" Version="4.3.0" />
