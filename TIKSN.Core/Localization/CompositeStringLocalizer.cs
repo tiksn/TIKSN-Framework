@@ -47,11 +47,6 @@ namespace TIKSN.Localization
             return localizedStrings;
         }
 
-        public IStringLocalizer WithCulture(CultureInfo culture)
-        {
-            return new CompositeStringLocalizer(Localizers.Select(item => item.WithCulture(culture)).ToArray());
-        }
-
         private LocalizedString GetLocalizedString(Func<IStringLocalizer, LocalizedString> singleLocalizer)
         {
             var localizedStrings = Localizers.Select(localizer => singleLocalizer(localizer)).ToArray();
