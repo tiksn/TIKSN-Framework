@@ -31,14 +31,14 @@
         <file src="any\zh-Hant\TIKSN.LanguageLocalization.resources.dll" target="lib\MonoAndroid403\zh-Hant" />
         <file src="any\TIKSN.LanguageLocalization.xml" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.LanguageLocalization.pdb" target="lib\MonoAndroid403" />
-        <file src="any\TIKSN.LanguageLocalization.dll" target="lib\netcoreapp3.1" />
-        <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\netcoreapp3.1\hy" />
-        <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\netcoreapp3.1\ru" />
-        <file src="any\uk\TIKSN.LanguageLocalization.resources.dll" target="lib\netcoreapp3.1\uk" />
-        <file src="any\zh-Hans\TIKSN.LanguageLocalization.resources.dll" target="lib\netcoreapp3.1\zh-Hans" />
-        <file src="any\zh-Hant\TIKSN.LanguageLocalization.resources.dll" target="lib\netcoreapp3.1\zh-Hant" />
-        <file src="any\TIKSN.LanguageLocalization.xml" target="lib\netcoreapp3.1" />
-        <file src="any\TIKSN.LanguageLocalization.pdb" target="lib\netcoreapp3.1" />
+        <file src="any\TIKSN.LanguageLocalization.dll" target="lib\net5.0" />
+        <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\net5.0\hy" />
+        <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\net5.0\ru" />
+        <file src="any\uk\TIKSN.LanguageLocalization.resources.dll" target="lib\net5.0\uk" />
+        <file src="any\zh-Hans\TIKSN.LanguageLocalization.resources.dll" target="lib\net5.0\zh-Hans" />
+        <file src="any\zh-Hant\TIKSN.LanguageLocalization.resources.dll" target="lib\net5.0\zh-Hant" />
+        <file src="any\TIKSN.LanguageLocalization.xml" target="lib\net5.0" />
+        <file src="any\TIKSN.LanguageLocalization.pdb" target="lib\net5.0" />
         <file src="any\TIKSN.LanguageLocalization.dll" target="lib\netstandard2.0" />
         <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\netstandard2.0\hy" />
         <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\netstandard2.0\ru" />
@@ -103,30 +103,30 @@
         <file src="any\zh-SG\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\zh-SG" />
         <file src="any\TIKSN.RegionLocalization.xml" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.RegionLocalization.pdb" target="lib\MonoAndroid403" />
-        <file src="any\TIKSN.RegionLocalization.dll" target="lib\netcoreapp3.1" />
-        <file src="any\en-001\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\en-001" />
-        <file src="any\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\en-150" />
-        <file src="any\en-AU\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\en-AU" />
-        <file src="any\en-CA\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\en-CA" />
-        <file src="any\en-CH\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\en-CH" />
-        <file src="any\en-DE\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\en-DE" />
-        <file src="any\en-GB\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\en-GB" />
-        <file src="any\en-GU\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\en-GU" />
-        <file src="any\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\en-IE" />
-        <file src="any\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\en-NZ" />
-        <file src="any\en-PR\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\en-PR" />
-        <file src="any\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\en-SG" />
-        <file src="any\en-US\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\en-US" />
-        <file src="any\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\hy-AM" />
-        <file src="any\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\ru-BY" />
-        <file src="any\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\ru-KZ" />
-        <file src="any\ru-RU\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\ru-RU" />
-        <file src="any\ru-UA\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\ru-UA" />
-        <file src="any\uk-UA\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\uk-UA" />
-        <file src="any\zh-CN\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\zh-CN" />
-        <file src="any\zh-SG\TIKSN.RegionLocalization.resources.dll" target="lib\netcoreapp3.1\zh-SG" />
-        <file src="any\TIKSN.RegionLocalization.xml" target="lib\netcoreapp3.1" />
-        <file src="any\TIKSN.RegionLocalization.pdb" target="lib\netcoreapp3.1" />
+        <file src="any\TIKSN.RegionLocalization.dll" target="lib\net5.0" />
+        <file src="any\en-001\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-001" />
+        <file src="any\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-150" />
+        <file src="any\en-AU\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-AU" />
+        <file src="any\en-CA\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-CA" />
+        <file src="any\en-CH\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-CH" />
+        <file src="any\en-DE\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-DE" />
+        <file src="any\en-GB\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-GB" />
+        <file src="any\en-GU\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-GU" />
+        <file src="any\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-IE" />
+        <file src="any\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-NZ" />
+        <file src="any\en-PR\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-PR" />
+        <file src="any\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-SG" />
+        <file src="any\en-US\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-US" />
+        <file src="any\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\hy-AM" />
+        <file src="any\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\ru-BY" />
+        <file src="any\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\ru-KZ" />
+        <file src="any\ru-RU\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\ru-RU" />
+        <file src="any\ru-UA\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\ru-UA" />
+        <file src="any\uk-UA\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\uk-UA" />
+        <file src="any\zh-CN\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\zh-CN" />
+        <file src="any\zh-SG\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\zh-SG" />
+        <file src="any\TIKSN.RegionLocalization.xml" target="lib\net5.0" />
+        <file src="any\TIKSN.RegionLocalization.pdb" target="lib\net5.0" />
         <file src="any\TIKSN.RegionLocalization.dll" target="lib\netstandard2.0" />
         <file src="any\en-001\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\en-001" />
         <file src="any\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\en-150" />
@@ -252,9 +252,9 @@
         <file src="any\TIKSN.Core.dll" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.Core.xml" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.Core.pdb" target="lib\MonoAndroid403" />
-        <file src="any\TIKSN.Core.dll" target="lib\netcoreapp3.1" />
-        <file src="any\TIKSN.Core.xml" target="lib\netcoreapp3.1" />
-        <file src="any\TIKSN.Core.pdb" target="lib\netcoreapp3.1" />
+        <file src="any\TIKSN.Core.dll" target="lib\net5.0" />
+        <file src="any\TIKSN.Core.xml" target="lib\net5.0" />
+        <file src="any\TIKSN.Core.pdb" target="lib\net5.0" />
         <file src="any\TIKSN.Core.dll" target="lib\netstandard2.0" />
         <file src="any\TIKSN.Core.xml" target="lib\netstandard2.0" />
         <file src="any\TIKSN.Core.pdb" target="lib\netstandard2.0" />
@@ -276,10 +276,10 @@
         <file src="any\TIKSN.Framework.Android.xml" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.Framework.Android.pdb" target="lib\MonoAndroid403" /> -->
 
-        <!-- Platform: .NET Core -->
-        <file src="any\TIKSN.Framework.Core.dll" target="lib\netcoreapp3.1" />
-        <file src="any\TIKSN.Framework.Core.xml" target="lib\netcoreapp3.1" />
-        <file src="any\TIKSN.Framework.Core.pdb" target="lib\netcoreapp3.1" />
+        <!-- Platform: .NET 5 -->
+        <file src="any\TIKSN.Framework.Core.dll" target="lib\net5.0" />
+        <file src="any\TIKSN.Framework.Core.xml" target="lib\net5.0" />
+        <file src="any\TIKSN.Framework.Core.pdb" target="lib\net5.0" />
 
         <!-- Platform: UAP -->
         <file src="any\TIKSN.Framework.UWP.dll" target="ref\uap10.0" />
