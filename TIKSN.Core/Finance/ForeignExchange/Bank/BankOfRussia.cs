@@ -97,6 +97,10 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                     foreach (var ValuteElement in xdoc.Element("ValCurs").Elements("Valute"))
                     {
                         var charCodeElement = ValuteElement.Element("CharCode");
+
+                        if (charCodeElement == null)
+                            continue;
+
                         var nominalElement = ValuteElement.Element("Nominal");
                         var valueElement = ValuteElement.Element("Value");
 
