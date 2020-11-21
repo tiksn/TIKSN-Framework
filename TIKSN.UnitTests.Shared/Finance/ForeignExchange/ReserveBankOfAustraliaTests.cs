@@ -7,7 +7,7 @@ using TIKSN.Globalization;
 using TIKSN.Time;
 using Xunit;
 
-namespace TIKSN.Finance.Tests.ForeignExchange
+namespace TIKSN.Finance.ForeignExchange.Tests
 {
     public class ReserveBankOfAustraliaTests
     {

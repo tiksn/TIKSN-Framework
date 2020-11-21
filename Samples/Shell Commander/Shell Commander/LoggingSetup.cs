@@ -5,14 +5,14 @@ namespace Shell_Commander
 {
     public class LoggingSetup : LoggingSetupBase
     {
-        public LoggingSetup(ILoggerFactory loggerFactory) : base(loggerFactory)
+        public LoggingSetup() : base()
         {
         }
 
-        public override void Setup()
+        public override void Setup(ILoggingBuilder loggingBuilder)
         {
-            base.Setup();
-            _loggerFactory.AddConsole(LogLevel.Debug);
+            base.Setup(loggingBuilder);
+            loggingBuilder.AddConsole();
         }
     }
 }

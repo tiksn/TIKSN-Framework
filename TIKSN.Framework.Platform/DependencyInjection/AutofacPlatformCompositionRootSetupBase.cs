@@ -23,7 +23,7 @@ namespace TIKSN.DependencyInjection
 
         protected override void ConfigureServices(IServiceCollection services)
         {
-            PlatformDependencyRegistration.Register(services);
+            services.AddFrameworkPlatform();
         }
     }
 }

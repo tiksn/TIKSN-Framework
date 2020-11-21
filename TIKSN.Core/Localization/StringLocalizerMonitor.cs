@@ -43,11 +43,6 @@ namespace TIKSN.Localization
             return _stringLocalizer.GetAllStrings(includeParentCultures);
         }
 
-        public IStringLocalizer WithCulture(CultureInfo culture)
-        {
-            return _stringLocalizer.WithCulture(culture);
-        }
-
         private LocalizedString Log(LocalizedString localizedString)
         {
             if (localizedString.ResourceNotFound)

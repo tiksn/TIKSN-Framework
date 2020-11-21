@@ -129,7 +129,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            decimal rate = (await this.GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn,cancellationToken)).Rate;
+            decimal rate = (await this.GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken)).Rate;
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }

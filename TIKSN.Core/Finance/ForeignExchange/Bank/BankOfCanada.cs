@@ -17,13 +17,12 @@ namespace TIKSN.Finance.ForeignExchange.Bank
     public class BankOfCanada : ICurrencyConverter, IExchangeRatesProvider
     {
         private const string RestURL = "https://www.bankofcanada.ca/valet/observations/group/FX_RATES_DAILY/json";
-        private static CurrencyInfo CanadianDollar;
         private static TimeZoneInfo bankTimeZone;
-
-        private DateTimeOffset lastFetchDate;
-        private Dictionary<DateTime, Dictionary<CurrencyInfo, decimal>> rates;
+        private static CurrencyInfo CanadianDollar;
         private readonly ICurrencyFactory _currencyFactory;
         private readonly ITimeProvider _timeProvider;
+        private DateTimeOffset lastFetchDate;
+        private Dictionary<DateTime, Dictionary<CurrencyInfo, decimal>> rates;
 
         static BankOfCanada()
         {
@@ -48,6 +47,41 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken);
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
+        }
+
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
+        {
+            await FetchOnDemandAsync(cancellationToken);
+
+            if (asOn > _timeProvider.GetCurrentTime())
+                throw new ArgumentException("Exchange rate forecasting are not supported.");
+
+            var result = new List<CurrencyPair>();
+
+            foreach (CurrencyInfo against in GetRatesByDate(asOn).Keys)
+            {
+                result.Add(new CurrencyPair(CanadianDollar, against));
+                result.Add(new CurrencyPair(against, CanadianDollar));
+            }
+
+            return result;
+        }
+
+        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
+        {
+            await FetchOnDemandAsync(cancellationToken);
+
+            if (asOn > _timeProvider.GetCurrentTime())
+                throw new ArgumentException("Exchange rate forecasting not supported.");
+
+            if (IsHomeCurrencyPair(pair, asOn))
+            {
+                return decimal.One / GetRatesByDate(asOn)[pair.CounterCurrency];
+            }
+            else
+            {
+                return GetRatesByDate(asOn)[pair.BaseCurrency];
+            }
         }
 
         public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
@@ -86,41 +120,6 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         private static DateTimeOffset ConvertToBankTimeZone(DateTimeOffset date)
         {
             return TimeZoneInfo.ConvertTime(date, bankTimeZone);
-        }
-
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
-        {
-            await FetchOnDemandAsync(cancellationToken);
-
-            if (asOn > _timeProvider.GetCurrentTime())
-                throw new ArgumentException("Exchange rate forecasting are not supported.");
-
-            var result = new List<CurrencyPair>();
-
-            foreach (CurrencyInfo against in GetRatesByDate(asOn).Keys)
-            {
-                result.Add(new CurrencyPair(CanadianDollar, against));
-                result.Add(new CurrencyPair(against, CanadianDollar));
-            }
-
-            return result;
-        }
-
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
-        {
-            await FetchOnDemandAsync(cancellationToken);
-
-            if (asOn > _timeProvider.GetCurrentTime())
-                throw new ArgumentException("Exchange rate forecasting not supported.");
-
-            if (IsHomeCurrencyPair(pair, asOn))
-            {
-                return decimal.One / GetRatesByDate(asOn)[pair.CounterCurrency];
-            }
-            else
-            {
-                return GetRatesByDate(asOn)[pair.BaseCurrency];
-            }
         }
 
         private async Task FetchOnDemandAsync(CancellationToken cancellationToken)
@@ -172,6 +171,26 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             }
         }
 
+        private Dictionary<CurrencyInfo, decimal> GetRatesByDate(DateTimeOffset asOn)
+        {
+            var nowInBuilding = ConvertToBankTimeZone(_timeProvider.GetCurrentTime());
+            var date = GetRatesDate(asOn);
+
+            if (rates.ContainsKey(date))
+                return rates[date];
+            else if (date.DayOfWeek == DayOfWeek.Saturday && rates.ContainsKey(date.AddDays(-1).Date))
+                return rates[date.AddDays(-1).Date];
+            else if (date.DayOfWeek == DayOfWeek.Sunday && rates.ContainsKey(date.AddDays(-2).Date))
+                return rates[date.AddDays(-2).Date];
+            else if (date.DayOfWeek == DayOfWeek.Monday && rates.ContainsKey(date.AddDays(-3).Date))
+                return rates[date.AddDays(-3).Date];
+
+            if (rates.ContainsKey(date.AddDays(-1).Date))
+                return rates[date.AddDays(-1).Date];
+
+            return rates[date]; // Exception will be thrown
+        }
+
         private DateTime GetRatesDate(DateTimeOffset asOn)
         {
             var date = ConvertToBankTimeZone(asOn).Date;
@@ -182,13 +201,6 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                 date = date.AddDays(-2);
 
             return date;
-        }
-
-        private Dictionary<CurrencyInfo, decimal> GetRatesByDate(DateTimeOffset asOn)
-        {
-            var date = GetRatesDate(asOn);
-
-            return rates[date];
         }
 
         private bool IsHomeCurrencyPair(CurrencyPair Pair, DateTimeOffset asOn)

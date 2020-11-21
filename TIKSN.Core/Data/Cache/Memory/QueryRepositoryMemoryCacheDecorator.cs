@@ -24,6 +24,13 @@ namespace TIKSN.Data.Cache.Memory
             _queryRepository = queryRepository;
         }
 
+        public Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken)
+        {
+            var cacheKey = Tuple.Create(entityType, CacheKeyKind.Query, id);
+
+            return GetQueryFromMemoryCacheAsync(cacheKey, () => _queryRepository.ExistsAsync(id, cancellationToken));
+        }
+
         public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
         {
             var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, id);
@@ -31,16 +38,23 @@ namespace TIKSN.Data.Cache.Memory
             var result = await GetFromMemoryCacheAsync(cacheKey, () => _queryRepository.GetAsync(id, cancellationToken));
 
             if (result == null)
+            {
                 throw new NullReferenceException("Result retrieved from cache or from original source is null.");
+            }
 
             return result;
         }
 
-        public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken = default)
+        public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
         {
             var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, id);
 
             return GetFromMemoryCacheAsync(cacheKey, () => _queryRepository.GetAsync(id, cancellationToken));
+        }
+
+        public async Task<IEnumerable<TEntity>> ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken)
+        {
+            return await BatchOperationHelper.BatchOperationAsync(ids, cancellationToken, (id, ct) => GetAsync(id, ct));
         }
 
         protected Task<IEnumerable<TEntity>> CreateMemoryCacheQueryAsync(ICacheEntry cacheEntry, Func<Task<IEnumerable<TEntity>>> queryFromSource)

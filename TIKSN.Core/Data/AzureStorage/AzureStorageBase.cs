@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.WindowsAzure.Storage;
+﻿using Microsoft.Azure.Storage;
+using Microsoft.Extensions.Configuration;
 
 namespace TIKSN.Data.AzureStorage
 {

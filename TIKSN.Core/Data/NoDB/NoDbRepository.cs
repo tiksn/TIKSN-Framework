@@ -32,19 +32,31 @@ namespace TIKSN.Data.NoDB
             return BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, (e, c) => AddAsync(e, c));
         }
 
+        public async Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken)
+        {
+            return await _basicQueries.FetchAsync(_projectId, id.ToString(), cancellationToken) != null;
+        }
+
         public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
         {
             var result = await GetOrDefaultAsync(id, cancellationToken);
 
             if (result == null)
+            {
                 throw new NullReferenceException("Result retrieved from database is null.");
+            }
 
             return result;
         }
 
-        public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken = default)
+        public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
         {
             return _basicQueries.FetchAsync(_projectId, id.ToString(), cancellationToken);
+        }
+
+        public async Task<IEnumerable<TEntity>> ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken)
+        {
+            return await BatchOperationHelper.BatchOperationAsync(ids, cancellationToken, (id, c) => GetAsync(id, c));
         }
 
         public Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)

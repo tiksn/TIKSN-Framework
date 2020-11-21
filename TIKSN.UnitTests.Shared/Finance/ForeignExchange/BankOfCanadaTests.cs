@@ -9,7 +9,7 @@ using TIKSN.Globalization;
 using TIKSN.Time;
 using Xunit;
 
-namespace TIKSN.Finance.Tests.ForeignExchange
+namespace TIKSN.Finance.ForeignExchange.Tests
 {
     public class BankOfCanadaTests
     {
@@ -164,7 +164,6 @@ namespace TIKSN.Finance.Tests.ForeignExchange
             Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/INR");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/IDR");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/JPY");
-            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/MYR");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/MXN");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/NZD");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/NOK");
@@ -176,10 +175,8 @@ namespace TIKSN.Finance.Tests.ForeignExchange
             Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/SEK");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/CHF");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/TWD");
-            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/THB");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/TRY");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/GBP");
-            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/VND");
 
             Assert.Contains(CurrencyPairs, C => C.ToString() == "USD/CAD");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "AUD/CAD");
@@ -190,7 +187,6 @@ namespace TIKSN.Finance.Tests.ForeignExchange
             Assert.Contains(CurrencyPairs, C => C.ToString() == "INR/CAD");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "IDR/CAD");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "JPY/CAD");
-            Assert.Contains(CurrencyPairs, C => C.ToString() == "MYR/CAD");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "MXN/CAD");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "NZD/CAD");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "NOK/CAD");
@@ -202,10 +198,8 @@ namespace TIKSN.Finance.Tests.ForeignExchange
             Assert.Contains(CurrencyPairs, C => C.ToString() == "SEK/CAD");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "CHF/CAD");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "TWD/CAD");
-            Assert.Contains(CurrencyPairs, C => C.ToString() == "THB/CAD");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "TRY/CAD");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "GBP/CAD");
-            Assert.Contains(CurrencyPairs, C => C.ToString() == "VND/CAD");
         }
 
         [Fact]

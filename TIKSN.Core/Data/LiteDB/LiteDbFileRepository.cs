@@ -1,70 +1,71 @@
 ﻿using LiteDB;
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace TIKSN.Data.LiteDB
 {
-    public class LiteDbFileRepository<TMetadata> : IFileRepository<string>, IFileRepository<string, TMetadata>
+    public class LiteDbFileRepository<TIdentity, TMetadata> : IFileRepository<TIdentity>, IFileRepository<TIdentity, TMetadata> where TIdentity : IEquatable<TIdentity>
     {
-        private LiteStorage _liteStorage;
+        private readonly ILiteStorage<TIdentity> _liteStorage;
 
         public LiteDbFileRepository(ILiteDbDatabaseProvider databaseProvider)
         {
-            _liteStorage = databaseProvider.GetDatabase().FileStorage;
+            _liteStorage = databaseProvider.GetDatabase().GetStorage<TIdentity>();
         }
 
-        public Task DeleteByIdAsync(string id, CancellationToken cancellationToken = default)
+        public Task DeleteByIdAsync(TIdentity id, CancellationToken cancellationToken)
         {
-            return Task.Run(() => _liteStorage.Delete(id), cancellationToken);
+            return Task.FromResult(_liteStorage.Delete(id));
         }
 
-        public async Task<IFile<string>> DownloadByIdAsync(string id, CancellationToken cancellationToken)
-        {
-            using (var stream = new MemoryStream())
-            {
-                var fileInfo = await Task.Run(() => _liteStorage.Download(id, stream), cancellationToken);
-
-                return new File<string>(fileInfo.Id, fileInfo.Filename, stream.ToArray());
-            }
-        }
-
-        public async Task<IFileInfo<string, TMetadata>> DownloadOnlyMetadataAsync(string id, CancellationToken cancellationToken = default)
-        {
-            var fileInfo = await Task.Run(() => _liteStorage.FindById(id), cancellationToken);
-
-            return new FileInfo<string, TMetadata>(fileInfo.Id, fileInfo.Filename, BsonMapper.Global.ToObject<TMetadata>(fileInfo.Metadata));
-        }
-
-        public async Task<IFile<string, TMetadata>> DownloadWithMetadataAsync(string id, CancellationToken cancellationToken = default)
+        public async Task<IFile<TIdentity>> DownloadByIdAsync(TIdentity id, CancellationToken cancellationToken)
         {
             using (var stream = new MemoryStream())
             {
-                var fileInfo = await Task.Run(() => _liteStorage.Download(id, stream), cancellationToken);
+                var fileInfo = _liteStorage.Download(id, stream);
 
-                return new File<string, TMetadata>(fileInfo.Id, fileInfo.Filename, BsonMapper.Global.ToObject<TMetadata>(fileInfo.Metadata), stream.ToArray());
+                return new File<TIdentity>(fileInfo.Id, fileInfo.Filename, stream.ToArray());
             }
         }
 
-        public Task<bool> ExistsByIdAsync(string id, CancellationToken cancellationToken)
+        public async Task<IFileInfo<TIdentity, TMetadata>> DownloadOnlyMetadataAsync(TIdentity id, CancellationToken cancellationToken)
         {
-            return Task.Run(() => _liteStorage.Exists(id), cancellationToken);
+            var fileInfo = _liteStorage.FindById(id);
+
+            return new FileInfo<TIdentity, TMetadata>(fileInfo.Id, fileInfo.Filename, BsonMapper.Global.ToObject<TMetadata>(fileInfo.Metadata));
         }
 
-        public async Task UploadAsync(string id, string path, byte[] content, TMetadata metadata, CancellationToken cancellationToken = default)
+        public async Task<IFile<TIdentity, TMetadata>> DownloadWithMetadataAsync(TIdentity id, CancellationToken cancellationToken)
         {
-            using (var stream = new MemoryStream(content))
+            using (var stream = new MemoryStream())
             {
-                await Task.Run(() => _liteStorage.Upload(id, path, stream), cancellationToken);
-                await Task.Run(() => _liteStorage.SetMetadata(id, BsonMapper.Global.ToDocument(metadata)), cancellationToken);
+                var fileInfo = _liteStorage.Download(id, stream);
+
+                return new File<TIdentity, TMetadata>(fileInfo.Id, fileInfo.Filename, BsonMapper.Global.ToObject<TMetadata>(fileInfo.Metadata), stream.ToArray());
             }
         }
 
-        public async Task UploadByIdAsync(string id, string path, byte[] content, CancellationToken cancellationToken)
+        public Task<bool> ExistsByIdAsync(TIdentity id, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_liteStorage.Exists(id));
+        }
+
+        public async Task UploadAsync(TIdentity id, string path, byte[] content, TMetadata metadata, CancellationToken cancellationToken)
         {
             using (var stream = new MemoryStream(content))
             {
-                await Task.Run(() => _liteStorage.Upload(id, path, stream), cancellationToken);
+                _liteStorage.Upload(id, path, stream);
+                _liteStorage.SetMetadata(id, BsonMapper.Global.ToDocument(metadata));
+            }
+        }
+
+        public async Task UploadByIdAsync(TIdentity id, string path, byte[] content, CancellationToken cancellationToken)
+        {
+            using (var stream = new MemoryStream(content))
+            {
+                _liteStorage.Upload(id, path, stream);
             }
         }
     }

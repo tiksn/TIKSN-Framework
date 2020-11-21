@@ -427,6 +427,8 @@ namespace TIKSN.Versioning
 
         public bool Equals(Version that)
         {
+            if (ReferenceEquals(that, null))
+                return false;
             return this.CompareTo(that) == 0;
         }
 

@@ -18,26 +18,26 @@ namespace TIKSN.Data.Cache.Memory
             _specificOptions = specificOptions;
         }
 
-        protected T CreateMemoryCacheItem(ICacheEntry entry, Func<T> getFromSource)
+        protected TResult CreateMemoryCacheItem<TResult>(ICacheEntry entry, Func<TResult> getFromSource)
         {
             SpecifyOptions(entry);
 
             return getFromSource();
         }
 
-        protected Task<T> CreateMemoryCacheItemAsync(ICacheEntry cacheEntry, Func<Task<T>> getFromSource)
+        protected Task<TResult> CreateMemoryCacheItemAsync<TResult>(ICacheEntry cacheEntry, Func<Task<TResult>> getFromSource)
         {
             SpecifyOptions(cacheEntry);
 
             return getFromSource();
         }
 
-        protected T GetFromMemoryCache(object cacheKey, Func<T> getFromSource)
+        protected TResult GetFromMemoryCache<TResult>(object cacheKey, Func<TResult> getFromSource)
         {
             return _memoryCache.GetOrCreate(cacheKey, x => CreateMemoryCacheItem(x, getFromSource));
         }
 
-        protected Task<T> GetFromMemoryCacheAsync(object cacheKey, Func<Task<T>> getFromSource)
+        protected Task<TResult> GetFromMemoryCacheAsync<TResult>(object cacheKey, Func<Task<TResult>> getFromSource)
         {
             return _memoryCache.GetOrCreateAsync(cacheKey, x => CreateMemoryCacheItemAsync(x, getFromSource));
         }

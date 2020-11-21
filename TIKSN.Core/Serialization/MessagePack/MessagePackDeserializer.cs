@@ -1,6 +1,5 @@
 ﻿using MsgPack.Serialization;
 using System.IO;
-using TIKSN.Analytics.Telemetry;
 
 namespace TIKSN.Serialization.MessagePack
 {
@@ -8,7 +7,7 @@ namespace TIKSN.Serialization.MessagePack
     {
         private readonly SerializationContext _serializationContext;
 
-        public MessagePackDeserializer(IExceptionTelemeter exceptionTelemeter, SerializationContext serializationContext) : base(exceptionTelemeter)
+        public MessagePackDeserializer(SerializationContext serializationContext)
         {
             _serializationContext = serializationContext;
         }

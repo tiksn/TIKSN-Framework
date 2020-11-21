@@ -4,36 +4,24 @@ namespace TIKSN.Advertising
 {
     public class AdUnitBundle
     {
-        public AdUnitBundle(AdUnit designTime, AdUnit tablet, AdUnit mobile)
+        public AdUnitBundle(AdUnit designTime, AdUnit production)
         {
-            Tablet = tablet;
-            DesignTime = designTime;
-            Mobile = mobile;
-
-            if (designTime == null)
-                throw new ArgumentNullException(nameof(designTime));
-
-            if (tablet == null)
-                throw new ArgumentNullException(nameof(tablet));
-
-            if (mobile == null)
-                throw new ArgumentNullException(nameof(mobile));
+            DesignTime = designTime ?? throw new ArgumentNullException(nameof(designTime));
+            Production = production ?? throw new ArgumentNullException(nameof(production));
 
             if (!designTime.IsTest)
+            {
                 throw new ArgumentException($"Value of {nameof(designTime)}.{nameof(designTime.IsTest)} must be true.", nameof(designTime));
+            }
 
-            if (tablet.IsTest || mobile.IsTest)
-                throw new ArgumentException($"Value of {nameof(tablet)}.{nameof(tablet.IsTest)} and {nameof(mobile)}.{nameof(mobile.IsTest)} must be false.");
-        }
-
-        public AdUnitBundle(AdUnit designTime, AdUnit adUnit) : this(designTime, adUnit, adUnit)
-        {
+            if (production.IsTest)
+            {
+                throw new ArgumentException($"Value of {nameof(production)}.{nameof(production.IsTest)} must be false.", nameof(production));
+            }
         }
 
         public AdUnit DesignTime { get; }
 
-        public AdUnit Mobile { get; }
-
-        public AdUnit Tablet { get; }
+        public AdUnit Production { get; }
     }
 }
