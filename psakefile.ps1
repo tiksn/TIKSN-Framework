@@ -96,7 +96,7 @@ Task Test -depends Build {
     Exec { dotnet test '.\TIKSN.Framework.Core.Tests\TIKSN.Framework.Core.Tests.csproj' }
 }
 
-Task Build -depends BuildLanguageLocalization, BuildRegionLocalization, BuildCommonCore, BuildNetCore, BuildAndroid, BuildUWP, CreateReferenceAssembliesForUWP {
+Task Build -depends BuildLanguageLocalization, BuildRegionLocalization, BuildCommonCore, BuildNetCore, BuildAndroid, BuildUWP {
 }
 
 Task BuildLanguageLocalization -depends EstimateVersions {
@@ -132,23 +132,7 @@ Task BuildAndroid -depends EstimateVersions -precondition { $false } {
 Task BuildUWP -depends EstimateVersions {
     $project = Resolve-Path -Path 'TIKSN.Framework.UWP/TIKSN.Framework.UWP.csproj'
 
-
-    Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=x64 /p:OutDir=$script:x64BuildArtifactsFolder }
-    Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=x86 /p:OutDir=$script:x86BuildArtifactsFolder }
-    Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=arm /p:OutDir=$script:armBuildArtifactsFolder }
-}
-
-Task CreateReferenceAssembliesForUWP -depends EstimateVersions, BuildUWP {
-    $sourceFilePath = Join-Path -Path $script:x86BuildArtifactsFolder -ChildPath "TIKSN.Framework.UWP\TIKSN.Framework.UWP.dll"
-    $destinationFilePath = Join-Path -Path $script:anyBuildArtifactsFolder -ChildPath "TIKSN.Framework.UWP.dll"
-
-    Copy-Item -Path $sourceFilePath -Destination $destinationFilePath
-    #TODO: Patch DLL
-    
-    $sourceFilePath = Join-Path -Path $script:x86BuildArtifactsFolder -ChildPath "TIKSN.Framework.UWP\TIKSN.Framework.UWP.xml"
-    $destinationFilePath = Join-Path -Path $script:anyBuildArtifactsFolder -ChildPath "TIKSN.Framework.UWP.xml"
-
-    Copy-Item -Path $sourceFilePath -Destination $destinationFilePath
+    Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutputPath=$script:anyBuildArtifactsFolder }
 }
 
 Task EstimateVersions -depends Restore {
