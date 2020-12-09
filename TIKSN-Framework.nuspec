@@ -7,7 +7,7 @@
         <title>TIKSN Framework</title>
         <authors>TIKSN</authors>
         <owners>TIKSN</owners>
-        <projectUrl>http://www.tiksn.com/Framework</projectUrl>
+        <projectUrl>https://tiksn.com/project/tiksn-framework/</projectUrl>
         <repository type="git" url="https://github.com/tiksn/TIKSN-Framework" />
         <iconUrl>http://www.tiksn.com/Images/Logo.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
