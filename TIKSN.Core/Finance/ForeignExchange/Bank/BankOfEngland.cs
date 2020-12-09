@@ -12,7 +12,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 {
     public class BankOfEngland : ICurrencyConverter, IExchangeRateProvider
     {
-        private const string UrlFormat = "http://www.bankofengland.co.uk/boeapps/iadb/fromshowcolumns.asp?CodeVer=new&xml.x=yes&Datefrom={0}&Dateto={1}&SeriesCodes={2}";
+        private const string UrlFormat = "https://www.bankofengland.co.uk/boeapps/iadb/fromshowcolumns.asp?CodeVer=new&xml.x=yes&Datefrom={0}&Dateto={1}&SeriesCodes={2}";
 
         private static Dictionary<CurrencyPair, string> SeriesCodes;
         private readonly ICurrencyFactory _currencyFactory;
