@@ -14,7 +14,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 {
     public class BankOfRussia : ICurrencyConverter, IExchangeRatesProvider
     {
-        private static readonly string AddressFormat = "http://www.cbr.ru/scripts/XML_daily.asp?date_req={0:00}.{1:00}.{2}";
+        private static readonly string AddressFormat = "https://www.cbr.ru/scripts/XML_daily.asp?date_req={0:00}.{1:00}.{2}";
         private static readonly CurrencyInfo RussianRuble;
         private static readonly CultureInfo RussianRussia;
 

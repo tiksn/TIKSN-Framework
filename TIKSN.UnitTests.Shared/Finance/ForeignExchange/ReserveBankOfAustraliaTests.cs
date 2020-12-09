@@ -163,7 +163,6 @@ namespace TIKSN.Finance.ForeignExchange.Tests
             Assert.Contains(CurrencyPairs, P => P.ToString() == "MYR/AUD");
             Assert.Contains(CurrencyPairs, P => P.ToString() == "IDR/AUD");
             Assert.Contains(CurrencyPairs, P => P.ToString() == "VND/AUD");
-            Assert.Contains(CurrencyPairs, P => P.ToString() == "AED/AUD");
             Assert.Contains(CurrencyPairs, P => P.ToString() == "HKD/AUD");
             Assert.Contains(CurrencyPairs, P => P.ToString() == "CAD/AUD");
             Assert.Contains(CurrencyPairs, P => P.ToString() == "CHF/AUD");
@@ -184,7 +183,6 @@ namespace TIKSN.Finance.ForeignExchange.Tests
             Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/MYR");
             Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/IDR");
             Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/VND");
-            Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/AED");
             Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/HKD");
             Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/CAD");
             Assert.Contains(CurrencyPairs, P => P.ToString() == "AUD/CHF");

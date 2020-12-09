@@ -13,8 +13,8 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
 {
     public class CurrencylayerDotCom : ICurrencyConverter, IExchangeRateProvider, IExchangeRatesProvider
     {
-        private const string HistoricalBaseURL = "http://apilayer.net/api/historical?";
-        private const string LiveBaseURL = "http://apilayer.net/api/live?";
+        private const string HistoricalBaseURL = "https://apilayer.net/api/historical?";
+        private const string LiveBaseURL = "https://apilayer.net/api/live?";
         private string accessKey;
         private readonly ICurrencyFactory _currencyFactory;
         private readonly ITimeProvider _timeProvider;

@@ -17,7 +17,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
     public class NationalBankOfUkraine : ICurrencyConverter, IExchangeRatesProvider
     {
         private static readonly string[] ignoreList = new[] { "___" };
-        private const string WebServiceUrlFormat = "http://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date={0:yyyyMMdd}";
+        private const string WebServiceUrlFormat = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date={0:yyyyMMdd}";
         private static readonly RegionInfo ukraine;
         private static readonly CultureInfo ukrainianCulture;
         private static readonly CurrencyInfo ukrainianHryvnia;
