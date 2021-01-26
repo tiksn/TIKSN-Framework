@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Data.NoDB
 {
-    public class NoDbRepository<TEntity, TIdentity> : IRepository<TEntity>, IQueryRepository<TEntity, TIdentity>
+    public class NoDbRepository<TEntity, TIdentity> : IRepository<TEntity>, IQueryRepository<TEntity, TIdentity>, IStreamRepository<TEntity>
         where TEntity : class, IEntity<TIdentity>
         where TIdentity : IEquatable<TIdentity>
     {
@@ -67,6 +67,15 @@ namespace TIKSN.Data.NoDB
         public Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
             return BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, (e, c) => RemoveAsync(e, c));
+        }
+
+        public async IAsyncEnumerable<TEntity> StreamAllAsync(CancellationToken cancellationToken)
+        {
+            var entities = await _basicQueries.GetAllAsync(_projectId, cancellationToken);
+            foreach (var entity in entities)
+            {
+                yield return entity;
+            }
         }
 
         public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
