@@ -88,6 +88,11 @@ namespace TIKSN.Data.LiteDB
             return Task.CompletedTask;
         }
 
+        public IAsyncEnumerable<TDocument> StreamAllAsync(CancellationToken cancellationToken)
+        {
+            return collection.FindAll().ToAsyncEnumerable();
+        }
+
         public Task UpdateAsync(TDocument entity, CancellationToken cancellationToken)
         {
             collection.Update(entity);
