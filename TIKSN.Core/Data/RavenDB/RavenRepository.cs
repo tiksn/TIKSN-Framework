@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Data.RavenDB
 {
-    public class RavenRepository<TEntity, TIdentity> : IRepository<TEntity>, IQueryRepository<TEntity, TIdentity>
+    public class RavenRepository<TEntity, TIdentity> : IRepository<TEntity>, IQueryRepository<TEntity, TIdentity>, IStreamRepository<TEntity>
         where TEntity : IEntity<TIdentity>
         where TIdentity : IEquatable<TIdentity>
     {
@@ -69,6 +69,12 @@ namespace TIKSN.Data.RavenDB
         public Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
             return BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, RemoveAsync);
+        }
+
+        public IAsyncEnumerable<TEntity> StreamAllAsync(CancellationToken cancellationToken)
+        {
+            return _session.Query<TEntity>()
+                .ToAsyncEnumerable();
         }
 
         public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)

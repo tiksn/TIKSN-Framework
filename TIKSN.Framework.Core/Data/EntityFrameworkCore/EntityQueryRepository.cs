@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TIKSN.Data.EntityFrameworkCore
 {
-    public class EntityQueryRepository<TContext, TEntity, TIdentity> : EntityRepository<TContext, TEntity>, IQueryRepository<TEntity, TIdentity>
+    public class EntityQueryRepository<TContext, TEntity, TIdentity> : EntityRepository<TContext, TEntity>, IQueryRepository<TEntity, TIdentity>, IStreamRepository<TEntity>
         where TContext : DbContext
         where TEntity : class, IEntity<TIdentity>, new()
         where TIdentity : IEquatable<TIdentity>
@@ -36,6 +36,14 @@ namespace TIKSN.Data.EntityFrameworkCore
         public async Task<IEnumerable<TEntity>> ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken)
         {
             return await Entities.Where(entity => ids.Contains(entity.ID)).ToListAsync(cancellationToken);
+        }
+
+        public async IAsyncEnumerable<TEntity> StreamAllAsync(CancellationToken cancellationToken)
+        {
+            await foreach (var entity in Entities.AsAsyncEnumerable().WithCancellation(cancellationToken))
+            {
+                yield return entity;
+            }
         }
     }
 }
