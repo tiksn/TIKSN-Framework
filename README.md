@@ -32,4 +32,4 @@
 
 ## Acknowledgments
 
-* [JetBrains](https://www.jetbrains.com/?from=NuGetTrends) for providing free license.
+* [JetBrains](https://www.jetbrains.com/?from=TIKSN-Framework) for providing free license.

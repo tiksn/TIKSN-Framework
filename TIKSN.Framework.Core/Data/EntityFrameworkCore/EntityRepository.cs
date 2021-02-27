@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,51 +14,63 @@ namespace TIKSN.Data.EntityFrameworkCore
 
         public EntityRepository(TContext dbContext)
         {
-            this.dbContext = dbContext;
+            this.dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
         public Task AddAsync(TEntity entity, CancellationToken cancellationToken)
         {
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+
             dbContext.Add(entity);
 
-            return Task.FromResult<object>(null);
+            return Task.CompletedTask;
         }
 
         public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
+            if (entities == null) throw new ArgumentNullException(nameof(entities));
+
             dbContext.AddRange(entities);
 
-            return Task.FromResult<object>(null);
+            return Task.CompletedTask;
         }
 
         public Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)
         {
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+
             dbContext.Entry(entity).State = EntityState.Deleted;
 
-            return Task.FromResult<object>(null);
+            return Task.CompletedTask;
         }
 
         public Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
+            if (entities == null) throw new ArgumentNullException(nameof(entities));
+
             foreach (var entity in entities)
                 dbContext.Entry(entity).State = EntityState.Deleted;
 
-            return Task.FromResult<object>(null);
+            return Task.CompletedTask;
         }
 
         public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
         {
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+
             dbContext.Entry(entity).State = EntityState.Modified;
 
-            return Task.FromResult<object>(null);
+            return Task.CompletedTask;
         }
 
         public Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
+            if (entities == null) throw new ArgumentNullException(nameof(entities));
+
             foreach (var entity in entities)
                 dbContext.Entry(entity).State = EntityState.Modified;
 
-            return Task.FromResult<object>(null);
+            return Task.CompletedTask;
         }
     }
 }

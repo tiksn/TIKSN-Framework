@@ -6,16 +6,6 @@ Properties {
     Set-Alias -Name xmsbuild -Value $msbuildPath -Scope "Script"
 }
 
-Task Tweet -depends Publish {
-    Set-TwitterOAuthSettings `
-        -ApiKey [Environment]::GetEnvironmentVariable('TIKSN-Framework-ConsumerKey') `
-        -ApiSecret [Environment]::GetEnvironmentVariable('TIKSN-Framework-ConsumerSecret') `
-        -AccessToken [Environment]::GetEnvironmentVariable('TIKSN-Framework-AccessToken') `
-        -AccessTokenSecret [Environment]::GetEnvironmentVariable('TIKSN-Framework-AccessTokenSecret')
-
-    Send-TwitterStatuses_Update "TIKSN Framework $Script:NextVersion is published https://www.nuget.org/packages/$PackageId/$Script:NextVersion"
-}
-
 Task Publish -depends Pack {
     $packageName = Join-Path -Path $script:trashFolder -ChildPath 'TIKSN-Framework.nupkg'
     $apiKey = [Environment]::GetEnvironmentVariable('TIKSN-Framework-ApiKey')

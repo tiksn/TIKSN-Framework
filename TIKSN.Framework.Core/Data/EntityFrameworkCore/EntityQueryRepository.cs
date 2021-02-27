@@ -35,6 +35,8 @@ namespace TIKSN.Data.EntityFrameworkCore
 
         public async Task<IEnumerable<TEntity>> ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken)
         {
+            if (ids == null) throw new ArgumentNullException(nameof(ids));
+
             return await Entities.Where(entity => ids.Contains(entity.ID)).ToListAsync(cancellationToken);
         }
 
