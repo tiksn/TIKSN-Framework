@@ -29,3 +29,7 @@
 * Rest Repository
 * Dependency Injection
 * Composition Root Setup base classes
+
+## Acknowledgments
+
+* [JetBrains](https://www.jetbrains.com/?from=NuGetTrends) for providing free license.
