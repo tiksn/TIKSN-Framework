@@ -79,7 +79,7 @@
             <Version>13.1.1</Version>
         </PackageReference>
         <PackageReference Include="ReactiveUI.XamForms">
-            <Version>13.1.1</Version>
+            <Version>13.2.2</Version>
         </PackageReference>
         <PackageReference Include="Serilog.Extensions.Logging">
             <Version>3.0.1</Version>

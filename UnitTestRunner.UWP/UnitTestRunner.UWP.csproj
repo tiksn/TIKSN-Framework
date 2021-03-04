@@ -97,7 +97,7 @@
             <Version>13.1.1</Version>
         </PackageReference>
         <PackageReference Include="ReactiveUI.XamForms">
-            <Version>13.1.1</Version>
+            <Version>13.2.2</Version>
         </PackageReference>
         <PackageReference Include="Serilog.Sinks.XUnit">
             <Version>2.0.4</Version>
