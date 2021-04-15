@@ -70,7 +70,7 @@
             <Version>1.2.2</Version>
         </PackageReference>
         <PackageReference Include="NuGet.Versioning">
-            <Version>5.9.0</Version>
+            <Version>5.9.1</Version>
         </PackageReference>
         <PackageReference Include="PowerShellStandard.Library">
             <Version>5.1.0</Version>
