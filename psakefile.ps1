@@ -142,9 +142,9 @@ Task EstimateVersions -depends Restore {
 
         $nextPreReleaseLabel = $latestPackageVersion.PreReleaseLabel.Split('.')[0] + '.' + (([int]$latestPackageVersion.PreReleaseLabel.Split('.')[1]) + 1)
 
-        $status = Get-RepositoryStatus
+        $currentCommit = git rev-parse HEAD
 
-        $Script:NextVersion = [System.Management.Automation.SemanticVersion]::New($latestPackageVersion.Major, $latestPackageVersion.Minor, $latestPackageVersion.Patch, $nextPreReleaseLabel, $status.CurrentCommit)
+        $Script:NextVersion = [System.Management.Automation.SemanticVersion]::New($latestPackageVersion.Major, $latestPackageVersion.Minor, $latestPackageVersion.Patch, $nextPreReleaseLabel, $currentCommit)
     }
 
     Write-Host "Next version estimated to be $Script:NextVersion"
