@@ -273,7 +273,7 @@ namespace TIKSN.Finance.ForeignExchange.Tests
 
             var pairs = await Bank.GetCurrencyPairsAsync(AtTheMoment, default);
 
-            var WebUrl = string.Format("http://www.cbr.ru/scripts/XML_daily.asp?date_req={2:00}.{1:00}.{0}", AtTheMoment.Year, AtTheMoment.Month, AtTheMoment.Day);
+            var WebUrl = string.Format("https://www.cbr.ru/scripts/XML_daily.asp?date_req={2:00}.{1:00}.{0}", AtTheMoment.Year, AtTheMoment.Month, AtTheMoment.Day);
 
             using (var httpClient = new HttpClient())
             {

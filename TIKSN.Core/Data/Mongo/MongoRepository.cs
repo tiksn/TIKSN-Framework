@@ -32,6 +32,11 @@ namespace TIKSN.Data.Mongo
             return collection.InsertManyAsync(entities, cancellationToken: cancellationToken);
         }
 
+        public Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken)
+        {
+            return collection.Find(GetIdentityFilter(id)).AnyAsync(cancellationToken);
+        }
+
         public Task<TDocument> GetAsync(TIdentity id, CancellationToken cancellationToken)
         {
             return collection.Find(GetIdentityFilter(id)).SingleAsync(cancellationToken);
@@ -40,6 +45,11 @@ namespace TIKSN.Data.Mongo
         public Task<TDocument> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
         {
             return collection.Find(GetIdentityFilter(id)).SingleOrDefaultAsync(cancellationToken);
+        }
+
+        public async Task<IEnumerable<TDocument>> ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken)
+        {
+            return await collection.Find(GetIdentitiesFilter(ids)).ToListAsync(cancellationToken);
         }
 
         public Task RemoveAsync(TDocument entity, CancellationToken cancellationToken)
@@ -66,6 +76,19 @@ namespace TIKSN.Data.Mongo
             return collection.DeleteManyAsync(filter, cancellationToken);
         }
 
+        public async IAsyncEnumerable<TDocument> StreamAllAsync(CancellationToken cancellationToken)
+        {
+            var cursor = await collection.Find(FilterDefinition<TDocument>.Empty).ToCursorAsync(cancellationToken);
+
+            while (await cursor.MoveNextAsync(cancellationToken))
+            {
+                foreach (var entity in cursor.ToEnumerable(cancellationToken))
+                {
+                    yield return entity;
+                }
+            }
+        }
+
         public Task UpdateAsync(TDocument entity, CancellationToken cancellationToken)
         {
             return collection.ReplaceOneAsync(item => item.ID.Equals(entity.ID), entity, cancellationToken: cancellationToken);
@@ -76,24 +99,14 @@ namespace TIKSN.Data.Mongo
             return BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, UpdateAsync);
         }
 
-        public Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken)
-        {
-            return collection.Find(GetIdentityFilter(id)).AnyAsync(cancellationToken);
-        }
-
-        protected static FilterDefinition<TDocument> GetIdentityFilter(TIdentity id)
-        {
-            return Builders<TDocument>.Filter.Eq(item => item.ID, id);
-        }
-
         protected static FilterDefinition<TDocument> GetIdentitiesFilter(IEnumerable<TIdentity> ids)
         {
             return Builders<TDocument>.Filter.In(item => item.ID, ids);
         }
 
-        public async Task<IEnumerable<TDocument>> ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken)
+        protected static FilterDefinition<TDocument> GetIdentityFilter(TIdentity id)
         {
-            return await collection.Find(GetIdentitiesFilter(ids)).ToListAsync(cancellationToken);
+            return Builders<TDocument>.Filter.Eq(item => item.ID, id);
         }
     }
 }

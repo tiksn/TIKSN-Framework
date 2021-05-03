@@ -13,7 +13,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 {
     public class FederalReserveSystem : ICurrencyConverter, IExchangeRatesProvider
     {
-        private const string DataUrlFormat = "http://www.federalreserve.gov/datadownload/Output.aspx?rel=H10&series=f72f395f2a6b3a4bbc83b2983ad62737&lastObs=7&from={0}&to={1}&filetype=sdmx&label=include&layout=seriescolumn";
+        private const string DataUrlFormat = "https://www.federalreserve.gov/datadownload/Output.aspx?rel=H10&series=f72f395f2a6b3a4bbc83b2983ad62737&lastObs=7&from={0}&to={1}&filetype=sdmx&label=include&layout=seriescolumn";
 
         private static readonly CurrencyInfo UnitedStatesDollar;
         private readonly ICurrencyFactory _currencyFactory;

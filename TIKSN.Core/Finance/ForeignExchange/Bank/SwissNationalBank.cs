@@ -15,7 +15,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
     public class SwissNationalBank : ICurrencyConverter, IExchangeRatesProvider
     {
         private static readonly CurrencyInfo SwissFranc;
-        private static string RSSURL = "http://www.snb.ch/selector/en/mmr/exfeed/rss";
+        private static string RSSURL = "https://www.snb.ch/selector/en/mmr/exfeed/rss";
         private Dictionary<CurrencyInfo, Tuple<DateTimeOffset, decimal>> foreignRates;
         private readonly ICurrencyFactory _currencyFactory;
         private readonly ITimeProvider _timeProvider;

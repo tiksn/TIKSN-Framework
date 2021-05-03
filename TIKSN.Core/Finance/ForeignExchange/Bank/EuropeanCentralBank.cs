@@ -12,7 +12,7 @@ using TIKSN.Time;
 namespace TIKSN.Finance.ForeignExchange.Bank
 {
     public class EuropeanCentralBank : ICurrencyConverter, IExchangeRatesProvider
-    {                                                                                    //TODO: switch to http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml see http://www.ecb.europa.eu/stats/exchange/eurofxref/html/index.en.html (For Developers section)
+    {                                                                                    //TODO: switch to https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml see https://www.ecb.europa.eu/stats/exchange/eurofxref/html/index.en.html (For Developers section)
         private const string DailyRatesUrl = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
         private const string Last90DaysRatesUrl = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml";
         private const string Since1999RatesUrl = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.xml";

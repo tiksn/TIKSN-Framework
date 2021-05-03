@@ -13,7 +13,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 {
     public class ReserveBankOfAustralia : ICurrencyConverter, IExchangeRatesProvider
     {
-        private const string RSS = "http://www.rba.gov.au/rss/rss-cb-exchange-rates.xml";
+        private const string RSS = "https://www.rba.gov.au/rss/rss-cb-exchange-rates.xml";
 
         private static CurrencyInfo AustralianDollar;
 

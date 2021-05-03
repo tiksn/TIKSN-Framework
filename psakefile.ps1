@@ -3,22 +3,14 @@ Properties {
     Import-Module -Name VSSetup
     $vsinstance = Get-VSSetupInstance -All | Select-VSSetupInstance -Product * -Latest
     $msbuildPath = Join-Path -Path $vsinstance.InstallationPath -ChildPath 'MSBuild\Current\Bin\MSBuild.exe'
-    Set-Alias -Name xmsbuild -Value $msbuildPath -Scope "Script"
-}
-
-Task Tweet -depends Publish {
-    Set-TwitterOAuthSettings `
-        -ApiKey [Environment]::GetEnvironmentVariable('TIKSN-Framework-ConsumerKey') `
-        -ApiSecret [Environment]::GetEnvironmentVariable('TIKSN-Framework-ConsumerSecret') `
-        -AccessToken [Environment]::GetEnvironmentVariable('TIKSN-Framework-AccessToken') `
-        -AccessTokenSecret [Environment]::GetEnvironmentVariable('TIKSN-Framework-AccessTokenSecret')
-
-    Send-TwitterStatuses_Update "TIKSN Framework $Script:NextVersion is published https://www.nuget.org/packages/$PackageId/$Script:NextVersion"
+    Set-Alias -Name xmsbuild -Value $msbuildPath -Scope 'Script'
 }
 
 Task Publish -depends Pack {
     $packageName = Join-Path -Path $script:trashFolder -ChildPath 'TIKSN-Framework.nupkg'
-    $apiKey = [Environment]::GetEnvironmentVariable('TIKSN-Framework-ApiKey')
+
+    Import-Module -Name Microsoft.PowerShell.SecretManagement
+    $apiKey = Get-Secret -Name 'TIKSN-Framework-ApiKey' -AsPlainText
 
     Exec { nuget push $packageName -ApiKey $apiKey -Source https://api.nuget.org/v3/index.json }
 }
@@ -73,11 +65,11 @@ Task Pack -depends Build, Test {
     $nuspec = [xml](Get-Content -Path $temporaryNuspec -Raw)
 
     foreach ($dependencyGroup in $dependencyGroups) {
-        $group = $nuspec.CreateElement("group", $nuspec.DocumentElement.NamespaceURI)
+        $group = $nuspec.CreateElement('group', $nuspec.DocumentElement.NamespaceURI)
         $group.SetAttribute('targetFramework', $dependencyGroup.TargetFramework)
 
         foreach ($key in $dependencyGroup.Packages.Keys) {
-            $dependency = $nuspec.CreateElement("dependency", $nuspec.DocumentElement.NamespaceURI)
+            $dependency = $nuspec.CreateElement('dependency', $nuspec.DocumentElement.NamespaceURI)
             $dependency.SetAttribute('id', $key)
             $dependency.SetAttribute('version', $dependencyGroup.Packages[$key])
             $dependency.SetAttribute('exclude', 'Build,Analyzers')
@@ -89,6 +81,7 @@ Task Pack -depends Build, Test {
 
     $nuspec.Save($temporaryNuspec)
 
+    Copy-Item -Path 'icon.png' -Destination $script:buildArtifactsFolder
     Exec { nuget pack $temporaryNuspec -Version $Script:NextVersion -BasePath $script:buildArtifactsFolder -OutputDirectory $script:trashFolder -OutputFileNamesWithoutVersion }
 }
 
@@ -96,7 +89,7 @@ Task Test -depends Build {
     Exec { dotnet test '.\TIKSN.Framework.Core.Tests\TIKSN.Framework.Core.Tests.csproj' }
 }
 
-Task Build -depends BuildLanguageLocalization, BuildRegionLocalization, BuildCommonCore, BuildNetCore, BuildAndroid, BuildUWP, CreateReferenceAssembliesForUWP {
+Task Build -depends BuildLanguageLocalization, BuildRegionLocalization, BuildCommonCore, BuildNetCore, BuildAndroid, BuildUWP {
 }
 
 Task BuildLanguageLocalization -depends EstimateVersions {
@@ -132,23 +125,7 @@ Task BuildAndroid -depends EstimateVersions -precondition { $false } {
 Task BuildUWP -depends EstimateVersions {
     $project = Resolve-Path -Path 'TIKSN.Framework.UWP/TIKSN.Framework.UWP.csproj'
 
-
-    Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=x64 /p:OutDir=$script:x64BuildArtifactsFolder }
-    Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=x86 /p:OutDir=$script:x86BuildArtifactsFolder }
-    Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:Platform=arm /p:OutDir=$script:armBuildArtifactsFolder }
-}
-
-Task CreateReferenceAssembliesForUWP -depends EstimateVersions, BuildUWP {
-    $sourceFilePath = Join-Path -Path $script:x86BuildArtifactsFolder -ChildPath "TIKSN.Framework.UWP\TIKSN.Framework.UWP.dll"
-    $destinationFilePath = Join-Path -Path $script:anyBuildArtifactsFolder -ChildPath "TIKSN.Framework.UWP.dll"
-
-    Copy-Item -Path $sourceFilePath -Destination $destinationFilePath
-    #TODO: Patch DLL
-    
-    $sourceFilePath = Join-Path -Path $script:x86BuildArtifactsFolder -ChildPath "TIKSN.Framework.UWP\TIKSN.Framework.UWP.xml"
-    $destinationFilePath = Join-Path -Path $script:anyBuildArtifactsFolder -ChildPath "TIKSN.Framework.UWP.xml"
-
-    Copy-Item -Path $sourceFilePath -Destination $destinationFilePath
+    Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutputPath=$script:anyBuildArtifactsFolder }
 }
 
 Task EstimateVersions -depends Restore {
@@ -168,9 +145,9 @@ Task EstimateVersions -depends Restore {
 
         $nextPreReleaseLabel = $latestPackageVersion.PreReleaseLabel.Split('.')[0] + '.' + (([int]$latestPackageVersion.PreReleaseLabel.Split('.')[1]) + 1)
 
-        $status = Get-RepositoryStatus
+        $currentCommit = git rev-parse HEAD
 
-        $Script:NextVersion = [System.Management.Automation.SemanticVersion]::New($latestPackageVersion.Major, $latestPackageVersion.Minor, $latestPackageVersion.Patch, $nextPreReleaseLabel, $status.CurrentCommit)
+        $Script:NextVersion = [System.Management.Automation.SemanticVersion]::New($latestPackageVersion.Major, $latestPackageVersion.Minor, $latestPackageVersion.Patch, $nextPreReleaseLabel, $currentCommit)
     }
 
     Write-Host "Next version estimated to be $Script:NextVersion"
@@ -193,23 +170,23 @@ Task Clean -depends Init {
 Task Init {
     $date = Get-Date
     $ticks = $date.Ticks
-    $trashFolder = Join-Path -Path . -ChildPath ".trash"
-    $script:trashFolder = Join-Path -Path $trashFolder -ChildPath $ticks.ToString("D19")
+    $trashFolder = Join-Path -Path . -ChildPath '.trash'
+    $script:trashFolder = Join-Path -Path $trashFolder -ChildPath $ticks.ToString('D19')
     New-Item -Path $script:trashFolder -ItemType Directory | Out-Null
     $script:trashFolder = Resolve-Path -Path $script:trashFolder
 
-    $script:buildArtifactsFolder = Join-Path -Path $script:trashFolder -ChildPath "artifacts"
+    $script:buildArtifactsFolder = Join-Path -Path $script:trashFolder -ChildPath 'artifacts'
     New-Item -Path $script:buildArtifactsFolder -ItemType Directory | Out-Null
 
-    $script:anyBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath "any"
+    $script:anyBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'any'
     New-Item -Path $script:anyBuildArtifactsFolder -ItemType Directory | Out-Null
 
-    $script:armBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath "arm"
+    $script:armBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'arm'
     New-Item -Path $script:armBuildArtifactsFolder -ItemType Directory | Out-Null
 
-    $script:x64BuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath "x64"
+    $script:x64BuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'x64'
     New-Item -Path $script:x64BuildArtifactsFolder -ItemType Directory | Out-Null
 
-    $script:x86BuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath "x86"
+    $script:x86BuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'x86'
     New-Item -Path $script:x86BuildArtifactsFolder -ItemType Directory | Out-Null
 }
