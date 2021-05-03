@@ -3,12 +3,14 @@ Properties {
     Import-Module -Name VSSetup
     $vsinstance = Get-VSSetupInstance -All | Select-VSSetupInstance -Product * -Latest
     $msbuildPath = Join-Path -Path $vsinstance.InstallationPath -ChildPath 'MSBuild\Current\Bin\MSBuild.exe'
-    Set-Alias -Name xmsbuild -Value $msbuildPath -Scope "Script"
+    Set-Alias -Name xmsbuild -Value $msbuildPath -Scope 'Script'
 }
 
 Task Publish -depends Pack {
     $packageName = Join-Path -Path $script:trashFolder -ChildPath 'TIKSN-Framework.nupkg'
-    $apiKey = [Environment]::GetEnvironmentVariable('TIKSN-Framework-ApiKey')
+
+    Import-Module -Name Microsoft.PowerShell.SecretManagement
+    $apiKey = Get-Secret -Name 'TIKSN-Framework-ApiKey' -AsPlainText
 
     Exec { nuget push $packageName -ApiKey $apiKey -Source https://api.nuget.org/v3/index.json }
 }
@@ -63,11 +65,11 @@ Task Pack -depends Build, Test {
     $nuspec = [xml](Get-Content -Path $temporaryNuspec -Raw)
 
     foreach ($dependencyGroup in $dependencyGroups) {
-        $group = $nuspec.CreateElement("group", $nuspec.DocumentElement.NamespaceURI)
+        $group = $nuspec.CreateElement('group', $nuspec.DocumentElement.NamespaceURI)
         $group.SetAttribute('targetFramework', $dependencyGroup.TargetFramework)
 
         foreach ($key in $dependencyGroup.Packages.Keys) {
-            $dependency = $nuspec.CreateElement("dependency", $nuspec.DocumentElement.NamespaceURI)
+            $dependency = $nuspec.CreateElement('dependency', $nuspec.DocumentElement.NamespaceURI)
             $dependency.SetAttribute('id', $key)
             $dependency.SetAttribute('version', $dependencyGroup.Packages[$key])
             $dependency.SetAttribute('exclude', 'Build,Analyzers')
@@ -79,6 +81,7 @@ Task Pack -depends Build, Test {
 
     $nuspec.Save($temporaryNuspec)
 
+    Copy-Item -Path 'icon.png' -Destination $script:buildArtifactsFolder
     Exec { nuget pack $temporaryNuspec -Version $Script:NextVersion -BasePath $script:buildArtifactsFolder -OutputDirectory $script:trashFolder -OutputFileNamesWithoutVersion }
 }
 
@@ -167,23 +170,23 @@ Task Clean -depends Init {
 Task Init {
     $date = Get-Date
     $ticks = $date.Ticks
-    $trashFolder = Join-Path -Path . -ChildPath ".trash"
-    $script:trashFolder = Join-Path -Path $trashFolder -ChildPath $ticks.ToString("D19")
+    $trashFolder = Join-Path -Path . -ChildPath '.trash'
+    $script:trashFolder = Join-Path -Path $trashFolder -ChildPath $ticks.ToString('D19')
     New-Item -Path $script:trashFolder -ItemType Directory | Out-Null
     $script:trashFolder = Resolve-Path -Path $script:trashFolder
 
-    $script:buildArtifactsFolder = Join-Path -Path $script:trashFolder -ChildPath "artifacts"
+    $script:buildArtifactsFolder = Join-Path -Path $script:trashFolder -ChildPath 'artifacts'
     New-Item -Path $script:buildArtifactsFolder -ItemType Directory | Out-Null
 
-    $script:anyBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath "any"
+    $script:anyBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'any'
     New-Item -Path $script:anyBuildArtifactsFolder -ItemType Directory | Out-Null
 
-    $script:armBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath "arm"
+    $script:armBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'arm'
     New-Item -Path $script:armBuildArtifactsFolder -ItemType Directory | Out-Null
 
-    $script:x64BuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath "x64"
+    $script:x64BuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'x64'
     New-Item -Path $script:x64BuildArtifactsFolder -ItemType Directory | Out-Null
 
-    $script:x86BuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath "x86"
+    $script:x86BuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'x86'
     New-Item -Path $script:x86BuildArtifactsFolder -ItemType Directory | Out-Null
 }
