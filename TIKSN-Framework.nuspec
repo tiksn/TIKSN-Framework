@@ -9,7 +9,7 @@
         <owners>TIKSN</owners>
         <projectUrl>https://tiksn.com/project/tiksn-framework/</projectUrl>
         <repository type="git" url="https://github.com/tiksn/TIKSN-Framework" />
-        <iconUrl>http://www.tiksn.com/Images/Logo.png</iconUrl>
+        <icon>icon.png</icon>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <license type="expression">MIT</license>
         <description>This is a .NET Framework enhancement framework. Main features are Versioning, Finance, Currency, Foreign Exchange, Money, Pricing strategy, Telemetry, Composite Weighted Progress, Repository and Unity of Wok pattern implementation with Entity Framework Core, Network Connectivity Service and Triggering, Settings, Windows Registry configuration source, Azure Storage Repository, MongoDB Repository, NoDB Repository, Lingual and Regional Localization, Serialization, Rest Requester, Rest Repository, Dependency Injection, Composition Root Setup base classes.</description>
@@ -22,6 +22,9 @@
         </dependencies>
     </metadata>
     <files>
+        <!-- Icon -->
+        <file src="icon.png" target="" />
+
         <!-- Standard 2.0 Language and Region Localization -->
         <file src="any\TIKSN.LanguageLocalization.dll" target="lib\MonoAndroid403" />
         <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\MonoAndroid403\hy" />
