@@ -5,7 +5,9 @@ namespace TIKSN.Framework.IntegrationTests.Data.Mongo
 {
     public class TestMongoRepository : MongoRepository<TestMongoEntity, Guid>, ITestMongoRepository
     {
-        public TestMongoRepository(IMongoDatabaseProvider mongoDatabaseProvider) : base(mongoDatabaseProvider, "Tests")
+        public TestMongoRepository(
+            IMongoClientSessionProvider mongoClientSessionProvider,
+            IMongoDatabaseProvider mongoDatabaseProvider) : base(mongoClientSessionProvider, mongoDatabaseProvider, "Tests")
         {
         }
     }
