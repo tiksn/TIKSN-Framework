@@ -21,6 +21,13 @@ namespace TIKSN.Data.EntityFrameworkCore
             await Task.WhenAll(tasks);
         }
 
+        public override Task DiscardAsync(CancellationToken cancellationToken)
+        {
+            _dbContexts.Do(dbContext => dbContext.ChangeTracker.Clear());
+
+            return Task.CompletedTask;
+        }
+
         protected override bool IsDirty()
         {
             return _dbContexts.Any(dbContext => dbContext.ChangeTracker.HasChanges());
