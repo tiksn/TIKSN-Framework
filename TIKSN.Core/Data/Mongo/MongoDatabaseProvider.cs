@@ -5,10 +5,10 @@ namespace TIKSN.Data.Mongo
 {
     public class MongoDatabaseProvider : IMongoDatabaseProvider
     {
-        private readonly IConfigurationRoot _configuration;
+        private readonly IConfiguration _configuration;
         private readonly string _connectionStringKey;
 
-        public MongoDatabaseProvider(IConfigurationRoot configuration, string connectionStringKey)
+        public MongoDatabaseProvider(IConfiguration configuration, string connectionStringKey)
         {
             _configuration = configuration;
             _connectionStringKey = connectionStringKey;
