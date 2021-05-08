@@ -8,6 +8,8 @@ namespace TIKSN.Framework.IntegrationTests.Data.Mongo
     {
         public Guid Value { get; set; }
 
+        public int Version { get; set; }
+        
         [BsonId]
         public Guid ID { get; set; }
     }
