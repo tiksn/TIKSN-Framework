@@ -4,6 +4,7 @@ using Microsoft.Extensions.Localization;
 using ReactiveUI;
 using System;
 using System.Numerics;
+using TIKSN.Data.Mongo;
 using TIKSN.FileSystem;
 using TIKSN.Globalization;
 using TIKSN.Serialization;
@@ -58,6 +59,8 @@ namespace TIKSN.DependencyInjection
             services.TryAddScoped<IShellCommandContext, ShellCommandContext>();
 
             services.AddSingleton(MessageBus.Current);
+
+            services.TryAddScoped<IMongoUnitOfWorkFactory, MongoUnitOfWorkFactory>();
 
             return services;
         }
