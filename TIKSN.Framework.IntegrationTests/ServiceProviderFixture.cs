@@ -5,6 +5,7 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using TIKSN.Data.Mongo;
+using TIKSN.DependencyInjection;
 using TIKSN.Framework.IntegrationTests.Data.Mongo;
 
 namespace TIKSN.Framework.IntegrationTests
@@ -16,12 +17,18 @@ namespace TIKSN.Framework.IntegrationTests
         public ServiceProviderFixture()
         {
             host = Host.CreateDefaultBuilder()
-                .ConfigureServices(services => { })
+                .ConfigureServices(services =>
+                {
+                    services.AddFrameworkPlatform();
+                })
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureContainer<ContainerBuilder>(builder =>
                 {
+                    builder.RegisterModule<CoreModule>();
+                    builder.RegisterModule<PlatformModule>();
                     builder.RegisterType<TestMongoRepository>().As<ITestMongoRepository>().InstancePerLifetimeScope();
-                    builder.RegisterType<TestMongoDatabaseProvider>().As<IMongoDatabaseProvider>().SingleInstance();
+                    builder.RegisterType<TestMongoDatabaseProviderBase>().As<IMongoDatabaseProvider>().SingleInstance();
+                    builder.RegisterType<TestMongoClientProvider>().As<IMongoClientProvider>().SingleInstance();
                 })
                 .ConfigureHostConfiguration(builder => { builder.AddInMemoryCollection(GetInMemoryConfiguration()); })
                 .Build();
@@ -30,7 +37,7 @@ namespace TIKSN.Framework.IntegrationTests
             {
                 return new()
                 {
-                    {"ConnectionStrings:Mongo", "mongodb://root:0b6273775d@localhost:27017/TIKSN_Framework_IntegrationTests?authSource=admin"}
+                    {"ConnectionStrings:Mongo", "mongodb://localhost:27017/TIKSN_Framework_IntegrationTests?w=majority"}
                 };
             }
         }
