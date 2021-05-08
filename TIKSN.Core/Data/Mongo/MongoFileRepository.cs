@@ -36,7 +36,7 @@ namespace TIKSN.Data.Mongo
 
         public async Task DeleteAsync(string path, CancellationToken cancellationToken)
         {
-            var fileInfo = await _bucket.Find(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Filename, path)).SingleAsync();
+            var fileInfo = await _bucket.Find(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Filename, path)).SingleAsync(cancellationToken: cancellationToken);
 
             await _bucket.DeleteAsync(fileInfo.Id, cancellationToken);
         }
