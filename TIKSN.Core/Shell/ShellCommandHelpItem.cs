@@ -6,8 +6,8 @@ namespace TIKSN.Shell
     {
         public ShellCommandHelpItem(string commandName, IEnumerable<string> parameters)
         {
-            CommandName = commandName;
-            Parameters = string.Join(", ", parameters); //TODO: localize
+            this.CommandName = commandName;
+            this.Parameters = string.Join(", ", parameters); //TODO: localize
         }
 
         public string CommandName { get; }
