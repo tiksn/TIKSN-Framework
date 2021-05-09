@@ -21,8 +21,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         private static readonly CurrencyInfo CanadianDollar;
         private readonly ICurrencyFactory _currencyFactory;
         private readonly ITimeProvider _timeProvider;
-        private DateTimeOffset lastFetchDate;
         private readonly Dictionary<DateTime, Dictionary<CurrencyInfo, decimal>> rates;
+        private DateTimeOffset lastFetchDate;
 
         static BankOfCanada()
         {
