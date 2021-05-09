@@ -1,13 +1,14 @@
-﻿using Microsoft.Extensions.Options;
-using NoDb;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
+using NoDb;
 
 namespace TIKSN.Data.NoDB
 {
-    public class NoDbRepository<TEntity, TIdentity> : IRepository<TEntity>, IQueryRepository<TEntity, TIdentity>, IStreamRepository<TEntity>
+    public class NoDbRepository<TEntity, TIdentity> : IRepository<TEntity>, IQueryRepository<TEntity, TIdentity>,
+        IStreamRepository<TEntity>
         where TEntity : class, IEntity<TIdentity>
         where TIdentity : IEquatable<TIdentity>
     {
@@ -15,31 +16,22 @@ namespace TIKSN.Data.NoDB
         private readonly IBasicQueries<TEntity> _basicQueries;
         private readonly string _projectId;
 
-        public NoDbRepository(IBasicCommands<TEntity> basicCommands, IBasicQueries<TEntity> basicQueries, IOptions<NoDbRepositoryOptions> genericOptions, IOptions<NoDbRepositoryOptions<TEntity>> specificOptions)
+        public NoDbRepository(IBasicCommands<TEntity> basicCommands, IBasicQueries<TEntity> basicQueries,
+            IOptions<NoDbRepositoryOptions> genericOptions, IOptions<NoDbRepositoryOptions<TEntity>> specificOptions)
         {
-            _basicCommands = basicCommands;
-            _basicQueries = basicQueries;
-            _projectId = string.IsNullOrEmpty(genericOptions.Value.ProjectId) ? specificOptions.Value.ProjectId : genericOptions.Value.ProjectId;
+            this._basicCommands = basicCommands;
+            this._basicQueries = basicQueries;
+            this._projectId = string.IsNullOrEmpty(genericOptions.Value.ProjectId)
+                ? specificOptions.Value.ProjectId
+                : genericOptions.Value.ProjectId;
         }
 
-        public Task AddAsync(TEntity entity, CancellationToken cancellationToken)
-        {
-            return _basicCommands.CreateAsync(_projectId, entity.ID.ToString(), entity, cancellationToken);
-        }
-
-        public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
-        {
-            return BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, (e, c) => AddAsync(e, c));
-        }
-
-        public async Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken)
-        {
-            return await _basicQueries.FetchAsync(_projectId, id.ToString(), cancellationToken) != null;
-        }
+        public async Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken) =>
+            await this._basicQueries.FetchAsync(this._projectId, id.ToString(), cancellationToken) != null;
 
         public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
         {
-            var result = await GetOrDefaultAsync(id, cancellationToken);
+            var result = await this.GetOrDefaultAsync(id, cancellationToken);
 
             if (result == null)
             {
@@ -49,48 +41,41 @@ namespace TIKSN.Data.NoDB
             return result;
         }
 
-        public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
-        {
-            return _basicQueries.FetchAsync(_projectId, id.ToString(), cancellationToken);
-        }
+        public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken) =>
+            this._basicQueries.FetchAsync(this._projectId, id.ToString(), cancellationToken);
 
-        public async Task<IEnumerable<TEntity>> ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken)
-        {
-            return await BatchOperationHelper.BatchOperationAsync(ids, cancellationToken, (id, c) => GetAsync(id, c));
-        }
+        public async Task<IEnumerable<TEntity>>
+            ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken) =>
+            await BatchOperationHelper.BatchOperationAsync(ids, cancellationToken, (id, c) => this.GetAsync(id, c));
 
-        public Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)
-        {
-            return _basicCommands.DeleteAsync(_projectId, entity.ID.ToString(), cancellationToken);
-        }
+        public Task AddAsync(TEntity entity, CancellationToken cancellationToken) =>
+            this._basicCommands.CreateAsync(this._projectId, entity.ID.ToString(), entity, cancellationToken);
 
-        public Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
-        {
-            return BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, (e, c) => RemoveAsync(e, c));
-        }
+        public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken) =>
+            BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, (e, c) => this.AddAsync(e, c));
+
+        public Task RemoveAsync(TEntity entity, CancellationToken cancellationToken) =>
+            this._basicCommands.DeleteAsync(this._projectId, entity.ID.ToString(), cancellationToken);
+
+        public Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken) =>
+            BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, (e, c) => this.RemoveAsync(e, c));
+
+        public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken) =>
+            this._basicCommands.UpdateAsync(this._projectId, entity.ID.ToString(), entity, cancellationToken);
+
+        public Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken) =>
+            BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, (e, c) => this.UpdateAsync(e, c));
 
         public async IAsyncEnumerable<TEntity> StreamAllAsync(CancellationToken cancellationToken)
         {
-            var entities = await _basicQueries.GetAllAsync(_projectId, cancellationToken);
+            var entities = await this._basicQueries.GetAllAsync(this._projectId, cancellationToken);
             foreach (var entity in entities)
             {
                 yield return entity;
             }
         }
 
-        public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
-        {
-            return _basicCommands.UpdateAsync(_projectId, entity.ID.ToString(), entity, cancellationToken);
-        }
-
-        public Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
-        {
-            return BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, (e, c) => UpdateAsync(e, c));
-        }
-
-        protected Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken)
-        {
-            return _basicQueries.GetAllAsync(_projectId, cancellationToken);
-        }
+        protected Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken) =>
+            this._basicQueries.GetAllAsync(this._projectId, cancellationToken);
     }
 }
