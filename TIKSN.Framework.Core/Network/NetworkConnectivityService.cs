@@ -5,13 +5,12 @@ namespace TIKSN.Network
 {
     public class NetworkConnectivityService : NetworkConnectivityServiceBase
     {
-        public NetworkConnectivityService() : base()
-        {
-            internetConnectivityStateInternal = Observable.FromEvent<NetworkAvailabilityChangedEventHandler, InternetConnectivityState>(
-                h => (s, e) => GetInternetConnectivityStateInternal(),
-                h => NetworkChange.NetworkAvailabilityChanged += h,
-                h => NetworkChange.NetworkAvailabilityChanged -= h);
-        }
+        public NetworkConnectivityService() =>
+            this.internetConnectivityStateInternal =
+                Observable.FromEvent<NetworkAvailabilityChangedEventHandler, InternetConnectivityState>(
+                    h => (s, e) => this.GetInternetConnectivityStateInternal(),
+                    h => NetworkChange.NetworkAvailabilityChanged += h,
+                    h => NetworkChange.NetworkAvailabilityChanged -= h);
 
         protected override InternetConnectivityState GetInternetConnectivityStateInternal()
         {
