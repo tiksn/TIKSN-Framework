@@ -16,7 +16,7 @@ namespace TIKSN.Framework.IntegrationTests
 
         public ServiceProviderFixture()
         {
-            host = Host.CreateDefaultBuilder()
+            this.host = Host.CreateDefaultBuilder()
                 .ConfigureServices(services =>
                 {
                     services.AddFrameworkPlatform();
@@ -37,16 +37,16 @@ namespace TIKSN.Framework.IntegrationTests
             {
                 return new()
                 {
-                    {"ConnectionStrings:Mongo", "mongodb://localhost:27017/TIKSN_Framework_IntegrationTests?w=majority"}
+                    {
+                        "ConnectionStrings:Mongo",
+                        "mongodb://localhost:27017/TIKSN_Framework_IntegrationTests?w=majority"
+                    }
                 };
             }
         }
 
-        public IServiceProvider Services => host.Services;
+        public IServiceProvider Services => this.host.Services;
 
-        public void Dispose()
-        {
-            host?.Dispose();
-        }
+        public void Dispose() => this.host?.Dispose();
     }
 }
