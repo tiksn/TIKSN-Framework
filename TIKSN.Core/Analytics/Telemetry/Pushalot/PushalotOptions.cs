@@ -6,12 +6,12 @@ namespace TIKSN.Analytics.Telemetry.Pushalot
     {
         public PushalotOptions()
         {
-            EventAuthorizationTokens = new List<string>();
-            ExceptionAuthorizationTokens = new List<string>();
-            MetricAuthorizationTokens = new List<string>();
-            TraceAuthorizationTokens = new List<string>();
-            SeverityLevelExceptionAuthorizationTokens = new Dictionary<TelemetrySeverityLevel, List<string>>();
-            SeverityLevelTraceAuthorizationTokens = new Dictionary<TelemetrySeverityLevel, List<string>>();
+            this.EventAuthorizationTokens = new List<string>();
+            this.ExceptionAuthorizationTokens = new List<string>();
+            this.MetricAuthorizationTokens = new List<string>();
+            this.TraceAuthorizationTokens = new List<string>();
+            this.SeverityLevelExceptionAuthorizationTokens = new Dictionary<TelemetrySeverityLevel, List<string>>();
+            this.SeverityLevelTraceAuthorizationTokens = new Dictionary<TelemetrySeverityLevel, List<string>>();
         }
 
         public List<string> EventAuthorizationTokens { get; }
