@@ -13,24 +13,23 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 {
     public class FederalReserveSystem : ICurrencyConverter, IExchangeRatesProvider
     {
-        private const string DataUrlFormat = "https://www.federalreserve.gov/datadownload/Output.aspx?rel=H10&series=f72f395f2a6b3a4bbc83b2983ad62737&lastObs=7&from={0}&to={1}&filetype=sdmx&label=include&layout=seriescolumn";
+        private const string DataUrlFormat =
+            "https://www.federalreserve.gov/datadownload/Output.aspx?rel=H10&series=f72f395f2a6b3a4bbc83b2983ad62737&lastObs=7&from={0}&to={1}&filetype=sdmx&label=include&layout=seriescolumn";
 
         private static readonly CurrencyInfo UnitedStatesDollar;
         private readonly ICurrencyFactory _currencyFactory;
         private readonly ITimeProvider _timeProvider;
 
-        static FederalReserveSystem()
-        {
-            UnitedStatesDollar = new CurrencyInfo(new RegionInfo("en-US"));
-        }
+        static FederalReserveSystem() => UnitedStatesDollar = new CurrencyInfo(new RegionInfo("en-US"));
 
         public FederalReserveSystem(ICurrencyFactory currencyFactory, ITimeProvider timeProvider)
         {
-            _currencyFactory = currencyFactory;
-            _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+            this._currencyFactory = currencyFactory;
+            this._timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
+            DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
@@ -39,13 +38,14 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return new Money(counterCurrency, rate * baseMoney.Amount);
         }
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
-            ValidateDate(asOn, _timeProvider);
+            ValidateDate(asOn, this._timeProvider);
 
             var result = new List<CurrencyPair>();
 
-            var rates = await GetRatesAsync(asOn, cancellationToken);
+            var rates = await this.GetRatesAsync(asOn, cancellationToken);
 
             foreach (var SomeCurrency in rates.Keys)
             {
@@ -56,42 +56,37 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return result;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
-            ValidateDate(asOn, _timeProvider);
+            ValidateDate(asOn, this._timeProvider);
 
-            var rates = await GetRatesAsync(asOn, cancellationToken);
+            var rates = await this.GetRatesAsync(asOn, cancellationToken);
 
             if (pair.BaseCurrency == UnitedStatesDollar)
             {
                 if (rates.ContainsKey(pair.CounterCurrency))
+                {
                     return rates[pair.CounterCurrency];
+                }
             }
             else if (pair.CounterCurrency == UnitedStatesDollar)
             {
                 if (rates.ContainsKey(pair.BaseCurrency))
+                {
                     return decimal.One / rates[pair.BaseCurrency];
+                }
             }
 
             throw new ArgumentException($"Currency pair '{pair}' not supported.");
         }
 
-        private async Task<Dictionary<CurrencyInfo, decimal>> GetRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
-            var rates = await GetExchangeRatesAsync(asOn, cancellationToken);
-            var result = new Dictionary<CurrencyInfo, decimal>();
-
-            foreach (var rawRate in rates)
-            {
-                result.Add(rawRate.Pair.CounterCurrency, rawRate.Rate);
-            }
-
-            return result;
-        }
-
-        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
-        {
-            string DataUrl = string.Format(DataUrlFormat, _timeProvider.GetCurrentTime().AddDays(-10d).ToString("MM/dd/yyyy"), _timeProvider.GetCurrentTime().ToString("MM/dd/yyyy"));
+            var DataUrl = string.Format(DataUrlFormat,
+                this._timeProvider.GetCurrentTime().AddDays(-10d).ToString("MM/dd/yyyy"),
+                this._timeProvider.GetCurrentTime().ToString("MM/dd/yyyy"));
 
             using (var httpClient = new HttpClient())
             {
@@ -101,23 +96,28 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
                 var result = new List<ExchangeRate>();
 
-                foreach (var SeriesElement in xdoc.Element("{http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message}MessageGroup").Element("{http://www.federalreserve.gov/structure/compact/common}DataSet").Elements("{http://www.federalreserve.gov/structure/compact/H10_H10}Series"))
+                foreach (var SeriesElement in xdoc
+                    .Element("{http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message}MessageGroup")
+                    .Element("{http://www.federalreserve.gov/structure/compact/common}DataSet")
+                    .Elements("{http://www.federalreserve.gov/structure/compact/H10_H10}Series"))
                 {
                     var CurrencyCode = SeriesElement.Attribute("CURRENCY").Value;
                     var FX = SeriesElement.Attribute("FX").Value;
 
                     if (CurrencyCode != "NA")
                     {
-                        Dictionary<DateTime, decimal> rates = new Dictionary<DateTime, decimal>();
+                        var rates = new Dictionary<DateTime, decimal>();
 
-                        foreach (var ObsElement in SeriesElement.Elements("{http://www.federalreserve.gov/structure/compact/common}Obs"))
+                        foreach (var ObsElement in SeriesElement.Elements(
+                            "{http://www.federalreserve.gov/structure/compact/common}Obs"))
                         {
                             var ObsValue = decimal.Parse(ObsElement.Attribute("OBS_VALUE").Value);
-                            var Period = System.DateTime.Parse(ObsElement.Attribute("TIME_PERIOD").Value);
+                            var Period = DateTime.Parse(ObsElement.Attribute("TIME_PERIOD").Value);
 
                             decimal obsValueRate;
 
-                            if (string.Equals(SeriesElement.Attribute("UNIT").Value, "Currency:_Per_USD", System.StringComparison.OrdinalIgnoreCase))
+                            if (string.Equals(SeriesElement.Attribute("UNIT").Value, "Currency:_Per_USD",
+                                StringComparison.OrdinalIgnoreCase))
                             {
                                 obsValueRate = ObsValue;
                             }
@@ -134,15 +134,19 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
                         if (FX == "ZAL")
                         {
-                            result.Add(new ExchangeRate(new CurrencyPair(UnitedStatesDollar, _currencyFactory.Create(CurrencyCode)), date, rate));
+                            result.Add(new ExchangeRate(
+                                new CurrencyPair(UnitedStatesDollar, this._currencyFactory.Create(CurrencyCode)), date,
+                                rate));
                         }
                         else if (FX == "VEB")
                         {
-                            result.Add(new ExchangeRate(new CurrencyPair(UnitedStatesDollar, _currencyFactory.Create("VEF")), date, rate));
+                            result.Add(new ExchangeRate(
+                                new CurrencyPair(UnitedStatesDollar, this._currencyFactory.Create("VEF")), date, rate));
                         }
                         else
                         {
-                            result.Add(new ExchangeRate(new CurrencyPair(UnitedStatesDollar, _currencyFactory.Create(FX)), date, rate));
+                            result.Add(new ExchangeRate(
+                                new CurrencyPair(UnitedStatesDollar, this._currencyFactory.Create(FX)), date, rate));
                         }
                     }
                 }
@@ -151,10 +155,26 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             }
         }
 
+        private async Task<Dictionary<CurrencyInfo, decimal>> GetRatesAsync(DateTimeOffset asOn,
+            CancellationToken cancellationToken)
+        {
+            var rates = await this.GetExchangeRatesAsync(asOn, cancellationToken);
+            var result = new Dictionary<CurrencyInfo, decimal>();
+
+            foreach (var rawRate in rates)
+            {
+                result.Add(rawRate.Pair.CounterCurrency, rawRate.Rate);
+            }
+
+            return result;
+        }
+
         private static void ValidateDate(DateTimeOffset asOn, ITimeProvider timeProvider)
         {
             if (asOn > timeProvider.GetCurrentTime())
+            {
                 throw new ArgumentException("Exchange rate forecasting are not supported.");
+            }
         }
     }
 }
