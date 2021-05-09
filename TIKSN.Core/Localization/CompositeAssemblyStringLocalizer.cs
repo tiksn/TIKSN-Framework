@@ -11,8 +11,8 @@ namespace TIKSN.Localization
     public abstract class CompositeAssemblyStringLocalizer : CompositeStringLocalizer
     {
         private readonly ILogger<CompositeAssemblyStringLocalizer> _logger;
-        private readonly IResourceNamesCache resourceNamesCache;
         private readonly Lazy<IEnumerable<IStringLocalizer>> localizers;
+        private readonly IResourceNamesCache resourceNamesCache;
 
         protected CompositeAssemblyStringLocalizer(IResourceNamesCache resourceNamesCache,
             ILogger<CompositeAssemblyStringLocalizer> logger)
