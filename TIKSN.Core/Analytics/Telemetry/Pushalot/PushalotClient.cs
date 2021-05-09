@@ -135,8 +135,8 @@ namespace TIKSN.Analytics.Telemetry.Pushalot
 
     public class PushalotClient<T> : PushalotClient
     {
-        private Lazy<ILookup<T, PushalotAuthorizationToken>> specialSubscribersLookup;
         private readonly HashSet<Tuple<T, PushalotAuthorizationToken>> specialSubscribersSet;
+        private Lazy<ILookup<T, PushalotAuthorizationToken>> specialSubscribersLookup;
 
         public PushalotClient()
         {
