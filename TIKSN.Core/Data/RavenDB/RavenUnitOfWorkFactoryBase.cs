@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System;
+using Microsoft.Extensions.Options;
 using Raven.Client.Documents;
-using System;
 
 namespace TIKSN.Data.RavenDB
 {
@@ -12,20 +12,16 @@ namespace TIKSN.Data.RavenDB
         protected RavenUnitOfWorkFactoryBase(IOptions<RavenUnitOfWorkFactoryOptions<TUnitOfWork>> options)
         {
             if (options == null)
+            {
                 throw new ArgumentNullException(nameof(options));
+            }
 
-            _store = new DocumentStore { Urls = options.Value.Urls, Database = options.Value.Database }.Initialize();
+            this._store = new DocumentStore {Urls = options.Value.Urls, Database = options.Value.Database}.Initialize();
         }
 
-        public TUnitOfWork Create()
-        {
-            return Create(_store);
-        }
+        public void Dispose() => this._store.Dispose();
 
-        public void Dispose()
-        {
-            _store.Dispose();
-        }
+        public TUnitOfWork Create() => this.Create(this._store);
 
         protected abstract TUnitOfWork Create(IDocumentStore store);
     }
