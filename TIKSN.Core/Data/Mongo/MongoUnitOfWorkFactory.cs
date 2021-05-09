@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Driver;
 
 namespace TIKSN.Data.Mongo
 {
@@ -13,15 +12,16 @@ namespace TIKSN.Data.Mongo
 
         public MongoUnitOfWorkFactory(IMongoClientProvider mongoClientProvider, IServiceProvider serviceProvider)
         {
-            _mongoClientProvider = mongoClientProvider ?? throw new ArgumentNullException(nameof(mongoClientProvider));
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            this._mongoClientProvider =
+                mongoClientProvider ?? throw new ArgumentNullException(nameof(mongoClientProvider));
+            this._serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
-        
+
         public async Task<IMongoUnitOfWork> CreateAsync(CancellationToken cancellationToken)
         {
-            var mongoClient = _mongoClientProvider.GetMongoClient();
-            var clientSessionHandle = await mongoClient.StartSessionAsync(options: null, cancellationToken: cancellationToken);
-            var serviceScope = _serviceProvider.CreateScope();
+            var mongoClient = this._mongoClientProvider.GetMongoClient();
+            var clientSessionHandle = await mongoClient.StartSessionAsync(null, cancellationToken);
+            var serviceScope = this._serviceProvider.CreateScope();
             var mongoClientSessionStore = serviceScope.ServiceProvider.GetRequiredService<IMongoClientSessionStore>();
             mongoClientSessionStore.SetClientSessionHandle(clientSessionHandle);
 
