@@ -8,7 +8,8 @@ namespace TIKSN.Data
 {
     public static class BatchOperationHelper
     {
-        public static Task BatchOperationAsync<T>(IEnumerable<T> entities, CancellationToken cancellationToken, Func<T, CancellationToken, Task> singleOperation)
+        public static Task BatchOperationAsync<T>(IEnumerable<T> entities, CancellationToken cancellationToken,
+            Func<T, CancellationToken, Task> singleOperation)
         {
             if (entities == null)
             {
@@ -25,7 +26,8 @@ namespace TIKSN.Data
             return Task.WhenAll(tasks);
         }
 
-        public static Task<TResult[]> BatchOperationAsync<T, TResult>(IEnumerable<T> entities, CancellationToken cancellationToken, Func<T, CancellationToken, Task<TResult>> singleOperation)
+        public static Task<TResult[]> BatchOperationAsync<T, TResult>(IEnumerable<T> entities,
+            CancellationToken cancellationToken, Func<T, CancellationToken, Task<TResult>> singleOperation)
         {
             if (entities == null)
             {
