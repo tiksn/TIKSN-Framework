@@ -6,7 +6,8 @@ namespace TIKSN.Finance.ForeignExchange
 {
     public interface IExchangeRateService
     {
-        Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken);
+        Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn,
+            CancellationToken cancellationToken);
 
         Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken);
 
