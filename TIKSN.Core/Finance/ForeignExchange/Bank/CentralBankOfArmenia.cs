@@ -18,8 +18,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         private static readonly CurrencyInfo AMD = new(new RegionInfo("hy-AM"));
         private readonly ICurrencyFactory _currencyFactory;
         private readonly ITimeProvider _timeProvider;
-        private DateTimeOffset lastFetchDate;
         private readonly Dictionary<CurrencyInfo, decimal> oneWayRates;
+        private DateTimeOffset lastFetchDate;
         private DateTimeOffset? publicationDate;
 
         public CentralBankOfArmenia(ICurrencyFactory currencyFactory, ITimeProvider timeProvider)
