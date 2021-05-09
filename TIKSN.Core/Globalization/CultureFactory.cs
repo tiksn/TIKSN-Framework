@@ -1,14 +1,16 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Options;
-using System;
+﻿using System;
 using System.Globalization;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using TIKSN.Data.Cache.Memory;
 
 namespace TIKSN.Globalization
 {
     public class CultureFactory : MemoryCacheDecoratorBase<CultureInfo>, ICultureFactory
     {
-        public CultureFactory(IMemoryCache memoryCache, IOptions<MemoryCacheDecoratorOptions> genericOptions, IOptions<MemoryCacheDecoratorOptions<CultureInfo>> specificOptions) : base(memoryCache, genericOptions, specificOptions)
+        public CultureFactory(IMemoryCache memoryCache, IOptions<MemoryCacheDecoratorOptions> genericOptions,
+            IOptions<MemoryCacheDecoratorOptions<CultureInfo>> specificOptions) : base(memoryCache, genericOptions,
+            specificOptions)
         {
         }
 
@@ -16,7 +18,7 @@ namespace TIKSN.Globalization
         {
             var cacheKey = Tuple.Create(entityType, name);
 
-            return GetFromMemoryCache(cacheKey, () => new CultureInfo(name));
+            return this.GetFromMemoryCache(cacheKey, () => new CultureInfo(name));
         }
     }
 }
