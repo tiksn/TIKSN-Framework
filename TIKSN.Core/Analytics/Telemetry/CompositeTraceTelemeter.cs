@@ -11,7 +11,8 @@ namespace TIKSN.Analytics.Telemetry
         private readonly IPartialConfiguration<CommonTelemetryOptions> commonConfiguration;
         private readonly IEnumerable<ITraceTelemeter> traceTelemeters;
 
-        public CompositeTraceTelemeter(IPartialConfiguration<CommonTelemetryOptions> commonConfiguration, IEnumerable<ITraceTelemeter> traceTelemeters)
+        public CompositeTraceTelemeter(IPartialConfiguration<CommonTelemetryOptions> commonConfiguration,
+            IEnumerable<ITraceTelemeter> traceTelemeters)
         {
             this.commonConfiguration = commonConfiguration;
             this.traceTelemeters = traceTelemeters;
@@ -19,9 +20,9 @@ namespace TIKSN.Analytics.Telemetry
 
         public async Task TrackTrace(string message)
         {
-            if (commonConfiguration.GetConfiguration().IsTraceTrackingEnabled)
+            if (this.commonConfiguration.GetConfiguration().IsTraceTrackingEnabled)
             {
-                foreach (var traceTelemeter in traceTelemeters)
+                foreach (var traceTelemeter in this.traceTelemeters)
                 {
                     try
                     {
@@ -37,9 +38,9 @@ namespace TIKSN.Analytics.Telemetry
 
         public async Task TrackTrace(string message, TelemetrySeverityLevel severityLevel)
         {
-            if (commonConfiguration.GetConfiguration().IsTraceTrackingEnabled)
+            if (this.commonConfiguration.GetConfiguration().IsTraceTrackingEnabled)
             {
-                foreach (var traceTelemeter in traceTelemeters)
+                foreach (var traceTelemeter in this.traceTelemeters)
                 {
                     try
                     {
