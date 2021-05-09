@@ -2,18 +2,12 @@
 
 namespace TIKSN.Web.Rest
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property)]
     public class AcceptLanguageAttribute : Attribute
     {
-        public AcceptLanguageAttribute()
-        {
-            Quality = null;
-        }
+        public AcceptLanguageAttribute() => this.Quality = null;
 
-        public AcceptLanguageAttribute(double quality)
-        {
-            Quality = quality;
-        }
+        public AcceptLanguageAttribute(double quality) => this.Quality = quality;
 
         public double? Quality { get; }
     }
