@@ -2,10 +2,7 @@
 {
     public class Base62CorrelationServiceOptions
     {
-        public Base62CorrelationServiceOptions()
-        {
-            ByteLength = 16;
-        }
+        public Base62CorrelationServiceOptions() => this.ByteLength = 16;
 
         public int ByteLength { get; set; }
     }
