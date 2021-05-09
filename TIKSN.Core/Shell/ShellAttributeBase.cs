@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Localization;
-using System;
+﻿using System;
+using Microsoft.Extensions.Localization;
 using TIKSN.Localization;
 
 namespace TIKSN.Shell
@@ -9,24 +9,23 @@ namespace TIKSN.Shell
         private readonly int? _integerNameKey;
         private readonly string _stringNameKey;
 
-        protected ShellAttributeBase(int nameKey)
-        {
-            _integerNameKey = nameKey;
-        }
+        protected ShellAttributeBase(int nameKey) => this._integerNameKey = nameKey;
 
-        protected ShellAttributeBase(string nameKey)
-        {
-            _stringNameKey = nameKey;
-        }
+        protected ShellAttributeBase(string nameKey) => this._stringNameKey = nameKey;
 
         public string GetName(IStringLocalizer stringLocalizer)
         {
-            if (_integerNameKey.HasValue)
-                return stringLocalizer.GetRequiredString(_integerNameKey.Value);
-            else if (Guid.TryParse(_stringNameKey, out Guid key))
+            if (this._integerNameKey.HasValue)
+            {
+                return stringLocalizer.GetRequiredString(this._integerNameKey.Value);
+            }
+
+            if (Guid.TryParse(this._stringNameKey, out var key))
+            {
                 return stringLocalizer.GetRequiredString(key);
-            else
-                return stringLocalizer.GetRequiredString(_stringNameKey);
+            }
+
+            return stringLocalizer.GetRequiredString(this._stringNameKey);
         }
     }
 }
