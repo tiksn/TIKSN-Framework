@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Security;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Win32;
 
 namespace TIKSN.Configuration
 {
@@ -13,21 +13,26 @@ namespace TIKSN.Configuration
         public WindowsRegistryConfigurationProvider(string rootKey, RegistryView registryView)
         {
             if (string.IsNullOrWhiteSpace(rootKey))
+            {
                 throw new ArgumentException("Parameter is null or white space.", nameof(rootKey));
-            _registryView = registryView;
-            _rootKey = rootKey;
+            }
+
+            this._registryView = registryView;
+            this._rootKey = rootKey;
         }
 
         public override void Load()
         {
-            Data.Clear();
+            this.Data.Clear();
 
             try
             {
-                using (var machineKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, _registryView))
+                using (var machineKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, this._registryView))
                 {
                     if (machineKey != null)
-                        PopulateRootKey(machineKey);
+                    {
+                        this.PopulateRootKey(machineKey);
+                    }
                 }
             }
             catch (SecurityException)
@@ -36,10 +41,12 @@ namespace TIKSN.Configuration
 
             try
             {
-                using (var userKey = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, _registryView))
+                using (var userKey = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, this._registryView))
                 {
                     if (userKey != null)
-                        PopulateRootKey(userKey);
+                    {
+                        this.PopulateRootKey(userKey);
+                    }
                 }
             }
             catch (SecurityException)
@@ -50,14 +57,16 @@ namespace TIKSN.Configuration
         private static string CombineConfigurationPath(string parentConfigurationKey, string childConfigurationKey)
         {
             if (string.IsNullOrEmpty(parentConfigurationKey))
+            {
                 return childConfigurationKey;
+            }
 
             return ConfigurationPath.Combine(parentConfigurationKey, childConfigurationKey);
         }
 
         private void PopulateKeys(RegistryKey currentRegistryKey, string parentConfigurationKey)
         {
-            PopulateValues(currentRegistryKey, parentConfigurationKey);
+            this.PopulateValues(currentRegistryKey, parentConfigurationKey);
 
             var subKeyNames = currentRegistryKey.GetSubKeyNames();
 
@@ -66,17 +75,21 @@ namespace TIKSN.Configuration
                 using (var registrySubKey = currentRegistryKey.OpenSubKey(subKeyName))
                 {
                     if (registrySubKey != null)
-                        PopulateKeys(registrySubKey, CombineConfigurationPath(parentConfigurationKey, subKeyName));
+                    {
+                        this.PopulateKeys(registrySubKey, CombineConfigurationPath(parentConfigurationKey, subKeyName));
+                    }
                 }
             }
         }
 
         private void PopulateRootKey(RegistryKey hiveKey)
         {
-            using (var registryKey = hiveKey.OpenSubKey(_rootKey))
+            using (var registryKey = hiveKey.OpenSubKey(this._rootKey))
             {
                 if (registryKey != null)
-                    PopulateKeys(registryKey, null);
+                {
+                    this.PopulateKeys(registryKey, null);
+                }
             }
         }
 
@@ -88,7 +101,7 @@ namespace TIKSN.Configuration
             {
                 var valueData = currentRegistryKey.GetValue(valueName);
 
-                Set(CombineConfigurationPath(parentConfigurationKey, valueName), valueData.ToString());
+                this.Set(CombineConfigurationPath(parentConfigurationKey, valueName), valueData.ToString());
             }
         }
     }
