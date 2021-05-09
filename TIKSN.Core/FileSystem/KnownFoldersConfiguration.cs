@@ -7,8 +7,8 @@ namespace TIKSN.FileSystem
     {
         public KnownFoldersConfiguration(Assembly mainAssembly, KnownFolderVersionConsideration versionConsideration)
         {
-            MainAssembly = mainAssembly ?? throw new ArgumentNullException(nameof(mainAssembly));
-            VersionConsideration = versionConsideration;
+            this.MainAssembly = mainAssembly ?? throw new ArgumentNullException(nameof(mainAssembly));
+            this.VersionConsideration = versionConsideration;
         }
 
         public Assembly MainAssembly { get; }
