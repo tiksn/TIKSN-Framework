@@ -7,14 +7,9 @@ namespace TIKSN.Shell
     {
         private readonly IOptions<ShellProgressFactoryOptions> options;
 
-        public ShellProgressFactory(IOptions<ShellProgressFactoryOptions> options)
-        {
-            this.options = options;
-        }
+        public ShellProgressFactory(IOptions<ShellProgressFactoryOptions> options) => this.options = options;
 
-        public DisposableProgress<OperationProgressReport> Create(string activity, string statusDescription)
-        {
-            return new ShellProgress($"{activity} {statusDescription}", options.Value.Accuracy);
-        }
+        public DisposableProgress<OperationProgressReport> Create(string activity, string statusDescription) =>
+            new ShellProgress($"{activity} {statusDescription}", this.options.Value.Accuracy);
     }
 }
