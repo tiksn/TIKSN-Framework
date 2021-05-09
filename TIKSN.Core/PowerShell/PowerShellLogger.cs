@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Management.Automation;
 using System.Text;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace TIKSN.PowerShell
 {
@@ -15,29 +15,28 @@ namespace TIKSN.PowerShell
         private readonly PowerShellLoggerScopeDisposable scopeDisposable;
         private readonly ConcurrentStack<object> scopes;
 
-        public PowerShellLogger(ICurrentCommandProvider currentCommandProvider, IOptions<PowerShellLoggerOptions> options, string name)
+        public PowerShellLogger(ICurrentCommandProvider currentCommandProvider,
+            IOptions<PowerShellLoggerOptions> options, string name)
         {
             this.options = options;
-            scopes = new ConcurrentStack<object>();
-            scopeDisposable = new PowerShellLoggerScopeDisposable(scopes);
+            this.scopes = new ConcurrentStack<object>();
+            this.scopeDisposable = new PowerShellLoggerScopeDisposable(this.scopes);
             this.name = name;
-            _currentCommandProvider = currentCommandProvider;
+            this._currentCommandProvider = currentCommandProvider;
         }
 
         public IDisposable BeginScope<TState>(TState state)
         {
-            scopes.Push(state);
-            return scopeDisposable;
+            this.scopes.Push(state);
+            return this.scopeDisposable;
         }
 
-        public bool IsEnabled(LogLevel logLevel)
-        {
-            return options.Value.MinLevel >= logLevel;
-        }
+        public bool IsEnabled(LogLevel logLevel) => this.options.Value.MinLevel >= logLevel;
 
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
+            Func<TState, Exception, string> formatter)
         {
-            if (!IsEnabled(logLevel))
+            if (!this.IsEnabled(logLevel))
             {
                 return;
             }
@@ -51,7 +50,7 @@ namespace TIKSN.PowerShell
 
             if (!string.IsNullOrEmpty(message) || exception != null)
             {
-                WriteMessage(logLevel, eventId, message, exception);
+                this.WriteMessage(logLevel, eventId, message, exception);
             }
         }
 
@@ -78,7 +77,7 @@ namespace TIKSN.PowerShell
         {
             var logBuilder = new StringBuilder();
 
-            var logLevelString = GetLogLevelString(logLevel);
+            var logLevelString = this.GetLogLevelString(logLevel);
 
             if (!string.IsNullOrEmpty(logLevelString))
             {
@@ -86,20 +85,20 @@ namespace TIKSN.PowerShell
                 logBuilder.Append(": ");
             }
 
-            logBuilder.Append(name);
+            logBuilder.Append(this.name);
             logBuilder.Append("[");
             logBuilder.Append(eventId);
             logBuilder.Append("]");
 
-            if (options.Value.IncludeScopes)
+            if (this.options.Value.IncludeScopes)
             {
-                foreach (var scope in scopes)
+                foreach (var scope in this.scopes)
                 {
                     logBuilder.Append(" => ");
                     logBuilder.Append(scope);
                 }
 
-                if (scopes.Count > 0)
+                if (this.scopes.Count > 0)
                 {
                     logBuilder.Append(" |");
                 }
@@ -117,20 +116,22 @@ namespace TIKSN.PowerShell
             {
                 case LogLevel.Trace:
                 case LogLevel.Information:
-                    _currentCommandProvider.GetCurrentCommand().WriteVerbose(logBuilder.ToString());
+                    this._currentCommandProvider.GetCurrentCommand().WriteVerbose(logBuilder.ToString());
                     break;
 
                 case LogLevel.Debug:
-                    _currentCommandProvider.GetCurrentCommand().WriteDebug(logBuilder.ToString());
+                    this._currentCommandProvider.GetCurrentCommand().WriteDebug(logBuilder.ToString());
                     break;
 
                 case LogLevel.Warning:
-                    _currentCommandProvider.GetCurrentCommand().WriteWarning(logBuilder.ToString());
+                    this._currentCommandProvider.GetCurrentCommand().WriteWarning(logBuilder.ToString());
                     break;
 
                 case LogLevel.Error:
                 case LogLevel.Critical:
-                    _currentCommandProvider.GetCurrentCommand().WriteError(new ErrorRecord(new Exception(logBuilder.ToString(), exception), eventId.ToString(), ErrorCategory.InvalidOperation, null));
+                    this._currentCommandProvider.GetCurrentCommand().WriteError(
+                        new ErrorRecord(new Exception(logBuilder.ToString(), exception), eventId.ToString(),
+                            ErrorCategory.InvalidOperation, null));
                     break;
 
                 default:
