@@ -9,9 +9,10 @@ namespace TIKSN.Settings.Tests
     {
         partial void SetupDenepdencies()
         {
-            services.AddFrameworkPlatform();
-            services.AddSingleton<ISettingsService, FileSettingsService>();
-            services.AddSingleton(new KnownFoldersConfiguration(GetType().Assembly, KnownFolderVersionConsideration.None));
+            this.services.AddFrameworkPlatform();
+            this.services.AddSingleton<ISettingsService, FileSettingsService>();
+            this.services.AddSingleton(new KnownFoldersConfiguration(this.GetType().Assembly,
+                KnownFolderVersionConsideration.None));
 
             var configurationRoot = new ConfigurationBuilder()
                 .AddInMemoryCollection()
@@ -19,7 +20,8 @@ namespace TIKSN.Settings.Tests
 
             configurationRoot["RelativePath"] = "settings.db";
 
-            services.ConfigurePartial<FileSettingsServiceOptions, FileSettingsServiceOptionsValidator>(configurationRoot);
+            this.services.ConfigurePartial<FileSettingsServiceOptions, FileSettingsServiceOptionsValidator>(
+                configurationRoot);
         }
     }
 }
