@@ -8,7 +8,7 @@ namespace TIKSN.Finance
     public class FixedRateCurrencyConverter : ICurrencyConverter
     {
         private CurrencyPair currencyPair;
-        private decimal rate;
+        private readonly decimal rate;
 
         public FixedRateCurrencyConverter(CurrencyPair pair, decimal rate)
         {
@@ -20,56 +20,54 @@ namespace TIKSN.Finance
             }
             else
             {
-                throw new System.ArgumentException("Rate cannot be negative or zero.", "Rate");
+                throw new ArgumentException("Rate cannot be negative or zero.", "Rate");
             }
         }
 
         public CurrencyPair CurrencyPair
         {
-            get
-            {
-                return this.currencyPair;
-            }
+            get => this.currencyPair;
             private set
             {
-                if (object.ReferenceEquals(value, null))
+                if (ReferenceEquals(value, null))
+                {
                     throw new ArgumentNullException();
+                }
 
                 this.currencyPair = value;
             }
         }
 
-        public Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
+        public Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
-            CurrencyPair requiredPair = new CurrencyPair(baseMoney.Currency, counterCurrency);
+            var requiredPair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
             if (this.CurrencyPair == requiredPair)
             {
                 return Task.FromResult(new Money(this.CurrencyPair.CounterCurrency, baseMoney.Amount * this.rate));
             }
-            else
-            {
-                throw new ArgumentException("Unsupported currency pair.");
-            }
+
+            throw new ArgumentException("Unsupported currency pair.");
         }
 
-        public Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
+        public Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
-            IEnumerable<CurrencyPair> singleItemList = new List<CurrencyPair>() { this.currencyPair };
+            IEnumerable<CurrencyPair> singleItemList = new List<CurrencyPair> {this.currencyPair};
 
             return Task.FromResult(singleItemList);
         }
 
-        public Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
+        public Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
             if (this.CurrencyPair == pair)
             {
                 return Task.FromResult(this.rate);
             }
-            else
-            {
-                throw new ArgumentException("Unsupported currency pair.");
-            }
+
+            throw new ArgumentException("Unsupported currency pair.");
         }
     }
 }
