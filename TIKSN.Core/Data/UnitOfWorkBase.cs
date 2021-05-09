@@ -11,7 +11,7 @@ namespace TIKSN.Data
 
         public virtual void Dispose()
         {
-            if (IsDirty())
+            if (this.IsDirty())
             {
                 throw new InvalidOperationException("Unit of work disposed without completion.");
             }
@@ -19,9 +19,9 @@ namespace TIKSN.Data
 
         public async ValueTask DisposeAsync()
         {
-            if (IsDirty())
+            if (this.IsDirty())
             {
-                await DiscardAsync(default);
+                await this.DiscardAsync(default);
             }
         }
 
