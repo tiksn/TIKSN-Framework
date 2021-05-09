@@ -4,6 +4,6 @@ namespace TIKSN.Data.Mongo
 {
     public interface IMongoUnitOfWork : IUnitOfWork
     {
-        public IServiceProvider Services { get;  }
+        public IServiceProvider Services { get; }
     }
 }
