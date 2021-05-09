@@ -4,9 +4,7 @@ namespace TIKSN.Localization
 {
     public static class RegionLocalizationParameters
     {
-        public static string GetDefaultCultureName()
-        {
-            return typeof(RegionLocalizationParameters).GetTypeInfo().Assembly.GetName().CultureName;
-        }
+        public static string GetDefaultCultureName() =>
+            typeof(RegionLocalizationParameters).GetTypeInfo().Assembly.GetName().CultureName;
     }
 }
