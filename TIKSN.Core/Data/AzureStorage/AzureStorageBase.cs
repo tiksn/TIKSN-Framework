@@ -10,13 +10,11 @@ namespace TIKSN.Data.AzureStorage
 
         protected AzureStorageBase(IConfigurationRoot configuration, string connectionStringKey)
         {
-            _configuration = configuration;
-            _connectionStringKey = connectionStringKey;
+            this._configuration = configuration;
+            this._connectionStringKey = connectionStringKey;
         }
 
-        protected CloudStorageAccount GetCloudStorageAccount()
-        {
-            return CloudStorageAccount.Parse(_configuration.GetConnectionString(_connectionStringKey));
-        }
+        protected CloudStorageAccount GetCloudStorageAccount() =>
+            CloudStorageAccount.Parse(this._configuration.GetConnectionString(this._connectionStringKey));
     }
 }
