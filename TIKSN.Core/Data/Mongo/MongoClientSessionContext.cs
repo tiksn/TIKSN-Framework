@@ -8,21 +8,18 @@ namespace TIKSN.Data.Mongo
     {
         private Option<IClientSessionHandle> _clientSessionHandle = Option<IClientSessionHandle>.None;
 
-        public Option<IClientSessionHandle> GetClientSessionHandle()
-        {
-            return _clientSessionHandle;
-        }
+        public Option<IClientSessionHandle> GetClientSessionHandle() => this._clientSessionHandle;
 
         public void SetClientSessionHandle(IClientSessionHandle clientSessionHandle)
         {
-            if (clientSessionHandle == null) throw new ArgumentNullException(nameof(clientSessionHandle));
+            if (clientSessionHandle == null)
+            {
+                throw new ArgumentNullException(nameof(clientSessionHandle));
+            }
 
-            _clientSessionHandle = Option<IClientSessionHandle>.Some(clientSessionHandle);
+            this._clientSessionHandle = Option<IClientSessionHandle>.Some(clientSessionHandle);
         }
 
-        public void ClearClientSessionHandle()
-        {
-            _clientSessionHandle = Option<IClientSessionHandle>.None;
-        }
+        public void ClearClientSessionHandle() => this._clientSessionHandle = Option<IClientSessionHandle>.None;
     }
 }
