@@ -11,7 +11,8 @@ namespace TIKSN.Analytics.Telemetry
         private readonly IPartialConfiguration<CommonTelemetryOptions> commonConfiguration;
         private readonly IEnumerable<IMetricTelemeter> metricTelemeters;
 
-        public CompositeMetricTelemeter(IPartialConfiguration<CommonTelemetryOptions> commonConfiguration, IEnumerable<IMetricTelemeter> metricTelemeters)
+        public CompositeMetricTelemeter(IPartialConfiguration<CommonTelemetryOptions> commonConfiguration,
+            IEnumerable<IMetricTelemeter> metricTelemeters)
         {
             this.commonConfiguration = commonConfiguration;
             this.metricTelemeters = metricTelemeters;
@@ -19,9 +20,9 @@ namespace TIKSN.Analytics.Telemetry
 
         public async Task TrackMetric(string metricName, decimal metricValue)
         {
-            if (commonConfiguration.GetConfiguration().IsMetricTrackingEnabled)
+            if (this.commonConfiguration.GetConfiguration().IsMetricTrackingEnabled)
             {
-                foreach (var metricTelemeter in metricTelemeters)
+                foreach (var metricTelemeter in this.metricTelemeters)
                 {
                     try
                     {
