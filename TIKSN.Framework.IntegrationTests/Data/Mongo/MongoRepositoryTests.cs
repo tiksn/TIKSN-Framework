@@ -11,22 +11,16 @@ namespace TIKSN.Framework.IntegrationTests.Data.Mongo
     {
         private readonly ServiceProviderFixture _serviceProviderFixture;
 
-        public MongoRepositoryTests(ServiceProviderFixture serviceProviderFixture)
-        {
-            _serviceProviderFixture = serviceProviderFixture;
-        }
+        public MongoRepositoryTests(ServiceProviderFixture serviceProviderFixture) =>
+            this._serviceProviderFixture = serviceProviderFixture;
 
         [Fact]
         public async Task TestCreationAndRetrieval()
         {
-            var testRepository = _serviceProviderFixture.Services.GetRequiredService<ITestMongoRepository>();
+            var testRepository = this._serviceProviderFixture.Services.GetRequiredService<ITestMongoRepository>();
 
             var testEntityId = Guid.NewGuid();
-            var testEntity = new TestMongoEntity
-            {
-                ID = testEntityId,
-                Value = Guid.NewGuid()
-            };
+            var testEntity = new TestMongoEntity {ID = testEntityId, Value = Guid.NewGuid()};
 
             await testRepository.AddAsync(testEntity, default);
 
