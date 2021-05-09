@@ -5,38 +5,32 @@ namespace TIKSN.Shell
 {
     public class ShellProgress : DisposableProgress<OperationProgressReport>
     {
-        private readonly ProgressBar _progressBar;
         private readonly int _accuracy;
+        private readonly ProgressBar _progressBar;
 
         public ShellProgress(string message, int accuracy)
         {
-            _accuracy = accuracy;
+            this._accuracy = accuracy;
             var options = new ProgressBarOptions();
-            _progressBar = new ProgressBar(EstimateTicks(100d), message, options);
+            this._progressBar = new ProgressBar(this.EstimateTicks(100d), message, options);
         }
 
-        private int EstimateTicks(double percentage)
-        {
-            return (int)(percentage * _accuracy);
-        }
+        private int EstimateTicks(double percentage) => (int)(percentage * this._accuracy);
 
         protected override void OnReport(OperationProgressReport value)
         {
             base.OnReport(value);
 
-            _progressBar.Message = $"{value.StatusDescription} {value.CurrentOperation}";
+            this._progressBar.Message = $"{value.StatusDescription} {value.CurrentOperation}";
 
-            var updatedTicks = EstimateTicks(value.PercentComplete);
+            var updatedTicks = this.EstimateTicks(value.PercentComplete);
 
-            while (_progressBar.CurrentTick < updatedTicks)
+            while (this._progressBar.CurrentTick < updatedTicks)
             {
-                _progressBar.Tick();
+                this._progressBar.Tick();
             }
         }
 
-        public override void Dispose()
-        {
-            _progressBar.Dispose();
-        }
+        public override void Dispose() => this._progressBar.Dispose();
     }
 }
