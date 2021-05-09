@@ -27,7 +27,7 @@ namespace TIKSN.Framework.IntegrationTests
                     builder.RegisterModule<CoreModule>();
                     builder.RegisterModule<PlatformModule>();
                     builder.RegisterType<TestMongoRepository>().As<ITestMongoRepository>().InstancePerLifetimeScope();
-                    builder.RegisterType<TestMongoDatabaseProviderBase>().As<IMongoDatabaseProvider>().SingleInstance();
+                    builder.RegisterType<TestMongoDatabaseProvider>().As<IMongoDatabaseProvider>().SingleInstance();
                     builder.RegisterType<TestMongoClientProvider>().As<IMongoClientProvider>().SingleInstance();
                 })
                 .ConfigureHostConfiguration(builder => { builder.AddInMemoryCollection(GetInMemoryConfiguration()); })
