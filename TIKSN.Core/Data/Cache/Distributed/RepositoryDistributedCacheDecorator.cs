@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Options;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
 using TIKSN.Serialization;
 
 namespace TIKSN.Data.Cache.Distributed
@@ -24,87 +24,93 @@ namespace TIKSN.Data.Cache.Distributed
             IOptions<DistributedCacheDecoratorOptions<TEntity>> specificOptions)
             : base(distributedCache, serializer, deserializer, genericOptions, specificOptions)
         {
-            _repository = repository;
-            _cacheKeychain = new HashSet<string>();
+            this._repository = repository;
+            this._cacheKeychain = new HashSet<string>();
         }
 
         public async Task AddAsync(TEntity entity, CancellationToken cancellationToken)
         {
-            await _repository.AddAsync(entity, cancellationToken);
+            await this._repository.AddAsync(entity, cancellationToken);
 
-            await InvalidateCacheItemAsync(entity, cancellationToken);
+            await this.InvalidateCacheItemAsync(entity, cancellationToken);
         }
 
         public async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
-            await _repository.AddRangeAsync(entities, cancellationToken);
+            await this._repository.AddRangeAsync(entities, cancellationToken);
 
-            await InvalidateCacheItemsAsync(entities, cancellationToken);
+            await this.InvalidateCacheItemsAsync(entities, cancellationToken);
         }
 
         public async Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)
         {
-            await _repository.RemoveAsync(entity, cancellationToken);
+            await this._repository.RemoveAsync(entity, cancellationToken);
 
-            await InvalidateCacheItemAsync(entity, cancellationToken);
+            await this.InvalidateCacheItemAsync(entity, cancellationToken);
         }
 
         public async Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
-            await _repository.RemoveRangeAsync(entities, cancellationToken);
+            await this._repository.RemoveRangeAsync(entities, cancellationToken);
 
-            await InvalidateCacheItemsAsync(entities, cancellationToken);
+            await this.InvalidateCacheItemsAsync(entities, cancellationToken);
         }
 
         public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
         {
-            await _repository.RemoveAsync(entity, cancellationToken);
+            await this._repository.RemoveAsync(entity, cancellationToken);
 
-            await InvalidateCacheItemAsync(entity, cancellationToken);
+            await this.InvalidateCacheItemAsync(entity, cancellationToken);
         }
 
         public async Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
-            await _repository.UpdateRangeAsync(entities, cancellationToken);
+            await this._repository.UpdateRangeAsync(entities, cancellationToken);
 
-            await InvalidateCacheItemsAsync(entities, cancellationToken);
+            await this.InvalidateCacheItemsAsync(entities, cancellationToken);
         }
 
-        protected Task<TEntity> GetQueryFromDistributedCacheAsync(string cacheKey, Func<Task<TEntity>> getFromSource, CancellationToken cancellationToken)
+        protected Task<TEntity> GetQueryFromDistributedCacheAsync(string cacheKey, Func<Task<TEntity>> getFromSource,
+            CancellationToken cancellationToken)
         {
-            _cacheKeychain.Add(cacheKey);
+            this._cacheKeychain.Add(cacheKey);
 
-            return GetFromDistributedCacheAsync(cacheKey, cancellationToken, getFromSource);
+            return this.GetFromDistributedCacheAsync(cacheKey, cancellationToken, getFromSource);
         }
 
         protected virtual async Task InvalidateCacheEntityAsync(TEntity entity, CancellationToken cancellationToken)
         {
             var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, entity.ID).ToString();
 
-            await _distributedCache.RemoveAsync(cacheKey, cancellationToken);
+            await this._distributedCache.RemoveAsync(cacheKey, cancellationToken);
         }
 
         protected virtual async Task InvalidateCacheItemAsync(TEntity entity, CancellationToken cancellationToken)
         {
-            await InvalidateCacheEntityAsync(entity, cancellationToken);
+            await this.InvalidateCacheEntityAsync(entity, cancellationToken);
 
-            await InvalidateCacheQueryItemsAsync(cancellationToken);
+            await this.InvalidateCacheQueryItemsAsync(cancellationToken);
         }
 
-        protected virtual async Task InvalidateCacheItemsAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
+        protected virtual async Task InvalidateCacheItemsAsync(IEnumerable<TEntity> entities,
+            CancellationToken cancellationToken)
         {
             foreach (var entity in entities)
-                await InvalidateCacheEntityAsync(entity, cancellationToken);
+            {
+                await this.InvalidateCacheEntityAsync(entity, cancellationToken);
+            }
 
-            await InvalidateCacheQueryItemsAsync(cancellationToken);
+            await this.InvalidateCacheQueryItemsAsync(cancellationToken);
         }
 
         protected virtual async Task InvalidateCacheQueryItemsAsync(CancellationToken cancellationToken)
         {
-            foreach (var cacheKey in _cacheKeychain)
-                await _distributedCache.RemoveAsync(cacheKey, cancellationToken);
+            foreach (var cacheKey in this._cacheKeychain)
+            {
+                await this._distributedCache.RemoveAsync(cacheKey, cancellationToken);
+            }
 
-            _cacheKeychain.Clear();
+            this._cacheKeychain.Clear();
         }
     }
 }
