@@ -21,10 +21,14 @@ namespace TIKSN.Web.Rest
             IDeserializerRestFactory deserializerRestFactory,
             IRestAuthenticationTokenProvider restAuthenticationTokenProvider)
         {
-            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-            _serializerRestFactory = serializerRestFactory ?? throw new ArgumentNullException(nameof(serializerRestFactory));
-            _deserializerRestFactory = deserializerRestFactory ?? throw new ArgumentNullException(nameof(deserializerRestFactory));
-            _restAuthenticationTokenProvider = restAuthenticationTokenProvider ?? throw new ArgumentNullException(nameof(restAuthenticationTokenProvider));
+            this._httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            this._serializerRestFactory =
+                serializerRestFactory ?? throw new ArgumentNullException(nameof(serializerRestFactory));
+            this._deserializerRestFactory = deserializerRestFactory ??
+                                            throw new ArgumentNullException(nameof(deserializerRestFactory));
+            this._restAuthenticationTokenProvider = restAuthenticationTokenProvider ??
+                                                    throw new ArgumentNullException(
+                                                        nameof(restAuthenticationTokenProvider));
         }
 
         public async Task<TResult> Request<TResult, TRequest>(TRequest request, CancellationToken cancellationToken)
@@ -34,14 +38,17 @@ namespace TIKSN.Web.Rest
             var restEndpointAttribute = requestType.GetCustomAttribute<RestEndpointAttribute>();
 
             if (restEndpointAttribute == null)
+            {
                 throw new NotSupportedException("Requested Type has to have RestEndpointAttribute.");
+            }
 
             var resourceLocation = restEndpointAttribute.ResourceTemplate;
             var requestUrl = new Uri(resourceLocation, UriKind.Relative);
 
-            var httpClient = await _httpClientFactory.Create(restEndpointAttribute.ApiKey);
+            var httpClient = await this._httpClientFactory.Create(restEndpointAttribute.ApiKey);
 
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(restEndpointAttribute.MediaType));
+            httpClient.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue(restEndpointAttribute.MediaType));
 
             var hasContent = false;
             object requestContent = null;
@@ -55,15 +62,18 @@ namespace TIKSN.Web.Rest
                 if (acceptLanguageAttribute != null)
                 {
                     var propertyValue = (CultureInfo)property.GetValue(request);
-                    httpClient.DefaultRequestHeaders.AcceptLanguage.Add(acceptLanguageAttribute.Quality.HasValue ?
-                        new StringWithQualityHeaderValue(propertyValue.Name, acceptLanguageAttribute.Quality.Value) :
-                        new StringWithQualityHeaderValue(propertyValue.Name));
+                    httpClient.DefaultRequestHeaders.AcceptLanguage.Add(acceptLanguageAttribute.Quality.HasValue
+                        ? new StringWithQualityHeaderValue(propertyValue.Name, acceptLanguageAttribute.Quality.Value)
+                        : new StringWithQualityHeaderValue(propertyValue.Name));
                 }
 
                 if (restContentAttribute != null)
                 {
                     if (hasContent)
+                    {
                         throw new NotSupportedException("Request model can't have more than one content property.");
+                    }
+
                     hasContent = true;
 
                     requestContent = property.GetValue(request);
@@ -94,12 +104,14 @@ namespace TIKSN.Web.Rest
                 }
             }
 
-            await SetAuthenticationHeader(restEndpointAttribute, httpClient);
+            await this.SetAuthenticationHeader(restEndpointAttribute, httpClient);
 
-            return await MakeRequest<TResult>(httpClient, restEndpointAttribute.Verb, requestUrl, requestContent, requestContentMediaType, restEndpointAttribute.MediaType, cancellationToken);
+            return await this.MakeRequest<TResult>(httpClient, restEndpointAttribute.Verb, requestUrl, requestContent,
+                requestContentMediaType, restEndpointAttribute.MediaType, cancellationToken);
         }
 
-        private static string ReplaceParameterValueInLocation(string resourceLocation, string parameterName, string parameterValue)
+        private static string ReplaceParameterValueInLocation(string resourceLocation, string parameterName,
+            string parameterValue)
         {
             var escapedParameterValue = parameterValue ?? string.Empty;
             escapedParameterValue = Uri.EscapeUriString(parameterValue);
@@ -108,12 +120,13 @@ namespace TIKSN.Web.Rest
             return resourceLocation;
         }
 
-        private HttpContent GetContent(object requestContent, string requestContentMediaType)
-        {
-            return new StringContent(_serializerRestFactory.Create(requestContentMediaType).Serialize(requestContent), Encoding.UTF8, requestContentMediaType);
-        }
+        private HttpContent GetContent(object requestContent, string requestContentMediaType) => new StringContent(
+            this._serializerRestFactory.Create(requestContentMediaType).Serialize(requestContent), Encoding.UTF8,
+            requestContentMediaType);
 
-        private async Task<TResult> MakeRequest<TResult>(HttpClient httpClient, RestVerb verb, Uri requestUrl, object requestContent, string requestContentMediaType, string responseContentMediaType, CancellationToken cancellationToken)
+        private async Task<TResult> MakeRequest<TResult>(HttpClient httpClient, RestVerb verb, Uri requestUrl,
+            object requestContent, string requestContentMediaType, string responseContentMediaType,
+            CancellationToken cancellationToken)
         {
             HttpResponseMessage response;
             switch (verb)
@@ -127,21 +140,24 @@ namespace TIKSN.Web.Rest
                     break;
 
                 case RestVerb.Put:
-                    response = await httpClient.PutAsync(requestUrl, GetContent(requestContent, requestContentMediaType), cancellationToken);
+                    response = await httpClient.PutAsync(requestUrl,
+                        this.GetContent(requestContent, requestContentMediaType), cancellationToken);
                     break;
 
                 case RestVerb.Post:
-                    response = await httpClient.PostAsync(requestUrl, GetContent(requestContent, requestContentMediaType), cancellationToken);
+                    response = await httpClient.PostAsync(requestUrl,
+                        this.GetContent(requestContent, requestContentMediaType), cancellationToken);
                     break;
 
                 default:
                     throw new NotSupportedException($"Request method '{verb.ToString()}' is not supported.");
             }
 
-            return await ParseResponse<TResult>(response, responseContentMediaType);
+            return await this.ParseResponse<TResult>(response, responseContentMediaType);
         }
 
-        private async Task<TResult> ParseResponse<TResult>(HttpResponseMessage response, string responseContentMediaType)
+        private async Task<TResult> ParseResponse<TResult>(HttpResponseMessage response,
+            string responseContentMediaType)
         {
             var result = default(TResult);
 
@@ -149,7 +165,7 @@ namespace TIKSN.Web.Rest
 
             if (content != null)
             {
-                result = _deserializerRestFactory.Create(responseContentMediaType).Deserialize<TResult>(content);
+                result = this._deserializerRestFactory.Create(responseContentMediaType).Deserialize<TResult>(content);
             }
 
             return result;
@@ -173,12 +189,15 @@ namespace TIKSN.Web.Rest
                     break;
 
                 default:
-                    throw new NotSupportedException($"Authentication type '{restEndpointAttribute.Authentication.ToString()}' is not supported.");
+                    throw new NotSupportedException(
+                        $"Authentication type '{restEndpointAttribute.Authentication.ToString()}' is not supported.");
             }
 
-            var authenticationToken = await _restAuthenticationTokenProvider.GetAuthenticationToken(restEndpointAttribute.ApiKey);
+            var authenticationToken =
+                await this._restAuthenticationTokenProvider.GetAuthenticationToken(restEndpointAttribute.ApiKey);
 
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authenticationSchema, authenticationToken);
+            httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue(authenticationSchema, authenticationToken);
         }
     }
 }
