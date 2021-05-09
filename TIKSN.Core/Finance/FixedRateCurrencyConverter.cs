@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,12 +7,11 @@ namespace TIKSN.Finance
 {
     public class FixedRateCurrencyConverter : ICurrencyConverter
     {
-        private CurrencyPair currencyPair;
         private readonly decimal rate;
 
         public FixedRateCurrencyConverter(CurrencyPair pair, decimal rate)
         {
-            this.CurrencyPair = pair;
+            this.CurrencyPair = pair ?? throw new ArgumentNullException(nameof(pair));
 
             if (rate > decimal.Zero)
             {
@@ -24,19 +23,7 @@ namespace TIKSN.Finance
             }
         }
 
-        public CurrencyPair CurrencyPair
-        {
-            get => this.currencyPair;
-            private set
-            {
-                if (ReferenceEquals(value, null))
-                {
-                    throw new ArgumentNullException();
-                }
-
-                this.currencyPair = value;
-            }
-        }
+        public CurrencyPair CurrencyPair { get; }
 
         public Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn,
             CancellationToken cancellationToken)
@@ -54,7 +41,7 @@ namespace TIKSN.Finance
         public Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            IEnumerable<CurrencyPair> singleItemList = new List<CurrencyPair> {this.currencyPair};
+            IEnumerable<CurrencyPair> singleItemList = new List<CurrencyPair> {this.CurrencyPair};
 
             return Task.FromResult(singleItemList);
         }
