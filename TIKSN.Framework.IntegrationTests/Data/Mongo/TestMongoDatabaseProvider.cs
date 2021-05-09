@@ -3,9 +3,9 @@ using TIKSN.Data.Mongo;
 
 namespace TIKSN.Framework.IntegrationTests.Data.Mongo
 {
-    public class TestMongoDatabaseProviderBase : MongoDatabaseProviderBase
+    public class TestMongoDatabaseProvider : MongoDatabaseProviderBase
     {
-        public TestMongoDatabaseProviderBase(
+        public TestMongoDatabaseProvider(
             IMongoClientProvider mongoClientProvider,
             IConfiguration configuration) : base(
             mongoClientProvider,
