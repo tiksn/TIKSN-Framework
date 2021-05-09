@@ -2,24 +2,23 @@
 <#@ assembly name="System.Core" #>
 <#@ assembly name="System.Xml" #>
 <#@ assembly name="System.Xml.Linq" #>
-<#@ import namespace="System.Linq" #>
-<#@ import namespace="System.Text" #>
-<#@ import namespace="System.Collections.Generic" #>
-<#@ import namespace="System.Xml.Linq" #>
 <#@ output extension=".cs" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml.Linq" #>
 <#
-	var resourceFiles = new [] {
-		@"EnglishOnly.resx",
-		@"..\Shell\ShellCommand.resx",
-		@"..\Web\Rest\RestRepository.resx",
-		@"..\..\TIKSN.LanguageLocalization\Strings.resx",
-		@"..\..\TIKSN.RegionLocalization\Strings.resx"
-	};
+    var resourceFiles = new[]
+    {
+        @"EnglishOnly.resx",
+        @"..\Shell\ShellCommand.resx",
+        @"..\Web\Rest\RestRepository.resx",
+        @"..\..\TIKSN.LanguageLocalization\Strings.resx",
+        @"..\..\TIKSN.RegionLocalization\Strings.resx"
+    };
 
-	var dataElements = resourceFiles
-		.Select(this.Host.ResolvePath)
-		.Select(XDocument.Load)
-		.SelectMany(doc => doc.Element("root").Elements("data"));
+    var dataElements = resourceFiles
+        .Select(Host.ResolvePath)
+        .Select(XDocument.Load)
+        .SelectMany(doc => doc.Element("root").Elements("data"));
 #>
 namespace TIKSN.Localization
 {
@@ -29,12 +28,14 @@ namespace TIKSN.Localization
 	public static class LocalizationKeys
 	{
 	<#
-	foreach(var dataElement in dataElements)
-	{#>	/// <summary>
-		/// Key: <#= dataElement.Attribute("name").Value#>
-		/// Original Value: <#= dataElement.Element("value").Value#>
+    foreach (var dataElement in dataElements)
+    {
+#>	/// <summary>
+		/// Key: <#= dataElement.Attribute("name").Value #>
+		/// Original Value: <#= dataElement.Element("value").Value #>
 		/// </summary>
-		public const int Key<#= dataElement.Attribute("name").Value#> = <#= dataElement.Attribute("name").Value#>;
-	<#}
-	#>}
+		public const int Key<#= dataElement.Attribute("name").Value #> = <#= dataElement.Attribute("name").Value #>;
+	<#
+    }
+#>}
 }
