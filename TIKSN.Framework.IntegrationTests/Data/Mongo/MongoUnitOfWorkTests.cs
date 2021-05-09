@@ -15,23 +15,18 @@ namespace TIKSN.Framework.IntegrationTests.Data.Mongo
     {
         private readonly ServiceProviderFixture _serviceProviderFixture;
 
-        public MongoUnitOfWorkTests(ServiceProviderFixture serviceProviderFixture)
-        {
-            _serviceProviderFixture = serviceProviderFixture;
-        }
+        public MongoUnitOfWorkTests(ServiceProviderFixture serviceProviderFixture) =>
+            this._serviceProviderFixture = serviceProviderFixture;
 
         [Fact]
         public async Task TestCreationAndRetrieval()
         {
             var testEntityId = Guid.NewGuid();
-            var testEntity = new TestMongoEntity
-            {
-                ID = testEntityId,
-                Value = Guid.NewGuid()
-            };
+            var testEntity = new TestMongoEntity {ID = testEntityId, Value = Guid.NewGuid()};
             TestMongoEntity retrievedEntity = null;
 
-            var mongoUnitOfWorkFactory = _serviceProviderFixture.Services.GetRequiredService<IMongoUnitOfWorkFactory>();
+            var mongoUnitOfWorkFactory =
+                this._serviceProviderFixture.Services.GetRequiredService<IMongoUnitOfWorkFactory>();
 
             await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default))
             {
@@ -53,20 +48,16 @@ namespace TIKSN.Framework.IntegrationTests.Data.Mongo
 
             retrievedEntity.Value.Should().Be(testEntity.Value);
         }
-        
+
         [Fact]
         public async Task TestConcurrentUpdates()
         {
             var testEntityId = Guid.NewGuid();
-            var testEntity = new TestMongoEntity
-            {
-                ID = testEntityId,
-                Value = Guid.NewGuid(),
-                Version = 1
-            };
+            var testEntity = new TestMongoEntity {ID = testEntityId, Value = Guid.NewGuid(), Version = 1};
             TestMongoEntity retrievedEntity = null;
 
-            var mongoUnitOfWorkFactory = _serviceProviderFixture.Services.GetRequiredService<IMongoUnitOfWorkFactory>();
+            var mongoUnitOfWorkFactory =
+                this._serviceProviderFixture.Services.GetRequiredService<IMongoUnitOfWorkFactory>();
 
             await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default))
             {
@@ -77,7 +68,8 @@ namespace TIKSN.Framework.IntegrationTests.Data.Mongo
                 await mongoUnitOfWork.CompleteAsync(default);
             }
 
-            var tasks = Enumerable.Repeat(0, 3).Select(_ => UpdateEntityWithRetry(mongoUnitOfWorkFactory, testEntityId)).ToArray();
+            var tasks = Enumerable.Repeat(0, 3).Select(_ => UpdateEntityWithRetry(mongoUnitOfWorkFactory, testEntityId))
+                .ToArray();
             await Task.WhenAll(tasks);
 
             await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default))
@@ -88,7 +80,7 @@ namespace TIKSN.Framework.IntegrationTests.Data.Mongo
 
                 await mongoUnitOfWork.CompleteAsync(default);
             }
-            
+
             retrievedEntity.Version.Should().Be(4);
 
             static Task UpdateEntityWithRetry(IMongoUnitOfWorkFactory mongoUnitOfWorkFactory, Guid testEntityId)
@@ -97,7 +89,7 @@ namespace TIKSN.Framework.IntegrationTests.Data.Mongo
                     .WaitAndRetryAsync(10, i => TimeSpan.FromMilliseconds(i * 10))
                     .ExecuteAsync(() => UpdateEntity(mongoUnitOfWorkFactory, testEntityId));
             }
-            
+
             static async Task UpdateEntity(IMongoUnitOfWorkFactory mongoUnitOfWorkFactory, Guid testEntityId)
             {
                 await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default))
@@ -107,9 +99,9 @@ namespace TIKSN.Framework.IntegrationTests.Data.Mongo
                     var entity = await testRepository.GetAsync(testEntityId, default);
 
                     entity.Version += 1;
-                    
+
                     await testRepository.UpdateAsync(entity, default);
-                    
+
                     await mongoUnitOfWork.CompleteAsync(default);
                 }
             }
