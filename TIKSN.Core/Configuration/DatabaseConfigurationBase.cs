@@ -6,14 +6,9 @@ namespace TIKSN.Configuration
     {
         private readonly IConfigurationRoot _configurationRoot;
 
-        protected DatabaseConfigurationBase(IConfigurationRoot configurationRoot)
-        {
-            _configurationRoot = configurationRoot;
-        }
+        protected DatabaseConfigurationBase(IConfigurationRoot configurationRoot) =>
+            this._configurationRoot = configurationRoot;
 
-        protected string GetConnectionString(string name)
-        {
-            return _configurationRoot.GetConnectionString(name);
-        }
+        protected string GetConnectionString(string name) => this._configurationRoot.GetConnectionString(name);
     }
 }
