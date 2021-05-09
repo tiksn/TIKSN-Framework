@@ -7,15 +7,12 @@ namespace TIKSN.PowerShell
     {
         private readonly ConcurrentStack<object> scopes;
 
-        public PowerShellLoggerScopeDisposable(ConcurrentStack<object> scopes)
-        {
-            this.scopes = scopes;
-        }
+        public PowerShellLoggerScopeDisposable(ConcurrentStack<object> scopes) => this.scopes = scopes;
 
         public void Dispose()
         {
             object result;
-            scopes.TryPop(out result);
+            this.scopes.TryPop(out result);
         }
     }
 }
