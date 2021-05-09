@@ -1,7 +1,7 @@
-﻿using Microsoft.ApplicationInsights.DataContracts;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Microsoft.ApplicationInsights.DataContracts;
 
 namespace TIKSN.Analytics.Telemetry
 {
