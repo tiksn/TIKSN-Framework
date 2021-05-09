@@ -1,9 +1,9 @@
-﻿using Autofac;
+﻿using System;
+using System.Collections.Generic;
+using Autofac;
 using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
 using TIKSN.PowerShell;
 
 namespace TIKSN.DependencyInjection
@@ -16,10 +16,10 @@ namespace TIKSN.DependencyInjection
 
         public IContainer CreateContainer()
         {
-            var container = CreateContainerInternal();
+            var container = this.CreateContainerInternal();
             var serviceProvider = new AutofacServiceProvider(container);
 
-            ValidateOptions(_services.Value, serviceProvider);
+            this.ValidateOptions(this._services.Value, serviceProvider);
 
             return container;
         }
@@ -29,22 +29,20 @@ namespace TIKSN.DependencyInjection
         protected IContainer CreateContainerInternal()
         {
             var builder = new ContainerBuilder();
-            builder.Populate(_services.Value);
+            builder.Populate(this._services.Value);
 
-            foreach (var module in GetAutofacModules())
+            foreach (var module in this.GetAutofacModules())
             {
                 builder.RegisterModule(module);
             }
 
-            ConfigureContainerBuilder(builder);
+            this.ConfigureContainerBuilder(builder);
 
             return builder.Build();
         }
 
-        protected override IServiceProvider CreateServiceProviderInternal()
-        {
-            return new AutofacServiceProvider(CreateContainerInternal());
-        }
+        protected override IServiceProvider CreateServiceProviderInternal() =>
+            new AutofacServiceProvider(this.CreateContainerInternal());
 
         protected virtual IEnumerable<IModule> GetAutofacModules()
         {
