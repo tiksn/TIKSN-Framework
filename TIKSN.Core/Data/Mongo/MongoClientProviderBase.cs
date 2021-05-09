@@ -12,27 +12,27 @@ namespace TIKSN.Data.Mongo
 
         protected MongoClientProviderBase(IConfiguration configuration, string connectionStringKey)
         {
-            _locker = new object();
-            _configuration = configuration;
-            _connectionStringKey = connectionStringKey;
+            this._locker = new object();
+            this._configuration = configuration;
+            this._connectionStringKey = connectionStringKey;
         }
 
         public IMongoClient GetMongoClient()
         {
-            if (_mongoClient == null)
+            if (this._mongoClient == null)
             {
-                lock (_locker)
+                lock (this._locker)
                 {
-                    if (_mongoClient == null)
+                    if (this._mongoClient == null)
                     {
-                        var connectionString = _configuration.GetConnectionString(_connectionStringKey);
+                        var connectionString = this._configuration.GetConnectionString(this._connectionStringKey);
                         var mongoUrl = MongoUrl.Create(connectionString);
-                        _mongoClient = new MongoClient(mongoUrl);
+                        this._mongoClient = new MongoClient(mongoUrl);
                     }
                 }
             }
 
-            return _mongoClient;
+            return this._mongoClient;
         }
     }
 }
