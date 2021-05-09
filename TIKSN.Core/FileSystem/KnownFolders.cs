@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.FileProviders;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using Microsoft.Extensions.FileProviders;
 
 namespace TIKSN.FileSystem
 {
@@ -13,11 +13,11 @@ namespace TIKSN.FileSystem
 
         public KnownFolders(KnownFoldersConfiguration knownFoldersConfiguration)
         {
-            _mainAssembly = knownFoldersConfiguration.MainAssembly;
-            _versionConsideration = knownFoldersConfiguration.VersionConsideration;
+            this._mainAssembly = knownFoldersConfiguration.MainAssembly;
+            this._versionConsideration = knownFoldersConfiguration.VersionConsideration;
 
-            LocalAppData = GetFromSpecialFolder(Environment.SpecialFolder.LocalApplicationData);
-            RoamingAppData = GetFromSpecialFolder(Environment.SpecialFolder.ApplicationData);
+            this.LocalAppData = this.GetFromSpecialFolder(Environment.SpecialFolder.LocalApplicationData);
+            this.RoamingAppData = this.GetFromSpecialFolder(Environment.SpecialFolder.ApplicationData);
         }
 
         public IFileProvider LocalAppData { get; }
@@ -35,37 +35,37 @@ namespace TIKSN.FileSystem
         {
             var folderPath = Environment.GetFolderPath(specialFolder);
 
-            var fileVersionInfo = FileVersionInfo.GetVersionInfo(_mainAssembly.Location);
+            var fileVersionInfo = FileVersionInfo.GetVersionInfo(this._mainAssembly.Location);
 
             folderPath = Path.Combine(folderPath, fileVersionInfo.CompanyName);
             folderPath = Path.Combine(folderPath, fileVersionInfo.ProductName);
 
-            switch (_versionConsideration)
+            switch (this._versionConsideration)
             {
                 case KnownFolderVersionConsideration.None:
                     break;
 
                 case KnownFolderVersionConsideration.Major:
-                    folderPath = Path.Combine(folderPath, _mainAssembly.GetName().Version.ToString(1));
+                    folderPath = Path.Combine(folderPath, this._mainAssembly.GetName().Version.ToString(1));
                     break;
 
                 case KnownFolderVersionConsideration.MajorMinor:
-                    folderPath = Path.Combine(folderPath, _mainAssembly.GetName().Version.ToString(2));
+                    folderPath = Path.Combine(folderPath, this._mainAssembly.GetName().Version.ToString(2));
                     break;
 
                 case KnownFolderVersionConsideration.MajorMinorBuild:
-                    folderPath = Path.Combine(folderPath, _mainAssembly.GetName().Version.ToString(3));
+                    folderPath = Path.Combine(folderPath, this._mainAssembly.GetName().Version.ToString(3));
                     break;
 
                 case KnownFolderVersionConsideration.MajorMinorBuildRevision:
-                    folderPath = Path.Combine(folderPath, _mainAssembly.GetName().Version.ToString(4));
+                    folderPath = Path.Combine(folderPath, this._mainAssembly.GetName().Version.ToString(4));
                     break;
 
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(_versionConsideration));
+                    throw new ArgumentOutOfRangeException(nameof(this._versionConsideration));
             }
 
-            return GetFromFolderPath(folderPath);
+            return this.GetFromFolderPath(folderPath);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace TIKSN.Progress
             Debug.Assert(percentComplete >= 0d);
             Debug.Assert(percentComplete <= 100d);
 
-            PercentComplete = percentComplete;
+            this.PercentComplete = percentComplete;
         }
 
         public ProgressReport(int completed, int overall)
@@ -17,15 +17,13 @@ namespace TIKSN.Progress
             Debug.Assert(completed <= overall);
             Debug.Assert(completed >= 0);
 
-            PercentComplete = overall > 0 ? completed * 100d / overall : 0d;
+            this.PercentComplete = overall > 0 ? completed * 100d / overall : 0d;
         }
 
-        public double PercentComplete { get; private set; }
+        public double PercentComplete { get; }
 
-        public static ProgressReport CreateProgressReportWithPercentage(ProgressReport baseReport, double percentComplete)
-        {
-            return new ProgressReport(percentComplete);
-        }
+        public static ProgressReport CreateProgressReportWithPercentage(ProgressReport baseReport,
+            double percentComplete) => new(percentComplete);
     }
 
     //public class ProgressStatus<T> : ProgressStatus

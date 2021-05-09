@@ -23,15 +23,16 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
             ITimeProvider timeProvider,
             Plan plan)
         {
-            _currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
-            _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
-            _plan = plan ?? throw new ArgumentNullException(nameof(plan));
+            this._currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
+            this._timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+            this._plan = plan ?? throw new ArgumentNullException(nameof(plan));
         }
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
             DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var rate = (await GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken)).Rate;
+            var rate = (await this.GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken))
+                .Rate;
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
@@ -41,16 +42,16 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
         {
             using (var httpClient = new HttpClient())
             {
-                httpClient.BaseAddress = _plan.BaseAddress;
+                httpClient.BaseAddress = this._plan.BaseAddress;
 
                 var currenciesJson =
-                    await httpClient.GetStringAsync(string.Format(CurrencyListApiEndpointFormat, _plan.ApiKey));
+                    await httpClient.GetStringAsync(string.Format(CurrencyListApiEndpointFormat, this._plan.ApiKey));
 
                 var currencyList = JsonConvert.DeserializeObject<CurrencyList>(currenciesJson);
 
                 var currencies = currencyList.Results.Keys
                     .Where(item => !string.Equals(item, "BTC", StringComparison.OrdinalIgnoreCase))
-                    .Select(item => _currencyFactory.Create(item))
+                    .Select(item => this._currencyFactory.Create(item))
                     .Distinct()
                     .ToArray();
 
@@ -58,34 +59,37 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
 
                 for (var i = 0; i < currencies.Length; i++)
                 for (var j = 0; j < currencies.Length; j++)
+                {
                     if (i != j)
+                    {
                         pairs.Add(new CurrencyPair(currencies[i], currencies[j]));
+                    }
+                }
 
                 return pairs;
             }
         }
 
         public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
-            CancellationToken cancellationToken)
-        {
-            return (await GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken)).Rate;
-        }
+            CancellationToken cancellationToken) =>
+            (await this.GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken)).Rate;
 
         public async Task<ExchangeRate> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency,
             DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            if (_timeProvider.GetCurrentTime().Date != asOn.Date)
+            if (this._timeProvider.GetCurrentTime().Date != asOn.Date)
+            {
                 throw new ArgumentOutOfRangeException(nameof(asOn));
+            }
 
             using (var httpClient = new HttpClient())
             {
-                httpClient.BaseAddress = _plan.BaseAddress;
+                httpClient.BaseAddress = this._plan.BaseAddress;
 
                 var exchangeRateJson = await httpClient.GetStringAsync(
                     string.Format(ConverterEndpointFormat,
                         baseCurrency.ISOCurrencySymbol,
-                        counterCurrency.ISOCurrencySymbol,
-                        _plan.ApiKey));
+                        counterCurrency.ISOCurrencySymbol, this._plan.ApiKey));
 
                 var exchangeRates = JsonConvert.DeserializeObject<Dictionary<string, decimal>>(exchangeRateJson);
 
@@ -98,8 +102,8 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
         {
             protected Plan(string apiKey, string hostName)
             {
-                ApiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));
-                BaseAddress = new UriBuilder(Uri.UriSchemeHttps, hostName).Uri;
+                this.ApiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));
+                this.BaseAddress = new UriBuilder(Uri.UriSchemeHttps, hostName).Uri;
             }
 
             public string ApiKey { get; }
@@ -136,16 +140,13 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
 
         public class CurrencyList
         {
-            [JsonProperty("results")]
-            public Dictionary<string, CurrencyRecord> Results { get; set; }
+            [JsonProperty("results")] public Dictionary<string, CurrencyRecord> Results { get; set; }
 
             public class CurrencyRecord
             {
-                [JsonProperty("currencyName")]
-                public string CurrencyName { get; set; }
+                [JsonProperty("currencyName")] public string CurrencyName { get; set; }
 
-                [JsonProperty("id")]
-                public string Id { get; set; }
+                [JsonProperty("id")] public string Id { get; set; }
             }
         }
     }

@@ -9,17 +9,17 @@ namespace TIKSN.Advertising
 
         protected AdUnitFactoryBase(IAdUnitSelector adUnitSelector)
         {
-            _adUnitSelector = adUnitSelector;
-            _adUnitBundles = new Dictionary<string, AdUnitBundle>();
+            this._adUnitSelector = adUnitSelector;
+            this._adUnitBundles = new Dictionary<string, AdUnitBundle>();
 
-            Register();
+            this.Register();
         }
 
         public AdUnit Create(string key)
         {
-            var adUnitBundle = _adUnitBundles[key];
+            var adUnitBundle = this._adUnitBundles[key];
 
-            return _adUnitSelector.Select(adUnitBundle);
+            return this._adUnitSelector.Select(adUnitBundle);
         }
 
         protected abstract void Register();

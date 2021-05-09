@@ -1,8 +1,8 @@
-﻿using LiteDB;
-using Microsoft.Extensions.FileProviders;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LiteDB;
+using Microsoft.Extensions.FileProviders;
 using TIKSN.Configuration;
 using TIKSN.FileSystem;
 
@@ -13,55 +13,38 @@ namespace TIKSN.Settings
         private readonly IPartialConfiguration<FileSettingsServiceOptions> _configuration;
         private readonly IKnownFolders _knownFolders;
 
-        public FileSettingsService(IKnownFolders knownFolders, IPartialConfiguration<FileSettingsServiceOptions> configuration)
+        public FileSettingsService(IKnownFolders knownFolders,
+            IPartialConfiguration<FileSettingsServiceOptions> configuration)
         {
-            _knownFolders = knownFolders ?? throw new ArgumentNullException(nameof(knownFolders));
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this._knownFolders = knownFolders ?? throw new ArgumentNullException(nameof(knownFolders));
+            this._configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
-        public T GetLocalSetting<T>(string name, T defaultValue)
-        {
-            return Apply(_knownFolders.LocalAppData, name, defaultValue, GetterProcessor);
-        }
+        public T GetLocalSetting<T>(string name, T defaultValue) => this.Apply(this._knownFolders.LocalAppData, name,
+            defaultValue, this.GetterProcessor);
 
-        public T GetRoamingSetting<T>(string name, T defaultValue)
-        {
-            return Apply(_knownFolders.RoamingAppData, name, defaultValue, GetterProcessor);
-        }
+        public T GetRoamingSetting<T>(string name, T defaultValue) => this.Apply(this._knownFolders.RoamingAppData,
+            name, defaultValue, this.GetterProcessor);
 
-        public IReadOnlyCollection<string> ListLocalSetting()
-        {
-            return ListNames(_knownFolders.LocalAppData);
-        }
+        public IReadOnlyCollection<string> ListLocalSetting() => this.ListNames(this._knownFolders.LocalAppData);
 
-        public IReadOnlyCollection<string> ListRoamingSetting()
-        {
-            return ListNames(_knownFolders.RoamingAppData);
-        }
+        public IReadOnlyCollection<string> ListRoamingSetting() => this.ListNames(this._knownFolders.RoamingAppData);
 
-        public void RemoveLocalSetting(string name)
-        {
-            Apply<object>(_knownFolders.LocalAppData, name, null, RemovalProcessor);
-        }
+        public void RemoveLocalSetting(string name) =>
+            this.Apply<object>(this._knownFolders.LocalAppData, name, null, this.RemovalProcessor);
 
-        public void RemoveRoamingSetting(string name)
-        {
-            Apply<object>(_knownFolders.RoamingAppData, name, null, RemovalProcessor);
-        }
+        public void RemoveRoamingSetting(string name) =>
+            this.Apply<object>(this._knownFolders.RoamingAppData, name, null, this.RemovalProcessor);
 
-        public void SetLocalSetting<T>(string name, T value)
-        {
-            Apply(_knownFolders.LocalAppData, name, value, SetterProcessor);
-        }
+        public void SetLocalSetting<T>(string name, T value) =>
+            this.Apply(this._knownFolders.LocalAppData, name, value, this.SetterProcessor);
 
-        public void SetRoamingSetting<T>(string name, T value)
-        {
-            Apply(_knownFolders.RoamingAppData, name, value, SetterProcessor);
-        }
+        public void SetRoamingSetting<T>(string name, T value) =>
+            this.Apply(this._knownFolders.RoamingAppData, name, value, this.SetterProcessor);
 
         private T Apply<T>(IFileProvider fileProvider, string name, T value, Func<BsonDocument, string, T, T> processor)
         {
-            using (var db = GetDatabase(fileProvider, out ILiteCollection<BsonDocument> settingsCollection, out BsonDocument bsonDocument))
+            using (var db = this.GetDatabase(fileProvider, out var settingsCollection, out var bsonDocument))
             {
                 var result = processor(bsonDocument, name, value);
 
@@ -71,14 +54,12 @@ namespace TIKSN.Settings
             }
         }
 
-        private LiteDatabase GetDatabase(IFileProvider fileProvider, out ILiteCollection<BsonDocument> settingsCollection, out BsonDocument bsonDocument)
+        private LiteDatabase GetDatabase(IFileProvider fileProvider,
+            out ILiteCollection<BsonDocument> settingsCollection, out BsonDocument bsonDocument)
         {
-            var fileInfo = fileProvider.GetFileInfo(_configuration.GetConfiguration().RelativePath);
+            var fileInfo = fileProvider.GetFileInfo(this._configuration.GetConfiguration().RelativePath);
 
-            var connectionString = new ConnectionString
-            {
-                Filename = fileInfo.PhysicalPath
-            };
+            var connectionString = new ConnectionString {Filename = fileInfo.PhysicalPath};
 
             var db = new LiteDatabase(connectionString);
 
@@ -96,10 +77,12 @@ namespace TIKSN.Settings
 
         private T GetterProcessor<T>(BsonDocument document, string name, T defaultValue)
         {
-            if (document.TryGetValue(name, out BsonValue bsonValue))
+            if (document.TryGetValue(name, out var bsonValue))
             {
                 if (bsonValue.IsNull)
+                {
                     return defaultValue;
+                }
 
                 var type = typeof(T);
                 var typeCode = Type.GetTypeCode(type);
@@ -108,7 +91,8 @@ namespace TIKSN.Settings
                 {
                     if (bsonValue.Type != bsonType)
                     {
-                        throw new ArgumentException($"Expected type was '{bsonType}' whitch is not matching with actual type '{bsonValue.Type}'.");
+                        throw new ArgumentException(
+                            $"Expected type was '{bsonType}' whitch is not matching with actual type '{bsonValue.Type}'.");
                     }
                 }
 
@@ -169,9 +153,10 @@ namespace TIKSN.Settings
 
         private IReadOnlyCollection<string> ListNames(IFileProvider fileProvider)
         {
-            using (var db = GetDatabase(fileProvider, out ILiteCollection<BsonDocument> settingsCollection, out BsonDocument bsonDocument))
+            using (var db = this.GetDatabase(fileProvider, out var settingsCollection, out var bsonDocument))
             {
-                return bsonDocument.Keys.Where(n => !string.Equals(n, "_id", StringComparison.OrdinalIgnoreCase)).ToArray();
+                return bsonDocument.Keys.Where(n => !string.Equals(n, "_id", StringComparison.OrdinalIgnoreCase))
+                    .ToArray();
             }
         }
 
@@ -264,6 +249,7 @@ namespace TIKSN.Settings
                         throw new NotSupportedException("Type is not supported.");
                     }
             }
+
             return value;
         }
     }

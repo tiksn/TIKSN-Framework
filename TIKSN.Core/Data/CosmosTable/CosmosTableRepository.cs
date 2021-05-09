@@ -1,9 +1,9 @@
-﻿using Microsoft.Azure.Cosmos.Table;
-using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Azure.Cosmos.Table;
+using Microsoft.Extensions.Configuration;
 
 namespace TIKSN.Data.CosmosTable
 {
@@ -15,75 +15,12 @@ namespace TIKSN.Data.CosmosTable
     {
         private readonly string _tableName;
 
-        protected CosmosTableRepository(string tableName, IConfigurationRoot configuration, string connectionStringKey) : base(configuration, connectionStringKey)
-        {
-            _tableName = tableName;
-        }
-
-        public Task AddAsync(T entity, CancellationToken cancellationToken)
-        {
-            var table = GetCloudTable();
-
-            var insertOperation = TableOperation.Insert(entity);
-
-            return table.ExecuteAsync(insertOperation, null, null, cancellationToken);
-        }
-
-        public Task AddOrMergeAsync(T entity, CancellationToken cancellationToken)
-        {
-            var table = GetCloudTable();
-
-            var insertOperation = TableOperation.InsertOrMerge(entity);
-
-            return table.ExecuteAsync(insertOperation, null, null, cancellationToken);
-        }
-
-        public Task AddOrReplaceAsync(T entity, CancellationToken cancellationToken)
-        {
-            var table = GetCloudTable();
-
-            var insertOperation = TableOperation.InsertOrReplace(entity);
-
-            return table.ExecuteAsync(insertOperation, null, null, cancellationToken);
-        }
-
-        public Task DeleteAsync(T entity, CancellationToken cancellationToken)
-        {
-            var table = GetCloudTable();
-
-            var deleteOperation = TableOperation.Delete(entity);
-
-            return table.ExecuteAsync(deleteOperation, null, null, cancellationToken);
-        }
-
-        public Task InitializeAsync(CancellationToken cancellationToken)
-        {
-            var table = this.GetCloudTable();
-
-            return table.CreateIfNotExistsAsync();
-        }
-
-        public Task MergeAsync(T entity, CancellationToken cancellationToken)
-        {
-            var table = GetCloudTable();
-
-            var mergeOperation = TableOperation.Merge(entity);
-
-            return table.ExecuteAsync(mergeOperation, null, null, cancellationToken);
-        }
-
-        public Task ReplaceAsync(T entity, CancellationToken cancellationToken)
-        {
-            var table = GetCloudTable();
-
-            var mergeOperation = TableOperation.Replace(entity);
-
-            return table.ExecuteAsync(mergeOperation, null, null, cancellationToken);
-        }
+        protected CosmosTableRepository(string tableName, IConfigurationRoot configuration, string connectionStringKey)
+            : base(configuration, connectionStringKey) => this._tableName = tableName;
 
         public async Task<T> RetrieveAsync(string partitionKey, string rowKey, CancellationToken cancellationToken)
         {
-            var table = GetCloudTable();
+            var table = this.GetCloudTable();
 
             var retriveOperation = TableOperation.Retrieve<T>(partitionKey, rowKey);
 
@@ -93,18 +30,20 @@ namespace TIKSN.Data.CosmosTable
             {
                 return default;
             }
+
             return (T)retrivalResult.Result;
         }
 
-        public Task<IEnumerable<T>> SearchAsync(IDictionary<string, object> filters, CancellationToken cancellationToken)
+        public Task<IEnumerable<T>> SearchAsync(IDictionary<string, object> filters,
+            CancellationToken cancellationToken)
         {
-            var table = GetCloudTable();
+            var table = this.GetCloudTable();
 
             string combinedFilter = null;
 
             foreach (var filter in filters)
             {
-                string filterCondition = GenerateFilterCondition(filter.Key, QueryComparisons.Equal, filter.Value);
+                var filterCondition = GenerateFilterCondition(filter.Key, QueryComparisons.Equal, filter.Value);
 
                 if (string.IsNullOrEmpty(combinedFilter))
                 {
@@ -118,16 +57,77 @@ namespace TIKSN.Data.CosmosTable
 
             var query = new TableQuery<T>().Where(combinedFilter);
 
-            return SearchAsync(table, query, cancellationToken);
+            return this.SearchAsync(table, query, cancellationToken);
+        }
+
+        public Task AddAsync(T entity, CancellationToken cancellationToken)
+        {
+            var table = this.GetCloudTable();
+
+            var insertOperation = TableOperation.Insert(entity);
+
+            return table.ExecuteAsync(insertOperation, null, null, cancellationToken);
+        }
+
+        public Task AddOrMergeAsync(T entity, CancellationToken cancellationToken)
+        {
+            var table = this.GetCloudTable();
+
+            var insertOperation = TableOperation.InsertOrMerge(entity);
+
+            return table.ExecuteAsync(insertOperation, null, null, cancellationToken);
+        }
+
+        public Task AddOrReplaceAsync(T entity, CancellationToken cancellationToken)
+        {
+            var table = this.GetCloudTable();
+
+            var insertOperation = TableOperation.InsertOrReplace(entity);
+
+            return table.ExecuteAsync(insertOperation, null, null, cancellationToken);
+        }
+
+        public Task DeleteAsync(T entity, CancellationToken cancellationToken)
+        {
+            var table = this.GetCloudTable();
+
+            var deleteOperation = TableOperation.Delete(entity);
+
+            return table.ExecuteAsync(deleteOperation, null, null, cancellationToken);
+        }
+
+        public Task MergeAsync(T entity, CancellationToken cancellationToken)
+        {
+            var table = this.GetCloudTable();
+
+            var mergeOperation = TableOperation.Merge(entity);
+
+            return table.ExecuteAsync(mergeOperation, null, null, cancellationToken);
+        }
+
+        public Task ReplaceAsync(T entity, CancellationToken cancellationToken)
+        {
+            var table = this.GetCloudTable();
+
+            var mergeOperation = TableOperation.Replace(entity);
+
+            return table.ExecuteAsync(mergeOperation, null, null, cancellationToken);
+        }
+
+        public Task InitializeAsync(CancellationToken cancellationToken)
+        {
+            var table = this.GetCloudTable();
+
+            return table.CreateIfNotExistsAsync();
         }
 
         protected CloudTable GetCloudTable()
         {
-            var storageAccount = GetCloudStorageAccount();
+            var storageAccount = this.GetCloudStorageAccount();
 
             var tableClient = storageAccount.CreateCloudTableClient();
 
-            return tableClient.GetTableReference(_tableName);
+            return tableClient.GetTableReference(this._tableName);
         }
 
         private static string GenerateFilterCondition(string fieldName, string operation, object givenValue)
@@ -163,14 +163,16 @@ namespace TIKSN.Data.CosmosTable
             }
         }
 
-        private async Task<IEnumerable<T>> SearchAsync(CloudTable table, TableQuery<T> query, CancellationToken cancellationToken)
+        private async Task<IEnumerable<T>> SearchAsync(CloudTable table, TableQuery<T> query,
+            CancellationToken cancellationToken)
         {
             var result = new List<T>();
 
             TableContinuationToken continuationToken = null;
             do
             {
-                var tableSegment = await table.ExecuteQuerySegmentedAsync(query, continuationToken, null, null, cancellationToken);
+                var tableSegment =
+                    await table.ExecuteQuerySegmentedAsync(query, continuationToken, null, null, cancellationToken);
 
                 result.AddRange(tableSegment.Results);
 

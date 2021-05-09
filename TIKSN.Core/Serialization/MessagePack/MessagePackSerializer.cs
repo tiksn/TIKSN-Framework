@@ -1,5 +1,5 @@
-﻿using MsgPack.Serialization;
-using System.IO;
+﻿using System.IO;
+using MsgPack.Serialization;
 
 namespace TIKSN.Serialization.MessagePack
 {
@@ -7,14 +7,12 @@ namespace TIKSN.Serialization.MessagePack
     {
         private readonly SerializationContext _serializationContext;
 
-        public MessagePackSerializer(SerializationContext serializationContext)
-        {
-            _serializationContext = serializationContext;
-        }
+        public MessagePackSerializer(SerializationContext serializationContext) =>
+            this._serializationContext = serializationContext;
 
         protected override byte[] SerializeInternal<T>(T obj)
         {
-            var serializer = _serializationContext.GetSerializer<T>();
+            var serializer = this._serializationContext.GetSerializer<T>();
 
             using (var stream = new MemoryStream())
             {

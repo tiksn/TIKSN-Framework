@@ -8,10 +8,7 @@ namespace TIKSN.Analytics.Telemetry
     {
         private readonly Cmdlet cmdlet;
 
-        public PowerShellTraceTelemeter(Cmdlet cmdlet)
-        {
-            this.cmdlet = cmdlet;
-        }
+        public PowerShellTraceTelemeter(Cmdlet cmdlet) => this.cmdlet = cmdlet;
 
         public Task TrackTrace(string message, TelemetrySeverityLevel severityLevel)
         {
@@ -19,7 +16,8 @@ namespace TIKSN.Analytics.Telemetry
             {
                 case TelemetrySeverityLevel.Critical:
                 case TelemetrySeverityLevel.Error:
-                    cmdlet.WriteError(new ErrorRecord(new Exception(message), null, ErrorCategory.InvalidOperation, null));
+                    this.cmdlet.WriteError(new ErrorRecord(new Exception(message), null, ErrorCategory.InvalidOperation,
+                        null));
                     break;
 
                 case TelemetrySeverityLevel.Information:
@@ -41,9 +39,6 @@ namespace TIKSN.Analytics.Telemetry
             return Task.FromResult<object>(null);
         }
 
-        public Task TrackTrace(string message)
-        {
-            return TrackTrace(message, TelemetrySeverityLevel.Verbose);
-        }
+        public Task TrackTrace(string message) => this.TrackTrace(message, TelemetrySeverityLevel.Verbose);
     }
 }

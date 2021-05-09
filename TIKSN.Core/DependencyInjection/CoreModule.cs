@@ -14,8 +14,9 @@ namespace TIKSN.DependencyInjection
             builder.RegisterType<JsonDeserializer>().AsSelf().SingleInstance();
             builder.RegisterType<JsonSerializer>().AsSelf().SingleInstance();
             builder.RegisterType<RestRequester>().As<IRestRequester>();
-            builder.RegisterType<SerializationRestFactory>().As<ISerializerRestFactory>().As<IDeserializerRestFactory>().SingleInstance();
-            
+            builder.RegisterType<SerializationRestFactory>().As<ISerializerRestFactory>().As<IDeserializerRestFactory>()
+                .SingleInstance();
+
             builder.RegisterType<MongoClientSessionContext>()
                 .As<IMongoClientSessionStore>()
                 .As<IMongoClientSessionProvider>()

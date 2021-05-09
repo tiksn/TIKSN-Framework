@@ -1,14 +1,14 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Options;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 
 namespace TIKSN.Data.Cache.Memory
 {
     public class QueryRepositoryMemoryCacheDecorator<TEntity, TIdentity>
-    : RepositoryMemoryCacheDecorator<TEntity, TIdentity>, IQueryRepository<TEntity, TIdentity>
+        : RepositoryMemoryCacheDecorator<TEntity, TIdentity>, IQueryRepository<TEntity, TIdentity>
         where TEntity : IEntity<TIdentity>
         where TIdentity : IEquatable<TIdentity>
     {
@@ -19,23 +19,23 @@ namespace TIKSN.Data.Cache.Memory
             IMemoryCache memoryCache,
             IOptions<MemoryCacheDecoratorOptions> genericOptions,
             IOptions<MemoryCacheDecoratorOptions<TEntity>> specificOptions)
-            : base(repository, memoryCache, genericOptions, specificOptions)
-        {
-            _queryRepository = queryRepository;
-        }
+            : base(repository, memoryCache, genericOptions, specificOptions) =>
+            this._queryRepository = queryRepository;
 
         public Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken)
         {
             var cacheKey = Tuple.Create(entityType, CacheKeyKind.Query, id);
 
-            return GetQueryFromMemoryCacheAsync(cacheKey, () => _queryRepository.ExistsAsync(id, cancellationToken));
+            return this.GetQueryFromMemoryCacheAsync(cacheKey,
+                () => this._queryRepository.ExistsAsync(id, cancellationToken));
         }
 
         public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
         {
             var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, id);
 
-            var result = await GetFromMemoryCacheAsync(cacheKey, () => _queryRepository.GetAsync(id, cancellationToken));
+            var result = await this.GetFromMemoryCacheAsync(cacheKey,
+                () => this._queryRepository.GetAsync(id, cancellationToken));
 
             if (result == null)
             {
@@ -49,31 +49,31 @@ namespace TIKSN.Data.Cache.Memory
         {
             var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, id);
 
-            return GetFromMemoryCacheAsync(cacheKey, () => _queryRepository.GetAsync(id, cancellationToken));
+            return this.GetFromMemoryCacheAsync(cacheKey, () => this._queryRepository.GetAsync(id, cancellationToken));
         }
 
-        public async Task<IEnumerable<TEntity>> ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken)
-        {
-            return await BatchOperationHelper.BatchOperationAsync(ids, cancellationToken, (id, ct) => GetAsync(id, ct));
-        }
+        public async Task<IEnumerable<TEntity>>
+            ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken) =>
+            await BatchOperationHelper.BatchOperationAsync(ids, cancellationToken, (id, ct) => this.GetAsync(id, ct));
 
-        protected Task<IEnumerable<TEntity>> CreateMemoryCacheQueryAsync(ICacheEntry cacheEntry, Func<Task<IEnumerable<TEntity>>> queryFromSource)
+        protected Task<IEnumerable<TEntity>> CreateMemoryCacheQueryAsync(ICacheEntry cacheEntry,
+            Func<Task<IEnumerable<TEntity>>> queryFromSource)
         {
-            SpecifyOptions(cacheEntry);
+            this.SpecifyOptions(cacheEntry);
 
             return queryFromSource();
         }
 
-        protected Task<IEnumerable<TEntity>> QueryFromMemoryCacheAsync(Func<Task<IEnumerable<TEntity>>> queryFromSource, CancellationToken cancellationToken)
+        protected Task<IEnumerable<TEntity>> QueryFromMemoryCacheAsync(Func<Task<IEnumerable<TEntity>>> queryFromSource,
+            CancellationToken cancellationToken)
         {
             var cacheKey = Tuple.Create(entityType, CacheKeyKind.Query);
 
-            return QueryFromMemoryCacheAsync(cacheKey, queryFromSource, cancellationToken);
+            return this.QueryFromMemoryCacheAsync(cacheKey, queryFromSource, cancellationToken);
         }
 
-        protected Task<IEnumerable<TEntity>> QueryFromMemoryCacheAsync(object cacheKey, Func<Task<IEnumerable<TEntity>>> queryFromSource, CancellationToken cancellationToken)
-        {
-            return _memoryCache.GetOrCreateAsync(cacheKey, x => CreateMemoryCacheQueryAsync(x, queryFromSource));
-        }
+        protected Task<IEnumerable<TEntity>> QueryFromMemoryCacheAsync(object cacheKey,
+            Func<Task<IEnumerable<TEntity>>> queryFromSource, CancellationToken cancellationToken) =>
+            this._memoryCache.GetOrCreateAsync(cacheKey, x => this.CreateMemoryCacheQueryAsync(x, queryFromSource));
     }
 }

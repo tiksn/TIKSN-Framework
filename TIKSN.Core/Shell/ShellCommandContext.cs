@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Localization;
-using System;
+﻿using System;
+using Microsoft.Extensions.Localization;
 using TIKSN.Localization;
 
 namespace TIKSN.Shell
@@ -15,23 +15,18 @@ namespace TIKSN.Shell
 
         public ShellCommandContext(IStringLocalizer stringLocalizer, IConsoleService consoleService)
         {
-            _stringLocalizer = stringLocalizer;
-            _consoleService = consoleService;
-        }
-
-        public void SetCommandName(string commandName)
-        {
-            this.commandName = commandName;
+            this._stringLocalizer = stringLocalizer;
+            this._consoleService = consoleService;
         }
 
         public bool ShouldContinue(string query, string caption)
         {
             var message = $"{caption}{Environment.NewLine}{query}";
 
-            var answer = _consoleService.UserPrompt(message,
-                _stringLocalizer.GetRequiredString(LocalizationKeys.Key592470584),
-                _stringLocalizer.GetRequiredString(LocalizationKeys.Key132999259),
-                _stringLocalizer.GetRequiredString(LocalizationKeys.Key777755530));
+            var answer = this._consoleService.UserPrompt(message,
+                this._stringLocalizer.GetRequiredString(LocalizationKeys.Key592470584),
+                this._stringLocalizer.GetRequiredString(LocalizationKeys.Key132999259),
+                this._stringLocalizer.GetRequiredString(LocalizationKeys.Key777755530));
 
             switch (answer)
             {
@@ -52,18 +47,23 @@ namespace TIKSN.Shell
         public bool ShouldContinue(string query, string caption, ref bool yesToAll, ref bool noToAll)
         {
             if (yesToAll)
+            {
                 return true;
+            }
 
             if (noToAll)
+            {
                 return false;
+            }
+
             var message = $"{caption}{Environment.NewLine}{query}";
 
-            var answer = _consoleService.UserPrompt(message,
-                _stringLocalizer.GetRequiredString(LocalizationKeys.Key592470584),
-                _stringLocalizer.GetRequiredString(LocalizationKeys.Key268507527),
-                _stringLocalizer.GetRequiredString(LocalizationKeys.Key132999259),
-                _stringLocalizer.GetRequiredString(LocalizationKeys.Key191067042),
-                _stringLocalizer.GetRequiredString(LocalizationKeys.Key777755530));
+            var answer = this._consoleService.UserPrompt(message,
+                this._stringLocalizer.GetRequiredString(LocalizationKeys.Key592470584),
+                this._stringLocalizer.GetRequiredString(LocalizationKeys.Key268507527),
+                this._stringLocalizer.GetRequiredString(LocalizationKeys.Key132999259),
+                this._stringLocalizer.GetRequiredString(LocalizationKeys.Key191067042),
+                this._stringLocalizer.GetRequiredString(LocalizationKeys.Key777755530));
 
             switch (answer)
             {
@@ -89,21 +89,16 @@ namespace TIKSN.Shell
             }
         }
 
-        public bool ShouldProcess(string target, string action)
-        {
-            return ShouldContinue(_stringLocalizer.GetRequiredString(LocalizationKeys.Key439104548),
-                string.Format(_stringLocalizer.GetRequiredString(LocalizationKeys.Key284914810), action, target),
-                ref yesToAll, ref noToAll);
-        }
+        public bool ShouldProcess(string target, string action) =>
+            this.ShouldContinue(this._stringLocalizer.GetRequiredString(LocalizationKeys.Key439104548),
+                string.Format(this._stringLocalizer.GetRequiredString(LocalizationKeys.Key284914810), action, target),
+                ref this.yesToAll, ref this.noToAll);
 
-        public bool ShouldProcess(string target)
-        {
-            return ShouldProcess(target, commandName);
-        }
+        public bool ShouldProcess(string target) => this.ShouldProcess(target, this.commandName);
 
-        public bool ShouldProcess(string verboseDescription, string verboseWarning, string caption)
-        {
-            return ShouldContinue(verboseWarning, caption, ref yesToAll, ref noToAll);
-        }
+        public bool ShouldProcess(string verboseDescription, string verboseWarning, string caption) =>
+            this.ShouldContinue(verboseWarning, caption, ref this.yesToAll, ref this.noToAll);
+
+        public void SetCommandName(string commandName) => this.commandName = commandName;
     }
 }

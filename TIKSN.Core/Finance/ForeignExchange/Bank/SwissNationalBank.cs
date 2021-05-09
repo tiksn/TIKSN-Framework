@@ -15,10 +15,10 @@ namespace TIKSN.Finance.ForeignExchange.Bank
     public class SwissNationalBank : ICurrencyConverter, IExchangeRatesProvider
     {
         private static readonly CurrencyInfo SwissFranc;
-        private static string RSSURL = "https://www.snb.ch/selector/en/mmr/exfeed/rss";
-        private Dictionary<CurrencyInfo, Tuple<DateTimeOffset, decimal>> foreignRates;
+        private static readonly string RSSURL = "https://www.snb.ch/selector/en/mmr/exfeed/rss";
         private readonly ICurrencyFactory _currencyFactory;
         private readonly ITimeProvider _timeProvider;
+        private readonly Dictionary<CurrencyInfo, Tuple<DateTimeOffset, decimal>> foreignRates;
 
         static SwissNationalBank()
         {
@@ -30,22 +30,24 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         public SwissNationalBank(ICurrencyFactory currencyFactory, ITimeProvider timeProvider)
         {
             this.foreignRates = new Dictionary<CurrencyInfo, Tuple<DateTimeOffset, decimal>>();
-            _currencyFactory = currencyFactory;
-            _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+            this._currencyFactory = currencyFactory;
+            this._timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
+            DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            await FetchOnDemandAsync(cancellationToken);
+            await this.FetchOnDemandAsync(cancellationToken);
 
-            var rate = GetRate(baseMoney.Currency, counterCurrency, asOn);
+            var rate = this.GetRate(baseMoney.Currency, counterCurrency, asOn);
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
-            await FetchOnDemandAsync(cancellationToken);
+            await this.FetchOnDemandAsync(cancellationToken);
 
             var pairs = new List<CurrencyPair>();
 
@@ -60,14 +62,16 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return pairs;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
-            await FetchOnDemandAsync(cancellationToken);
+            await this.FetchOnDemandAsync(cancellationToken);
 
-            return GetRate(pair.BaseCurrency, pair.CounterCurrency, asOn);
+            return this.GetRate(pair.BaseCurrency, pair.CounterCurrency, asOn);
         }
 
-        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
             var result = new List<ExchangeRate>();
 
@@ -82,17 +86,25 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                     foreach (var ItemElement in xdoc.Element("rss").Element("channel").Elements("item"))
                     {
                         var dateElement = ItemElement.Element("{http://purl.org/dc/elements/1.1/}date");
-                        var exchangeRateElement = ItemElement.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}statistics").Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}exchangeRate");
-                        var valueElement = exchangeRateElement.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}observation").Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}value");
-                        var targetCurrencyElement = exchangeRateElement.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}targetCurrency");
+                        var exchangeRateElement = ItemElement
+                            .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}statistics")
+                            .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}exchangeRate");
+                        var valueElement = exchangeRateElement
+                            .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}observation")
+                            .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}value");
+                        var targetCurrencyElement =
+                            exchangeRateElement.Element(
+                                "{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}targetCurrency");
 
                         var date = DateTimeOffset.Parse(dateElement.Value);
                         var currencyCode = targetCurrencyElement.Value;
-                        decimal rate = decimal.Parse(valueElement.Value);
+                        var rate = decimal.Parse(valueElement.Value);
 
-                        var currency = _currencyFactory.Create(currencyCode);
+                        var currency = this._currencyFactory.Create(currencyCode);
 
-                        Debug.Assert(exchangeRateElement.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}observation").Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}unit").Value == "CHF");
+                        Debug.Assert(exchangeRateElement
+                            .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}observation")
+                            .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}unit").Value == "CHF");
 
                         this.foreignRates[currency] = new Tuple<DateTimeOffset, decimal>(date, rate);
                         result.Add(new ExchangeRate(new CurrencyPair(currency, SwissFranc), date, rate));
@@ -106,21 +118,29 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         private async Task FetchOnDemandAsync(CancellationToken cancellationToken)
         {
             if (this.foreignRates.Count == 0)
-                await this.GetExchangeRatesAsync(_timeProvider.GetCurrentTime(), cancellationToken);
-            else if (this.foreignRates.Any(R => R.Value.Item1.Date == _timeProvider.GetCurrentTime().Date))
-                await this.GetExchangeRatesAsync(_timeProvider.GetCurrentTime(), cancellationToken);
+            {
+                await this.GetExchangeRatesAsync(this._timeProvider.GetCurrentTime(), cancellationToken);
+            }
+            else if (this.foreignRates.Any(R => R.Value.Item1.Date == this._timeProvider.GetCurrentTime().Date))
+            {
+                await this.GetExchangeRatesAsync(this._timeProvider.GetCurrentTime(), cancellationToken);
+            }
         }
 
-        private System.Collections.Generic.Dictionary<CurrencyInfo, decimal> FilterByDate(DateTimeOffset asOn)
+        private Dictionary<CurrencyInfo, decimal> FilterByDate(DateTimeOffset asOn)
         {
-            if (asOn > _timeProvider.GetCurrentTime())
-                throw new System.ArgumentException("Exchange rate forecasting not supported.");
+            if (asOn > this._timeProvider.GetCurrentTime())
+            {
+                throw new ArgumentException("Exchange rate forecasting not supported.");
+            }
 
             var maxDate = this.foreignRates.Max(R => R.Value.Item1);
             var minDate = this.foreignRates.Min(R => R.Value.Item1);
 
             if (asOn < minDate)
+            {
                 throw new ArgumentException("Exchange rate history not supported.");
+            }
 
             DateTimeOffset filterDate;
 
@@ -133,7 +153,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                 filterDate = asOn;
             }
 
-            var filteredResults = this.foreignRates.Where(R => R.Value.Item1.Date == filterDate.Date).Select(R => new System.Tuple<CurrencyInfo, decimal>(R.Key, R.Value.Item2));
+            var filteredResults = this.foreignRates.Where(R => R.Value.Item1.Date == filterDate.Date)
+                .Select(R => new Tuple<CurrencyInfo, decimal>(R.Key, R.Value.Item2));
 
             var Results = new Dictionary<CurrencyInfo, decimal>();
 
@@ -152,12 +173,16 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             if (BaseCurrency == SwissFranc)
             {
                 if (filtered.ContainsKey(CounterCurrency))
+                {
                     return 1 / filtered[CounterCurrency];
+                }
             }
             else if (CounterCurrency == SwissFranc)
             {
                 if (filtered.ContainsKey(BaseCurrency))
+                {
                     return filtered[BaseCurrency];
+                }
             }
 
             throw new ArgumentException("Currency pair not supported.");

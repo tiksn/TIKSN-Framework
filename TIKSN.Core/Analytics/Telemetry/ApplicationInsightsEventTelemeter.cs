@@ -1,8 +1,8 @@
-﻿using Microsoft.ApplicationInsights.DataContracts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Microsoft.ApplicationInsights.DataContracts;
 
 namespace TIKSN.Analytics.Telemetry
 {
@@ -30,7 +30,9 @@ namespace TIKSN.Analytics.Telemetry
                 var telemetry = new EventTelemetry(name);
 
                 foreach (var property in properties)
+                {
                     telemetry.Properties.Add(property);
+                }
 
                 ApplicationInsightsHelper.TrackEvent(telemetry);
             }

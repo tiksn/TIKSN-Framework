@@ -8,12 +8,14 @@ namespace TIKSN.Finance.Helpers
 {
     internal static class CurrencyHelper
     {
-        public static async Task<IEnumerable<ICurrencyConverter>> FilterConverters(IEnumerable<ICurrencyConverter> converters, CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
-        {
-            return await FilterConverters(converters, pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken);
-        }
+        public static async Task<IEnumerable<ICurrencyConverter>> FilterConverters(
+            IEnumerable<ICurrencyConverter> converters, CurrencyPair pair, DateTimeOffset asOn,
+            CancellationToken cancellationToken) => await FilterConverters(converters, pair.BaseCurrency,
+            pair.CounterCurrency, asOn, cancellationToken);
 
-        public static async Task<IEnumerable<ICurrencyConverter>> FilterConverters(IEnumerable<ICurrencyConverter> converters, CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
+        public static async Task<IEnumerable<ICurrencyConverter>> FilterConverters(
+            IEnumerable<ICurrencyConverter> converters, CurrencyInfo baseCurrency, CurrencyInfo counterCurrency,
+            DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             var filteredConverters = new List<ICurrencyConverter>();
 

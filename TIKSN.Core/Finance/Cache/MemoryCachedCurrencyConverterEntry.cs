@@ -4,11 +4,12 @@ namespace TIKSN.Finance.Cache
 {
     public class MemoryCachedCurrencyConverterEntry
     {
-        private MemoryCachedCurrencyConverterEntry(MemoryCachedCurrencyConverterEntryKind kind, IEnumerable<CurrencyPair> currencyPairs, decimal exchangeRate)
+        private MemoryCachedCurrencyConverterEntry(MemoryCachedCurrencyConverterEntryKind kind,
+            IEnumerable<CurrencyPair> currencyPairs, decimal exchangeRate)
         {
-            Kind = kind;
-            CurrencyPairs = currencyPairs;
-            ExchangeRate = exchangeRate;
+            this.Kind = kind;
+            this.CurrencyPairs = currencyPairs;
+            this.ExchangeRate = exchangeRate;
         }
 
         public IEnumerable<CurrencyPair> CurrencyPairs { get; }
@@ -17,16 +18,13 @@ namespace TIKSN.Finance.Cache
 
         public MemoryCachedCurrencyConverterEntryKind Kind { get; }
 
-        public static MemoryCachedCurrencyConverterEntry CreateForCurrencyPairs(IEnumerable<CurrencyPair> currencyPairs)
-        {
-            return new MemoryCachedCurrencyConverterEntry(MemoryCachedCurrencyConverterEntryKind.CurrencyPairs,
+        public static MemoryCachedCurrencyConverterEntry
+            CreateForCurrencyPairs(IEnumerable<CurrencyPair> currencyPairs) =>
+            new(MemoryCachedCurrencyConverterEntryKind.CurrencyPairs,
                 currencyPairs, decimal.Zero);
-        }
 
-        public static MemoryCachedCurrencyConverterEntry CreateForExchangeRate(decimal exchangeRate)
-        {
-            return new MemoryCachedCurrencyConverterEntry(MemoryCachedCurrencyConverterEntryKind.CurrencyPairs,
+        public static MemoryCachedCurrencyConverterEntry CreateForExchangeRate(decimal exchangeRate) =>
+            new(MemoryCachedCurrencyConverterEntryKind.CurrencyPairs,
                 null, exchangeRate);
-        }
     }
 }

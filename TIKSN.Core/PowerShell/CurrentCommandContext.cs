@@ -8,12 +8,12 @@ namespace TIKSN.PowerShell
 
         public CommandBase GetCurrentCommand()
         {
-            if (_command == null)
+            if (this._command == null)
             {
                 throw new NullReferenceException("Command is not set yet.");
             }
 
-            return _command;
+            return this._command;
         }
 
         public void SetCurrentCommand(CommandBase command)
@@ -23,7 +23,7 @@ namespace TIKSN.PowerShell
                 throw new ArgumentNullException(nameof(command));
             }
 
-            _command = command;
+            this._command = command;
         }
     }
 }

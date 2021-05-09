@@ -5,13 +5,11 @@ namespace TIKSN.Configuration
 {
     public static class WindowsRegistryConfigurationExtensions
     {
-        public static IConfigurationBuilder AddWindowsRegistry(this IConfigurationBuilder configurationBuilder, string rootKey, RegistryView registryView = RegistryView.Default)
-        {
-            return configurationBuilder.Add(new WindowsRegistryConfigurationSource
+        public static IConfigurationBuilder AddWindowsRegistry(this IConfigurationBuilder configurationBuilder,
+            string rootKey, RegistryView registryView = RegistryView.Default) =>
+            configurationBuilder.Add(new WindowsRegistryConfigurationSource
             {
-                RootKey = rootKey,
-                RegistryView = registryView
+                RootKey = rootKey, RegistryView = registryView
             });
-        }
     }
 }

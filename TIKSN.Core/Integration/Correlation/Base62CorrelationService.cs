@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Options;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Microsoft.Extensions.Options;
 using TIKSN.Serialization;
 
 namespace TIKSN.Integration.Correlation
@@ -35,10 +35,14 @@ namespace TIKSN.Integration.Correlation
             ICustomSerializer<byte[], BigInteger> bigIntegerBinarySerializer,
             ICustomDeserializer<byte[], BigInteger> bigIntegerBinaryDeserializer)
         {
-            _random = random ?? throw new ArgumentNullException(nameof(random));
-            _base62CorrelationServiceOptions = base62CorrelationServiceOptions ?? throw new ArgumentNullException(nameof(base62CorrelationServiceOptions));
-            _bigIntegerBinarySerializer = bigIntegerBinarySerializer ?? throw new ArgumentNullException(nameof(bigIntegerBinarySerializer));
-            _bigIntegerBinaryDeserializer = bigIntegerBinaryDeserializer ?? throw new ArgumentNullException(nameof(bigIntegerBinaryDeserializer));
+            this._random = random ?? throw new ArgumentNullException(nameof(random));
+            this._base62CorrelationServiceOptions = base62CorrelationServiceOptions ??
+                                                    throw new ArgumentNullException(
+                                                        nameof(base62CorrelationServiceOptions));
+            this._bigIntegerBinarySerializer = bigIntegerBinarySerializer ??
+                                               throw new ArgumentNullException(nameof(bigIntegerBinarySerializer));
+            this._bigIntegerBinaryDeserializer = bigIntegerBinaryDeserializer ??
+                                                 throw new ArgumentNullException(nameof(bigIntegerBinaryDeserializer));
         }
 
         public CorrelationID Create(string stringRepresentation)
@@ -50,14 +54,15 @@ namespace TIKSN.Integration.Correlation
                 number *= Radix;
                 number += CodeMap[c];
             }
-            byte[] byteArrayRepresentation = _bigIntegerBinarySerializer.Serialize(number).Reverse().ToArray();
+
+            var byteArrayRepresentation = this._bigIntegerBinarySerializer.Serialize(number).Reverse().ToArray();
             return new CorrelationID(stringRepresentation, byteArrayRepresentation);
         }
 
         public CorrelationID Create(byte[] byteArrayRepresentation)
         {
-            var number = _bigIntegerBinaryDeserializer.Deserialize(byteArrayRepresentation.Reverse().ToArray());
-            Stack<char> chars = new Stack<char>();
+            var number = this._bigIntegerBinaryDeserializer.Deserialize(byteArrayRepresentation.Reverse().ToArray());
+            var chars = new Stack<char>();
 
             while (number != BigInteger.Zero)
             {
@@ -67,17 +72,19 @@ namespace TIKSN.Integration.Correlation
             }
 
             if (chars.IsEmpty())
+            {
                 chars.Push('0');
+            }
 
-            string stringRepresentation = new string(chars.ToArray());
+            var stringRepresentation = new string(chars.ToArray());
             return new CorrelationID(stringRepresentation, byteArrayRepresentation);
         }
 
         public CorrelationID Generate()
         {
-            var byteArrayRepresentation = new byte[_base62CorrelationServiceOptions.Value.ByteLength];
-            _random.NextBytes(byteArrayRepresentation);
-            return Create(byteArrayRepresentation);
+            var byteArrayRepresentation = new byte[this._base62CorrelationServiceOptions.Value.ByteLength];
+            this._random.NextBytes(byteArrayRepresentation);
+            return this.Create(byteArrayRepresentation);
         }
     }
 }

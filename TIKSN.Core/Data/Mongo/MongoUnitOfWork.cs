@@ -13,32 +13,26 @@ namespace TIKSN.Data.Mongo
 
         public MongoUnitOfWork(IClientSessionHandle clientSessionHandle, IServiceScope serviceScope)
         {
-            _clientSessionHandle = clientSessionHandle ?? throw new ArgumentNullException(nameof(clientSessionHandle));
-            _serviceScope = serviceScope ?? throw new ArgumentNullException(nameof(serviceScope));
+            this._clientSessionHandle =
+                clientSessionHandle ?? throw new ArgumentNullException(nameof(clientSessionHandle));
+            this._serviceScope = serviceScope ?? throw new ArgumentNullException(nameof(serviceScope));
         }
 
-        public override Task CompleteAsync(CancellationToken cancellationToken)
-        {
-            return _clientSessionHandle.CommitTransactionAsync(cancellationToken);
-        }
+        public override Task CompleteAsync(CancellationToken cancellationToken) =>
+            this._clientSessionHandle.CommitTransactionAsync(cancellationToken);
 
-        public override Task DiscardAsync(CancellationToken cancellationToken)
-        {
-            return _clientSessionHandle.AbortTransactionAsync(cancellationToken);
-        }
-
-        protected override bool IsDirty()
-        {
-            return _clientSessionHandle.WrappedCoreSession.IsDirty;
-        }
+        public override Task DiscardAsync(CancellationToken cancellationToken) =>
+            this._clientSessionHandle.AbortTransactionAsync(cancellationToken);
 
         public override void Dispose()
         {
-            _serviceScope?.Dispose();
-            
+            this._serviceScope?.Dispose();
+
             base.Dispose();
         }
 
-        public IServiceProvider Services => _serviceScope.ServiceProvider;
+        public IServiceProvider Services => this._serviceScope.ServiceProvider;
+
+        protected override bool IsDirty() => this._clientSessionHandle.WrappedCoreSession.IsDirty;
     }
 }

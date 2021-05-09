@@ -6,16 +6,16 @@ namespace TIKSN.Finance.PricingStrategy
     {
         public Money EstimateMarketPrice(Money basePrice)
         {
-            var estimatedPrice = EstimateMarketPrice(basePrice.Amount);
+            var estimatedPrice = this.EstimateMarketPrice(basePrice.Amount);
 
             return new Money(basePrice.Currency, estimatedPrice);
         }
 
         public decimal EstimateMarketPrice(decimal basePrice)
         {
-            decimal sign = basePrice >= decimal.Zero ? decimal.One : decimal.MinusOne;
-            decimal absoluteBasePrice = Math.Abs(basePrice);
-            decimal absoluteEstimatedPrice = absoluteBasePrice; //TODO: To change
+            var sign = basePrice >= decimal.Zero ? decimal.One : decimal.MinusOne;
+            var absoluteBasePrice = Math.Abs(basePrice);
+            var absoluteEstimatedPrice = absoluteBasePrice; //TODO: To change
 
             return sign * absoluteEstimatedPrice;
         }

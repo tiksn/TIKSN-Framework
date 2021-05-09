@@ -2,7 +2,7 @@
 
 namespace TIKSN.Shell
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property)]
     public sealed class ShellCommandParameterAttribute : ShellAttributeBase
     {
         public ShellCommandParameterAttribute(int nameKey) : base(nameKey)

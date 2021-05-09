@@ -12,19 +12,20 @@ namespace TIKSN.Finance
 
         protected CompositeCurrencyConverter(ICurrencyConversionCompositionStrategy compositionStrategy)
         {
-            this.compositionStrategy = compositionStrategy ?? throw new ArgumentNullException(nameof(compositionStrategy));
-            converters = new List<ICurrencyConverter>();
+            this.compositionStrategy =
+                compositionStrategy ?? throw new ArgumentNullException(nameof(compositionStrategy));
+            this.converters = new List<ICurrencyConverter>();
         }
 
-        public void Add(ICurrencyConverter converter)
-        {
-            this.converters.Add(converter);
-        }
+        public void Add(ICurrencyConverter converter) => this.converters.Add(converter);
 
-        public abstract Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken);
+        public abstract Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
+            DateTimeOffset asOn, CancellationToken cancellationToken);
 
-        public abstract Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken);
+        public abstract Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+            CancellationToken cancellationToken);
 
-        public abstract Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken);
+        public abstract Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+            CancellationToken cancellationToken);
     }
 }

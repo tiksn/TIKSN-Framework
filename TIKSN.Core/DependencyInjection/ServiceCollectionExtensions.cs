@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using System.Numerics;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
+using MsgPack.Serialization;
 using ReactiveUI;
-using System;
-using System.Numerics;
 using TIKSN.Data.Mongo;
 using TIKSN.FileSystem;
 using TIKSN.Globalization;
@@ -14,6 +15,7 @@ using TIKSN.Serialization.Numerics;
 using TIKSN.Shell;
 using TIKSN.Time;
 using TIKSN.Web.Rest;
+using MessagePackSerializer = TIKSN.Serialization.MessagePack.MessagePackSerializer;
 
 namespace TIKSN.DependencyInjection
 {
@@ -33,7 +35,7 @@ namespace TIKSN.DependencyInjection
             services.TryAddSingleton<IShellCommandEngine, ShellCommandEngine>();
             services.TryAddSingleton<ITimeProvider, TimeProvider>();
             services.TryAddSingleton<Random>();
-            services.TryAddSingleton(MsgPack.Serialization.SerializationContext.Default);
+            services.TryAddSingleton(SerializationContext.Default);
             services.TryAddSingleton<IKnownFolders, KnownFolders>();
 
             services.TryAddSingleton<CompactBinaryBondDeserializer>();

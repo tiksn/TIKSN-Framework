@@ -5,20 +5,21 @@ namespace TIKSN.Configuration
 {
     public class PartialConfiguration<T> : IPartialConfiguration<T> where T : class, new()
     {
-        private readonly IOptions<T> _options;
         private readonly IConfigurationValidationStrategy<T> _configurationValidationStrategy;
+        private readonly IOptions<T> _options;
 
-        public PartialConfiguration(IOptions<T> options, IConfigurationValidationStrategy<T> configurationValidationStrategy)
+        public PartialConfiguration(IOptions<T> options,
+            IConfigurationValidationStrategy<T> configurationValidationStrategy)
         {
-            _options = options;
-            _configurationValidationStrategy = configurationValidationStrategy;
+            this._options = options;
+            this._configurationValidationStrategy = configurationValidationStrategy;
         }
 
         public T GetConfiguration()
         {
-            var config = _options.Value;
+            var config = this._options.Value;
 
-            _configurationValidationStrategy.Validate(config);
+            this._configurationValidationStrategy.Validate(config);
 
             return config;
         }

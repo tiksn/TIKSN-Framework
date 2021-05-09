@@ -5,7 +5,6 @@ namespace TIKSN.Finance.ForeignExchange.Data
 {
     public class ExchangeRateEntity : IEntity<int>
     {
-        public int ID { get; set; }
         public string BaseCurrencyCode { get; set; }
         public string CounterCurrencyCode { get; set; }
         public DateTimeOffset AsOn { get; set; }
@@ -13,5 +12,6 @@ namespace TIKSN.Finance.ForeignExchange.Data
         public int? ForeignExchangeID { get; set; }
 
         public virtual ForeignExchangeEntity ForeignExchange { get; set; }
+        public int ID { get; set; }
     }
 }

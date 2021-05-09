@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using TIKSN.Globalization;
 using TIKSN.Time;
 
@@ -18,35 +18,39 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
 
         public MyCurrencyDotNet(ICurrencyFactory currencyFactory, ITimeProvider timeProvider)
         {
-            _currencyFactory = currencyFactory;
-            _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+            this._currencyFactory = currencyFactory;
+            this._timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
+            DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var rate = await GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken);
+            var rate = await this.GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken);
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
-            if (_timeProvider.GetCurrentTime().Date != asOn.Date)
+            if (this._timeProvider.GetCurrentTime().Date != asOn.Date)
+            {
                 throw new ArgumentOutOfRangeException(nameof(asOn));
+            }
 
-            var exchangeRates = await GetExchangeRatesAsync(asOn, cancellationToken);
+            var exchangeRates = await this.GetExchangeRatesAsync(asOn, cancellationToken);
 
             return exchangeRates.Select(item => item.Pair).ToArray();
         }
 
-        public Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
-        {
-            return GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken);
-        }
+        public Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+            CancellationToken cancellationToken) =>
+            this.GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken);
 
-        public async Task<IEnumerable<ForeignExchange.ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ForeignExchange.ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
-            ValidateDate(asOn, _timeProvider);
+            ValidateDate(asOn, this._timeProvider);
 
             using (var httpClient = new HttpClient())
             {
@@ -55,17 +59,20 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
                 var exchangeResponse = JsonConvert.DeserializeObject<ExchangeResponse>(jsonExchangeRates);
                 var exchangeRates = exchangeResponse.Rates;
 
-                var baseCurrency = _currencyFactory.Create(exchangeResponse.BaseCurrency);
+                var baseCurrency = this._currencyFactory.Create(exchangeResponse.BaseCurrency);
 
                 var rates = exchangeRates
-                    .Select(item => (currency: _currencyFactory.Create(item.CurrencyCode), rate: item.Rate))
+                    .Select(item => (currency: this._currencyFactory.Create(item.CurrencyCode), rate: item.Rate))
                     .Where(item => item.currency != baseCurrency)
                     .ToArray();
 
                 return rates
-                    .Select(item => new ForeignExchange.ExchangeRate(new CurrencyPair(baseCurrency, item.currency), asOn, item.rate))
+                    .Select(item =>
+                        new ForeignExchange.ExchangeRate(new CurrencyPair(baseCurrency, item.currency), asOn,
+                            item.rate))
                     .Concat(rates
-                        .Select(item => new ForeignExchange.ExchangeRate(new CurrencyPair(item.currency, baseCurrency), asOn, decimal.One / item.rate)))
+                        .Select(item => new ForeignExchange.ExchangeRate(new CurrencyPair(item.currency, baseCurrency),
+                            asOn, decimal.One / item.rate)))
                     .ToArray();
             }
         }
@@ -73,45 +80,45 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
         private static void ValidateDate(DateTimeOffset asOn, ITimeProvider timeProvider)
         {
             if (timeProvider.GetCurrentTime().Date != asOn.Date)
+            {
                 throw new ArgumentOutOfRangeException(nameof(asOn));
+            }
         }
 
-        private async Task<decimal> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
+        private async Task<decimal> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency,
+            DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            ValidateDate(asOn, _timeProvider);
+            ValidateDate(asOn, this._timeProvider);
 
-            var exchangeRates = await GetExchangeRatesAsync(asOn, cancellationToken);
+            var exchangeRates = await this.GetExchangeRatesAsync(asOn, cancellationToken);
 
-            var exchangeRate = exchangeRates.SingleOrDefault(item => item.Pair.BaseCurrency == baseCurrency && item.Pair.CounterCurrency == counterCurrency);
+            var exchangeRate = exchangeRates.SingleOrDefault(item =>
+                item.Pair.BaseCurrency == baseCurrency && item.Pair.CounterCurrency == counterCurrency);
 
             if (exchangeRate == null)
+            {
                 throw new NotSupportedException($"Currency pair {baseCurrency}/{counterCurrency} is not supported");
+            }
 
             return exchangeRate.Rate;
         }
 
         public class ExchangeRate
         {
-            [JsonProperty("code")]
-            public string Code { get; set; }
+            [JsonProperty("code")] public string Code { get; set; }
 
-            [JsonProperty("currency_code")]
-            public string CurrencyCode { get; set; }
+            [JsonProperty("currency_code")] public string CurrencyCode { get; set; }
 
-            [JsonProperty("name")]
-            public string Name { get; set; }
+            [JsonProperty("name")] public string Name { get; set; }
 
-            [JsonProperty("rate")]
-            public decimal Rate { get; set; }
+            [JsonProperty("rate")] public decimal Rate { get; set; }
         }
 
         public class ExchangeResponse
         {
-            [JsonProperty("baseCurrency")]
-            public string BaseCurrency { get; set; }
+            [JsonProperty("baseCurrency")] public string BaseCurrency { get; set; }
 
-            [JsonProperty("rates")]
-            public ExchangeRate[] Rates { get; set; }
+            [JsonProperty("rates")] public ExchangeRate[] Rates { get; set; }
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace TIKSN.Data.EntityFrameworkCore
 {
@@ -8,22 +8,18 @@ namespace TIKSN.Data.EntityFrameworkCore
     {
         private readonly IServiceProvider serviceProvider;
 
-        protected EntityUnitOfWorkFactoryBase(IServiceProvider serviceProvider)
-        {
+        protected EntityUnitOfWorkFactoryBase(IServiceProvider serviceProvider) =>
             this.serviceProvider = serviceProvider;
-        }
 
         public IUnitOfWork Create()
         {
-            var dbContexts = GetContexts();
+            var dbContexts = this.GetContexts();
 
             return new EntityUnitOfWork(dbContexts);
         }
 
-        protected TContext GetContext<TContext>() where TContext : DbContext
-        {
-            return serviceProvider.GetRequiredService<TContext>();
-        }
+        protected TContext GetContext<TContext>() where TContext : DbContext =>
+            this.serviceProvider.GetRequiredService<TContext>();
 
         protected abstract DbContext[] GetContexts();
     }

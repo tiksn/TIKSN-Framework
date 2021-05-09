@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace TIKSN.Analytics.Telemetry.Pushalot
 {
@@ -25,34 +25,27 @@ namespace TIKSN.Analytics.Telemetry.Pushalot
         private const string JSON_FIELD_NAME_TITLE = "Title";
         private const string REQUEST_CONTENT_TYPE = "application/json";
 
-        private HashSet<PushalotAuthorizationToken> generalSubscribers;
+        private readonly HashSet<PushalotAuthorizationToken> generalSubscribers;
 
-        public PushalotClient()
-        {
-            generalSubscribers = new HashSet<PushalotAuthorizationToken>();
-        }
+        public PushalotClient() => this.generalSubscribers = new HashSet<PushalotAuthorizationToken>();
 
         public async Task SendMessage(PushalotMessage message)
         {
-            foreach (var generalSubscriber in generalSubscribers)
+            foreach (var generalSubscriber in this.generalSubscribers)
             {
                 await SendMessage(message, generalSubscriber);
             }
         }
 
-        public bool Subscribe(PushalotAuthorizationToken authorizationToken)
-        {
-            return generalSubscribers.Add(authorizationToken);
-        }
+        public bool Subscribe(PushalotAuthorizationToken authorizationToken) =>
+            this.generalSubscribers.Add(authorizationToken);
 
-        public bool Unsubscribe(PushalotAuthorizationToken authorizationToken)
-        {
-            return generalSubscribers.Remove(authorizationToken);
-        }
+        public bool Unsubscribe(PushalotAuthorizationToken authorizationToken) =>
+            this.generalSubscribers.Remove(authorizationToken);
 
         protected static async Task SendMessage(PushalotMessage message, PushalotAuthorizationToken authorizationToken)
         {
-            string jsonText = GetJsonText(message, authorizationToken);
+            var jsonText = GetJsonText(message, authorizationToken);
 
             Debug.WriteLine("JSON: {0}", jsonText);
 
@@ -68,17 +61,23 @@ namespace TIKSN.Analytics.Telemetry.Pushalot
                                 break;
 
                             case HttpStatusCode.BadRequest:
-                                throw new Exception("Input data validation failed. Check result information Description field for detailed information. Report about this issue by visiting https://pushalot.codeplex.com/workitem/list/basic.");
+                                throw new Exception(
+                                    "Input data validation failed. Check result information Description field for detailed information. Report about this issue by visiting https://pushalot.codeplex.com/workitem/list/basic.");
                             case HttpStatusCode.MethodNotAllowed:
-                                throw new Exception("Method POST is required. Report about this issue by visiting https://pushalot.codeplex.com/workitem/list/basic.");
+                                throw new Exception(
+                                    "Method POST is required. Report about this issue by visiting https://pushalot.codeplex.com/workitem/list/basic.");
                             case HttpStatusCode.NotAcceptable:
-                                throw new Exception("Message throttle limit hit. Check result information Description field for information which limit was exceeded. See limits (https://pushalot.com/api#limits) to learn more about what limits are enforced.");
+                                throw new Exception(
+                                    "Message throttle limit hit. Check result information Description field for information which limit was exceeded. See limits (https://pushalot.com/api#limits) to learn more about what limits are enforced.");
                             case HttpStatusCode.Gone:
-                                throw new Exception("The AuthorizationToken is no longer valid and no more messages should be ever sent again using that token.");
+                                throw new Exception(
+                                    "The AuthorizationToken is no longer valid and no more messages should be ever sent again using that token.");
                             case HttpStatusCode.InternalServerError:
-                                throw new Exception("Something is broken. Please contact Pushalot.com (https://pushalot.com/support) so we can investigate.");
+                                throw new Exception(
+                                    "Something is broken. Please contact Pushalot.com (https://pushalot.com/support) so we can investigate.");
                             case HttpStatusCode.ServiceUnavailable:
-                                throw new Exception("Pushalot.com servers are currently overloaded with requests. Try again later.");
+                                throw new Exception(
+                                    "Pushalot.com servers are currently overloaded with requests. Try again later.");
                             default:
                                 throw new Exception("Unknown error.");
                         }
@@ -128,7 +127,7 @@ namespace TIKSN.Analytics.Telemetry.Pushalot
                 jsonDictionary.Add(JSON_FIELD_NAME_TIME_TO_LIVE, message.TimeToLive.Value);
             }
 
-            string jsonText = JsonConvert.SerializeObject(jsonDictionary);
+            var jsonText = JsonConvert.SerializeObject(jsonDictionary);
 
             return jsonText;
         }
@@ -136,15 +135,14 @@ namespace TIKSN.Analytics.Telemetry.Pushalot
 
     public class PushalotClient<T> : PushalotClient
     {
+        private readonly HashSet<Tuple<T, PushalotAuthorizationToken>> specialSubscribersSet;
         private Lazy<ILookup<T, PushalotAuthorizationToken>> specialSubscribersLookup;
-        private HashSet<Tuple<T, PushalotAuthorizationToken>> specialSubscribersSet;
 
         public PushalotClient()
-            : base()
         {
-            specialSubscribersSet = new HashSet<Tuple<T, PushalotAuthorizationToken>>();
+            this.specialSubscribersSet = new HashSet<Tuple<T, PushalotAuthorizationToken>>();
 
-            ResetSpecialSubscribersLookup();
+            this.ResetSpecialSubscribersLookup();
         }
 
         public async Task SendMessage(PushalotMessage message, params T[] tags)
@@ -153,31 +151,23 @@ namespace TIKSN.Analytics.Telemetry.Pushalot
 
             foreach (var tag in tags)
             {
-                foreach (var specialSubscriber in specialSubscribersLookup.Value[tag])
+                foreach (var specialSubscriber in this.specialSubscribersLookup.Value[tag])
                 {
                     await SendMessage(message, specialSubscriber);
                 }
             }
         }
 
-        public bool Subscribe(T tag, PushalotAuthorizationToken authorizationToken)
-        {
-            return specialSubscribersSet.Add(new Tuple<T, PushalotAuthorizationToken>(tag, authorizationToken));
-        }
+        public bool Subscribe(T tag, PushalotAuthorizationToken authorizationToken) =>
+            this.specialSubscribersSet.Add(new Tuple<T, PushalotAuthorizationToken>(tag, authorizationToken));
 
-        public bool Unsubscribe(T tag, PushalotAuthorizationToken authorizationToken)
-        {
-            return specialSubscribersSet.Remove(new Tuple<T, PushalotAuthorizationToken>(tag, authorizationToken));
-        }
+        public bool Unsubscribe(T tag, PushalotAuthorizationToken authorizationToken) =>
+            this.specialSubscribersSet.Remove(new Tuple<T, PushalotAuthorizationToken>(tag, authorizationToken));
 
-        private ILookup<T, PushalotAuthorizationToken> InitializeSpecialSubscribersLookup()
-        {
-            return specialSubscribersSet.ToLookup(item => item.Item1, item => item.Item2);
-        }
+        private ILookup<T, PushalotAuthorizationToken> InitializeSpecialSubscribersLookup() =>
+            this.specialSubscribersSet.ToLookup(item => item.Item1, item => item.Item2);
 
-        private void ResetSpecialSubscribersLookup()
-        {
-            specialSubscribersLookup = new Lazy<ILookup<T, PushalotAuthorizationToken>>(InitializeSpecialSubscribersLookup);
-        }
+        private void ResetSpecialSubscribersLookup() => this.specialSubscribersLookup =
+            new Lazy<ILookup<T, PushalotAuthorizationToken>>(this.InitializeSpecialSubscribersLookup);
     }
 }

@@ -1,13 +1,12 @@
-﻿using Microsoft.Extensions.Localization;
+﻿using System.Collections.Generic;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Collections.Generic;
-using System.Globalization;
 
 namespace TIKSN.Localization
 {
     /// <summary>
-    /// IStringLocalizer decorator for monitoring not found resources.
+    ///     IStringLocalizer decorator for monitoring not found resources.
     /// </summary>
     public class StringLocalizerMonitor : IStringLocalizer
     {
@@ -15,38 +14,29 @@ namespace TIKSN.Localization
         private readonly IOptions<StringLocalizerMonitorOptions> _options;
         private readonly IStringLocalizer _stringLocalizer;
 
-        public StringLocalizerMonitor(IStringLocalizer stringLocalizer, ILogger<StringLocalizerMonitor> logger, IOptions<StringLocalizerMonitorOptions> options)
+        public StringLocalizerMonitor(IStringLocalizer stringLocalizer, ILogger<StringLocalizerMonitor> logger,
+            IOptions<StringLocalizerMonitorOptions> options)
         {
-            _stringLocalizer = stringLocalizer;
-            _logger = logger;
-            _options = options;
+            this._stringLocalizer = stringLocalizer;
+            this._logger = logger;
+            this._options = options;
         }
 
-        public LocalizedString this[string name]
-        {
-            get
-            {
-                return Log(_stringLocalizer[name]);
-            }
-        }
+        public LocalizedString this[string name] => this.Log(this._stringLocalizer[name]);
 
-        public LocalizedString this[string name, params object[] arguments]
-        {
-            get
-            {
-                return Log(_stringLocalizer[name, arguments]);
-            }
-        }
+        public LocalizedString this[string name, params object[] arguments] =>
+            this.Log(this._stringLocalizer[name, arguments]);
 
-        public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
-        {
-            return _stringLocalizer.GetAllStrings(includeParentCultures);
-        }
+        public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures) =>
+            this._stringLocalizer.GetAllStrings(includeParentCultures);
 
         private LocalizedString Log(LocalizedString localizedString)
         {
             if (localizedString.ResourceNotFound)
-                _logger.Log(_options.Value.LogLevel, 414761847, $"Resource with name '{localizedString.Name}' is not found.", null, (s, e) => s);
+            {
+                this._logger.Log(this._options.Value.LogLevel, 414761847,
+                    $"Resource with name '{localizedString.Name}' is not found.", null, (s, e) => s);
+            }
 
             return localizedString;
         }

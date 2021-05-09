@@ -16,12 +16,13 @@ namespace TIKSN.Analytics.Telemetry.Pushalot
         {
             this.pushalotConfiguration = pushalotConfiguration;
 
-            lazyClient = new Lazy<PushalotClient<TelemetrySeverityLevel>>(CreatePushalotClient);
+            this.lazyClient = new Lazy<PushalotClient<TelemetrySeverityLevel>>(this.CreatePushalotClient);
         }
 
         protected abstract IEnumerable<string> GetAuthorizationTokens(PushalotOptions pushalotConfiguration);
 
-        protected abstract IEnumerable<string> GetAuthorizationTokens(PushalotOptions pushalotConfiguration, TelemetrySeverityLevel severityLevel);
+        protected abstract IEnumerable<string> GetAuthorizationTokens(PushalotOptions pushalotConfiguration,
+            TelemetrySeverityLevel severityLevel);
 
         protected async Task SendMessage(string title, string content)
         {
@@ -33,7 +34,7 @@ namespace TIKSN.Analytics.Telemetry.Pushalot
 
                 var message = mbuilder.Build();
 
-                await lazyClient.Value.SendMessage(message);
+                await this.lazyClient.Value.SendMessage(message);
             }
             catch (Exception ex)
             {
@@ -45,7 +46,7 @@ namespace TIKSN.Analytics.Telemetry.Pushalot
         {
             var client = new PushalotClient<TelemetrySeverityLevel>();
 
-            var authorizationTokens = GetAuthorizationTokens(pushalotConfiguration.GetConfiguration());
+            var authorizationTokens = this.GetAuthorizationTokens(this.pushalotConfiguration.GetConfiguration());
 
             foreach (var authorizationToken in authorizationTokens)
             {
@@ -54,7 +55,8 @@ namespace TIKSN.Analytics.Telemetry.Pushalot
 
             foreach (var severityLevel in Enum.GetValues(typeof(TelemetrySeverityLevel)).Cast<TelemetrySeverityLevel>())
             {
-                var severityLevelAuthorizationTokens = GetAuthorizationTokens(pushalotConfiguration.GetConfiguration(), severityLevel);
+                var severityLevelAuthorizationTokens =
+                    this.GetAuthorizationTokens(this.pushalotConfiguration.GetConfiguration(), severityLevel);
 
                 foreach (var severityLevelAuthorizationToken in severityLevelAuthorizationTokens)
                 {

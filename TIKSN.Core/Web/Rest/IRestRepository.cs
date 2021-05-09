@@ -5,7 +5,8 @@ using TIKSN.Data;
 
 namespace TIKSN.Web.Rest
 {
-    public interface IRestRepository<TEntity, TIdentity> where TEntity : IEntity<TIdentity> where TIdentity : IEquatable<TIdentity>
+    public interface IRestRepository<TEntity, TIdentity> where TEntity : IEntity<TIdentity>
+        where TIdentity : IEquatable<TIdentity>
     {
         Task AddAsync(TEntity entity, CancellationToken cancellationToken);
 

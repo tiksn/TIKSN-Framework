@@ -7,57 +7,60 @@ namespace TIKSN.PowerShell
 {
     public class PowerShellProgress : DisposableProgress<OperationProgressReport>
     {
-        private static readonly object activityIdLocker = new object();
-        private static int nextActivityId = 0;
+        private static readonly object activityIdLocker = new();
+        private static int nextActivityId;
 
         private readonly ICurrentCommandProvider _currentCommandProvider;
         private readonly ProgressRecord progressRecord;
-        private Stopwatch stopwatch;
+        private readonly Stopwatch stopwatch;
 
-        public PowerShellProgress(ICurrentCommandProvider currentCommandProvider, string activity, string statusDescription)
+        public PowerShellProgress(ICurrentCommandProvider currentCommandProvider, string activity,
+            string statusDescription)
         {
             this.progressRecord = new ProgressRecord(GenerateNextActivityId(), activity, statusDescription);
 
-            stopwatch = Stopwatch.StartNew();
-            progressRecord.RecordType = ProgressRecordType.Processing;
-            _currentCommandProvider = currentCommandProvider ?? throw new ArgumentNullException(nameof(currentCommandProvider));
-            _currentCommandProvider.GetCurrentCommand().WriteProgress(progressRecord);
+            this.stopwatch = Stopwatch.StartNew();
+            this.progressRecord.RecordType = ProgressRecordType.Processing;
+            this._currentCommandProvider = currentCommandProvider ??
+                                           throw new ArgumentNullException(nameof(currentCommandProvider));
+            this._currentCommandProvider.GetCurrentCommand().WriteProgress(this.progressRecord);
         }
 
         public PowerShellProgress CreateChildProgress(string activity, string statusDescription)
         {
-            var childProgress = new PowerShellProgress(_currentCommandProvider, activity, statusDescription);
+            var childProgress = new PowerShellProgress(this._currentCommandProvider, activity, statusDescription);
 
-            childProgress.progressRecord.ParentActivityId = progressRecord.ActivityId;
+            childProgress.progressRecord.ParentActivityId = this.progressRecord.ActivityId;
 
             return childProgress;
         }
 
         public override void Dispose()
         {
-            stopwatch.Stop();
-            progressRecord.RecordType = ProgressRecordType.Completed;
-            _currentCommandProvider.GetCurrentCommand().WriteProgress(progressRecord);
+            this.stopwatch.Stop();
+            this.progressRecord.RecordType = ProgressRecordType.Completed;
+            this._currentCommandProvider.GetCurrentCommand().WriteProgress(this.progressRecord);
         }
 
         protected override void OnReport(OperationProgressReport value)
         {
-            progressRecord.RecordType = ProgressRecordType.Processing;
-            progressRecord.PercentComplete = (int)value.PercentComplete;
+            this.progressRecord.RecordType = ProgressRecordType.Processing;
+            this.progressRecord.PercentComplete = (int)value.PercentComplete;
 
-            progressRecord.SecondsRemaining = (int)(stopwatch.Elapsed.TotalSeconds * (100d - value.PercentComplete) / value.PercentComplete);
+            this.progressRecord.SecondsRemaining = (int)(this.stopwatch.Elapsed.TotalSeconds *
+                (100d - value.PercentComplete) / value.PercentComplete);
 
             if (value.CurrentOperation != null)
             {
-                progressRecord.CurrentOperation = value.CurrentOperation;
+                this.progressRecord.CurrentOperation = value.CurrentOperation;
             }
 
             if (value.StatusDescription != null)
             {
-                progressRecord.StatusDescription = value.StatusDescription;
+                this.progressRecord.StatusDescription = value.StatusDescription;
             }
 
-            _currentCommandProvider.GetCurrentCommand().WriteProgress(progressRecord);
+            this._currentCommandProvider.GetCurrentCommand().WriteProgress(this.progressRecord);
             base.OnReport(value);
         }
 

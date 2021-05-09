@@ -8,8 +8,8 @@ namespace TIKSN.Web.Rest
     {
         public RestRepositoryOptions()
         {
-            MediaType = "application/json";
-            Encoding = Encoding.UTF8;
+            this.MediaType = "application/json";
+            this.Encoding = Encoding.UTF8;
         }
 
         public Guid ApiKey { get; set; }

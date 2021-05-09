@@ -4,54 +4,48 @@ using System.Linq;
 namespace TIKSN.Integration.Correlation
 {
     /// <summary>
-    /// Correlation ID
+    ///     Correlation ID
     /// </summary>
     public struct CorrelationID : IEquatable<CorrelationID>
     {
         /// <summary>
-        /// Empty Correlation ID.
+        ///     Empty Correlation ID.
         /// </summary>
-        public static readonly CorrelationID Empty = new CorrelationID();
+        public static readonly CorrelationID Empty = new();
 
         private readonly byte[] _byteArrayRepresentation;
         private readonly string _stringRepresentation;
 
         internal CorrelationID(string stringRepresentation, byte[] byteArrayRepresentation)
         {
-            _stringRepresentation = stringRepresentation ?? throw new ArgumentNullException(nameof(stringRepresentation));
-            _byteArrayRepresentation = byteArrayRepresentation ?? throw new ArgumentNullException(nameof(byteArrayRepresentation));
+            this._stringRepresentation =
+                stringRepresentation ?? throw new ArgumentNullException(nameof(stringRepresentation));
+            this._byteArrayRepresentation = byteArrayRepresentation ??
+                                            throw new ArgumentNullException(nameof(byteArrayRepresentation));
         }
 
         /// <summary>
-        /// Implicitly convert <see cref="CorrelationID"/> to byte array.
+        ///     Implicitly convert <see cref="CorrelationID" /> to byte array.
         /// </summary>
         /// <param name="correlationId"></param>
-        public static implicit operator byte[](CorrelationID correlationId)
-        {
-            return correlationId._byteArrayRepresentation;
-        }
+        public static implicit operator byte[](CorrelationID correlationId) => correlationId._byteArrayRepresentation;
 
         /// <summary>
-        /// Implicitly convert <see cref="CorrelationID"/> to string.
+        ///     Implicitly convert <see cref="CorrelationID" /> to string.
         /// </summary>
         /// <param name="correlationId"></param>
-        public static implicit operator string(CorrelationID correlationId)
-        {
-            return correlationId._stringRepresentation;
-        }
+        public static implicit operator string(CorrelationID correlationId) => correlationId._stringRepresentation;
 
         /// <summary>
-        /// Indicates whether this instance and a <paramref name="other"/> are equal by their binary representation.
+        ///     Indicates whether this instance and a <paramref name="other" /> are equal by their binary representation.
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public bool Equals(CorrelationID other)
-        {
-            return _byteArrayRepresentation.SequenceEqual(other._byteArrayRepresentation);
-        }
+        public bool Equals(CorrelationID other) =>
+            this._byteArrayRepresentation.SequenceEqual(other._byteArrayRepresentation);
 
         /// <summary>
-        /// Indicates whether this instance and a specified object are equal.
+        ///     Indicates whether this instance and a specified object are equal.
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
@@ -64,42 +58,37 @@ namespace TIKSN.Integration.Correlation
 
             var other = (CorrelationID)obj;
 
-            return Equals(other);
+            return this.Equals(other);
         }
 
         /// <summary>
-        /// Returns the hash code for this instance.
+        ///     Returns the hash code for this instance.
         /// </summary>
         /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
         public override int GetHashCode()
         {
             unchecked
             {
-                int hash = 27;
-                for (int i = 0; i < _byteArrayRepresentation.Length && i < 4; i++)
+                var hash = 27;
+                for (var i = 0; i < this._byteArrayRepresentation.Length && i < 4; i++)
                 {
-                    hash = (13 * hash) + _byteArrayRepresentation[i].GetHashCode();
+                    hash = (13 * hash) + this._byteArrayRepresentation[i].GetHashCode();
                 }
+
                 return hash;
             }
         }
 
         /// <summary>
-        /// Returns binary representation.
+        ///     Returns binary representation.
         /// </summary>
         /// <returns></returns>
-        public byte[] ToByteArray()
-        {
-            return _byteArrayRepresentation;
-        }
+        public byte[] ToByteArray() => this._byteArrayRepresentation;
 
         /// <summary>
-        /// Returns string representation.
+        ///     Returns string representation.
         /// </summary>
         /// <returns></returns>
-        public override string ToString()
-        {
-            return _stringRepresentation;
-        }
+        public override string ToString() => this._stringRepresentation;
     }
 }

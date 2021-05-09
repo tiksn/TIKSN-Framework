@@ -1,7 +1,8 @@
-﻿using Microsoft.Azure.Cosmos.Table;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Azure.Cosmos.Table;
 
 namespace TIKSN.Data.CosmosTable
 {
@@ -12,7 +13,9 @@ namespace TIKSN.Data.CosmosTable
             where T : ITableEntity
         {
             if (repository == null)
-                throw new System.ArgumentNullException(nameof(repository));
+            {
+                throw new ArgumentNullException(nameof(repository));
+            }
 
             var filters = new Dictionary<string, object>();
 
@@ -26,7 +29,9 @@ namespace TIKSN.Data.CosmosTable
             where T : ITableEntity
         {
             if (repository == null)
-                throw new System.ArgumentNullException(nameof(repository));
+            {
+                throw new ArgumentNullException(nameof(repository));
+            }
 
             var filters = new Dictionary<string, object>();
 

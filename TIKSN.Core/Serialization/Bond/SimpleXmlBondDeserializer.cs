@@ -1,6 +1,6 @@
-﻿using Bond.Protocols;
-using System.IO;
+﻿using System.IO;
 using System.Xml;
+using Bond.Protocols;
 
 namespace TIKSN.Serialization.Bond
 {

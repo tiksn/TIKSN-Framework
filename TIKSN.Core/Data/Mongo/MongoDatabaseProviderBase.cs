@@ -6,21 +6,24 @@ namespace TIKSN.Data.Mongo
 {
     public abstract class MongoDatabaseProviderBase : IMongoDatabaseProvider
     {
-        private readonly IMongoClientProvider _mongoClientProvider;
         private readonly IConfiguration _configuration;
         private readonly string _connectionStringKey;
+        private readonly IMongoClientProvider _mongoClientProvider;
 
-        public MongoDatabaseProviderBase(IMongoClientProvider mongoClientProvider, IConfiguration configuration, string connectionStringKey)
+        public MongoDatabaseProviderBase(IMongoClientProvider mongoClientProvider, IConfiguration configuration,
+            string connectionStringKey)
         {
-            _mongoClientProvider = mongoClientProvider ?? throw new ArgumentNullException(nameof(mongoClientProvider));
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _connectionStringKey = connectionStringKey ?? throw new ArgumentNullException(nameof(connectionStringKey));
+            this._mongoClientProvider =
+                mongoClientProvider ?? throw new ArgumentNullException(nameof(mongoClientProvider));
+            this._configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this._connectionStringKey =
+                connectionStringKey ?? throw new ArgumentNullException(nameof(connectionStringKey));
         }
 
         public IMongoDatabase GetDatabase()
         {
-            var mongoClient = _mongoClientProvider.GetMongoClient();
-            var connectionString = _configuration.GetConnectionString(_connectionStringKey);
+            var mongoClient = this._mongoClientProvider.GetMongoClient();
+            var connectionString = this._configuration.GetConnectionString(this._connectionStringKey);
             var databaseName = MongoUrl.Create(connectionString).DatabaseName;
             return mongoClient.GetDatabase(databaseName);
         }

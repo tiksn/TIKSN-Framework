@@ -7,22 +7,19 @@ namespace TIKSN.Analytics.Logging.Serilog
     {
         protected LoggerConfiguration _loggerConfiguration;
 
-        protected SerilogLoggingSetupBase()
-        {
-            _loggerConfiguration = new LoggerConfiguration();
-        }
+        protected SerilogLoggingSetupBase() => this._loggerConfiguration = new LoggerConfiguration();
 
         public void Setup(ILoggingBuilder loggingBuilder)
         {
-            SetupSerilog();
+            this.SetupSerilog();
 
-            loggingBuilder.AddSerilog(_loggerConfiguration.CreateLogger(), dispose: true);
+            loggingBuilder.AddSerilog(this._loggerConfiguration.CreateLogger(), true);
         }
 
         protected virtual void SetupSerilog()
         {
-            _loggerConfiguration.MinimumLevel.Verbose();
-            _loggerConfiguration.Enrich.FromLogContext();
+            this._loggerConfiguration.MinimumLevel.Verbose();
+            this._loggerConfiguration.Enrich.FromLogContext();
         }
     }
 }

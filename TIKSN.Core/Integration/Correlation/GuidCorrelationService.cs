@@ -3,12 +3,12 @@
 namespace TIKSN.Integration.Correlation
 {
     /// <summary>
-    /// Service for generating and parsing <see cref="Guid"/> backed <see cref="CorrelationID"/>.
+    ///     Service for generating and parsing <see cref="Guid" /> backed <see cref="CorrelationID" />.
     /// </summary>
     public class GuidCorrelationService : ICorrelationService
     {
         /// <summary>
-        /// Creates <see cref="CorrelationID"/> from string representation.
+        ///     Creates <see cref="CorrelationID" /> from string representation.
         /// </summary>
         /// <param name="stringRepresentation"></param>
         /// <returns></returns>
@@ -19,7 +19,7 @@ namespace TIKSN.Integration.Correlation
         }
 
         /// <summary>
-        /// Creates <see cref="CorrelationID"/> from binary representation.
+        ///     Creates <see cref="CorrelationID" /> from binary representation.
         /// </summary>
         /// <param name="byteArrayRepresentation"></param>
         /// <returns></returns>
@@ -30,7 +30,7 @@ namespace TIKSN.Integration.Correlation
         }
 
         /// <summary>
-        /// Generates new <see cref="CorrelationID"/>
+        ///     Generates new <see cref="CorrelationID" />
         /// </summary>
         /// <returns></returns>
         public CorrelationID Generate()

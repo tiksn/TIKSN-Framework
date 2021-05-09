@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System;
+using Microsoft.Extensions.Options;
 using Multiformats.Base;
-using System;
 
 namespace TIKSN.Integration.Correlation
 {
@@ -13,27 +13,30 @@ namespace TIKSN.Integration.Correlation
             Random random,
             IOptions<MultibaseCorrelationServiceOptions> multibaseCorrelationServiceOptions)
         {
-            _random = random ?? throw new ArgumentNullException(nameof(random));
-            _multibaseCorrelationServiceOptions = multibaseCorrelationServiceOptions ?? throw new ArgumentNullException(nameof(multibaseCorrelationServiceOptions));
+            this._random = random ?? throw new ArgumentNullException(nameof(random));
+            this._multibaseCorrelationServiceOptions = multibaseCorrelationServiceOptions ??
+                                                       throw new ArgumentNullException(
+                                                           nameof(multibaseCorrelationServiceOptions));
         }
 
         public CorrelationID Create(string stringRepresentation)
         {
-            byte[] byteArrayRepresentation = Multibase.Decode(stringRepresentation, out MultibaseEncoding encoding);
+            var byteArrayRepresentation = Multibase.Decode(stringRepresentation, out MultibaseEncoding encoding);
             return new CorrelationID(stringRepresentation, byteArrayRepresentation);
         }
 
         public CorrelationID Create(byte[] byteArrayRepresentation)
         {
-            string stringRepresentation = Multibase.Encode(_multibaseCorrelationServiceOptions.Value.Encoding, byteArrayRepresentation);
+            var stringRepresentation = Multibase.Encode(this._multibaseCorrelationServiceOptions.Value.Encoding,
+                byteArrayRepresentation);
             return new CorrelationID(stringRepresentation, byteArrayRepresentation);
         }
 
         public CorrelationID Generate()
         {
-            var byteArrayRepresentation = new byte[_multibaseCorrelationServiceOptions.Value.ByteLength];
-            _random.NextBytes(byteArrayRepresentation);
-            return Create(byteArrayRepresentation);
+            var byteArrayRepresentation = new byte[this._multibaseCorrelationServiceOptions.Value.ByteLength];
+            this._random.NextBytes(byteArrayRepresentation);
+            return this.Create(byteArrayRepresentation);
         }
     }
 }

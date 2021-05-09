@@ -2,7 +2,8 @@
 
 namespace TIKSN.Configuration.Validator
 {
-    public abstract class PartialConfigurationFluentValidatorBase<T> : AbstractValidator<T>, IPartialConfigurationValidator<T>
+    public abstract class PartialConfigurationFluentValidatorBase<T> : AbstractValidator<T>,
+        IPartialConfigurationValidator<T>
     {
         public void ValidateConfiguration(T instance)
         {

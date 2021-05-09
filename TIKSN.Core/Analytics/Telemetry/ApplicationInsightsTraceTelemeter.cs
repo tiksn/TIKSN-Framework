@@ -1,21 +1,16 @@
-﻿using Microsoft.ApplicationInsights.DataContracts;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Microsoft.ApplicationInsights.DataContracts;
 
 namespace TIKSN.Analytics.Telemetry
 {
     public class ApplicationInsightsTraceTelemeter : ITraceTelemeter
     {
-        public Task TrackTrace(string message, TelemetrySeverityLevel severityLevel)
-        {
-            return TrackTraceInternal(message, severityLevel);
-        }
+        public Task TrackTrace(string message, TelemetrySeverityLevel severityLevel) =>
+            this.TrackTraceInternal(message, severityLevel);
 
-        public Task TrackTrace(string message)
-        {
-            return TrackTraceInternal(message, null);
-        }
+        public Task TrackTrace(string message) => this.TrackTraceInternal(message, null);
 
         private Task TrackTraceInternal(string message, TelemetrySeverityLevel? severityLevel)
         {
