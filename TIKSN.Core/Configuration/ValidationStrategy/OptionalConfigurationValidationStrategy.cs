@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
 using TIKSN.Configuration.Validator;
 
 namespace TIKSN.Configuration.ValidationStrategy
@@ -10,9 +10,7 @@ namespace TIKSN.Configuration.ValidationStrategy
         {
         }
 
-        protected override IPartialConfigurationValidator<T> GetConfigurationValidator()
-        {
-            return _serviceProvider.GetService<IPartialConfigurationValidator<T>>();
-        }
+        protected override IPartialConfigurationValidator<T> GetConfigurationValidator() =>
+            this._serviceProvider.GetService<IPartialConfigurationValidator<T>>();
     }
 }
