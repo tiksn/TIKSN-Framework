@@ -11,7 +11,7 @@ namespace TIKSN.Data
                 throw new ArgumentException("Argument is null, empty or whitespace.", nameof(path));
             }
 
-            Path = path;
+            this.Path = path;
         }
 
         public string Path { get; }
@@ -19,20 +19,15 @@ namespace TIKSN.Data
 
     public class FileInfo<TIdentity> : FileInfo, IFileInfo<TIdentity> where TIdentity : IEquatable<TIdentity>
     {
-        public FileInfo(TIdentity id, string path) : base(path)
-        {
-            ID = id;
-        }
+        public FileInfo(TIdentity id, string path) : base(path) => this.ID = id;
 
         public TIdentity ID { get; }
     }
 
-    public class FileInfo<TIdentity, TMetadata> : FileInfo<TIdentity>, IFileInfo<TIdentity, TMetadata> where TIdentity : IEquatable<TIdentity>
+    public class FileInfo<TIdentity, TMetadata> : FileInfo<TIdentity>, IFileInfo<TIdentity, TMetadata>
+        where TIdentity : IEquatable<TIdentity>
     {
-        public FileInfo(TIdentity id, string path, TMetadata metadata) : base(id, path)
-        {
-            Metadata = metadata;
-        }
+        public FileInfo(TIdentity id, string path, TMetadata metadata) : base(id, path) => this.Metadata = metadata;
 
         public TMetadata Metadata { get; }
     }
