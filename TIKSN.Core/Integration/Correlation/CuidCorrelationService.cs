@@ -46,10 +46,10 @@ namespace TIKSN.Integration.Correlation
 
         public CuidCorrelationService(ITimeProvider timeProvider, Random random)
         {
-            _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
-            _counter = 0;
-            _locker = new object();
-            _random = random ?? throw new ArgumentNullException(nameof(random));
+            this._timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+            this._counter = 0;
+            this._locker = new object();
+            this._random = random ?? throw new ArgumentNullException(nameof(random));
         }
 
         public CorrelationID Create(string stringRepresentation)
@@ -59,31 +59,31 @@ namespace TIKSN.Integration.Correlation
                 throw new ArgumentNullException(nameof(stringRepresentation));
             }
 
-            char[] charArrayRepresentation = stringRepresentation.ToCharArray();
-            byte[] byteArrayRepresentation = CreateByteArray();
+            var charArrayRepresentation = stringRepresentation.ToCharArray();
+            var byteArrayRepresentation = this.CreateByteArray();
 
-            CreateChunks(
+            this.CreateChunks(
                 ref charArrayRepresentation,
                 ref byteArrayRepresentation,
-                out Span<char> timestampChars,
-                out Span<byte> timestampBytes,
-                out Span<char> counterChars,
-                out Span<byte> counterBytes,
-                out Span<char> pidChars,
-                out Span<byte> pidBytes,
-                out Span<char> hostnameChars,
-                out Span<byte> hostnameBytes,
-                out Span<char> randomNumber1Chars,
-                out Span<byte> randomNumber1Bytes,
-                out Span<char> randomNumber2Chars,
-                out Span<byte> randomNumber2Bytes);
+                out var timestampChars,
+                out var timestampBytes,
+                out var counterChars,
+                out var counterBytes,
+                out var pidChars,
+                out var pidBytes,
+                out var hostnameChars,
+                out var hostnameBytes,
+                out var randomNumber1Chars,
+                out var randomNumber1Bytes,
+                out var randomNumber2Chars,
+                out var randomNumber2Bytes);
 
-            ConvertCharsToBytes(timestampChars, timestampBytes);
-            ConvertCharsToBytes(counterChars, counterBytes);
-            ConvertCharsToBytes(pidChars, pidBytes);
-            ConvertCharsToBytes(hostnameChars, hostnameBytes);
-            ConvertCharsToBytes(randomNumber1Chars, randomNumber1Bytes);
-            ConvertCharsToBytes(randomNumber2Chars, randomNumber2Bytes);
+            this.ConvertCharsToBytes(timestampChars, timestampBytes);
+            this.ConvertCharsToBytes(counterChars, counterBytes);
+            this.ConvertCharsToBytes(pidChars, pidBytes);
+            this.ConvertCharsToBytes(hostnameChars, hostnameBytes);
+            this.ConvertCharsToBytes(randomNumber1Chars, randomNumber1Bytes);
+            this.ConvertCharsToBytes(randomNumber2Chars, randomNumber2Bytes);
 
             return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
         }
@@ -95,73 +95,74 @@ namespace TIKSN.Integration.Correlation
                 throw new ArgumentNullException(nameof(byteArrayRepresentation));
             }
 
-            char[] charArrayRepresentation = CreateCharsArray();
+            var charArrayRepresentation = this.CreateCharsArray();
 
-            CreateChunks(
+            this.CreateChunks(
                 ref charArrayRepresentation,
                 ref byteArrayRepresentation,
-                out Span<char> timestampChars,
-                out Span<byte> timestampBytes,
-                out Span<char> counterChars,
-                out Span<byte> counterBytes,
-                out Span<char> pidChars,
-                out Span<byte> pidBytes,
-                out Span<char> hostnameChars,
-                out Span<byte> hostnameBytes,
-                out Span<char> randomNumber1Chars,
-                out Span<byte> randomNumber1Bytes,
-                out Span<char> randomNumber2Chars,
-                out Span<byte> randomNumber2Bytes);
+                out var timestampChars,
+                out var timestampBytes,
+                out var counterChars,
+                out var counterBytes,
+                out var pidChars,
+                out var pidBytes,
+                out var hostnameChars,
+                out var hostnameBytes,
+                out var randomNumber1Chars,
+                out var randomNumber1Bytes,
+                out var randomNumber2Chars,
+                out var randomNumber2Bytes);
 
-            ConvertBytesToChars(timestampChars, timestampBytes);
-            ConvertBytesToChars(counterChars, counterBytes);
-            ConvertBytesToChars(pidChars, pidBytes);
-            ConvertBytesToChars(hostnameChars, hostnameBytes);
-            ConvertBytesToChars(randomNumber1Chars, randomNumber1Bytes);
-            ConvertBytesToChars(randomNumber2Chars, randomNumber2Bytes);
+            this.ConvertBytesToChars(timestampChars, timestampBytes);
+            this.ConvertBytesToChars(counterChars, counterBytes);
+            this.ConvertBytesToChars(pidChars, pidBytes);
+            this.ConvertBytesToChars(hostnameChars, hostnameBytes);
+            this.ConvertBytesToChars(randomNumber1Chars, randomNumber1Bytes);
+            this.ConvertBytesToChars(randomNumber2Chars, randomNumber2Bytes);
 
             return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
         }
 
         public CorrelationID Generate()
         {
-            char[] charArrayRepresentation = CreateCharsArray();
-            byte[] byteArrayRepresentation = CreateByteArray();
+            var charArrayRepresentation = this.CreateCharsArray();
+            var byteArrayRepresentation = this.CreateByteArray();
 
-            CreateChunks(
+            this.CreateChunks(
                 ref charArrayRepresentation,
                 ref byteArrayRepresentation,
-                out Span<char> timestampChars,
-                out Span<byte> timestampBytes,
-                out Span<char> counterChars,
-                out Span<byte> counterBytes,
-                out Span<char> pidChars,
-                out Span<byte> pidBytes,
-                out Span<char> hostnameChars,
-                out Span<byte> hostnameBytes,
-                out Span<char> randomNumber1Chars,
-                out Span<byte> randomNumber1Bytes,
-                out Span<char> randomNumber2Chars,
-                out Span<byte> randomNumber2Bytes);
+                out var timestampChars,
+                out var timestampBytes,
+                out var counterChars,
+                out var counterBytes,
+                out var pidChars,
+                out var pidBytes,
+                out var hostnameChars,
+                out var hostnameBytes,
+                out var randomNumber1Chars,
+                out var randomNumber1Bytes,
+                out var randomNumber2Chars,
+                out var randomNumber2Bytes);
 
             var chars = charArrayRepresentation.AsSpan();
             var bytes = byteArrayRepresentation.AsSpan();
 
-            var timestamp = _timeProvider.GetCurrentTime().ToUnixTimeMilliseconds();
+            var timestamp = this._timeProvider.GetCurrentTime().ToUnixTimeMilliseconds();
 
             int counter;
 
-            lock (_locker)
+            lock (this._locker)
             {
-                counter = _counter;
-                _counter = (_counter == QuartetteUpperBoundary) ? 0 : _counter + 1;
+                counter = this._counter;
+                this._counter = this._counter == QuartetteUpperBoundary ? 0 : this._counter + 1;
             }
 
             var pid = Process.GetCurrentProcess().Id % DuetteUpperBoundary;
-            var hostname = GetHostname();
-            var hostnameHash = hostname.Split().Aggregate(hostname.Length + 36, (prev, c) => prev + c[0]) % DuetteUpperBoundary;
-            var randomNumber1 = _random.Next() % QuartetteUpperBoundary;
-            var randomNumber2 = _random.Next() % QuartetteUpperBoundary;
+            var hostname = this.GetHostname();
+            var hostnameHash = hostname.Split().Aggregate(hostname.Length + 36, (prev, c) => prev + c[0]) %
+                               DuetteUpperBoundary;
+            var randomNumber1 = this._random.Next() % QuartetteUpperBoundary;
+            var randomNumber2 = this._random.Next() % QuartetteUpperBoundary;
 
             WriteBase36(timestamp, timestampChars, timestampBytes);
             WriteBase36(counter, counterChars, counterBytes);
@@ -175,7 +176,7 @@ namespace TIKSN.Integration.Correlation
 
         private static void WriteBase36(long value, Span<char> chars)
         {
-            for (int i = chars.Length - 1; i >= 0; i--)
+            for (var i = chars.Length - 1; i >= 0; i--)
             {
                 chars[i] = Alphabet[(int)(value % Radix)];
                 value /= Radix;
@@ -201,9 +202,9 @@ namespace TIKSN.Integration.Correlation
 
         private void ConvertBytesToChars(Span<char> chars, Span<byte> bytes)
         {
-            long value = 0L;
+            var value = 0L;
 
-            for (int i = 0; i < bytes.Length; i++)
+            for (var i = 0; i < bytes.Length; i++)
             {
                 value *= 256;
                 value += bytes[i];
@@ -214,11 +215,11 @@ namespace TIKSN.Integration.Correlation
 
         private void ConvertCharsToBytes(Span<char> chars, Span<byte> bytes)
         {
-            long value = 0L;
+            var value = 0L;
 
-            for (int i = 0; i < chars.Length; i++)
+            for (var i = 0; i < chars.Length; i++)
             {
-                int code = CodeMap[chars[i]];
+                var code = CodeMap[chars[i]];
                 value *= Radix;
                 value += code;
             }
@@ -226,10 +227,7 @@ namespace TIKSN.Integration.Correlation
             WriteBase36(value, bytes);
         }
 
-        private byte[] CreateByteArray()
-        {
-            return new byte[ByteArraySize];
-        }
+        private byte[] CreateByteArray() => new byte[ByteArraySize];
 
         private char[] CreateCharsArray()
         {
@@ -256,30 +254,33 @@ namespace TIKSN.Integration.Correlation
         {
             if (charArrayRepresentation is null)
             {
-                charArrayRepresentation = CreateCharsArray();
+                charArrayRepresentation = this.CreateCharsArray();
             }
             else
             {
                 if (charArrayRepresentation.Length != CharsArraySize)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(charArrayRepresentation), "CUID string representation contains invalid number of characters.");
+                    throw new ArgumentOutOfRangeException(nameof(charArrayRepresentation),
+                        "CUID string representation contains invalid number of characters.");
                 }
 
                 if (charArrayRepresentation[0] != 'c')
                 {
-                    throw new ArgumentException("CUID string representation should start with 'c' character.", nameof(charArrayRepresentation));
+                    throw new ArgumentException("CUID string representation should start with 'c' character.",
+                        nameof(charArrayRepresentation));
                 }
             }
 
             if (byteArrayRepresentation is null)
             {
-                byteArrayRepresentation = CreateByteArray();
+                byteArrayRepresentation = this.CreateByteArray();
             }
             else
             {
                 if (byteArrayRepresentation.Length != ByteArraySize)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(byteArrayRepresentation), "CUID byte array representation contains invalid number of characters.");
+                    throw new ArgumentOutOfRangeException(nameof(byteArrayRepresentation),
+                        "CUID byte array representation contains invalid number of characters.");
                 }
             }
 
@@ -307,25 +308,25 @@ namespace TIKSN.Integration.Correlation
 
         private string GetHostname()
         {
-            if (_hostname == null)
+            if (this._hostname == null)
             {
-                lock (_locker)
+                lock (this._locker)
                 {
-                    if (_hostname == null)
+                    if (this._hostname == null)
                     {
                         try
                         {
-                            _hostname = Environment.MachineName;
+                            this._hostname = Environment.MachineName;
                         }
                         catch
                         {
-                            _hostname = _random.Next().ToString(CultureInfo.InvariantCulture);
+                            this._hostname = this._random.Next().ToString(CultureInfo.InvariantCulture);
                         }
                     }
                 }
             }
 
-            return _hostname;
+            return this._hostname;
         }
     }
 }
