@@ -20,9 +20,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         private static readonly CultureInfo RussianRussia;
         private readonly ICurrencyFactory _currencyFactory;
         private readonly ITimeProvider _timeProvider;
+        private readonly Dictionary<CurrencyInfo, decimal> rates;
 
         private DateTimeOffset? published;
-        private readonly Dictionary<CurrencyInfo, decimal> rates;
 
         static BankOfRussia()
         {
