@@ -1,11 +1,9 @@
-﻿namespace TIKSN.Analytics.Telemetry.Pushalot
+﻿using System;
+
+namespace TIKSN.Analytics.Telemetry.Pushalot
 {
     public class PushalotMessageBuilder
     {
-        public PushalotMessageBuilder()
-        {
-        }
-
         public string MessageBody { get; set; }
         public string MessageImage { get; set; }
         public bool MessageIsImportant { get; set; }
@@ -22,17 +20,18 @@
 
             if (!string.IsNullOrEmpty(this.MessageLink))
             {
-                link = new PushalotMessageLink(this.MessageLinkTitle, new System.Uri(this.MessageLink));
+                link = new PushalotMessageLink(this.MessageLinkTitle, new Uri(this.MessageLink));
             }
 
             PushalotMessageImage image = null;
 
             if (!string.IsNullOrEmpty(this.MessageImage))
             {
-                image = new PushalotMessageImage(new System.Uri(this.MessageImage));
+                image = new PushalotMessageImage(new Uri(this.MessageImage));
             }
 
-            var message = new PushalotMessage(this.MessageTitle, this.MessageBody, link, this.MessageIsImportant, this.MessageIsSilent, image, this.MessageSource, this.MessageTimeToLive);
+            var message = new PushalotMessage(this.MessageTitle, this.MessageBody, link, this.MessageIsImportant,
+                this.MessageIsSilent, image, this.MessageSource, this.MessageTimeToLive);
 
             return message;
         }
