@@ -2,7 +2,8 @@
 
 namespace TIKSN.Finance.ForeignExchange.Data
 {
-    public interface IForeignExchangeRepository : IQueryRepository<ForeignExchangeEntity, int>, IRepository<ForeignExchangeEntity>
+    public interface IForeignExchangeRepository : IQueryRepository<ForeignExchangeEntity, int>,
+        IRepository<ForeignExchangeEntity>
     {
     }
 }
