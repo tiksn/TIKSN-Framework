@@ -12,22 +12,16 @@ namespace TIKSN.Analytics.Telemetry.Pushalot
         {
         }
 
-        public async Task TrackTrace(string message)
-        {
-            await SendMessage("Trace", message);
-        }
+        public async Task TrackTrace(string message) => await this.SendMessage("Trace", message);
 
-        public async Task TrackTrace(string message, TelemetrySeverityLevel severityLevel)
-        {
-            await SendMessage(string.Format("Trace: {0}", severityLevel), message);
-        }
+        public async Task TrackTrace(string message, TelemetrySeverityLevel severityLevel) =>
+            await this.SendMessage(string.Format("Trace: {0}", severityLevel), message);
 
-        protected override IEnumerable<string> GetAuthorizationTokens(PushalotOptions pushalotConfiguration)
-        {
-            return pushalotConfiguration.TraceAuthorizationTokens;
-        }
+        protected override IEnumerable<string> GetAuthorizationTokens(PushalotOptions pushalotConfiguration) =>
+            pushalotConfiguration.TraceAuthorizationTokens;
 
-        protected override IEnumerable<string> GetAuthorizationTokens(PushalotOptions pushalotConfiguration, TelemetrySeverityLevel severityLevel)
+        protected override IEnumerable<string> GetAuthorizationTokens(PushalotOptions pushalotConfiguration,
+            TelemetrySeverityLevel severityLevel)
         {
             if (pushalotConfiguration.SeverityLevelTraceAuthorizationTokens.ContainsKey(severityLevel))
             {
