@@ -197,7 +197,7 @@ namespace TIKSN.Data.Mongo
 
             while (await cursor.MoveNextAsync(cancellationToken))
             {
-                foreach (var entity in cursor.ToEnumerable(cancellationToken))
+                foreach (var entity in cursor.Current)
                 {
                     yield return entity;
                 }
