@@ -45,7 +45,7 @@ namespace TIKSN.Web.Rest
             var resourceLocation = restEndpointAttribute.ResourceTemplate;
             var requestUrl = new Uri(resourceLocation, UriKind.Relative);
 
-            var httpClient = await this._httpClientFactory.Create(restEndpointAttribute.ApiKey);
+            var httpClient = this._httpClientFactory.CreateClient(restEndpointAttribute.ApiKey);
 
             httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue(restEndpointAttribute.MediaType));
