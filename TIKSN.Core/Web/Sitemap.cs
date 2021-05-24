@@ -59,9 +59,9 @@ namespace TIKSN.Web
 
             private Uri address;
 
-            private decimal? priority;
+            private double? priority;
 
-            public Page(Uri Address, DateTime? LastModified, Frequency? ChangeFrequency, decimal? Priority)
+            public Page(Uri Address, DateTime? LastModified, Frequency? ChangeFrequency, double? Priority)
             {
                 this.Address = Address;
                 this.LastModified = LastModified;
@@ -87,12 +87,12 @@ namespace TIKSN.Web
 
             public DateTime? LastModified { get; }
 
-            public decimal? Priority
+            public double? Priority
             {
                 get => this.priority;
                 private set
                 {
-                    if (!value.HasValue || (value.Value >= decimal.Zero && value.Value <= decimal.One))
+                    if (!value.HasValue || (value.Value >= 0.0d && value.Value <= 1.0d))
                     {
                         this.priority = value;
                     }
