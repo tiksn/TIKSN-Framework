@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace TIKSN.Web.Rest
@@ -12,7 +11,7 @@ namespace TIKSN.Web.Rest
             this.Encoding = Encoding.UTF8;
         }
 
-        public Guid ApiKey { get; set; }
+        public string ApiKey { get; set; }
 
         public string MediaType { get; set; }
 
