@@ -8,14 +8,14 @@ namespace TIKSN.Web.Rest
         public RestEndpointAttribute(string apiKey, RestVerb verb, string resourceTemplate,
             RestAuthenticationType authentication = RestAuthenticationType.None, string mediaType = "application/json")
         {
-            this.ApiKey = new Guid(apiKey);
+            this.ApiKey = apiKey;
             this.Verb = verb;
             this.ResourceTemplate = resourceTemplate;
             this.MediaType = mediaType;
             this.Authentication = authentication;
         }
 
-        public Guid ApiKey { get; }
+        public string ApiKey { get; }
 
         public RestAuthenticationType Authentication { get; }
 
