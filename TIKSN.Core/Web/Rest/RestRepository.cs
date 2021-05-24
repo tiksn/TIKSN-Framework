@@ -174,7 +174,7 @@ namespace TIKSN.Web.Rest
 
         private async Task<HttpClient> GetHttpClientAsync()
         {
-            var httpClient = await this._httpClientFactory.Create(this._options.Value.ApiKey);
+            var httpClient = this._httpClientFactory.CreateClient(this._options.Value.ApiKey);
 
             httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue(this._options.Value.MediaType));
