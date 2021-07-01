@@ -30,7 +30,11 @@ namespace TIKSN.Framework.IntegrationTests
                     builder.RegisterType<TestMongoDatabaseProvider>().As<IMongoDatabaseProvider>().SingleInstance();
                     builder.RegisterType<TestMongoClientProvider>().As<IMongoClientProvider>().SingleInstance();
                 })
-                .ConfigureHostConfiguration(builder => { builder.AddInMemoryCollection(GetInMemoryConfiguration()); })
+                .ConfigureHostConfiguration(builder =>
+                {
+                    builder.AddInMemoryCollection(GetInMemoryConfiguration());
+                    builder.AddUserSecrets<ServiceProviderFixture>();
+                })
                 .Build();
 
             static Dictionary<string, string> GetInMemoryConfiguration() => new()
