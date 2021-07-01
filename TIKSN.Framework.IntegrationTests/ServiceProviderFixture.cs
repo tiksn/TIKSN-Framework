@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -33,16 +33,13 @@ namespace TIKSN.Framework.IntegrationTests
                 .ConfigureHostConfiguration(builder => { builder.AddInMemoryCollection(GetInMemoryConfiguration()); })
                 .Build();
 
-            static Dictionary<string, string> GetInMemoryConfiguration()
+            static Dictionary<string, string> GetInMemoryConfiguration() => new()
             {
-                return new()
                 {
-                    {
-                        "ConnectionStrings:Mongo",
-                        "mongodb://localhost:27017/TIKSN_Framework_IntegrationTests?w=majority"
-                    }
-                };
-            }
+                    "ConnectionStrings:Mongo",
+                    "mongodb://localhost:27017/TIKSN_Framework_IntegrationTests?w=majority"
+                }
+            };
         }
 
         public IServiceProvider Services => this.host.Services;
