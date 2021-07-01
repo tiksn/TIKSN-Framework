@@ -1,11 +1,11 @@
-﻿using FluentAssertions;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using TIKSN.DependencyInjection.Tests;
+using FluentAssertions;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using TIKSN.Finance.ForeignExchange.Cumulative;
+using TIKSN.Framework.IntegrationTests;
 using TIKSN.Globalization;
 using TIKSN.Time;
 using Xunit;
@@ -13,31 +13,29 @@ using Xunit.Abstractions;
 
 namespace TIKSN.Finance.ForeignExchange.Tests
 {
+    [Collection("ServiceProviderCollection")]
     public class CurrencyConverterApiDotComTests
     {
-        private readonly IServiceProvider _serviceProvider;
-        private readonly ITimeProvider _timeProvider;
-        private readonly string _currencyConverterApiKey;
+        private readonly ITimeProvider timeProvider;
+        private readonly string currencyConverterApiKey;
+        private readonly ITestOutputHelper testOutputHelper;
+        private readonly ServiceProviderFixture serviceProviderFixture;
 
-        public CurrencyConverterApiDotComTests(ITestOutputHelper testOutputHelper)
+        public CurrencyConverterApiDotComTests(ITestOutputHelper testOutputHelper, ServiceProviderFixture serviceProviderFixture)
         {
-            _serviceProvider = new TestCompositionRootSetup(testOutputHelper, services =>
-            {
-                services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
-                services.AddSingleton<IRegionFactory, RegionFactory>();
-                services.AddSingleton<ITimeProvider, TimeProvider>();
-            }).CreateServiceProvider();
-            _timeProvider = _serviceProvider.GetRequiredService<ITimeProvider>();
-            _currencyConverterApiKey = _serviceProvider.GetRequiredService<IConfigurationRoot>().GetValue<string>("CurrencyConverterApiKey");
+            this.timeProvider = this.serviceProviderFixture.Services.GetRequiredService<ITimeProvider>();
+            this.currencyConverterApiKey = this.serviceProviderFixture.Services.GetRequiredService<IConfigurationRoot>().GetValue<string>("CurrencyConverterApiKey");
+            this.testOutputHelper = testOutputHelper;
+            this.serviceProviderFixture = serviceProviderFixture;
         }
 
         [Fact]
         public async Task GetCurrencyPairsAsync()
         {
-            var currencyFactory = _serviceProvider.GetRequiredService<ICurrencyFactory>();
-            var regionFactory = _serviceProvider.GetRequiredService<IRegionFactory>();
+            var currencyFactory = this.serviceProviderFixture.Services.GetRequiredService<ICurrencyFactory>();
+            var regionFactory = this.serviceProviderFixture.Services.GetRequiredService<IRegionFactory>();
 
-            var myCurrencyDotNet = new CurrencyConverterApiDotCom(currencyFactory, _timeProvider, new CurrencyConverterApiDotCom.FreePlan(_currencyConverterApiKey));
+            var myCurrencyDotNet = new CurrencyConverterApiDotCom(currencyFactory, this.timeProvider, new CurrencyConverterApiDotCom.FreePlan(this.currencyConverterApiKey));
 
             var pairs = await myCurrencyDotNet.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
@@ -47,10 +45,10 @@ namespace TIKSN.Finance.ForeignExchange.Tests
         [Fact]
         public async Task GetExchangeRateAsync001()
         {
-            var currencyFactory = _serviceProvider.GetRequiredService<ICurrencyFactory>();
-            var regionFactory = _serviceProvider.GetRequiredService<IRegionFactory>();
+            var currencyFactory = this.serviceProviderFixture.Services.GetRequiredService<ICurrencyFactory>();
+            var regionFactory = this.serviceProviderFixture.Services.GetRequiredService<IRegionFactory>();
 
-            var myCurrencyDotNet = new CurrencyConverterApiDotCom(currencyFactory, _timeProvider, new CurrencyConverterApiDotCom.FreePlan(_currencyConverterApiKey));
+            var myCurrencyDotNet = new CurrencyConverterApiDotCom(currencyFactory, this.timeProvider, new CurrencyConverterApiDotCom.FreePlan(this.currencyConverterApiKey));
 
             var amd = currencyFactory.Create("AMD");
             var usd = currencyFactory.Create("USD");
@@ -64,10 +62,10 @@ namespace TIKSN.Finance.ForeignExchange.Tests
         [Fact]
         public async Task GetExchangeRateAsync002()
         {
-            var currencyFactory = _serviceProvider.GetRequiredService<ICurrencyFactory>();
-            var regionFactory = _serviceProvider.GetRequiredService<IRegionFactory>();
+            var currencyFactory = this.serviceProviderFixture.Services.GetRequiredService<ICurrencyFactory>();
+            var regionFactory = this.serviceProviderFixture.Services.GetRequiredService<IRegionFactory>();
 
-            var myCurrencyDotNet = new CurrencyConverterApiDotCom(currencyFactory, _timeProvider, new CurrencyConverterApiDotCom.FreePlan(_currencyConverterApiKey));
+            var myCurrencyDotNet = new CurrencyConverterApiDotCom(currencyFactory, this.timeProvider, new CurrencyConverterApiDotCom.FreePlan(this.currencyConverterApiKey));
 
             var amd = currencyFactory.Create("AMD");
             var usd = currencyFactory.Create("USD");
