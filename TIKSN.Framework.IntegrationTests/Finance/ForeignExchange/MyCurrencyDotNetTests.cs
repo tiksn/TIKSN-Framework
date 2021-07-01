@@ -8,16 +8,16 @@ using TIKSN.Framework.IntegrationTests;
 using TIKSN.Globalization;
 using TIKSN.Time;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace TIKSN.Finance.ForeignExchange.Tests
 {
+    [Collection("ServiceProviderCollection")]
     public class MyCurrencyDotNetTests
     {
         private readonly ITimeProvider timeProvider;
         private readonly ServiceProviderFixture serviceProviderFixture;
 
-        public MyCurrencyDotNetTests(ITestOutputHelper testOutputHelper, ServiceProviderFixture serviceProviderFixture)
+        public MyCurrencyDotNetTests(ServiceProviderFixture serviceProviderFixture)
         {
             this.timeProvider = serviceProviderFixture.Services.GetRequiredService<ITimeProvider>();
             this.serviceProviderFixture = serviceProviderFixture ?? throw new ArgumentNullException(nameof(serviceProviderFixture));
