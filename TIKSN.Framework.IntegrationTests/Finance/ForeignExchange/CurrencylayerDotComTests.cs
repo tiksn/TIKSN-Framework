@@ -7,7 +7,6 @@ using TIKSN.Framework.IntegrationTests;
 using TIKSN.Globalization;
 using TIKSN.Time;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace TIKSN.Finance.Tests.ForeignExchange
 {
@@ -19,7 +18,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         private readonly ITimeProvider timeProvider;
         private readonly ServiceProviderFixture serviceProviderFixture;
 
-        public CurrencylayerDotComTests(ITestOutputHelper testOutputHelper, ServiceProviderFixture serviceProviderFixture)
+        public CurrencylayerDotComTests(ServiceProviderFixture serviceProviderFixture)
         {
             this.currencyFactory = serviceProviderFixture.Services.GetRequiredService<ICurrencyFactory>();
             this.timeProvider = serviceProviderFixture.Services.GetRequiredService<ITimeProvider>();
