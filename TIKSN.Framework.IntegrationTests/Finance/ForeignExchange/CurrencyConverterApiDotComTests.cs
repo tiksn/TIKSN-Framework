@@ -9,7 +9,6 @@ using TIKSN.Framework.IntegrationTests;
 using TIKSN.Globalization;
 using TIKSN.Time;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace TIKSN.Finance.ForeignExchange.Tests
 {
@@ -18,14 +17,12 @@ namespace TIKSN.Finance.ForeignExchange.Tests
     {
         private readonly ITimeProvider timeProvider;
         private readonly string currencyConverterApiKey;
-        private readonly ITestOutputHelper testOutputHelper;
         private readonly ServiceProviderFixture serviceProviderFixture;
 
-        public CurrencyConverterApiDotComTests(ITestOutputHelper testOutputHelper, ServiceProviderFixture serviceProviderFixture)
+        public CurrencyConverterApiDotComTests(ServiceProviderFixture serviceProviderFixture)
         {
-            this.timeProvider = this.serviceProviderFixture.Services.GetRequiredService<ITimeProvider>();
-            this.currencyConverterApiKey = this.serviceProviderFixture.Services.GetRequiredService<IConfigurationRoot>().GetValue<string>("CurrencyConverterApiKey");
-            this.testOutputHelper = testOutputHelper;
+            this.timeProvider = serviceProviderFixture.Services.GetRequiredService<ITimeProvider>();
+            this.currencyConverterApiKey = serviceProviderFixture.Services.GetRequiredService<IConfiguration>().GetValue<string>("CurrencyConverterApiKey");
             this.serviceProviderFixture = serviceProviderFixture;
         }
 
