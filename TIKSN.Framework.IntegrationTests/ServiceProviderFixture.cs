@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -30,19 +30,20 @@ namespace TIKSN.Framework.IntegrationTests
                     builder.RegisterType<TestMongoDatabaseProvider>().As<IMongoDatabaseProvider>().SingleInstance();
                     builder.RegisterType<TestMongoClientProvider>().As<IMongoClientProvider>().SingleInstance();
                 })
-                .ConfigureHostConfiguration(builder => { builder.AddInMemoryCollection(GetInMemoryConfiguration()); })
+                .ConfigureHostConfiguration(builder =>
+                {
+                    builder.AddInMemoryCollection(GetInMemoryConfiguration());
+                    builder.AddUserSecrets<ServiceProviderFixture>();
+                })
                 .Build();
 
-            static Dictionary<string, string> GetInMemoryConfiguration()
+            static Dictionary<string, string> GetInMemoryConfiguration() => new()
             {
-                return new()
                 {
-                    {
-                        "ConnectionStrings:Mongo",
-                        "mongodb://localhost:27017/TIKSN_Framework_IntegrationTests?w=majority"
-                    }
-                };
-            }
+                    "ConnectionStrings:Mongo",
+                    "mongodb://localhost:27017/TIKSN_Framework_IntegrationTests?w=majority"
+                }
+            };
         }
 
         public IServiceProvider Services => this.host.Services;
