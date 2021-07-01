@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using TIKSN.DependencyInjection.Tests;
+using Microsoft.Extensions.DependencyInjection;
 using TIKSN.Finance.ForeignExchange.Cumulative;
+using TIKSN.Framework.IntegrationTests;
 using TIKSN.Globalization;
 using TIKSN.Time;
 using Xunit;
@@ -11,24 +11,25 @@ using Xunit.Abstractions;
 
 namespace TIKSN.Finance.Tests.ForeignExchange
 {
+    [Collection("ServiceProviderCollection")]
     public class CurrencylayerDotComTests
     {
-        private string accessKey = "<put your access key here>";
-        private readonly IServiceProvider _serviceProvider;
-        private readonly ICurrencyFactory _currencyFactory;
-        private readonly ITimeProvider _timeProvider;
+        private readonly string accessKey = "<put your access key here>";
+        private readonly ICurrencyFactory currencyFactory;
+        private readonly ITimeProvider timeProvider;
+        private readonly ServiceProviderFixture serviceProviderFixture;
 
-        public CurrencylayerDotComTests(ITestOutputHelper testOutputHelper)
+        public CurrencylayerDotComTests(ITestOutputHelper testOutputHelper, ServiceProviderFixture serviceProviderFixture)
         {
-            _serviceProvider = new TestCompositionRootSetup(testOutputHelper).CreateServiceProvider();
-            _currencyFactory = _serviceProvider.GetRequiredService<ICurrencyFactory>();
-            _timeProvider = _serviceProvider.GetRequiredService<ITimeProvider>();
+            this.currencyFactory = serviceProviderFixture.Services.GetRequiredService<ICurrencyFactory>();
+            this.timeProvider = serviceProviderFixture.Services.GetRequiredService<ITimeProvider>();
+            this.serviceProviderFixture = serviceProviderFixture ?? throw new ArgumentNullException(nameof(serviceProviderFixture));
         }
 
         //[Fact]
         public async Task GetCurrencyPairs001()
         {
-            var exchange = new CurrencylayerDotCom(_currencyFactory, _timeProvider, accessKey);
+            var exchange = new CurrencylayerDotCom(this.currencyFactory, this.timeProvider, this.accessKey);
 
             var pairs = await exchange.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
@@ -38,7 +39,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         //[Fact]
         public async Task GetExchangeRateAsync001()
         {
-            var exchange = new CurrencylayerDotCom(_currencyFactory, _timeProvider, accessKey);
+            var exchange = new CurrencylayerDotCom(this.currencyFactory, this.timeProvider, this.accessKey);
 
             var pair = new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("UAH"));
 
