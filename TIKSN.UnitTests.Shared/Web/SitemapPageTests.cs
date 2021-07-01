@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Xunit;
 
 namespace TIKSN.Web.Tests
@@ -8,7 +8,7 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Equality001()
         {
-            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
+            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
             Sitemap.Page p2 = null;
 
             Assert.False(null == p1);
@@ -18,8 +18,8 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Equals001()
         {
-            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
-            Sitemap.Page p2 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
+            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
+            Sitemap.Page p2 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
 
             Assert.True(p1.Equals(p1));
             Assert.True(p1.Equals(p2));
@@ -33,8 +33,8 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Equals002()
         {
-            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
-            Sitemap.Page p2 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now.AddDays(10d), Sitemap.Page.Frequency.Monthly, 0.2m);
+            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
+            Sitemap.Page p2 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now.AddDays(10d), Sitemap.Page.Frequency.Monthly, 0.2);
 
             Assert.True(p1.Equals(p1));
             Assert.True(p1.Equals(p2));
@@ -48,8 +48,8 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Equals003()
         {
-            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
-            Sitemap.Page p2 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/sitemap.aspx"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
+            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
+            Sitemap.Page p2 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/sitemap.aspx"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
 
             Assert.True(p1.Equals(p1));
             Assert.False(p1.Equals(p2));
@@ -63,7 +63,7 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Equals004()
         {
-            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
+            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
 
             Assert.False(p1.Equals(null));
             Assert.False(p1 == null);
@@ -73,7 +73,7 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Equals005()
         {
-            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
+            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
 
             System.Collections.Generic.HashSet<Sitemap.Page> pages = new System.Collections.Generic.HashSet<Sitemap.Page>();
 
@@ -84,8 +84,8 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Equals007()
         {
-            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
-            Sitemap.Page p2 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now.AddDays(10d), Sitemap.Page.Frequency.Monthly, 0.2m);
+            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
+            Sitemap.Page p2 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now.AddDays(10d), Sitemap.Page.Frequency.Monthly, 0.2);
 
             System.Collections.Generic.HashSet<Sitemap.Page> pages = new System.Collections.Generic.HashSet<Sitemap.Page>();
 
@@ -96,7 +96,7 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Equals008()
         {
-            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
+            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
 
             System.Collections.Generic.List<Sitemap.Page> pages = new System.Collections.Generic.List<Sitemap.Page>();
 
@@ -112,8 +112,8 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Equals009()
         {
-            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
-            Sitemap.Page p2 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now.AddDays(10d), Sitemap.Page.Frequency.Monthly, 0.2m);
+            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
+            Sitemap.Page p2 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now.AddDays(10d), Sitemap.Page.Frequency.Monthly, 0.2);
 
             System.Collections.Generic.List<Sitemap.Page> pages = new System.Collections.Generic.List<Sitemap.Page>();
 
@@ -129,7 +129,7 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Equals010()
         {
-            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
+            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
 
             System.Collections.Generic.Dictionary<Sitemap.Page, int> pages = new System.Collections.Generic.Dictionary<Sitemap.Page, int>();
 
@@ -145,8 +145,8 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Equals011()
         {
-            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
-            Sitemap.Page p2 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now.AddDays(10d), Sitemap.Page.Frequency.Monthly, 0.2m);
+            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
+            Sitemap.Page p2 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now.AddDays(10d), Sitemap.Page.Frequency.Monthly, 0.2);
 
             System.Collections.Generic.Dictionary<Sitemap.Page, int> pages = new System.Collections.Generic.Dictionary<Sitemap.Page, int>();
 
@@ -162,7 +162,7 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Equals012()
         {
-            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
+            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
             object p2 = null;
 
             Assert.False(p1.Equals(p2));
@@ -171,7 +171,7 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Equals013()
         {
-            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
+            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
             Sitemap.Page p2 = p1;
 
             Assert.True(p1.Equals(p2));
@@ -180,7 +180,7 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Equals014()
         {
-            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
+            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
             Sitemap s1 = new Sitemap();
 
             Assert.False(p1.Equals(s1));
@@ -189,8 +189,8 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Equals015()
         {
-            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
-            object p2 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now.AddDays(10d), Sitemap.Page.Frequency.Monthly, 0.2m);
+            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
+            object p2 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now.AddDays(10d), Sitemap.Page.Frequency.Monthly, 0.2);
 
             Assert.True(p1.Equals(p2));
         }
@@ -198,7 +198,7 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Equals016()
         {
-            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
+            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
             object p2 = p1;
 
             Assert.True(p1.Equals(p2));
@@ -207,7 +207,7 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Inequality001()
         {
-            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m);
+            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
             Sitemap.Page p2 = null;
 
             Assert.True(null != p1);
@@ -224,7 +224,7 @@ namespace TIKSN.Web.Tests
         public void Page002()
         {
             Assert.Throws<ArgumentNullException>(
-                () => new Sitemap.Page(null, DateTime.Now, Sitemap.Page.Frequency.Always, 0.5m));
+                () => new Sitemap.Page(null, DateTime.Now, Sitemap.Page.Frequency.Always, 0.5));
         }
 
         [Fact]
@@ -244,7 +244,7 @@ namespace TIKSN.Web.Tests
             Assert.Throws<ArgumentOutOfRangeException>(
                 () =>
                     new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now,
-                        Sitemap.Page.Frequency.Always, 1.5m));
+                        Sitemap.Page.Frequency.Always, 1.5));
         }
 
         [Fact]
@@ -252,7 +252,7 @@ namespace TIKSN.Web.Tests
         {
             Assert.Throws<ArgumentOutOfRangeException>(
                 () =>
-                    new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, -0.5m));
+                    new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), DateTime.Now, Sitemap.Page.Frequency.Always, -0.5));
         }
     }
 }
