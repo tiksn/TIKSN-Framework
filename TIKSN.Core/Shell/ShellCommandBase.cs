@@ -8,21 +8,12 @@ namespace TIKSN.Shell
     {
         private readonly IConsoleService _consoleService;
 
+        protected ShellCommandBase(IConsoleService consoleService) => this._consoleService = consoleService;
+
         public abstract Task ExecuteAsync(CancellationToken cancellationToken);
 
-        protected ShellCommandBase(IConsoleService consoleService)
-        {
-            _consoleService = consoleService;
-        }
+        protected void WriteObject<T>(T tableValue) => this._consoleService.WriteObject(tableValue);
 
-        protected void WriteObject<T>(T tableValue)
-        {
-            _consoleService.WriteObject<T>(tableValue);
-        }
-
-        protected void WriteObjects<T>(IEnumerable<T> tableValues)
-        {
-            _consoleService.WriteObjects<T>(tableValues);
-        }
+        protected void WriteObjects<T>(IEnumerable<T> tableValues) => this._consoleService.WriteObjects(tableValues);
     }
 }

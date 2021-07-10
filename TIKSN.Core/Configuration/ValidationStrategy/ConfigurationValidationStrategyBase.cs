@@ -7,17 +7,17 @@ namespace TIKSN.Configuration.ValidationStrategy
     {
         protected readonly IServiceProvider _serviceProvider;
 
-        protected ConfigurationValidationStrategyBase(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-        }
+        protected ConfigurationValidationStrategyBase(IServiceProvider serviceProvider) =>
+            this._serviceProvider = serviceProvider;
 
         public void Validate(T instance)
         {
-            var validator = GetConfigurationValidator();
+            var validator = this.GetConfigurationValidator();
 
             if (validator != null)
+            {
                 validator.ValidateConfiguration(instance);
+            }
         }
 
         protected abstract IPartialConfigurationValidator<T> GetConfigurationValidator();

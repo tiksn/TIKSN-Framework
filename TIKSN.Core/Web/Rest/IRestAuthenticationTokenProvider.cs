@@ -1,10 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace TIKSN.Web.Rest
 {
     public interface IRestAuthenticationTokenProvider
     {
-        Task<string> GetAuthenticationToken(Guid apiKey);
+        Task<string> GetAuthenticationToken(string apiKey);
     }
 }

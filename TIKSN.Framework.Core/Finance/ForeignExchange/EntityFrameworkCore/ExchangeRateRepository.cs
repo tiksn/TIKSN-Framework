@@ -1,14 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using TIKSN.Data.EntityFrameworkCore;
 
 namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
 {
-    public class ExchangeRateRepository : EntityQueryRepository<ExchangeRatesContext, ExchangeRateEntity, int>, IExchangeRateRepository
+    public class ExchangeRateRepository : EntityQueryRepository<ExchangeRatesContext, ExchangeRateEntity, int>,
+        IExchangeRateRepository
     {
         public ExchangeRateRepository(ExchangeRatesContext dbContext) : base(dbContext)
         {
@@ -19,23 +20,25 @@ namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
             string baseCurrencyCode,
             string counterCurrencyCode,
             DateTimeOffset asOn,
-            CancellationToken cancellationToken)
-        {
-            return Entities
-                .Where(item => item.ForeignExchangeID == foreignExchangeID && item.BaseCurrencyCode == baseCurrencyCode && item.CounterCurrencyCode == counterCurrencyCode)
+            CancellationToken cancellationToken) =>
+            this.Entities
+                .Where(item =>
+                    item.ForeignExchangeID == foreignExchangeID && item.BaseCurrencyCode == baseCurrencyCode &&
+                    item.CounterCurrencyCode == counterCurrencyCode)
                 .OrderBy(entity => Math.Abs((entity.AsOn - asOn).Ticks))
                 .Include(item => item.ForeignExchange)
                 .FirstOrDefaultAsync(cancellationToken);
-        }
 
         public async Task<int> GetMaximalIdAsync(CancellationToken cancellationToken)
         {
-            var entity = await Entities
+            var entity = await this.Entities
                 .OrderByDescending(item => item.ID)
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (entity == null)
+            {
                 return 0;
+            }
 
             return entity.ID;
         }
@@ -46,9 +49,8 @@ namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
             string counterCurrencyCode,
             DateTimeOffset dateFrom,
             DateTimeOffset dateTo,
-            CancellationToken cancellationToken)
-        {
-            return await Entities
+            CancellationToken cancellationToken) =>
+            await this.Entities
                 .Where(item =>
                     item.BaseCurrencyCode == baseCurrencyCode &&
                     item.CounterCurrencyCode == counterCurrencyCode &&
@@ -56,6 +58,5 @@ namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
                     item.AsOn >= dateFrom && item.AsOn <= dateTo)
                 .Include(item => item.ForeignExchange)
                 .ToArrayAsync(cancellationToken);
-        }
     }
 }

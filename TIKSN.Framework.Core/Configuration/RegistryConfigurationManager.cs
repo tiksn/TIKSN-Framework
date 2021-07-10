@@ -1,6 +1,6 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Microsoft.Win32;
 
 namespace TIKSN.Configuration
 {
@@ -25,13 +25,19 @@ namespace TIKSN.Configuration
             object result = null;
 
             if (globalValue != null)
+            {
                 result = globalValue;
+            }
 
             if (localValue != null)
+            {
                 result = localValue;
+            }
 
             if (result == null)
+            {
                 throw new Exception("Value not found");
+            }
 
             return result;
         }
@@ -61,11 +67,8 @@ namespace TIKSN.Configuration
             {
                 if (propertyInfo.PropertyType.IsPrimitive || propertyInfo.PropertyType == typeof(string))
                 {
-                    propertyInfo.SetValue(obj, GetValueFromRegistry(keys, propertyInfo.Name, propertyInfo.PropertyType));
-                }
-                else
-                {
-                    //TODO: in case of complex values, lists, dictionaries
+                    propertyInfo.SetValue(obj,
+                        GetValueFromRegistry(keys, propertyInfo.Name, propertyInfo.PropertyType));
                 }
             }
         }

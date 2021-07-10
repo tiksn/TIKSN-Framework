@@ -2,14 +2,11 @@
 {
     public class CosmosTableRepositoryAdapterOptions
     {
-        public CosmosTableRepositoryAdapterOptions()
-        {
-            AddOption = AddOptions.Add;
-        }
-
         public enum AddOptions { Add, AddOrMerge, AddOrReplace }
 
         public enum UpdateOptions { Merge, Replace }
+
+        public CosmosTableRepositoryAdapterOptions() => this.AddOption = AddOptions.Add;
 
         public AddOptions AddOption { get; set; }
 

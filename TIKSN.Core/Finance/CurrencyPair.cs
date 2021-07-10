@@ -1,82 +1,79 @@
-﻿namespace TIKSN.Finance
+﻿using System;
+
+namespace TIKSN.Finance
 {
-    public class CurrencyPair : System.IEquatable<CurrencyPair>
+    public class CurrencyPair : IEquatable<CurrencyPair>
     {
         public CurrencyPair(CurrencyInfo BaseCurrency, CurrencyInfo CounterCurrency)
         {
             if (BaseCurrency == CounterCurrency)
-                throw new System.ArgumentException("Base currency and counter currency cannot be the same.");
+            {
+                throw new ArgumentException("Base currency and counter currency cannot be the same.");
+            }
 
             this.BaseCurrency = BaseCurrency;
             this.CounterCurrency = CounterCurrency;
         }
 
-        public CurrencyInfo BaseCurrency { get; private set; }
+        public CurrencyInfo BaseCurrency { get; }
 
-        public CurrencyInfo CounterCurrency { get; private set; }
-
-        public static bool operator !=(CurrencyPair pair1, CurrencyPair pair2)
-        {
-            return !Equals(pair1, pair2);
-        }
-
-        public static bool operator ==(CurrencyPair pair1, CurrencyPair pair2)
-        {
-            return Equals(pair1, pair2);
-        }
+        public CurrencyInfo CounterCurrency { get; }
 
         public bool Equals(CurrencyPair that)
         {
-            if (object.ReferenceEquals(that, null))
+            if (ReferenceEquals(that, null))
+            {
                 return false;
+            }
 
-            if (object.ReferenceEquals(this, that))
+            if (ReferenceEquals(this, that))
+            {
                 return true;
+            }
 
-            return (this.BaseCurrency == that.BaseCurrency && this.CounterCurrency == that.CounterCurrency);
+            return this.BaseCurrency == that.BaseCurrency && this.CounterCurrency == that.CounterCurrency;
         }
+
+        public static bool operator !=(CurrencyPair pair1, CurrencyPair pair2) => !Equals(pair1, pair2);
+
+        public static bool operator ==(CurrencyPair pair1, CurrencyPair pair2) => Equals(pair1, pair2);
 
         public override bool Equals(object that)
         {
-            if (object.ReferenceEquals(that, null))
+            if (ReferenceEquals(that, null))
+            {
                 return false;
+            }
 
-            if (object.ReferenceEquals(this, that))
+            if (ReferenceEquals(this, that))
+            {
                 return true;
+            }
 
-            CurrencyPair another = that as CurrencyPair;
+            var another = that as CurrencyPair;
 
-            if (object.ReferenceEquals(another, null))
+            if (ReferenceEquals(another, null))
+            {
                 return false;
+            }
 
             return this.Equals(another);
         }
 
-        public override int GetHashCode()
-        {
-            return this.ToString().GetHashCode();
-        }
+        public override int GetHashCode() => this.ToString().GetHashCode();
 
-        public CurrencyPair Reverse()
-        {
-            return new CurrencyPair(CounterCurrency, BaseCurrency);
-        }
+        public CurrencyPair Reverse() => new(this.CounterCurrency, this.BaseCurrency);
 
-        public override string ToString()
-        {
-            return string.Format("{0}/{1}", this.BaseCurrency.ToString(), this.CounterCurrency.ToString());
-        }
+        public override string ToString() => string.Format("{0}/{1}", this.BaseCurrency, this.CounterCurrency);
 
         private static bool Equals(CurrencyPair pair1, CurrencyPair pair2)
         {
-            if (object.ReferenceEquals(pair1, null))
+            if (ReferenceEquals(pair1, null))
             {
-                return object.ReferenceEquals(pair2, null);
+                return ReferenceEquals(pair2, null);
             }
-            else
-            {
-                return pair1.Equals(pair2);
-            }
+
+            return pair1.Equals(pair2);
         }
     }
 }

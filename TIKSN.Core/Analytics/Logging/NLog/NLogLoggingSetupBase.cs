@@ -5,6 +5,7 @@ using NLog.Extensions.Logging;
 using NLog.Layouts;
 using NLog.Targets;
 using TIKSN.Configuration;
+using LogLevel = NLog.LogLevel;
 
 namespace TIKSN.Analytics.Logging.NLog
 {
@@ -15,15 +16,15 @@ namespace TIKSN.Analytics.Logging.NLog
 
         protected NLogLoggingSetupBase(IPartialConfiguration<RemoteNLogViewerOptions> remoteNLogViewerOptions)
         {
-            _loggingConfiguration = new LoggingConfiguration();
-            _remoteNLogViewerOptions = remoteNLogViewerOptions;
+            this._loggingConfiguration = new LoggingConfiguration();
+            this._remoteNLogViewerOptions = remoteNLogViewerOptions;
         }
 
         public void Setup(ILoggingBuilder loggingBuilder)
         {
-            SetupNLog();
+            this.SetupNLog();
 
-            var options = _remoteNLogViewerOptions.GetConfiguration();
+            var options = this._remoteNLogViewerOptions.GetConfiguration();
 
             if (options.Url != null)
             {
@@ -39,25 +40,27 @@ namespace TIKSN.Analytics.Logging.NLog
                 };
 
                 if (!string.IsNullOrWhiteSpace(options.AppInfo))
+                {
                     nLogViewerTarget.AppInfo = options.AppInfo;
+                }
 
-                AddForAllLevels(nLogViewerTarget);
+                this.AddForAllLevels(nLogViewerTarget);
             }
 
             loggingBuilder.AddNLog();
-            LogManager.Configuration = _loggingConfiguration;
+            LogManager.Configuration = this._loggingConfiguration;
         }
 
         protected void AddForAllLevels(Target target)
         {
-            _loggingConfiguration.AddTarget(target);
-            _loggingConfiguration.AddRuleForAllLevels(target);
+            this._loggingConfiguration.AddTarget(target);
+            this._loggingConfiguration.AddRuleForAllLevels(target);
         }
 
-        protected void AddForOneLevel(global::NLog.LogLevel level, Target target)
+        protected void AddForOneLevel(LogLevel level, Target target)
         {
-            _loggingConfiguration.AddTarget(target);
-            _loggingConfiguration.AddRuleForOneLevel(level, target);
+            this._loggingConfiguration.AddTarget(target);
+            this._loggingConfiguration.AddRuleForOneLevel(level, target);
         }
 
         protected abstract void SetupNLog();

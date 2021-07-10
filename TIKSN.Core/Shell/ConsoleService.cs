@@ -1,11 +1,11 @@
-﻿using ConsoleTables;
-using Microsoft.Extensions.Localization;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Security;
 using System.Threading;
+using ConsoleTables;
+using Microsoft.Extensions.Localization;
 using TIKSN.Localization;
 
 namespace TIKSN.Shell
@@ -14,20 +14,17 @@ namespace TIKSN.Shell
     {
         private readonly IStringLocalizer _stringLocalizer;
 
-        public ConsoleService(IStringLocalizer stringLocalizer)
-        {
-            _stringLocalizer = stringLocalizer;
-        }
+        public ConsoleService(IStringLocalizer stringLocalizer) => this._stringLocalizer = stringLocalizer;
 
         public string ReadLine(string promptMessage, ConsoleColor promptForegroundColor)
         {
-            WritePromptMessage(promptMessage, promptForegroundColor);
+            this.WritePromptMessage(promptMessage, promptForegroundColor);
             return Console.ReadLine();
         }
 
         public SecureString ReadPasswordLine(string promptMessage, ConsoleColor promptForegroundColor)
         {
-            WritePromptMessage(promptMessage, promptForegroundColor);
+            this.WritePromptMessage(promptMessage, promptForegroundColor);
 
             var pwd = new SecureString();
             while (true)
@@ -38,7 +35,8 @@ namespace TIKSN.Shell
                     Console.WriteLine();
                     break;
                 }
-                else if (i.Key == ConsoleKey.Backspace)
+
+                if (i.Key == ConsoleKey.Backspace)
                 {
                     if (pwd.Length > 0)
                     {
@@ -52,6 +50,7 @@ namespace TIKSN.Shell
                     Console.Write("*");
                 }
             }
+
             return pwd;
         }
 
@@ -72,42 +71,39 @@ namespace TIKSN.Shell
         public int UserPrompt(string message, params string[] options)
         {
             if (!options.Any())
-                throw new ArgumentException("User prompt must contain at least one options", nameof(options)); //TODO: localize
+            {
+                throw new ArgumentException("User prompt must contain at least one options",
+                    nameof(options)); //TODO: localize
+            }
 
             while (true)
             {
-                ConsoleWrite($"{message} [{string.Join("/", options)}]{_stringLocalizer.GetRequiredString(LocalizationKeys.Key444677337)}");
+                ConsoleWrite(
+                    $"{message} [{string.Join("/", options)}]{this._stringLocalizer.GetRequiredString(LocalizationKeys.Key444677337)}");
 
                 var answer = Console.ReadLine();
 
-                for (int i = 0; i < options.Length; i++)
+                for (var i = 0; i < options.Length; i++)
                 {
                     if (string.Equals(options[i], answer, StringComparison.OrdinalIgnoreCase))
+                    {
                         return i;
+                    }
                 }
             }
         }
 
-        public void WriteError(string errorMessage)
-        {
-            ConsoleWriteLine(errorMessage, ConsoleColor.Red);
-        }
+        public void WriteError(string errorMessage) => ConsoleWriteLine(errorMessage, ConsoleColor.Red);
 
         public void WriteObject<T>(T tableValue)
         {
-            var tableValues = new List<T> { tableValue };
+            var tableValues = new List<T> {tableValue};
             WriteObjects(tableValues, false);
         }
 
-        public void WriteObjects<T>(IEnumerable<T> tableValues)
-        {
-            WriteObjects(tableValues, true);
-        }
+        public void WriteObjects<T>(IEnumerable<T> tableValues) => WriteObjects(tableValues, true);
 
-        private static void ConsoleWrite(string message)
-        {
-            Console.Write(message);
-        }
+        private static void ConsoleWrite(string message) => Console.Write(message);
 
         private static void ConsoleWrite(string message, ConsoleColor foreground)
         {
@@ -134,7 +130,7 @@ namespace TIKSN.Shell
         private void WritePromptMessage(string promptMessage, ConsoleColor promptForegroundColor)
         {
             ConsoleWrite(promptMessage, promptForegroundColor);
-            ConsoleWrite(_stringLocalizer.GetRequiredString(LocalizationKeys.Key444677337), promptForegroundColor);
+            ConsoleWrite(this._stringLocalizer.GetRequiredString(LocalizationKeys.Key444677337), promptForegroundColor);
         }
     }
 }

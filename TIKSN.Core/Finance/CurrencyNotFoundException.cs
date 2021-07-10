@@ -1,7 +1,9 @@
-﻿namespace TIKSN.Finance
+﻿using System;
+
+namespace TIKSN.Finance
 {
     //[System.Serializable]
-    public class CurrencyNotFoundException : System.Exception
+    public class CurrencyNotFoundException : Exception
     {
         public CurrencyNotFoundException()
         {
@@ -11,7 +13,7 @@
         {
         }
 
-        public CurrencyNotFoundException(string message, System.Exception inner) : base(message, inner)
+        public CurrencyNotFoundException(string message, Exception inner) : base(message, inner)
         {
         }
 

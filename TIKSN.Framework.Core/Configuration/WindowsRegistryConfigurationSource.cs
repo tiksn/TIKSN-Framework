@@ -8,9 +8,7 @@ namespace TIKSN.Configuration
         public RegistryView RegistryView { get; set; }
         public string RootKey { get; set; }
 
-        public IConfigurationProvider Build(IConfigurationBuilder builder)
-        {
-            return new WindowsRegistryConfigurationProvider(RootKey, RegistryView);
-        }
+        public IConfigurationProvider Build(IConfigurationBuilder builder) =>
+            new WindowsRegistryConfigurationProvider(this.RootKey, this.RegistryView);
     }
 }

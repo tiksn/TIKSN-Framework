@@ -10,6 +10,6 @@
         ReleaseCandidate = 3,
 
         // Stable
-        Release = 4,
+        Release = 4
     }
 }

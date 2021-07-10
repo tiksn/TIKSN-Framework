@@ -8,21 +8,18 @@ namespace TIKSN.Web.Rest
     {
         private readonly IDictionary<string, Tuple<ISerializer<string>, IDeserializer<string>>> map;
 
-        public SerializationRestFactory(JsonSerializer jsonSerializer, JsonDeserializer jsonDeserializer, DotNetXmlSerializer dotNetXmlSerializer, DotNetXmlDeserializer dotNetXmlDeserializer)
+        public SerializationRestFactory(JsonSerializer jsonSerializer, JsonDeserializer jsonDeserializer,
+            DotNetXmlSerializer dotNetXmlSerializer, DotNetXmlDeserializer dotNetXmlDeserializer)
         {
-            map = new Dictionary<string, Tuple<ISerializer<string>, IDeserializer<string>>>();
-            map.Add("application/json", new Tuple<ISerializer<string>, IDeserializer<string>>(jsonSerializer, jsonDeserializer));
-            map.Add("application/xml", new Tuple<ISerializer<string>, IDeserializer<string>>(dotNetXmlSerializer, dotNetXmlDeserializer));
+            this.map = new Dictionary<string, Tuple<ISerializer<string>, IDeserializer<string>>>();
+            this.map.Add("application/json",
+                new Tuple<ISerializer<string>, IDeserializer<string>>(jsonSerializer, jsonDeserializer));
+            this.map.Add("application/xml",
+                new Tuple<ISerializer<string>, IDeserializer<string>>(dotNetXmlSerializer, dotNetXmlDeserializer));
         }
 
-        IDeserializer<string> IDeserializerRestFactory.Create(string mediaType)
-        {
-            return map[mediaType].Item2;
-        }
+        IDeserializer<string> IDeserializerRestFactory.Create(string mediaType) => this.map[mediaType].Item2;
 
-        ISerializer<string> ISerializerRestFactory.Create(string mediaType)
-        {
-            return map[mediaType].Item1;
-        }
+        ISerializer<string> ISerializerRestFactory.Create(string mediaType) => this.map[mediaType].Item1;
     }
 }

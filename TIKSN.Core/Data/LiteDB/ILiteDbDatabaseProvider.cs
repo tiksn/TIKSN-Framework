@@ -3,18 +3,18 @@
 namespace TIKSN.Data.LiteDB
 {
     /// <summary>
-    /// Create LiteDB database
+    ///     Create LiteDB database
     /// </summary>
     public interface ILiteDbDatabaseProvider
     {
         /// <summary>
-        /// Creates LiteDB database
+        ///     Creates LiteDB database
         /// </summary>
         /// <returns></returns>
         LiteDatabase GetDatabase();
 
         /// <summary>
-        /// Creates LiteDB database with mapper
+        ///     Creates LiteDB database with mapper
         /// </summary>
         /// <param name="mapper">Mapper</param>
         /// <returns></returns>

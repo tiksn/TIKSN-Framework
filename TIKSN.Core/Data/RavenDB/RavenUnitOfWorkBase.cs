@@ -1,8 +1,8 @@
-﻿using Raven.Client.Documents;
-using Raven.Client.Documents.Session;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Raven.Client.Documents;
+using Raven.Client.Documents.Session;
 
 namespace TIKSN.Data.RavenDB
 {
@@ -13,29 +13,28 @@ namespace TIKSN.Data.RavenDB
         protected RavenUnitOfWorkBase(IDocumentStore store)
         {
             if (store == null)
+            {
                 throw new ArgumentNullException(nameof(store));
+            }
 
-            _session = store.OpenAsyncSession();
+            this._session = store.OpenAsyncSession();
         }
 
         public override async Task CompleteAsync(CancellationToken cancellationToken)
         {
-            await _session.SaveChangesAsync(cancellationToken);
+            await this._session.SaveChangesAsync(cancellationToken);
 
-            _session.Advanced.Clear();
+            this._session.Advanced.Clear();
         }
 
         public override void Dispose()
         {
-            _session.Dispose();
+            this._session.Dispose();
 
             base.Dispose();
         }
 
-        protected override bool IsDirty()
-        {
-            return false;
-            //return _session.Advanced.HasChanges;
-        }
+        protected override bool IsDirty() => false;
+        //return _session.Advanced.HasChanges;
     }
 }

@@ -8,7 +8,8 @@ namespace TIKSN.PowerShell
         {
             base.Load(builder);
 
-            builder.RegisterType<CurrentCommandContext>().As<ICurrentCommandStore>().As<ICurrentCommandProvider>().InstancePerLifetimeScope();
+            builder.RegisterType<CurrentCommandContext>().As<ICurrentCommandStore>().As<ICurrentCommandProvider>()
+                .InstancePerLifetimeScope();
         }
     }
 }

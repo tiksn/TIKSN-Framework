@@ -1,17 +1,13 @@
-﻿using Microsoft.Extensions.Localization;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
+using Microsoft.Extensions.Localization;
 
 namespace TIKSN.Localization
 {
     public class CompositeStringLocalizer : IStringLocalizer
     {
-        public CompositeStringLocalizer(IEnumerable<IStringLocalizer> localizers)
-        {
-            Localizers = localizers;
-        }
+        public CompositeStringLocalizer(IEnumerable<IStringLocalizer> localizers) => this.Localizers = localizers;
 
         protected CompositeStringLocalizer()
         {
@@ -19,27 +15,16 @@ namespace TIKSN.Localization
 
         public virtual IEnumerable<IStringLocalizer> Localizers { get; }
 
-        public LocalizedString this[string name]
-        {
-            get
-            {
-                return GetLocalizedString(l => l[name]);
-            }
-        }
+        public LocalizedString this[string name] => this.GetLocalizedString(l => l[name]);
 
-        public LocalizedString this[string name, params object[] arguments]
-        {
-            get
-            {
-                return GetLocalizedString(l => l[name, arguments]);
-            }
-        }
+        public LocalizedString this[string name, params object[] arguments] =>
+            this.GetLocalizedString(l => l[name, arguments]);
 
         public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
         {
             var localizedStrings = new List<LocalizedString>();
 
-            foreach (var localizer in Localizers)
+            foreach (var localizer in this.Localizers)
             {
                 localizedStrings.AddRange(localizer.GetAllStrings(includeParentCultures));
             }
@@ -49,12 +34,15 @@ namespace TIKSN.Localization
 
         private LocalizedString GetLocalizedString(Func<IStringLocalizer, LocalizedString> singleLocalizer)
         {
-            var localizedStrings = Localizers.Select(localizer => singleLocalizer(localizer)).ToArray();
+            var localizedStrings = this.Localizers.Select(localizer => singleLocalizer(localizer)).ToArray();
 
-            var localizableStrings = localizedStrings.Where(item => !item.ResourceNotFound && item.Name != item.Value).ToArray();
+            var localizableStrings = localizedStrings.Where(item => !item.ResourceNotFound && item.Name != item.Value)
+                .ToArray();
 
             if (localizableStrings.Length > 0)
+            {
                 return localizableStrings.First();
+            }
 
             return localizedStrings.First();
         }

@@ -1,23 +1,16 @@
-﻿namespace TIKSN.Web
+﻿using System;
+using System.Collections.Generic;
+using System.Xml;
+
+namespace TIKSN.Web
 {
     public class SitemapIndex
     {
-        private System.Collections.Generic.Dictionary<System.Uri, System.DateTime?> sitemaps;
+        public SitemapIndex() => this.Sitemaps = new Dictionary<Uri, DateTime?>();
 
-        public SitemapIndex()
-        {
-            this.sitemaps = new System.Collections.Generic.Dictionary<System.Uri, System.DateTime?>();
-        }
+        public Dictionary<Uri, DateTime?> Sitemaps { get; }
 
-        public System.Collections.Generic.Dictionary<System.Uri, System.DateTime?> Sitemaps
-        {
-            get
-            {
-                return this.sitemaps;
-            }
-        }
-
-        public void Write(System.Xml.XmlWriter XWriter)
+        public void Write(XmlWriter XWriter)
         {
             XWriter.WriteStartDocument();
 

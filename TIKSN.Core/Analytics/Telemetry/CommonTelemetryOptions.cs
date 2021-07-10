@@ -4,10 +4,10 @@
     {
         public CommonTelemetryOptions()
         {
-            IsEventTrackingEnabled = true;
-            IsExceptionTrackingEnabled = true;
-            IsMetricTrackingEnabled = true;
-            IsTraceTrackingEnabled = true;
+            this.IsEventTrackingEnabled = true;
+            this.IsExceptionTrackingEnabled = true;
+            this.IsMetricTrackingEnabled = true;
+            this.IsTraceTrackingEnabled = true;
         }
 
         public bool IsEventTrackingEnabled { get; set; }

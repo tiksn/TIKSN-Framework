@@ -1,29 +1,22 @@
-﻿namespace TIKSN.Web
+﻿using System;
+using System.Collections.Generic;
+using System.Xml;
+
+namespace TIKSN.Web
 {
     public class Sitemap
     {
-        private System.Collections.Generic.HashSet<Page> pages;
+        public Sitemap() => this.Pages = new HashSet<Page>();
 
-        public Sitemap()
-        {
-            this.pages = new System.Collections.Generic.HashSet<Page>();
-        }
+        public HashSet<Page> Pages { get; }
 
-        public System.Collections.Generic.HashSet<Page> Pages
-        {
-            get
-            {
-                return this.pages;
-            }
-        }
-
-        public void Write(System.Xml.XmlWriter XWriter)
+        public void Write(XmlWriter XWriter)
         {
             XWriter.WriteStartDocument();
 
             XWriter.WriteStartElement("urlset", "http://www.sitemaps.org/schemas/sitemap/0.9");
 
-            foreach (Page P in this.Pages)
+            foreach (var P in this.Pages)
             {
                 XWriter.WriteStartElement("url");
 
@@ -60,13 +53,15 @@
             XWriter.Flush();
         }
 
-        public class Page : System.IEquatable<Page>
+        public class Page : IEquatable<Page>
         {
-            private System.Uri address;
+            public enum Frequency { Always, Hourly, Daily, Weekly, Monthly, Yearly, Never }
 
-            private decimal? priority;
+            private Uri address;
 
-            public Page(System.Uri Address, System.DateTime? LastModified, Frequency? ChangeFrequency, decimal? Priority)
+            private double? priority;
+
+            public Page(Uri Address, DateTime? LastModified, Frequency? ChangeFrequency, double? Priority)
             {
                 this.Address = Address;
                 this.LastModified = LastModified;
@@ -74,80 +69,74 @@
                 this.Priority = Priority;
             }
 
-            public enum Frequency { Always, Hourly, Daily, Weekly, Monthly, Yearly, Never }
-
-            public System.Uri Address
+            public Uri Address
             {
-                get
-                {
-                    return this.address;
-                }
+                get => this.address;
                 private set
                 {
-                    if (object.ReferenceEquals(value, null))
+                    if (ReferenceEquals(value, null))
                     {
-                        throw new System.ArgumentNullException("Address");
+                        throw new ArgumentNullException("Address");
                     }
 
                     this.address = value;
                 }
             }
 
-            public Frequency? ChangeFrequency { get; private set; }
+            public Frequency? ChangeFrequency { get; }
 
-            public System.DateTime? LastModified { get; private set; }
+            public DateTime? LastModified { get; }
 
-            public decimal? Priority
+            public double? Priority
             {
-                get
-                {
-                    return this.priority;
-                }
+                get => this.priority;
                 private set
                 {
-                    if (!value.HasValue || (value.Value >= decimal.Zero && value.Value <= decimal.One))
+                    if (!value.HasValue || (value.Value >= 0.0d && value.Value <= 1.0d))
                     {
                         this.priority = value;
                     }
                     else
                     {
-                        throw new System.ArgumentOutOfRangeException("Valid values range from 0.0 to 1.0.");
+                        throw new ArgumentOutOfRangeException("Valid values range from 0.0 to 1.0.");
                     }
                 }
             }
 
-            public static bool operator !=(Page page1, Page page2)
-            {
-                return !Equals(page1, page2);
-            }
-
-            public static bool operator ==(Page page1, Page page2)
-            {
-                return Equals(page1, page2);
-            }
-
             public bool Equals(Page that)
             {
-                if (object.ReferenceEquals(that, null))
+                if (ReferenceEquals(that, null))
+                {
                     return false;
+                }
 
-                if (object.ReferenceEquals(this, that))
+                if (ReferenceEquals(this, that))
+                {
                     return true;
+                }
 
                 return this.Address == that.Address;
             }
 
+            public static bool operator !=(Page page1, Page page2) => !Equals(page1, page2);
+
+            public static bool operator ==(Page page1, Page page2) => Equals(page1, page2);
+
             public override bool Equals(object that)
             {
-                if (object.ReferenceEquals(that, null))
+                if (ReferenceEquals(that, null))
+                {
                     return false;
+                }
 
-                if (object.ReferenceEquals(this, that))
+                if (ReferenceEquals(this, that))
+                {
                     return true;
+                }
 
-                Page p = that as Page;
+                var p = that as Page;
 
-                if ((System.Object)p == null)
+                if ((object)p == null)
                 {
                     return false;
                 }
@@ -155,16 +144,13 @@
                 return this.Equals(p);
             }
 
-            public override int GetHashCode()
-            {
-                return this.Address.GetHashCode();
-            }
+            public override int GetHashCode() => this.Address.GetHashCode();
 
             private static bool Equals(Page page1, Page page2)
             {
-                if (object.ReferenceEquals(page1, null))
+                if (ReferenceEquals(page1, null))
                 {
-                    return object.ReferenceEquals(page2, null);
+                    return ReferenceEquals(page2, null);
                 }
 
                 return page1.Equals(page2);

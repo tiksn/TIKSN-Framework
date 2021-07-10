@@ -4,12 +4,12 @@ namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
 {
     public class ExchangeRatesContext : DbContext
     {
-        public virtual DbSet<ExchangeRateEntity> ExchangeRates { get; set; }
-        public virtual DbSet<ForeignExchangeEntity> ForeignExchanges { get; set; }
-
         public ExchangeRatesContext(DbContextOptions<ExchangeRatesContext> dbContextOptions) : base(dbContextOptions)
         {
         }
+
+        public virtual DbSet<ExchangeRateEntity> ExchangeRates { get; set; }
+        public virtual DbSet<ForeignExchangeEntity> ForeignExchanges { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

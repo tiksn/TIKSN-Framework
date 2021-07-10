@@ -7,13 +7,18 @@ namespace TIKSN.Finance.ForeignExchange
         public ExchangeRate(CurrencyPair pair, DateTimeOffset asOn, decimal rate)
         {
             if (pair == null)
+            {
                 throw new ArgumentNullException(nameof(pair));
+            }
 
-            if (rate <= decimal.Zero) throw new ArgumentOutOfRangeException(nameof(rate), rate, "Rate must be a positive number.");
+            if (rate <= decimal.Zero)
+            {
+                throw new ArgumentOutOfRangeException(nameof(rate), rate, "Rate must be a positive number.");
+            }
 
-            Pair = pair;
-            AsOn = asOn;
-            Rate = rate;
+            this.Pair = pair;
+            this.AsOn = asOn;
+            this.Rate = rate;
         }
 
         public DateTimeOffset AsOn { get; }
@@ -25,26 +30,20 @@ namespace TIKSN.Finance.ForeignExchange
         public bool Equals(ExchangeRate other)
         {
             if (other == null)
+            {
                 return false;
+            }
 
-            return AsOn == other.AsOn
-                && Pair == other.Pair
-                && Rate == other.Rate;
+            return this.AsOn == other.AsOn
+                   && this.Pair == other.Pair
+                   && this.Rate == other.Rate;
         }
 
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as ExchangeRate);
-        }
+        public override bool Equals(object obj) => this.Equals(obj as ExchangeRate);
 
-        public ExchangeRate Reverse()
-        {
-            return new ExchangeRate(Pair.Reverse(), AsOn, decimal.One / Rate);
-        }
+        public ExchangeRate Reverse() => new(this.Pair.Reverse(), this.AsOn, decimal.One / this.Rate);
 
-        public override int GetHashCode()
-        {
-            return AsOn.GetHashCode() ^ Pair.GetHashCode() ^ Rate.GetHashCode();
-        }
+        public override int GetHashCode() =>
+            this.AsOn.GetHashCode() ^ this.Pair.GetHashCode() ^ this.Rate.GetHashCode();
     }
 }

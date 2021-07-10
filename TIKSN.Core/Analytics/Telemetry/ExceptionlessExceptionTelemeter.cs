@@ -1,16 +1,12 @@
-﻿using Exceptionless;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Exceptionless;
 
 namespace TIKSN.Analytics.Telemetry
 {
     public class ExceptionlessExceptionTelemeter : ExceptionlessTelemeterBase, IExceptionTelemeter
     {
-        public ExceptionlessExceptionTelemeter()
-        {
-        }
-
         public async Task TrackException(Exception exception)
         {
             try

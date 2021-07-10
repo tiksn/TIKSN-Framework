@@ -1,19 +1,19 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Options;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
 using TIKSN.Serialization;
 
 namespace TIKSN.Data.Cache.Distributed
 {
     public abstract class DistributedCacheDecoratorBase<T> : CacheDecoratorBase<T>
     {
+        protected readonly IDeserializer<byte[]> _deserializer;
         protected readonly IDistributedCache _distributedCache;
         protected readonly IOptions<DistributedCacheDecoratorOptions> _genericOptions;
-        protected readonly IOptions<DistributedCacheDecoratorOptions<T>> _specificOptions;
         protected readonly ISerializer<byte[]> _serializer;
-        protected readonly IDeserializer<byte[]> _deserializer;
+        protected readonly IOptions<DistributedCacheDecoratorOptions<T>> _specificOptions;
 
         protected DistributedCacheDecoratorBase(
             IDistributedCache distributedCache,
@@ -22,23 +22,25 @@ namespace TIKSN.Data.Cache.Distributed
             IOptions<DistributedCacheDecoratorOptions> genericOptions,
             IOptions<DistributedCacheDecoratorOptions<T>> specificOptions)
         {
-            _distributedCache = distributedCache;
-            _genericOptions = genericOptions;
-            _specificOptions = specificOptions;
-            _serializer = serializer;
-            _deserializer = deserializer;
+            this._distributedCache = distributedCache;
+            this._genericOptions = genericOptions;
+            this._specificOptions = specificOptions;
+            this._serializer = serializer;
+            this._deserializer = deserializer;
         }
 
-        protected Task SetToDistributedCacheAsync<TValue>(string cacheKey, TValue value, CancellationToken cancellationToken)
+        protected Task SetToDistributedCacheAsync<TValue>(string cacheKey, TValue value,
+            CancellationToken cancellationToken)
         {
-            var bytes = _serializer.Serialize(value);
+            var bytes = this._serializer.Serialize(value);
 
-            return _distributedCache.SetAsync(cacheKey, bytes, CreateEntryOptions(), cancellationToken);
+            return this._distributedCache.SetAsync(cacheKey, bytes, this.CreateEntryOptions(), cancellationToken);
         }
 
-        protected async Task<TResult> GetFromDistributedCacheAsync<TResult>(string cacheKey, CancellationToken cancellationToken, Func<Task<TResult>> getFromSource = null)
+        protected async Task<TResult> GetFromDistributedCacheAsync<TResult>(string cacheKey,
+            CancellationToken cancellationToken, Func<Task<TResult>> getFromSource = null)
         {
-            var cachedBytes = await _distributedCache.GetAsync(cacheKey, cancellationToken);
+            var cachedBytes = await this._distributedCache.GetAsync(cacheKey, cancellationToken);
 
             TResult result;
 
@@ -51,24 +53,26 @@ namespace TIKSN.Data.Cache.Distributed
 
                 result = await getFromSource();
 
-                await SetToDistributedCacheAsync(cacheKey, result, cancellationToken);
+                await this.SetToDistributedCacheAsync(cacheKey, result, cancellationToken);
             }
             else
             {
-                result = _deserializer.Deserialize<TResult>(cachedBytes);
+                result = this._deserializer.Deserialize<TResult>(cachedBytes);
             }
 
             return result;
         }
 
-        protected DistributedCacheEntryOptions CreateEntryOptions()
-        {
-            return new DistributedCacheEntryOptions
+        protected DistributedCacheEntryOptions CreateEntryOptions() =>
+            new()
             {
-                AbsoluteExpiration = _specificOptions.Value.AbsoluteExpiration ?? _genericOptions.Value.AbsoluteExpiration,
-                AbsoluteExpirationRelativeToNow = _specificOptions.Value.AbsoluteExpirationRelativeToNow ?? _genericOptions.Value.AbsoluteExpirationRelativeToNow,
-                SlidingExpiration = _specificOptions.Value.SlidingExpiration ?? _genericOptions.Value.SlidingExpiration
+                AbsoluteExpiration =
+                    this._specificOptions.Value.AbsoluteExpiration ?? this._genericOptions.Value.AbsoluteExpiration,
+                AbsoluteExpirationRelativeToNow =
+                    this._specificOptions.Value.AbsoluteExpirationRelativeToNow ??
+                    this._genericOptions.Value.AbsoluteExpirationRelativeToNow,
+                SlidingExpiration = this._specificOptions.Value.SlidingExpiration ??
+                                    this._genericOptions.Value.SlidingExpiration
             };
-        }
     }
 }

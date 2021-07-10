@@ -4,10 +4,10 @@
     {
         public AdUnit(string provider, string applicationId, string adUnitId, bool isTest = false)
         {
-            Provider = provider;
-            ApplicationId = applicationId;
-            AdUnitId = adUnitId;
-            IsTest = isTest;
+            this.Provider = provider;
+            this.ApplicationId = applicationId;
+            this.AdUnitId = adUnitId;
+            this.IsTest = isTest;
         }
 
         public string AdUnitId { get; }

@@ -6,17 +6,19 @@ namespace TIKSN.Advertising
     {
         public AdUnitBundle(AdUnit designTime, AdUnit production)
         {
-            DesignTime = designTime ?? throw new ArgumentNullException(nameof(designTime));
-            Production = production ?? throw new ArgumentNullException(nameof(production));
+            this.DesignTime = designTime ?? throw new ArgumentNullException(nameof(designTime));
+            this.Production = production ?? throw new ArgumentNullException(nameof(production));
 
             if (!designTime.IsTest)
             {
-                throw new ArgumentException($"Value of {nameof(designTime)}.{nameof(designTime.IsTest)} must be true.", nameof(designTime));
+                throw new ArgumentException($"Value of {nameof(designTime)}.{nameof(designTime.IsTest)} must be true.",
+                    nameof(designTime));
             }
 
             if (production.IsTest)
             {
-                throw new ArgumentException($"Value of {nameof(production)}.{nameof(production.IsTest)} must be false.", nameof(production));
+                throw new ArgumentException($"Value of {nameof(production)}.{nameof(production.IsTest)} must be false.",
+                    nameof(production));
             }
         }
 

@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
 
 namespace TIKSN.PowerShell
 {
@@ -9,7 +9,9 @@ namespace TIKSN.PowerShell
     {
         public static ILoggerFactory AddPowerShell(this ILoggerFactory factory, IServiceProvider serviceProvider)
         {
-            factory.AddProvider(new PowerShellLoggerProvider(serviceProvider.GetRequiredService<ICurrentCommandProvider>(), serviceProvider.GetRequiredService<IOptions<PowerShellLoggerOptions>>()));
+            factory.AddProvider(new PowerShellLoggerProvider(
+                serviceProvider.GetRequiredService<ICurrentCommandProvider>(),
+                serviceProvider.GetRequiredService<IOptions<PowerShellLoggerOptions>>()));
 
             return factory;
         }

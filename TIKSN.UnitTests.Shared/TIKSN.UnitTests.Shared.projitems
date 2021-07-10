@@ -9,8 +9,6 @@
     <Import_RootNamespace>TIKSN.UnitTests.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Advertising\MicrosoftBannerAdUnitBundleTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Advertising\MicrosoftInterstitialAdUnitBundleTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\CompositionRootSetupBaseTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\TestCompositionRootSetup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\TestConfigurationRootSetup.cs" />
@@ -22,18 +20,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Finance\CurrencyInfoTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Finance\CurrencyPairTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Finance\FixedRateCurrencyConverterTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Finance\ForeignExchange\BankOfCanadaTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Finance\ForeignExchange\BankOfEnglandTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Finance\ForeignExchange\BankOfRussiaTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Finance\ForeignExchange\CentralBankOfArmeniaTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Finance\ForeignExchange\CurrencyConverterApiDotComTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Finance\ForeignExchange\CurrencylayerDotComTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Finance\ForeignExchange\EuropeanCentralBankTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Finance\ForeignExchange\FederalReserveSystemTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Finance\ForeignExchange\MyCurrencyDotNetTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Finance\ForeignExchange\NationalBankOfUkraineTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Finance\ForeignExchange\ReserveBankOfAustraliaTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Finance\ForeignExchange\SwissNationalBankTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Finance\Helper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Finance\MoneyTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Finance\PricingStrategy\PsychologicalPricingStrategyTests.cs" />

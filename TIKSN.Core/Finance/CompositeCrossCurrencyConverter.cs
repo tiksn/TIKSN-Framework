@@ -12,12 +12,13 @@ namespace TIKSN.Finance
         {
         }
 
-        public override async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
-        {
-            return await compositionStrategy.ConvertCurrencyAsync(baseMoney, this.converters, counterCurrency, asOn, cancellationToken);
-        }
+        public override async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
+            DateTimeOffset asOn, CancellationToken cancellationToken) =>
+            await this.compositionStrategy.ConvertCurrencyAsync(baseMoney, this.converters, counterCurrency, asOn,
+                cancellationToken);
 
-        public override async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
+        public override async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
             var pairs = new HashSet<CurrencyPair>();
 
@@ -34,9 +35,8 @@ namespace TIKSN.Finance
             return pairs;
         }
 
-        public override async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
-        {
-            return await compositionStrategy.GetExchangeRateAsync(this.converters, pair, asOn, cancellationToken);
-        }
+        public override async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+            CancellationToken cancellationToken) =>
+            await this.compositionStrategy.GetExchangeRateAsync(this.converters, pair, asOn, cancellationToken);
     }
 }

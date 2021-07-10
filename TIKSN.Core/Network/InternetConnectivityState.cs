@@ -3,41 +3,39 @@ using System.Collections.Generic;
 
 namespace TIKSN.Network
 {
-    public class InternetConnectivityState : IEqualityComparer<InternetConnectivityState>, IEquatable<InternetConnectivityState>
+    public class InternetConnectivityState : IEqualityComparer<InternetConnectivityState>,
+        IEquatable<InternetConnectivityState>
     {
-        public InternetConnectivityState(bool isInternetAvailable, bool isWiFiAvailable, bool isCellularNetworkAvailable)
+        public InternetConnectivityState(bool isInternetAvailable, bool isWiFiAvailable,
+            bool isCellularNetworkAvailable)
         {
-            IsInternetAvailable = isInternetAvailable;
-            IsWiFiAvailable = isWiFiAvailable;
-            IsCellularNetworkAvailable = isCellularNetworkAvailable;
+            this.IsInternetAvailable = isInternetAvailable;
+            this.IsWiFiAvailable = isWiFiAvailable;
+            this.IsCellularNetworkAvailable = isCellularNetworkAvailable;
         }
 
-        public bool IsCellularNetworkAvailable { get; private set; }
-        public bool IsInternetAvailable { get; private set; }
+        public bool IsCellularNetworkAvailable { get; }
+        public bool IsInternetAvailable { get; }
 
-        public bool IsWiFiAvailable { get; private set; }
+        public bool IsWiFiAvailable { get; }
 
-        public bool Equals(InternetConnectivityState x, InternetConnectivityState y)
-        {
-            return ReferenceEquals(x, null) ? ReferenceEquals(y, null) : x.Equals(y);
-        }
+        public bool Equals(InternetConnectivityState x, InternetConnectivityState y) =>
+            ReferenceEquals(x, null) ? ReferenceEquals(y, null) : x.Equals(y);
+
+        public int GetHashCode(InternetConnectivityState obj) => this.IsInternetAvailable.GetHashCode() ^
+                                                                 this.IsWiFiAvailable.GetHashCode() ^
+                                                                 this.IsCellularNetworkAvailable.GetHashCode();
 
         public bool Equals(InternetConnectivityState other)
         {
             if (ReferenceEquals(other, null))
+            {
                 return false;
+            }
 
-            return IsInternetAvailable == other.IsInternetAvailable &&
-                IsWiFiAvailable == other.IsWiFiAvailable &&
-                IsCellularNetworkAvailable == other.IsCellularNetworkAvailable;
-        }
-
-        public int GetHashCode(InternetConnectivityState obj)
-        {
-            return
-                IsInternetAvailable.GetHashCode() ^
-                IsWiFiAvailable.GetHashCode() ^
-                IsCellularNetworkAvailable.GetHashCode();
+            return this.IsInternetAvailable == other.IsInternetAvailable &&
+                   this.IsWiFiAvailable == other.IsWiFiAvailable &&
+                   this.IsCellularNetworkAvailable == other.IsCellularNetworkAvailable;
         }
     }
 }

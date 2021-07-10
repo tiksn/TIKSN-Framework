@@ -9,44 +9,25 @@ namespace TIKSN.Analytics.Telemetry
     {
         private readonly ITextToSpeechService _textToSpeechService;
 
-        public AudibleTelemeter(ITextToSpeechService textToSpeechService)
-        {
-            _textToSpeechService = textToSpeechService ?? throw new ArgumentNullException(nameof(textToSpeechService));
-        }
+        public AudibleTelemeter(ITextToSpeechService textToSpeechService) => this._textToSpeechService =
+            textToSpeechService ?? throw new ArgumentNullException(nameof(textToSpeechService));
 
-        public Task TrackEvent(string name)
-        {
-            return _textToSpeechService.SpeakAsync($"Event {name} occurred.");
-        }
+        public Task TrackEvent(string name) => this._textToSpeechService.SpeakAsync($"Event {name} occurred.");
 
-        public Task TrackEvent(string name, IDictionary<string, string> properties)
-        {
-            return _textToSpeechService.SpeakAsync($"Event {name} occurred.");
-        }
+        public Task TrackEvent(string name, IDictionary<string, string> properties) =>
+            this._textToSpeechService.SpeakAsync($"Event {name} occurred.");
 
-        public Task TrackException(Exception exception)
-        {
-            return _textToSpeechService.SpeakAsync(exception.Message);
-        }
+        public Task TrackException(Exception exception) => this._textToSpeechService.SpeakAsync(exception.Message);
 
-        public Task TrackException(Exception exception, TelemetrySeverityLevel severityLevel)
-        {
-            return _textToSpeechService.SpeakAsync($"{severityLevel}. {exception.Message}");
-        }
+        public Task TrackException(Exception exception, TelemetrySeverityLevel severityLevel) =>
+            this._textToSpeechService.SpeakAsync($"{severityLevel}. {exception.Message}");
 
-        public Task TrackMetric(string metricName, decimal metricValue)
-        {
-            return _textToSpeechService.SpeakAsync($"Metric {metricName} is {metricValue}.");
-        }
+        public Task TrackMetric(string metricName, decimal metricValue) =>
+            this._textToSpeechService.SpeakAsync($"Metric {metricName} is {metricValue}.");
 
-        public Task TrackTrace(string message)
-        {
-            return _textToSpeechService.SpeakAsync(message);
-        }
+        public Task TrackTrace(string message) => this._textToSpeechService.SpeakAsync(message);
 
-        public Task TrackTrace(string message, TelemetrySeverityLevel severityLevel)
-        {
-            return _textToSpeechService.SpeakAsync($"{severityLevel} {message}");
-        }
+        public Task TrackTrace(string message, TelemetrySeverityLevel severityLevel) =>
+            this._textToSpeechService.SpeakAsync($"{severityLevel} {message}");
     }
 }

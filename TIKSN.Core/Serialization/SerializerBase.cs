@@ -8,7 +8,7 @@ namespace TIKSN.Serialization
         {
             try
             {
-                return SerializeInternal(obj);
+                return this.SerializeInternal(obj);
             }
             catch (Exception ex)
             {

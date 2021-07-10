@@ -11,7 +11,8 @@ namespace TIKSN.Analytics.Telemetry
         private readonly IPartialConfiguration<CommonTelemetryOptions> commonConfiguration;
         private readonly IEnumerable<IExceptionTelemeter> exceptionTelemeters;
 
-        public CompositeExceptionTelemeter(IPartialConfiguration<CommonTelemetryOptions> commonConfiguration, IEnumerable<IExceptionTelemeter> exceptionTelemeters)
+        public CompositeExceptionTelemeter(IPartialConfiguration<CommonTelemetryOptions> commonConfiguration,
+            IEnumerable<IExceptionTelemeter> exceptionTelemeters)
         {
             this.commonConfiguration = commonConfiguration;
             this.exceptionTelemeters = exceptionTelemeters;
@@ -19,9 +20,9 @@ namespace TIKSN.Analytics.Telemetry
 
         public async Task TrackException(Exception exception)
         {
-            if (commonConfiguration.GetConfiguration().IsExceptionTrackingEnabled)
+            if (this.commonConfiguration.GetConfiguration().IsExceptionTrackingEnabled)
             {
-                foreach (var exceptionTelemeter in exceptionTelemeters)
+                foreach (var exceptionTelemeter in this.exceptionTelemeters)
                 {
                     try
                     {
@@ -37,9 +38,9 @@ namespace TIKSN.Analytics.Telemetry
 
         public async Task TrackException(Exception exception, TelemetrySeverityLevel severityLevel)
         {
-            if (commonConfiguration.GetConfiguration().IsExceptionTrackingEnabled)
+            if (this.commonConfiguration.GetConfiguration().IsExceptionTrackingEnabled)
             {
-                foreach (var exceptionTelemeter in exceptionTelemeters)
+                foreach (var exceptionTelemeter in this.exceptionTelemeters)
                 {
                     try
                     {

@@ -6,37 +6,28 @@ namespace TIKSN.Network
 {
     public abstract class NetworkConnectivityServiceBase : INetworkConnectivityService
     {
-        protected IObservable<InternetConnectivityState> internetConnectivityStateInternal;
         private readonly Subject<InternetConnectivityState> manualChecks;
+        protected IObservable<InternetConnectivityState> internetConnectivityStateInternal;
 
-        protected NetworkConnectivityServiceBase()
-        {
-            manualChecks = new Subject<InternetConnectivityState>();
-        }
+        protected NetworkConnectivityServiceBase() => this.manualChecks = new Subject<InternetConnectivityState>();
 
-        public IObservable<InternetConnectivityState> InternetConnectivityChanged
-        {
-            get
-            {
-                return internetConnectivityStateInternal
-                    .Merge(manualChecks)
-                    .DistinctUntilChanged();
-            }
-        }
+        public IObservable<InternetConnectivityState> InternetConnectivityChanged =>
+            this.internetConnectivityStateInternal
+                .Merge(this.manualChecks)
+                .DistinctUntilChanged();
 
-        public InternetConnectivityState GetInternetConnectivityState()
-        {
-            return GetInternetConnectivityState(true);
-        }
+        public InternetConnectivityState GetInternetConnectivityState() => this.GetInternetConnectivityState(true);
 
         protected abstract InternetConnectivityState GetInternetConnectivityStateInternal();
 
         private InternetConnectivityState GetInternetConnectivityState(bool broadcast)
         {
-            var result = GetInternetConnectivityStateInternal();
+            var result = this.GetInternetConnectivityStateInternal();
 
             if (broadcast)
-                manualChecks.OnNext(result);
+            {
+                this.manualChecks.OnNext(result);
+            }
 
             return result;
         }

@@ -28,10 +28,12 @@ namespace TIKSN.Data
 
     public interface IFileRepository<TIdentity, TMetadata> where TIdentity : IEquatable<TIdentity>
     {
-        Task<IFileInfo<TIdentity, TMetadata>> DownloadOnlyMetadataAsync(TIdentity id, CancellationToken cancellationToken);
+        Task<IFileInfo<TIdentity, TMetadata>> DownloadOnlyMetadataAsync(TIdentity id,
+            CancellationToken cancellationToken);
 
         Task<IFile<TIdentity, TMetadata>> DownloadWithMetadataAsync(TIdentity id, CancellationToken cancellationToken);
 
-        Task UploadAsync(TIdentity id, string path, byte[] content, TMetadata metadata, CancellationToken cancellationToken);
+        Task UploadAsync(TIdentity id, string path, byte[] content, TMetadata metadata,
+            CancellationToken cancellationToken);
     }
 }

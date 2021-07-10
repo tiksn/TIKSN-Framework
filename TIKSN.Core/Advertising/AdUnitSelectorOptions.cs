@@ -4,8 +4,8 @@
     {
         public AdUnitSelectorOptions()
         {
-            IsDebuggerSensitive = true;
-            IsDebug = false;
+            this.IsDebuggerSensitive = true;
+            this.IsDebug = false;
         }
 
         public bool IsDebuggerSensitive { get; set; }

@@ -6,8 +6,8 @@ namespace TIKSN.Integration.Correlation
     {
         public MultibaseCorrelationServiceOptions()
         {
-            ByteLength = 16;
-            Encoding = MultibaseEncoding.Base64;
+            this.ByteLength = 16;
+            this.Encoding = MultibaseEncoding.Base64;
         }
 
         public int ByteLength { get; set; }

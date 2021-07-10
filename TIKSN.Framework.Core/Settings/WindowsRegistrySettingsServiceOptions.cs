@@ -4,10 +4,7 @@ namespace TIKSN.Settings
 {
     public class WindowsRegistrySettingsServiceOptions
     {
-        public WindowsRegistrySettingsServiceOptions()
-        {
-            RegistryView = RegistryView.Default;
-        }
+        public WindowsRegistrySettingsServiceOptions() => this.RegistryView = RegistryView.Default;
 
         public RegistryView RegistryView { get; set; }
 

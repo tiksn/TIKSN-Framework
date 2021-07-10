@@ -11,7 +11,8 @@ namespace TIKSN.Analytics.Telemetry
         private readonly IPartialConfiguration<CommonTelemetryOptions> commonConfiguration;
         private readonly IEnumerable<IEventTelemeter> eventTelemeters;
 
-        public CompositeEventTelemeter(IPartialConfiguration<CommonTelemetryOptions> commonConfiguration, IEnumerable<IEventTelemeter> eventTelemeters)
+        public CompositeEventTelemeter(IPartialConfiguration<CommonTelemetryOptions> commonConfiguration,
+            IEnumerable<IEventTelemeter> eventTelemeters)
         {
             this.commonConfiguration = commonConfiguration;
             this.eventTelemeters = eventTelemeters;
@@ -19,9 +20,9 @@ namespace TIKSN.Analytics.Telemetry
 
         public async Task TrackEvent(string name)
         {
-            if (commonConfiguration.GetConfiguration().IsEventTrackingEnabled)
+            if (this.commonConfiguration.GetConfiguration().IsEventTrackingEnabled)
             {
-                foreach (var eventTelemeter in eventTelemeters)
+                foreach (var eventTelemeter in this.eventTelemeters)
                 {
                     try
                     {
@@ -37,9 +38,9 @@ namespace TIKSN.Analytics.Telemetry
 
         public async Task TrackEvent(string name, IDictionary<string, string> properties)
         {
-            if (commonConfiguration.GetConfiguration().IsEventTrackingEnabled)
+            if (this.commonConfiguration.GetConfiguration().IsEventTrackingEnabled)
             {
-                foreach (var eventTelemeter in eventTelemeters)
+                foreach (var eventTelemeter in this.eventTelemeters)
                 {
                     try
                     {

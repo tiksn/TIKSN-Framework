@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -9,6 +7,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using TIKSN.Globalization;
 using TIKSN.Time;
 
@@ -17,12 +17,12 @@ namespace TIKSN.Finance.ForeignExchange.Bank
     public class BankOfCanada : ICurrencyConverter, IExchangeRatesProvider
     {
         private const string RestURL = "https://www.bankofcanada.ca/valet/observations/group/FX_RATES_DAILY/json";
-        private static TimeZoneInfo bankTimeZone;
-        private static CurrencyInfo CanadianDollar;
+        private static readonly TimeZoneInfo bankTimeZone;
+        private static readonly CurrencyInfo CanadianDollar;
         private readonly ICurrencyFactory _currencyFactory;
         private readonly ITimeProvider _timeProvider;
+        private readonly Dictionary<DateTime, Dictionary<CurrencyInfo, decimal>> rates;
         private DateTimeOffset lastFetchDate;
-        private Dictionary<DateTime, Dictionary<CurrencyInfo, decimal>> rates;
 
         static BankOfCanada()
         {
@@ -33,14 +33,15 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         public BankOfCanada(ICurrencyFactory currencyFactory, ITimeProvider timeProvider)
         {
-            rates = new Dictionary<DateTime, Dictionary<CurrencyInfo, decimal>>();
+            this.rates = new Dictionary<DateTime, Dictionary<CurrencyInfo, decimal>>();
 
-            lastFetchDate = DateTimeOffset.MinValue;
-            _currencyFactory = currencyFactory;
-            _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+            this.lastFetchDate = DateTimeOffset.MinValue;
+            this._currencyFactory = currencyFactory;
+            this._timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
+            DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
@@ -49,16 +50,19 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
-            await FetchOnDemandAsync(cancellationToken);
+            await this.FetchOnDemandAsync(cancellationToken);
 
-            if (asOn > _timeProvider.GetCurrentTime())
+            if (asOn > this._timeProvider.GetCurrentTime())
+            {
                 throw new ArgumentException("Exchange rate forecasting are not supported.");
+            }
 
             var result = new List<CurrencyPair>();
 
-            foreach (CurrencyInfo against in GetRatesByDate(asOn).Keys)
+            foreach (var against in this.GetRatesByDate(asOn).Keys)
             {
                 result.Add(new CurrencyPair(CanadianDollar, against));
                 result.Add(new CurrencyPair(against, CanadianDollar));
@@ -67,70 +71,75 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return result;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
-            await FetchOnDemandAsync(cancellationToken);
+            await this.FetchOnDemandAsync(cancellationToken);
 
-            if (asOn > _timeProvider.GetCurrentTime())
+            if (asOn > this._timeProvider.GetCurrentTime())
+            {
                 throw new ArgumentException("Exchange rate forecasting not supported.");
+            }
 
-            if (IsHomeCurrencyPair(pair, asOn))
+            if (this.IsHomeCurrencyPair(pair, asOn))
             {
-                return decimal.One / GetRatesByDate(asOn)[pair.CounterCurrency];
+                return decimal.One / this.GetRatesByDate(asOn)[pair.CounterCurrency];
             }
-            else
-            {
-                return GetRatesByDate(asOn)[pair.BaseCurrency];
-            }
+
+            return this.GetRatesByDate(asOn)[pair.BaseCurrency];
         }
 
-        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
             var result = new List<ExchangeRate>();
 
             var ratesList = new List<Tuple<CurrencyInfo, DateTime, decimal>>();
 
-            var rawData = await FetchRawDataAsync(RestURL, cancellationToken);
+            var rawData = await this.FetchRawDataAsync(RestURL, cancellationToken);
 
-            var asOnDate = GetRatesDate(asOn);
+            var asOnDate = this.GetRatesDate(asOn);
             foreach (var rawItem in rawData)
             {
-                var currency = _currencyFactory.Create(rawItem.Item1);
+                var currency = this._currencyFactory.Create(rawItem.Item1);
 
                 if (asOnDate == rawItem.Item2.Date)
-                    result.Add(new ExchangeRate(new CurrencyPair(currency, CanadianDollar), rawItem.Item2, rawItem.Item3));
+                {
+                    result.Add(new ExchangeRate(new CurrencyPair(currency, CanadianDollar), rawItem.Item2,
+                        rawItem.Item3));
+                }
+
                 ratesList.Add(new Tuple<CurrencyInfo, DateTime, decimal>(currency, rawItem.Item2, rawItem.Item3));
             }
 
-            lock (rates)
+            lock (this.rates)
             {
-                rates.Clear();
+                this.rates.Clear();
 
                 foreach (var perDate in ratesList.GroupBy(item => item.Item2))
                 {
-                    rates.Add(perDate.Key, perDate.ToDictionary(k => k.Item1, v => v.Item3));
+                    this.rates.Add(perDate.Key, perDate.ToDictionary(k => k.Item1, v => v.Item3));
                 }
             }
 
-            lastFetchDate = _timeProvider.GetCurrentTime(); // must stay at the end
+            this.lastFetchDate = this._timeProvider.GetCurrentTime(); // must stay at the end
 
             return result;
         }
 
-        private static DateTimeOffset ConvertToBankTimeZone(DateTimeOffset date)
-        {
-            return TimeZoneInfo.ConvertTime(date, bankTimeZone);
-        }
+        private static DateTimeOffset ConvertToBankTimeZone(DateTimeOffset date) =>
+            TimeZoneInfo.ConvertTime(date, bankTimeZone);
 
         private async Task FetchOnDemandAsync(CancellationToken cancellationToken)
         {
-            if (_timeProvider.GetCurrentTime() - lastFetchDate > TimeSpan.FromDays(1d))
+            if (this._timeProvider.GetCurrentTime() - this.lastFetchDate > TimeSpan.FromDays(1d))
             {
-                await GetExchangeRatesAsync(_timeProvider.GetCurrentTime(), cancellationToken);
+                await this.GetExchangeRatesAsync(this._timeProvider.GetCurrentTime(), cancellationToken);
             }
         }
 
-        private async Task<List<Tuple<string, DateTime, decimal>>> FetchRawDataAsync(string restUrl, CancellationToken cancellationToken)
+        private async Task<List<Tuple<string, DateTime, decimal>>> FetchRawDataAsync(string restUrl,
+            CancellationToken cancellationToken)
         {
             using (var httpClient = new HttpClient())
             {
@@ -142,7 +151,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
                     var result = new List<Tuple<string, DateTime, decimal>>();
 
-                    foreach (var observation in jsonDoc.Children().Single(item => string.Equals(item.Path, "observations", StringComparison.OrdinalIgnoreCase)).Children().Single().Children())
+                    foreach (var observation in jsonDoc.Children()
+                        .Single(item => string.Equals(item.Path, "observations", StringComparison.OrdinalIgnoreCase))
+                        .Children().Single().Children())
                     {
                         var asOn = observation.Value<DateTime>("d");
 
@@ -154,7 +165,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
                                 var targetCurrencyCode = observationProperty.Name.Substring(2, 3);
 
-                                var valueObject = observationProperty.Value.Children().OfType<JProperty>().FirstOrDefault(item => string.Equals(item.Name, "v", StringComparison.OrdinalIgnoreCase));
+                                var valueObject = observationProperty.Value.Children().OfType<JProperty>()
+                                    .FirstOrDefault(item =>
+                                        string.Equals(item.Name, "v", StringComparison.OrdinalIgnoreCase));
 
                                 if (valueObject != null)
                                 {
@@ -173,22 +186,35 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         private Dictionary<CurrencyInfo, decimal> GetRatesByDate(DateTimeOffset asOn)
         {
-            var nowInBuilding = ConvertToBankTimeZone(_timeProvider.GetCurrentTime());
-            var date = GetRatesDate(asOn);
+            var nowInBuilding = ConvertToBankTimeZone(this._timeProvider.GetCurrentTime());
+            var date = this.GetRatesDate(asOn);
 
-            if (rates.ContainsKey(date))
-                return rates[date];
-            else if (date.DayOfWeek == DayOfWeek.Saturday && rates.ContainsKey(date.AddDays(-1).Date))
-                return rates[date.AddDays(-1).Date];
-            else if (date.DayOfWeek == DayOfWeek.Sunday && rates.ContainsKey(date.AddDays(-2).Date))
-                return rates[date.AddDays(-2).Date];
-            else if (date.DayOfWeek == DayOfWeek.Monday && rates.ContainsKey(date.AddDays(-3).Date))
-                return rates[date.AddDays(-3).Date];
+            if (this.rates.ContainsKey(date))
+            {
+                return this.rates[date];
+            }
 
-            if (rates.ContainsKey(date.AddDays(-1).Date))
-                return rates[date.AddDays(-1).Date];
+            if (date.DayOfWeek == DayOfWeek.Saturday && this.rates.ContainsKey(date.AddDays(-1).Date))
+            {
+                return this.rates[date.AddDays(-1).Date];
+            }
 
-            return rates[date]; // Exception will be thrown
+            if (date.DayOfWeek == DayOfWeek.Sunday && this.rates.ContainsKey(date.AddDays(-2).Date))
+            {
+                return this.rates[date.AddDays(-2).Date];
+            }
+
+            if (date.DayOfWeek == DayOfWeek.Monday && this.rates.ContainsKey(date.AddDays(-3).Date))
+            {
+                return this.rates[date.AddDays(-3).Date];
+            }
+
+            if (this.rates.ContainsKey(date.AddDays(-1).Date))
+            {
+                return this.rates[date.AddDays(-1).Date];
+            }
+
+            return this.rates[date]; // Exception will be thrown
         }
 
         private DateTime GetRatesDate(DateTimeOffset asOn)
@@ -196,9 +222,13 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             var date = ConvertToBankTimeZone(asOn).Date;
 
             if (date.DayOfWeek == DayOfWeek.Saturday)
+            {
                 date = date.AddDays(-1);
+            }
             else if (date.DayOfWeek == DayOfWeek.Sunday)
+            {
                 date = date.AddDays(-2);
+            }
 
             return date;
         }
@@ -207,13 +237,17 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             if (Pair.BaseCurrency == CanadianDollar)
             {
-                if (GetRatesByDate(asOn).Any(R => R.Key == Pair.CounterCurrency))
+                if (this.GetRatesByDate(asOn).Any(R => R.Key == Pair.CounterCurrency))
+                {
                     return true;
+                }
             }
             else if (Pair.CounterCurrency == CanadianDollar)
             {
-                if (GetRatesByDate(asOn).Any(R => R.Key == Pair.BaseCurrency))
+                if (this.GetRatesByDate(asOn).Any(R => R.Key == Pair.BaseCurrency))
+                {
                     return false;
+                }
             }
 
             throw new ArgumentException("Currency pair not supported.");

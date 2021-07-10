@@ -10,7 +10,7 @@ namespace TIKSN.Serialization
         {
             if (string.IsNullOrEmpty(serial))
             {
-                return default(T);
+                return default;
             }
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(serial)))

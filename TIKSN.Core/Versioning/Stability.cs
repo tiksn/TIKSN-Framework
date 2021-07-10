@@ -3,6 +3,6 @@
     public enum Stability
     {
         Stable,
-        Unstable,
+        Unstable
     }
 }

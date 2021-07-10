@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using TIKSN.Globalization;
 using TIKSN.Time;
 
@@ -15,32 +15,36 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
     {
         private const string HistoricalBaseURL = "https://apilayer.net/api/historical?";
         private const string LiveBaseURL = "https://apilayer.net/api/live?";
-        private string accessKey;
         private readonly ICurrencyFactory _currencyFactory;
         private readonly ITimeProvider _timeProvider;
+        private readonly string accessKey;
 
         public CurrencylayerDotCom(ICurrencyFactory currencyFactory, ITimeProvider timeProvider, string accessKey)
         {
             if (string.IsNullOrEmpty(accessKey))
+            {
                 throw new ArgumentNullException(nameof(accessKey));
+            }
 
             this.accessKey = accessKey;
-            _currencyFactory = currencyFactory;
-            _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+            this._currencyFactory = currencyFactory;
+            this._timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
+            DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var rates = await GetRatesAasync(baseMoney.Currency, counterCurrency, asOn, cancellationToken);
+            var rates = await this.GetRatesAasync(baseMoney.Currency, counterCurrency, asOn, cancellationToken);
 
             var rate = rates.Values.Single();
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
-            var pairsWithRates = await GetRatesAasync(null, null, asOn, cancellationToken);
+            var pairsWithRates = await this.GetRatesAasync(null, null, asOn, cancellationToken);
 
             var currencies = pairsWithRates.Keys.Select(item => item.CounterCurrency);
 
@@ -60,34 +64,41 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
             return pairs;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
-            var rates = await GetRatesAasync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken);
+            var rates = await this.GetRatesAasync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken);
 
             return rates.Values.Single();
         }
 
-        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<ExchangeRate> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency,
+            DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var rates = await GetRatesAasync(null, null, asOn, cancellationToken);
-
-            return rates.Select(item => new ExchangeRate(new CurrencyPair(item.Key.BaseCurrency, item.Key.CounterCurrency), asOn, item.Value)).ToArray();
-        }
-
-        public async Task<ExchangeRate> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
-        {
-            var rates = await GetRatesAasync(baseCurrency, counterCurrency, asOn, cancellationToken);
+            var rates = await this.GetRatesAasync(baseCurrency, counterCurrency, asOn, cancellationToken);
 
             return new ExchangeRate(new CurrencyPair(baseCurrency, counterCurrency), asOn, rates.Single().Value);
         }
 
-        private async Task<IDictionary<CurrencyPair, decimal>> GetRatesAasync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn,
+            CancellationToken cancellationToken)
+        {
+            var rates = await this.GetRatesAasync(null, null, asOn, cancellationToken);
+
+            return rates.Select(item =>
+                    new ExchangeRate(new CurrencyPair(item.Key.BaseCurrency, item.Key.CounterCurrency), asOn,
+                        item.Value))
+                .ToArray();
+        }
+
+        private async Task<IDictionary<CurrencyPair, decimal>> GetRatesAasync(CurrencyInfo baseCurrency,
+            CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             using (var client = new HttpClient())
             {
                 string requestUrl;
 
-                var difference = _timeProvider.GetCurrentTime() - asOn;
+                var difference = this._timeProvider.GetCurrentTime() - asOn;
 
                 if (difference < TimeSpan.FromDays(1.0))
                 {
@@ -99,7 +110,7 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
                     requestUrl += string.Format("date={0}&", asOn.ToString("yyyy-MM-dd"));
                 }
 
-                requestUrl += string.Format("access_key={0}", accessKey);
+                requestUrl += string.Format("access_key={0}", this.accessKey);
 
                 if (baseCurrency != null)
                 {
@@ -117,9 +128,11 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
 
                 var responseJsonString = await response.Content.ReadAsStringAsync();
 
-                var jsonSerializerSettings = new JsonSerializerSettings { Culture = CultureInfo.InvariantCulture };
+                var jsonSerializerSettings = new JsonSerializerSettings {Culture = CultureInfo.InvariantCulture};
 
-                var responseJsonObject = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseJsonString, jsonSerializerSettings);
+                var responseJsonObject =
+                    JsonConvert.DeserializeObject<Dictionary<string, object>>(responseJsonString,
+                        jsonSerializerSettings);
 
                 var success = (bool)responseJsonObject["success"];
 
@@ -127,17 +140,21 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
                 {
                     var result = new Dictionary<CurrencyPair, decimal>();
 
-                    var quotes = JsonConvert.DeserializeObject<Dictionary<string, decimal>>(responseJsonObject["quotes"].ToString(), jsonSerializerSettings);
+                    var quotes =
+                        JsonConvert.DeserializeObject<Dictionary<string, decimal>>(
+                            responseJsonObject["quotes"].ToString(), jsonSerializerSettings);
 
                     foreach (var quote in quotes)
                     {
-                        string quoteBaseCurrencyCode = quote.Key.Substring(0, 3);
-                        string quoteCounterCurrencyCode = quote.Key.Substring(3);
+                        var quoteBaseCurrencyCode = quote.Key.Substring(0, 3);
+                        var quoteCounterCurrencyCode = quote.Key.Substring(3);
 
-                        if (IsSupportedCurrency(quoteBaseCurrencyCode) && IsSupportedCurrency(quoteCounterCurrencyCode) && quoteBaseCurrencyCode.ToUpperInvariant() != quoteCounterCurrencyCode.ToUpperInvariant())
+                        if (this.IsSupportedCurrency(quoteBaseCurrencyCode) &&
+                            this.IsSupportedCurrency(quoteCounterCurrencyCode) &&
+                            quoteBaseCurrencyCode.ToUpperInvariant() != quoteCounterCurrencyCode.ToUpperInvariant())
                         {
-                            var quoteBaseCurrency = _currencyFactory.Create(quoteBaseCurrencyCode);
-                            var quoteCounterCurrency = _currencyFactory.Create(quoteCounterCurrencyCode);
+                            var quoteBaseCurrency = this._currencyFactory.Create(quoteBaseCurrencyCode);
+                            var quoteCounterCurrency = this._currencyFactory.Create(quoteCounterCurrencyCode);
 
                             var quotePair = new CurrencyPair(quoteBaseCurrency, quoteCounterCurrency);
 
@@ -147,12 +164,11 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
 
                     return result;
                 }
-                else
-                {
-                    var errorDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseJsonObject["error"].ToString());
 
-                    throw new Exception(errorDictionary["info"].ToString());
-                }
+                var errorDictionary =
+                    JsonConvert.DeserializeObject<Dictionary<string, object>>(responseJsonObject["error"].ToString());
+
+                throw new Exception(errorDictionary["info"].ToString());
             }
         }
 
