@@ -38,7 +38,7 @@
     <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="5.0.8" />
-    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="5.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="5.0.8" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
