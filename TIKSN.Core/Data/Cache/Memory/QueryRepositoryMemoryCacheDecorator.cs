@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,7 +35,7 @@ namespace TIKSN.Data.Cache.Memory
             var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, id);
 
             var result = await this.GetFromMemoryCacheAsync(cacheKey,
-                () => this._queryRepository.GetAsync(id, cancellationToken));
+                () => this._queryRepository.GetAsync(id, cancellationToken)).ConfigureAwait(false);
 
             if (result == null)
             {
@@ -54,7 +54,7 @@ namespace TIKSN.Data.Cache.Memory
 
         public async Task<IEnumerable<TEntity>>
             ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken) =>
-            await BatchOperationHelper.BatchOperationAsync(ids, cancellationToken, (id, ct) => this.GetAsync(id, ct));
+            await BatchOperationHelper.BatchOperationAsync(ids, cancellationToken, (id, ct) => this.GetAsync(id, ct)).ConfigureAwait(false);
 
         protected Task<IEnumerable<TEntity>> CreateMemoryCacheQueryAsync(ICacheEntry cacheEntry,
             Func<Task<IEnumerable<TEntity>>> queryFromSource)
@@ -64,16 +64,15 @@ namespace TIKSN.Data.Cache.Memory
             return queryFromSource();
         }
 
-        protected Task<IEnumerable<TEntity>> QueryFromMemoryCacheAsync(Func<Task<IEnumerable<TEntity>>> queryFromSource,
-            CancellationToken cancellationToken)
+        protected Task<IEnumerable<TEntity>> QueryFromMemoryCacheAsync(Func<Task<IEnumerable<TEntity>>> queryFromSource)
         {
             var cacheKey = Tuple.Create(entityType, CacheKeyKind.Query);
 
-            return this.QueryFromMemoryCacheAsync(cacheKey, queryFromSource, cancellationToken);
+            return this.QueryFromMemoryCacheAsync(cacheKey, queryFromSource);
         }
 
         protected Task<IEnumerable<TEntity>> QueryFromMemoryCacheAsync(object cacheKey,
-            Func<Task<IEnumerable<TEntity>>> queryFromSource, CancellationToken cancellationToken) =>
+            Func<Task<IEnumerable<TEntity>>> queryFromSource) =>
             this._memoryCache.GetOrCreateAsync(cacheKey, x => this.CreateMemoryCacheQueryAsync(x, queryFromSource));
     }
 }

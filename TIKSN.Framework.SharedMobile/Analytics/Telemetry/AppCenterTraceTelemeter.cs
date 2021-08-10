@@ -1,17 +1,17 @@
-﻿using Microsoft.AppCenter;
 using System;
 using System.Threading.Tasks;
+using Microsoft.AppCenter;
 
 namespace TIKSN.Analytics.Telemetry
 {
     public class AppCenterTraceTelemeter : ITraceTelemeter
     {
-        public Task TrackTrace(string message)
+        public Task TrackTraceAsync(string message)
         {
-            return TrackTrace(message, TelemetrySeverityLevel.Information);
+            return TrackTraceAsync(message, TelemetrySeverityLevel.Information);
         }
 
-        public Task TrackTrace(string message, TelemetrySeverityLevel severityLevel)
+        public Task TrackTraceAsync(string message, TelemetrySeverityLevel severityLevel)
         {
             switch (severityLevel)
             {

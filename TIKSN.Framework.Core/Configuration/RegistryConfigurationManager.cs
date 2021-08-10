@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Win32;
 
@@ -9,15 +9,17 @@ namespace TIKSN.Configuration
         public static T ReadObject<T>(string rootKey)
         {
             var configuration = Activator.CreateInstance<T>();
-            var keys = new List<string>();
-            keys.Add(rootKey);
+            var keys = new List<string>
+            {
+                rootKey
+            };
 
             Initialize(configuration, keys);
 
             return configuration;
         }
 
-        private static object GetValueFromRegistry(IEnumerable<string> keys, string valueName, Type type)
+        private static object GetValueFromRegistry(IEnumerable<string> keys, string valueName)
         {
             var globalValue = GetValueFromRegistry(RegistryHive.LocalMachine, keys, valueName);
             var localValue = GetValueFromRegistry(RegistryHive.CurrentUser, keys, valueName);
@@ -68,7 +70,7 @@ namespace TIKSN.Configuration
                 if (propertyInfo.PropertyType.IsPrimitive || propertyInfo.PropertyType == typeof(string))
                 {
                     propertyInfo.SetValue(obj,
-                        GetValueFromRegistry(keys, propertyInfo.Name, propertyInfo.PropertyType));
+                        GetValueFromRegistry(keys, propertyInfo.Name));
                 }
             }
         }

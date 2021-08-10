@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
 {
@@ -13,44 +13,44 @@ namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ExchangeRateEntity>(entity =>
-            {
-                entity.ToTable("ExchangeRates");
+            _ = modelBuilder.Entity<ExchangeRateEntity>(entity =>
+              {
+                  _ = entity.ToTable("ExchangeRates");
 
-                entity.Property(e => e.ID).HasColumnName("ID");
+                  _ = entity.Property(e => e.ID).HasColumnName("ID");
 
-                entity.Property(e => e.AsOn)
-                    .IsRequired()
-                    .HasColumnType("DATETIME");
+                  _ = entity.Property(e => e.AsOn)
+                      .IsRequired()
+                      .HasColumnType("DATETIME");
 
-                entity.Property(e => e.BaseCurrencyCode)
-                    .IsRequired()
-                    .HasColumnType("STRING (3, 3)");
+                  _ = entity.Property(e => e.BaseCurrencyCode)
+                      .IsRequired()
+                      .HasColumnType("STRING (3, 3)");
 
-                entity.Property(e => e.CounterCurrencyCode)
-                    .IsRequired()
-                    .HasColumnType("STRING (3, 3)");
+                  _ = entity.Property(e => e.CounterCurrencyCode)
+                      .IsRequired()
+                      .HasColumnType("STRING (3, 3)");
 
-                entity.Property(e => e.ForeignExchangeID).HasColumnName("ForeignExchangeID");
+                  _ = entity.Property(e => e.ForeignExchangeID).HasColumnName("ForeignExchangeID");
 
-                entity.Property(e => e.Rate)
-                    .IsRequired()
-                    .HasColumnType("DECIMAL");
+                  _ = entity.Property(e => e.Rate)
+                      .IsRequired()
+                      .HasColumnType("DECIMAL");
 
-                entity.HasOne(d => d.ForeignExchange)
-                    .WithMany(p => p.ExchangeRates)
-                    .HasForeignKey(d => d.ForeignExchangeID);
-            });
+                  _ = entity.HasOne(d => d.ForeignExchange)
+                      .WithMany(p => p.ExchangeRates)
+                      .HasForeignKey(d => d.ForeignExchangeID);
+              });
 
-            modelBuilder.Entity<ForeignExchangeEntity>(entity =>
-            {
-                entity.ToTable("ForeignExchanges");
-                entity.Property(e => e.ID).HasColumnName("ID");
+            _ = modelBuilder.Entity<ForeignExchangeEntity>(entity =>
+              {
+                  _ = entity.ToTable("ForeignExchanges");
+                  _ = entity.Property(e => e.ID).HasColumnName("ID");
 
-                entity.Property(e => e.CountryCode)
-                    .IsRequired()
-                    .HasColumnType("STRING (2, 3)");
-            });
+                  _ = entity.Property(e => e.CountryCode)
+                      .IsRequired()
+                      .HasColumnType("STRING (2, 3)");
+              });
         }
     }
 }

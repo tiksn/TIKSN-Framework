@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Versioning
+namespace TIKSN.Versioning
 {
     public enum Stability
     {

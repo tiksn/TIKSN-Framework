@@ -1,4 +1,4 @@
-﻿using LiteDB;
+using LiteDB;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 

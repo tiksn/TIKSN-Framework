@@ -1,4 +1,4 @@
-﻿using Microsoft.Azure.Storage;
+using Microsoft.Azure.Storage;
 using Microsoft.Extensions.Configuration;
 
 namespace TIKSN.Data.AzureStorage

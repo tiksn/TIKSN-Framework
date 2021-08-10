@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -23,25 +23,25 @@ namespace TIKSN.Data.LiteDB
 
         public Task AddAsync(TDocument entity, CancellationToken cancellationToken)
         {
-            this.collection.Insert(entity);
+            _ = this.collection.Insert(entity);
             return Task.CompletedTask;
         }
 
         public Task AddOrUpdateAsync(TDocument entity, CancellationToken cancellationToken)
         {
-            this.collection.Upsert(entity);
+            _ = this.collection.Upsert(entity);
             return Task.CompletedTask;
         }
 
         public Task AddOrUpdateRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken)
         {
-            this.collection.Upsert(entities);
+            _ = this.collection.Upsert(entities);
             return Task.CompletedTask;
         }
 
         public Task AddRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken)
         {
-            this.collection.Insert(entities);
+            _ = this.collection.Insert(entities);
             return Task.CompletedTask;
         }
 
@@ -50,7 +50,7 @@ namespace TIKSN.Data.LiteDB
 
         public async Task<TDocument> GetAsync(TIdentity id, CancellationToken cancellationToken)
         {
-            var result = await this.GetOrDefaultAsync(id, cancellationToken);
+            var result = await this.GetOrDefaultAsync(id, cancellationToken).ConfigureAwait(false);
 
             if (result == null)
             {
@@ -79,7 +79,7 @@ namespace TIKSN.Data.LiteDB
 
             var ids = entities.Select(item => item.ID).ToArray();
 
-            this.collection.DeleteMany(item => ids.Contains(item.ID));
+            _ = this.collection.DeleteMany(item => ids.Contains(item.ID));
             return Task.CompletedTask;
         }
 
@@ -88,13 +88,13 @@ namespace TIKSN.Data.LiteDB
 
         public Task UpdateAsync(TDocument entity, CancellationToken cancellationToken)
         {
-            this.collection.Update(entity);
+            _ = this.collection.Update(entity);
             return Task.CompletedTask;
         }
 
         public Task UpdateRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken)
         {
-            this.collection.Update(entities);
+            _ = this.collection.Update(entities);
             return Task.CompletedTask;
         }
     }

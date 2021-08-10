@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using TIKSN.Finance.PricingStrategy;
+using System.Collections.Generic;
 using Xunit;
 
 namespace TIKSN.Finance.PricingStrategy.Tests
@@ -11,30 +10,31 @@ namespace TIKSN.Finance.PricingStrategy.Tests
         {
             var strategy = new RoundingPricingStrategy(1);
 
-            var prices = new Dictionary<decimal, decimal>();
-
-            prices.Add(1m, 1m);
-            prices.Add(2m, 2m);
-            prices.Add(46m, 50m);
-            prices.Add(47m, 50m);
-            prices.Add(48m, 50m);
-            prices.Add(49m, 50m);
-            prices.Add(50m, 50m);
-            prices.Add(55m, 60m);
-            prices.Add(69m, 70m);
-            prices.Add(8m, 8m);
-            prices.Add(51m, 50m);
-            prices.Add(83m, 80m);
-            prices.Add(18m, 20m);
-            prices.Add(364m, 400m);
-            prices.Add(794m, 800m);
-            prices.Add(191m, 200m);
-            prices.Add(149m, 100m);
-            prices.Add(761m, 800m);
-            prices.Add(154m, 200m);
-            prices.Add(6283m, 6000m);
-            prices.Add(870387m, 900000m);
-            prices.Add(526213m, 500000m);
+            var prices = new Dictionary<decimal, decimal>
+            {
+                { 1m, 1m },
+                { 2m, 2m },
+                { 46m, 50m },
+                { 47m, 50m },
+                { 48m, 50m },
+                { 49m, 50m },
+                { 50m, 50m },
+                { 55m, 60m },
+                { 69m, 70m },
+                { 8m, 8m },
+                { 51m, 50m },
+                { 83m, 80m },
+                { 18m, 20m },
+                { 364m, 400m },
+                { 794m, 800m },
+                { 191m, 200m },
+                { 149m, 100m },
+                { 761m, 800m },
+                { 154m, 200m },
+                { 6283m, 6000m },
+                { 870387m, 900000m },
+                { 526213m, 500000m }
+            };
 
             foreach (var price in prices)
             {
@@ -50,18 +50,19 @@ namespace TIKSN.Finance.PricingStrategy.Tests
         {
             var strategy = new RoundingPricingStrategy(2);
 
-            var prices = new Dictionary<decimal, decimal>();
-
-            prices.Add(1m, 1m);
-            prices.Add(2m, 2m);
-            prices.Add(49m, 49m);
-            prices.Add(50m, 50m);
-            prices.Add(55m, 55m);
-            prices.Add(364m, 360m);
-            prices.Add(794m, 790m);
-            prices.Add(191m, 190m);
-            prices.Add(149m, 150m);
-            prices.Add(6283m, 6300m);
+            var prices = new Dictionary<decimal, decimal>
+            {
+                { 1m, 1m },
+                { 2m, 2m },
+                { 49m, 49m },
+                { 50m, 50m },
+                { 55m, 55m },
+                { 364m, 360m },
+                { 794m, 790m },
+                { 191m, 190m },
+                { 149m, 150m },
+                { 6283m, 6300m }
+            };
 
             foreach (var price in prices)
             {

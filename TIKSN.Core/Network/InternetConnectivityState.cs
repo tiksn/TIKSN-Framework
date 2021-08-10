@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace TIKSN.Network
@@ -20,7 +20,7 @@ namespace TIKSN.Network
         public bool IsWiFiAvailable { get; }
 
         public bool Equals(InternetConnectivityState x, InternetConnectivityState y) =>
-            ReferenceEquals(x, null) ? ReferenceEquals(y, null) : x.Equals(y);
+            x is null ? y is null : x.Equals(y);
 
         public int GetHashCode(InternetConnectivityState obj) => this.IsInternetAvailable.GetHashCode() ^
                                                                  this.IsWiFiAvailable.GetHashCode() ^
@@ -28,7 +28,7 @@ namespace TIKSN.Network
 
         public bool Equals(InternetConnectivityState other)
         {
-            if (ReferenceEquals(other, null))
+            if (other is null)
             {
                 return false;
             }
@@ -37,5 +37,9 @@ namespace TIKSN.Network
                    this.IsWiFiAvailable == other.IsWiFiAvailable &&
                    this.IsCellularNetworkAvailable == other.IsCellularNetworkAvailable;
         }
+
+        public override bool Equals(object obj) => this.Equals(obj as InternetConnectivityState);
+
+        public override int GetHashCode() => throw new NotImplementedException();
     }
 }

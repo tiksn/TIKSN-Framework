@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 
@@ -10,31 +10,21 @@ namespace TIKSN.Analytics.Telemetry
         {
             if (severityLevel.HasValue)
             {
-                switch (severityLevel.Value)
+                return severityLevel.Value switch
                 {
-                    case TelemetrySeverityLevel.Verbose:
-                        return SeverityLevel.Verbose;
-
-                    case TelemetrySeverityLevel.Information:
-                        return SeverityLevel.Information;
-
-                    case TelemetrySeverityLevel.Warning:
-                        return SeverityLevel.Warning;
-
-                    case TelemetrySeverityLevel.Error:
-                        return SeverityLevel.Error;
-
-                    case TelemetrySeverityLevel.Critical:
-                        return SeverityLevel.Critical;
-
-                    default:
-                        throw new NotSupportedException();
-                }
+                    TelemetrySeverityLevel.Verbose => SeverityLevel.Verbose,
+                    TelemetrySeverityLevel.Information => SeverityLevel.Information,
+                    TelemetrySeverityLevel.Warning => SeverityLevel.Warning,
+                    TelemetrySeverityLevel.Error => SeverityLevel.Error,
+                    TelemetrySeverityLevel.Critical => SeverityLevel.Critical,
+                    _ => throw new NotSupportedException(),
+                };
             }
 
             return null;
         }
 
+        [Obsolete]
         internal static void TrackEvent(EventTelemetry telemetry)
         {
             var client = new TelemetryClient();
@@ -42,6 +32,7 @@ namespace TIKSN.Analytics.Telemetry
             client.TrackEvent(telemetry);
         }
 
+        [Obsolete]
         internal static void TrackException(ExceptionTelemetry telemetry)
         {
             var client = new TelemetryClient();
@@ -49,6 +40,7 @@ namespace TIKSN.Analytics.Telemetry
             client.TrackException(telemetry);
         }
 
+        [Obsolete]
         internal static void TrackMetric(MetricTelemetry telemetry)
         {
             var client = new TelemetryClient();
@@ -56,6 +48,7 @@ namespace TIKSN.Analytics.Telemetry
             client.TrackMetric(telemetry);
         }
 
+        [Obsolete]
         internal static void TrackTrace(TraceTelemetry telemetry)
         {
             var client = new TelemetryClient();

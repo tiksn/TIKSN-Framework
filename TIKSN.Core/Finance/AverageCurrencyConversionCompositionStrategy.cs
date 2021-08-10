@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -12,15 +12,15 @@ namespace TIKSN.Finance
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, IEnumerable<ICurrencyConverter> converters,
             CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var filteredConverters = await CurrencyHelper.FilterConverters(converters, baseMoney.Currency,
-                counterCurrency, asOn, cancellationToken);
+            var filteredConverters = await CurrencyHelper.FilterConvertersAsync(converters, baseMoney.Currency,
+                counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
 
             var amounts = new List<decimal>();
 
             foreach (var converter in filteredConverters)
             {
                 var convertedMoney =
-                    await converter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken);
+                    await converter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
 
                 if (convertedMoney.Currency != counterCurrency)
                 {
@@ -38,13 +38,13 @@ namespace TIKSN.Finance
         public async Task<decimal> GetExchangeRateAsync(IEnumerable<ICurrencyConverter> converters, CurrencyPair pair,
             DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var filteredConverters = await CurrencyHelper.FilterConverters(converters, pair, asOn, cancellationToken);
+            var filteredConverters = await CurrencyHelper.FilterConvertersAsync(converters, pair, asOn, cancellationToken).ConfigureAwait(false);
 
             var rates = new List<decimal>();
 
             foreach (var converter in filteredConverters)
             {
-                var rate = await converter.GetExchangeRateAsync(pair, asOn, cancellationToken);
+                var rate = await converter.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
 
                 rates.Add(rate);
             }

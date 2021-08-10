@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -47,12 +47,12 @@ namespace TIKSN.Web.Rest
 
         public async Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
-            await this._traceTelemeter.TrackTrace(
-                this._stringLocalizer.GetRequiredString(LocalizationKeys.Key638306944));
+            await this._traceTelemeter.TrackTraceAsync(
+                this._stringLocalizer.GetRequiredString(LocalizationKeys.Key638306944)).ConfigureAwait(false);
 
             foreach (var entity in entities)
             {
-                await this.RemoveAsync(entity, cancellationToken);
+                await this.RemoveAsync(entity, cancellationToken).ConfigureAwait(false);
             }
         }
 
@@ -61,16 +61,16 @@ namespace TIKSN.Web.Rest
 
         public async Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
-            var httpClient = await this.GetHttpClientAsync();
+            var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
             var uriTemplate = new UriTemplate(this._options.Value.ResourceTemplate);
 
             uriTemplate.Fill("ID", string.Empty);
 
             var requestUrl = uriTemplate.Compose();
 
-            var response = await httpClient.PutAsync(requestUrl, this.GetContent(entities), cancellationToken);
+            var response = await httpClient.PutAsync(requestUrl, this.GetContent(entities), cancellationToken).ConfigureAwait(false);
 
-            response.EnsureSuccessStatusCode();
+            _ = response.EnsureSuccessStatusCode();
         }
 
         public Task AddAsync(TEntity entity, CancellationToken cancellationToken) =>
@@ -78,50 +78,50 @@ namespace TIKSN.Web.Rest
 
         public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
         {
-            var httpClient = await this.GetHttpClientAsync();
+            var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
             var uriTemplate = new UriTemplate(this._options.Value.ResourceTemplate);
 
             uriTemplate.Fill("ID", id.ToString());
 
             var requestUrl = uriTemplate.Compose();
 
-            var response = await httpClient.GetAsync(requestUrl, cancellationToken);
+            var response = await httpClient.GetAsync(requestUrl, cancellationToken).ConfigureAwait(false);
 
-            return await this.ObjectifyResponse<TEntity>(response, true);
+            return await this.ObjectifyResponseAsync<TEntity>(response, true).ConfigureAwait(false);
         }
 
         public async Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)
         {
-            var httpClient = await this.GetHttpClientAsync();
+            var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
             var uriTemplate = new UriTemplate(this._options.Value.ResourceTemplate);
 
             uriTemplate.Fill("ID", entity.ID.ToString());
 
             var requestUrl = uriTemplate.Compose();
 
-            var response = await httpClient.DeleteAsync(requestUrl, cancellationToken);
+            var response = await httpClient.DeleteAsync(requestUrl, cancellationToken).ConfigureAwait(false);
 
-            response.EnsureSuccessStatusCode();
+            _ = response.EnsureSuccessStatusCode();
         }
 
         public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
         {
-            var httpClient = await this.GetHttpClientAsync();
+            var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
             var uriTemplate = new UriTemplate(this._options.Value.ResourceTemplate);
 
             uriTemplate.Fill("ID", entity.ID.ToString());
 
             var requestUrl = uriTemplate.Compose();
 
-            var response = await httpClient.PutAsync(requestUrl, this.GetContent(entity), cancellationToken);
+            var response = await httpClient.PutAsync(requestUrl, this.GetContent(entity), cancellationToken).ConfigureAwait(false);
 
-            response.EnsureSuccessStatusCode();
+            _ = response.EnsureSuccessStatusCode();
         }
 
         protected async Task<IEnumerable<TEntity>> SearchAsync(IEnumerable<KeyValuePair<string, string>> parameters,
             CancellationToken cancellationToken)
         {
-            var httpClient = await this.GetHttpClientAsync();
+            var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
             var uriTemplate = new UriTemplate(this._options.Value.ResourceTemplate);
 
             foreach (var parameter in parameters)
@@ -131,15 +131,15 @@ namespace TIKSN.Web.Rest
 
             var requestUrl = uriTemplate.Compose();
 
-            var response = await httpClient.GetAsync(requestUrl, cancellationToken);
+            var response = await httpClient.GetAsync(requestUrl, cancellationToken).ConfigureAwait(false);
 
-            return await this.ObjectifyResponse<IEnumerable<TEntity>>(response, false);
+            return await this.ObjectifyResponseAsync<IEnumerable<TEntity>>(response, false).ConfigureAwait(false);
         }
 
         protected async Task<TEntity> SingleOrDefaultAsync(IEnumerable<KeyValuePair<string, string>> parameters,
             CancellationToken cancellationToken)
         {
-            var httpClient = await this.GetHttpClientAsync();
+            var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
             var uriTemplate = new UriTemplate(this._options.Value.ResourceTemplate);
 
             foreach (var parameter in parameters)
@@ -149,23 +149,23 @@ namespace TIKSN.Web.Rest
 
             var requestUrl = uriTemplate.Compose();
 
-            var response = await httpClient.GetAsync(requestUrl, cancellationToken);
+            var response = await httpClient.GetAsync(requestUrl, cancellationToken).ConfigureAwait(false);
 
-            return await this.ObjectifyResponse<TEntity>(response, true);
+            return await this.ObjectifyResponseAsync<TEntity>(response, true).ConfigureAwait(false);
         }
 
         private async Task AddObjectAsync(object requestContent, CancellationToken cancellationToken)
         {
-            var httpClient = await this.GetHttpClientAsync();
+            var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
             var uriTemplate = new UriTemplate(this._options.Value.ResourceTemplate);
 
             uriTemplate.Fill("ID", string.Empty);
 
             var requestUrl = uriTemplate.Compose();
 
-            var response = await httpClient.PostAsync(requestUrl, this.GetContent(requestContent), cancellationToken);
+            var response = await httpClient.PostAsync(requestUrl, this.GetContent(requestContent), cancellationToken).ConfigureAwait(false);
 
-            response.EnsureSuccessStatusCode();
+            _ = response.EnsureSuccessStatusCode();
         }
 
         private HttpContent GetContent(object requestContent) => new StringContent(
@@ -188,29 +188,28 @@ namespace TIKSN.Web.Rest
                 }
             }
 
-            await this.SetAuthenticationHeader(httpClient);
+            await this.SetAuthenticationHeaderAsync(httpClient).ConfigureAwait(false);
 
             return httpClient;
         }
 
-        private async Task<TResult> ObjectifyResponse<TResult>(HttpResponseMessage response, bool defaultIfNotFound)
+        private async Task<TResult> ObjectifyResponseAsync<TResult>(HttpResponseMessage response, bool defaultIfNotFound)
         {
             if (defaultIfNotFound && response.StatusCode == HttpStatusCode.NotFound)
             {
                 return default;
             }
 
-            response.EnsureSuccessStatusCode();
+            _ = response.EnsureSuccessStatusCode();
 
-            var content = await response.Content.ReadAsStringAsync();
+            var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             return this._deserializerRestFactory.Create(this._options.Value.MediaType).Deserialize<TResult>(content);
         }
 
-        private async Task SetAuthenticationHeader(HttpClient httpClient)
+        private async Task SetAuthenticationHeaderAsync(HttpClient httpClient)
         {
-            var authenticationSchema = string.Empty;
-
+            string authenticationSchema;
             switch (this._options.Value.Authentication)
             {
                 case RestAuthenticationType.None:
@@ -230,7 +229,7 @@ namespace TIKSN.Web.Rest
             }
 
             var authenticationToken =
-                await this._restAuthenticationTokenProvider.GetAuthenticationToken(this._options.Value.ApiKey);
+                await this._restAuthenticationTokenProvider.GetAuthenticationTokenAsync(this._options.Value.ApiKey).ConfigureAwait(false);
 
             httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue(authenticationSchema, authenticationToken);

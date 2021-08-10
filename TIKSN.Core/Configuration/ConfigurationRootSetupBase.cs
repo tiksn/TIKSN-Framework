@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using TIKSN.Analytics.Logging.NLog;
 using TIKSN.FileSystem;
@@ -15,17 +15,24 @@ namespace TIKSN.Configuration
         protected ConfigurationRootSetupBase()
         {
             this._configurationBuilder = new ConfigurationBuilder();
-            this._switchMappings = new Dictionary<string, string>();
-
-            this._switchMappings.Add("--nlog-viewer-address",
-                ConfigurationPath.Combine(RemoteNLogViewerOptions.RemoteNLogViewerConfigurationSection,
-                    nameof(RemoteNLogViewerOptions.Address)));
-            this._switchMappings.Add("--nlog-viewer-include-call-site",
-                ConfigurationPath.Combine(RemoteNLogViewerOptions.RemoteNLogViewerConfigurationSection,
-                    nameof(RemoteNLogViewerOptions.IncludeCallSite)));
-            this._switchMappings.Add("--nlog-viewer-include-source-info",
-                ConfigurationPath.Combine(RemoteNLogViewerOptions.RemoteNLogViewerConfigurationSection,
-                    nameof(RemoteNLogViewerOptions.IncludeSourceInfo)));
+            this._switchMappings = new Dictionary<string, string>
+            {
+                {
+                    "--nlog-viewer-address",
+                    ConfigurationPath.Combine(RemoteNLogViewerOptions.RemoteNLogViewerConfigurationSection,
+                    nameof(RemoteNLogViewerOptions.Address))
+                },
+                {
+                    "--nlog-viewer-include-call-site",
+                    ConfigurationPath.Combine(RemoteNLogViewerOptions.RemoteNLogViewerConfigurationSection,
+                    nameof(RemoteNLogViewerOptions.IncludeCallSite))
+                },
+                {
+                    "--nlog-viewer-include-source-info",
+                    ConfigurationPath.Combine(RemoteNLogViewerOptions.RemoteNLogViewerConfigurationSection,
+                    nameof(RemoteNLogViewerOptions.IncludeSourceInfo))
+                }
+            };
         }
 
         public virtual IConfigurationRoot GetConfigurationRoot()

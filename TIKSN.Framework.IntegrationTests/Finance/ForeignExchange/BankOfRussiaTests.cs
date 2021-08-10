@@ -1,4 +1,3 @@
-﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using System.Linq;
@@ -6,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Globalization;
 using TIKSN.Time;
@@ -21,26 +21,26 @@ namespace TIKSN.Finance.ForeignExchange.Tests
         public BankOfRussiaTests()
         {
             var services = new ServiceCollection();
-            services.AddMemoryCache();
-            services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
-            services.AddSingleton<IRegionFactory, RegionFactory>();
-            services.AddSingleton<ITimeProvider, TimeProvider>();
+            _ = services.AddMemoryCache();
+            _ = services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
+            _ = services.AddSingleton<IRegionFactory, RegionFactory>();
+            _ = services.AddSingleton<ITimeProvider, TimeProvider>();
 
             var serviceProvider = services.BuildServiceProvider();
-            _currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
-            _timeProvider = serviceProvider.GetRequiredService<ITimeProvider>();
+            this._currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+            this._timeProvider = serviceProvider.GetRequiredService<ITimeProvider>();
         }
 
         [Fact]
-        public async Task Calculate001()
+        public async Task Calculate001Async()
         {
-            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
+            var Bank = new BankOfRussia(this._currencyFactory, this._timeProvider);
 
-            foreach (var pair in await Bank.GetCurrencyPairsAsync(DateTime.Now, default))
+            foreach (var pair in await Bank.GetCurrencyPairsAsync(DateTime.Now, default).ConfigureAwait(true))
             {
-                Money Before = new Money(pair.BaseCurrency, 10m);
-                decimal rate = await Bank.GetExchangeRateAsync(pair, DateTime.Now, default);
-                Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTime.Now, default);
+                var Before = new Money(pair.BaseCurrency, 10m);
+                var rate = await Bank.GetExchangeRateAsync(pair, DateTime.Now, default).ConfigureAwait(true);
+                var After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTime.Now, default).ConfigureAwait(true);
 
                 Assert.True(After.Amount == rate * Before.Amount);
                 Assert.True(After.Currency == pair.CounterCurrency);
@@ -48,110 +48,110 @@ namespace TIKSN.Finance.ForeignExchange.Tests
         }
 
         [Fact]
-        public async Task ConvertCurrency001()
+        public async Task ConvertCurrency001Async()
         {
-            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
+            var Bank = new BankOfRussia(this._currencyFactory, this._timeProvider);
 
             var Moment = DateTime.Now;
 
-            foreach (var pair in await Bank.GetCurrencyPairsAsync(Moment, default))
+            foreach (var pair in await Bank.GetCurrencyPairsAsync(Moment, default).ConfigureAwait(true))
             {
-                Money BeforeConversion = new Money(pair.BaseCurrency, 100m);
+                var BeforeConversion = new Money(pair.BaseCurrency, 100m);
 
-                Money AfterComversion = await Bank.ConvertCurrencyAsync(BeforeConversion, pair.CounterCurrency, Moment, default);
+                var AfterComversion = await Bank.ConvertCurrencyAsync(BeforeConversion, pair.CounterCurrency, Moment, default).ConfigureAwait(true);
 
                 Assert.True(AfterComversion.Amount > 0m);
-                Assert.Equal<Finance.CurrencyInfo>(pair.CounterCurrency, AfterComversion.Currency);
+                Assert.Equal(pair.CounterCurrency, AfterComversion.Currency);
             }
         }
 
         [Fact]
-        public async Task ConvertCurrency002()
+        public async Task ConvertCurrency002Async()
         {
-            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
+            var Bank = new BankOfRussia(this._currencyFactory, this._timeProvider);
 
-            System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
-            System.Globalization.RegionInfo RU = new System.Globalization.RegionInfo("RU");
+            var US = new System.Globalization.RegionInfo("US");
+            var RU = new System.Globalization.RegionInfo("RU");
 
-            CurrencyInfo USD = new CurrencyInfo(US);
-            CurrencyInfo RUB = new CurrencyInfo(RU);
+            var USD = new CurrencyInfo(US);
+            var RUB = new CurrencyInfo(RU);
 
-            Money Before = new Money(USD, 100m);
+            var Before = new Money(USD, 100m);
 
-            await
+            _ = await
                 Assert.ThrowsAsync<ArgumentException>(
                     async () =>
-                        await Bank.ConvertCurrencyAsync(Before, RUB, DateTimeOffset.Now.AddMinutes(1d), default));
+                        await Bank.ConvertCurrencyAsync(Before, RUB, DateTimeOffset.Now.AddMinutes(1d), default).ConfigureAwait(true)).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task ConvertCurrency003()
+        public async Task ConvertCurrency003Async()
         {
-            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
+            var Bank = new BankOfRussia(this._currencyFactory, this._timeProvider);
 
-            System.Globalization.RegionInfo AO = new System.Globalization.RegionInfo("AO");
-            System.Globalization.RegionInfo BW = new System.Globalization.RegionInfo("BW");
+            var AO = new System.Globalization.RegionInfo("AO");
+            var BW = new System.Globalization.RegionInfo("BW");
 
-            CurrencyInfo AOA = new CurrencyInfo(AO);
-            CurrencyInfo BWP = new CurrencyInfo(BW);
+            var AOA = new CurrencyInfo(AO);
+            var BWP = new CurrencyInfo(BW);
 
-            Money Before = new Money(AOA, 100m);
+            var Before = new Money(AOA, 100m);
 
-            await
+            _ = await
                 Assert.ThrowsAsync<ArgumentException>(
                     async () =>
-                        await Bank.ConvertCurrencyAsync(Before, BWP, DateTime.Now, default));
+                        await Bank.ConvertCurrencyAsync(Before, BWP, DateTime.Now, default).ConfigureAwait(true)).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task GetCurrencyPairs001()
+        public async Task GetCurrencyPairs001Async()
         {
-            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
+            var Bank = new BankOfRussia(this._currencyFactory, this._timeProvider);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default).ConfigureAwait(true);
 
-            foreach (CurrencyPair pair in CurrencyPairs)
+            foreach (var pair in CurrencyPairs)
             {
-                CurrencyPair reversePair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
+                var reversePair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
 
                 Assert.Contains(CurrencyPairs, C => C == reversePair);
             }
         }
 
         [Fact]
-        public async Task GetCurrencyPairs002()
+        public async Task GetCurrencyPairs002Async()
         {
-            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
+            var Bank = new BankOfRussia(this._currencyFactory, this._timeProvider);
 
-            System.Collections.Generic.HashSet<CurrencyPair> pairSet = new System.Collections.Generic.HashSet<CurrencyPair>();
+            var pairSet = new System.Collections.Generic.HashSet<CurrencyPair>();
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default).ConfigureAwait(true);
 
-            foreach (CurrencyPair pair in CurrencyPairs)
+            foreach (var pair in CurrencyPairs)
             {
-                pairSet.Add(pair);
+                _ = pairSet.Add(pair);
             }
 
             Assert.True(pairSet.Count == CurrencyPairs.Count());
         }
 
         [Fact]
-        public async Task GetCurrencyPairs003()
+        public async Task GetCurrencyPairs003Async()
         {
-            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
+            var Bank = new BankOfRussia(this._currencyFactory, this._timeProvider);
 
-            await
+            _ = await
                     Assert.ThrowsAsync<ArgumentException>(
                         async () =>
-                            await Bank.GetCurrencyPairsAsync(DateTime.Now.AddDays(10), default));
+                            await Bank.GetCurrencyPairsAsync(DateTime.Now.AddDays(10), default).ConfigureAwait(true)).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task GetCurrencyPairs004()
+        public async Task GetCurrencyPairs004Async()
         {
-            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
+            var Bank = new BankOfRussia(this._currencyFactory, this._timeProvider);
 
-            var pairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
+            var pairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default).ConfigureAwait(true);
 
             Assert.Contains(pairs, C => C.ToString() == "AUD/RUB");
             Assert.Contains(pairs, C => C.ToString() == "AZN/RUB");
@@ -221,11 +221,11 @@ namespace TIKSN.Finance.ForeignExchange.Tests
         }
 
         [Fact]
-        public async Task GetCurrencyPairs005()
+        public async Task GetCurrencyPairs005Async()
         {
-            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
+            var Bank = new BankOfRussia(this._currencyFactory, this._timeProvider);
 
-            var pairs = await Bank.GetCurrencyPairsAsync(new System.DateTime(2010, 01, 01), default);
+            var pairs = await Bank.GetCurrencyPairsAsync(new DateTime(2010, 01, 01), default).ConfigureAwait(true);
 
             Assert.Contains(pairs, C => C.ToString() == "AUD/RUB");
             Assert.Contains(pairs, C => C.ToString() == "BYR/RUB");
@@ -265,125 +265,123 @@ namespace TIKSN.Finance.ForeignExchange.Tests
         }
 
         [Fact]
-        public async Task GetCurrencyPairs006()
+        public async Task GetCurrencyPairs006Async()
         {
-            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
+            var Bank = new BankOfRussia(this._currencyFactory, this._timeProvider);
 
             var AtTheMoment = DateTime.Now;
 
-            var pairs = await Bank.GetCurrencyPairsAsync(AtTheMoment, default);
+            var pairs = await Bank.GetCurrencyPairsAsync(AtTheMoment, default).ConfigureAwait(true);
 
             var WebUrl = string.Format("https://www.cbr.ru/scripts/XML_daily.asp?date_req={2:00}.{1:00}.{0}", AtTheMoment.Year, AtTheMoment.Month, AtTheMoment.Day);
 
-            using (var httpClient = new HttpClient())
+            using var httpClient = new HttpClient();
+            var responseStream = await httpClient.GetStreamAsync(WebUrl).ConfigureAwait(true);
+
+            var stream​Reader = new Stream​Reader(responseStream, Encoding.UTF7);
+
+            var Xdoc = XDocument.Load(stream​Reader);
+
+            var WebPairs = new System.Collections.Generic.List<string>();
+
+            foreach (var CodeElement in Xdoc.Element("ValCurs").Elements("Valute"))
             {
-                var responseStream = await httpClient.GetStreamAsync(WebUrl);
+                var code = CodeElement.Element("CharCode").Value.Trim().ToUpper();
 
-                var stream​Reader = new Stream​Reader(responseStream, Encoding.UTF7);
+                WebPairs.Add(string.Format("{0}/RUB", code));
+                WebPairs.Add(string.Format("RUB/{0}", code));
+            }
 
-                var Xdoc = XDocument.Load(stream​Reader);
+            foreach (var Pair in pairs)
+            {
+                Assert.Contains(WebPairs, WP => WP == Pair.ToString());
+            }
 
-                var WebPairs = new System.Collections.Generic.List<string>();
+            foreach (var WebPair in WebPairs)
+            {
+                Assert.Contains(pairs, P => P.ToString() == WebPair);
+            }
 
-                foreach (var CodeElement in Xdoc.Element("ValCurs").Elements("Valute"))
+            Assert.True(pairs.Count() == WebPairs.Count);
+        }
+
+        [Fact]
+        public async Task GetCurrencyPairs007Async()
+        {
+            var Bank = new BankOfRussia(this._currencyFactory, this._timeProvider);
+
+            for (var year = 1994; year <= DateTime.Now.Year; year++)
+            {
+                for (var month = 1; (year < DateTime.Now.Year && month <= 12) || month <= DateTime.Now.Month; month++)
                 {
-                    string code = CodeElement.Element("CharCode").Value.Trim().ToUpper();
+                    var date = new DateTime(year, month, 1);
 
-                    WebPairs.Add(string.Format("{0}/RUB", code));
-                    WebPairs.Add(string.Format("RUB/{0}", code));
+                    _ = await Bank.GetCurrencyPairsAsync(date, default).ConfigureAwait(true);
                 }
-
-                foreach (var Pair in pairs)
-                {
-                    Assert.Contains(WebPairs, WP => WP == Pair.ToString());
-                }
-
-                foreach (var WebPair in WebPairs)
-                {
-                    Assert.True(pairs.Any(P => P.ToString() == WebPair));
-                }
-
-                Assert.True(pairs.Count() == WebPairs.Count);
             }
         }
 
         [Fact]
-        public async Task GetCurrencyPairs007()
+        public async Task GetExchangeRate001Async()
         {
-            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
+            var Bank = new BankOfRussia(this._currencyFactory, this._timeProvider);
 
-            for (int year = 1994; year <= DateTime.Now.Year; year++)
+            foreach (var pair in await Bank.GetCurrencyPairsAsync(DateTime.Now, default).ConfigureAwait(true))
             {
-                for (int month = 1; (year < DateTime.Now.Year && month <= 12) || month <= DateTime.Now.Month; month++)
-                {
-                    var date = new System.DateTime(year, month, 1);
-
-                    await Bank.GetCurrencyPairsAsync(date, default);
-                }
-            }
-        }
-
-        [Fact]
-        public async Task GetExchangeRate001()
-        {
-            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
-
-            foreach (var pair in await Bank.GetCurrencyPairsAsync(DateTime.Now, default))
-            {
-                var rate = await Bank.GetExchangeRateAsync(pair, DateTime.Now, default);
+                var rate = await Bank.GetExchangeRateAsync(pair, DateTime.Now, default).ConfigureAwait(true);
 
                 Assert.True(rate > decimal.Zero);
             }
         }
 
         [Fact]
-        public async Task GetExchangeRate002()
+        public async Task GetExchangeRate002Async()
         {
-            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
+            var Bank = new BankOfRussia(this._currencyFactory, this._timeProvider);
 
-            System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
-            System.Globalization.RegionInfo RU = new System.Globalization.RegionInfo("RU");
+            var US = new System.Globalization.RegionInfo("US");
+            var RU = new System.Globalization.RegionInfo("RU");
 
-            CurrencyInfo USD = new CurrencyInfo(US);
-            CurrencyInfo RUB = new CurrencyInfo(RU);
+            var USD = new CurrencyInfo(US);
+            var RUB = new CurrencyInfo(RU);
 
-            CurrencyPair pair = new CurrencyPair(RUB, USD);
+            var pair = new CurrencyPair(RUB, USD);
 
-            await
+            _ = await
                     Assert.ThrowsAsync<ArgumentException>(
                         async () =>
-                            await Bank.GetExchangeRateAsync(pair, DateTime.Now.AddMinutes(1d), default));
+                            await Bank.GetExchangeRateAsync(pair, DateTime.Now.AddMinutes(1d), default).ConfigureAwait(true)).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task GetExchangeRate003()
+        public async Task GetExchangeRate003Async()
         {
-            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
+            var Bank = new BankOfRussia(this._currencyFactory, this._timeProvider);
 
-            System.Globalization.RegionInfo AO = new System.Globalization.RegionInfo("AO");
-            System.Globalization.RegionInfo BW = new System.Globalization.RegionInfo("BW");
+            var AO = new System.Globalization.RegionInfo("AO");
+            var BW = new System.Globalization.RegionInfo("BW");
 
-            CurrencyInfo AOA = new CurrencyInfo(AO);
-            CurrencyInfo BWP = new CurrencyInfo(BW);
+            var AOA = new CurrencyInfo(AO);
+            var BWP = new CurrencyInfo(BW);
 
-            CurrencyPair pair = new CurrencyPair(BWP, AOA);
+            var pair = new CurrencyPair(BWP, AOA);
 
-            await
+            _ = await
                     Assert.ThrowsAsync<ArgumentException>(
                         async () =>
-                            await Bank.GetExchangeRateAsync(pair, DateTime.Now, default));
+                            await Bank.GetExchangeRateAsync(pair, DateTime.Now, default).ConfigureAwait(true)).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task GetExchangeRate004()
+        public async Task GetExchangeRate004Async()
         {
-            var Bank = new BankOfRussia(_currencyFactory, _timeProvider);
+            var Bank = new BankOfRussia(this._currencyFactory, this._timeProvider);
 
             var Moment = DateTime.Now.AddYears(-1);
 
-            foreach (var pair in await Bank.GetCurrencyPairsAsync(Moment, default))
+            foreach (var pair in await Bank.GetCurrencyPairsAsync(Moment, default).ConfigureAwait(true))
             {
-                var rate = await Bank.GetExchangeRateAsync(pair, Moment, default);
+                var rate = await Bank.GetExchangeRateAsync(pair, Moment, default).ConfigureAwait(true);
 
                 Assert.True(rate > decimal.Zero);
             }

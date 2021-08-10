@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.Extensions.Options;
 using Raven.Client.Documents;
 
@@ -16,7 +16,7 @@ namespace TIKSN.Data.RavenDB
                 throw new ArgumentNullException(nameof(options));
             }
 
-            this._store = new DocumentStore {Urls = options.Value.Urls, Database = options.Value.Database}.Initialize();
+            this._store = new DocumentStore { Urls = options.Value.Urls, Database = options.Value.Database }.Initialize();
         }
 
         public void Dispose() => this._store.Dispose();

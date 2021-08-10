@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Web.Rest
+namespace TIKSN.Web.Rest
 {
     public enum RestVerb
     {

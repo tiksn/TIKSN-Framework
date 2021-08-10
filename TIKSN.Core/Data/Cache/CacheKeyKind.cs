@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Data.Cache
+namespace TIKSN.Data.Cache
 {
     public enum CacheKeyKind
     {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -26,17 +26,17 @@ namespace TIKSN.Integration.Correlation
         {
             var codeMap = new Dictionary<char, int>();
 
-            "0123456789"
+            _ = "0123456789"
                 .ToCharArray()
                 .Do(x => codeMap.Add(x, x - '0'))
                 .ToArray();
 
-            "abcdefghijklmnopqrstuvwxyz"
+            _ = "abcdefghijklmnopqrstuvwxyz"
                 .ToCharArray()
                 .Do(x => codeMap.Add(x, x - 'a' + 10))
                 .ToArray();
 
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            _ = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 .ToCharArray()
                 .Do(x => codeMap.Add(x, x - 'A' + 10))
                 .ToArray();
@@ -60,9 +60,9 @@ namespace TIKSN.Integration.Correlation
             }
 
             var charArrayRepresentation = stringRepresentation.ToCharArray();
-            var byteArrayRepresentation = this.CreateByteArray();
+            var byteArrayRepresentation = CreateByteArray();
 
-            this.CreateChunks(
+            CreateChunks(
                 ref charArrayRepresentation,
                 ref byteArrayRepresentation,
                 out var timestampChars,
@@ -78,12 +78,12 @@ namespace TIKSN.Integration.Correlation
                 out var randomNumber2Chars,
                 out var randomNumber2Bytes);
 
-            this.ConvertCharsToBytes(timestampChars, timestampBytes);
-            this.ConvertCharsToBytes(counterChars, counterBytes);
-            this.ConvertCharsToBytes(pidChars, pidBytes);
-            this.ConvertCharsToBytes(hostnameChars, hostnameBytes);
-            this.ConvertCharsToBytes(randomNumber1Chars, randomNumber1Bytes);
-            this.ConvertCharsToBytes(randomNumber2Chars, randomNumber2Bytes);
+            ConvertCharsToBytes(timestampChars, timestampBytes);
+            ConvertCharsToBytes(counterChars, counterBytes);
+            ConvertCharsToBytes(pidChars, pidBytes);
+            ConvertCharsToBytes(hostnameChars, hostnameBytes);
+            ConvertCharsToBytes(randomNumber1Chars, randomNumber1Bytes);
+            ConvertCharsToBytes(randomNumber2Chars, randomNumber2Bytes);
 
             return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
         }
@@ -95,9 +95,9 @@ namespace TIKSN.Integration.Correlation
                 throw new ArgumentNullException(nameof(byteArrayRepresentation));
             }
 
-            var charArrayRepresentation = this.CreateCharsArray();
+            var charArrayRepresentation = CreateCharsArray();
 
-            this.CreateChunks(
+            CreateChunks(
                 ref charArrayRepresentation,
                 ref byteArrayRepresentation,
                 out var timestampChars,
@@ -113,22 +113,22 @@ namespace TIKSN.Integration.Correlation
                 out var randomNumber2Chars,
                 out var randomNumber2Bytes);
 
-            this.ConvertBytesToChars(timestampChars, timestampBytes);
-            this.ConvertBytesToChars(counterChars, counterBytes);
-            this.ConvertBytesToChars(pidChars, pidBytes);
-            this.ConvertBytesToChars(hostnameChars, hostnameBytes);
-            this.ConvertBytesToChars(randomNumber1Chars, randomNumber1Bytes);
-            this.ConvertBytesToChars(randomNumber2Chars, randomNumber2Bytes);
+            ConvertBytesToChars(timestampChars, timestampBytes);
+            ConvertBytesToChars(counterChars, counterBytes);
+            ConvertBytesToChars(pidChars, pidBytes);
+            ConvertBytesToChars(hostnameChars, hostnameBytes);
+            ConvertBytesToChars(randomNumber1Chars, randomNumber1Bytes);
+            ConvertBytesToChars(randomNumber2Chars, randomNumber2Bytes);
 
             return new CorrelationID(new string(charArrayRepresentation), byteArrayRepresentation);
         }
 
         public CorrelationID Generate()
         {
-            var charArrayRepresentation = this.CreateCharsArray();
-            var byteArrayRepresentation = this.CreateByteArray();
+            var charArrayRepresentation = CreateCharsArray();
+            var byteArrayRepresentation = CreateByteArray();
 
-            this.CreateChunks(
+            CreateChunks(
                 ref charArrayRepresentation,
                 ref byteArrayRepresentation,
                 out var timestampChars,
@@ -200,7 +200,7 @@ namespace TIKSN.Integration.Correlation
             WriteBase36(value, chars);
         }
 
-        private void ConvertBytesToChars(Span<char> chars, Span<byte> bytes)
+        private static void ConvertBytesToChars(Span<char> chars, Span<byte> bytes)
         {
             var value = 0L;
 
@@ -213,7 +213,7 @@ namespace TIKSN.Integration.Correlation
             WriteBase36(value, chars);
         }
 
-        private void ConvertCharsToBytes(Span<char> chars, Span<byte> bytes)
+        private static void ConvertCharsToBytes(Span<char> chars, Span<byte> bytes)
         {
             var value = 0L;
 
@@ -227,16 +227,16 @@ namespace TIKSN.Integration.Correlation
             WriteBase36(value, bytes);
         }
 
-        private byte[] CreateByteArray() => new byte[ByteArraySize];
+        private static byte[] CreateByteArray() => new byte[ByteArraySize];
 
-        private char[] CreateCharsArray()
+        private static char[] CreateCharsArray()
         {
             var chars = new char[CharsArraySize];
             chars[0] = 'c';
             return chars;
         }
 
-        private void CreateChunks(
+        private static void CreateChunks(
             ref char[] charArrayRepresentation,
             ref byte[] byteArrayRepresentation,
             out Span<char> timestampChars,
@@ -254,7 +254,7 @@ namespace TIKSN.Integration.Correlation
         {
             if (charArrayRepresentation is null)
             {
-                charArrayRepresentation = this.CreateCharsArray();
+                charArrayRepresentation = CreateCharsArray();
             }
             else
             {
@@ -273,7 +273,7 @@ namespace TIKSN.Integration.Correlation
 
             if (byteArrayRepresentation is null)
             {
-                byteArrayRepresentation = this.CreateByteArray();
+                byteArrayRepresentation = CreateByteArray();
             }
             else
             {

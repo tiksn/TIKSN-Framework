@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Xml;
 
@@ -74,7 +74,7 @@ namespace TIKSN.Web
                 get => this.address;
                 private set
                 {
-                    if (ReferenceEquals(value, null))
+                    if (value is null)
                     {
                         throw new ArgumentNullException("Address");
                     }
@@ -105,7 +105,7 @@ namespace TIKSN.Web
 
             public bool Equals(Page that)
             {
-                if (ReferenceEquals(that, null))
+                if (that is null)
                 {
                     return false;
                 }
@@ -124,7 +124,7 @@ namespace TIKSN.Web
 
             public override bool Equals(object that)
             {
-                if (ReferenceEquals(that, null))
+                if (that is null)
                 {
                     return false;
                 }
@@ -134,9 +134,8 @@ namespace TIKSN.Web
                     return true;
                 }
 
-                var p = that as Page;
 
-                if ((object)p == null)
+                if (that is not Page p)
                 {
                     return false;
                 }
@@ -148,9 +147,9 @@ namespace TIKSN.Web
 
             private static bool Equals(Page page1, Page page2)
             {
-                if (ReferenceEquals(page1, null))
+                if (page1 is null)
                 {
-                    return ReferenceEquals(page2, null);
+                    return page2 is null;
                 }
 
                 return page1.Equals(page2);

@@ -160,6 +160,11 @@ Task DownloadCurrencyCodes -depends Clean {
     Invoke-WebRequest -Uri 'https://www.currency-iso.org/dam/downloads/lists/list_three.xml' -OutFile 'TIKSN.Core/Finance/Resources/TableA3.xml'
 }
 
+Task Format -depends Restore {
+    $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+    Exec { dotnet format --fix-whitespace --fix-style info --fix-analyzers info $solution }
+}
+
 Task Restore -depends Clean {
     $solution = Resolve-Path -Path 'TIKSN Framework.sln'
     Exec { dotnet restore $solution }
@@ -167,6 +172,11 @@ Task Restore -depends Clean {
 }
 
 Task Clean -depends Init {
+    Get-ChildItem -Directory
+    | Where-Object { -not $_.Name.StartsWith('.') }
+    | ForEach-Object { Get-ChildItem -Path $_ -Recurse -Directory }
+    | Where-Object { ( $_.Name -eq 'bin') -or ( $_.Name -eq 'obj') }
+    | ForEach-Object { Remove-Item -Path $_ -Recurse -Force }
 }
 
 Task Init {

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace TIKSN.DependencyInjection
@@ -9,9 +9,6 @@ namespace TIKSN.DependencyInjection
         {
         }
 
-        protected override void ConfigureServices(IServiceCollection services)
-        {
-            services.AddFrameworkPlatform();
-        }
+        protected override void ConfigureServices(IServiceCollection services) => services.AddFrameworkPlatform();
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
@@ -131,7 +131,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
             DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var rate = (await this.GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken))
+            var rate = (await this.GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken).ConfigureAwait(false))
                 .Rate;
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
@@ -144,7 +144,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
             foreach (var pair in SeriesCodes.Keys)
             {
-                var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken);
+                var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
 
                 if (rate != decimal.Zero)
                 {
@@ -157,7 +157,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
             CancellationToken cancellationToken) =>
-            (await this.GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken)).Rate;
+            (await this.GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken).ConfigureAwait(false)).Rate;
 
         public async Task<ExchangeRate> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency,
             DateTimeOffset asOn, CancellationToken cancellationToken)
@@ -182,46 +182,44 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             var RequestUrl = string.Format(UrlFormat, ToInternalDataFormat(asOn.AddMonths(-1)),
                 ToInternalDataFormat(asOn), SerieCode);
 
-            using (var httpClient = new HttpClient())
+            using var httpClient = new HttpClient();
+            var responseStream = await httpClient.GetStreamAsync(RequestUrl).ConfigureAwait(false);
+
+            var xdoc = XDocument.Load(responseStream);
+
+            var date = DateTimeOffset.MinValue;
+            var reverseRate = decimal.Zero;
+
+            foreach (var item in xdoc.Element("{http://www.gesmes.org/xml/2002-08-01}Envelope")
+                .Element("{http://www.bankofengland.co.uk/boeapps/iadb/agg_series}Cube")
+                .Elements("{http://www.bankofengland.co.uk/boeapps/iadb/agg_series}Cube"))
             {
-                var responseStream = await httpClient.GetStreamAsync(RequestUrl);
+                var time = item.Attribute("TIME");
+                var EstimatedRate = item.Attribute("OBS_VALUE");
 
-                var xdoc = XDocument.Load(responseStream);
-
-                var date = DateTimeOffset.MinValue;
-                var reverseRate = decimal.Zero;
-
-                foreach (var item in xdoc.Element("{http://www.gesmes.org/xml/2002-08-01}Envelope")
-                    .Element("{http://www.bankofengland.co.uk/boeapps/iadb/agg_series}Cube")
-                    .Elements("{http://www.bankofengland.co.uk/boeapps/iadb/agg_series}Cube"))
+                if (time != null && EstimatedRate != null)
                 {
-                    var time = item.Attribute("TIME");
-                    var EstimatedRate = item.Attribute("OBS_VALUE");
+                    var Year = int.Parse(time.Value.Substring(0, 4));
+                    var Month = int.Parse(time.Value.Substring(5, 2));
+                    var Day = int.Parse(time.Value.Substring(8));
 
-                    if (time != null && EstimatedRate != null)
+                    var itemTime = new DateTimeOffset(Year, Month, Day, 0, 0, 0, TimeSpan.Zero);
+
+                    if (itemTime > date)
                     {
-                        var Year = int.Parse(time.Value.Substring(0, 4));
-                        var Month = int.Parse(time.Value.Substring(5, 2));
-                        var Day = int.Parse(time.Value.Substring(8));
-
-                        var itemTime = new DateTimeOffset(Year, Month, Day, 0, 0, 0, TimeSpan.Zero);
-
-                        if (itemTime > date)
-                        {
-                            reverseRate = decimal.Parse(EstimatedRate.Value, CultureInfo.InvariantCulture);
-                            date = itemTime;
-                        }
+                        reverseRate = decimal.Parse(EstimatedRate.Value, CultureInfo.InvariantCulture);
+                        date = itemTime;
                     }
                 }
-
-                var rate = decimal.Zero;
-                if (reverseRate != decimal.Zero)
-                {
-                    rate = decimal.One / reverseRate;
-                }
-
-                return new ExchangeRate(pair, date, rate);
             }
+
+            var rate = decimal.Zero;
+            if (reverseRate != decimal.Zero)
+            {
+                rate = decimal.One / reverseRate;
+            }
+
+            return new ExchangeRate(pair, date, rate);
         }
 
         private static void AddSeriesCode(string BaseCountryCode, string CounterCountryCode, string SerieCode)

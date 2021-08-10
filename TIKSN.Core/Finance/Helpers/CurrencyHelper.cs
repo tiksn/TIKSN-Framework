@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -8,12 +8,12 @@ namespace TIKSN.Finance.Helpers
 {
     internal static class CurrencyHelper
     {
-        public static async Task<IEnumerable<ICurrencyConverter>> FilterConverters(
+        public static async Task<IEnumerable<ICurrencyConverter>> FilterConvertersAsync(
             IEnumerable<ICurrencyConverter> converters, CurrencyPair pair, DateTimeOffset asOn,
-            CancellationToken cancellationToken) => await FilterConverters(converters, pair.BaseCurrency,
-            pair.CounterCurrency, asOn, cancellationToken);
+            CancellationToken cancellationToken) => await FilterConvertersAsync(converters, pair.BaseCurrency,
+            pair.CounterCurrency, asOn, cancellationToken).ConfigureAwait(false);
 
-        public static async Task<IEnumerable<ICurrencyConverter>> FilterConverters(
+        public static async Task<IEnumerable<ICurrencyConverter>> FilterConvertersAsync(
             IEnumerable<ICurrencyConverter> converters, CurrencyInfo baseCurrency, CurrencyInfo counterCurrency,
             DateTimeOffset asOn, CancellationToken cancellationToken)
         {
@@ -21,7 +21,7 @@ namespace TIKSN.Finance.Helpers
 
             foreach (var converter in converters)
             {
-                var pairs = await converter.GetCurrencyPairsAsync(asOn, cancellationToken);
+                var pairs = await converter.GetCurrencyPairsAsync(asOn, cancellationToken).ConfigureAwait(false);
 
                 if (pairs.Any(item => item.BaseCurrency == baseCurrency && item.CounterCurrency == counterCurrency))
                 {

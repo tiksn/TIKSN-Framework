@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Serialization
+namespace TIKSN.Serialization
 {
     /// <summary>
     ///     Deserializer interface
@@ -9,7 +9,7 @@
         /// <summary>
         ///     Deserialize from <typeparamref name="TSerial" /> type
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="serial"></param>
         /// <returns></returns>
         T Deserialize<T>(TSerial serial);
     }

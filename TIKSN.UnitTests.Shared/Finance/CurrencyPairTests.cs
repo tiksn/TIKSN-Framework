@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Xunit;
 
 namespace TIKSN.Finance.Tests
@@ -8,29 +8,29 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void CurrencyPair001()
         {
-            System.Globalization.RegionInfo USA = new System.Globalization.RegionInfo("US");
-            CurrencyInfo USD1 = new CurrencyInfo(USA);
-            CurrencyInfo USD2 = new CurrencyInfo(USA);
+            var USA = new System.Globalization.RegionInfo("US");
+            var USD1 = new CurrencyInfo(USA);
+            var USD2 = new CurrencyInfo(USA);
 
-            Assert.Throws<ArgumentException>(() => new CurrencyPair(USD1, USD2));
+            _ = Assert.Throws<ArgumentException>(() => new CurrencyPair(USD1, USD2));
         }
 
         [Fact]
         public void Equals001()
         {
-            System.Globalization.RegionInfo USA = new System.Globalization.RegionInfo("US");
-            System.Globalization.RegionInfo GBR = new System.Globalization.RegionInfo("GB");
-            System.Globalization.RegionInfo ITA = new System.Globalization.RegionInfo("IT");
+            var USA = new System.Globalization.RegionInfo("US");
+            var GBR = new System.Globalization.RegionInfo("GB");
+            var ITA = new System.Globalization.RegionInfo("IT");
 
-            CurrencyInfo USD = new CurrencyInfo(USA);
-            CurrencyInfo GBP = new CurrencyInfo(GBR);
-            CurrencyInfo EUR = new CurrencyInfo(ITA);
+            var USD = new CurrencyInfo(USA);
+            var GBP = new CurrencyInfo(GBR);
+            var EUR = new CurrencyInfo(ITA);
 
-            CurrencyPair pair1 = new CurrencyPair(GBP, USD);
-            CurrencyPair pair2 = new CurrencyPair(GBP, USD);
-            CurrencyPair pair3 = new CurrencyPair(GBP, EUR);
-            CurrencyPair pair4 = new CurrencyPair(USD, EUR);
-            CurrencyPair pair5 = new CurrencyPair(EUR, USD);
+            var pair1 = new CurrencyPair(GBP, USD);
+            var pair2 = new CurrencyPair(GBP, USD);
+            var pair3 = new CurrencyPair(GBP, EUR);
+            var pair4 = new CurrencyPair(USD, EUR);
+            var pair5 = new CurrencyPair(EUR, USD);
 
             Assert.True(pair1.Equals(pair1));
             Assert.True(pair1.GetHashCode() == pair1.GetHashCode());
@@ -67,16 +67,16 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void Equals002()
         {
-            System.Globalization.RegionInfo USA = new System.Globalization.RegionInfo("US");
-            System.Globalization.RegionInfo GBR = new System.Globalization.RegionInfo("GB");
+            var USA = new System.Globalization.RegionInfo("US");
+            var GBR = new System.Globalization.RegionInfo("GB");
 
-            CurrencyInfo USD = new CurrencyInfo(USA);
-            CurrencyInfo GBP = new CurrencyInfo(GBR);
+            var USD = new CurrencyInfo(USA);
+            var GBP = new CurrencyInfo(GBR);
 
-            CurrencyPair pair1 = new CurrencyPair(GBP, USD);
-            CurrencyPair pair2 = pair1;
+            var pair1 = new CurrencyPair(GBP, USD);
+            var pair2 = pair1;
             object pair3 = pair1;
-            object something = new object();
+            var something = new object();
             object pair4 = new CurrencyPair(GBP, USD);
 
             Assert.True(pair1.Equals(pair2));
@@ -94,13 +94,13 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void Equals003()
         {
-            System.Globalization.RegionInfo USA = new System.Globalization.RegionInfo("US");
-            System.Globalization.RegionInfo GBR = new System.Globalization.RegionInfo("GB");
+            var USA = new System.Globalization.RegionInfo("US");
+            var GBR = new System.Globalization.RegionInfo("GB");
 
-            CurrencyInfo USD = new CurrencyInfo(USA);
-            CurrencyInfo GBP = new CurrencyInfo(GBR);
+            var USD = new CurrencyInfo(USA);
+            var GBP = new CurrencyInfo(GBR);
 
-            CurrencyPair pair1 = new CurrencyPair(GBP, USD);
+            var pair1 = new CurrencyPair(GBP, USD);
             CurrencyPair pair2 = null;
             object pair3 = null;
             CurrencyPair pair4 = null;
@@ -118,13 +118,13 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void ToString001()
         {
-            System.Globalization.RegionInfo USA = new System.Globalization.RegionInfo("US");
-            System.Globalization.RegionInfo GBR = new System.Globalization.RegionInfo("GB");
+            var USA = new System.Globalization.RegionInfo("US");
+            var GBR = new System.Globalization.RegionInfo("GB");
 
-            CurrencyInfo USD = new CurrencyInfo(USA);
-            CurrencyInfo GBP = new CurrencyInfo(GBR);
+            var USD = new CurrencyInfo(USA);
+            var GBP = new CurrencyInfo(GBR);
 
-            CurrencyPair pair = new CurrencyPair(GBP, USD);
+            var pair = new CurrencyPair(GBP, USD);
 
             Assert.Equal("GBP/USD", pair.ToString());
         }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +25,7 @@ namespace TIKSN.Data.Cache.Distributed
 
         public async Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken)
         {
-            var cachedBytes = await this._distributedCache.GetAsync(this.CreateEntryCacheKey(id), cancellationToken);
+            var cachedBytes = await this._distributedCache.GetAsync(this.CreateEntryCacheKey(id), cancellationToken).ConfigureAwait(false);
 
             return cachedBytes != null;
         }
@@ -33,7 +33,7 @@ namespace TIKSN.Data.Cache.Distributed
         public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
         {
             var result =
-                await this.GetFromDistributedCacheAsync<TEntity>(this.CreateEntryCacheKey(id), cancellationToken);
+                await this.GetFromDistributedCacheAsync<TEntity>(this.CreateEntryCacheKey(id), cancellationToken).ConfigureAwait(false);
 
             if (result == null)
             {
@@ -48,6 +48,6 @@ namespace TIKSN.Data.Cache.Distributed
 
         public async Task<IEnumerable<TEntity>>
             ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken) =>
-            await BatchOperationHelper.BatchOperationAsync(ids, cancellationToken, (id, ct) => this.GetAsync(id, ct));
+            await BatchOperationHelper.BatchOperationAsync(ids, cancellationToken, (id, ct) => this.GetAsync(id, ct)).ConfigureAwait(false);
     }
 }

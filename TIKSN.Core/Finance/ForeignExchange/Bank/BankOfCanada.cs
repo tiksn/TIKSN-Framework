@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -45,7 +45,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
-            var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken);
+            var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
@@ -53,7 +53,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            await this.FetchOnDemandAsync(cancellationToken);
+            await this.FetchOnDemandAsync(cancellationToken).ConfigureAwait(false);
 
             if (asOn > this._timeProvider.GetCurrentTime())
             {
@@ -74,7 +74,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            await this.FetchOnDemandAsync(cancellationToken);
+            await this.FetchOnDemandAsync(cancellationToken).ConfigureAwait(false);
 
             if (asOn > this._timeProvider.GetCurrentTime())
             {
@@ -96,9 +96,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
             var ratesList = new List<Tuple<CurrencyInfo, DateTime, decimal>>();
 
-            var rawData = await this.FetchRawDataAsync(RestURL, cancellationToken);
+            var rawData = await FetchRawDataAsync(RestURL).ConfigureAwait(false);
 
-            var asOnDate = this.GetRatesDate(asOn);
+            var asOnDate = GetRatesDate(asOn);
             foreach (var rawItem in rawData)
             {
                 var currency = this._currencyFactory.Create(rawItem.Item1);
@@ -134,60 +134,55 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             if (this._timeProvider.GetCurrentTime() - this.lastFetchDate > TimeSpan.FromDays(1d))
             {
-                await this.GetExchangeRatesAsync(this._timeProvider.GetCurrentTime(), cancellationToken);
+                _ = await this.GetExchangeRatesAsync(this._timeProvider.GetCurrentTime(), cancellationToken).ConfigureAwait(false);
             }
         }
 
-        private async Task<List<Tuple<string, DateTime, decimal>>> FetchRawDataAsync(string restUrl,
-            CancellationToken cancellationToken)
+        private static async Task<List<Tuple<string, DateTime, decimal>>> FetchRawDataAsync(string restUrl)
         {
-            using (var httpClient = new HttpClient())
+            using var httpClient = new HttpClient();
+            var responseStream = await httpClient.GetStreamAsync(restUrl).ConfigureAwait(false);
+
+            using var streamReader = new StreamReader(responseStream);
+            var jsonDoc = (JObject)JsonConvert.DeserializeObject(await streamReader.ReadToEndAsync().ConfigureAwait(false));
+
+            var result = new List<Tuple<string, DateTime, decimal>>();
+
+            foreach (var observation in jsonDoc.Children()
+                .Single(item => string.Equals(item.Path, "observations", StringComparison.OrdinalIgnoreCase))
+                .Children().Single().Children())
             {
-                var responseStream = await httpClient.GetStreamAsync(restUrl);
+                var asOn = observation.Value<DateTime>("d");
 
-                using (var streamReader = new StreamReader(responseStream))
+                foreach (JProperty observationProperty in observation.Children())
                 {
-                    var jsonDoc = (JObject)JsonConvert.DeserializeObject(await streamReader.ReadToEndAsync());
-
-                    var result = new List<Tuple<string, DateTime, decimal>>();
-
-                    foreach (var observation in jsonDoc.Children()
-                        .Single(item => string.Equals(item.Path, "observations", StringComparison.OrdinalIgnoreCase))
-                        .Children().Single().Children())
+                    if (observationProperty.Name.StartsWith("FX", StringComparison.OrdinalIgnoreCase))
                     {
-                        var asOn = observation.Value<DateTime>("d");
+                        Debug.Assert(observationProperty.Name.EndsWith("CAD"));
 
-                        foreach (JProperty observationProperty in observation.Children())
+                        var targetCurrencyCode = observationProperty.Name.Substring(2, 3);
+
+                        var valueObject = observationProperty.Value.Children().OfType<JProperty>()
+                            .FirstOrDefault(item =>
+                                string.Equals(item.Name, "v", StringComparison.OrdinalIgnoreCase));
+
+                        if (valueObject != null)
                         {
-                            if (observationProperty.Name.StartsWith("FX", StringComparison.OrdinalIgnoreCase))
-                            {
-                                Debug.Assert(observationProperty.Name.EndsWith("CAD"));
+                            var rate = (decimal)valueObject.Value;
 
-                                var targetCurrencyCode = observationProperty.Name.Substring(2, 3);
-
-                                var valueObject = observationProperty.Value.Children().OfType<JProperty>()
-                                    .FirstOrDefault(item =>
-                                        string.Equals(item.Name, "v", StringComparison.OrdinalIgnoreCase));
-
-                                if (valueObject != null)
-                                {
-                                    var rate = (decimal)valueObject.Value;
-
-                                    result.Add(new Tuple<string, DateTime, decimal>(targetCurrencyCode, asOn, rate));
-                                }
-                            }
+                            result.Add(new Tuple<string, DateTime, decimal>(targetCurrencyCode, asOn, rate));
                         }
                     }
-
-                    return result;
                 }
             }
+
+            return result;
         }
 
         private Dictionary<CurrencyInfo, decimal> GetRatesByDate(DateTimeOffset asOn)
         {
-            var nowInBuilding = ConvertToBankTimeZone(this._timeProvider.GetCurrentTime());
-            var date = this.GetRatesDate(asOn);
+            _ = ConvertToBankTimeZone(this._timeProvider.GetCurrentTime());
+            var date = GetRatesDate(asOn);
 
             if (this.rates.ContainsKey(date))
             {
@@ -217,7 +212,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return this.rates[date]; // Exception will be thrown
         }
 
-        private DateTime GetRatesDate(DateTimeOffset asOn)
+        private static DateTime GetRatesDate(DateTimeOffset asOn)
         {
             var date = ConvertToBankTimeZone(asOn).Date;
 

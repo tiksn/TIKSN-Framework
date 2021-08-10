@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -8,7 +8,7 @@ namespace TIKSN.Analytics.Telemetry
 {
     public class ExceptionlessEventTelemeter : ExceptionlessTelemeterBase, IEventTelemeter
     {
-        public async Task TrackEvent(string name)
+        public Task TrackEventAsync(string name)
         {
             try
             {
@@ -18,9 +18,11 @@ namespace TIKSN.Analytics.Telemetry
             {
                 Debug.WriteLine(ex);
             }
+
+            return Task.CompletedTask;
         }
 
-        public async Task TrackEvent(string name, IDictionary<string, string> properties)
+        public Task TrackEventAsync(string name, IDictionary<string, string> properties)
         {
             try
             {
@@ -28,7 +30,7 @@ namespace TIKSN.Analytics.Telemetry
 
                 foreach (var property in properties)
                 {
-                    eventBuilder.SetProperty(property.Key, property.Value);
+                    _ = eventBuilder.SetProperty(property.Key, property.Value);
                 }
 
                 eventBuilder.Submit();
@@ -37,6 +39,8 @@ namespace TIKSN.Analytics.Telemetry
             {
                 Debug.WriteLine(ex);
             }
+
+            return Task.CompletedTask;
         }
     }
 }

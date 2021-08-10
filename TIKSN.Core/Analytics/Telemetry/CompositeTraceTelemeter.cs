@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -18,7 +18,7 @@ namespace TIKSN.Analytics.Telemetry
             this.traceTelemeters = traceTelemeters;
         }
 
-        public async Task TrackTrace(string message)
+        public async Task TrackTraceAsync(string message)
         {
             if (this.commonConfiguration.GetConfiguration().IsTraceTrackingEnabled)
             {
@@ -26,7 +26,7 @@ namespace TIKSN.Analytics.Telemetry
                 {
                     try
                     {
-                        await traceTelemeter.TrackTrace(message);
+                        await traceTelemeter.TrackTraceAsync(message).ConfigureAwait(false);
                     }
                     catch (Exception ex)
                     {
@@ -36,7 +36,7 @@ namespace TIKSN.Analytics.Telemetry
             }
         }
 
-        public async Task TrackTrace(string message, TelemetrySeverityLevel severityLevel)
+        public async Task TrackTraceAsync(string message, TelemetrySeverityLevel severityLevel)
         {
             if (this.commonConfiguration.GetConfiguration().IsTraceTrackingEnabled)
             {
@@ -44,7 +44,7 @@ namespace TIKSN.Analytics.Telemetry
                 {
                     try
                     {
-                        await traceTelemeter.TrackTrace(message, severityLevel);
+                        await traceTelemeter.TrackTraceAsync(message, severityLevel).ConfigureAwait(false);
                     }
                     catch (Exception ex)
                     {

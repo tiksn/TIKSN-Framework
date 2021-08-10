@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using MsgPack.Serialization;
 
 namespace TIKSN.Serialization.MessagePack
@@ -14,10 +14,8 @@ namespace TIKSN.Serialization.MessagePack
         {
             var serializer = this._serializationContext.GetSerializer<T>();
 
-            using (var stream = new MemoryStream(serial))
-            {
-                return serializer.Unpack(stream);
-            }
+            using var stream = new MemoryStream(serial);
+            return serializer.Unpack(stream);
         }
     }
 }

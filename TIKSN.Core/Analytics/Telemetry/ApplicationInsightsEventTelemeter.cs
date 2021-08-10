@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -8,7 +8,8 @@ namespace TIKSN.Analytics.Telemetry
 {
     public class ApplicationInsightsEventTelemeter : IEventTelemeter
     {
-        public Task TrackEvent(string name)
+        [Obsolete]
+        public Task TrackEventAsync(string name)
         {
             try
             {
@@ -23,7 +24,8 @@ namespace TIKSN.Analytics.Telemetry
             return Task.FromResult<object>(null);
         }
 
-        public Task TrackEvent(string name, IDictionary<string, string> properties)
+        [Obsolete]
+        public Task TrackEventAsync(string name, IDictionary<string, string> properties)
         {
             try
             {

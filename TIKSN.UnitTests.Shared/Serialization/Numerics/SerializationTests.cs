@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
 using System;
 using System.Numerics;
+using FluentAssertions;
 using Xunit;
 
 namespace TIKSN.Serialization.Numerics.Tests
@@ -11,10 +11,10 @@ namespace TIKSN.Serialization.Numerics.Tests
         public void DeserializeSerializeUnsignedBigInteger()
         {
             var rng = new Random();
-            UnsignedBigIntegerBinarySerializer serializer = new UnsignedBigIntegerBinarySerializer();
-            UnsignedBigIntegerBinaryDeserializer deserializer = new UnsignedBigIntegerBinaryDeserializer();
+            var serializer = new UnsignedBigIntegerBinarySerializer();
+            var deserializer = new UnsignedBigIntegerBinaryDeserializer();
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 var number = BigInteger.One;
                 number *= rng.Next();
@@ -25,8 +25,8 @@ namespace TIKSN.Serialization.Numerics.Tests
                 var bytes = serializer.Serialize(number);
                 var recovered = deserializer.Deserialize(bytes);
                 var recoveredBytes = serializer.Serialize(recovered);
-                recovered.Should().Be(number);
-                recoveredBytes.Should().BeEquivalentTo(bytes);
+                _ = recovered.Should().Be(number);
+                _ = recoveredBytes.Should().BeEquivalentTo(bytes);
             }
         }
     }

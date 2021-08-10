@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using TIKSN.Configuration.Validator;
 
 namespace TIKSN.Analytics.Logging.NLog
@@ -12,23 +12,10 @@ namespace TIKSN.Analytics.Logging.NLog
                 .Must(IsProperScheme)
                 .When(instance => instance.Url != null);
 
-        private static bool IsProperScheme(string scheme)
+        private static bool IsProperScheme(string scheme) => scheme.ToLowerInvariant() switch
         {
-            switch (scheme.ToLowerInvariant())
-            {
-                case "tcp":
-                case "tcp4":
-                case "tcp6":
-                case "udp":
-                case "udp4":
-                case "udp6":
-                case "http":
-                case "https":
-                    return true;
-
-                default:
-                    return false;
-            }
-        }
+            "tcp" or "tcp4" or "tcp6" or "udp" or "udp4" or "udp6" or "http" or "https" => true,
+            _ => false,
+        };
     }
 }

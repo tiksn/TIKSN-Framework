@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace TIKSN.Finance
 {
@@ -21,7 +21,7 @@ namespace TIKSN.Finance
 
         public bool Equals(CurrencyPair that)
         {
-            if (ReferenceEquals(that, null))
+            if (that is null)
             {
                 return false;
             }
@@ -40,7 +40,7 @@ namespace TIKSN.Finance
 
         public override bool Equals(object that)
         {
-            if (ReferenceEquals(that, null))
+            if (that is null)
             {
                 return false;
             }
@@ -50,9 +50,8 @@ namespace TIKSN.Finance
                 return true;
             }
 
-            var another = that as CurrencyPair;
 
-            if (ReferenceEquals(another, null))
+            if (that is not CurrencyPair another)
             {
                 return false;
             }
@@ -68,9 +67,9 @@ namespace TIKSN.Finance
 
         private static bool Equals(CurrencyPair pair1, CurrencyPair pair2)
         {
-            if (ReferenceEquals(pair1, null))
+            if (pair1 is null)
             {
-                return ReferenceEquals(pair2, null);
+                return pair2 is null;
             }
 
             return pair1.Equals(pair2);

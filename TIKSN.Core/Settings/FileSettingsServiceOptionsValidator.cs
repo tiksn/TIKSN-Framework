@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using TIKSN.Configuration.Validator;
 
 namespace TIKSN.Settings

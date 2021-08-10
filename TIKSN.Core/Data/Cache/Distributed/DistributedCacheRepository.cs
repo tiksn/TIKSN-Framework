@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,9 +26,9 @@ namespace TIKSN.Data.Cache.Distributed
 
         public async Task AddAsync(TEntity entity, CancellationToken cancellationToken)
         {
-            await this.SetToDistributedCacheAsync(this.CreateEntryCacheKey(entity.ID), entity, cancellationToken);
+            await this.SetToDistributedCacheAsync(this.CreateEntryCacheKey(entity.ID), entity, cancellationToken).ConfigureAwait(false);
 
-            this._cachedIdentities.Add(entity.ID);
+            _ = this._cachedIdentities.Add(entity.ID);
         }
 
         public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken) =>
@@ -36,9 +36,9 @@ namespace TIKSN.Data.Cache.Distributed
 
         public async Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)
         {
-            await this._distributedCache.RemoveAsync(this.CreateEntryCacheKey(entity.ID), cancellationToken);
+            await this._distributedCache.RemoveAsync(this.CreateEntryCacheKey(entity.ID), cancellationToken).ConfigureAwait(false);
 
-            this._cachedIdentities.Remove(entity.ID);
+            _ = this._cachedIdentities.Remove(entity.ID);
         }
 
         public Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken) =>

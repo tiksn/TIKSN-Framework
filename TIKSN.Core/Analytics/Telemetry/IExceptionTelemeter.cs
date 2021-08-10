@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 
 namespace TIKSN.Analytics.Telemetry
 {
     public interface IExceptionTelemeter
     {
-        Task TrackException(Exception exception);
+        Task TrackExceptionAsync(Exception exception);
 
-        Task TrackException(Exception exception, TelemetrySeverityLevel severityLevel);
+        Task TrackExceptionAsync(Exception exception, TelemetrySeverityLevel severityLevel);
     }
 }

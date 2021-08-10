@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -15,7 +15,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
     public class SwissNationalBank : ICurrencyConverter, IExchangeRatesProvider
     {
         private static readonly CurrencyInfo SwissFranc;
-        private static readonly string RSSURL = "https://www.snb.ch/selector/en/mmr/exfeed/rss";
+        private const string RSSURL = "https://www.snb.ch/selector/en/mmr/exfeed/rss";
         private readonly ICurrencyFactory _currencyFactory;
         private readonly ITimeProvider _timeProvider;
         private readonly Dictionary<CurrencyInfo, Tuple<DateTimeOffset, decimal>> foreignRates;
@@ -37,7 +37,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
             DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            await this.FetchOnDemandAsync(cancellationToken);
+            await this.FetchOnDemandAsync(cancellationToken).ConfigureAwait(false);
 
             var rate = this.GetRate(baseMoney.Currency, counterCurrency, asOn);
 
@@ -47,7 +47,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            await this.FetchOnDemandAsync(cancellationToken);
+            await this.FetchOnDemandAsync(cancellationToken).ConfigureAwait(false);
 
             var pairs = new List<CurrencyPair>();
 
@@ -65,7 +65,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            await this.FetchOnDemandAsync(cancellationToken);
+            await this.FetchOnDemandAsync(cancellationToken).ConfigureAwait(false);
 
             return this.GetRate(pair.BaseCurrency, pair.CounterCurrency, asOn);
         }
@@ -77,7 +77,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
             using (var httpClient = new HttpClient())
             {
-                var responseStream = await httpClient.GetStreamAsync(RSSURL);
+                var responseStream = await httpClient.GetStreamAsync(RSSURL).ConfigureAwait(false);
 
                 var xdoc = XDocument.Load(responseStream);
 
@@ -119,11 +119,11 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             if (this.foreignRates.Count == 0)
             {
-                await this.GetExchangeRatesAsync(this._timeProvider.GetCurrentTime(), cancellationToken);
+                _ = await this.GetExchangeRatesAsync(this._timeProvider.GetCurrentTime(), cancellationToken).ConfigureAwait(false);
             }
             else if (this.foreignRates.Any(R => R.Value.Item1.Date == this._timeProvider.GetCurrentTime().Date))
             {
-                await this.GetExchangeRatesAsync(this._timeProvider.GetCurrentTime(), cancellationToken);
+                _ = await this.GetExchangeRatesAsync(this._timeProvider.GetCurrentTime(), cancellationToken).ConfigureAwait(false);
             }
         }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -47,7 +47,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
-            var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken);
+            var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
 
             return new Money(counterCurrency, rate * baseMoney.Amount);
         }
@@ -55,7 +55,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            await this.FetchOnDemandAsync(cancellationToken);
+            await this.FetchOnDemandAsync(cancellationToken).ConfigureAwait(false);
 
             this.VerifyDate(asOn);
 
@@ -70,7 +70,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            await this.FetchOnDemandAsync(cancellationToken);
+            await this.FetchOnDemandAsync(cancellationToken).ConfigureAwait(false);
 
             this.VerifyDate(asOn);
 
@@ -99,7 +99,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
             using (var httpClient = new HttpClient())
             {
-                var responseStream = await httpClient.GetStreamAsync(RSS);
+                var responseStream = await httpClient.GetStreamAsync(RSS).ConfigureAwait(false);
 
                 var xdoc = XDocument.Load(responseStream);
 
@@ -152,7 +152,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             if (this._timeProvider.GetCurrentTime() - this.lastFetchDate > TimeSpan.FromDays(1d))
             {
-                await this.GetExchangeRatesAsync(this._timeProvider.GetCurrentTime(), cancellationToken);
+                _ = await this.GetExchangeRatesAsync(this._timeProvider.GetCurrentTime(), cancellationToken).ConfigureAwait(false);
             }
         }
 

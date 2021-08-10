@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
 namespace TIKSN.Network
 {
-    public abstract class NetworkConnectivityServiceBase : INetworkConnectivityService
+    public abstract class NetworkConnectivityServiceBase : INetworkConnectivityService, IDisposable
     {
         private readonly Subject<InternetConnectivityState> manualChecks;
         protected IObservable<InternetConnectivityState> internetConnectivityStateInternal;
@@ -31,5 +31,7 @@ namespace TIKSN.Network
 
             return result;
         }
+
+        public void Dispose() => throw new NotImplementedException();
     }
 }

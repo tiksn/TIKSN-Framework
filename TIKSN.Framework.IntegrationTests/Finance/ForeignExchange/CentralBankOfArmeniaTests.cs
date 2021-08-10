@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Globalization;
 using TIKSN.Time;
@@ -19,43 +19,43 @@ namespace TIKSN.Finance.ForeignExchange.Tests
         public CentralBankOfArmeniaTests()
         {
             var services = new ServiceCollection();
-            services.AddMemoryCache();
-            services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
-            services.AddSingleton<IRegionFactory, RegionFactory>();
-            services.AddSingleton<ITimeProvider, TimeProvider>();
+            _ = services.AddMemoryCache();
+            _ = services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
+            _ = services.AddSingleton<IRegionFactory, RegionFactory>();
+            _ = services.AddSingleton<ITimeProvider, TimeProvider>();
 
             var serviceProvider = services.BuildServiceProvider();
-            _currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
-            _timeProvider = serviceProvider.GetRequiredService<ITimeProvider>();
+            this._currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+            this._timeProvider = serviceProvider.GetRequiredService<ITimeProvider>();
         }
 
         [Fact]
-        public async Task ConversionDirection001()
+        public async Task ConversionDirection001Async()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
+            var Bank = new CentralBankOfArmenia(this._currencyFactory, this._timeProvider);
 
             var ArmenianDram = new CurrencyInfo(new RegionInfo("AM"));
             var PoundSterling = new CurrencyInfo(new RegionInfo("GB"));
 
             var BeforeInPound = new Money(PoundSterling, 100m);
 
-            var AfterInDram = await Bank.ConvertCurrencyAsync(BeforeInPound, ArmenianDram, DateTime.Now, default);
+            var AfterInDram = await Bank.ConvertCurrencyAsync(BeforeInPound, ArmenianDram, DateTime.Now, default).ConfigureAwait(true);
 
             Assert.True(BeforeInPound.Amount < AfterInDram.Amount);
         }
 
         [Fact]
-        public async Task ConvertCurrency001()
+        public async Task ConvertCurrency001Async()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
+            var Bank = new CentralBankOfArmenia(this._currencyFactory, this._timeProvider);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default).ConfigureAwait(true);
 
             foreach (var pair in CurrencyPairs)
             {
-                Money Initial = new Money(pair.BaseCurrency, 10m);
-                decimal rate = await Bank.GetExchangeRateAsync(pair, DateTime.Now, default);
-                Money Result = await Bank.ConvertCurrencyAsync(Initial, pair.CounterCurrency, DateTime.Now, default);
+                var Initial = new Money(pair.BaseCurrency, 10m);
+                var rate = await Bank.GetExchangeRateAsync(pair, DateTime.Now, default).ConfigureAwait(true);
+                var Result = await Bank.ConvertCurrencyAsync(Initial, pair.CounterCurrency, DateTime.Now, default).ConfigureAwait(true);
 
                 Assert.True(Result.Currency == pair.CounterCurrency);
                 Assert.True(Result.Amount > 0m);
@@ -64,72 +64,72 @@ namespace TIKSN.Finance.ForeignExchange.Tests
         }
 
         [Fact]
-        public async Task ConvertCurrency002()
+        public async Task ConvertCurrency002Async()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
+            var Bank = new CentralBankOfArmenia(this._currencyFactory, this._timeProvider);
 
-            RegionInfo UnitedStates = new RegionInfo("US");
-            RegionInfo Armenia = new RegionInfo("AM");
+            var UnitedStates = new RegionInfo("US");
+            var Armenia = new RegionInfo("AM");
 
-            CurrencyInfo Dollar = new CurrencyInfo(UnitedStates);
-            CurrencyInfo Dram = new CurrencyInfo(Armenia);
+            var Dollar = new CurrencyInfo(UnitedStates);
+            var Dram = new CurrencyInfo(Armenia);
 
-            Money Before = new Money(Dollar, 100m);
+            var Before = new Money(Dollar, 100m);
 
-            await
+            _ = await
                     Assert.ThrowsAsync<ArgumentException>(
                         async () =>
-                            await Bank.ConvertCurrencyAsync(Before, Dram, DateTime.Now.AddDays(1d), default));
+                            await Bank.ConvertCurrencyAsync(Before, Dram, DateTime.Now.AddDays(1d), default).ConfigureAwait(true)).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task ConvertCurrency003()
+        public async Task ConvertCurrency003Async()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
+            var Bank = new CentralBankOfArmenia(this._currencyFactory, this._timeProvider);
 
-            RegionInfo UnitedStates = new RegionInfo("US");
-            RegionInfo Armenia = new RegionInfo("AM");
+            var UnitedStates = new RegionInfo("US");
+            var Armenia = new RegionInfo("AM");
 
-            CurrencyInfo Dollar = new CurrencyInfo(UnitedStates);
-            CurrencyInfo Dram = new CurrencyInfo(Armenia);
+            var Dollar = new CurrencyInfo(UnitedStates);
+            var Dram = new CurrencyInfo(Armenia);
 
-            Money Before = new Money(Dollar, 100m);
+            var Before = new Money(Dollar, 100m);
 
-            await
+            _ = await
                 Assert.ThrowsAsync<ArgumentException>(
                     async () =>
-                        await Bank.ConvertCurrencyAsync(Before, Dram, DateTime.Now.AddMinutes(1d), default));
+                        await Bank.ConvertCurrencyAsync(Before, Dram, DateTime.Now.AddMinutes(1d), default).ConfigureAwait(true)).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task ConvertCurrency004()
+        public async Task ConvertCurrency004Async()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
+            var Bank = new CentralBankOfArmenia(this._currencyFactory, this._timeProvider);
 
-            RegionInfo UnitedStates = new RegionInfo("US");
-            RegionInfo Armenia = new RegionInfo("AM");
+            var UnitedStates = new RegionInfo("US");
+            var Armenia = new RegionInfo("AM");
 
-            CurrencyInfo Dollar = new CurrencyInfo(UnitedStates);
-            CurrencyInfo Dram = new CurrencyInfo(Armenia);
+            var Dollar = new CurrencyInfo(UnitedStates);
+            var Dram = new CurrencyInfo(Armenia);
 
-            Money Before = new Money(Dollar, 100m);
+            var Before = new Money(Dollar, 100m);
 
-            await
+            _ = await
                 Assert.ThrowsAsync<ArgumentException>(
                     async () =>
-                        await Bank.ConvertCurrencyAsync(Before, Dram, DateTime.Now.AddDays(-20d), default));
+                        await Bank.ConvertCurrencyAsync(Before, Dram, DateTime.Now.AddDays(-20d), default).ConfigureAwait(true)).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task Fetch001()
+        public async Task Fetch001Async()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
+            var Bank = new CentralBankOfArmenia(this._currencyFactory, this._timeProvider);
 
-            await Bank.GetExchangeRatesAsync(DateTimeOffset.Now, default);
+            _ = await Bank.GetExchangeRatesAsync(DateTimeOffset.Now, default).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task Fetch002()
+        public async Task Fetch002Async()
         {
             var passed = false;
 
@@ -141,37 +141,37 @@ namespace TIKSN.Finance.ForeignExchange.Tests
                 Thread.CurrentThread.CurrentCulture = ci;
                 Thread.CurrentThread.CurrentUICulture = ci;
 
-                var bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
+                var bank = new CentralBankOfArmenia(this._currencyFactory, this._timeProvider);
 
-                await bank.GetExchangeRatesAsync(_timeProvider.GetCurrentTime(), default);
+                _ = await bank.GetExchangeRatesAsync(this._timeProvider.GetCurrentTime(), default).ConfigureAwait(true);
 
                 passed = true;
-            });
+            }).ConfigureAwait(true);
 
-            Assert.Equal(true, passed);
+            Assert.True(passed);
         }
 
         [Fact]
-        public async Task GetCurrencyPairs001()
+        public async Task GetCurrencyPairs001Async()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
+            var Bank = new CentralBankOfArmenia(this._currencyFactory, this._timeProvider);
 
-            System.Collections.Generic.HashSet<CurrencyPair> pairs = new System.Collections.Generic.HashSet<CurrencyPair>();
+            var pairs = new System.Collections.Generic.HashSet<CurrencyPair>();
 
-            foreach (CurrencyPair pair in await Bank.GetCurrencyPairsAsync(DateTime.Now, default))
+            foreach (var pair in await Bank.GetCurrencyPairsAsync(DateTime.Now, default).ConfigureAwait(true))
             {
-                pairs.Add(pair);
+                _ = pairs.Add(pair);
             }
 
-            Assert.True(pairs.Count == (await Bank.GetCurrencyPairsAsync(DateTime.Now, default)).Count());
+            Assert.True(pairs.Count == (await Bank.GetCurrencyPairsAsync(DateTime.Now, default).ConfigureAwait(true)).Count());
         }
 
         [Fact]
-        public async Task GetCurrencyPairs002()
+        public async Task GetCurrencyPairs002Async()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
+            var Bank = new CentralBankOfArmenia(this._currencyFactory, this._timeProvider);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default).ConfigureAwait(true);
 
             Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "USD" && C.CounterCurrency.ISOCurrencySymbol == "AMD");
             Assert.Contains(CurrencyPairs, C => C.BaseCurrency.ISOCurrencySymbol == "AMD" && C.CounterCurrency.ISOCurrencySymbol == "USD");
@@ -306,141 +306,141 @@ namespace TIKSN.Finance.ForeignExchange.Tests
         }
 
         [Fact]
-        public async Task GetCurrencyPairs003()
+        public async Task GetCurrencyPairs003Async()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
+            var Bank = new CentralBankOfArmenia(this._currencyFactory, this._timeProvider);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default).ConfigureAwait(true);
 
-            foreach (CurrencyPair pair in CurrencyPairs)
+            foreach (var pair in CurrencyPairs)
             {
-                CurrencyPair reverse = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
+                var reverse = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
 
                 Assert.Contains(CurrencyPairs, C => C == reverse);
             }
         }
 
         [Fact]
-        public async Task GetExchangeRate001()
+        public async Task GetExchangeRate001Async()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
+            var Bank = new CentralBankOfArmenia(this._currencyFactory, this._timeProvider);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default).ConfigureAwait(true);
 
-            foreach (CurrencyPair pair in CurrencyPairs)
+            foreach (var pair in CurrencyPairs)
             {
-                Assert.True(await Bank.GetExchangeRateAsync(pair, DateTime.Now, default) > decimal.Zero);
+                Assert.True(await Bank.GetExchangeRateAsync(pair, DateTime.Now, default).ConfigureAwait(true) > decimal.Zero);
             }
         }
 
         [Fact]
-        public async Task GetExchangeRate002()
+        public async Task GetExchangeRate002Async()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
+            var Bank = new CentralBankOfArmenia(this._currencyFactory, this._timeProvider);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default).ConfigureAwait(true);
 
-            foreach (CurrencyPair pair in CurrencyPairs)
+            foreach (var pair in CurrencyPairs)
             {
-                CurrencyPair reversePair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
+                var reversePair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
 
-                Assert.Equal<decimal>(decimal.One, System.Math.Round(await Bank.GetExchangeRateAsync(pair, DateTime.Now, default) * await Bank.GetExchangeRateAsync(reversePair, DateTime.Now, default), 5));
+                Assert.Equal(decimal.One, Math.Round(await Bank.GetExchangeRateAsync(pair, DateTime.Now, default).ConfigureAwait(true) * await Bank.GetExchangeRateAsync(reversePair, DateTime.Now, default).ConfigureAwait(true), 5));
             }
         }
 
         [Fact]
-        public async Task GetExchangeRate003()
+        public async Task GetExchangeRate003Async()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
+            var Bank = new CentralBankOfArmenia(this._currencyFactory, this._timeProvider);
 
-            RegionInfo UnitedStates = new RegionInfo("US");
-            RegionInfo Armenia = new RegionInfo("AM");
+            var UnitedStates = new RegionInfo("US");
+            var Armenia = new RegionInfo("AM");
 
-            CurrencyInfo Dollar = new CurrencyInfo(UnitedStates);
-            CurrencyInfo Dram = new CurrencyInfo(Armenia);
+            var Dollar = new CurrencyInfo(UnitedStates);
+            var Dram = new CurrencyInfo(Armenia);
 
-            CurrencyPair DollarPerDram = new CurrencyPair(Dollar, Dram);
+            var DollarPerDram = new CurrencyPair(Dollar, Dram);
 
-            await
+            _ = await
                 Assert.ThrowsAsync<ArgumentException>(
                     async () =>
-                        await Bank.GetExchangeRateAsync(DollarPerDram, DateTime.Now.AddDays(1d), default));
+                        await Bank.GetExchangeRateAsync(DollarPerDram, DateTime.Now.AddDays(1d), default).ConfigureAwait(true)).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task GetExchangeRate004()
+        public async Task GetExchangeRate004Async()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
+            var Bank = new CentralBankOfArmenia(this._currencyFactory, this._timeProvider);
 
-            RegionInfo UnitedStates = new RegionInfo("US");
-            RegionInfo Armenia = new RegionInfo("AM");
+            var UnitedStates = new RegionInfo("US");
+            var Armenia = new RegionInfo("AM");
 
-            CurrencyInfo Dollar = new CurrencyInfo(UnitedStates);
-            CurrencyInfo Dram = new CurrencyInfo(Armenia);
+            var Dollar = new CurrencyInfo(UnitedStates);
+            var Dram = new CurrencyInfo(Armenia);
 
-            CurrencyPair DollarPerDram = new CurrencyPair(Dollar, Dram);
+            var DollarPerDram = new CurrencyPair(Dollar, Dram);
 
-            await
+            _ = await
                 Assert.ThrowsAsync<ArgumentException>(
                     async () =>
-                        await Bank.GetExchangeRateAsync(DollarPerDram, DateTime.Now.AddDays(-20d), default));
+                        await Bank.GetExchangeRateAsync(DollarPerDram, DateTime.Now.AddDays(-20d), default).ConfigureAwait(true)).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task GetExchangeRate005()
+        public async Task GetExchangeRate005Async()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
+            var Bank = new CentralBankOfArmenia(this._currencyFactory, this._timeProvider);
 
-            RegionInfo UnitedStates = new RegionInfo("US");
-            RegionInfo Armenia = new RegionInfo("AM");
+            var UnitedStates = new RegionInfo("US");
+            var Armenia = new RegionInfo("AM");
 
-            CurrencyInfo Dollar = new CurrencyInfo(UnitedStates);
-            CurrencyInfo Dram = new CurrencyInfo(Armenia);
+            var Dollar = new CurrencyInfo(UnitedStates);
+            var Dram = new CurrencyInfo(Armenia);
 
-            CurrencyPair DollarPerDram = new CurrencyPair(Dollar, Dram);
+            var DollarPerDram = new CurrencyPair(Dollar, Dram);
 
-            await
+            _ = await
                 Assert.ThrowsAsync<ArgumentException>(
                     async () =>
-                        await Bank.GetExchangeRateAsync(DollarPerDram, DateTime.Now.AddMinutes(1d), default));
+                        await Bank.GetExchangeRateAsync(DollarPerDram, DateTime.Now.AddMinutes(1d), default).ConfigureAwait(true)).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task GetExchangeRate006()
+        public async Task GetExchangeRate006Async()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
+            var Bank = new CentralBankOfArmenia(this._currencyFactory, this._timeProvider);
 
-            RegionInfo Albania = new RegionInfo("AL");
-            RegionInfo Armenia = new RegionInfo("AM");
+            var Albania = new RegionInfo("AL");
+            var Armenia = new RegionInfo("AM");
 
-            CurrencyInfo Lek = new CurrencyInfo(Albania);
-            CurrencyInfo Dram = new CurrencyInfo(Armenia);
+            var Lek = new CurrencyInfo(Albania);
+            var Dram = new CurrencyInfo(Armenia);
 
-            CurrencyPair LekPerDram = new CurrencyPair(Lek, Dram);
+            var LekPerDram = new CurrencyPair(Lek, Dram);
 
-            await
+            _ = await
                 Assert.ThrowsAsync<ArgumentException>(
                     async () =>
-                        await Bank.GetExchangeRateAsync(LekPerDram, DateTime.Now, default));
+                        await Bank.GetExchangeRateAsync(LekPerDram, DateTime.Now, default).ConfigureAwait(true)).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task GetExchangeRate007()
+        public async Task GetExchangeRate007Async()
         {
-            var Bank = new CentralBankOfArmenia(_currencyFactory, _timeProvider);
+            var Bank = new CentralBankOfArmenia(this._currencyFactory, this._timeProvider);
 
-            RegionInfo Albania = new RegionInfo("AL");
-            RegionInfo Armenia = new RegionInfo("AM");
+            var Albania = new RegionInfo("AL");
+            var Armenia = new RegionInfo("AM");
 
-            CurrencyInfo Lek = new CurrencyInfo(Albania);
-            CurrencyInfo Dram = new CurrencyInfo(Armenia);
+            var Lek = new CurrencyInfo(Albania);
+            var Dram = new CurrencyInfo(Armenia);
 
-            CurrencyPair DramPerLek = new CurrencyPair(Dram, Lek);
+            var DramPerLek = new CurrencyPair(Dram, Lek);
 
-            await
+            _ = await
                 Assert.ThrowsAsync<ArgumentException>(
                     async () =>
-                        await Bank.GetExchangeRateAsync(DramPerLek, DateTime.Now, default));
+                        await Bank.GetExchangeRateAsync(DramPerLek, DateTime.Now, default).ConfigureAwait(true)).ConfigureAwait(true);
         }
     }
 }

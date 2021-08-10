@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
@@ -56,12 +56,12 @@ namespace TIKSN.Shell
 
         public IDisposable RegisterCancellation(CancellationTokenSource cancellationTokenSource)
         {
-            ConsoleCancelEventHandler consoleCancelEventHandler = (sender, e) =>
+            void consoleCancelEventHandler(object sender, ConsoleCancelEventArgs e)
             {
                 cancellationTokenSource.Cancel();
 
                 e.Cancel = true;
-            };
+            }
 
             Console.CancelKeyPress += consoleCancelEventHandler;
 
@@ -97,7 +97,7 @@ namespace TIKSN.Shell
 
         public void WriteObject<T>(T tableValue)
         {
-            var tableValues = new List<T> {tableValue};
+            var tableValues = new List<T> { tableValue };
             WriteObjects(tableValues, false);
         }
 

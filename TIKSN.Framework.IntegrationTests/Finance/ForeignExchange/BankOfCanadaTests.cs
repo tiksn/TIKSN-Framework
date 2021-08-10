@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Globalization;
 using TIKSN.Time;
@@ -19,26 +19,26 @@ namespace TIKSN.Finance.ForeignExchange.Tests
         public BankOfCanadaTests()
         {
             var services = new ServiceCollection();
-            services.AddMemoryCache();
-            services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
-            services.AddSingleton<IRegionFactory, RegionFactory>();
-            services.AddSingleton<ITimeProvider, TimeProvider>();
+            _ = services.AddMemoryCache();
+            _ = services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
+            _ = services.AddSingleton<IRegionFactory, RegionFactory>();
+            _ = services.AddSingleton<ITimeProvider, TimeProvider>();
 
             var serviceProvider = services.BuildServiceProvider();
-            _currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
-            _timeProvider = serviceProvider.GetRequiredService<ITimeProvider>();
+            this._currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+            this._timeProvider = serviceProvider.GetRequiredService<ITimeProvider>();
         }
 
         [Fact]
-        public async Task Calculate001()
+        public async Task Calculate001Async()
         {
-            var bank = new BankOfCanada(_currencyFactory, _timeProvider);
+            var bank = new BankOfCanada(this._currencyFactory, this._timeProvider);
 
-            foreach (var pair in await bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default))
+            foreach (var pair in await bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true))
             {
-                Money Before = new Money(pair.BaseCurrency, 10m);
-                decimal rate = await bank.GetExchangeRateAsync(pair, DateTimeOffset.Now, default);
-                Money After = await bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now, default);
+                var Before = new Money(pair.BaseCurrency, 10m);
+                var rate = await bank.GetExchangeRateAsync(pair, DateTimeOffset.Now, default).ConfigureAwait(true);
+                var After = await bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now, default).ConfigureAwait(true);
 
                 Assert.True(After.Amount == rate * Before.Amount);
                 Assert.True(After.Currency == pair.CounterCurrency);
@@ -46,68 +46,68 @@ namespace TIKSN.Finance.ForeignExchange.Tests
         }
 
         [Fact]
-        public async Task ConversionDirection001()
+        public async Task ConversionDirection001Async()
         {
-            var Bank = new BankOfCanada(_currencyFactory, _timeProvider);
+            var Bank = new BankOfCanada(this._currencyFactory, this._timeProvider);
 
             var CanadianDollar = new CurrencyInfo(new RegionInfo("CA"));
             var PoundSterling = new CurrencyInfo(new RegionInfo("GB"));
 
             var BeforeInPound = new Money(PoundSterling, 100m);
 
-            var AfterInDollar = await Bank.ConvertCurrencyAsync(BeforeInPound, CanadianDollar, DateTimeOffset.Now, default);
+            var AfterInDollar = await Bank.ConvertCurrencyAsync(BeforeInPound, CanadianDollar, DateTimeOffset.Now, default).ConfigureAwait(true);
 
             Assert.True(BeforeInPound.Amount < AfterInDollar.Amount);
         }
 
         [Fact]
-        public async Task ConvertCurrency001()
+        public async Task ConvertCurrency001Async()
         {
-            BankOfCanada Bank = new BankOfCanada(_currencyFactory, _timeProvider);
+            var Bank = new BankOfCanada(this._currencyFactory, this._timeProvider);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true);
 
-            foreach (CurrencyPair pair in CurrencyPairs)
+            foreach (var pair in CurrencyPairs)
             {
-                Money Before = new Money(pair.BaseCurrency, decimal.One);
+                var Before = new Money(pair.BaseCurrency, decimal.One);
 
-                Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now, default);
+                var After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now, default).ConfigureAwait(true);
 
                 Assert.True(After.Amount > decimal.Zero);
             }
         }
 
         [Fact]
-        public async Task ConvertCurrency002()
+        public async Task ConvertCurrency002Async()
         {
-            BankOfCanada Bank = new BankOfCanada(_currencyFactory, _timeProvider);
+            var Bank = new BankOfCanada(this._currencyFactory, this._timeProvider);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true);
 
-            foreach (CurrencyPair pair in CurrencyPairs)
+            foreach (var pair in CurrencyPairs)
             {
-                Money Before = new Money(pair.BaseCurrency, decimal.One);
+                var Before = new Money(pair.BaseCurrency, decimal.One);
 
-                Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now, default);
+                var After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now, default).ConfigureAwait(true);
 
                 Assert.True(After.Currency == pair.CounterCurrency);
             }
         }
 
         [Fact]
-        public async Task ConvertCurrency003()
+        public async Task ConvertCurrency003Async()
         {
-            BankOfCanada Bank = new BankOfCanada(_currencyFactory, _timeProvider);
+            var Bank = new BankOfCanada(this._currencyFactory, this._timeProvider);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true);
 
-            foreach (CurrencyPair pair in CurrencyPairs)
+            foreach (var pair in CurrencyPairs)
             {
-                Money Before = new Money(pair.BaseCurrency, 10m);
+                var Before = new Money(pair.BaseCurrency, 10m);
 
-                Money After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now, default);
+                var After = await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTimeOffset.Now, default).ConfigureAwait(true);
 
-                decimal rate = await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now, default);
+                var rate = await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now, default).ConfigureAwait(true);
 
                 Assert.True(After.Currency == pair.CounterCurrency);
                 Assert.True(After.Amount == rate * Before.Amount);
@@ -115,45 +115,45 @@ namespace TIKSN.Finance.ForeignExchange.Tests
         }
 
         [Fact]
-        public async Task ConvertCurrency004()
+        public async Task ConvertCurrency004Async()
         {
-            BankOfCanada Bank = new BankOfCanada(_currencyFactory, _timeProvider);
+            var Bank = new BankOfCanada(this._currencyFactory, this._timeProvider);
 
-            RegionInfo US = new RegionInfo("US");
-            RegionInfo CA = new RegionInfo("CA");
+            var US = new RegionInfo("US");
+            var CA = new RegionInfo("CA");
 
-            CurrencyInfo USD = new CurrencyInfo(US);
-            CurrencyInfo CAD = new CurrencyInfo(CA);
+            var USD = new CurrencyInfo(US);
+            var CAD = new CurrencyInfo(CA);
 
-            Money Before = new Money(USD, 100m);
+            var Before = new Money(USD, 100m);
 
-            await Assert.ThrowsAsync<ArgumentException>(
-                async () => await Bank.ConvertCurrencyAsync(Before, CAD, DateTimeOffset.Now.AddMinutes(1d), default));
+            _ = await Assert.ThrowsAsync<ArgumentException>(
+                async () => await Bank.ConvertCurrencyAsync(Before, CAD, DateTimeOffset.Now.AddMinutes(1d), default).ConfigureAwait(true)).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task ConvertCurrency006()
+        public async Task ConvertCurrency006Async()
         {
-            BankOfCanada Bank = new BankOfCanada(_currencyFactory, _timeProvider);
+            var Bank = new BankOfCanada(this._currencyFactory, this._timeProvider);
 
-            RegionInfo AO = new RegionInfo("AO");
-            RegionInfo BW = new RegionInfo("BW");
+            var AO = new RegionInfo("AO");
+            var BW = new RegionInfo("BW");
 
-            CurrencyInfo AOA = new CurrencyInfo(AO);
-            CurrencyInfo BWP = new CurrencyInfo(BW);
+            var AOA = new CurrencyInfo(AO);
+            var BWP = new CurrencyInfo(BW);
 
-            Money Before = new Money(AOA, 100m);
+            var Before = new Money(AOA, 100m);
 
-            await Assert.ThrowsAsync<ArgumentException>(
-                async () => await Bank.ConvertCurrencyAsync(Before, BWP, DateTimeOffset.Now, default));
+            _ = await Assert.ThrowsAsync<ArgumentException>(
+                async () => await Bank.ConvertCurrencyAsync(Before, BWP, DateTimeOffset.Now, default).ConfigureAwait(true)).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task CurrencyPairs001()
+        public async Task CurrencyPairs001Async()
         {
-            BankOfCanada Bank = new BankOfCanada(_currencyFactory, _timeProvider);
+            var Bank = new BankOfCanada(this._currencyFactory, this._timeProvider);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true);
 
             Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/USD");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/AUD");
@@ -203,101 +203,101 @@ namespace TIKSN.Finance.ForeignExchange.Tests
         }
 
         [Fact]
-        public async Task CurrencyPairs002()
+        public async Task CurrencyPairs002Async()
         {
-            BankOfCanada Bank = new BankOfCanada(_currencyFactory, _timeProvider);
+            var Bank = new BankOfCanada(this._currencyFactory, this._timeProvider);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true);
 
-            foreach (CurrencyPair pair in CurrencyPairs)
+            foreach (var pair in CurrencyPairs)
             {
-                CurrencyPair reversePair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
+                var reversePair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
 
-                Assert.True(CurrencyPairs.Any(C => C == reversePair));
+                Assert.Contains(CurrencyPairs, C => C == reversePair);
             }
         }
 
         [Fact]
-        public async Task CurrencyPairs003()
+        public async Task CurrencyPairs003Async()
         {
-            BankOfCanada Bank = new BankOfCanada(_currencyFactory, _timeProvider);
+            var Bank = new BankOfCanada(this._currencyFactory, this._timeProvider);
 
             var pairSet = new HashSet<CurrencyPair>();
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true);
 
-            foreach (CurrencyPair pair in CurrencyPairs)
+            foreach (var pair in CurrencyPairs)
             {
-                pairSet.Add(pair);
+                _ = pairSet.Add(pair);
             }
 
             Assert.True(pairSet.Count == CurrencyPairs.Count());
         }
 
         [Fact]
-        public async Task CurrencyPairs005()
+        public async Task CurrencyPairs005Async()
         {
-            BankOfCanada Bank = new BankOfCanada(_currencyFactory, _timeProvider);
+            var Bank = new BankOfCanada(this._currencyFactory, this._timeProvider);
 
-            await Assert.ThrowsAsync<ArgumentException>(
-                async () => await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now.AddDays(10), default));
+            _ = await Assert.ThrowsAsync<ArgumentException>(
+                async () => await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now.AddDays(10), default).ConfigureAwait(true)).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task Fetch001()
+        public async Task Fetch001Async()
         {
-            var Bank = new BankOfCanada(_currencyFactory, _timeProvider);
+            var Bank = new BankOfCanada(this._currencyFactory, this._timeProvider);
 
-            await Bank.GetExchangeRatesAsync(DateTimeOffset.Now, default);
+            _ = await Bank.GetExchangeRatesAsync(DateTimeOffset.Now, default).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task GetExchangeRate001()
+        public async Task GetExchangeRate001Async()
         {
-            BankOfCanada Bank = new BankOfCanada(_currencyFactory, _timeProvider);
+            var Bank = new BankOfCanada(this._currencyFactory, this._timeProvider);
 
-            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
+            var CurrencyPairs = await Bank.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true);
 
-            foreach (CurrencyPair pair in CurrencyPairs)
+            foreach (var pair in CurrencyPairs)
             {
-                decimal rate = await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now, default);
+                var rate = await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now, default).ConfigureAwait(true);
 
                 Assert.True(rate > decimal.Zero);
             }
         }
 
         [Fact]
-        public async Task GetExchangeRate002()
+        public async Task GetExchangeRate002Async()
         {
-            BankOfCanada Bank = new BankOfCanada(_currencyFactory, _timeProvider);
+            var Bank = new BankOfCanada(this._currencyFactory, this._timeProvider);
 
-            RegionInfo US = new RegionInfo("US");
-            RegionInfo CA = new RegionInfo("CA");
+            var US = new RegionInfo("US");
+            var CA = new RegionInfo("CA");
 
-            CurrencyInfo USD = new CurrencyInfo(US);
-            CurrencyInfo CAD = new CurrencyInfo(CA);
+            var USD = new CurrencyInfo(US);
+            var CAD = new CurrencyInfo(CA);
 
-            CurrencyPair pair = new CurrencyPair(CAD, USD);
+            var pair = new CurrencyPair(CAD, USD);
 
-            await Assert.ThrowsAsync<ArgumentException>(
-                async () => await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now.AddMinutes(1d), default));
+            _ = await Assert.ThrowsAsync<ArgumentException>(
+                async () => await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now.AddMinutes(1d), default).ConfigureAwait(true)).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task GetExchangeRate004()
+        public async Task GetExchangeRate004Async()
         {
-            BankOfCanada Bank = new BankOfCanada(_currencyFactory, _timeProvider);
+            var Bank = new BankOfCanada(this._currencyFactory, this._timeProvider);
 
-            RegionInfo AO = new RegionInfo("AO");
-            RegionInfo BW = new RegionInfo("BW");
+            var AO = new RegionInfo("AO");
+            var BW = new RegionInfo("BW");
 
-            CurrencyInfo AOA = new CurrencyInfo(AO);
-            CurrencyInfo BWP = new CurrencyInfo(BW);
+            var AOA = new CurrencyInfo(AO);
+            var BWP = new CurrencyInfo(BW);
 
-            CurrencyPair pair = new CurrencyPair(BWP, AOA);
+            var pair = new CurrencyPair(BWP, AOA);
 
-            await Assert.ThrowsAsync<ArgumentException>(
-                async () => await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now, default));
+            _ = await Assert.ThrowsAsync<ArgumentException>(
+                async () => await Bank.GetExchangeRateAsync(pair, DateTimeOffset.Now, default).ConfigureAwait(true)).ConfigureAwait(true);
         }
     }
 }

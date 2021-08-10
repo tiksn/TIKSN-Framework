@@ -1,4 +1,4 @@
-﻿using System.Reactive.Linq;
+using System.Reactive.Linq;
 using Windows.Networking.Connectivity;
 
 namespace TIKSN.Network

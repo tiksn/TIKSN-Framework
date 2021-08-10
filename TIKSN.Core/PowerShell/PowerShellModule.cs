@@ -1,4 +1,4 @@
-﻿using Autofac;
+using Autofac;
 
 namespace TIKSN.PowerShell
 {
@@ -8,7 +8,7 @@ namespace TIKSN.PowerShell
         {
             base.Load(builder);
 
-            builder.RegisterType<CurrentCommandContext>().As<ICurrentCommandStore>().As<ICurrentCommandProvider>()
+            _ = builder.RegisterType<CurrentCommandContext>().As<ICurrentCommandStore>().As<ICurrentCommandProvider>()
                 .InstancePerLifetimeScope();
         }
     }

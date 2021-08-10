@@ -13,11 +13,9 @@ namespace TIKSN.Serialization
                 return default;
             }
 
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(serial)))
-            {
-                var serializer = new XmlSerializer(typeof(T));
-                return (T)serializer.Deserialize(stream);
-            }
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(serial));
+            var serializer = new XmlSerializer(typeof(T));
+            return (T)serializer.Deserialize(stream);
         }
     }
 }

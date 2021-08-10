@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Advertising
+namespace TIKSN.Advertising
 {
     public static class AdProviders
     {
