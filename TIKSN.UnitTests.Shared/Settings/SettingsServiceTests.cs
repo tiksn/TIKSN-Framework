@@ -40,11 +40,11 @@ namespace TIKSN.Settings.Tests
         [Fact]
         public void LocalSettingsGuidTest()
         {
-            var expectedValue = Guid.NewGuid();
+            var expectedValue = Guid.Parse("368c0eb7-0891-4498-ab6b-2bc10a5c9152");
 
             this.settingsService.SetLocalSetting("LocalGuid", expectedValue);
 
-            var actualValue = this.settingsService.GetLocalSetting("LocalGuid", Guid.NewGuid());
+            var actualValue = this.settingsService.GetLocalSetting("LocalGuid", Guid.Parse("853dda84-4b61-4c11-9d79-ea3c4c9d8de1"));
 
             Assert.Equal(expectedValue, actualValue);
 
@@ -91,11 +91,11 @@ namespace TIKSN.Settings.Tests
         [Fact]
         public void RoamingSettingsGuidTest()
         {
-            var expectedValue = Guid.NewGuid();
+            var expectedValue = Guid.Parse("368c0eb7-0891-4498-ab6b-2bc10a5c9152");
 
             this.settingsService.SetRoamingSetting("RoamingGuid", expectedValue);
 
-            var actualValue = this.settingsService.GetRoamingSetting("RoamingGuid", Guid.NewGuid());
+            var actualValue = this.settingsService.GetRoamingSetting("RoamingGuid", Guid.Parse("853dda84-4b61-4c11-9d79-ea3c4c9d8de1"));
 
             Assert.Equal(expectedValue, actualValue);
 
