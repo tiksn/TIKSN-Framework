@@ -33,9 +33,10 @@ namespace TIKSN.Data.CosmosTable
                 throw new ArgumentNullException(nameof(repository));
             }
 
-            var filters = new Dictionary<string, object>();
-
-            filters.Add(fieldName, givenValue);
+            var filters = new Dictionary<string, object>
+            {
+                { fieldName, givenValue }
+            };
 
             return repository.SearchAsync(filters, cancellationToken);
         }
