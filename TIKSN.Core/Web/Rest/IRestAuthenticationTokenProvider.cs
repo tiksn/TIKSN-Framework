@@ -4,6 +4,6 @@ namespace TIKSN.Web.Rest
 {
     public interface IRestAuthenticationTokenProvider
     {
-        Task<string> GetAuthenticationToken(string apiKey);
+        Task<string> GetAuthenticationTokenAsync(string apiKey);
     }
 }
