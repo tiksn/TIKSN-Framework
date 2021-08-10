@@ -8,7 +8,7 @@ namespace TIKSN.DependencyInjection
     {
         public static IServiceCollection AddFrameworkPlatform(this IServiceCollection services)
         {
-            services.AddFrameworkCore();
+            _ = services.AddFrameworkCore();
 
             services.TryAddSingleton<IKnownFolders, KnownFolders>();
 
