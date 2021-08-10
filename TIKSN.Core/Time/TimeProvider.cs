@@ -4,11 +4,10 @@ namespace TIKSN.Time
 {
     public class TimeProvider : ITimeProvider
     {
-        public DateTimeOffset GetCurrentTime()
-        {
+        public DateTimeOffset GetCurrentTime() =>
 #pragma warning disable DateTimeNowAnalyzer // DateTime.Now should not be used.
-            return DateTimeOffset.Now;
+            DateTimeOffset.Now;
 #pragma warning restore DateTimeNowAnalyzer // DateTime.Now should not be used.
-        }
+
     }
 }
