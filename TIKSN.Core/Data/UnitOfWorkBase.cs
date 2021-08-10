@@ -21,7 +21,7 @@ namespace TIKSN.Data
         {
             if (this.IsDirty())
             {
-                await this.DiscardAsync(default);
+                await this.DiscardAsync(default).ConfigureAwait(false);
             }
         }
 
