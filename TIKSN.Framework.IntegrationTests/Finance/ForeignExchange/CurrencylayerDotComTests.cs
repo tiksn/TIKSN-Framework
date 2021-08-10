@@ -26,23 +26,23 @@ namespace TIKSN.Finance.Tests.ForeignExchange
         }
 
         //[Fact]
-        public async Task GetCurrencyPairs001()
+        public async Task GetCurrencyPairs001Async()
         {
             var exchange = new CurrencylayerDotCom(this.currencyFactory, this.timeProvider, this.accessKey);
 
-            var pairs = await exchange.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
+            var pairs = await exchange.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true);
 
             Assert.True(pairs.Count() > 0);
         }
 
         //[Fact]
-        public async Task GetExchangeRateAsync001()
+        public async Task GetExchangeRateAsync001Async()
         {
             var exchange = new CurrencylayerDotCom(this.currencyFactory, this.timeProvider, this.accessKey);
 
             var pair = new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("UAH"));
 
-            var rate = await exchange.GetExchangeRateAsync(pair, DateTimeOffset.Now, default);
+            var rate = await exchange.GetExchangeRateAsync(pair, DateTimeOffset.Now, default).ConfigureAwait(true);
 
             Assert.True(rate > decimal.Zero);
         }
