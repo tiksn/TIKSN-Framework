@@ -24,7 +24,7 @@ namespace TIKSN.Finance
 
         public bool Equals(CurrencyInfo that)
         {
-            if (ReferenceEquals(that, null))
+            if (that is null)
             {
                 return false;
             }
@@ -43,14 +43,13 @@ namespace TIKSN.Finance
                 return true;
             }
 
-            if (ReferenceEquals(that, null))
+            if (that is null)
             {
                 return false;
             }
 
-            var That = that as CurrencyInfo;
 
-            if (ReferenceEquals(That, null))
+            if (that is not CurrencyInfo That)
             {
                 return false;
             }
@@ -69,12 +68,12 @@ namespace TIKSN.Finance
                 return true;
             }
 
-            if (ReferenceEquals(first, null))
+            if (first is null)
             {
                 return false;
             }
 
-            if (ReferenceEquals(second, null))
+            if (second is null)
             {
                 return false;
             }
