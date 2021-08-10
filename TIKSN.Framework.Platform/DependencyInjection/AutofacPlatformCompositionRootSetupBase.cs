@@ -21,9 +21,6 @@ namespace TIKSN.DependencyInjection
             return modules;
         }
 
-        protected override void ConfigureServices(IServiceCollection services)
-        {
-            services.AddFrameworkPlatform();
-        }
+        protected override void ConfigureServices(IServiceCollection services) => services.AddFrameworkPlatform();
     }
 }
