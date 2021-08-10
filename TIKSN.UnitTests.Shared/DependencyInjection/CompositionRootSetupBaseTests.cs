@@ -8,15 +8,9 @@ namespace TIKSN.DependencyInjection.Tests
     {
         private readonly TestCompositionRootSetup _compositionRoot;
 
-        public CompositionRootSetupBaseTests(ITestOutputHelper testOutputHelper)
-        {
-            _compositionRoot = new TestCompositionRootSetup(testOutputHelper, configureOptions: (s, c) => s.Configure<TestOptions>(c));
-        }
+        public CompositionRootSetupBaseTests(ITestOutputHelper testOutputHelper) => this._compositionRoot = new TestCompositionRootSetup(testOutputHelper, configureOptions: (s, c) => s.Configure<TestOptions>(c));
 
         [Fact]
-        public void OptionsValidationForNonParameterLessPropertyType()
-        {
-            _compositionRoot.CreateServiceProvider();
-        }
+        public void OptionsValidationForNonParameterLessPropertyType() => this._compositionRoot.CreateServiceProvider();
     }
 }
