@@ -25,7 +25,7 @@ namespace TIKSN.DependencyInjection
         {
             var serviceProvider = this.CreateServiceProviderInternal();
 
-            this.ValidateOptions(this._services.Value, serviceProvider);
+            ValidateOptions(this._services.Value, serviceProvider);
 
             return serviceProvider;
         }
@@ -45,14 +45,14 @@ namespace TIKSN.DependencyInjection
         protected IServiceCollection CreateServiceCollection()
         {
             var services = this.GetInitialServiceCollection();
-            services.AddFrameworkCore();
-            services.AddLogging(this.ConfigureLoggingBuilder);
+            _ = services.AddFrameworkCore();
+            _ = services.AddLogging(this.ConfigureLoggingBuilder);
 
             this.ConfigureServices(services);
 
             this.ConfigureOptions(services, this._configurationRoot);
 
-            services.AddSingleton(this._configurationRoot);
+            _ = services.AddSingleton(this._configurationRoot);
 
             return services;
         }
@@ -64,7 +64,7 @@ namespace TIKSN.DependencyInjection
 
         protected abstract IEnumerable<ILoggingSetup> GetLoggingSetups();
 
-        protected void ValidateOptions(IServiceCollection services, IServiceProvider serviceProvider)
+        protected static void ValidateOptions(IServiceCollection services, IServiceProvider serviceProvider)
         {
             var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
 
