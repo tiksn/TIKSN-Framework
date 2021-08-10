@@ -22,8 +22,7 @@ namespace TIKSN.Progress
 
         public double PercentComplete { get; }
 
-        public static ProgressReport CreateProgressReportWithPercentage(ProgressReport baseReport,
-            double percentComplete) => new(percentComplete);
+        public static ProgressReport CreateProgressReportWithPercentage(double percentComplete) => new(percentComplete);
     }
 
     //public class ProgressStatus<T> : ProgressStatus
