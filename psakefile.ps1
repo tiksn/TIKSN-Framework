@@ -160,6 +160,11 @@ Task DownloadCurrencyCodes -depends Clean {
     Invoke-WebRequest -Uri 'https://www.currency-iso.org/dam/downloads/lists/list_three.xml' -OutFile 'TIKSN.Core/Finance/Resources/TableA3.xml'
 }
 
+Task Format -depends Restore {
+    $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+    Exec { dotnet format $solution }
+}
+
 Task Restore -depends Clean {
     $solution = Resolve-Path -Path 'TIKSN Framework.sln'
     Exec { dotnet restore $solution }
