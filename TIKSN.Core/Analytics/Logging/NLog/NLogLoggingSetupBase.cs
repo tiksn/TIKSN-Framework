@@ -47,7 +47,7 @@ namespace TIKSN.Analytics.Logging.NLog
                 this.AddForAllLevels(nLogViewerTarget);
             }
 
-            loggingBuilder.AddNLog();
+            _ = loggingBuilder.AddNLog();
             LogManager.Configuration = this._loggingConfiguration;
         }
 
