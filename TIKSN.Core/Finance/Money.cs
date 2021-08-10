@@ -212,9 +212,8 @@ namespace TIKSN.Finance
 
         public static Money Divide(Money left, Money right) => throw new NotImplementedException();
 
-        public static Money Plus(Money item)
-        {
-            throw new NotImplementedException();
-        }
+        public static Money Plus(Money item) => throw new NotImplementedException();
+
+        public static Money Add(Money left, Money right) => throw new NotImplementedException();
     }
 }
