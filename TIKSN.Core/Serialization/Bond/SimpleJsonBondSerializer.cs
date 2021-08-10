@@ -7,16 +7,14 @@ namespace TIKSN.Serialization.Bond
     {
         protected override string SerializeInternal<T>(T obj)
         {
-            using (var output = new StringWriter())
-            {
-                var writer = new SimpleJsonWriter(output);
+            using var output = new StringWriter();
+            var writer = new SimpleJsonWriter(output);
 
-                global::Bond.Serialize.To(writer, obj);
+            global::Bond.Serialize.To(writer, obj);
 
-                writer.Flush();
+            writer.Flush();
 
-                return output.GetStringBuilder().ToString();
-            }
+            return output.GetStringBuilder().ToString();
         }
     }
 }
