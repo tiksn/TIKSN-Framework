@@ -56,12 +56,12 @@ namespace TIKSN.Shell
 
         public IDisposable RegisterCancellation(CancellationTokenSource cancellationTokenSource)
         {
-            ConsoleCancelEventHandler consoleCancelEventHandler = (sender, e) =>
+            void consoleCancelEventHandler(object sender, ConsoleCancelEventArgs e)
             {
                 cancellationTokenSource.Cancel();
 
                 e.Cancel = true;
-            };
+            }
 
             Console.CancelKeyPress += consoleCancelEventHandler;
 
