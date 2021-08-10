@@ -13,6 +13,8 @@ namespace TIKSN.Finance.Tests.ForeignExchange
     [Collection("ServiceProviderCollection")]
     public class CurrencylayerDotComTests
     {
+        const string skip = "API changed, code needs to be adopted";
+
         private readonly string accessKey = "<put your access key here>";
         private readonly ICurrencyFactory currencyFactory;
         private readonly ITimeProvider timeProvider;
@@ -25,7 +27,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
             this.serviceProviderFixture = serviceProviderFixture ?? throw new ArgumentNullException(nameof(serviceProviderFixture));
         }
 
-        //[Fact]
+        [Fact(Skip = skip)]
         public async Task GetCurrencyPairs001Async()
         {
             var exchange = new CurrencylayerDotCom(this.currencyFactory, this.timeProvider, this.accessKey);
@@ -35,7 +37,7 @@ namespace TIKSN.Finance.Tests.ForeignExchange
             Assert.True(pairs.Count() > 0);
         }
 
-        //[Fact]
+        [Fact(Skip = skip)]
         public async Task GetExchangeRateAsync001Async()
         {
             var exchange = new CurrencylayerDotCom(this.currencyFactory, this.timeProvider, this.accessKey);
