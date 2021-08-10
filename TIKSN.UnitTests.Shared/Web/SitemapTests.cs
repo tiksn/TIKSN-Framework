@@ -7,10 +7,10 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Pages001()
         {
-            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
-            Sitemap.Page p2 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
+            var p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
+            var p2 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
 
-            Sitemap map = new Sitemap();
+            var map = new Sitemap();
 
             Assert.True(map.Pages.Add(p1));
             Assert.False(map.Pages.Add(p2));
@@ -19,9 +19,9 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Pages002()
         {
-            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
+            var p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
 
-            Sitemap map = new Sitemap();
+            var map = new Sitemap();
 
             Assert.True(map.Pages.Add(p1));
             Assert.False(map.Pages.Add(p1));
@@ -30,10 +30,10 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Pages003()
         {
-            Sitemap.Page p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
-            Sitemap.Page p2 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now.AddDays(10d), Sitemap.Page.Frequency.Monthly, 0.2);
+            var p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
+            var p2 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now.AddDays(10d), Sitemap.Page.Frequency.Monthly, 0.2);
 
-            Sitemap map = new Sitemap();
+            var map = new Sitemap();
 
             Assert.True(map.Pages.Add(p1));
             Assert.False(map.Pages.Add(p2));
@@ -42,14 +42,14 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Write001()
         {
-            System.Text.StringBuilder sbuilder = new System.Text.StringBuilder();
-            System.Xml.XmlWriter xwriter = System.Xml.XmlWriter.Create(sbuilder);
+            var sbuilder = new System.Text.StringBuilder();
+            var xwriter = System.Xml.XmlWriter.Create(sbuilder);
 
-            Sitemap map = new Sitemap();
+            var map = new Sitemap();
 
             map.Write(xwriter);
 
-            string XmlOutput = sbuilder.ToString();
+            var XmlOutput = sbuilder.ToString();
 
             Assert.Equal(
                 "<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
@@ -60,18 +60,18 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Write002()
         {
-            System.Text.StringBuilder sbuilder = new System.Text.StringBuilder();
-            System.Xml.XmlWriter xwriter = System.Xml.XmlWriter.Create(sbuilder);
+            var sbuilder = new System.Text.StringBuilder();
+            var xwriter = System.Xml.XmlWriter.Create(sbuilder);
 
-            Sitemap map = new Sitemap();
+            var map = new Sitemap();
 
-            map.Pages.Add(new Sitemap.Page(new System.Uri("http://microsoft.com/"), new System.DateTime(2012, 8, 3), Sitemap.Page.Frequency.Daily, 0.2));
-            map.Pages.Add(new Sitemap.Page(new System.Uri("http://microsoft.com/sitemap.aspx"), new System.DateTime(2012, 8, 3), Sitemap.Page.Frequency.Daily, 0.2));
-            map.Pages.Add(new Sitemap.Page(new System.Uri("http://microsoft.com/default.aspx"), new System.DateTime(2012, 4, 5), Sitemap.Page.Frequency.Monthly, 0.8));
+            _ = map.Pages.Add(new Sitemap.Page(new System.Uri("http://microsoft.com/"), new System.DateTime(2012, 8, 3), Sitemap.Page.Frequency.Daily, 0.2));
+            _ = map.Pages.Add(new Sitemap.Page(new System.Uri("http://microsoft.com/sitemap.aspx"), new System.DateTime(2012, 8, 3), Sitemap.Page.Frequency.Daily, 0.2));
+            _ = map.Pages.Add(new Sitemap.Page(new System.Uri("http://microsoft.com/default.aspx"), new System.DateTime(2012, 4, 5), Sitemap.Page.Frequency.Monthly, 0.8));
 
             map.Write(xwriter);
 
-            string XmlOutput = sbuilder.ToString();
+            var XmlOutput = sbuilder.ToString();
 
             Assert.Equal(
                 "<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
