@@ -172,6 +172,11 @@ Task Restore -depends Clean {
 }
 
 Task Clean -depends Init {
+    Get-ChildItem -Directory
+    | Where-Object { -not $_.Name.StartsWith('.') }
+    | ForEach-Object { Get-ChildItem -Path $_ -Recurse -Directory }
+    | Where-Object { ( $_.Name -eq 'bin') -or ( $_.Name -eq 'obj') }
+    | ForEach-Object { Remove-Item -Path $_ -Recurse -Force }
 }
 
 Task Init {
