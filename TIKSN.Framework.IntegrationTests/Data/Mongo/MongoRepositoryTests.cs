@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +20,7 @@ namespace TIKSN.Framework.IntegrationTests.Data.Mongo
             var testRepository = this._serviceProviderFixture.Services.GetRequiredService<ITestMongoRepository>();
 
             var testEntityId = Guid.NewGuid();
-            var testEntity = new TestMongoEntity {ID = testEntityId, Value = Guid.NewGuid()};
+            var testEntity = new TestMongoEntity { ID = testEntityId, Value = Guid.NewGuid() };
 
             await testRepository.AddAsync(testEntity, default);
 

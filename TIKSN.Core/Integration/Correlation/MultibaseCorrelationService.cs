@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.Extensions.Options;
 using Multiformats.Base;
 

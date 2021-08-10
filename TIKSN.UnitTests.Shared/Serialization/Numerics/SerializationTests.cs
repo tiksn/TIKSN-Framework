@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
 using System;
 using System.Numerics;
+using FluentAssertions;
 using Xunit;
 
 namespace TIKSN.Serialization.Numerics.Tests

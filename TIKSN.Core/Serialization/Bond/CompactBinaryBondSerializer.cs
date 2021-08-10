@@ -1,4 +1,4 @@
-﻿using Bond.IO.Safe;
+using Bond.IO.Safe;
 using Bond.Protocols;
 
 namespace TIKSN.Serialization.Bond

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -199,7 +199,7 @@ namespace TIKSN.Finance.ForeignExchange
                 var exchangeRate = await individualProvider.GetExchangeRateAsync(pair.BaseCurrency,
                     pair.CounterCurrency, asOn, cancellationToken);
 
-                await this.SaveExchangeRatesAsync(foreignExchangeID, new[] {exchangeRate}, cancellationToken);
+                await this.SaveExchangeRatesAsync(foreignExchangeID, new[] { exchangeRate }, cancellationToken);
             }
             catch (Exception ex)
             {

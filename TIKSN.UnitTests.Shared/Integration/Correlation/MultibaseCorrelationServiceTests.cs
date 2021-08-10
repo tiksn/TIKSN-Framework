@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
-using Microsoft.Extensions.DependencyInjection;
 using System;
+using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using TIKSN.DependencyInjection;
 using Xunit;
 using Xunit.Abstractions;

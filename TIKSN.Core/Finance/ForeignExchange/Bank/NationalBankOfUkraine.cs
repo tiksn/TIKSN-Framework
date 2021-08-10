@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -19,7 +19,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         private const string WebServiceUrlFormat =
             "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date={0:yyyyMMdd}";
 
-        private static readonly string[] ignoreList = {"___"};
+        private static readonly string[] ignoreList = { "___" };
         private static readonly RegionInfo ukraine;
         private static readonly CultureInfo ukrainianCulture;
         private static readonly CurrencyInfo ukrainianHryvnia;

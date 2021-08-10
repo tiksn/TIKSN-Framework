@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Win32;

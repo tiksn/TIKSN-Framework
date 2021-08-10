@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using MsgPack.Serialization;
 
 namespace TIKSN.Serialization.MessagePack

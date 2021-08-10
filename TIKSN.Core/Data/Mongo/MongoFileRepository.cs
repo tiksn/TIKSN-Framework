@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Bson;
@@ -28,9 +28,9 @@ namespace TIKSN.Data.Mongo
 
             var database = mongoDatabaseProvider.GetDatabase();
 
-            this._bucket = new GridFSBucket<TIdentity>(database, new GridFSBucketOptions {BucketName = bucketName});
+            this._bucket = new GridFSBucket<TIdentity>(database, new GridFSBucketOptions { BucketName = bucketName });
 
-            this._bucketRaw = new GridFSBucket(database, new GridFSBucketOptions {BucketName = bucketName});
+            this._bucketRaw = new GridFSBucket(database, new GridFSBucketOptions { BucketName = bucketName });
         }
 
         public async Task DeleteAsync(string path, CancellationToken cancellationToken)
@@ -85,7 +85,7 @@ namespace TIKSN.Data.Mongo
         public Task UploadAsync(TIdentity id, string path, byte[] content, TMetadata metadata,
             CancellationToken cancellationToken) =>
             this._bucket.UploadFromBytesAsync(id, path, content,
-                new GridFSUploadOptions {Metadata = metadata.ToBsonDocument()}, cancellationToken);
+                new GridFSUploadOptions { Metadata = metadata.ToBsonDocument() }, cancellationToken);
 
         public Task DeleteByIdAsync(TIdentity id, CancellationToken cancellationToken) =>
             this._bucket.DeleteAsync(id, cancellationToken);

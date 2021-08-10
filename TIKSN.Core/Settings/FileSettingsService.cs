@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiteDB;
@@ -59,7 +59,7 @@ namespace TIKSN.Settings
         {
             var fileInfo = fileProvider.GetFileInfo(this._configuration.GetConfiguration().RelativePath);
 
-            var connectionString = new ConnectionString {Filename = fileInfo.PhysicalPath};
+            var connectionString = new ConnectionString { Filename = fileInfo.PhysicalPath };
 
             var db = new LiteDatabase(connectionString);
 

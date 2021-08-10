@@ -1,9 +1,9 @@
-﻿using FluentAssertions;
+using System;
+using System.Linq;
+using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
 using TIKSN.DependencyInjection.Tests;
 using Xunit;
 using Xunit.Abstractions;

@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Advertising
+namespace TIKSN.Advertising
 {
     public class AdDuplexAdUnitBundle : AdUnitBundle
     {

@@ -1,4 +1,4 @@
-﻿using Autofac;
+using Autofac;
 using TIKSN.Advertising;
 using TIKSN.Network;
 using TIKSN.Settings;

@@ -41,7 +41,7 @@ namespace TIKSN.Finance
         public Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            IEnumerable<CurrencyPair> singleItemList = new List<CurrencyPair> {this.CurrencyPair};
+            IEnumerable<CurrencyPair> singleItemList = new List<CurrencyPair> { this.CurrencyPair };
 
             return Task.FromResult(singleItemList);
         }

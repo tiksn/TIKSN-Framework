@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using TIKSN.Finance.Tests;
 using TIKSN.Time;
 using Xunit;

@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Data.RavenDB
+namespace TIKSN.Data.RavenDB
 {
     public class RavenUnitOfWorkFactoryOptions<TUnitOfWork>
         where TUnitOfWork : IUnitOfWork

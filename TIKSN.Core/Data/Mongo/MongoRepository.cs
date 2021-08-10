@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -39,7 +39,7 @@ namespace TIKSN.Data.Mongo
 
         public Task AddOrUpdateAsync(TDocument entity, CancellationToken cancellationToken)
         {
-            var updateOptions = new UpdateOptions {IsUpsert = true};
+            var updateOptions = new UpdateOptions { IsUpsert = true };
 
             Task None()
             {

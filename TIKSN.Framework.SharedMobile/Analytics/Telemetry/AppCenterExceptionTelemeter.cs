@@ -1,6 +1,6 @@
-﻿using Microsoft.AppCenter;
 using System;
 using System.Threading.Tasks;
+using Microsoft.AppCenter;
 
 namespace TIKSN.Analytics.Telemetry
 {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -22,7 +22,7 @@ namespace TIKSN.Framework.IntegrationTests.Data.Mongo
         public async Task TestCreationAndRetrieval()
         {
             var testEntityId = Guid.NewGuid();
-            var testEntity = new TestMongoEntity {ID = testEntityId, Value = Guid.NewGuid()};
+            var testEntity = new TestMongoEntity { ID = testEntityId, Value = Guid.NewGuid() };
             TestMongoEntity retrievedEntity = null;
 
             var mongoUnitOfWorkFactory =
@@ -53,7 +53,7 @@ namespace TIKSN.Framework.IntegrationTests.Data.Mongo
         public async Task TestConcurrentUpdates()
         {
             var testEntityId = Guid.NewGuid();
-            var testEntity = new TestMongoEntity {ID = testEntityId, Value = Guid.NewGuid(), Version = 1};
+            var testEntity = new TestMongoEntity { ID = testEntityId, Value = Guid.NewGuid(), Version = 1 };
             TestMongoEntity retrievedEntity = null;
 
             var mongoUnitOfWorkFactory =

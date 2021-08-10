@@ -1,4 +1,4 @@
-﻿using Autofac;
+using Autofac;
 using TIKSN.Data.Mongo;
 using TIKSN.Serialization;
 using TIKSN.Web.Rest;

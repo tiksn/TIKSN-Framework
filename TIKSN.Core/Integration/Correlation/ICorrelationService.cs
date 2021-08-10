@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Integration.Correlation
+namespace TIKSN.Integration.Correlation
 {
     /// <summary>
     ///     Service for generating and parsing <see cref="CorrelationID" />.

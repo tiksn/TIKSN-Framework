@@ -1,12 +1,12 @@
-﻿using FluentAssertions;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using TIKSN.Data.Cache.Memory;
 using TIKSN.DependencyInjection.Tests;
 using Xunit;

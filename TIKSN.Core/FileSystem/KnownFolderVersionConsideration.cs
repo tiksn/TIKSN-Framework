@@ -1,4 +1,4 @@
-﻿namespace TIKSN.FileSystem
+namespace TIKSN.FileSystem
 {
     public enum KnownFolderVersionConsideration
     {

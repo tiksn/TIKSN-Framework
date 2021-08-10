@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
 {

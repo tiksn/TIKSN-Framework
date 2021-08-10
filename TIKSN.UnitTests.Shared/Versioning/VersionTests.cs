@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
-using NuGet.Versioning;
 using System;
+using FluentAssertions;
+using NuGet.Versioning;
 using Xunit;
 
 namespace TIKSN.Versioning.Tests

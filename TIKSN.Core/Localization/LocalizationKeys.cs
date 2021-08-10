@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Localization
+namespace TIKSN.Localization
 {
     /// <summary>
     ///     Keys to known localization resources

@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Speech
+namespace TIKSN.Speech
 {
     public class TextToSpeechOptions
     {

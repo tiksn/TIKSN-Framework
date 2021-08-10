@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -192,7 +192,7 @@ namespace TIKSN.Shell
         {
             if (command != null)
             {
-                var additionalSeparators = new[] {"-", "_"};
+                var additionalSeparators = new[] { "-", "_" };
 
                 var normalizedParts = command.Split(null)
                     .SelectMany(whitespaceSeparatedPart =>

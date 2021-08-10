@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Shell
+namespace TIKSN.Shell
 {
     public interface IShellCommandContextStore
     {

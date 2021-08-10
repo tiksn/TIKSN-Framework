@@ -1,4 +1,4 @@
-﻿using TIKSN.Serialization;
+using TIKSN.Serialization;
 
 namespace TIKSN.Web.Rest
 {

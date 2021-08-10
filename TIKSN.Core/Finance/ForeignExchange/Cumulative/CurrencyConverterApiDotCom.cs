@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -58,13 +58,13 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
                 var pairs = new List<CurrencyPair>();
 
                 for (var i = 0; i < currencies.Length; i++)
-                for (var j = 0; j < currencies.Length; j++)
-                {
-                    if (i != j)
+                    for (var j = 0; j < currencies.Length; j++)
                     {
-                        pairs.Add(new CurrencyPair(currencies[i], currencies[j]));
+                        if (i != j)
+                        {
+                            pairs.Add(new CurrencyPair(currencies[i], currencies[j]));
+                        }
                     }
-                }
 
                 return pairs;
             }

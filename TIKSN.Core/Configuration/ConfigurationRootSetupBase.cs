@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using TIKSN.Analytics.Logging.NLog;
 using TIKSN.FileSystem;

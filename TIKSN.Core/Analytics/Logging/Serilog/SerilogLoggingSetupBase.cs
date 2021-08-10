@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace TIKSN.Analytics.Logging.Serilog

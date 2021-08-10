@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using TIKSN.Analytics.Logging.Serilog;
 using Xunit.Abstractions;
 

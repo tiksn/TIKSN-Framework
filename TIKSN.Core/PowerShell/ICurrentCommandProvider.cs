@@ -1,4 +1,4 @@
-﻿namespace TIKSN.PowerShell
+namespace TIKSN.PowerShell
 {
     public interface ICurrentCommandProvider
     {

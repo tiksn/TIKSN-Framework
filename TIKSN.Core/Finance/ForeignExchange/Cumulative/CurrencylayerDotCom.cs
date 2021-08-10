@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -128,7 +128,7 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
 
                 var responseJsonString = await response.Content.ReadAsStringAsync();
 
-                var jsonSerializerSettings = new JsonSerializerSettings {Culture = CultureInfo.InvariantCulture};
+                var jsonSerializerSettings = new JsonSerializerSettings { Culture = CultureInfo.InvariantCulture };
 
                 var responseJsonObject =
                     JsonConvert.DeserializeObject<Dictionary<string, object>>(responseJsonString,

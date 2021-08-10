@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -516,10 +516,10 @@ namespace TIKSN.Versioning
 
             if (version.prereleaseNumber == DefaultPrereleaseNumber)
             {
-                return new[] {milestoneTag};
+                return new[] { milestoneTag };
             }
 
-            return new[] {milestoneTag, version.prereleaseNumber.ToString()};
+            return new[] { milestoneTag, version.prereleaseNumber.ToString() };
         }
 
         private void ValidateMilestoneAndPrerelease()

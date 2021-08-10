@@ -1,4 +1,4 @@
-﻿using System.Management.Automation;
+using System.Management.Automation;
 using System.Threading.Tasks;
 
 namespace TIKSN.Analytics.Telemetry
