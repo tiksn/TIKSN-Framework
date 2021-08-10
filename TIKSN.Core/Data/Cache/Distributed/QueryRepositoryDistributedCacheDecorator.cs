@@ -27,7 +27,7 @@ namespace TIKSN.Data.Cache.Distributed
 
         public async Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken)
         {
-            var entity = await this.GetOrDefaultAsync(id, cancellationToken);
+            var entity = await this.GetOrDefaultAsync(id, cancellationToken).ConfigureAwait(false);
             return entity != null;
         }
 
@@ -56,7 +56,7 @@ namespace TIKSN.Data.Cache.Distributed
 
         public async Task<IEnumerable<TEntity>>
             ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken) =>
-            await BatchOperationHelper.BatchOperationAsync(ids, cancellationToken, (id, ct) => this.GetAsync(id, ct));
+            await BatchOperationHelper.BatchOperationAsync(ids, cancellationToken, (id, ct) => this.GetAsync(id, ct)).ConfigureAwait(false);
 
         protected Task<IEnumerable<TEntity>> QueryFromDistributedCacheAsync(
             Func<Task<IEnumerable<TEntity>>> queryFromSource, CancellationToken cancellationToken)
