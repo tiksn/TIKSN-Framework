@@ -9,10 +9,6 @@ namespace TIKSN.PowerShell
 
         public PowerShellLoggerScopeDisposable(ConcurrentStack<object> scopes) => this.scopes = scopes;
 
-        public void Dispose()
-        {
-            object result;
-            this.scopes.TryPop(out result);
-        }
+        public void Dispose() => _ = this.scopes.TryPop(out _);
     }
 }
