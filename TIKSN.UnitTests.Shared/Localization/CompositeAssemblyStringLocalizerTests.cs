@@ -17,17 +17,17 @@ namespace TIKSN.Localization.Tests
         public CompositeAssemblyStringLocalizerTests(ITestOutputHelper testOutputHelper)
         {
             var compositionRoot = new TestCompositionRootSetup(testOutputHelper);
-            _serviceProvider = compositionRoot.CreateServiceProvider();
+            this._serviceProvider = compositionRoot.CreateServiceProvider();
         }
 
         [Fact]
         public void KeyUniqueness()
         {
             var resourceNamesCache = new ResourceNamesCache();
-            var testStringLocalizer = new TestStringLocalizer(resourceNamesCache, _serviceProvider.GetRequiredService<ILogger<TestStringLocalizer>>());
+            var testStringLocalizer = new TestStringLocalizer(resourceNamesCache, this._serviceProvider.GetRequiredService<ILogger<TestStringLocalizer>>());
             var duplicatesCount = testStringLocalizer.GetAllStrings().GroupBy(item => item.Name.ToLowerInvariant()).Count(item => item.Count() > 1);
 
-            duplicatesCount.Should().Be(0);
+            _ = duplicatesCount.Should().Be(0);
         }
     }
 }
