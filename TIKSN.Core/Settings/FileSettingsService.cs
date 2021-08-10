@@ -136,9 +136,7 @@ namespace TIKSN.Settings
                     case TypeCode.DBNull:
                         break;
                     case TypeCode.Empty:
-                        break;
                     case TypeCode.Object:
-                        break;
                     default:
                         if (type == typeof(Guid))
                         {
@@ -241,9 +239,7 @@ namespace TIKSN.Settings
                     document[name] = new BsonValue((decimal)valueObject);
                     break;
                 case TypeCode.DBNull:
-                    break;
                 case TypeCode.Object:
-                    break;
                 default:
                     if (type == typeof(Guid))
                     {
