@@ -9,9 +9,6 @@ namespace TIKSN.DependencyInjection
         {
         }
 
-        protected override void ConfigureServices(IServiceCollection services)
-        {
-            services.AddFrameworkPlatform();
-        }
+        protected override void ConfigureServices(IServiceCollection services) => services.AddFrameworkPlatform();
     }
 }
