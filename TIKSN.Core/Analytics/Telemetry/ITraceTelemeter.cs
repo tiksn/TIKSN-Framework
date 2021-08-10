@@ -4,8 +4,8 @@ namespace TIKSN.Analytics.Telemetry
 {
     public interface ITraceTelemeter
     {
-        Task TrackTrace(string message);
+        Task TrackTraceAsync(string message);
 
-        Task TrackTrace(string message, TelemetrySeverityLevel severityLevel);
+        Task TrackTraceAsync(string message, TelemetrySeverityLevel severityLevel);
     }
 }
