@@ -113,7 +113,8 @@ namespace TIKSN.Finance
                             this.IsCurrent = lookingForCurrent;
                             this.ISOCurrencySymbol = ccyElement.Value;
                             this.CurrencySymbol = string.IsNullOrEmpty(symbol) ? this.ISOCurrencySymbol : symbol;
-                            this.ISOCurrencyNumber = int.Parse(ccyNtryElement.Element("CcyNbr").Value);
+                            var ccyNbrElement = ccyNtryElement.Element("CcyNbr");
+                            this.ISOCurrencyNumber = ccyNbrElement is null ? null : int.Parse(ccyNbrElement.Value);
 
                             var ccyNmElement = ccyNtryElement.Element("CcyNm");
                             var isFundAttributeValue = ccyNmElement.Attribute("IsFund")?.Value;
@@ -128,7 +129,8 @@ namespace TIKSN.Finance
                             }
 
                             this.IsFund = !string.IsNullOrWhiteSpace(isFundAttributeValue) &&
-                                          bool.Parse(isFundAttributeValue);
+                                (string.Equals(isFundAttributeValue, "WAHR", StringComparison.OrdinalIgnoreCase) ||
+                                bool.Parse(isFundAttributeValue));
 
                             return true;
                         }
