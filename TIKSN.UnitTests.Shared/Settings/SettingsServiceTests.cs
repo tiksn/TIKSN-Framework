@@ -12,10 +12,10 @@ namespace TIKSN.Settings.Tests
 
         public SettingsServiceTests()
         {
-            services = new ServiceCollection();
-            SetupDenepdencies();
-            var serviceProvider = services.BuildServiceProvider();
-            settingsService = serviceProvider.GetRequiredService<ISettingsService>();
+            this.services = new ServiceCollection();
+            this.SetupDenepdencies();
+            var serviceProvider = this.services.BuildServiceProvider();
+            this.settingsService = serviceProvider.GetRequiredService<ISettingsService>();
         }
 
         [Fact]
@@ -24,15 +24,15 @@ namespace TIKSN.Settings.Tests
             var rng = new Random();
             var expectedValue = rng.Next();
 
-            settingsService.SetLocalSetting("LocalInteger", expectedValue);
+            this.settingsService.SetLocalSetting("LocalInteger", expectedValue);
 
-            var actualValue = settingsService.GetLocalSetting("LocalInteger", expectedValue + 10);
+            var actualValue = this.settingsService.GetLocalSetting("LocalInteger", expectedValue + 10);
 
             Assert.Equal(expectedValue, actualValue);
 
-            settingsService.RemoveLocalSetting("LocalInteger");
+            this.settingsService.RemoveLocalSetting("LocalInteger");
 
-            actualValue = settingsService.GetLocalSetting("LocalInteger", expectedValue + 120);
+            actualValue = this.settingsService.GetLocalSetting("LocalInteger", expectedValue + 120);
 
             Assert.Equal(expectedValue + 120, actualValue);
         }
@@ -42,16 +42,16 @@ namespace TIKSN.Settings.Tests
         {
             var expectedValue = Guid.NewGuid();
 
-            settingsService.SetLocalSetting("LocalGuid", expectedValue);
+            this.settingsService.SetLocalSetting("LocalGuid", expectedValue);
 
-            var actualValue = settingsService.GetLocalSetting("LocalGuid", Guid.NewGuid());
+            var actualValue = this.settingsService.GetLocalSetting("LocalGuid", Guid.NewGuid());
 
             Assert.Equal(expectedValue, actualValue);
 
-            settingsService.RemoveLocalSetting("LocalGuid");
+            this.settingsService.RemoveLocalSetting("LocalGuid");
 
             var newValue = Guid.NewGuid();
-            actualValue = settingsService.GetLocalSetting("LocalGuid", newValue);
+            actualValue = this.settingsService.GetLocalSetting("LocalGuid", newValue);
 
             Assert.Equal(newValue, actualValue);
         }
@@ -61,13 +61,13 @@ namespace TIKSN.Settings.Tests
         {
             var rng = new Random();
 
-            settingsService.SetLocalSetting("LocalInteger", rng.Next());
-            settingsService.SetLocalSetting("LocalString", $"{Guid.NewGuid()}---{rng.Next()}");
-            settingsService.SetLocalSetting("LocalGuid", Guid.NewGuid());
+            this.settingsService.SetLocalSetting("LocalInteger", rng.Next());
+            this.settingsService.SetLocalSetting("LocalString", $"{Guid.NewGuid()}---{rng.Next()}");
+            this.settingsService.SetLocalSetting("LocalGuid", Guid.NewGuid());
 
-            var names = settingsService.ListLocalSetting();
+            var names = this.settingsService.ListLocalSetting();
 
-            names.Should().BeEquivalentTo(new[] { "LocalInteger", "LocalString", "LocalGuid" });
+            _ = names.Should().BeEquivalentTo(new[] { "LocalInteger", "LocalString", "LocalGuid" });
         }
 
         [Fact]
@@ -75,15 +75,15 @@ namespace TIKSN.Settings.Tests
         {
             var expectedValue = Guid.NewGuid().ToString();
 
-            settingsService.SetLocalSetting("LocalString", expectedValue);
+            this.settingsService.SetLocalSetting("LocalString", expectedValue);
 
-            var actualValue = settingsService.GetLocalSetting("LocalString", expectedValue + 10);
+            var actualValue = this.settingsService.GetLocalSetting("LocalString", expectedValue + 10);
 
             Assert.Equal(expectedValue, actualValue);
 
-            settingsService.RemoveLocalSetting("LocalString");
+            this.settingsService.RemoveLocalSetting("LocalString");
 
-            actualValue = settingsService.GetLocalSetting("LocalString", expectedValue + 120);
+            actualValue = this.settingsService.GetLocalSetting("LocalString", expectedValue + 120);
 
             Assert.Equal(expectedValue + 120, actualValue);
         }
@@ -93,16 +93,16 @@ namespace TIKSN.Settings.Tests
         {
             var expectedValue = Guid.NewGuid();
 
-            settingsService.SetRoamingSetting("RoamingGuid", expectedValue);
+            this.settingsService.SetRoamingSetting("RoamingGuid", expectedValue);
 
-            var actualValue = settingsService.GetRoamingSetting("RoamingGuid", Guid.NewGuid());
+            var actualValue = this.settingsService.GetRoamingSetting("RoamingGuid", Guid.NewGuid());
 
             Assert.Equal(expectedValue, actualValue);
 
-            settingsService.RemoveRoamingSetting("RoamingGuid");
+            this.settingsService.RemoveRoamingSetting("RoamingGuid");
 
             var newValue = Guid.NewGuid();
-            actualValue = settingsService.GetRoamingSetting("RoamingGuid", newValue);
+            actualValue = this.settingsService.GetRoamingSetting("RoamingGuid", newValue);
 
             Assert.Equal(newValue, actualValue);
         }
@@ -112,13 +112,13 @@ namespace TIKSN.Settings.Tests
         {
             var rng = new Random();
 
-            settingsService.SetRoamingSetting("RoamingInteger", rng.Next());
-            settingsService.SetRoamingSetting("RoamingString", $"{Guid.NewGuid()}---{rng.Next()}");
-            settingsService.SetRoamingSetting("RoamingGuid", Guid.NewGuid());
+            this.settingsService.SetRoamingSetting("RoamingInteger", rng.Next());
+            this.settingsService.SetRoamingSetting("RoamingString", $"{Guid.NewGuid()}---{rng.Next()}");
+            this.settingsService.SetRoamingSetting("RoamingGuid", Guid.NewGuid());
 
-            var names = settingsService.ListRoamingSetting();
+            var names = this.settingsService.ListRoamingSetting();
 
-            names.Should().BeEquivalentTo(new[] { "RoamingInteger", "RoamingString", "RoamingGuid" });
+            _ = names.Should().BeEquivalentTo(new[] { "RoamingInteger", "RoamingString", "RoamingGuid" });
         }
 
         [Fact]
@@ -127,15 +127,15 @@ namespace TIKSN.Settings.Tests
             var rng = new Random();
             var expectedValue = rng.Next();
 
-            settingsService.SetRoamingSetting("RoamingInteger", expectedValue);
+            this.settingsService.SetRoamingSetting("RoamingInteger", expectedValue);
 
-            var actualValue = settingsService.GetRoamingSetting("RoamingInteger", expectedValue + 10);
+            var actualValue = this.settingsService.GetRoamingSetting("RoamingInteger", expectedValue + 10);
 
             Assert.Equal(expectedValue, actualValue);
 
-            settingsService.RemoveRoamingSetting("RoamingInteger");
+            this.settingsService.RemoveRoamingSetting("RoamingInteger");
 
-            actualValue = settingsService.GetRoamingSetting("RoamingInteger", expectedValue + 120);
+            actualValue = this.settingsService.GetRoamingSetting("RoamingInteger", expectedValue + 120);
 
             Assert.Equal(expectedValue + 120, actualValue);
         }
@@ -145,15 +145,15 @@ namespace TIKSN.Settings.Tests
         {
             var expectedValue = Guid.NewGuid().ToString();
 
-            settingsService.SetRoamingSetting("RoamingString", expectedValue);
+            this.settingsService.SetRoamingSetting("RoamingString", expectedValue);
 
-            var actualValue = settingsService.GetRoamingSetting("RoamingString", expectedValue + 10);
+            var actualValue = this.settingsService.GetRoamingSetting("RoamingString", expectedValue + 10);
 
             Assert.Equal(expectedValue, actualValue);
 
-            settingsService.RemoveRoamingSetting("RoamingString");
+            this.settingsService.RemoveRoamingSetting("RoamingString");
 
-            actualValue = settingsService.GetRoamingSetting("RoamingString", expectedValue + 120);
+            actualValue = this.settingsService.GetRoamingSetting("RoamingString", expectedValue + 120);
 
             Assert.Equal(expectedValue + 120, actualValue);
         }
