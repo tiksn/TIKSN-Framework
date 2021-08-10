@@ -22,7 +22,7 @@ namespace TIKSN.Data.EntityFrameworkCore
                 throw new ArgumentNullException(nameof(entity));
             }
 
-            this.dbContext.Add(entity);
+            _ = this.dbContext.Add(entity);
 
             return Task.CompletedTask;
         }
