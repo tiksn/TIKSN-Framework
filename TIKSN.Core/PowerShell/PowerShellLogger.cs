@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace TIKSN.PowerShell
 {
-    public class PowerShellLogger : ILogger
+    public class PowerShellLogger : ILogger, IDisposable
     {
         private readonly ICurrentCommandProvider _currentCommandProvider;
         private readonly string name;
@@ -54,7 +54,7 @@ namespace TIKSN.PowerShell
             }
         }
 
-        private string GetLogLevelString(LogLevel logLevel)
+        private static string GetLogLevelString(LogLevel logLevel)
         {
             switch (logLevel)
             {
@@ -67,7 +67,8 @@ namespace TIKSN.PowerShell
                 case LogLevel.Warning:
                 case LogLevel.Error:
                     return string.Empty;
-
+                case LogLevel.None:
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(logLevel));
             }
@@ -77,39 +78,39 @@ namespace TIKSN.PowerShell
         {
             var logBuilder = new StringBuilder();
 
-            var logLevelString = this.GetLogLevelString(logLevel);
+            var logLevelString = GetLogLevelString(logLevel);
 
             if (!string.IsNullOrEmpty(logLevelString))
             {
-                logBuilder.Append(logLevelString);
-                logBuilder.Append(": ");
+                _ = logBuilder.Append(logLevelString);
+                _ = logBuilder.Append(": ");
             }
 
-            logBuilder.Append(this.name);
-            logBuilder.Append("[");
-            logBuilder.Append(eventId);
-            logBuilder.Append("]");
+            _ = logBuilder.Append(this.name);
+            _ = logBuilder.Append('[');
+            _ = logBuilder.Append(eventId);
+            _ = logBuilder.Append(']');
 
             if (this.options.Value.IncludeScopes)
             {
                 foreach (var scope in this.scopes)
                 {
-                    logBuilder.Append(" => ");
-                    logBuilder.Append(scope);
+                    _ = logBuilder.Append(" => ");
+                    _ = logBuilder.Append(scope);
                 }
 
-                if (this.scopes.Count > 0)
+                if (!this.scopes.IsEmpty)
                 {
-                    logBuilder.Append(" |");
+                    _ = logBuilder.Append(" |");
                 }
             }
 
-            logBuilder.Append(message);
+            _ = logBuilder.Append(message);
 
             if (exception != null)
             {
-                logBuilder.AppendLine();
-                logBuilder.AppendLine(exception.ToString());
+                _ = logBuilder.AppendLine();
+                _ = logBuilder.AppendLine(exception.ToString());
             }
 
             switch (logLevel)
@@ -133,10 +134,13 @@ namespace TIKSN.PowerShell
                         new ErrorRecord(new Exception(logBuilder.ToString(), exception), eventId.ToString(),
                             ErrorCategory.InvalidOperation, null));
                     break;
-
+                case LogLevel.None:
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(logLevel));
             }
         }
+
+        public void Dispose() => throw new NotImplementedException();
     }
 }
