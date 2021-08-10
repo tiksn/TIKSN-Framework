@@ -19,7 +19,7 @@ namespace TIKSN.DependencyInjection
             var container = this.CreateContainerInternal();
             var serviceProvider = new AutofacServiceProvider(container);
 
-            this.ValidateOptions(this._services.Value, serviceProvider);
+            ValidateOptions(this._services.Value, serviceProvider);
 
             return container;
         }
@@ -33,7 +33,7 @@ namespace TIKSN.DependencyInjection
 
             foreach (var module in this.GetAutofacModules())
             {
-                builder.RegisterModule(module);
+                _ = builder.RegisterModule(module);
             }
 
             this.ConfigureContainerBuilder(builder);
