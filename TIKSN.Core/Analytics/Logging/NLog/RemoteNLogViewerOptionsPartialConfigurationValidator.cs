@@ -12,13 +12,10 @@ namespace TIKSN.Analytics.Logging.NLog
                 .Must(IsProperScheme)
                 .When(instance => instance.Url != null);
 
-        private static bool IsProperScheme(string scheme)
+        private static bool IsProperScheme(string scheme) => scheme.ToLowerInvariant() switch
         {
-            return scheme.ToLowerInvariant() switch
-            {
-                "tcp" or "tcp4" or "tcp6" or "udp" or "udp4" or "udp6" or "http" or "https" => true,
-                _ => false,
-            };
-        }
+            "tcp" or "tcp4" or "tcp6" or "udp" or "udp4" or "udp6" or "http" or "https" => true,
+            _ => false,
+        };
     }
 }
