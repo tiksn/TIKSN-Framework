@@ -36,7 +36,7 @@ namespace TIKSN.Data.EntityFrameworkCore
                 throw new ArgumentNullException(nameof(ids));
             }
 
-            return await this.Entities.Where(entity => ids.Contains(entity.ID)).ToListAsync(cancellationToken);
+            return await this.Entities.Where(entity => ids.Contains(entity.ID)).ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public async IAsyncEnumerable<TEntity> StreamAllAsync(CancellationToken cancellationToken)
