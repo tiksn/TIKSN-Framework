@@ -56,22 +56,13 @@ namespace TIKSN.PowerShell
 
         private static string GetLogLevelString(LogLevel logLevel)
         {
-            switch (logLevel)
+            return logLevel switch
             {
-                case LogLevel.Trace:
-                case LogLevel.Critical:
-                    return logLevel.ToString();
-
-                case LogLevel.Information:
-                case LogLevel.Debug:
-                case LogLevel.Warning:
-                case LogLevel.Error:
-                    return string.Empty;
-                case LogLevel.None:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(logLevel));
-            }
+                LogLevel.Trace or LogLevel.Critical => logLevel.ToString(),
+                LogLevel.Information or LogLevel.Debug or LogLevel.Warning or LogLevel.Error => string.Empty,
+                LogLevel.None => throw new NotSupportedException("LogLevel.None is not supported."),
+                _ => throw new ArgumentOutOfRangeException(nameof(logLevel)),
+            };
         }
 
         private void WriteMessage(LogLevel logLevel, EventId eventId, string message, Exception exception)
