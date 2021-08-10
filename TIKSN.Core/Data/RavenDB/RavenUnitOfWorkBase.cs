@@ -22,7 +22,7 @@ namespace TIKSN.Data.RavenDB
 
         public override async Task CompleteAsync(CancellationToken cancellationToken)
         {
-            await this._session.SaveChangesAsync(cancellationToken);
+            await this._session.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             this._session.Advanced.Clear();
         }
