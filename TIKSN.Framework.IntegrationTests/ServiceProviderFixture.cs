@@ -17,23 +17,20 @@ namespace TIKSN.Framework.IntegrationTests
         public ServiceProviderFixture()
         {
             this.host = Host.CreateDefaultBuilder()
-                .ConfigureServices(services =>
-                {
-                    services.AddFrameworkPlatform();
-                })
+                .ConfigureServices(services => _ = services.AddFrameworkPlatform())
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureContainer<ContainerBuilder>(builder =>
                 {
-                    builder.RegisterModule<CoreModule>();
-                    builder.RegisterModule<PlatformModule>();
-                    builder.RegisterType<TestMongoRepository>().As<ITestMongoRepository>().InstancePerLifetimeScope();
-                    builder.RegisterType<TestMongoDatabaseProvider>().As<IMongoDatabaseProvider>().SingleInstance();
-                    builder.RegisterType<TestMongoClientProvider>().As<IMongoClientProvider>().SingleInstance();
+                    _ = builder.RegisterModule<CoreModule>();
+                    _ = builder.RegisterModule<PlatformModule>();
+                    _ = builder.RegisterType<TestMongoRepository>().As<ITestMongoRepository>().InstancePerLifetimeScope();
+                    _ = builder.RegisterType<TestMongoDatabaseProvider>().As<IMongoDatabaseProvider>().SingleInstance();
+                    _ = builder.RegisterType<TestMongoClientProvider>().As<IMongoClientProvider>().SingleInstance();
                 })
                 .ConfigureHostConfiguration(builder =>
                 {
-                    builder.AddInMemoryCollection(GetInMemoryConfiguration());
-                    builder.AddUserSecrets<ServiceProviderFixture>();
+                    _ = builder.AddInMemoryCollection(GetInMemoryConfiguration());
+                    _ = builder.AddUserSecrets<ServiceProviderFixture>();
                 })
                 .Build();
 
