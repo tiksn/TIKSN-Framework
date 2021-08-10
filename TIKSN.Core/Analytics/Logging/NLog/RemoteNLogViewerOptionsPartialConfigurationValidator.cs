@@ -14,21 +14,11 @@ namespace TIKSN.Analytics.Logging.NLog
 
         private static bool IsProperScheme(string scheme)
         {
-            switch (scheme.ToLowerInvariant())
+            return scheme.ToLowerInvariant() switch
             {
-                case "tcp":
-                case "tcp4":
-                case "tcp6":
-                case "udp":
-                case "udp4":
-                case "udp6":
-                case "http":
-                case "https":
-                    return true;
-
-                default:
-                    return false;
-            }
+                "tcp" or "tcp4" or "tcp6" or "udp" or "udp4" or "udp6" or "http" or "https" => true,
+                _ => false,
+            };
         }
     }
 }
