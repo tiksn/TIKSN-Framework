@@ -13,18 +13,18 @@ namespace TIKSN.DependencyInjection
         {
             if (mandatoryValidation)
             {
-                services
+                _ = services
                     .AddSingleton<IConfigurationValidationStrategy<TOptions>,
                         MandatoryConfigurationValidationStrategy<TOptions>>();
             }
             else
             {
-                services
+                _ = services
                     .AddSingleton<IConfigurationValidationStrategy<TOptions>,
                         OptionalConfigurationValidationStrategy<TOptions>>();
             }
 
-            services.AddSingleton<IPartialConfiguration<TOptions>, PartialConfiguration<TOptions>>();
+            _ = services.AddSingleton<IPartialConfiguration<TOptions>, PartialConfiguration<TOptions>>();
 
             return services.Configure<TOptions>(config);
         }
@@ -34,7 +34,7 @@ namespace TIKSN.DependencyInjection
             where TOptions : class, new()
             where TValidator : class, IPartialConfigurationValidator<TOptions>
         {
-            services.AddSingleton<IPartialConfigurationValidator<TOptions>, TValidator>();
+            _ = services.AddSingleton<IPartialConfigurationValidator<TOptions>, TValidator>();
 
             return services.ConfigurePartial<TOptions>(config, true);
         }
