@@ -162,7 +162,7 @@ Task DownloadCurrencyCodes -depends Clean {
 
 Task Format -depends Restore {
     $solution = Resolve-Path -Path 'TIKSN Framework.sln'
-    Exec { dotnet format --fix-whitespace $solution }
+    Exec { dotnet format --fix-whitespace --fix-style info --fix-analyzers info $solution }
 }
 
 Task Restore -depends Clean {
