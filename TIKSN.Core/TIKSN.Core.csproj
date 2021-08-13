@@ -52,7 +52,7 @@
     <PackageReference Include="Nito.AsyncEx.Context" Version="5.1.0" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.7.3" />
     <PackageReference Include="NoDb" Version="1.2.2" />
-    <PackageReference Include="NuGet.Versioning" Version="5.10.0" />
+    <PackageReference Include="NuGet.Versioning" Version="5.11.0" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" />
     <PackageReference Include="RavenDB.Client" Version="5.2.1" />
     <PackageReference Include="ReactiveUI" Version="14.3.1" />
