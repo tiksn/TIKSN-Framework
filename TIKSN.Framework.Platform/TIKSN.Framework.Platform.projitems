@@ -9,7 +9,6 @@
     <Import_RootNamespace>TIKSN.Framework.Platform</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\AutofacPlatformCompositionRootSetupBase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\PlatformCompositionRootSetupBase.cs" />
+    <Folder Include="$(MSBuildThisFileDirectory)DependencyInjection\" />
   </ItemGroup>
 </Project>
