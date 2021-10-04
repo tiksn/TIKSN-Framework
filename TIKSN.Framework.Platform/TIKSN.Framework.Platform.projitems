@@ -8,7 +8,4 @@
   <PropertyGroup Label="Configuration">
     <Import_RootNamespace>TIKSN.Framework.Platform</Import_RootNamespace>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)DependencyInjection\" />
-  </ItemGroup>
 </Project>
