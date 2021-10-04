@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Framework.Core", "TIK
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TIKSN.Framework.SharedMobile", "TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.shproj", "{7A9B69CB-8ABF-4474-A85A-11D5D9F3D005}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TIKSN.Framework.Platform", "TIKSN.Framework.Platform\TIKSN.Framework.Platform.shproj", "{B067DD13-E17B-45CC-8B35-D34A1876E0FE}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2278829B-1466-45C6-862F-FF38DFF07A24}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -33,18 +31,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Framework.Core.Tests"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TIKSN.UnitTests.Shared", "TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.shproj", "{04326875-E3E6-4F1F-881D-4046D83913FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIKSN.Framework.IntegrationTests", "TIKSN.Framework.IntegrationTests\TIKSN.Framework.IntegrationTests.csproj", "{C21074B3-47E9-4D3D-95FB-F7041143B218}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Framework.IntegrationTests", "TIKSN.Framework.IntegrationTests\TIKSN.Framework.IntegrationTests.csproj", "{C21074B3-47E9-4D3D-95FB-F7041143B218}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.projitems*{04326875-e3e6-4f1f-881d-4046d83913fc}*SharedItemsImports = 13
 		TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.projitems*{31dbb0ce-8360-41fd-a874-f4c6d907c5ee}*SharedItemsImports = 5
-		TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems*{3d7b87c7-b00c-4691-9bbd-f5836011345a}*SharedItemsImports = 5
 		TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems*{3d7b87c7-b00c-4691-9bbd-f5836011345a}*SharedItemsImports = 5
 		TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems*{7a9b69cb-8abf-4474-a85a-11d5d9f3d005}*SharedItemsImports = 13
-		TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems*{b067dd13-e17b-45cc-8b35-d34a1876e0fe}*SharedItemsImports = 13
 		TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.projitems*{d906abe6-13f2-4ab0-bde2-e63f77cf54e9}*SharedItemsImports = 5
-		TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems*{ed598e91-6d8e-4132-a73d-a1a9a402f395}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -195,7 +190,6 @@ Global
 		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
 		{ED598E91-6D8E-4132-A73D-A1A9A402F395} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{7A9B69CB-8ABF-4474-A85A-11D5D9F3D005} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
-		{B067DD13-E17B-45CC-8B35-D34A1876E0FE} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{974DB7C5-CE2D-4232-B781-CFCBB1F7784F} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{9D8726CC-AC22-4597-90DB-A2809E22500C} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{31DBB0CE-8360-41FD-A874-F4C6D907C5EE} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
