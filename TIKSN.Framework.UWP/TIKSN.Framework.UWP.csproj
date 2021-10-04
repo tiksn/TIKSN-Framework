@@ -95,5 +95,4 @@
         </PackageReference>
     </ItemGroup>
     <Import Project="..\TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems" Label="Shared" />
-    <Import Project="..\TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems" Label="Shared" />
 </Project>
