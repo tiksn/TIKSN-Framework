@@ -10,7 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\CompositionRootSetupBaseTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\TestCompositionRootSetup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\TestConfigurationRootSetup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\TestOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\TestSerilogLoggingSetup.cs" />
