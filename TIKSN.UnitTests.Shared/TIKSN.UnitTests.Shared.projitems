@@ -9,9 +9,6 @@
     <Import_RootNamespace>TIKSN.UnitTests.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\CompositionRootSetupBaseTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\TestCompositionRootSetup.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\TestConfigurationRootSetup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\TestOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\TestSerilogLoggingSetup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Finance\Cache\CachedCurrencyConverterTests.cs" />

@@ -7,8 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
+using Serilog;
 using TIKSN.Data.Cache.Memory;
-using TIKSN.DependencyInjection.Tests;
+using TIKSN.DependencyInjection;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -24,8 +25,19 @@ namespace TIKSN.Finance.Cache.Tests
 
         public MemoryCachedCurrencyConverterTests(ITestOutputHelper testOutputHelper)
         {
-            var compositionRoot = new TestCompositionRootSetup(testOutputHelper, configureOptions: (s, c) => s.Configure<MemoryCachedCurrencyConverterOptions>(o => o.CacheInterval = TimeSpan.FromMinutes(5)));
-            var serviceProvider = compositionRoot.CreateServiceProvider();
+            var services = new ServiceCollection();
+            _ = services.AddFrameworkCore();
+            _ = services.AddLogging(builder =>
+            {
+                _ = builder.AddDebug();
+                var loggger = new LoggerConfiguration()
+                    .MinimumLevel.Verbose()
+                    .WriteTo.TestOutput(testOutputHelper)
+                    .CreateLogger();
+                _ = builder.AddSerilog(loggger);
+            });
+            _ = services.Configure<MemoryCachedCurrencyConverterOptions>(o => o.CacheInterval = TimeSpan.FromMinutes(5));
+            var serviceProvider = services.BuildServiceProvider();
 
             this._logger = serviceProvider.GetRequiredService<ILogger<MemoryCachedCurrencyConverter>>();
             this._memoryCache = serviceProvider.GetRequiredService<IMemoryCache>();

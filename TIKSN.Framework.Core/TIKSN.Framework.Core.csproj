@@ -10,7 +10,6 @@
     <LangVersion>latest</LangVersion>
     <Authors>TIKSN Development</Authors>
   </PropertyGroup>
-  <Import Project="..\TIKSN.Framework.Platform\TIKSN.Framework.Platform.projitems" Label="Shared" />
   <ItemGroup>
     <ProjectReference Include="..\TIKSN.Core\TIKSN.Core.csproj" />
     <ProjectReference Include="..\TIKSN.LanguageLocalization\TIKSN.LanguageLocalization.csproj" />
