@@ -1,4 +1,4 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.23">
+﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.38">
     <PropertyGroup>
         <TargetFramework>uap10.0.19041</TargetFramework>
     </PropertyGroup>
