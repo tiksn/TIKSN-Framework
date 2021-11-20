@@ -47,8 +47,8 @@
       <file filePath="TIKSN.RegionLocalization\Strings.ru-RU.resx" uniqueID="eca658be-296c-45ae-acca-9692c1afa299" />
       <file filePath="TIKSN.RegionLocalization\Strings.ru-UA.resx" uniqueID="5166a481-7f37-4b48-84b1-5f91dfb3f3e1" />
       <file filePath="TIKSN.RegionLocalization\Strings.uk-UA.resx" uniqueID="9d766046-8f88-4e51-bf03-eae8269265df" />
-      <file filePath="TIKSN.RegionLocalization\Strings.zh-CN.resx" uniqueID="80e64a8f-b661-4c2f-9697-35fc4157b5e6" />
-      <file filePath="TIKSN.RegionLocalization\Strings.zh-SG.resx" uniqueID="d2b059f3-2f50-4ab7-84bf-26a19b434481" />
+      <file filePath="TIKSN.RegionLocalization\Strings.zh-Hans-CN.resx" uniqueID="80e64a8f-b661-4c2f-9697-35fc4157b5e6" />
+      <file filePath="TIKSN.RegionLocalization\Strings.zh-Hans-SG.resx" uniqueID="d2b059f3-2f50-4ab7-84bf-26a19b434481" />
       <remarks>
       </remarks>
     </fileGroup>
