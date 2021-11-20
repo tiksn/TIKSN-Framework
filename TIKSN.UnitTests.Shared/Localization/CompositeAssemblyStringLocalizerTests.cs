@@ -36,7 +36,13 @@ namespace TIKSN.Localization.Tests
         {
             var resourceNamesCache = new ResourceNamesCache();
             var testStringLocalizer = new TestStringLocalizer(resourceNamesCache, this._serviceProvider.GetRequiredService<ILogger<TestStringLocalizer>>());
-            var duplicatesCount = testStringLocalizer.GetAllStrings().GroupBy(item => item.Name.ToLowerInvariant()).Count(item => item.Count() > 1);
+            var duplicates = testStringLocalizer
+                .GetAllStrings()
+                .GroupBy(item => item.Name.ToLowerInvariant())
+                .Where(item => item.Count() > 1)
+                .ToArray();
+
+            var duplicatesCount = duplicates.Length;
 
             _ = duplicatesCount.Should().Be(0);
         }

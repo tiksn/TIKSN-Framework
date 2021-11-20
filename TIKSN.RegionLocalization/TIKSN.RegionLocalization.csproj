@@ -77,10 +77,10 @@
     <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.uk-UA.xlf">
       <Generator>XliffResxGenerator</Generator>
     </XliffResource>
-    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.zh-CN.xlf">
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.zh-Hans-CN.xlf">
       <Generator>XliffResxGenerator</Generator>
     </XliffResource>
-    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.zh-SG.xlf">
+    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.zh-Hans-SG.xlf">
       <Generator>XliffResxGenerator</Generator>
     </XliffResource>
   </ItemGroup>
