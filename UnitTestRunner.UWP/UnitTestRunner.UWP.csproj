@@ -103,7 +103,7 @@
             <Version>3.0.3</Version>
         </PackageReference>
         <PackageReference Include="System.Interactive">
-            <Version>5.1.0</Version>
+            <Version>6.0.1</Version>
         </PackageReference>
         <PackageReference Include="System.Interactive.Async">
             <Version>5.1.0</Version>
