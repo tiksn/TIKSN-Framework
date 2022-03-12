@@ -42,7 +42,7 @@
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.Configuration">
-            <Version>6.0.0</Version>
+            <Version>6.0.1</Version>
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions">
             <Version>6.0.0</Version>
