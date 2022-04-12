@@ -76,7 +76,7 @@
             <Version>5.1.1</Version>
         </PackageReference>
         <PackageReference Include="ReactiveUI">
-            <Version>17.1.50</Version>
+            <Version>18.0.7</Version>
         </PackageReference>
         <PackageReference Include="ReactiveUI.XamForms">
             <Version>18.0.7</Version>
