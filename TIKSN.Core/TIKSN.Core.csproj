@@ -44,7 +44,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
     <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="2.2.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.1.46" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.2.32" />
     <PackageReference Include="MongoDB.Driver" Version="2.15.1" />
     <PackageReference Include="MongoDB.Driver.GridFS" Version="2.15.1" />
     <PackageReference Include="MsgPack.Cli" Version="1.0.1" />
