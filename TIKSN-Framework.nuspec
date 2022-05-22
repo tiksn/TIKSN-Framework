@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>TIKSN-Framework</id>
-        <version>4.2.0-alpha.0</version>
+        <version>4.3.2-alpha.0</version>
         <title>TIKSN Framework</title>
         <authors>TIKSN</authors>
         <owners>TIKSN</owners>
@@ -13,8 +13,8 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <license type="expression">MIT</license>
         <description>This is a .NET Framework enhancement framework. Main features are Versioning, Finance, Currency, Foreign Exchange, Money, Pricing strategy, Telemetry, Composite Weighted Progress, Repository and Unity of Wok pattern implementation with Entity Framework Core, Network Connectivity Service and Triggering, Settings, Windows Registry configuration source, Azure Storage Repository, MongoDB Repository, NoDB Repository, Lingual and Regional Localization, Serialization, Rest Requester, Rest Repository, Dependency Injection, Composition Root Setup base classes.</description>
-        <copyright>Copyright © 2019, TIKSN Lab</copyright>
-        <releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/milestone/13</releaseNotes>
+        <copyright>Copyright © 2022, TIKSN Lab</copyright>
+        <releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/milestone/14</releaseNotes>
         <language />
         <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry, Configuration, Azure Storage, MongoDB, NoDB, Rest, Localization, Dependency Injection</tags>
         <dependencies>
