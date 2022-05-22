@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,7 +16,7 @@ namespace TIKSN.Finance.Cache
             typeof(MemoryCachedCurrencyConverterEntry);
 
         private readonly ILogger<MemoryCachedCurrencyConverter> _logger;
-        private readonly IMemoryCache _memoryCache;
+        private new readonly IMemoryCache _memoryCache;
         private readonly IOptions<MemoryCachedCurrencyConverterOptions> _options;
         private readonly ICurrencyConverter _originalConverter;
         private readonly Guid instanceID;
@@ -45,7 +45,7 @@ namespace TIKSN.Finance.Cache
                 baseMoney.Currency, counterCurrency);
 
             var cacheEntry = await this.GetFromMemoryCacheAsync(cacheKey,
-                () => this.OriginalConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken));
+                () => this.OriginalConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken)).ConfigureAwait(false);
 
             return new Money(counterCurrency, baseMoney.Amount * cacheEntry.ExchangeRate);
         }
@@ -57,7 +57,7 @@ namespace TIKSN.Finance.Cache
                 MemoryCachedCurrencyConverterEntryKind.CurrencyPairs, this.instanceID, this.GetCacheIntervalKey(asOn));
 
             var cacheEntry = await this.GetFromMemoryCacheAsync(cacheKey,
-                () => this.GetOriginalCurrencyPairsAsync(asOn, cancellationToken));
+                () => this.GetOriginalCurrencyPairsAsync(asOn, cancellationToken)).ConfigureAwait(false);
 
             return cacheEntry.CurrencyPairs;
         }
@@ -70,7 +70,7 @@ namespace TIKSN.Finance.Cache
                 pair.BaseCurrency, pair.CounterCurrency);
 
             var cacheEntry = await this.GetFromMemoryCacheAsync(cacheKey,
-                () => this.GetOriginalExchangeRateAsync(pair, asOn, cancellationToken));
+                () => this.GetOriginalExchangeRateAsync(pair, asOn, cancellationToken)).ConfigureAwait(false);
 
             return cacheEntry.ExchangeRate;
         }
@@ -90,7 +90,7 @@ namespace TIKSN.Finance.Cache
         private async Task<MemoryCachedCurrencyConverterEntry> GetOriginalCurrencyPairsAsync(DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            var currencyPairs = await this._originalConverter.GetCurrencyPairsAsync(asOn, cancellationToken);
+            var currencyPairs = await this._originalConverter.GetCurrencyPairsAsync(asOn, cancellationToken).ConfigureAwait(false);
 
             return MemoryCachedCurrencyConverterEntry.CreateForCurrencyPairs(currencyPairs);
         }
@@ -98,7 +98,7 @@ namespace TIKSN.Finance.Cache
         private async Task<MemoryCachedCurrencyConverterEntry> GetOriginalExchangeRateAsync(CurrencyPair pair,
             DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var exchangeRate = await this._originalConverter.GetExchangeRateAsync(pair, asOn, cancellationToken);
+            var exchangeRate = await this._originalConverter.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
 
             return MemoryCachedCurrencyConverterEntry.CreateForExchangeRate(exchangeRate);
         }
@@ -107,7 +107,7 @@ namespace TIKSN.Finance.Cache
             CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             var convertedMoney =
-                await this._originalConverter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken);
+                await this._originalConverter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
 
             var exchangeRate = convertedMoney.Amount / baseMoney.Amount;
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiteDB;
@@ -21,37 +21,35 @@ namespace TIKSN.Settings
         }
 
         public T GetLocalSetting<T>(string name, T defaultValue) => this.Apply(this._knownFolders.LocalAppData, name,
-            defaultValue, this.GetterProcessor);
+            defaultValue, GetterProcessor);
 
         public T GetRoamingSetting<T>(string name, T defaultValue) => this.Apply(this._knownFolders.RoamingAppData,
-            name, defaultValue, this.GetterProcessor);
+            name, defaultValue, GetterProcessor);
 
         public IReadOnlyCollection<string> ListLocalSetting() => this.ListNames(this._knownFolders.LocalAppData);
 
         public IReadOnlyCollection<string> ListRoamingSetting() => this.ListNames(this._knownFolders.RoamingAppData);
 
         public void RemoveLocalSetting(string name) =>
-            this.Apply<object>(this._knownFolders.LocalAppData, name, null, this.RemovalProcessor);
+            this.Apply<object>(this._knownFolders.LocalAppData, name, null, RemovalProcessor);
 
         public void RemoveRoamingSetting(string name) =>
-            this.Apply<object>(this._knownFolders.RoamingAppData, name, null, this.RemovalProcessor);
+            this.Apply<object>(this._knownFolders.RoamingAppData, name, null, RemovalProcessor);
 
         public void SetLocalSetting<T>(string name, T value) =>
-            this.Apply(this._knownFolders.LocalAppData, name, value, this.SetterProcessor);
+            this.Apply(this._knownFolders.LocalAppData, name, value, SetterProcessor);
 
         public void SetRoamingSetting<T>(string name, T value) =>
-            this.Apply(this._knownFolders.RoamingAppData, name, value, this.SetterProcessor);
+            this.Apply(this._knownFolders.RoamingAppData, name, value, SetterProcessor);
 
         private T Apply<T>(IFileProvider fileProvider, string name, T value, Func<BsonDocument, string, T, T> processor)
         {
-            using (var db = this.GetDatabase(fileProvider, out var settingsCollection, out var bsonDocument))
-            {
-                var result = processor(bsonDocument, name, value);
+            using var db = this.GetDatabase(fileProvider, out var settingsCollection, out var bsonDocument);
+            var result = processor(bsonDocument, name, value);
 
-                settingsCollection.Update(bsonDocument);
+            _ = settingsCollection.Update(bsonDocument);
 
-                return result;
-            }
+            return result;
         }
 
         private LiteDatabase GetDatabase(IFileProvider fileProvider,
@@ -59,7 +57,7 @@ namespace TIKSN.Settings
         {
             var fileInfo = fileProvider.GetFileInfo(this._configuration.GetConfiguration().RelativePath);
 
-            var connectionString = new ConnectionString {Filename = fileInfo.PhysicalPath};
+            var connectionString = new ConnectionString { Filename = fileInfo.PhysicalPath };
 
             var db = new LiteDatabase(connectionString);
 
@@ -67,15 +65,17 @@ namespace TIKSN.Settings
             bsonDocument = settingsCollection.FindById(Guid.Empty);
             if (bsonDocument == null)
             {
-                bsonDocument = new BsonDocument();
-                bsonDocument.Add("_id", Guid.Empty);
-                settingsCollection.Insert(bsonDocument);
+                bsonDocument = new BsonDocument
+                {
+                    { "_id", Guid.Empty }
+                };
+                _ = settingsCollection.Insert(bsonDocument);
             }
 
             return db;
         }
 
-        private T GetterProcessor<T>(BsonDocument document, string name, T defaultValue)
+        private static T GetterProcessor<T>(BsonDocument document, string name, T defaultValue)
         {
             if (document.TryGetValue(name, out var bsonValue))
             {
@@ -133,7 +133,10 @@ namespace TIKSN.Settings
                     case TypeCode.String:
                         CheckType(BsonType.String);
                         return (T)(object)bsonValue.AsString;
-
+                    case TypeCode.DBNull:
+                        break;
+                    case TypeCode.Empty:
+                    case TypeCode.Object:
                     default:
                         if (type == typeof(Guid))
                         {
@@ -153,21 +156,19 @@ namespace TIKSN.Settings
 
         private IReadOnlyCollection<string> ListNames(IFileProvider fileProvider)
         {
-            using (var db = this.GetDatabase(fileProvider, out var settingsCollection, out var bsonDocument))
-            {
-                return bsonDocument.Keys.Where(n => !string.Equals(n, "_id", StringComparison.OrdinalIgnoreCase))
-                    .ToArray();
-            }
+            using var db = this.GetDatabase(fileProvider, out var settingsCollection, out var bsonDocument);
+            return bsonDocument.Keys.Where(n => !string.Equals(n, "_id", StringComparison.OrdinalIgnoreCase))
+                .ToArray();
         }
 
-        private T RemovalProcessor<T>(BsonDocument document, string name, T value)
+        private static T RemovalProcessor<T>(BsonDocument document, string name, T value)
         {
-            document.Remove(name);
+            _ = document.Remove(name);
 
             return value;
         }
 
-        private T SetterProcessor<T>(BsonDocument document, string name, T value)
+        private static T SetterProcessor<T>(BsonDocument document, string name, T value)
         {
             object valueObject = value;
 
@@ -237,7 +238,8 @@ namespace TIKSN.Settings
                 case TypeCode.UInt64:
                     document[name] = new BsonValue((decimal)valueObject);
                     break;
-
+                case TypeCode.DBNull:
+                case TypeCode.Object:
                 default:
                     if (type == typeof(Guid))
                     {

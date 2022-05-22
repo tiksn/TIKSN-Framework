@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Configuration.Validator
+namespace TIKSN.Configuration.Validator
 {
     public interface IPartialConfigurationValidator<in T>
     {

@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Data.CosmosTable
+namespace TIKSN.Data.CosmosTable
 {
     public class CosmosTableRepositoryAdapterOptions
     {

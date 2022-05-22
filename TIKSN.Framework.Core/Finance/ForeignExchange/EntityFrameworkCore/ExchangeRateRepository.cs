@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -33,7 +33,7 @@ namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
         {
             var entity = await this.Entities
                 .OrderByDescending(item => item.ID)
-                .FirstOrDefaultAsync(cancellationToken);
+                .FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
 
             if (entity == null)
             {
@@ -57,6 +57,6 @@ namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
                     item.ForeignExchangeID == foreignExchangeID &&
                     item.AsOn >= dateFrom && item.AsOn <= dateTo)
                 .Include(item => item.ForeignExchange)
-                .ToArrayAsync(cancellationToken);
+                .ToArrayAsync(cancellationToken).ConfigureAwait(false);
     }
 }

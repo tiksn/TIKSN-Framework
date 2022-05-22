@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Data.NoDB
+namespace TIKSN.Data.NoDB
 {
     public class NoDbRepositoryOptions
     {

@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Storage;
@@ -41,13 +41,11 @@ namespace TIKSN.Data.AzureStorage
         {
             var blob = this.GetCloudBlobContainer().GetBlobReference(path);
 
-            using (var stream = new MemoryStream())
-            {
-                await blob.DownloadToStreamAsync(stream, AccessCondition.GenerateEmptyCondition(), this._options,
-                    this._operationContext, cancellationToken);
+            using var stream = new MemoryStream();
+            await blob.DownloadToStreamAsync(stream, AccessCondition.GenerateEmptyCondition(), this._options,
+                this._operationContext, cancellationToken).ConfigureAwait(false);
 
-                return new File(blob.Name, stream.ToArray());
-            }
+            return new File(blob.Name, stream.ToArray());
         }
 
         public Task<bool> ExistsAsync(string path, CancellationToken cancellationToken)

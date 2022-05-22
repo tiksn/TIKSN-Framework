@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Reflection;
 using System.Xml.Linq;
@@ -24,7 +24,7 @@ namespace TIKSN.Finance
 
         public bool Equals(CurrencyInfo that)
         {
-            if (ReferenceEquals(that, null))
+            if (that is null)
             {
                 return false;
             }
@@ -43,14 +43,13 @@ namespace TIKSN.Finance
                 return true;
             }
 
-            if (ReferenceEquals(that, null))
+            if (that is null)
             {
                 return false;
             }
 
-            var That = that as CurrencyInfo;
 
-            if (ReferenceEquals(That, null))
+            if (that is not CurrencyInfo That)
             {
                 return false;
             }
@@ -69,12 +68,12 @@ namespace TIKSN.Finance
                 return true;
             }
 
-            if (ReferenceEquals(first, null))
+            if (first is null)
             {
                 return false;
             }
 
-            if (ReferenceEquals(second, null))
+            if (second is null)
             {
                 return false;
             }
@@ -114,7 +113,8 @@ namespace TIKSN.Finance
                             this.IsCurrent = lookingForCurrent;
                             this.ISOCurrencySymbol = ccyElement.Value;
                             this.CurrencySymbol = string.IsNullOrEmpty(symbol) ? this.ISOCurrencySymbol : symbol;
-                            this.ISOCurrencyNumber = int.Parse(ccyNtryElement.Element("CcyNbr").Value);
+                            var ccyNbrElement = ccyNtryElement.Element("CcyNbr");
+                            this.ISOCurrencyNumber = ccyNbrElement is null ? null : int.Parse(ccyNbrElement.Value);
 
                             var ccyNmElement = ccyNtryElement.Element("CcyNm");
                             var isFundAttributeValue = ccyNmElement.Attribute("IsFund")?.Value;
@@ -129,7 +129,8 @@ namespace TIKSN.Finance
                             }
 
                             this.IsFund = !string.IsNullOrWhiteSpace(isFundAttributeValue) &&
-                                          bool.Parse(isFundAttributeValue);
+                                (string.Equals(isFundAttributeValue, "WAHR", StringComparison.OrdinalIgnoreCase) ||
+                                bool.Parse(isFundAttributeValue));
 
                             return true;
                         }

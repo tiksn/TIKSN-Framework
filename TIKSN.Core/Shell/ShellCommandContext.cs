@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.Extensions.Localization;
 using TIKSN.Localization;
 
@@ -28,20 +28,13 @@ namespace TIKSN.Shell
                 this._stringLocalizer.GetRequiredString(LocalizationKeys.Key132999259),
                 this._stringLocalizer.GetRequiredString(LocalizationKeys.Key777755530));
 
-            switch (answer)
+            return answer switch
             {
-                case 0:
-                    return true;
-
-                case 1:
-                    return false;
-
-                case 2:
-                    throw new ShellCommandSuspendedException();
-
-                default:
-                    throw new NotSupportedException();
-            }
+                0 => true,
+                1 => false,
+                2 => throw new ShellCommandSuspendedException(),
+                _ => throw new NotSupportedException(),
+            };
         }
 
         public bool ShouldContinue(string query, string caption, ref bool yesToAll, ref bool noToAll)

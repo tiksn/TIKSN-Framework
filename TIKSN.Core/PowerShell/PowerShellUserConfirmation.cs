@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using TIKSN.Progress;
 
 namespace TIKSN.PowerShell

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.ApplicationInsights.DataContracts;
@@ -7,17 +7,22 @@ namespace TIKSN.Analytics.Telemetry
 {
     public class ApplicationInsightsTraceTelemeter : ITraceTelemeter
     {
-        public Task TrackTrace(string message, TelemetrySeverityLevel severityLevel) =>
-            this.TrackTraceInternal(message, severityLevel);
+        [Obsolete]
+        public Task TrackTraceAsync(string message, TelemetrySeverityLevel severityLevel) =>
+            TrackTraceInternalAsync(message, severityLevel);
 
-        public Task TrackTrace(string message) => this.TrackTraceInternal(message, null);
+        [Obsolete]
+        public Task TrackTraceAsync(string message) => TrackTraceInternalAsync(message, null);
 
-        private Task TrackTraceInternal(string message, TelemetrySeverityLevel? severityLevel)
+        [Obsolete]
+        private static Task TrackTraceInternalAsync(string message, TelemetrySeverityLevel? severityLevel)
         {
             try
             {
-                var telemetry = new TraceTelemetry(message);
-                telemetry.SeverityLevel = ApplicationInsightsHelper.ConvertSeverityLevel(severityLevel);
+                var telemetry = new TraceTelemetry(message)
+                {
+                    SeverityLevel = ApplicationInsightsHelper.ConvertSeverityLevel(severityLevel)
+                };
                 ApplicationInsightsHelper.TrackTrace(telemetry);
             }
             catch (Exception ex)

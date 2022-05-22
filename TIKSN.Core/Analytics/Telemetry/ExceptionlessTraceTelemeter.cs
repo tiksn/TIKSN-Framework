@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Exceptionless;
@@ -7,7 +7,7 @@ namespace TIKSN.Analytics.Telemetry
 {
     public class ExceptionlessTraceTelemeter : ExceptionlessTelemeterBase, ITraceTelemeter
     {
-        public async Task TrackTrace(string message)
+        public Task TrackTraceAsync(string message)
         {
             try
             {
@@ -17,9 +17,11 @@ namespace TIKSN.Analytics.Telemetry
             {
                 Debug.WriteLine(ex);
             }
+
+            return Task.CompletedTask;
         }
 
-        public async Task TrackTrace(string message, TelemetrySeverityLevel severityLevel)
+        public Task TrackTraceAsync(string message, TelemetrySeverityLevel severityLevel)
         {
             try
             {
@@ -29,6 +31,8 @@ namespace TIKSN.Analytics.Telemetry
             {
                 Debug.WriteLine(ex);
             }
+
+            return Task.CompletedTask;
         }
     }
 }

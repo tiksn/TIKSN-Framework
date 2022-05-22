@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using Bond.Protocols;
 
 namespace TIKSN.Serialization.Bond

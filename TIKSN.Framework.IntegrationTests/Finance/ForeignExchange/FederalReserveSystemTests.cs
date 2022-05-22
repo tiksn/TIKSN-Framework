@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Globalization;
 using TIKSN.Time;

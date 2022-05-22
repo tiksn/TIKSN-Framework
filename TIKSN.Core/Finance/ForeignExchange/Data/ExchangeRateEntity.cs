@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using TIKSN.Data;
 
 namespace TIKSN.Finance.ForeignExchange.Data

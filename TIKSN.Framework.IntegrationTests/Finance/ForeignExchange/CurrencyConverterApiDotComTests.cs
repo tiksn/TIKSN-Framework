@@ -30,20 +30,22 @@ namespace TIKSN.Finance.ForeignExchange.Tests
         public async Task GetCurrencyPairsAsync()
         {
             var currencyFactory = this.serviceProviderFixture.Services.GetRequiredService<ICurrencyFactory>();
-            var regionFactory = this.serviceProviderFixture.Services.GetRequiredService<IRegionFactory>();
+
+            _ = this.serviceProviderFixture.Services.GetRequiredService<IRegionFactory>();
 
             var myCurrencyDotNet = new CurrencyConverterApiDotCom(currencyFactory, this.timeProvider, new CurrencyConverterApiDotCom.FreePlan(this.currencyConverterApiKey));
 
-            var pairs = await myCurrencyDotNet.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
+            var pairs = await myCurrencyDotNet.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true);
 
-            pairs.Count().Should().BeGreaterThan(0);
+            _ = pairs.Count().Should().BeGreaterThan(0);
         }
 
         [Fact]
-        public async Task GetExchangeRateAsync001()
+        public async Task GetExchangeRateAsync001Async()
         {
             var currencyFactory = this.serviceProviderFixture.Services.GetRequiredService<ICurrencyFactory>();
-            var regionFactory = this.serviceProviderFixture.Services.GetRequiredService<IRegionFactory>();
+
+            _ = this.serviceProviderFixture.Services.GetRequiredService<IRegionFactory>();
 
             var myCurrencyDotNet = new CurrencyConverterApiDotCom(currencyFactory, this.timeProvider, new CurrencyConverterApiDotCom.FreePlan(this.currencyConverterApiKey));
 
@@ -51,16 +53,17 @@ namespace TIKSN.Finance.ForeignExchange.Tests
             var usd = currencyFactory.Create("USD");
             var pair = new CurrencyPair(usd, amd);
 
-            var rate = await myCurrencyDotNet.GetExchangeRateAsync(pair, DateTimeOffset.Now, default);
+            var rate = await myCurrencyDotNet.GetExchangeRateAsync(pair, DateTimeOffset.Now, default).ConfigureAwait(true);
 
-            rate.Should().BeGreaterThan(decimal.One);
+            _ = rate.Should().BeGreaterThan(decimal.One);
         }
 
         [Fact]
-        public async Task GetExchangeRateAsync002()
+        public async Task GetExchangeRateAsync002Async()
         {
             var currencyFactory = this.serviceProviderFixture.Services.GetRequiredService<ICurrencyFactory>();
-            var regionFactory = this.serviceProviderFixture.Services.GetRequiredService<IRegionFactory>();
+
+            _ = this.serviceProviderFixture.Services.GetRequiredService<IRegionFactory>();
 
             var myCurrencyDotNet = new CurrencyConverterApiDotCom(currencyFactory, this.timeProvider, new CurrencyConverterApiDotCom.FreePlan(this.currencyConverterApiKey));
 
@@ -68,9 +71,9 @@ namespace TIKSN.Finance.ForeignExchange.Tests
             var usd = currencyFactory.Create("USD");
             var pair = new CurrencyPair(amd, usd);
 
-            var rate = await myCurrencyDotNet.GetExchangeRateAsync(pair, DateTimeOffset.Now, default);
+            var rate = await myCurrencyDotNet.GetExchangeRateAsync(pair, DateTimeOffset.Now, default).ConfigureAwait(true);
 
-            rate.Should().BeLessThan(decimal.One);
+            _ = rate.Should().BeLessThan(decimal.One);
         }
     }
 }

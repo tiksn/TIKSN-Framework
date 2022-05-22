@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -289,7 +289,7 @@ namespace TIKSN.Versioning
 
             if (ReleaseComparison == 0)
             {
-                var MilestoneComparison = this.Milestone - that.Milestone;
+                _ = this.Milestone - that.Milestone;
 
                 if (this.Milestone > that.Milestone)
                 {
@@ -323,7 +323,7 @@ namespace TIKSN.Versioning
 
         public bool Equals(Version that)
         {
-            if (ReferenceEquals(that, null))
+            if (that is null)
             {
                 return false;
             }
@@ -463,22 +463,14 @@ namespace TIKSN.Versioning
                 : DefaultPrereleaseNumber;
 
             var milestoneTag = releaseLabels.ElementAt(0);
-            var milestone = Milestone.Release;
 
-            switch (milestoneTag.ToLowerInvariant())
+            return milestoneTag.ToLowerInvariant() switch
             {
-                case "alpha":
-                    return (Milestone.Alpha, prereleaseNumber);
-
-                case "beta":
-                    return (Milestone.Beta, prereleaseNumber);
-
-                case "rc":
-                    return (Milestone.ReleaseCandidate, prereleaseNumber);
-
-                default:
-                    throw new FormatException($"Unknown milestone tag '{milestoneTag}'.");
-            }
+                "alpha" => (Milestone.Alpha, prereleaseNumber),
+                "beta" => (Milestone.Beta, prereleaseNumber),
+                "rc" => (Milestone.ReleaseCandidate, prereleaseNumber),
+                _ => throw new FormatException($"Unknown milestone tag '{milestoneTag}'."),
+            };
         }
 
         private static DateTimeOffset GetReleaseDate(string metadata) => DateTimeOffset.Parse(metadata);
@@ -490,36 +482,20 @@ namespace TIKSN.Versioning
                 return Array.Empty<string>();
             }
 
-            string milestoneTag;
-
-            switch (version.Milestone)
+            var milestoneTag = version.Milestone switch
             {
-                case Milestone.Alpha:
-                    milestoneTag = "alpha";
-                    break;
-
-                case Milestone.Beta:
-                    milestoneTag = "beta";
-                    break;
-
-                case Milestone.ReleaseCandidate:
-                    milestoneTag = "rc";
-                    break;
-
-                case Milestone.Release:
-                    milestoneTag = null;
-                    break;
-
-                default:
-                    throw new NotSupportedException("Unsupported milestone name.");
-            }
-
+                Milestone.Alpha => "alpha",
+                Milestone.Beta => "beta",
+                Milestone.ReleaseCandidate => "rc",
+                Milestone.Release => null,
+                _ => throw new NotSupportedException("Unsupported milestone name."),
+            };
             if (version.prereleaseNumber == DefaultPrereleaseNumber)
             {
-                return new[] {milestoneTag};
+                return new[] { milestoneTag };
             }
 
-            return new[] {milestoneTag, version.prereleaseNumber.ToString()};
+            return new[] { milestoneTag, version.prereleaseNumber.ToString() };
         }
 
         private void ValidateMilestoneAndPrerelease()
@@ -541,5 +517,28 @@ namespace TIKSN.Versioning
 
             throw new NotSupportedException($"Milestone '{this.Milestone}' value is not supported.");
         }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj is null)
+            {
+                return false;
+            }
+
+            throw new NotImplementedException();
+        }
+
+        public override int GetHashCode() => throw new NotImplementedException();
+
+        public static NuGetVersion ToNuGetVersion(Version left, Version right) => throw new NotImplementedException();
+
+        public static SemanticVersion ToSemanticVersion(Version left, Version right) => throw new NotImplementedException();
+
+        public static Version ToVersion(Version left, Version right) => throw new NotImplementedException();
     }
 }

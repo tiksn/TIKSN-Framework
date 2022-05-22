@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using Microsoft.Win32;
@@ -16,10 +16,10 @@ namespace TIKSN.Settings
         }
 
         public T GetLocalSetting<T>(string name, T defaultValue) =>
-            this.Process(RegistryHive.CurrentUser, name, defaultValue, this.GetSetting);
+            this.Process(RegistryHive.CurrentUser, name, defaultValue, GetSetting);
 
         public T GetRoamingSetting<T>(string name, T defaultValue) =>
-            this.Process(RegistryHive.LocalMachine, name, defaultValue, this.GetSetting);
+            this.Process(RegistryHive.LocalMachine, name, defaultValue, GetSetting);
 
         public IReadOnlyCollection<string> ListLocalSetting() =>
             this.Process<IReadOnlyCollection<string>>(RegistryHive.CurrentUser, null, null, this.ListNames);
@@ -28,18 +28,18 @@ namespace TIKSN.Settings
             this.Process<IReadOnlyCollection<string>>(RegistryHive.LocalMachine, null, null, this.ListNames);
 
         public void RemoveLocalSetting(string name) =>
-            this.Process<object>(RegistryHive.CurrentUser, name, null, this.RemoveSetting);
+            this.Process<object>(RegistryHive.CurrentUser, name, null, RemoveSetting);
 
         public void RemoveRoamingSetting(string name) =>
-            this.Process<object>(RegistryHive.LocalMachine, name, null, this.RemoveSetting);
+            this.Process<object>(RegistryHive.LocalMachine, name, null, RemoveSetting);
 
         public void SetLocalSetting<T>(string name, T value) =>
-            this.Process(RegistryHive.CurrentUser, name, value, this.SetSetting);
+            this.Process(RegistryHive.CurrentUser, name, value, SetSetting);
 
         public void SetRoamingSetting<T>(string name, T value) =>
-            this.Process(RegistryHive.LocalMachine, name, value, this.SetSetting);
+            this.Process(RegistryHive.LocalMachine, name, value, SetSetting);
 
-        private T GetSetting<T>(RegistryKey subKey, string name, T defaultValue) =>
+        private static T GetSetting<T>(RegistryKey subKey, string name, T defaultValue) =>
             (T)subKey.GetValue(name, defaultValue);
 
         private IReadOnlyCollection<string> ListNames(RegistryKey subKey, string name,
@@ -54,23 +54,19 @@ namespace TIKSN.Settings
 
             this.ValidateOptions();
 
-            using (var rootKey = RegistryKey.OpenBaseKey(hiveKey, this._options.Value.RegistryView))
-            {
-                using (var registrySubKey = rootKey.CreateSubKey(this._options.Value.SubKey, true))
-                {
-                    return processor(registrySubKey, name, value);
-                }
-            }
+            using var rootKey = RegistryKey.OpenBaseKey(hiveKey, this._options.Value.RegistryView);
+            using var registrySubKey = rootKey.CreateSubKey(this._options.Value.SubKey, true);
+            return processor(registrySubKey, name, value);
         }
 
-        private T RemoveSetting<T>(RegistryKey subKey, string name, T value)
+        private static T RemoveSetting<T>(RegistryKey subKey, string name, T value)
         {
             subKey.DeleteValue(name);
 
             return value;
         }
 
-        private T SetSetting<T>(RegistryKey subKey, string name, T value)
+        private static T SetSetting<T>(RegistryKey subKey, string name, T value)
         {
             subKey.SetValue(name, value);
 

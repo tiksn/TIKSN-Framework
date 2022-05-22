@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -40,7 +40,7 @@ namespace TIKSN.Shell
         {
             foreach (var definedType in assembly.DefinedTypes)
             {
-                this.TryAddType(definedType.AsType());
+                _ = this.TryAddType(definedType.AsType());
             }
         }
 
@@ -67,7 +67,7 @@ namespace TIKSN.Shell
             }
 
             this._logger.LogDebug(804856258, $"Checking command name localization for '{type.FullName}' command.");
-            commandAttribute.GetName(this._stringLocalizer);
+            _ = commandAttribute.GetName(this._stringLocalizer);
 
             var constructors = type.GetConstructors();
             if (constructors.Length != 1)
@@ -85,7 +85,7 @@ namespace TIKSN.Shell
                 {
                     this._logger.LogDebug(804856258,
                         $"Checking string localization for '{type.FullName}' command's '{propertyInfo.Name}' parameter.");
-                    commandParameterAttribute.GetName(this._stringLocalizer);
+                    _ = commandParameterAttribute.GetName(this._stringLocalizer);
 
                     properties.Add(
                         new Tuple<ShellCommandParameterAttribute, PropertyInfo>(commandParameterAttribute,
@@ -111,7 +111,7 @@ namespace TIKSN.Shell
                     continue;
                 }
 
-                command = this.NormalizeCommandName(command);
+                command = NormalizeCommandName(command);
 
                 if (string.Equals(command, this._stringLocalizer.GetRequiredString(LocalizationKeys.Key785393579),
                     StringComparison.OrdinalIgnoreCase))
@@ -122,21 +122,22 @@ namespace TIKSN.Shell
                 if (string.Equals(command, this._stringLocalizer.GetRequiredString(LocalizationKeys.Key427524976),
                     StringComparison.OrdinalIgnoreCase))
                 {
-                    var helpItems = new List<ShellCommandHelpItem>();
-
-                    helpItems.Add(new ShellCommandHelpItem(
-                        this.NormalizeCommandName(
+                    var helpItems = new List<ShellCommandHelpItem>
+                    {
+                        new ShellCommandHelpItem(
+                        NormalizeCommandName(
                             this._stringLocalizer.GetRequiredString(LocalizationKeys.Key785393579)),
-                        Enumerable.Empty<string>()));
-                    helpItems.Add(new ShellCommandHelpItem(
-                        this.NormalizeCommandName(
+                        Enumerable.Empty<string>()),
+                        new ShellCommandHelpItem(
+                        NormalizeCommandName(
                             this._stringLocalizer.GetRequiredString(LocalizationKeys.Key427524976)),
-                        Enumerable.Empty<string>()));
+                        Enumerable.Empty<string>())
+                    };
 
                     foreach (var commandItem in this.commands)
                     {
                         helpItems.Add(new ShellCommandHelpItem(
-                            this.NormalizeCommandName(commandItem.Item2.GetName(this._stringLocalizer)),
+                            NormalizeCommandName(commandItem.Item2.GetName(this._stringLocalizer)),
                             commandItem.Item4.Select(item => item.Item1.GetName(this._stringLocalizer))));
                     }
 
@@ -147,7 +148,7 @@ namespace TIKSN.Shell
                 else
                 {
                     var matches = this.commands.Where(item => string.Equals(command,
-                        this.NormalizeCommandName(item.Item2.GetName(this._stringLocalizer)),
+                        NormalizeCommandName(item.Item2.GetName(this._stringLocalizer)),
                         StringComparison.OrdinalIgnoreCase));
 
                     switch (matches.Count())
@@ -158,7 +159,9 @@ namespace TIKSN.Shell
                             break;
 
                         case 1:
-                            await this.RunCommandAsync(command, matches.Single());
+                            await this.RunCommandAsync(command, matches.Single()).ConfigureAwait(false);
+                            break;
+                        default:
                             break;
                     }
                 }
@@ -167,14 +170,14 @@ namespace TIKSN.Shell
 
         private static void AppendExceptionMessage(StringBuilder messageBuilder, Exception exception)
         {
-            messageBuilder.Append(exception.Message);
+            _ = messageBuilder.Append(exception.Message);
             if (exception.Message.EndsWith(".", StringComparison.OrdinalIgnoreCase))
             {
-                messageBuilder.Append(" ");
+                _ = messageBuilder.Append(' ');
             }
             else
             {
-                messageBuilder.Append(". ");
+                _ = messageBuilder.Append(". ");
             }
         }
 
@@ -188,11 +191,11 @@ namespace TIKSN.Shell
             }
         }
 
-        private string NormalizeCommandName(string command)
+        private static string NormalizeCommandName(string command)
         {
             if (command != null)
             {
-                var additionalSeparators = new[] {"-", "_"};
+                var additionalSeparators = new[] { "-", "_" };
 
                 var normalizedParts = command.Split(null)
                     .SelectMany(whitespaceSeparatedPart =>
@@ -204,7 +207,7 @@ namespace TIKSN.Shell
             return command;
         }
 
-        private void PrintError(EventId eventId, Exception exception, string message)
+        private void PrintError(EventId eventId, Exception exception)
         {
             var messageBuilder = new StringBuilder();
             AppendExceptionMessage(messageBuilder, exception);
@@ -259,62 +262,58 @@ namespace TIKSN.Shell
             Tuple<Type, ShellCommandAttribute, ConstructorInfo,
                 IEnumerable<Tuple<ShellCommandParameterAttribute, PropertyInfo>>> commandInfo)
         {
-            using (var commandScope = this._serviceProvider.CreateScope())
+            using var commandScope = this._serviceProvider.CreateScope();
+            try
             {
+                var commandContextStore =
+                    commandScope.ServiceProvider.GetRequiredService<IShellCommandContext>() as
+                        IShellCommandContextStore;
+
+                commandContextStore.SetCommandName(commandName);
+
+                var args = new List<object>();
+
+                foreach (var parameterInfo in commandInfo.Item3.GetParameters())
+                {
+                    args.Add(commandScope.ServiceProvider.GetRequiredService(parameterInfo.ParameterType));
+                }
+
+                var obj = Activator.CreateInstance(commandInfo.Item1, args.ToArray());
+
+                foreach (var property in commandInfo.Item4)
+                {
+                    var parameter = this.ReadCommandParameter(property);
+
+                    if (parameter != null)
+                    {
+                        property.Item2.SetValue(obj, parameter);
+                    }
+
+                    this._logger.LogTrace(
+                        $"Parameter '{property.Item1.GetName(this._stringLocalizer)}' has value '{property.Item2.GetValue(obj)}'");
+                }
+
+                var command = obj as IShellCommand;
+
                 try
                 {
-                    var commandContextStore =
-                        commandScope.ServiceProvider.GetRequiredService<IShellCommandContext>() as
-                            IShellCommandContextStore;
-
-                    commandContextStore.SetCommandName(commandName);
-
-                    var args = new List<object>();
-
-                    foreach (var parameterInfo in commandInfo.Item3.GetParameters())
+                    using (var cancellationTokenSource = new CancellationTokenSource())
+                    using (this._consoleService.RegisterCancellation(cancellationTokenSource))
                     {
-                        args.Add(commandScope.ServiceProvider.GetRequiredService(parameterInfo.ParameterType));
-                    }
-
-                    var obj = Activator.CreateInstance(commandInfo.Item1, args.ToArray());
-
-                    foreach (var property in commandInfo.Item4)
-                    {
-                        var parameter = this.ReadCommandParameter(property);
-
-                        if (parameter != null)
-                        {
-                            property.Item2.SetValue(obj, parameter);
-                        }
-
-                        this._logger.LogTrace(
-                            $"Parameter '{property.Item1.GetName(this._stringLocalizer)}' has value '{property.Item2.GetValue(obj)}'");
-                    }
-
-                    var command = obj as IShellCommand;
-
-                    try
-                    {
-                        using (var cancellationTokenSource = new CancellationTokenSource())
-                        using (this._consoleService.RegisterCancellation(cancellationTokenSource))
-                        {
-                            await command.ExecuteAsync(cancellationTokenSource.Token);
-                        }
-                    }
-#pragma warning disable CC0004 // Catch block cannot be empty
-                    catch (ShellCommandSuspendedException) { }
-#pragma warning restore CC0004 // Catch block cannot be empty
-                    catch (Exception ex)
-                    {
-                        this.PrintError(1815744366, ex,
-                            this._stringLocalizer.GetRequiredString(LocalizationKeys.Key163077375));
+                        await command.ExecuteAsync(cancellationTokenSource.Token).ConfigureAwait(false);
                     }
                 }
+#pragma warning disable CC0004 // Catch block cannot be empty
+                catch (ShellCommandSuspendedException) { }
+#pragma warning restore CC0004 // Catch block cannot be empty
                 catch (Exception ex)
                 {
-                    this.PrintError(1999436483, ex,
-                        this._stringLocalizer.GetRequiredString(LocalizationKeys.Key548430597));
+                    this.PrintError(1815744366, ex);
                 }
+            }
+            catch (Exception ex)
+            {
+                this.PrintError(1999436483, ex);
             }
         }
 
@@ -326,7 +325,7 @@ namespace TIKSN.Shell
 
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //_logger.LogError(1955486110, ex, "Failed to add type {0} as command.", type.FullName);
                 //_logger.LogDebug(650126203, ex, string.Empty);

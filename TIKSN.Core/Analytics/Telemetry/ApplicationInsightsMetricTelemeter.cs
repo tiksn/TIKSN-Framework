@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.ApplicationInsights.DataContracts;
@@ -7,7 +7,8 @@ namespace TIKSN.Analytics.Telemetry
 {
     public class ApplicationInsightsMetricTelemeter : IMetricTelemeter
     {
-        public Task TrackMetric(string metricName, decimal metricValue)
+        [Obsolete]
+        public Task TrackMetricAsync(string metricName, decimal metricValue)
         {
             try
             {

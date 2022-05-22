@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace TIKSN.Finance.ForeignExchange
 {
@@ -6,17 +6,12 @@ namespace TIKSN.Finance.ForeignExchange
     {
         public ExchangeRate(CurrencyPair pair, DateTimeOffset asOn, decimal rate)
         {
-            if (pair == null)
-            {
-                throw new ArgumentNullException(nameof(pair));
-            }
-
             if (rate <= decimal.Zero)
             {
                 throw new ArgumentOutOfRangeException(nameof(rate), rate, "Rate must be a positive number.");
             }
 
-            this.Pair = pair;
+            this.Pair = pair ?? throw new ArgumentNullException(nameof(pair));
             this.AsOn = asOn;
             this.Rate = rate;
         }

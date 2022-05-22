@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 
 namespace TIKSN.Integration.Correlation
@@ -11,7 +11,7 @@ namespace TIKSN.Integration.Correlation
         /// <summary>
         ///     Empty Correlation ID.
         /// </summary>
-        public static readonly CorrelationID Empty = new();
+        public static readonly CorrelationID Empty;
 
         private readonly byte[] _byteArrayRepresentation;
         private readonly string _stringRepresentation;
@@ -51,7 +51,7 @@ namespace TIKSN.Integration.Correlation
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            if (obj == null || !(obj is CorrelationID))
+            if (obj is null or not CorrelationID)
             {
                 return false;
             }
@@ -90,5 +90,9 @@ namespace TIKSN.Integration.Correlation
         /// </summary>
         /// <returns></returns>
         public override string ToString() => this._stringRepresentation;
+
+        public static bool operator ==(CorrelationID left, CorrelationID right) => left.Equals(right);
+
+        public static bool operator !=(CorrelationID left, CorrelationID right) => !(left == right);
     }
 }

@@ -13,6 +13,8 @@ namespace TIKSN.Finance.Tests.ForeignExchange
     [Collection("ServiceProviderCollection")]
     public class CurrencylayerDotComTests
     {
+        const string skip = "API changed, code needs to be adopted";
+
         private readonly string accessKey = "<put your access key here>";
         private readonly ICurrencyFactory currencyFactory;
         private readonly ITimeProvider timeProvider;
@@ -25,24 +27,24 @@ namespace TIKSN.Finance.Tests.ForeignExchange
             this.serviceProviderFixture = serviceProviderFixture ?? throw new ArgumentNullException(nameof(serviceProviderFixture));
         }
 
-        //[Fact]
-        public async Task GetCurrencyPairs001()
+        [Fact(Skip = skip)]
+        public async Task GetCurrencyPairs001Async()
         {
             var exchange = new CurrencylayerDotCom(this.currencyFactory, this.timeProvider, this.accessKey);
 
-            var pairs = await exchange.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
+            var pairs = await exchange.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true);
 
             Assert.True(pairs.Count() > 0);
         }
 
-        //[Fact]
-        public async Task GetExchangeRateAsync001()
+        [Fact(Skip = skip)]
+        public async Task GetExchangeRateAsync001Async()
         {
             var exchange = new CurrencylayerDotCom(this.currencyFactory, this.timeProvider, this.accessKey);
 
             var pair = new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("UAH"));
 
-            var rate = await exchange.GetExchangeRateAsync(pair, DateTimeOffset.Now, default);
+            var rate = await exchange.GetExchangeRateAsync(pair, DateTimeOffset.Now, default).ConfigureAwait(true);
 
             Assert.True(rate > decimal.Zero);
         }

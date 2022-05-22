@@ -1,4 +1,4 @@
-﻿using Multiformats.Base;
+using Multiformats.Base;
 
 namespace TIKSN.Integration.Correlation
 {

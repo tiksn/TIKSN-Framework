@@ -1,4 +1,4 @@
-﻿using Xunit;
+using Xunit;
 
 namespace TIKSN.Web.Tests
 {
@@ -7,25 +7,25 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void SitemapIndex001()
         {
-            SitemapIndex SIndex = new SitemapIndex();
+            var SIndex = new SitemapIndex();
 
             SIndex.Sitemaps.Add(new System.Uri("http://microsoft.com/"), new System.DateTime(2012, 8, 4, 15, 58, 58, System.DateTimeKind.Utc));
 
-            Assert.Equal(1, SIndex.Sitemaps.Count);
+            _ = Assert.Single(SIndex.Sitemaps);
         }
 
         [Fact]
         public void Write001()
         {
-            SitemapIndex SIndex = new SitemapIndex();
+            var SIndex = new SitemapIndex();
 
-            System.Text.StringBuilder SBuilder = new System.Text.StringBuilder();
+            var SBuilder = new System.Text.StringBuilder();
 
-            System.Xml.XmlWriter XWriter = System.Xml.XmlWriter.Create(SBuilder);
+            var XWriter = System.Xml.XmlWriter.Create(SBuilder);
 
             SIndex.Write(XWriter);
 
-            string XmlOutput = SBuilder.ToString();
+            var XmlOutput = SBuilder.ToString();
 
             Assert.Equal(
                 "<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
@@ -36,18 +36,18 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void Write002()
         {
-            SitemapIndex SIndex = new SitemapIndex();
+            var SIndex = new SitemapIndex();
 
             SIndex.Sitemaps.Add(new System.Uri("http://microsoft.com/"), null);
             SIndex.Sitemaps.Add(new System.Uri("http://microsoft.com/siteindex.xml"), new System.DateTime(2012, 10, 25, 16, 45, 36, System.DateTimeKind.Utc));
 
-            System.Text.StringBuilder SBuilder = new System.Text.StringBuilder();
+            var SBuilder = new System.Text.StringBuilder();
 
-            System.Xml.XmlWriter XWriter = System.Xml.XmlWriter.Create(SBuilder);
+            var XWriter = System.Xml.XmlWriter.Create(SBuilder);
 
             SIndex.Write(XWriter);
 
-            string XmlOutput = SBuilder.ToString();
+            var XmlOutput = SBuilder.ToString();
 
             Assert.Equal(
                 "<?xml version=\"1.0\" encoding=\"utf-16\"?>" +

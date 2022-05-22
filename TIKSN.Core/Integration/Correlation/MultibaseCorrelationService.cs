@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.Extensions.Options;
 using Multiformats.Base;
 
@@ -21,7 +21,7 @@ namespace TIKSN.Integration.Correlation
 
         public CorrelationID Create(string stringRepresentation)
         {
-            var byteArrayRepresentation = Multibase.Decode(stringRepresentation, out MultibaseEncoding encoding);
+            var byteArrayRepresentation = Multibase.Decode(stringRepresentation, out MultibaseEncoding _);
             return new CorrelationID(stringRepresentation, byteArrayRepresentation);
         }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Management.Automation;
 using System.Threading.Tasks;
 
@@ -10,7 +10,7 @@ namespace TIKSN.Analytics.Telemetry
 
         public PowerShellTraceTelemeter(Cmdlet cmdlet) => this.cmdlet = cmdlet;
 
-        public Task TrackTrace(string message, TelemetrySeverityLevel severityLevel)
+        public Task TrackTraceAsync(string message, TelemetrySeverityLevel severityLevel)
         {
             switch (severityLevel)
             {
@@ -39,6 +39,6 @@ namespace TIKSN.Analytics.Telemetry
             return Task.FromResult<object>(null);
         }
 
-        public Task TrackTrace(string message) => this.TrackTrace(message, TelemetrySeverityLevel.Verbose);
+        public Task TrackTraceAsync(string message) => this.TrackTraceAsync(message, TelemetrySeverityLevel.Verbose);
     }
 }

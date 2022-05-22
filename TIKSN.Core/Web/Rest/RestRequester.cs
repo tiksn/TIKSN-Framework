@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -31,7 +31,7 @@ namespace TIKSN.Web.Rest
                                                         nameof(restAuthenticationTokenProvider));
         }
 
-        public async Task<TResult> Request<TResult, TRequest>(TRequest request, CancellationToken cancellationToken)
+        public async Task<TResult> RequestAsync<TResult, TRequest>(TRequest request, CancellationToken cancellationToken)
         {
             var requestType = request.GetType().GetTypeInfo();
 
@@ -104,17 +104,17 @@ namespace TIKSN.Web.Rest
                 }
             }
 
-            await this.SetAuthenticationHeader(restEndpointAttribute, httpClient);
+            await this.SetAuthenticationHeaderAsync(restEndpointAttribute, httpClient).ConfigureAwait(false);
 
-            return await this.MakeRequest<TResult>(httpClient, restEndpointAttribute.Verb, requestUrl, requestContent,
-                requestContentMediaType, restEndpointAttribute.MediaType, cancellationToken);
+            return await this.MakeRequestAsync<TResult>(httpClient, restEndpointAttribute.Verb, requestUrl, requestContent,
+                requestContentMediaType, restEndpointAttribute.MediaType, cancellationToken).ConfigureAwait(false);
         }
 
         private static string ReplaceParameterValueInLocation(string resourceLocation, string parameterName,
             string parameterValue)
         {
-            var escapedParameterValue = parameterValue ?? string.Empty;
-            escapedParameterValue = Uri.EscapeUriString(parameterValue);
+            _ = parameterValue ?? string.Empty;
+            var escapedParameterValue = Uri.EscapeUriString(parameterValue);
 
             resourceLocation = resourceLocation.Replace($"{{{parameterName}}}", escapedParameterValue);
             return resourceLocation;
@@ -124,44 +124,29 @@ namespace TIKSN.Web.Rest
             this._serializerRestFactory.Create(requestContentMediaType).Serialize(requestContent), Encoding.UTF8,
             requestContentMediaType);
 
-        private async Task<TResult> MakeRequest<TResult>(HttpClient httpClient, RestVerb verb, Uri requestUrl,
+        private async Task<TResult> MakeRequestAsync<TResult>(HttpClient httpClient, RestVerb verb, Uri requestUrl,
             object requestContent, string requestContentMediaType, string responseContentMediaType,
             CancellationToken cancellationToken)
         {
-            HttpResponseMessage response;
-            switch (verb)
+            var response = verb switch
             {
-                case RestVerb.Get:
-                    response = await httpClient.GetAsync(requestUrl, cancellationToken);
-                    break;
-
-                case RestVerb.Delete:
-                    response = await httpClient.DeleteAsync(requestUrl, cancellationToken);
-                    break;
-
-                case RestVerb.Put:
-                    response = await httpClient.PutAsync(requestUrl,
-                        this.GetContent(requestContent, requestContentMediaType), cancellationToken);
-                    break;
-
-                case RestVerb.Post:
-                    response = await httpClient.PostAsync(requestUrl,
-                        this.GetContent(requestContent, requestContentMediaType), cancellationToken);
-                    break;
-
-                default:
-                    throw new NotSupportedException($"Request method '{verb.ToString()}' is not supported.");
-            }
-
-            return await this.ParseResponse<TResult>(response, responseContentMediaType);
+                RestVerb.Get => await httpClient.GetAsync(requestUrl, cancellationToken).ConfigureAwait(false),
+                RestVerb.Delete => await httpClient.DeleteAsync(requestUrl, cancellationToken).ConfigureAwait(false),
+                RestVerb.Put => await httpClient.PutAsync(requestUrl,
+this.GetContent(requestContent, requestContentMediaType), cancellationToken).ConfigureAwait(false),
+                RestVerb.Post => await httpClient.PostAsync(requestUrl,
+this.GetContent(requestContent, requestContentMediaType), cancellationToken).ConfigureAwait(false),
+                _ => throw new NotSupportedException($"Request method '{verb}' is not supported."),
+            };
+            return await this.ParseResponseAsync<TResult>(response, responseContentMediaType).ConfigureAwait(false);
         }
 
-        private async Task<TResult> ParseResponse<TResult>(HttpResponseMessage response,
+        private async Task<TResult> ParseResponseAsync<TResult>(HttpResponseMessage response,
             string responseContentMediaType)
         {
             var result = default(TResult);
 
-            var content = await response.Content.ReadAsStringAsync();
+            var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             if (content != null)
             {
@@ -171,10 +156,9 @@ namespace TIKSN.Web.Rest
             return result;
         }
 
-        private async Task SetAuthenticationHeader(RestEndpointAttribute restEndpointAttribute, HttpClient httpClient)
+        private async Task SetAuthenticationHeaderAsync(RestEndpointAttribute restEndpointAttribute, HttpClient httpClient)
         {
-            var authenticationSchema = string.Empty;
-
+            string authenticationSchema;
             switch (restEndpointAttribute.Authentication)
             {
                 case RestAuthenticationType.None:
@@ -190,11 +174,11 @@ namespace TIKSN.Web.Rest
 
                 default:
                     throw new NotSupportedException(
-                        $"Authentication type '{restEndpointAttribute.Authentication.ToString()}' is not supported.");
+                        $"Authentication type '{restEndpointAttribute.Authentication}' is not supported.");
             }
 
             var authenticationToken =
-                await this._restAuthenticationTokenProvider.GetAuthenticationToken(restEndpointAttribute.ApiKey);
+                await this._restAuthenticationTokenProvider.GetAuthenticationTokenAsync(restEndpointAttribute.ApiKey).ConfigureAwait(false);
 
             httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue(authenticationSchema, authenticationToken);

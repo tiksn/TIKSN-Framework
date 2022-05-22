@@ -1,4 +1,4 @@
-﻿using Microsoft.Azure.Cosmos.Table;
+using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Configuration;
 
 namespace TIKSN.Data.CosmosTable

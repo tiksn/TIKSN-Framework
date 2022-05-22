@@ -1,4 +1,4 @@
-﻿using TIKSN.Progress;
+using TIKSN.Progress;
 
 namespace TIKSN.Shell
 {

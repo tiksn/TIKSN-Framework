@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace TIKSN.PowerShell
 {
@@ -16,14 +16,6 @@ namespace TIKSN.PowerShell
             return this._command;
         }
 
-        public void SetCurrentCommand(CommandBase command)
-        {
-            if (command == null)
-            {
-                throw new ArgumentNullException(nameof(command));
-            }
-
-            this._command = command;
-        }
+        public void SetCurrentCommand(CommandBase command) => this._command = command ?? throw new ArgumentNullException(nameof(command));
     }
 }

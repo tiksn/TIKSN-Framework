@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using TIKSN.Finance;
 
 namespace TIKSN.Globalization

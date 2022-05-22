@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,23 +19,13 @@ namespace TIKSN.Data.CosmosTable
             this._options = options;
         }
 
-        public Task AddAsync(T entity, CancellationToken cancellationToken)
+        public Task AddAsync(T entity, CancellationToken cancellationToken) => this._options.Value.AddOption switch
         {
-            switch (this._options.Value.AddOption)
-            {
-                case CosmosTableRepositoryAdapterOptions.AddOptions.Add:
-                    return this._azureTableStorageRepository.AddAsync(entity, cancellationToken);
-
-                case CosmosTableRepositoryAdapterOptions.AddOptions.AddOrMerge:
-                    return this._azureTableStorageRepository.AddOrMergeAsync(entity, cancellationToken);
-
-                case CosmosTableRepositoryAdapterOptions.AddOptions.AddOrReplace:
-                    return this._azureTableStorageRepository.AddOrReplaceAsync(entity, cancellationToken);
-
-                default:
-                    throw new NotSupportedException($"Add option '{this._options.Value.AddOption}' is not supported.");
-            }
-        }
+            CosmosTableRepositoryAdapterOptions.AddOptions.Add => this._azureTableStorageRepository.AddAsync(entity, cancellationToken),
+            CosmosTableRepositoryAdapterOptions.AddOptions.AddOrMerge => this._azureTableStorageRepository.AddOrMergeAsync(entity, cancellationToken),
+            CosmosTableRepositoryAdapterOptions.AddOptions.AddOrReplace => this._azureTableStorageRepository.AddOrReplaceAsync(entity, cancellationToken),
+            _ => throw new NotSupportedException($"Add option '{this._options.Value.AddOption}' is not supported."),
+        };
 
         public Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken) =>
             BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, this.AddAsync);
@@ -46,21 +36,13 @@ namespace TIKSN.Data.CosmosTable
         public Task RemoveRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken) =>
             BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, this.RemoveAsync);
 
-        public Task UpdateAsync(T entity, CancellationToken cancellationToken)
+        public Task UpdateAsync(T entity, CancellationToken cancellationToken) => this._options.Value.UpdateOption switch
         {
-            switch (this._options.Value.UpdateOption)
-            {
-                case CosmosTableRepositoryAdapterOptions.UpdateOptions.Merge:
-                    return this._azureTableStorageRepository.MergeAsync(entity, cancellationToken);
-
-                case CosmosTableRepositoryAdapterOptions.UpdateOptions.Replace:
-                    return this._azureTableStorageRepository.ReplaceAsync(entity, cancellationToken);
-
-                default:
-                    throw new NotSupportedException(
-                        $"Update option '{this._options.Value.AddOption}' is not supported.");
-            }
-        }
+            CosmosTableRepositoryAdapterOptions.UpdateOptions.Merge => this._azureTableStorageRepository.MergeAsync(entity, cancellationToken),
+            CosmosTableRepositoryAdapterOptions.UpdateOptions.Replace => this._azureTableStorageRepository.ReplaceAsync(entity, cancellationToken),
+            _ => throw new NotSupportedException(
+$"Update option '{this._options.Value.AddOption}' is not supported."),
+        };
 
         public Task UpdateRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken) =>
             BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, this.UpdateAsync);

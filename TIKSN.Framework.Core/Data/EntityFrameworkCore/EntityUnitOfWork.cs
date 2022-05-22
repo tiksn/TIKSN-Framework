@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -15,12 +15,12 @@ namespace TIKSN.Data.EntityFrameworkCore
         {
             var tasks = this._dbContexts.Select(dbContext => dbContext.SaveChangesAsync(cancellationToken)).ToArray();
 
-            await Task.WhenAll(tasks);
+            _ = await Task.WhenAll(tasks).ConfigureAwait(false);
         }
 
         public override Task DiscardAsync(CancellationToken cancellationToken)
         {
-            this._dbContexts.Do(dbContext => dbContext.ChangeTracker.Clear());
+            _ = this._dbContexts.Do(dbContext => dbContext.ChangeTracker.Clear());
 
             return Task.CompletedTask;
         }

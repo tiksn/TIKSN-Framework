@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Management.Automation;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,7 +8,7 @@ using Nito.AsyncEx;
 
 namespace TIKSN.PowerShell
 {
-    public abstract class CommandBase : PSCmdlet
+    public abstract class CommandBase : PSCmdlet, IDisposable
     {
         protected CancellationTokenSource cancellationTokenSource;
         private IServiceScope serviceScope;
@@ -35,7 +35,7 @@ namespace TIKSN.PowerShell
         protected abstract IServiceProvider GetServiceProvider();
 
         protected sealed override void ProcessRecord() => AsyncContext.Run(async () =>
-            await this.ProcessRecordAsync(this.cancellationTokenSource.Token));
+            await this.ProcessRecordAsync(this.cancellationTokenSource.Token).ConfigureAwait(false));
 
         protected abstract Task ProcessRecordAsync(CancellationToken cancellationToken);
 
@@ -45,5 +45,7 @@ namespace TIKSN.PowerShell
             base.StopProcessing();
             this.serviceScope.Dispose();
         }
+
+        public void Dispose() => throw new NotImplementedException();
     }
 }

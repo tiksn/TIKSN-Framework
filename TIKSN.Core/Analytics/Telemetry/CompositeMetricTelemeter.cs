@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -18,7 +18,7 @@ namespace TIKSN.Analytics.Telemetry
             this.metricTelemeters = metricTelemeters;
         }
 
-        public async Task TrackMetric(string metricName, decimal metricValue)
+        public async Task TrackMetricAsync(string metricName, decimal metricValue)
         {
             if (this.commonConfiguration.GetConfiguration().IsMetricTrackingEnabled)
             {
@@ -26,7 +26,7 @@ namespace TIKSN.Analytics.Telemetry
                 {
                     try
                     {
-                        await metricTelemeter.TrackMetric(metricName, metricValue);
+                        await metricTelemeter.TrackMetricAsync(metricName, metricValue).ConfigureAwait(false);
                     }
                     catch (Exception ex)
                     {

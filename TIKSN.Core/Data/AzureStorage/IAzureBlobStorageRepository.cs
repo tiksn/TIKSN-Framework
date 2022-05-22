@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Data.AzureStorage
+namespace TIKSN.Data.AzureStorage
 {
     public interface IAzureBlobStorageRepository : IFileRepository
     {

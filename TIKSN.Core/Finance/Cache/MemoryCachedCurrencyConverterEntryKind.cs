@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Finance.Cache
+namespace TIKSN.Finance.Cache
 {
     public enum MemoryCachedCurrencyConverterEntryKind
     {

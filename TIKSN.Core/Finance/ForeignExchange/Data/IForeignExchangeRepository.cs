@@ -1,4 +1,4 @@
-﻿using TIKSN.Data;
+using TIKSN.Data;
 
 namespace TIKSN.Finance.ForeignExchange.Data
 {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -91,11 +91,11 @@ namespace TIKSN.Finance.Cache
             }
 
             var actualMoney =
-                await this._originalConverter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken);
+                await this._originalConverter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
 
             var actualRate = actualMoney.Amount / baseMoney.Amount;
 
-            this.AddToCache(this.cachedRates, this.RatesCacheCapacity,
+            AddToCache(this.cachedRates, this.RatesCacheCapacity,
                 new CachedRate(pair, actualRate, asOn, this._timeProvider));
 
             return actualMoney;
@@ -111,9 +111,9 @@ namespace TIKSN.Finance.Cache
                 return cachedPairs.CurrencyPairs;
             }
 
-            var actualPairs = await this._originalConverter.GetCurrencyPairsAsync(asOn, cancellationToken);
+            var actualPairs = await this._originalConverter.GetCurrencyPairsAsync(asOn, cancellationToken).ConfigureAwait(false);
 
-            this.AddToCache(this.cachedCurrencyPairs, this.CurrencyPairsCacheCapacity,
+            AddToCache(this.cachedCurrencyPairs, this.CurrencyPairsCacheCapacity,
                 new CachedCurrencyPairs(actualPairs, asOn, this._timeProvider));
 
             return actualPairs;
@@ -130,9 +130,9 @@ namespace TIKSN.Finance.Cache
                 return cachedRate.ExchangeRate;
             }
 
-            var actualRate = await this._originalConverter.GetExchangeRateAsync(pair, asOn, cancellationToken);
+            var actualRate = await this._originalConverter.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
 
-            this.AddToCache(this.cachedRates, this.RatesCacheCapacity,
+            AddToCache(this.cachedRates, this.RatesCacheCapacity,
                 new CachedRate(pair, actualRate, asOn, this._timeProvider));
 
             return actualRate;
@@ -174,7 +174,7 @@ namespace TIKSN.Finance.Cache
             return false;
         }
 
-        private void AddToCache<T>(List<T> cache, int? capacity, T itemToCache) where T : CachedData
+        private static void AddToCache<T>(List<T> cache, int? capacity, T itemToCache) where T : CachedData
         {
             lock (cache)
             {
@@ -186,7 +186,7 @@ namespace TIKSN.Finance.Cache
                         {
                             var itemToRemove = cache.OrderBy(item => item.LastAccess).First();
 
-                            cache.Remove(itemToRemove);
+                            _ = cache.Remove(itemToRemove);
                         }
 
                         cache.Add(itemToCache);

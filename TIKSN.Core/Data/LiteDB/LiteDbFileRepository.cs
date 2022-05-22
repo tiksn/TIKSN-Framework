@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,54 +35,48 @@ namespace TIKSN.Data.LiteDB
         public Task<IFile<TIdentity, TMetadata>> DownloadWithMetadataAsync(TIdentity id,
             CancellationToken cancellationToken)
         {
-            using (var stream = new RecyclableMemoryStream(this._recyclableMemoryStreamManager))
-            {
-                var fileInfo = this._liteStorage.Download(id, stream);
+            using var stream = new RecyclableMemoryStream(this._recyclableMemoryStreamManager);
+            var fileInfo = this._liteStorage.Download(id, stream);
 
-                var file = new File<TIdentity, TMetadata>(fileInfo.Id, fileInfo.Filename,
-                    BsonMapper.Global.ToObject<TMetadata>(fileInfo.Metadata), stream.ToArray());
-                return Task.FromResult<IFile<TIdentity, TMetadata>>(file);
-            }
+            var file = new File<TIdentity, TMetadata>(fileInfo.Id, fileInfo.Filename,
+                BsonMapper.Global.ToObject<TMetadata>(fileInfo.Metadata), stream.ToArray());
+            return Task.FromResult<IFile<TIdentity, TMetadata>>(file);
         }
 
-        public async Task UploadAsync(TIdentity id, string path, byte[] content, TMetadata metadata,
+        public Task UploadAsync(TIdentity id, string path, byte[] content, TMetadata metadata,
             CancellationToken cancellationToken)
         {
-            using (var stream = new MemoryStream(content))
-            {
-                this._liteStorage.Upload(id, path, stream);
-                this._liteStorage.SetMetadata(id, BsonMapper.Global.ToDocument(metadata));
-            }
+            using var stream = new MemoryStream(content);
+            _ = this._liteStorage.Upload(id, path, stream);
+            _ = this._liteStorage.SetMetadata(id, BsonMapper.Global.ToDocument(metadata));
+            return Task.CompletedTask;
         }
 
         public Task DeleteByIdAsync(TIdentity id, CancellationToken cancellationToken)
         {
-            this._liteStorage.Delete(id);
+            _ = this._liteStorage.Delete(id);
 
             return Task.CompletedTask;
         }
 
         public Task<IFile<TIdentity>> DownloadByIdAsync(TIdentity id, CancellationToken cancellationToken)
         {
-            using (var stream = new RecyclableMemoryStream(this._recyclableMemoryStreamManager))
-            {
-                var fileInfo = this._liteStorage.Download(id, stream);
+            using var stream = new RecyclableMemoryStream(this._recyclableMemoryStreamManager);
+            var fileInfo = this._liteStorage.Download(id, stream);
 
-                var file = new File<TIdentity>(fileInfo.Id, fileInfo.Filename, stream.ToArray());
-                return Task.FromResult<IFile<TIdentity>>(file);
-            }
+            var file = new File<TIdentity>(fileInfo.Id, fileInfo.Filename, stream.ToArray());
+            return Task.FromResult<IFile<TIdentity>>(file);
         }
 
         public Task<bool> ExistsByIdAsync(TIdentity id, CancellationToken cancellationToken) =>
             Task.FromResult(this._liteStorage.Exists(id));
 
-        public async Task UploadByIdAsync(TIdentity id, string path, byte[] content,
+        public Task UploadByIdAsync(TIdentity id, string path, byte[] content,
             CancellationToken cancellationToken)
         {
-            using (var stream = new MemoryStream(content))
-            {
-                this._liteStorage.Upload(id, path, stream);
-            }
+            using var stream = new MemoryStream(content);
+            _ = this._liteStorage.Upload(id, path, stream);
+            return Task.CompletedTask;
         }
     }
 }

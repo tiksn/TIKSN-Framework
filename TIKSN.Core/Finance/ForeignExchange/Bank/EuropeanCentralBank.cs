@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -34,7 +34,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             DateTimeOffset asOn, CancellationToken cancellationToken)
         {
             var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
-            var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken);
+            var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
@@ -44,7 +44,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             this.VerifyDate(asOn);
 
-            var rates = await this.GetExchangeRatesAsync(asOn, cancellationToken);
+            var rates = await this.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
 
             var result = new List<CurrencyPair>();
 
@@ -62,7 +62,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             this.VerifyDate(asOn);
 
-            var rates = await this.GetExchangeRatesAsync(asOn, cancellationToken);
+            var rates = await this.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
 
             var rate = rates.SingleOrDefault(item => item.Pair == pair);
             if (rate != null)
@@ -84,41 +84,39 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             var requestURL = GetRatesUrl(asOn, this._timeProvider);
 
-            using (var httpClient = new HttpClient())
+            using var httpClient = new HttpClient();
+            var responseStream = await httpClient.GetStreamAsync(requestURL).ConfigureAwait(false);
+
+            var xdoc = XDocument.Load(responseStream);
+
+            var groupsCubes = xdoc.Element("{http://www.gesmes.org/xml/2002-08-01}Envelope")
+                .Element("{http://www.ecb.int/vocabulary/2002-08-01/eurofxref}Cube")
+                .Elements("{http://www.ecb.int/vocabulary/2002-08-01/eurofxref}Cube");
+
+            //var groupsCubesCollection = groupsCubes.Select(item => new Tuple<XElement, DateTimeOffset>(item, DateTimeOffset.Parse(item.Attribute("time").Value)));
+
+            //var closestCubeDateDifference = groupsCubesCollection.Where(item => item.Item2 <= asOn).Min(item => asOn - item.Item2);
+
+            //var groupCubes = groupsCubesCollection.First(item => asOn - item.Item2 == closestCubeDateDifference);
+
+            var groupCubes = groupsCubes
+                .Select(x =>
+                    new Tuple<XElement, DateTimeOffset>(x, DateTimeOffset.Parse(x.Attribute("time").Value)))
+                .Where(z => z.Item2 <= asOn).OrderByDescending(y => y.Item2).First();
+
+            var rates = new List<ExchangeRate>();
+
+            foreach (var rateCube in groupCubes.Item1.Elements(
+                "{http://www.ecb.int/vocabulary/2002-08-01/eurofxref}Cube"))
             {
-                var responseStream = await httpClient.GetStreamAsync(requestURL);
+                var currencyCode = rateCube.Attribute("currency").Value;
+                var rate = decimal.Parse(rateCube.Attribute("rate").Value);
 
-                var xdoc = XDocument.Load(responseStream);
-
-                var groupsCubes = xdoc.Element("{http://www.gesmes.org/xml/2002-08-01}Envelope")
-                    .Element("{http://www.ecb.int/vocabulary/2002-08-01/eurofxref}Cube")
-                    .Elements("{http://www.ecb.int/vocabulary/2002-08-01/eurofxref}Cube");
-
-                //var groupsCubesCollection = groupsCubes.Select(item => new Tuple<XElement, DateTimeOffset>(item, DateTimeOffset.Parse(item.Attribute("time").Value)));
-
-                //var closestCubeDateDifference = groupsCubesCollection.Where(item => item.Item2 <= asOn).Min(item => asOn - item.Item2);
-
-                //var groupCubes = groupsCubesCollection.First(item => asOn - item.Item2 == closestCubeDateDifference);
-
-                var groupCubes = groupsCubes
-                    .Select(x =>
-                        new Tuple<XElement, DateTimeOffset>(x, DateTimeOffset.Parse(x.Attribute("time").Value)))
-                    .Where(z => z.Item2 <= asOn).OrderByDescending(y => y.Item2).First();
-
-                var rates = new List<ExchangeRate>();
-
-                foreach (var rateCube in groupCubes.Item1.Elements(
-                    "{http://www.ecb.int/vocabulary/2002-08-01/eurofxref}Cube"))
-                {
-                    var currencyCode = rateCube.Attribute("currency").Value;
-                    var rate = decimal.Parse(rateCube.Attribute("rate").Value);
-
-                    rates.Add(new ExchangeRate(new CurrencyPair(Euro, this._currencyFactory.Create(currencyCode)),
-                        groupCubes.Item2, rate));
-                }
-
-                return rates;
+                rates.Add(new ExchangeRate(new CurrencyPair(Euro, this._currencyFactory.Create(currencyCode)),
+                    groupCubes.Item2, rate));
             }
+
+            return rates;
         }
 
         private static string GetRatesUrl(DateTimeOffset asOn, ITimeProvider timeProvider)

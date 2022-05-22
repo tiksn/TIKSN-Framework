@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,203 +9,207 @@ namespace TIKSN.Finance.Tests
     public class FixedRateCurrencyConverterTests
     {
         [Fact]
-        public async Task ConvertCurrency001()
+        public async Task ConvertCurrency001Async()
         {
-            RegionInfo UnitedStates = new RegionInfo("US");
-            RegionInfo UnitedKingdom = new RegionInfo("GB");
+            var UnitedStates = new RegionInfo("US");
+            var UnitedKingdom = new RegionInfo("GB");
 
-            CurrencyInfo USDollar = new CurrencyInfo(UnitedStates);
-            CurrencyInfo PoundSterling = new CurrencyInfo(UnitedKingdom);
+            var USDollar = new CurrencyInfo(UnitedStates);
+            var PoundSterling = new CurrencyInfo(UnitedKingdom);
 
-            Money Initial = new Money(USDollar, 100);
+            var Initial = new Money(USDollar, 100);
 
-            FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
+            var converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
-            Money Final = await converter.ConvertCurrencyAsync(Initial, PoundSterling, DateTime.Now, default);
+            var Final = await converter.ConvertCurrencyAsync(Initial, PoundSterling, DateTime.Now, default).ConfigureAwait(true);
 
             Assert.Equal(PoundSterling, Final.Currency);
             Assert.Equal(200m, Final.Amount);
         }
 
         [Fact]
-        public async Task ConvertCurrency002()
+        public async Task ConvertCurrency002Async()
         {
-            RegionInfo UnitedStates = new RegionInfo("US");
-            RegionInfo UnitedKingdom = new RegionInfo("GB");
-            RegionInfo Italy = new RegionInfo("IT");
+            var UnitedStates = new RegionInfo("US");
+            var UnitedKingdom = new RegionInfo("GB");
+            var Italy = new RegionInfo("IT");
 
-            CurrencyInfo USDollar = new CurrencyInfo(UnitedStates);
-            CurrencyInfo PoundSterling = new CurrencyInfo(UnitedKingdom);
-            CurrencyInfo Euro = new CurrencyInfo(Italy);
+            var USDollar = new CurrencyInfo(UnitedStates);
+            var PoundSterling = new CurrencyInfo(UnitedKingdom);
+            var Euro = new CurrencyInfo(Italy);
 
-            Money Initial = new Money(USDollar, 100);
+            var Initial = new Money(USDollar, 100);
 
-            FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
+            var converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
-            await Assert.ThrowsAsync<ArgumentException>(
-                    async () => await converter.ConvertCurrencyAsync(Initial, Euro, DateTimeOffset.Now, default));
+            _ = await Assert.ThrowsAsync<ArgumentException>(
+                    async () => await converter.ConvertCurrencyAsync(Initial, Euro, DateTimeOffset.Now, default).ConfigureAwait(true)).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task ConvertCurrency003()
+        public async Task ConvertCurrency003Async()
         {
-            RegionInfo UnitedStates = new RegionInfo("US");
-            RegionInfo UnitedKingdom = new RegionInfo("GB");
-            RegionInfo Italy = new RegionInfo("IT");
-            RegionInfo Armenia = new RegionInfo("AM");
+            var UnitedStates = new RegionInfo("US");
+            var UnitedKingdom = new RegionInfo("GB");
+            var Italy = new RegionInfo("IT");
+            var Armenia = new RegionInfo("AM");
 
-            CurrencyInfo USDollar = new CurrencyInfo(UnitedStates);
-            CurrencyInfo PoundSterling = new CurrencyInfo(UnitedKingdom);
-            CurrencyInfo Euro = new CurrencyInfo(Italy);
-            CurrencyInfo ArmenianDram = new CurrencyInfo(Armenia);
+            var USDollar = new CurrencyInfo(UnitedStates);
+            var PoundSterling = new CurrencyInfo(UnitedKingdom);
+            var Euro = new CurrencyInfo(Italy);
+            var ArmenianDram = new CurrencyInfo(Armenia);
 
-            Money Initial = new Money(ArmenianDram, 100);
+            var Initial = new Money(ArmenianDram, 100);
 
-            FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
+            var converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
-            await Assert.ThrowsAsync<ArgumentException>(
-                    async () => await converter.ConvertCurrencyAsync(Initial, Euro, DateTimeOffset.Now, default));
+            _ = await Assert.ThrowsAsync<ArgumentException>(
+                    async () => await converter.ConvertCurrencyAsync(Initial, Euro, DateTimeOffset.Now, default).ConfigureAwait(true)).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task CurrencyPair001()
+        public Task CurrencyPair001Async()
         {
-            RegionInfo UnitedStates = new RegionInfo("US");
-            RegionInfo UnitedKingdom = new RegionInfo("GB");
-            RegionInfo Italy = new RegionInfo("IT");
+            var UnitedStates = new RegionInfo("US");
+            var UnitedKingdom = new RegionInfo("GB");
+            var Italy = new RegionInfo("IT");
 
-            CurrencyInfo USDollar = new CurrencyInfo(UnitedStates);
-            CurrencyInfo PoundSterling = new CurrencyInfo(UnitedKingdom);
-            CurrencyInfo Euro = new CurrencyInfo(Italy);
+            var USDollar = new CurrencyInfo(UnitedStates);
+            var PoundSterling = new CurrencyInfo(UnitedKingdom);
 
-            FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
+            _ = new CurrencyInfo(Italy);
+
+            var converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
             Assert.True(ReferenceEquals(converter.CurrencyPair.BaseCurrency, USDollar));
-            Assert.True(object.ReferenceEquals(converter.CurrencyPair.CounterCurrency, PoundSterling));
+            Assert.True(ReferenceEquals(converter.CurrencyPair.CounterCurrency, PoundSterling));
+            return Task.CompletedTask;
         }
 
         [Fact]
-        public async Task FixedRateCurrencyConverter001()
+        public Task FixedRateCurrencyConverter001Async()
         {
-            Assert.Throws<ArgumentNullException>(
+            _ = Assert.Throws<ArgumentNullException>(
                     () => new FixedRateCurrencyConverter(null, 0.5m));
+            return Task.CompletedTask;
         }
 
         [Fact]
-        public async Task FixedRateCurrencyConverter002()
+        public Task FixedRateCurrencyConverter002Async()
         {
-            RegionInfo US = new RegionInfo("US");
-            RegionInfo AM = new RegionInfo("AM");
+            var US = new RegionInfo("US");
+            var AM = new RegionInfo("AM");
 
-            CurrencyInfo USD = new CurrencyInfo(US);
-            CurrencyInfo AMD = new CurrencyInfo(AM);
+            var USD = new CurrencyInfo(US);
+            var AMD = new CurrencyInfo(AM);
 
-            CurrencyPair pair = new CurrencyPair(USD, AMD);
+            var pair = new CurrencyPair(USD, AMD);
 
-            Assert.Throws<ArgumentException>(
+            _ = Assert.Throws<ArgumentException>(
                     () => new FixedRateCurrencyConverter(pair, -0.5m));
+            return Task.CompletedTask;
         }
 
         [Fact]
-        public async Task GetCurrencyPairs001()
+        public async Task GetCurrencyPairs001Async()
         {
-            RegionInfo UnitedStates = new RegionInfo("US");
-            RegionInfo UnitedKingdom = new RegionInfo("GB");
+            var UnitedStates = new RegionInfo("US");
+            var UnitedKingdom = new RegionInfo("GB");
 
-            CurrencyInfo USDollar = new CurrencyInfo(UnitedStates);
-            CurrencyInfo PoundSterling = new CurrencyInfo(UnitedKingdom);
+            var USDollar = new CurrencyInfo(UnitedStates);
+            var PoundSterling = new CurrencyInfo(UnitedKingdom);
 
             var pair = new CurrencyPair(USDollar, PoundSterling);
 
-            FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(pair, 2m);
+            var converter = new FixedRateCurrencyConverter(pair, 2m);
 
-            Assert.Equal<CurrencyInfo>(USDollar, converter.CurrencyPair.BaseCurrency);
-            Assert.Equal<CurrencyInfo>(PoundSterling, converter.CurrencyPair.CounterCurrency);
+            Assert.Equal(USDollar, converter.CurrencyPair.BaseCurrency);
+            Assert.Equal(PoundSterling, converter.CurrencyPair.CounterCurrency);
 
-            Assert.True(object.ReferenceEquals(pair, (await converter.GetCurrencyPairsAsync(DateTimeOffset.Now, default)).Single()));
+            Assert.True(ReferenceEquals(pair, (await converter.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true)).Single()));
         }
 
         [Fact]
-        public async Task GetExchangeRate001()
+        public async Task GetExchangeRate001Async()
         {
-            RegionInfo UnitedStates = new RegionInfo("US");
-            RegionInfo UnitedKingdom = new RegionInfo("GB");
+            var UnitedStates = new RegionInfo("US");
+            var UnitedKingdom = new RegionInfo("GB");
 
-            CurrencyInfo USDollar = new CurrencyInfo(UnitedStates);
-            CurrencyInfo PoundSterling = new CurrencyInfo(UnitedKingdom);
+            var USDollar = new CurrencyInfo(UnitedStates);
+            var PoundSterling = new CurrencyInfo(UnitedKingdom);
 
-            FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
+            var converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
-            Assert.Equal(2m, await converter.GetExchangeRateAsync(new CurrencyPair(USDollar, PoundSterling), DateTimeOffset.Now, default));
+            Assert.Equal(2m, await converter.GetExchangeRateAsync(new CurrencyPair(USDollar, PoundSterling), DateTimeOffset.Now, default).ConfigureAwait(true));
         }
 
         [Fact]
-        public async Task GetExchangeRate002()
+        public async Task GetExchangeRate002Async()
         {
-            RegionInfo UnitedStates = new RegionInfo("US");
-            RegionInfo UnitedKingdom = new RegionInfo("GB");
+            var UnitedStates = new RegionInfo("US");
+            var UnitedKingdom = new RegionInfo("GB");
 
-            CurrencyInfo USDollar = new CurrencyInfo(UnitedStates);
-            CurrencyInfo PoundSterling = new CurrencyInfo(UnitedKingdom);
+            var USDollar = new CurrencyInfo(UnitedStates);
+            var PoundSterling = new CurrencyInfo(UnitedKingdom);
 
-            FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
+            var converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
-            await Assert.ThrowsAsync<ArgumentException>(
-                    async () => await converter.GetExchangeRateAsync(new CurrencyPair(PoundSterling, USDollar), DateTimeOffset.Now, default));
+            _ = await Assert.ThrowsAsync<ArgumentException>(
+                    async () => await converter.GetExchangeRateAsync(new CurrencyPair(PoundSterling, USDollar), DateTimeOffset.Now, default).ConfigureAwait(true)).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task GetExchangeRate003()
+        public async Task GetExchangeRate003Async()
         {
-            RegionInfo UnitedStates = new RegionInfo("US");
-            RegionInfo UnitedKingdom = new RegionInfo("GB");
-            RegionInfo Italy = new RegionInfo("IT");
+            var UnitedStates = new RegionInfo("US");
+            var UnitedKingdom = new RegionInfo("GB");
+            var Italy = new RegionInfo("IT");
 
-            CurrencyInfo USDollar = new CurrencyInfo(UnitedStates);
-            CurrencyInfo PoundSterling = new CurrencyInfo(UnitedKingdom);
-            CurrencyInfo Euro = new CurrencyInfo(Italy);
+            var USDollar = new CurrencyInfo(UnitedStates);
+            var PoundSterling = new CurrencyInfo(UnitedKingdom);
+            var Euro = new CurrencyInfo(Italy);
 
-            FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
+            var converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
-            await Assert.ThrowsAsync<ArgumentException>(
-                    async () => await converter.GetExchangeRateAsync(new CurrencyPair(Euro, USDollar), DateTimeOffset.Now, default));
+            _ = await Assert.ThrowsAsync<ArgumentException>(
+                    async () => await converter.GetExchangeRateAsync(new CurrencyPair(Euro, USDollar), DateTimeOffset.Now, default).ConfigureAwait(true)).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task GetExchangeRate004()
+        public async Task GetExchangeRate004Async()
         {
-            RegionInfo UnitedStates = new RegionInfo("US");
-            RegionInfo UnitedKingdom = new RegionInfo("GB");
-            RegionInfo Italy = new RegionInfo("IT");
+            var UnitedStates = new RegionInfo("US");
+            var UnitedKingdom = new RegionInfo("GB");
+            var Italy = new RegionInfo("IT");
 
-            CurrencyInfo USDollar = new CurrencyInfo(UnitedStates);
-            CurrencyInfo PoundSterling = new CurrencyInfo(UnitedKingdom);
-            CurrencyInfo Euro = new CurrencyInfo(Italy);
+            var USDollar = new CurrencyInfo(UnitedStates);
+            var PoundSterling = new CurrencyInfo(UnitedKingdom);
+            var Euro = new CurrencyInfo(Italy);
 
-            FixedRateCurrencyConverter converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
+            var converter = new FixedRateCurrencyConverter(new CurrencyPair(USDollar, PoundSterling), 2m);
 
-            await Assert.ThrowsAsync<ArgumentException>(
-                    async () => await converter.GetExchangeRateAsync(new CurrencyPair(USDollar, Euro), DateTimeOffset.Now, default));
+            _ = await Assert.ThrowsAsync<ArgumentException>(
+                    async () => await converter.GetExchangeRateAsync(new CurrencyPair(USDollar, Euro), DateTimeOffset.Now, default).ConfigureAwait(true)).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task GetExchangeRate005()
+        public async Task GetExchangeRate005Async()
         {
-            RegionInfo UnitedStates = new RegionInfo("US");
-            RegionInfo UnitedKingdom = new RegionInfo("GB");
+            var UnitedStates = new RegionInfo("US");
+            var UnitedKingdom = new RegionInfo("GB");
 
-            CurrencyInfo USDollar = new CurrencyInfo(UnitedStates);
-            CurrencyInfo PoundSterling = new CurrencyInfo(UnitedKingdom);
+            var USDollar = new CurrencyInfo(UnitedStates);
+            var PoundSterling = new CurrencyInfo(UnitedKingdom);
 
-            CurrencyPair pair = new CurrencyPair(PoundSterling, USDollar);
+            var pair = new CurrencyPair(PoundSterling, USDollar);
 
             var converter = new FixedRateCurrencyConverter(pair, 1.6m);
 
             var LastMonth = DateTimeOffset.Now.AddMonths(-1);
             var NextMonth = DateTimeOffset.Now.AddMonths(1);
 
-            decimal RateInLastMonth = await converter.GetExchangeRateAsync(pair, LastMonth, default);
-            decimal RateInNextMonth = await converter.GetExchangeRateAsync(pair, NextMonth, default);
+            var RateInLastMonth = await converter.GetExchangeRateAsync(pair, LastMonth, default).ConfigureAwait(true);
+            var RateInNextMonth = await converter.GetExchangeRateAsync(pair, NextMonth, default).ConfigureAwait(true);
 
             Assert.True(RateInLastMonth == RateInNextMonth);
         }

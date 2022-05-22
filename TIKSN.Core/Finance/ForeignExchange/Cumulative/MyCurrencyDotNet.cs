@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -25,7 +25,7 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
             DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var rate = await this.GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken);
+            var rate = await this.GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
@@ -38,7 +38,7 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
                 throw new ArgumentOutOfRangeException(nameof(asOn));
             }
 
-            var exchangeRates = await this.GetExchangeRatesAsync(asOn, cancellationToken);
+            var exchangeRates = await this.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
 
             return exchangeRates.Select(item => item.Pair).ToArray();
         }
@@ -52,29 +52,27 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
         {
             ValidateDate(asOn, this._timeProvider);
 
-            using (var httpClient = new HttpClient())
-            {
-                var jsonExchangeRates = await httpClient.GetStringAsync(ResourceUrl);
+            using var httpClient = new HttpClient();
+            var jsonExchangeRates = await httpClient.GetStringAsync(ResourceUrl).ConfigureAwait(false);
 
-                var exchangeResponse = JsonConvert.DeserializeObject<ExchangeResponse>(jsonExchangeRates);
-                var exchangeRates = exchangeResponse.Rates;
+            var exchangeResponse = JsonConvert.DeserializeObject<ExchangeResponse>(jsonExchangeRates);
+            var exchangeRates = exchangeResponse.Rates;
 
-                var baseCurrency = this._currencyFactory.Create(exchangeResponse.BaseCurrency);
+            var baseCurrency = this._currencyFactory.Create(exchangeResponse.BaseCurrency);
 
-                var rates = exchangeRates
-                    .Select(item => (currency: this._currencyFactory.Create(item.CurrencyCode), rate: item.Rate))
-                    .Where(item => item.currency != baseCurrency)
-                    .ToArray();
+            var rates = exchangeRates
+                .Select(item => (currency: this._currencyFactory.Create(item.CurrencyCode), rate: item.Rate))
+                .Where(item => item.currency != baseCurrency)
+                .ToArray();
 
-                return rates
-                    .Select(item =>
-                        new ForeignExchange.ExchangeRate(new CurrencyPair(baseCurrency, item.currency), asOn,
-                            item.rate))
-                    .Concat(rates
-                        .Select(item => new ForeignExchange.ExchangeRate(new CurrencyPair(item.currency, baseCurrency),
-                            asOn, decimal.One / item.rate)))
-                    .ToArray();
-            }
+            return rates
+                .Select(item =>
+                    new ForeignExchange.ExchangeRate(new CurrencyPair(baseCurrency, item.currency), asOn,
+                        item.rate))
+                .Concat(rates
+                    .Select(item => new ForeignExchange.ExchangeRate(new CurrencyPair(item.currency, baseCurrency),
+                        asOn, decimal.One / item.rate)))
+                .ToArray();
         }
 
         private static void ValidateDate(DateTimeOffset asOn, ITimeProvider timeProvider)
@@ -90,7 +88,7 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
         {
             ValidateDate(asOn, this._timeProvider);
 
-            var exchangeRates = await this.GetExchangeRatesAsync(asOn, cancellationToken);
+            var exchangeRates = await this.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
 
             var exchangeRate = exchangeRates.SingleOrDefault(item =>
                 item.Pair.BaseCurrency == baseCurrency && item.Pair.CounterCurrency == counterCurrency);

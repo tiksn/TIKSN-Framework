@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +22,7 @@ namespace TIKSN.Data.EntityFrameworkCore
                 throw new ArgumentNullException(nameof(entity));
             }
 
-            this.dbContext.Add(entity);
+            _ = this.dbContext.Add(entity);
 
             return Task.CompletedTask;
         }

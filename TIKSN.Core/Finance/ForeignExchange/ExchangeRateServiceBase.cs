@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -60,7 +60,7 @@ namespace TIKSN.Finance.ForeignExchange
         {
             var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
-            var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken);
+            var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
@@ -83,19 +83,19 @@ namespace TIKSN.Finance.ForeignExchange
 
                     var rates = await this._exchangeRateRepository.SearchAsync(provider.Key,
                         pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, dateFrom, dateTo,
-                        cancellationToken);
+                        cancellationToken).ConfigureAwait(false);
 
                     if (rates.Count == 0)
                     {
                         if (provider.Value.BatchProvider != null)
                         {
                             await this.FetchExchangeRatesAsync(provider.Key, provider.Value.BatchProvider, asOn,
-                                cancellationToken);
+                                cancellationToken).ConfigureAwait(false);
                         }
                         else if (provider.Value.IndividualProvider != null)
                         {
                             await this.FetchExchangeRatesAsync(provider.Key, provider.Value.IndividualProvider, pair,
-                                asOn, cancellationToken);
+                                asOn, cancellationToken).ConfigureAwait(false);
                         }
                         else
                         {
@@ -105,7 +105,7 @@ namespace TIKSN.Finance.ForeignExchange
 
                         var rate = await this._exchangeRateRepository.GetOrDefaultAsync(provider.Key,
                             pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, asOn,
-                            cancellationToken);
+                            cancellationToken).ConfigureAwait(false);
 
                         if (rate != null)
                         {
@@ -118,7 +118,7 @@ namespace TIKSN.Finance.ForeignExchange
                     }
                 }
 
-                await uow.CompleteAsync(cancellationToken);
+                await uow.CompleteAsync(cancellationToken).ConfigureAwait(false);
             }
 
             var exchangeRateEntity = combinedRates
@@ -138,7 +138,7 @@ namespace TIKSN.Finance.ForeignExchange
                 foreach (var provider in this._providers)
                 {
                     var forex = await this._foreignExchangeRepository.GetOrDefaultAsync(provider.Key,
-                        cancellationToken);
+                        cancellationToken).ConfigureAwait(false);
 
                     if (forex == null)
                     {
@@ -150,21 +150,21 @@ namespace TIKSN.Finance.ForeignExchange
                             CountryCode = provider.Value.Country.Name
                         };
 
-                        await this._foreignExchangeRepository.AddAsync(forex, cancellationToken);
+                        await this._foreignExchangeRepository.AddAsync(forex, cancellationToken).ConfigureAwait(false);
                     }
                 }
 
-                await uow.CompleteAsync(cancellationToken);
+                await uow.CompleteAsync(cancellationToken).ConfigureAwait(false);
             }
 
-            await nextIdLocker.WaitAsync();
+            await nextIdLocker.WaitAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                nextID = await this._exchangeRateRepository.GetMaximalIdAsync(cancellationToken);
+                nextID = await this._exchangeRateRepository.GetMaximalIdAsync(cancellationToken).ConfigureAwait(false);
             }
             finally
             {
-                nextIdLocker.Release();
+                _ = nextIdLocker.Release();
             }
         }
 
@@ -181,9 +181,9 @@ namespace TIKSN.Finance.ForeignExchange
         {
             try
             {
-                var exchangeRates = await batchProvider.GetExchangeRatesAsync(asOn, cancellationToken);
+                var exchangeRates = await batchProvider.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
 
-                await this.SaveExchangeRatesAsync(foreignExchangeID, exchangeRates, cancellationToken);
+                await this.SaveExchangeRatesAsync(foreignExchangeID, exchangeRates, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -197,9 +197,9 @@ namespace TIKSN.Finance.ForeignExchange
             try
             {
                 var exchangeRate = await individualProvider.GetExchangeRateAsync(pair.BaseCurrency,
-                    pair.CounterCurrency, asOn, cancellationToken);
+                    pair.CounterCurrency, asOn, cancellationToken).ConfigureAwait(false);
 
-                await this.SaveExchangeRatesAsync(foreignExchangeID, new[] {exchangeRate}, cancellationToken);
+                await this.SaveExchangeRatesAsync(foreignExchangeID, new[] { exchangeRate }, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -227,7 +227,7 @@ namespace TIKSN.Finance.ForeignExchange
                 });
             }
 
-            await this._exchangeRateRepository.AddRangeAsync(entities, cancellationToken);
+            await this._exchangeRateRepository.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
         }
     }
 }

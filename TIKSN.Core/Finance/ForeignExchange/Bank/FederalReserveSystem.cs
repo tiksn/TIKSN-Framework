@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -33,7 +33,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
-            var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken);
+            var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
 
             return new Money(counterCurrency, rate * baseMoney.Amount);
         }
@@ -45,7 +45,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
             var result = new List<CurrencyPair>();
 
-            var rates = await this.GetRatesAsync(asOn, cancellationToken);
+            var rates = await this.GetRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
 
             foreach (var SomeCurrency in rates.Keys)
             {
@@ -61,7 +61,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             ValidateDate(asOn, this._timeProvider);
 
-            var rates = await this.GetRatesAsync(asOn, cancellationToken);
+            var rates = await this.GetRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
 
             if (pair.BaseCurrency == UnitedStatesDollar)
             {
@@ -88,77 +88,75 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                 this._timeProvider.GetCurrentTime().AddDays(-10d).ToString("MM/dd/yyyy"),
                 this._timeProvider.GetCurrentTime().ToString("MM/dd/yyyy"));
 
-            using (var httpClient = new HttpClient())
+            using var httpClient = new HttpClient();
+            var responseStream = await httpClient.GetStreamAsync(DataUrl).ConfigureAwait(false);
+
+            var xdoc = XDocument.Load(responseStream);
+
+            var result = new List<ExchangeRate>();
+
+            foreach (var SeriesElement in xdoc
+                .Element("{http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message}MessageGroup")
+                .Element("{http://www.federalreserve.gov/structure/compact/common}DataSet")
+                .Elements("{http://www.federalreserve.gov/structure/compact/H10_H10}Series"))
             {
-                var responseStream = await httpClient.GetStreamAsync(DataUrl);
+                var CurrencyCode = SeriesElement.Attribute("CURRENCY").Value;
+                var FX = SeriesElement.Attribute("FX").Value;
 
-                var xdoc = XDocument.Load(responseStream);
-
-                var result = new List<ExchangeRate>();
-
-                foreach (var SeriesElement in xdoc
-                    .Element("{http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message}MessageGroup")
-                    .Element("{http://www.federalreserve.gov/structure/compact/common}DataSet")
-                    .Elements("{http://www.federalreserve.gov/structure/compact/H10_H10}Series"))
+                if (CurrencyCode != "NA")
                 {
-                    var CurrencyCode = SeriesElement.Attribute("CURRENCY").Value;
-                    var FX = SeriesElement.Attribute("FX").Value;
+                    var rates = new Dictionary<DateTime, decimal>();
 
-                    if (CurrencyCode != "NA")
+                    foreach (var ObsElement in SeriesElement.Elements(
+                        "{http://www.federalreserve.gov/structure/compact/common}Obs"))
                     {
-                        var rates = new Dictionary<DateTime, decimal>();
+                        var ObsValue = decimal.Parse(ObsElement.Attribute("OBS_VALUE").Value);
+                        var Period = DateTime.Parse(ObsElement.Attribute("TIME_PERIOD").Value);
 
-                        foreach (var ObsElement in SeriesElement.Elements(
-                            "{http://www.federalreserve.gov/structure/compact/common}Obs"))
+                        decimal obsValueRate;
+
+                        if (string.Equals(SeriesElement.Attribute("UNIT").Value, "Currency:_Per_USD",
+                            StringComparison.OrdinalIgnoreCase))
                         {
-                            var ObsValue = decimal.Parse(ObsElement.Attribute("OBS_VALUE").Value);
-                            var Period = DateTime.Parse(ObsElement.Attribute("TIME_PERIOD").Value);
-
-                            decimal obsValueRate;
-
-                            if (string.Equals(SeriesElement.Attribute("UNIT").Value, "Currency:_Per_USD",
-                                StringComparison.OrdinalIgnoreCase))
-                            {
-                                obsValueRate = ObsValue;
-                            }
-                            else
-                            {
-                                obsValueRate = decimal.One / ObsValue;
-                            }
-
-                            rates.Add(Period, obsValueRate);
-                        }
-
-                        var date = rates.Keys.Max();
-                        var rate = rates[date];
-
-                        if (FX == "ZAL")
-                        {
-                            result.Add(new ExchangeRate(
-                                new CurrencyPair(UnitedStatesDollar, this._currencyFactory.Create(CurrencyCode)), date,
-                                rate));
-                        }
-                        else if (FX == "VEB")
-                        {
-                            result.Add(new ExchangeRate(
-                                new CurrencyPair(UnitedStatesDollar, this._currencyFactory.Create("VEF")), date, rate));
+                            obsValueRate = ObsValue;
                         }
                         else
                         {
-                            result.Add(new ExchangeRate(
-                                new CurrencyPair(UnitedStatesDollar, this._currencyFactory.Create(FX)), date, rate));
+                            obsValueRate = decimal.One / ObsValue;
                         }
+
+                        rates.Add(Period, obsValueRate);
+                    }
+
+                    var date = rates.Keys.Max();
+                    var rate = rates[date];
+
+                    if (FX == "ZAL")
+                    {
+                        result.Add(new ExchangeRate(
+                            new CurrencyPair(UnitedStatesDollar, this._currencyFactory.Create(CurrencyCode)), date,
+                            rate));
+                    }
+                    else if (FX == "VEB")
+                    {
+                        result.Add(new ExchangeRate(
+                            new CurrencyPair(UnitedStatesDollar, this._currencyFactory.Create("VEF")), date, rate));
+                    }
+                    else
+                    {
+                        result.Add(new ExchangeRate(
+                            new CurrencyPair(UnitedStatesDollar, this._currencyFactory.Create(FX)), date, rate));
                     }
                 }
-
-                return result;
             }
+
+            return result;
         }
 
         private async Task<Dictionary<CurrencyInfo, decimal>> GetRatesAsync(DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            var rates = await this.GetExchangeRatesAsync(asOn, cancellationToken);
+            var rates = await this.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
             var result = new Dictionary<CurrencyInfo, decimal>();
 
             foreach (var rawRate in rates)

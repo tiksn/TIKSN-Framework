@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -24,9 +24,9 @@ namespace TIKSN.FileSystem
 
         public IFileProvider RoamingAppData { get; }
 
-        private IFileProvider GetFromFolderPath(string folderPath)
+        private static IFileProvider GetFromFolderPath(string folderPath)
         {
-            Directory.CreateDirectory(folderPath);
+            _ = Directory.CreateDirectory(folderPath);
 
             return new PhysicalFileProvider(folderPath);
         }
@@ -65,7 +65,7 @@ namespace TIKSN.FileSystem
                     throw new ArgumentOutOfRangeException(nameof(this._versionConsideration));
             }
 
-            return this.GetFromFolderPath(folderPath);
+            return GetFromFolderPath(folderPath);
         }
     }
 }

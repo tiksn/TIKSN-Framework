@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Data
+namespace TIKSN.Data
 {
     public interface IMapper<TSource, TDestination>
     {

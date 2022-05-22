@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -18,7 +18,7 @@ namespace TIKSN.Analytics.Telemetry
             this.exceptionTelemeters = exceptionTelemeters;
         }
 
-        public async Task TrackException(Exception exception)
+        public async Task TrackExceptionAsync(Exception exception)
         {
             if (this.commonConfiguration.GetConfiguration().IsExceptionTrackingEnabled)
             {
@@ -26,7 +26,7 @@ namespace TIKSN.Analytics.Telemetry
                 {
                     try
                     {
-                        await exceptionTelemeter.TrackException(exception);
+                        await exceptionTelemeter.TrackExceptionAsync(exception).ConfigureAwait(false);
                     }
                     catch (Exception ex)
                     {
@@ -36,7 +36,7 @@ namespace TIKSN.Analytics.Telemetry
             }
         }
 
-        public async Task TrackException(Exception exception, TelemetrySeverityLevel severityLevel)
+        public async Task TrackExceptionAsync(Exception exception, TelemetrySeverityLevel severityLevel)
         {
             if (this.commonConfiguration.GetConfiguration().IsExceptionTrackingEnabled)
             {
@@ -44,7 +44,7 @@ namespace TIKSN.Analytics.Telemetry
                 {
                     try
                     {
-                        await exceptionTelemeter.TrackException(exception, severityLevel);
+                        await exceptionTelemeter.TrackExceptionAsync(exception, severityLevel).ConfigureAwait(false);
                     }
                     catch (Exception ex)
                     {

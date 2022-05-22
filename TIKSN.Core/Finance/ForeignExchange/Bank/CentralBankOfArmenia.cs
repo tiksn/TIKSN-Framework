@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
@@ -36,7 +36,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
-            var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken);
+            var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
@@ -44,7 +44,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            await this.FetchOnDemandAsync(asOn, cancellationToken);
+            await this.FetchOnDemandAsync(asOn, cancellationToken).ConfigureAwait(false);
 
             var rates = new List<CurrencyPair>();
 
@@ -60,7 +60,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            await this.FetchOnDemandAsync(asOn, cancellationToken);
+            await this.FetchOnDemandAsync(asOn, cancellationToken).ConfigureAwait(false);
 
             if (pair.CounterCurrency == AMD)
             {
@@ -89,7 +89,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
             using (var httpClient = new HttpClient())
             {
-                var responseStream = await httpClient.GetStreamAsync(RSS);
+                var responseStream = await httpClient.GetStreamAsync(RSS).ConfigureAwait(false);
 
                 var xdoc = XDocument.Load(responseStream);
 
@@ -151,11 +151,11 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             if (!this.publicationDate.HasValue)
             {
-                await this.GetExchangeRatesAsync(asOn, cancellationToken);
+                _ = await this.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
             }
             else if (this._timeProvider.GetCurrentTime() - this.lastFetchDate > TimeSpan.FromDays(1d))
             {
-                await this.GetExchangeRatesAsync(asOn, cancellationToken);
+                _ = await this.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
             }
         }
 

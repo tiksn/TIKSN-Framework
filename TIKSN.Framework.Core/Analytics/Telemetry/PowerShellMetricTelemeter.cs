@@ -1,4 +1,4 @@
-﻿using System.Management.Automation;
+using System.Management.Automation;
 using System.Threading.Tasks;
 
 namespace TIKSN.Analytics.Telemetry
@@ -9,7 +9,7 @@ namespace TIKSN.Analytics.Telemetry
 
         public PowerShellMetricTelemeter(Cmdlet cmdlet) => this.cmdlet = cmdlet;
 
-        public Task TrackMetric(string metricName, decimal metricValue)
+        public Task TrackMetricAsync(string metricName, decimal metricValue)
         {
             this.cmdlet.WriteVerbose($"METRIC: {metricName} - {metricValue}");
 

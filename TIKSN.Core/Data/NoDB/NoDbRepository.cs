@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,11 +27,11 @@ namespace TIKSN.Data.NoDB
         }
 
         public async Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken) =>
-            await this._basicQueries.FetchAsync(this._projectId, id.ToString(), cancellationToken) != null;
+            await this._basicQueries.FetchAsync(this._projectId, id.ToString(), cancellationToken).ConfigureAwait(false) != null;
 
         public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
         {
-            var result = await this.GetOrDefaultAsync(id, cancellationToken);
+            var result = await this.GetOrDefaultAsync(id, cancellationToken).ConfigureAwait(false);
 
             if (result == null)
             {
@@ -46,7 +46,7 @@ namespace TIKSN.Data.NoDB
 
         public async Task<IEnumerable<TEntity>>
             ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken) =>
-            await BatchOperationHelper.BatchOperationAsync(ids, cancellationToken, (id, c) => this.GetAsync(id, c));
+            await BatchOperationHelper.BatchOperationAsync(ids, cancellationToken, (id, c) => this.GetAsync(id, c)).ConfigureAwait(false);
 
         public Task AddAsync(TEntity entity, CancellationToken cancellationToken) =>
             this._basicCommands.CreateAsync(this._projectId, entity.ID.ToString(), entity, cancellationToken);
@@ -68,7 +68,7 @@ namespace TIKSN.Data.NoDB
 
         public async IAsyncEnumerable<TEntity> StreamAllAsync(CancellationToken cancellationToken)
         {
-            var entities = await this._basicQueries.GetAllAsync(this._projectId, cancellationToken);
+            var entities = await this._basicQueries.GetAllAsync(this._projectId, cancellationToken).ConfigureAwait(false);
             foreach (var entity in entities)
             {
                 yield return entity;

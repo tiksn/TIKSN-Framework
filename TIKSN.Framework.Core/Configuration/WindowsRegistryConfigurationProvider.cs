@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Win32;
@@ -27,12 +27,10 @@ namespace TIKSN.Configuration
 
             try
             {
-                using (var machineKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, this._registryView))
+                using var machineKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, this._registryView);
+                if (machineKey != null)
                 {
-                    if (machineKey != null)
-                    {
-                        this.PopulateRootKey(machineKey);
-                    }
+                    this.PopulateRootKey(machineKey);
                 }
             }
             catch (SecurityException)
@@ -41,12 +39,10 @@ namespace TIKSN.Configuration
 
             try
             {
-                using (var userKey = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, this._registryView))
+                using var userKey = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, this._registryView);
+                if (userKey != null)
                 {
-                    if (userKey != null)
-                    {
-                        this.PopulateRootKey(userKey);
-                    }
+                    this.PopulateRootKey(userKey);
                 }
             }
             catch (SecurityException)
@@ -72,24 +68,20 @@ namespace TIKSN.Configuration
 
             foreach (var subKeyName in subKeyNames)
             {
-                using (var registrySubKey = currentRegistryKey.OpenSubKey(subKeyName))
+                using var registrySubKey = currentRegistryKey.OpenSubKey(subKeyName);
+                if (registrySubKey != null)
                 {
-                    if (registrySubKey != null)
-                    {
-                        this.PopulateKeys(registrySubKey, CombineConfigurationPath(parentConfigurationKey, subKeyName));
-                    }
+                    this.PopulateKeys(registrySubKey, CombineConfigurationPath(parentConfigurationKey, subKeyName));
                 }
             }
         }
 
         private void PopulateRootKey(RegistryKey hiveKey)
         {
-            using (var registryKey = hiveKey.OpenSubKey(this._rootKey))
+            using var registryKey = hiveKey.OpenSubKey(this._rootKey);
+            if (registryKey != null)
             {
-                if (registryKey != null)
-                {
-                    this.PopulateKeys(registryKey, null);
-                }
+                this.PopulateKeys(registryKey, null);
             }
         }
 

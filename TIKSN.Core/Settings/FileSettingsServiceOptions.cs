@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Settings
+namespace TIKSN.Settings
 {
     public class FileSettingsServiceOptions
     {

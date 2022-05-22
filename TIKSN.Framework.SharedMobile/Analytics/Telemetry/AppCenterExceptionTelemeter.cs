@@ -1,17 +1,17 @@
-﻿using Microsoft.AppCenter;
 using System;
 using System.Threading.Tasks;
+using Microsoft.AppCenter;
 
 namespace TIKSN.Analytics.Telemetry
 {
     public class AppCenterExceptionTelemeter : IExceptionTelemeter
     {
-        public Task TrackException(Exception exception)
+        public Task TrackExceptionAsync(Exception exception)
         {
-            return TrackException(exception, TelemetrySeverityLevel.Information);
+            return TrackExceptionAsync(exception, TelemetrySeverityLevel.Information);
         }
 
-        public Task TrackException(Exception exception, TelemetrySeverityLevel severityLevel)
+        public Task TrackExceptionAsync(Exception exception, TelemetrySeverityLevel severityLevel)
         {
             switch (severityLevel)
             {

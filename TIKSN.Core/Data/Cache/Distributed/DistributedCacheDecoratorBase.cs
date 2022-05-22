@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
@@ -40,7 +40,7 @@ namespace TIKSN.Data.Cache.Distributed
         protected async Task<TResult> GetFromDistributedCacheAsync<TResult>(string cacheKey,
             CancellationToken cancellationToken, Func<Task<TResult>> getFromSource = null)
         {
-            var cachedBytes = await this._distributedCache.GetAsync(cacheKey, cancellationToken);
+            var cachedBytes = await this._distributedCache.GetAsync(cacheKey, cancellationToken).ConfigureAwait(false);
 
             TResult result;
 
@@ -51,9 +51,9 @@ namespace TIKSN.Data.Cache.Distributed
                     return default;
                 }
 
-                result = await getFromSource();
+                result = await getFromSource().ConfigureAwait(false);
 
-                await this.SetToDistributedCacheAsync(cacheKey, result, cancellationToken);
+                await this.SetToDistributedCacheAsync(cacheKey, result, cancellationToken).ConfigureAwait(false);
             }
             else
             {

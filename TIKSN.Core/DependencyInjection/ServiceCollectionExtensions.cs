@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Numerics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -23,9 +23,9 @@ namespace TIKSN.DependencyInjection
     {
         public static IServiceCollection AddFrameworkCore(this IServiceCollection services)
         {
-            services.AddLocalization();
-            services.AddMemoryCache();
-            services.AddOptions();
+            _ = services.AddLocalization();
+            _ = services.AddMemoryCache();
+            _ = services.AddOptions();
 
             services.TryAddSingleton<IConsoleService, ConsoleService>();
             services.TryAddSingleton<ICultureFactory, CultureFactory>();
@@ -60,7 +60,7 @@ namespace TIKSN.DependencyInjection
 
             services.TryAddScoped<IShellCommandContext, ShellCommandContext>();
 
-            services.AddSingleton(MessageBus.Current);
+            _ = services.AddSingleton(MessageBus.Current);
 
             services.TryAddScoped<IMongoUnitOfWorkFactory, MongoUnitOfWorkFactory>();
 

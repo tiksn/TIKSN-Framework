@@ -17,7 +17,7 @@
     <Warning Text="$(MSBuildProjectFile) is Multilingual build enabled, but the Multilingual App Toolkit is unavailable during the build. If building with Visual Studio, please check to ensure that toolkit is properly installed." />
   </Target>
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.10.56" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.2.32" />
   </ItemGroup>
   <ItemGroup>
     <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.en-001.xlf">
@@ -75,12 +75,6 @@
       <Generator>XliffResxGenerator</Generator>
     </XliffResource>
     <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.uk-UA.xlf">
-      <Generator>XliffResxGenerator</Generator>
-    </XliffResource>
-    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.zh-CN.xlf">
-      <Generator>XliffResxGenerator</Generator>
-    </XliffResource>
-    <XliffResource Include="MultilingualResources\TIKSN.RegionLocalization.zh-SG.xlf">
       <Generator>XliffResxGenerator</Generator>
     </XliffResource>
   </ItemGroup>

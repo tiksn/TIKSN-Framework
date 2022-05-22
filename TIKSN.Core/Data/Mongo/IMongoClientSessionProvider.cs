@@ -1,4 +1,4 @@
-﻿using LanguageExt;
+using LanguageExt;
 using MongoDB.Driver;
 
 namespace TIKSN.Data.Mongo

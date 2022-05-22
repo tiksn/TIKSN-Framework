@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Config;
 using NLog.Extensions.Logging;
@@ -47,7 +47,7 @@ namespace TIKSN.Analytics.Logging.NLog
                 this.AddForAllLevels(nLogViewerTarget);
             }
 
-            loggingBuilder.AddNLog();
+            _ = loggingBuilder.AddNLog();
             LogManager.Configuration = this._loggingConfiguration;
         }
 

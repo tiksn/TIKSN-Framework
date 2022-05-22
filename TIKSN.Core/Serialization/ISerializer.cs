@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Serialization
+namespace TIKSN.Serialization
 {
     /// <summary>
     ///     Serializer interface

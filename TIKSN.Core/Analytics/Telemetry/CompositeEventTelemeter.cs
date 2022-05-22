@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -18,7 +18,7 @@ namespace TIKSN.Analytics.Telemetry
             this.eventTelemeters = eventTelemeters;
         }
 
-        public async Task TrackEvent(string name)
+        public async Task TrackEventAsync(string name)
         {
             if (this.commonConfiguration.GetConfiguration().IsEventTrackingEnabled)
             {
@@ -26,7 +26,7 @@ namespace TIKSN.Analytics.Telemetry
                 {
                     try
                     {
-                        await eventTelemeter.TrackEvent(name);
+                        await eventTelemeter.TrackEventAsync(name).ConfigureAwait(false);
                     }
                     catch (Exception ex)
                     {
@@ -36,7 +36,7 @@ namespace TIKSN.Analytics.Telemetry
             }
         }
 
-        public async Task TrackEvent(string name, IDictionary<string, string> properties)
+        public async Task TrackEventAsync(string name, IDictionary<string, string> properties)
         {
             if (this.commonConfiguration.GetConfiguration().IsEventTrackingEnabled)
             {
@@ -44,7 +44,7 @@ namespace TIKSN.Analytics.Telemetry
                 {
                     try
                     {
-                        await eventTelemeter.TrackEvent(name, properties);
+                        await eventTelemeter.TrackEventAsync(name, properties).ConfigureAwait(false);
                     }
                     catch (Exception ex)
                     {

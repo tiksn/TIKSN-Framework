@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -24,9 +24,9 @@ namespace TIKSN.Data.RavenDB
 
         public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
         {
-            var entity = await this.GetOrDefaultAsync(id, cancellationToken);
+            var entity = await this.GetOrDefaultAsync(id, cancellationToken).ConfigureAwait(false);
 
-            if (ReferenceEquals(entity, null))
+            if (entity is null)
             {
                 throw new NullReferenceException($"Entity with ID '{id}' is not found.");
             }
@@ -41,7 +41,7 @@ namespace TIKSN.Data.RavenDB
             CancellationToken cancellationToken) =>
             await this._session.Query<TEntity>()
                 .Where(entity => ids.Contains(entity.ID))
-                .ToListAsync(cancellationToken);
+                .ToListAsync(cancellationToken).ConfigureAwait(false);
 
         public Task AddAsync(TEntity entity, CancellationToken cancellationToken) =>
             this._session.StoreAsync(entity, entity.ID.ToString(), cancellationToken);

@@ -14,7 +14,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 {
     public class BankOfRussia : ICurrencyConverter, IExchangeRatesProvider
     {
-        private static readonly string AddressFormat =
+        private const string AddressFormat =
             "https://www.cbr.ru/scripts/XML_daily.asp?date_req={0:00}.{1:00}.{2}";
 
         private static readonly CurrencyInfo RussianRuble;
@@ -44,7 +44,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
             DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            await this.FetchOnDemandAsync(asOn, cancellationToken);
+            await this.FetchOnDemandAsync(asOn, cancellationToken).ConfigureAwait(false);
 
             var rate = this.GetRate(baseMoney.Currency, counterCurrency);
 
@@ -54,7 +54,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            await this.FetchOnDemandAsync(asOn, cancellationToken);
+            await this.FetchOnDemandAsync(asOn, cancellationToken).ConfigureAwait(false);
 
             var pairs = new List<CurrencyPair>();
 
@@ -70,7 +70,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            await this.FetchOnDemandAsync(asOn, cancellationToken);
+            await this.FetchOnDemandAsync(asOn, cancellationToken).ConfigureAwait(false);
 
             var rate = this.GetRate(pair.BaseCurrency, pair.CounterCurrency);
 
@@ -90,7 +90,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
             using (var httpClient = new HttpClient())
             {
-                var responseStream = await httpClient.GetStreamAsync(address);
+                var responseStream = await httpClient.GetStreamAsync(address).ConfigureAwait(false);
 
                 var stream​Reader = new Stream​Reader(responseStream, Encoding.UTF7);
 
@@ -147,11 +147,11 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
             if (!this.published.HasValue)
             {
-                await this.GetExchangeRatesAsync(asOn, cancellationToken);
+                _ = await this.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
             }
             else if (this.published.Value != asOn.Date)
             {
-                await this.GetExchangeRatesAsync(asOn, cancellationToken);
+                _ = await this.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
             }
         }
 

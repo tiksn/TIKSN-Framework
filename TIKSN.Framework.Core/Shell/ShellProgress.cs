@@ -1,4 +1,4 @@
-﻿using ShellProgressBar;
+using ShellProgressBar;
 using TIKSN.Progress;
 
 namespace TIKSN.Shell

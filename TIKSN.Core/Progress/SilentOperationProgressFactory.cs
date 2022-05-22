@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Progress
+namespace TIKSN.Progress
 {
     public class SilentOperationProgressFactory : IOperationProgressFactory
     {

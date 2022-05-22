@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Finance.Tests
+namespace TIKSN.Finance.Tests
 {
     public static class Helper
     {

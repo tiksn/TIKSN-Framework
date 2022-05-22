@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,7 +24,7 @@ namespace TIKSN.Data.CosmosTable
 
             var retriveOperation = TableOperation.Retrieve<T>(partitionKey, rowKey);
 
-            var retrivalResult = await table.ExecuteAsync(retriveOperation, null, null, cancellationToken);
+            var retrivalResult = await table.ExecuteAsync(retriveOperation, null, null, cancellationToken).ConfigureAwait(false);
 
             if (retrivalResult.Result == null)
             {
@@ -57,7 +57,7 @@ namespace TIKSN.Data.CosmosTable
 
             var query = new TableQuery<T>().Where(combinedFilter);
 
-            return this.SearchAsync(table, query, cancellationToken);
+            return SearchAsync(table, query, cancellationToken);
         }
 
         public Task AddAsync(T entity, CancellationToken cancellationToken)
@@ -118,7 +118,7 @@ namespace TIKSN.Data.CosmosTable
         {
             var table = this.GetCloudTable();
 
-            return table.CreateIfNotExistsAsync();
+            return table.CreateIfNotExistsAsync(cancellationToken);
         }
 
         protected CloudTable GetCloudTable()
@@ -130,40 +130,20 @@ namespace TIKSN.Data.CosmosTable
             return tableClient.GetTableReference(this._tableName);
         }
 
-        private static string GenerateFilterCondition(string fieldName, string operation, object givenValue)
+        private static string GenerateFilterCondition(string fieldName, string operation, object givenValue) => givenValue switch
         {
-            switch (givenValue)
-            {
-                case string s:
-                    return TableQuery.GenerateFilterCondition(fieldName, operation, s);
+            string s => TableQuery.GenerateFilterCondition(fieldName, operation, s),
+            byte[] binary => TableQuery.GenerateFilterConditionForBinary(fieldName, operation, binary),
+            bool boolean => TableQuery.GenerateFilterConditionForBool(fieldName, operation, boolean),
+            DateTimeOffset date => TableQuery.GenerateFilterConditionForDate(fieldName, operation, date),
+            int i => TableQuery.GenerateFilterConditionForInt(fieldName, operation, i),
+            long l => TableQuery.GenerateFilterConditionForLong(fieldName, operation, l),
+            double d => TableQuery.GenerateFilterConditionForDouble(fieldName, operation, d),
+            Guid g => TableQuery.GenerateFilterConditionForGuid(fieldName, operation, g),
+            _ => throw new NotSupportedException("Search filter value type is not supported."),
+        };
 
-                case byte[] binary:
-                    return TableQuery.GenerateFilterConditionForBinary(fieldName, operation, binary);
-
-                case bool boolean:
-                    return TableQuery.GenerateFilterConditionForBool(fieldName, operation, boolean);
-
-                case DateTimeOffset date:
-                    return TableQuery.GenerateFilterConditionForDate(fieldName, operation, date);
-
-                case int i:
-                    return TableQuery.GenerateFilterConditionForInt(fieldName, operation, i);
-
-                case long l:
-                    return TableQuery.GenerateFilterConditionForLong(fieldName, operation, l);
-
-                case double d:
-                    return TableQuery.GenerateFilterConditionForDouble(fieldName, operation, d);
-
-                case Guid g:
-                    return TableQuery.GenerateFilterConditionForGuid(fieldName, operation, g);
-
-                default:
-                    throw new NotSupportedException("Search filter value type is not supported.");
-            }
-        }
-
-        private async Task<IEnumerable<T>> SearchAsync(CloudTable table, TableQuery<T> query,
+        private static async Task<IEnumerable<T>> SearchAsync(CloudTable table, TableQuery<T> query,
             CancellationToken cancellationToken)
         {
             var result = new List<T>();
@@ -172,7 +152,7 @@ namespace TIKSN.Data.CosmosTable
             do
             {
                 var tableSegment =
-                    await table.ExecuteQuerySegmentedAsync(query, continuationToken, null, null, cancellationToken);
+                    await table.ExecuteQuerySegmentedAsync(query, continuationToken, null, null, cancellationToken).ConfigureAwait(false);
 
                 result.AddRange(tableSegment.Results);
 

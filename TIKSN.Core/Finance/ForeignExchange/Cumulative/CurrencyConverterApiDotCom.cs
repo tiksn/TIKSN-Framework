@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -31,7 +32,7 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
             DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            var rate = (await this.GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken))
+            var rate = (await this.GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken).ConfigureAwait(false))
                 .Rate;
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
@@ -40,24 +41,29 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
         public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            using (var httpClient = new HttpClient())
+            using var httpClient = new HttpClient();
+            httpClient.BaseAddress = this._plan.BaseAddress;
+
+            var requestUri = string.Format(
+                CultureInfo.InvariantCulture,
+                CurrencyListApiEndpointFormat,
+                this._plan.ApiKey);
+
+            var currenciesJson =
+                await httpClient.GetStringAsync(requestUri).ConfigureAwait(false);
+
+            var currencyList = JsonConvert.DeserializeObject<CurrencyList>(currenciesJson);
+
+            var currencies = currencyList.Results.Keys
+                .Where(item => !string.Equals(item, "BTC", StringComparison.OrdinalIgnoreCase))
+                .Select(item => this._currencyFactory.Create(item))
+                .Distinct()
+                .ToArray();
+
+            var pairs = new List<CurrencyPair>();
+
+            for (var i = 0; i < currencies.Length; i++)
             {
-                httpClient.BaseAddress = this._plan.BaseAddress;
-
-                var currenciesJson =
-                    await httpClient.GetStringAsync(string.Format(CurrencyListApiEndpointFormat, this._plan.ApiKey));
-
-                var currencyList = JsonConvert.DeserializeObject<CurrencyList>(currenciesJson);
-
-                var currencies = currencyList.Results.Keys
-                    .Where(item => !string.Equals(item, "BTC", StringComparison.OrdinalIgnoreCase))
-                    .Select(item => this._currencyFactory.Create(item))
-                    .Distinct()
-                    .ToArray();
-
-                var pairs = new List<CurrencyPair>();
-
-                for (var i = 0; i < currencies.Length; i++)
                 for (var j = 0; j < currencies.Length; j++)
                 {
                     if (i != j)
@@ -65,14 +71,14 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
                         pairs.Add(new CurrencyPair(currencies[i], currencies[j]));
                     }
                 }
-
-                return pairs;
             }
+
+            return pairs;
         }
 
         public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
             CancellationToken cancellationToken) =>
-            (await this.GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken)).Rate;
+            (await this.GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken).ConfigureAwait(false)).Rate;
 
         public async Task<ExchangeRate> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency,
             DateTimeOffset asOn, CancellationToken cancellationToken)
@@ -82,20 +88,18 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
                 throw new ArgumentOutOfRangeException(nameof(asOn));
             }
 
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.BaseAddress = this._plan.BaseAddress;
+            using var httpClient = new HttpClient();
+            httpClient.BaseAddress = this._plan.BaseAddress;
 
-                var exchangeRateJson = await httpClient.GetStringAsync(
-                    string.Format(ConverterEndpointFormat,
-                        baseCurrency.ISOCurrencySymbol,
-                        counterCurrency.ISOCurrencySymbol, this._plan.ApiKey));
+            var exchangeRateJson = await httpClient.GetStringAsync(
+                string.Format(ConverterEndpointFormat,
+                    baseCurrency.ISOCurrencySymbol,
+                    counterCurrency.ISOCurrencySymbol, this._plan.ApiKey)).ConfigureAwait(false);
 
-                var exchangeRates = JsonConvert.DeserializeObject<Dictionary<string, decimal>>(exchangeRateJson);
+            var exchangeRates = JsonConvert.DeserializeObject<Dictionary<string, decimal>>(exchangeRateJson);
 
-                return new ExchangeRate(new CurrencyPair(baseCurrency, counterCurrency), asOn.Date,
-                    exchangeRates.Values.Single());
-            }
+            return new ExchangeRate(new CurrencyPair(baseCurrency, counterCurrency), asOn.Date,
+                exchangeRates.Values.Single());
         }
 
         public abstract class Plan

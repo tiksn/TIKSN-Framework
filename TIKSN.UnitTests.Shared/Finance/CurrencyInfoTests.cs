@@ -1,4 +1,4 @@
-﻿using Xunit;
+using Xunit;
 
 namespace TIKSN.Finance.Tests
 {
@@ -7,8 +7,8 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void CreateArmenianDram001()
         {
-            System.Globalization.RegionInfo AM = new System.Globalization.RegionInfo("AM");
-            CurrencyInfo AMD = new CurrencyInfo(AM);
+            var AM = new System.Globalization.RegionInfo("AM");
+            var AMD = new CurrencyInfo(AM);
 
             Assert.Equal("AMD", AMD.ISOCurrencySymbol);
             Assert.Equal("\u058F", AMD.CurrencySymbol);
@@ -17,8 +17,8 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void CreateArmenianDram002()
         {
-            System.Globalization.RegionInfo AM = new System.Globalization.RegionInfo("hy-AM");
-            CurrencyInfo AMD = new CurrencyInfo(AM);
+            var AM = new System.Globalization.RegionInfo("hy-AM");
+            var AMD = new CurrencyInfo(AM);
 
             Assert.Equal("AMD", AMD.ISOCurrencySymbol);
             Assert.Equal("֏", AMD.CurrencySymbol);
@@ -27,8 +27,8 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void CreateEuro001()
         {
-            System.Globalization.RegionInfo DE = new System.Globalization.RegionInfo("DE");
-            CurrencyInfo Euro = new CurrencyInfo(DE);
+            var DE = new System.Globalization.RegionInfo("DE");
+            var Euro = new CurrencyInfo(DE);
 
             Assert.Equal("EUR", Euro.ISOCurrencySymbol);
             Assert.Equal("€", Euro.CurrencySymbol);
@@ -37,8 +37,8 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void CreateEuro002()
         {
-            System.Globalization.RegionInfo FR = new System.Globalization.RegionInfo("FR");
-            CurrencyInfo Euro = new CurrencyInfo(FR);
+            var FR = new System.Globalization.RegionInfo("FR");
+            var Euro = new CurrencyInfo(FR);
 
             Assert.Equal("EUR", Euro.ISOCurrencySymbol);
             Assert.Equal("€", Euro.CurrencySymbol);
@@ -47,8 +47,8 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void CreateEuro003()
         {
-            System.Globalization.RegionInfo DE = new System.Globalization.RegionInfo("de-DE");
-            CurrencyInfo Euro = new CurrencyInfo(DE);
+            var DE = new System.Globalization.RegionInfo("de-DE");
+            var Euro = new CurrencyInfo(DE);
 
             Assert.Equal("EUR", Euro.ISOCurrencySymbol);
             Assert.Equal("€", Euro.CurrencySymbol);
@@ -57,8 +57,8 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void CreateUnitedStatesDollar001()
         {
-            System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
-            CurrencyInfo USD = new CurrencyInfo(US);
+            var US = new System.Globalization.RegionInfo("US");
+            var USD = new CurrencyInfo(US);
 
             Assert.Equal("USD", USD.ISOCurrencySymbol);
             Assert.Equal("$", USD.CurrencySymbol);
@@ -67,8 +67,8 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void CreateUnitedStatesDollar002()
         {
-            System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("en-US");
-            CurrencyInfo USD = new CurrencyInfo(US);
+            var US = new System.Globalization.RegionInfo("en-US");
+            var USD = new CurrencyInfo(US);
 
             Assert.Equal("USD", USD.ISOCurrencySymbol);
             Assert.Equal("$", USD.CurrencySymbol);
@@ -77,8 +77,8 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void CreateUnitedStatesDollar003()
         {
-            System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("es-US");
-            CurrencyInfo USD = new CurrencyInfo(US);
+            var US = new System.Globalization.RegionInfo("es-US");
+            var USD = new CurrencyInfo(US);
 
             Assert.Equal("USD", USD.ISOCurrencySymbol);
             Assert.Equal("$", USD.CurrencySymbol);
@@ -87,8 +87,8 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void CreateUnitedStatesDollar004()
         {
-            System.Globalization.RegionInfo SV = new System.Globalization.RegionInfo("SV");
-            CurrencyInfo USD = new CurrencyInfo(SV);
+            var SV = new System.Globalization.RegionInfo("SV");
+            var USD = new CurrencyInfo(SV);
 
             Assert.Equal("USD", USD.ISOCurrencySymbol);
             Assert.Equal("$", USD.CurrencySymbol);
@@ -97,8 +97,8 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void CreateUnitedStatesDollar005()
         {
-            System.Globalization.RegionInfo SV = new System.Globalization.RegionInfo("es-SV");
-            CurrencyInfo USD = new CurrencyInfo(SV);
+            var SV = new System.Globalization.RegionInfo("es-SV");
+            var USD = new CurrencyInfo(SV);
 
             Assert.Equal("USD", USD.ISOCurrencySymbol);
             Assert.Equal("$", USD.CurrencySymbol);
@@ -107,8 +107,8 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void CreateUnitedStatesDollar006()
         {
-            System.Globalization.RegionInfo EC = new System.Globalization.RegionInfo("EC");
-            CurrencyInfo USD = new CurrencyInfo(EC);
+            var EC = new System.Globalization.RegionInfo("EC");
+            var USD = new CurrencyInfo(EC);
 
             Assert.Equal("USD", USD.ISOCurrencySymbol);
             Assert.Equal("$", USD.CurrencySymbol);
@@ -117,8 +117,8 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void CreateUnitedStatesDollar007()
         {
-            System.Globalization.RegionInfo EC = new System.Globalization.RegionInfo("es-EC");
-            CurrencyInfo USD = new CurrencyInfo(EC);
+            var EC = new System.Globalization.RegionInfo("es-EC");
+            var USD = new CurrencyInfo(EC);
 
             Assert.Equal("USD", USD.ISOCurrencySymbol);
             Assert.Equal("$", USD.CurrencySymbol);
@@ -127,17 +127,17 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void CurrencyComparison001()
         {
-            System.Globalization.RegionInfo R1 = new System.Globalization.RegionInfo("en-US");
-            System.Globalization.RegionInfo R2 = new System.Globalization.RegionInfo("es-US");
-            System.Globalization.RegionInfo R3 = new System.Globalization.RegionInfo("US");
+            var R1 = new System.Globalization.RegionInfo("en-US");
+            var R2 = new System.Globalization.RegionInfo("es-US");
+            var R3 = new System.Globalization.RegionInfo("US");
 
             Assert.True(R1 != R2);
             Assert.True(R1 != R3);
             Assert.True(R3 != R2);
 
-            CurrencyInfo C1 = new CurrencyInfo(R1);
-            CurrencyInfo C2 = new CurrencyInfo(R2);
-            CurrencyInfo C3 = new CurrencyInfo(R3);
+            var C1 = new CurrencyInfo(R1);
+            var C2 = new CurrencyInfo(R2);
+            var C3 = new CurrencyInfo(R3);
 
             Assert.True(C1.Equals(C1));
             Assert.True(C2.Equals(C2));
@@ -154,11 +154,11 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void CurrencyComparison002()
         {
-            System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
-            System.Globalization.RegionInfo AM = new System.Globalization.RegionInfo("AM");
+            var US = new System.Globalization.RegionInfo("US");
+            var AM = new System.Globalization.RegionInfo("AM");
 
-            CurrencyInfo USD = new CurrencyInfo(US);
-            CurrencyInfo AMD = new CurrencyInfo(AM);
+            var USD = new CurrencyInfo(US);
+            var AMD = new CurrencyInfo(AM);
 
             Assert.False(AMD.Equals(USD));
             Assert.False(USD.Equals(AMD));
@@ -167,11 +167,11 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void CurrencyComparison003()
         {
-            System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
-            System.Globalization.RegionInfo SV = new System.Globalization.RegionInfo("SV");
+            var US = new System.Globalization.RegionInfo("US");
+            var SV = new System.Globalization.RegionInfo("SV");
 
-            CurrencyInfo USD1 = new CurrencyInfo(US);
-            CurrencyInfo USD2 = new CurrencyInfo(SV);
+            var USD1 = new CurrencyInfo(US);
+            var USD2 = new CurrencyInfo(SV);
 
             Assert.True(USD1 == USD2);
             Assert.False(USD1 != USD2);
@@ -180,11 +180,11 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void CurrencyComparison004()
         {
-            System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
-            System.Globalization.RegionInfo AM = new System.Globalization.RegionInfo("AM");
+            var US = new System.Globalization.RegionInfo("US");
+            var AM = new System.Globalization.RegionInfo("AM");
 
-            CurrencyInfo USD = new CurrencyInfo(US);
-            CurrencyInfo AMD = new CurrencyInfo(AM);
+            var USD = new CurrencyInfo(US);
+            var AMD = new CurrencyInfo(AM);
 
             Assert.True(AMD != USD);
             Assert.False(AMD == USD);
@@ -198,51 +198,54 @@ namespace TIKSN.Finance.Tests
             Assert.Equal("EUR", currency.ISOCurrencySymbol);
             Assert.Equal("EUR", currency.CurrencySymbol);
             Assert.Equal("EUR", currency.ToString());
-            Assert.Equal(false, currency.IsFund);
-            Assert.Equal(true, currency.IsCurrent);
+            Assert.False(currency.IsFund);
+            Assert.True(currency.IsCurrent);
         }
 
-        public void CurrencyIsoSymbolAndNumber002()
+        [Fact]
+        public static void CurrencyIsoSymbolAndNumber002()
         {
             var currency = new CurrencyInfo("BOV");
 
             Assert.Equal("BOV", currency.ISOCurrencySymbol);
             Assert.Equal("BOV", currency.CurrencySymbol);
             Assert.Equal("BOV", currency.ToString());
-            Assert.Equal(true, currency.IsFund);
-            Assert.Equal(true, currency.IsCurrent);
+            Assert.True(currency.IsFund);
+            Assert.True(currency.IsCurrent);
         }
 
-        public void CurrencyIsoSymbolAndNumber003()
+        [Fact]
+        public static void CurrencyIsoSymbolAndNumber003()
         {
             var currency = new CurrencyInfo("XRE");
 
             Assert.Equal("XRE", currency.ISOCurrencySymbol);
             Assert.Equal("XRE", currency.CurrencySymbol);
             Assert.Equal("XRE", currency.ToString());
-            Assert.Equal(true, currency.IsFund);
-            Assert.Equal(false, currency.IsCurrent);
+            Assert.True(currency.IsFund);
+            Assert.False(currency.IsCurrent);
         }
 
-        public void CurrencyIsoSymbolAndNumber004()
+        [Fact]
+        public static void CurrencyIsoSymbolAndNumber004()
         {
             var currency = new CurrencyInfo(new System.Globalization.RegionInfo("en-US"));
 
             Assert.Equal("USD", currency.ISOCurrencySymbol);
             Assert.Equal("$", currency.CurrencySymbol);
             Assert.Equal("USD", currency.ToString());
-            Assert.Equal(false, currency.IsFund);
-            Assert.Equal(true, currency.IsCurrent);
+            Assert.False(currency.IsFund);
+            Assert.True(currency.IsCurrent);
         }
 
         [Fact]
         public void Equals001()
         {
-            System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
-            CurrencyInfo USD1 = new CurrencyInfo(US);
-            CurrencyInfo USD2 = USD1;
+            var US = new System.Globalization.RegionInfo("US");
+            var USD1 = new CurrencyInfo(US);
+            var USD2 = USD1;
             CurrencyInfo SomeCurrency1 = null;
-            object Something1 = new object();
+            var Something1 = new object();
             object Something2 = null;
             object USD3 = USD1;
             object USD4 = new CurrencyInfo(US);
@@ -259,8 +262,8 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void EqualsToNull()
         {
-            System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
-            CurrencyInfo USD1 = new CurrencyInfo(US);
+            var US = new System.Globalization.RegionInfo("US");
+            var USD1 = new CurrencyInfo(US);
             CurrencyInfo USD2 = null;
 
             Assert.True(USD1 != USD2);
@@ -270,8 +273,8 @@ namespace TIKSN.Finance.Tests
         [Fact]
         public void ToString001()
         {
-            System.Globalization.RegionInfo US = new System.Globalization.RegionInfo("US");
-            CurrencyInfo USD = new CurrencyInfo(US);
+            var US = new System.Globalization.RegionInfo("US");
+            var USD = new CurrencyInfo(US);
 
             Assert.Equal("USD", USD.ToString());
         }

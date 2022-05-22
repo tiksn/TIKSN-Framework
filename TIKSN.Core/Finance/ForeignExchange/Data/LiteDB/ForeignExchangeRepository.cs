@@ -1,4 +1,4 @@
-﻿using LiteDB;
+using LiteDB;
 using TIKSN.Data.LiteDB;
 
 namespace TIKSN.Finance.ForeignExchange.Data.LiteDB

@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Configuration.ValidationStrategy
+namespace TIKSN.Configuration.ValidationStrategy
 {
     public interface IConfigurationValidationStrategy<T>
     {

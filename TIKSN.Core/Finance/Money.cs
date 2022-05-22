@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Globalization;
 
@@ -30,7 +30,7 @@ namespace TIKSN.Finance
 
         public bool Equals(Money that)
         {
-            if (ReferenceEquals(that, null))
+            if (that is null)
             {
                 return false;
             }
@@ -60,20 +60,12 @@ namespace TIKSN.Finance
                 amountFormat += format.Substring(1);
             }
 
-            switch (currencyFormat)
+            NFI.CurrencySymbol = currencyFormat switch
             {
-                case "S":
-                    NFI.CurrencySymbol = this.Currency.CurrencySymbol;
-                    break;
-
-                case "I":
-                    NFI.CurrencySymbol = this.Currency.ISOCurrencySymbol;
-                    break;
-
-                default:
-                    throw new FormatException();
-            }
-
+                "S" => this.Currency.CurrencySymbol,
+                "I" => this.Currency.ISOCurrencySymbol,
+                _ => throw new FormatException(),
+            };
             return this.Amount.ToString(amountFormat, NFI);
         }
 
@@ -188,7 +180,7 @@ namespace TIKSN.Finance
 
             var thatMoney = that as Money;
 
-            if (!ReferenceEquals(thatMoney, null))
+            if (thatMoney is not null)
             {
                 return this.Equals(thatMoney);
             }
@@ -207,5 +199,21 @@ namespace TIKSN.Finance
                 throw new InvalidOperationException("Money values are in different currencies.");
             }
         }
+
+        public override int GetHashCode() => throw new NotImplementedException();
+
+        public static Money Negate(Money item) => throw new NotImplementedException();
+
+        public static Money Subtract(Money left, Money right) => throw new NotImplementedException();
+
+        public static Money Mod(Money left, Money right) => throw new NotImplementedException();
+
+        public static Money Multiply(Money left, Money right) => throw new NotImplementedException();
+
+        public static Money Divide(Money left, Money right) => throw new NotImplementedException();
+
+        public static Money Plus(Money item) => throw new NotImplementedException();
+
+        public static Money Add(Money left, Money right) => throw new NotImplementedException();
     }
 }

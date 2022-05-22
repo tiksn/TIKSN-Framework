@@ -14,7 +14,7 @@
         <license type="expression">MIT</license>
         <description>This is a .NET Framework enhancement framework. Main features are Versioning, Finance, Currency, Foreign Exchange, Money, Pricing strategy, Telemetry, Composite Weighted Progress, Repository and Unity of Wok pattern implementation with Entity Framework Core, Network Connectivity Service and Triggering, Settings, Windows Registry configuration source, Azure Storage Repository, MongoDB Repository, NoDB Repository, Lingual and Regional Localization, Serialization, Rest Requester, Rest Repository, Dependency Injection, Composition Root Setup base classes.</description>
         <copyright>Copyright © 2019, TIKSN Lab</copyright>
-        <releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/milestone/12 </releaseNotes>
+        <releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/milestone/13</releaseNotes>
         <language />
         <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry, Configuration, Azure Storage, MongoDB, NoDB, Rest, Localization, Dependency Injection</tags>
         <dependencies>
@@ -30,56 +30,42 @@
         <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\MonoAndroid403\hy" />
         <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\MonoAndroid403\ru" />
         <file src="any\uk\TIKSN.LanguageLocalization.resources.dll" target="lib\MonoAndroid403\uk" />
-        <file src="any\zh-Hans\TIKSN.LanguageLocalization.resources.dll" target="lib\MonoAndroid403\zh-Hans" />
-        <file src="any\zh-Hant\TIKSN.LanguageLocalization.resources.dll" target="lib\MonoAndroid403\zh-Hant" />
         <file src="any\TIKSN.LanguageLocalization.xml" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.LanguageLocalization.pdb" target="lib\MonoAndroid403" />
-        <file src="any\TIKSN.LanguageLocalization.dll" target="lib\net5.0" />
-        <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\net5.0\hy" />
-        <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\net5.0\ru" />
-        <file src="any\uk\TIKSN.LanguageLocalization.resources.dll" target="lib\net5.0\uk" />
-        <file src="any\zh-Hans\TIKSN.LanguageLocalization.resources.dll" target="lib\net5.0\zh-Hans" />
-        <file src="any\zh-Hant\TIKSN.LanguageLocalization.resources.dll" target="lib\net5.0\zh-Hant" />
-        <file src="any\TIKSN.LanguageLocalization.xml" target="lib\net5.0" />
-        <file src="any\TIKSN.LanguageLocalization.pdb" target="lib\net5.0" />
+        <file src="any\TIKSN.LanguageLocalization.dll" target="lib\net6.0" />
+        <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\net6.0\hy" />
+        <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\net6.0\ru" />
+        <file src="any\uk\TIKSN.LanguageLocalization.resources.dll" target="lib\net6.0\uk" />
+        <file src="any\TIKSN.LanguageLocalization.xml" target="lib\net6.0" />
+        <file src="any\TIKSN.LanguageLocalization.pdb" target="lib\net6.0" />
         <file src="any\TIKSN.LanguageLocalization.dll" target="lib\netstandard2.0" />
         <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\netstandard2.0\hy" />
         <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\netstandard2.0\ru" />
         <file src="any\uk\TIKSN.LanguageLocalization.resources.dll" target="lib\netstandard2.0\uk" />
-        <file src="any\zh-Hans\TIKSN.LanguageLocalization.resources.dll" target="lib\netstandard2.0\zh-Hans" />
-        <file src="any\zh-Hant\TIKSN.LanguageLocalization.resources.dll" target="lib\netstandard2.0\zh-Hant" />
         <file src="any\TIKSN.LanguageLocalization.xml" target="lib\netstandard2.0" />
         <file src="any\TIKSN.LanguageLocalization.pdb" target="lib\netstandard2.0" />
         <file src="any\TIKSN.LanguageLocalization.dll" target="ref\uap10.0" />
         <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="ref\uap10.0\hy" />
         <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="ref\uap10.0\ru" />
         <file src="any\uk\TIKSN.LanguageLocalization.resources.dll" target="ref\uap10.0\uk" />
-        <file src="any\zh-Hans\TIKSN.LanguageLocalization.resources.dll" target="ref\uap10.0\zh-Hans" />
-        <file src="any\zh-Hant\TIKSN.LanguageLocalization.resources.dll" target="ref\uap10.0\zh-Hant" />
         <file src="any\TIKSN.LanguageLocalization.xml" target="ref\uap10.0" />
         <file src="any\TIKSN.LanguageLocalization.pdb" target="ref\uap10.0" />
         <file src="any\TIKSN.LanguageLocalization.dll" target="runtimes\win10-x86\lib\uap10.0" />
         <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\hy" />
         <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\ru" />
         <file src="any\uk\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\uk" />
-        <file src="any\zh-Hans\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\zh-Hans" />
-        <file src="any\zh-Hant\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\zh-Hant" />
         <file src="any\TIKSN.LanguageLocalization.xml" target="runtimes\win10-x86\lib\uap10.0" />
         <file src="any\TIKSN.LanguageLocalization.pdb" target="runtimes\win10-x86\lib\uap10.0" />
         <file src="any\TIKSN.LanguageLocalization.dll" target="runtimes\win10-x64\lib\uap10.0" />
         <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\hy" />
         <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\ru" />
         <file src="any\uk\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\uk" />
-        <file src="any\zh-Hans\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\zh-Hans" />
-        <file src="any\zh-Hant\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\zh-Hant" />
         <file src="any\TIKSN.LanguageLocalization.xml" target="runtimes\win10-x64\lib\uap10.0" />
         <file src="any\TIKSN.LanguageLocalization.pdb" target="runtimes\win10-x64\lib\uap10.0" />
         <file src="any\TIKSN.LanguageLocalization.dll" target="runtimes\win10-arm\lib\uap10.0" />
         <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\hy" />
         <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\ru" />
         <file src="any\uk\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\uk" />
-        <file src="any\zh-Hans\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\zh-Hans" />
-        <file src="any\zh-Hant\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\zh-Hant" />
         <file src="any\TIKSN.LanguageLocalization.xml" target="runtimes\win10-arm\lib\uap10.0" />
         <file src="any\TIKSN.LanguageLocalization.pdb" target="runtimes\win10-arm\lib\uap10.0" />
         <file src="any\TIKSN.RegionLocalization.dll" target="lib\MonoAndroid403" />
@@ -102,34 +88,30 @@
         <file src="any\ru-RU\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\ru-RU" />
         <file src="any\ru-UA\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\ru-UA" />
         <file src="any\uk-UA\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\uk-UA" />
-        <file src="any\zh-CN\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\zh-CN" />
-        <file src="any\zh-SG\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\zh-SG" />
         <file src="any\TIKSN.RegionLocalization.xml" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.RegionLocalization.pdb" target="lib\MonoAndroid403" />
-        <file src="any\TIKSN.RegionLocalization.dll" target="lib\net5.0" />
-        <file src="any\en-001\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-001" />
-        <file src="any\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-150" />
-        <file src="any\en-AU\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-AU" />
-        <file src="any\en-CA\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-CA" />
-        <file src="any\en-CH\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-CH" />
-        <file src="any\en-DE\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-DE" />
-        <file src="any\en-GB\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-GB" />
-        <file src="any\en-GU\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-GU" />
-        <file src="any\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-IE" />
-        <file src="any\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-NZ" />
-        <file src="any\en-PR\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-PR" />
-        <file src="any\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-SG" />
-        <file src="any\en-US\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\en-US" />
-        <file src="any\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\hy-AM" />
-        <file src="any\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\ru-BY" />
-        <file src="any\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\ru-KZ" />
-        <file src="any\ru-RU\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\ru-RU" />
-        <file src="any\ru-UA\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\ru-UA" />
-        <file src="any\uk-UA\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\uk-UA" />
-        <file src="any\zh-CN\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\zh-CN" />
-        <file src="any\zh-SG\TIKSN.RegionLocalization.resources.dll" target="lib\net5.0\zh-SG" />
-        <file src="any\TIKSN.RegionLocalization.xml" target="lib\net5.0" />
-        <file src="any\TIKSN.RegionLocalization.pdb" target="lib\net5.0" />
+        <file src="any\TIKSN.RegionLocalization.dll" target="lib\net6.0" />
+        <file src="any\en-001\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-001" />
+        <file src="any\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-150" />
+        <file src="any\en-AU\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-AU" />
+        <file src="any\en-CA\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-CA" />
+        <file src="any\en-CH\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-CH" />
+        <file src="any\en-DE\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-DE" />
+        <file src="any\en-GB\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-GB" />
+        <file src="any\en-GU\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-GU" />
+        <file src="any\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-IE" />
+        <file src="any\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-NZ" />
+        <file src="any\en-PR\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-PR" />
+        <file src="any\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-SG" />
+        <file src="any\en-US\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-US" />
+        <file src="any\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\hy-AM" />
+        <file src="any\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\ru-BY" />
+        <file src="any\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\ru-KZ" />
+        <file src="any\ru-RU\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\ru-RU" />
+        <file src="any\ru-UA\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\ru-UA" />
+        <file src="any\uk-UA\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\uk-UA" />
+        <file src="any\TIKSN.RegionLocalization.xml" target="lib\net6.0" />
+        <file src="any\TIKSN.RegionLocalization.pdb" target="lib\net6.0" />
         <file src="any\TIKSN.RegionLocalization.dll" target="lib\netstandard2.0" />
         <file src="any\en-001\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\en-001" />
         <file src="any\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\en-150" />
@@ -150,8 +132,6 @@
         <file src="any\ru-RU\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\ru-RU" />
         <file src="any\ru-UA\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\ru-UA" />
         <file src="any\uk-UA\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\uk-UA" />
-        <file src="any\zh-CN\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\zh-CN" />
-        <file src="any\zh-SG\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\zh-SG" />
         <file src="any\TIKSN.RegionLocalization.xml" target="lib\netstandard2.0" />
         <file src="any\TIKSN.RegionLocalization.pdb" target="lib\netstandard2.0" />
         <file src="any\TIKSN.RegionLocalization.dll" target="ref\uap10.0" />
@@ -174,8 +154,6 @@
         <file src="any\ru-RU\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\ru-RU" />
         <file src="any\ru-UA\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\ru-UA" />
         <file src="any\uk-UA\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\uk-UA" />
-        <file src="any\zh-CN\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\zh-CN" />
-        <file src="any\zh-SG\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\zh-SG" />
         <file src="any\TIKSN.RegionLocalization.xml" target="ref\uap10.0" />
         <file src="any\TIKSN.RegionLocalization.pdb" target="ref\uap10.0" />
         <file src="any\TIKSN.RegionLocalization.dll" target="runtimes\win10-x86\lib\uap10.0" />
@@ -198,8 +176,6 @@
         <file src="any\ru-RU\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\ru-RU" />
         <file src="any\ru-UA\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\ru-UA" />
         <file src="any\uk-UA\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\uk-UA" />
-        <file src="any\zh-CN\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\zh-CN" />
-        <file src="any\zh-SG\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\zh-SG" />
         <file src="any\TIKSN.RegionLocalization.xml" target="runtimes\win10-x86\lib\uap10.0" />
         <file src="any\TIKSN.RegionLocalization.pdb" target="runtimes\win10-x86\lib\uap10.0" />
         <file src="any\TIKSN.RegionLocalization.dll" target="runtimes\win10-x64\lib\uap10.0" />
@@ -222,8 +198,6 @@
         <file src="any\ru-RU\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\ru-RU" />
         <file src="any\ru-UA\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\ru-UA" />
         <file src="any\uk-UA\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\uk-UA" />
-        <file src="any\zh-CN\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\zh-CN" />
-        <file src="any\zh-SG\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\zh-SG" />
         <file src="any\TIKSN.RegionLocalization.xml" target="runtimes\win10-x64\lib\uap10.0" />
         <file src="any\TIKSN.RegionLocalization.pdb" target="runtimes\win10-x64\lib\uap10.0" />
         <file src="any\TIKSN.RegionLocalization.dll" target="runtimes\win10-arm\lib\uap10.0" />
@@ -246,8 +220,6 @@
         <file src="any\ru-RU\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\ru-RU" />
         <file src="any\ru-UA\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\ru-UA" />
         <file src="any\uk-UA\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\uk-UA" />
-        <file src="any\zh-CN\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\zh-CN" />
-        <file src="any\zh-SG\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\zh-SG" />
         <file src="any\TIKSN.RegionLocalization.xml" target="runtimes\win10-arm\lib\uap10.0" />
         <file src="any\TIKSN.RegionLocalization.pdb" target="runtimes\win10-arm\lib\uap10.0" />
 
@@ -255,9 +227,9 @@
         <file src="any\TIKSN.Core.dll" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.Core.xml" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.Core.pdb" target="lib\MonoAndroid403" />
-        <file src="any\TIKSN.Core.dll" target="lib\net5.0" />
-        <file src="any\TIKSN.Core.xml" target="lib\net5.0" />
-        <file src="any\TIKSN.Core.pdb" target="lib\net5.0" />
+        <file src="any\TIKSN.Core.dll" target="lib\net6.0" />
+        <file src="any\TIKSN.Core.xml" target="lib\net6.0" />
+        <file src="any\TIKSN.Core.pdb" target="lib\net6.0" />
         <file src="any\TIKSN.Core.dll" target="lib\netstandard2.0" />
         <file src="any\TIKSN.Core.xml" target="lib\netstandard2.0" />
         <file src="any\TIKSN.Core.pdb" target="lib\netstandard2.0" />
@@ -280,9 +252,9 @@
         <file src="any\TIKSN.Framework.Android.pdb" target="lib\MonoAndroid403" /> -->
 
         <!-- Platform: .NET 5 -->
-        <file src="any\TIKSN.Framework.Core.dll" target="lib\net5.0" />
-        <file src="any\TIKSN.Framework.Core.xml" target="lib\net5.0" />
-        <file src="any\TIKSN.Framework.Core.pdb" target="lib\net5.0" />
+        <file src="any\TIKSN.Framework.Core.dll" target="lib\net6.0" />
+        <file src="any\TIKSN.Framework.Core.xml" target="lib\net6.0" />
+        <file src="any\TIKSN.Framework.Core.pdb" target="lib\net6.0" />
 
         <!-- Platform: UAP -->
         <file src="any\TIKSN.Framework.UWP.dll" target="lib\uap10.0" />

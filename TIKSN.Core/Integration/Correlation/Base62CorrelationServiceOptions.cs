@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Integration.Correlation
+namespace TIKSN.Integration.Correlation
 {
     public class Base62CorrelationServiceOptions
     {

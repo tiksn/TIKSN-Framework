@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,42 +27,42 @@ namespace TIKSN.Data.Cache.Memory
 
         public async Task AddAsync(TEntity entity, CancellationToken cancellationToken)
         {
-            await this._repository.AddAsync(entity, cancellationToken);
+            await this._repository.AddAsync(entity, cancellationToken).ConfigureAwait(false);
 
             this.InvalidateCacheItem(entity);
         }
 
         public async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
-            await this._repository.AddRangeAsync(entities, cancellationToken);
+            await this._repository.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
 
             this.InvalidateCacheItems(entities);
         }
 
         public async Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)
         {
-            await this._repository.RemoveAsync(entity, cancellationToken);
+            await this._repository.RemoveAsync(entity, cancellationToken).ConfigureAwait(false);
 
             this.InvalidateCacheItem(entity);
         }
 
         public async Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
-            await this._repository.RemoveRangeAsync(entities, cancellationToken);
+            await this._repository.RemoveRangeAsync(entities, cancellationToken).ConfigureAwait(false);
 
             this.InvalidateCacheItems(entities);
         }
 
         public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
         {
-            await this._repository.RemoveAsync(entity, cancellationToken);
+            await this._repository.RemoveAsync(entity, cancellationToken).ConfigureAwait(false);
 
             this.InvalidateCacheItem(entity);
         }
 
         public async Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
-            await this._repository.UpdateRangeAsync(entities, cancellationToken);
+            await this._repository.UpdateRangeAsync(entities, cancellationToken).ConfigureAwait(false);
 
             this.InvalidateCacheItems(entities);
         }
@@ -70,7 +70,7 @@ namespace TIKSN.Data.Cache.Memory
         protected Task<TResult> GetQueryFromMemoryCacheAsync<TResult>(object cacheKey,
             Func<Task<TResult>> getFromSource)
         {
-            this._cacheKeychain.Add(cacheKey);
+            _ = this._cacheKeychain.Add(cacheKey);
 
             return this.GetFromMemoryCacheAsync(cacheKey, getFromSource);
         }

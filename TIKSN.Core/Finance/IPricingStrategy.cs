@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Finance
+namespace TIKSN.Finance
 {
     public interface IPricingStrategy
     {

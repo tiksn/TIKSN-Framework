@@ -1,4 +1,4 @@
-﻿using LiteDB;
+using LiteDB;
 
 namespace TIKSN.Data.LiteDB
 {
