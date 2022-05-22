@@ -30,7 +30,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             AddSeriesCode("en-CA", "en-US", "XUDLCDD");
             AddSeriesCode("en-CA", "en-GB", "XUDLCDS");
 
-            AddSeriesCode("zh-Hans-CN", "en-US", "XUDLBK73");
+            AddSeriesCode("zh-CN", "en-US", "XUDLBK73");
 
             AddSeriesCode("cs-CZ", "en-US", "XUDLBK27");
             AddSeriesCode("cs-CZ", "de-DE", "XUDLBK26");
@@ -88,8 +88,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             AddSeriesCode("ar-SA", "en-US", "XUDLSRD");
             AddSeriesCode("ar-SA", "en-GB", "XUDLSRS");
 
-            AddSeriesCode("zh-Hans-SG", "en-US", "XUDLSGD");
-            AddSeriesCode("zh-Hans-SG", "en-GB", "XUDLSGS");
+            AddSeriesCode("zh-SG", "en-US", "XUDLSGD");
+            AddSeriesCode("zh-SG", "en-GB", "XUDLSGS");
 
             AddSeriesCode("af-ZA", "en-US", "XUDLZRD");
             AddSeriesCode("af-ZA", "en-GB", "XUDLZRS");
@@ -118,7 +118,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
             //AddSeriesCode("pt-BR", "en-US", "XUDLB8KL");
 
-            AddSeriesCode("zh-Hans-CN", "en-GB", "XUDLBK89");
+            AddSeriesCode("zh-CN", "en-GB", "XUDLBK89");
         }
 
         public BankOfEngland(ICurrencyFactory currencyFactory, IRegionFactory regionFactory, ITimeProvider timeProvider)
