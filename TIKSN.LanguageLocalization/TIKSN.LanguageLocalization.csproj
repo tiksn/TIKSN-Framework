@@ -29,11 +29,5 @@
     <XliffResource Include="MultilingualResources\TIKSN.LanguageLocalization.uk.xlf">
       <Generator>XliffResxGenerator</Generator>
     </XliffResource>
-    <XliffResource Include="MultilingualResources\TIKSN.LanguageLocalization.zh-Hans.xlf">
-      <Generator>XliffResxGenerator</Generator>
-    </XliffResource>
-    <XliffResource Include="MultilingualResources\TIKSN.LanguageLocalization.zh-Hant.xlf">
-      <Generator>XliffResxGenerator</Generator>
-    </XliffResource>
   </ItemGroup>
 </Project>

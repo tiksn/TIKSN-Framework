@@ -36,14 +36,29 @@ namespace TIKSN.Localization.Tests
         {
             var resourceNamesCache = new ResourceNamesCache();
             var testStringLocalizer = new TestStringLocalizer(resourceNamesCache, this._serviceProvider.GetRequiredService<ILogger<TestStringLocalizer>>());
-            var duplicates = testStringLocalizer
+            var allStrings = testStringLocalizer
                 .GetAllStrings()
                 .GroupBy(item => item.Name.ToLowerInvariant())
+                .ToArray();
+
+            var duplicates = allStrings
                 .Where(item => item.Count() > 1)
                 .ToArray();
 
             var duplicatesCount = duplicates.Length;
+            var logger = this._serviceProvider.GetRequiredService<ILogger<CompositeAssemblyStringLocalizerTests>>();
 
+            foreach (var duplicate in duplicates)
+            {
+                logger.LogInformation("Localization Key {LocalizationKey}", duplicate.Key);
+
+                foreach (var duplicateItem in duplicate)
+                {
+                    logger.LogInformation("Localization Name {LocalizationName}", duplicateItem.Name);
+                    logger.LogInformation("Localization Value {LocalizationValue}", duplicateItem.Value);
+                    logger.LogInformation("Localization SearchedLocation {LocalizationSearchedLocation}", duplicateItem.SearchedLocation);
+                }
+            }
             _ = duplicatesCount.Should().Be(0);
         }
     }
