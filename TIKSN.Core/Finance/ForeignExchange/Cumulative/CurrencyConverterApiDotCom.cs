@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -43,8 +44,13 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
             using var httpClient = new HttpClient();
             httpClient.BaseAddress = this._plan.BaseAddress;
 
+            var requestUri = string.Format(
+                CultureInfo.InvariantCulture,
+                CurrencyListApiEndpointFormat,
+                this._plan.ApiKey);
+
             var currenciesJson =
-                await httpClient.GetStringAsync(string.Format(CurrencyListApiEndpointFormat, this._plan.ApiKey)).ConfigureAwait(false);
+                await httpClient.GetStringAsync(requestUri).ConfigureAwait(false);
 
             var currencyList = JsonConvert.DeserializeObject<CurrencyList>(currenciesJson);
 
