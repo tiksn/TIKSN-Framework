@@ -125,8 +125,8 @@ namespace TIKSN.Finance.ForeignExchange
                 .MinBy(item => Math.Abs((item.AsOn - asOn).Ticks))
                 .First();
 
-            this._logger.LogInformation("Exchange rate provided by {0}",
-                this._stringLocalizer.GetRequiredString(exchangeRateEntity.ForeignExchange.ShortNameKey));
+            this._logger.LogInformation("Exchange rate provided by Foreign Exchange with ID {0}",
+                exchangeRateEntity.ForeignExchangeID);
 
             return exchangeRateEntity.Rate;
         }
