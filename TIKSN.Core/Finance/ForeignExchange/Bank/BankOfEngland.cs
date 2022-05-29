@@ -16,9 +16,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             "https://www.bankofengland.co.uk/boeapps/iadb/fromshowcolumns.asp?CodeVer=new&xml.x=yes&Datefrom={0}&Dateto={1}&SeriesCodes={2}";
 
         private static readonly Dictionary<CurrencyPair, string> SeriesCodes;
-        private readonly ICurrencyFactory _currencyFactory;
-        private readonly IRegionFactory _regionFactory;
-        private readonly ITimeProvider _timeProvider;
+        private readonly ICurrencyFactory currencyFactory;
+        private readonly IRegionFactory regionFactory;
+        private readonly ITimeProvider timeProvider;
 
         static BankOfEngland()
         {
@@ -27,18 +27,15 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             AddSeriesCode("en-AU", "en-US", "XUDLADD");
             AddSeriesCode("en-AU", "en-GB", "XUDLADS");
 
-            AddSeriesCode("en-CA", "en-US", "XUDLCDD");
             AddSeriesCode("en-CA", "en-GB", "XUDLCDS");
 
             AddSeriesCode("zh-CN", "en-US", "XUDLBK73");
 
             AddSeriesCode("cs-CZ", "en-US", "XUDLBK27");
-            AddSeriesCode("cs-CZ", "de-DE", "XUDLBK26");
             AddSeriesCode("cs-CZ", "en-GB", "XUDLBK25");
 
             AddSeriesCode("da-DK", "en-US", "XUDLDKD");
             AddSeriesCode("da-DK", "en-GB", "XUDLDKS");
-            AddSeriesCode("da-DK", "de-DE", "XUDLBK76");
 
             AddSeriesCode("de-DE", "en-US", "XUDLERD");
             AddSeriesCode("de-DE", "en-GB", "XUDLERS");
@@ -47,7 +44,6 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             AddSeriesCode("zh-HK", "en-GB", "XUDLHDS");
 
             AddSeriesCode("hu-HU", "en-US", "XUDLBK35");
-            AddSeriesCode("hu-HU", "de-DE", "XUDLBK34");
             AddSeriesCode("hu-HU", "en-GB", "XUDLBK33");
 
             AddSeriesCode("hi-IN", "en-GB", "XUDLBK97");
@@ -58,8 +54,6 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
             AddSeriesCode("ja-JP", "en-US", "XUDLJYD");
             AddSeriesCode("ja-JP", "en-GB", "XUDLJYS");
-            AddSeriesCode("ja-JP", "de-DE", "XUDLBK63");
-            AddSeriesCode("de-CH", "de-DE", "XUDLBK68");
 
             //AddSeriesCode("LV", "en-US", "XUDLBK43");
             //AddSeriesCode("LV", "de-DE", "XUDLBK42");
@@ -79,11 +73,10 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             AddSeriesCode("nn-NO", "en-GB", "XUDLNKS");
 
             AddSeriesCode("pl-PL", "en-US", "XUDLBK49");
-            AddSeriesCode("pl-PL", "de-DE", "XUDLBK48");
             AddSeriesCode("pl-PL", "en-GB", "XUDLBK47");
 
-            AddSeriesCode("ru-RU", "en-GB", "XUDLBK85");
-            AddSeriesCode("ru-RU", "en-US", "XUDLBK69");
+            // AddSeriesCode("ru-RU", "en-GB", "XUDLBK85");
+            // AddSeriesCode("ru-RU", "en-US", "XUDLBK69");
 
             AddSeriesCode("ar-SA", "en-US", "XUDLSRD");
             AddSeriesCode("ar-SA", "en-GB", "XUDLSRS");
@@ -123,9 +116,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         public BankOfEngland(ICurrencyFactory currencyFactory, IRegionFactory regionFactory, ITimeProvider timeProvider)
         {
-            this._currencyFactory = currencyFactory;
-            this._regionFactory = regionFactory;
-            this._timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+            this.currencyFactory = currencyFactory;
+            this.regionFactory = regionFactory;
+            this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
@@ -162,7 +155,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         public async Task<ExchangeRate> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency,
             DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            if (asOn > this._timeProvider.GetCurrentTime())
+            if (asOn > this.timeProvider.GetCurrentTime())
             {
                 throw new ArgumentException("Exchange rate forecasting are not supported.");
             }
@@ -179,11 +172,11 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                 throw new ArgumentException("Currency pair not supported.");
             }
 
-            var RequestUrl = string.Format(UrlFormat, ToInternalDataFormat(asOn.AddMonths(-1)),
+            var requestUrl = string.Format(UrlFormat, ToInternalDataFormat(asOn.AddMonths(-1)),
                 ToInternalDataFormat(asOn), SerieCode);
 
             using var httpClient = new HttpClient();
-            var responseStream = await httpClient.GetStreamAsync(RequestUrl).ConfigureAwait(false);
+            var responseStream = await httpClient.GetStreamAsync(requestUrl).ConfigureAwait(false);
 
             var xdoc = XDocument.Load(responseStream);
 
@@ -191,24 +184,27 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             var reverseRate = decimal.Zero;
 
             foreach (var item in xdoc.Element("{http://www.gesmes.org/xml/2002-08-01}Envelope")
-                .Element("{http://www.bankofengland.co.uk/boeapps/iadb/agg_series}Cube")
-                .Elements("{http://www.bankofengland.co.uk/boeapps/iadb/agg_series}Cube"))
+                .Element("{https://www.bankofengland.co.uk/website/agg_series}Cube")
+                .Elements("{https://www.bankofengland.co.uk/website/agg_series}Cube"))
             {
                 var time = item.Attribute("TIME");
-                var EstimatedRate = item.Attribute("OBS_VALUE");
-
-                if (time != null && EstimatedRate != null)
+                if (time is not null)
                 {
-                    var Year = int.Parse(time.Value.Substring(0, 4));
-                    var Month = int.Parse(time.Value.Substring(5, 2));
-                    var Day = int.Parse(time.Value.Substring(8));
+                    var estimatedRate = item.Attribute("OBS_VALUE");
 
-                    var itemTime = new DateTimeOffset(Year, Month, Day, 0, 0, 0, TimeSpan.Zero);
-
-                    if (itemTime > date)
+                    if (time != null && estimatedRate != null)
                     {
-                        reverseRate = decimal.Parse(EstimatedRate.Value, CultureInfo.InvariantCulture);
-                        date = itemTime;
+                        var year = int.Parse(time.Value.Substring(0, 4), CultureInfo.InvariantCulture);
+                        var month = int.Parse(time.Value.Substring(5, 2), CultureInfo.InvariantCulture);
+                        var day = int.Parse(time.Value.Substring(8), CultureInfo.InvariantCulture);
+
+                        var itemTime = new DateTimeOffset(year, month, day, 0, 0, 0, TimeSpan.Zero);
+
+                        if (itemTime > date)
+                        {
+                            reverseRate = decimal.Parse(estimatedRate.Value, CultureInfo.InvariantCulture);
+                            date = itemTime;
+                        }
                     }
                 }
             }
@@ -222,20 +218,20 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return new ExchangeRate(pair, date, rate);
         }
 
-        private static void AddSeriesCode(string BaseCountryCode, string CounterCountryCode, string SerieCode)
+        private static void AddSeriesCode(string baseCountryCode, string counterCountryCode, string serieCode)
         {
-            var BaseCountry = new RegionInfo(BaseCountryCode);
-            var CounterCountry = new RegionInfo(CounterCountryCode);
+            var baseCountry = new RegionInfo(baseCountryCode);
+            var counterCountry = new RegionInfo(counterCountryCode);
 
-            var BaseCurrency = new CurrencyInfo(BaseCountry);
-            var CounterCurrency = new CurrencyInfo(CounterCountry);
+            var baseCurrency = new CurrencyInfo(baseCountry);
+            var counterCurrency = new CurrencyInfo(counterCountry);
 
-            var pair = new CurrencyPair(BaseCurrency, CounterCurrency);
+            var pair = new CurrencyPair(baseCurrency, counterCurrency);
 
-            SeriesCodes.Add(pair, SerieCode);
+            SeriesCodes.Add(pair, serieCode);
         }
 
-        private static string ToInternalDataFormat(DateTimeOffset DT) =>
-            DT.ToString("dd/MMM/yyyy", CultureInfo.InvariantCulture);
+        private static string ToInternalDataFormat(DateTimeOffset dt) =>
+            dt.ToString("dd/MMM/yyyy", CultureInfo.InvariantCulture);
     }
 }

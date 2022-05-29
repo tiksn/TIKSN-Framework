@@ -140,7 +140,6 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
             Assert.Contains(CurrencyPairs, C => C.ToString() == "AUD/USD");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "AUD/GBP");
 
-            Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/USD");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "CAD/GBP");
 
             Assert.Contains(CurrencyPairs, C => C.ToString() == "CNY/GBP");
@@ -148,11 +147,9 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
 
             Assert.Contains(CurrencyPairs, C => C.ToString() == "CZK/USD");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "CZK/GBP");
-            Assert.Contains(CurrencyPairs, C => C.ToString() == "CZK/EUR");
 
             Assert.Contains(CurrencyPairs, C => C.ToString() == "DKK/GBP");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "DKK/USD");
-            Assert.Contains(CurrencyPairs, C => C.ToString() == "DKK/EUR");
 
             Assert.Contains(CurrencyPairs, C => C.ToString() == "EUR/USD");
 
@@ -161,7 +158,6 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
 
             Assert.Contains(CurrencyPairs, C => C.ToString() == "HUF/USD");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "HUF/GBP");
-            Assert.Contains(CurrencyPairs, C => C.ToString() == "HUF/EUR");
 
             Assert.Contains(CurrencyPairs, C => C.ToString() == "INR/GBP");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "INR/USD");
@@ -171,7 +167,6 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
 
             Assert.Contains(CurrencyPairs, C => C.ToString() == "JPY/USD");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "JPY/GBP");
-            Assert.Contains(CurrencyPairs, C => C.ToString() == "JPY/EUR");
 
             Assert.Contains(CurrencyPairs, C => C.ToString() == "MYR/GBP");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "MYR/USD");
@@ -183,11 +178,7 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
             Assert.Contains(CurrencyPairs, C => C.ToString() == "NOK/GBP");
 
             Assert.Contains(CurrencyPairs, C => C.ToString() == "PLN/USD");
-            Assert.Contains(CurrencyPairs, C => C.ToString() == "PLN/EUR");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "PLN/GBP");
-
-            Assert.Contains(CurrencyPairs, C => C.ToString() == "RUB/GBP");
-            Assert.Contains(CurrencyPairs, C => C.ToString() == "RUB/USD");
 
             Assert.Contains(CurrencyPairs, C => C.ToString() == "SAR/USD");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "SAR/GBP");
@@ -208,7 +199,6 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
 
             Assert.Contains(CurrencyPairs, C => C.ToString() == "CHF/USD");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "CHF/GBP");
-            Assert.Contains(CurrencyPairs, C => C.ToString() == "CHF/EUR");
 
             Assert.Contains(CurrencyPairs, C => C.ToString() == "TWD/USD");
             Assert.Contains(CurrencyPairs, C => C.ToString() == "TWD/GBP");
@@ -300,7 +290,7 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
             // In case or failure, check currency pair information from BOE website and set deadline
             // up to 3 month.
 
-            System.DateTimeOffset Deadline = new DateTime(2019, 10, 01);
+            System.DateTimeOffset Deadline = new DateTime(2022, 06, 01);
 
             if (System.DateTimeOffset.Now > Deadline)
                 throw new Exception("Source is out of date. Please update.");
