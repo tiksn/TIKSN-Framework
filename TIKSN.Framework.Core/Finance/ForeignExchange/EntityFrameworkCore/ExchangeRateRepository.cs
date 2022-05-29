@@ -8,7 +8,7 @@ using TIKSN.Data.EntityFrameworkCore;
 
 namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
 {
-    public class ExchangeRateRepository : EntityQueryRepository<ExchangeRatesContext, ExchangeRateEntity, int>,
+    public class ExchangeRateRepository : EntityQueryRepository<ExchangeRatesContext, ExchangeRateEntity, Guid>,
         IExchangeRateRepository
     {
         public ExchangeRateRepository(ExchangeRatesContext dbContext) : base(dbContext)
@@ -16,7 +16,7 @@ namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
         }
 
         public Task<ExchangeRateEntity> GetOrDefaultAsync(
-            int foreignExchangeID,
+            Guid foreignExchangeID,
             string baseCurrencyCode,
             string counterCurrencyCode,
             DateTimeOffset asOn,
@@ -29,22 +29,8 @@ namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
                 .Include(item => item.ForeignExchange)
                 .FirstOrDefaultAsync(cancellationToken);
 
-        public async Task<int> GetMaximalIdAsync(CancellationToken cancellationToken)
-        {
-            var entity = await this.Entities
-                .OrderByDescending(item => item.ID)
-                .FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
-
-            if (entity == null)
-            {
-                return 0;
-            }
-
-            return entity.ID;
-        }
-
         public async Task<IReadOnlyCollection<ExchangeRateEntity>> SearchAsync(
-            int foreignExchangeID,
+            Guid foreignExchangeID,
             string baseCurrencyCode,
             string counterCurrencyCode,
             DateTimeOffset dateFrom,
