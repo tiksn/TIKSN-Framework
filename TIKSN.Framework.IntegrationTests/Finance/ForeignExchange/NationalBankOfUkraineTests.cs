@@ -6,7 +6,7 @@ using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Globalization;
 using Xunit;
 
-namespace TIKSN.Finance.ForeignExchange.Tests
+namespace TIKSN.Finance.ForeignExchange.IntegrationTests
 {
     public class NationalBankOfUkraineTests
     {

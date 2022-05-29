@@ -5,12 +5,12 @@ using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.Finance.ForeignExchange.Cumulative;
-using TIKSN.Framework.IntegrationTests;
 using TIKSN.Globalization;
+using TIKSN.IntegrationTests;
 using TIKSN.Time;
 using Xunit;
 
-namespace TIKSN.Finance.ForeignExchange.Tests
+namespace TIKSN.Finance.ForeignExchange.IntegrationTests
 {
     [Collection("ServiceProviderCollection")]
     public class CurrencyConverterApiDotComTests
