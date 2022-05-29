@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,11 +11,12 @@ using TIKSN.Time;
 
 namespace TIKSN.Finance.ForeignExchange.Bank
 {
-    public class BankOfEngland : ICurrencyConverter, IExchangeRateProvider
+    public class BankOfEngland : ICurrencyConverter, IExchangeRateProvider, IExchangeRatesProvider
     {
         private const string UrlFormat =
             "https://www.bankofengland.co.uk/boeapps/iadb/fromshowcolumns.asp?CodeVer=new&xml.x=yes&Datefrom={0}&Dateto={1}&SeriesCodes={2}";
 
+        private static readonly Dictionary<string, CurrencyPair> Pairs;
         private static readonly Dictionary<CurrencyPair, string> SeriesCodes;
         private readonly ICurrencyFactory currencyFactory;
         private readonly IRegionFactory regionFactory;
@@ -23,6 +25,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         static BankOfEngland()
         {
             SeriesCodes = new Dictionary<CurrencyPair, string>();
+            Pairs = new Dictionary<string, CurrencyPair>();
 
             AddSeriesCode("en-AU", "en-US", "XUDLADD");
             AddSeriesCode("en-AU", "en-GB", "XUDLADS");
@@ -152,36 +155,88 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             CancellationToken cancellationToken) =>
             (await this.GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken).ConfigureAwait(false)).Rate;
 
-        public async Task<ExchangeRate> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency,
-            DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<ExchangeRate> GetExchangeRateAsync(
+            CurrencyInfo baseCurrency,
+            CurrencyInfo counterCurrency,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
             if (asOn > this.timeProvider.GetCurrentTime())
             {
                 throw new ArgumentException("Exchange rate forecasting are not supported.");
             }
 
-            string SerieCode;
+            string seriesCode;
             var pair = new CurrencyPair(baseCurrency, counterCurrency);
 
             try
             {
-                SerieCode = SeriesCodes[pair];
+                seriesCode = SeriesCodes[pair];
             }
             catch (KeyNotFoundException)
             {
                 throw new ArgumentException("Currency pair not supported.");
             }
 
-            var requestUrl = string.Format(UrlFormat, ToInternalDataFormat(asOn.AddMonths(-1)),
-                ToInternalDataFormat(asOn), SerieCode);
+            var exchangeRates = await this.GetSeriesCodeExchangeRateAsync(seriesCode, asOn, cancellationToken).ConfigureAwait(false);
+
+            return exchangeRates
+                .Where(x => x.Pair == pair)
+                .MinByWithTies(x => x.AsOn - asOn)
+                .First();
+        }
+
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
+        {
+            List<ExchangeRate> rates = new();
+            foreach (var seriesCode in SeriesCodes)
+            {
+                var exchangeRates = await this.GetSeriesCodeExchangeRateAsync(seriesCode.Value, asOn, cancellationToken).ConfigureAwait(false);
+                rates.AddRange(exchangeRates);
+            }
+
+            return rates;
+        }
+
+        private static void AddSeriesCode(string baseCountryCode, string counterCountryCode, string serieCode)
+        {
+            var baseCountry = new RegionInfo(baseCountryCode);
+            var counterCountry = new RegionInfo(counterCountryCode);
+
+            var baseCurrency = new CurrencyInfo(baseCountry);
+            var counterCurrency = new CurrencyInfo(counterCountry);
+
+            var pair = new CurrencyPair(baseCurrency, counterCurrency);
+
+            SeriesCodes.Add(pair, serieCode);
+            Pairs.Add(serieCode, pair);
+        }
+
+        private static string ToInternalDataFormat(DateTimeOffset dt) =>
+            dt.ToString("dd/MMM/yyyy", CultureInfo.InvariantCulture);
+
+        private async Task<IReadOnlyList<ExchangeRate>> GetSeriesCodeExchangeRateAsync(
+            string seriesCode,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
+        {
+            var pair = Pairs[seriesCode];
+
+            if (asOn > this.timeProvider.GetCurrentTime())
+            {
+                throw new ArgumentException("Exchange rate forecasting are not supported.");
+            }
+
+            var requestUrl = string.Format(UrlFormat,
+                ToInternalDataFormat(asOn.AddMonths(-1)),
+                ToInternalDataFormat(asOn), seriesCode);
 
             using var httpClient = new HttpClient();
             var responseStream = await httpClient.GetStreamAsync(requestUrl).ConfigureAwait(false);
 
             var xdoc = XDocument.Load(responseStream);
 
-            var date = DateTimeOffset.MinValue;
-            var reverseRate = decimal.Zero;
+            List<ExchangeRate> rates = new();
 
             foreach (var item in xdoc.Element("{http://www.gesmes.org/xml/2002-08-01}Envelope")
                 .Element("{https://www.bankofengland.co.uk/website/agg_series}Cube")
@@ -200,38 +255,16 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
                         var itemTime = new DateTimeOffset(year, month, day, 0, 0, 0, TimeSpan.Zero);
 
-                        if (itemTime > date)
-                        {
-                            reverseRate = decimal.Parse(estimatedRate.Value, CultureInfo.InvariantCulture);
-                            date = itemTime;
-                        }
+                        var reverseRate = decimal.Parse(estimatedRate.Value, CultureInfo.InvariantCulture);
+                        var rate = decimal.One / reverseRate;
+
+                        rates.Add(new ExchangeRate(pair, itemTime, rate));
+                        rates.Add(new ExchangeRate(pair.Reverse(), itemTime, reverseRate));
                     }
                 }
             }
 
-            var rate = decimal.Zero;
-            if (reverseRate != decimal.Zero)
-            {
-                rate = decimal.One / reverseRate;
-            }
-
-            return new ExchangeRate(pair, date, rate);
+            return rates;
         }
-
-        private static void AddSeriesCode(string baseCountryCode, string counterCountryCode, string serieCode)
-        {
-            var baseCountry = new RegionInfo(baseCountryCode);
-            var counterCountry = new RegionInfo(counterCountryCode);
-
-            var baseCurrency = new CurrencyInfo(baseCountry);
-            var counterCurrency = new CurrencyInfo(counterCountry);
-
-            var pair = new CurrencyPair(baseCurrency, counterCurrency);
-
-            SeriesCodes.Add(pair, serieCode);
-        }
-
-        private static string ToInternalDataFormat(DateTimeOffset dt) =>
-            dt.ToString("dd/MMM/yyyy", CultureInfo.InvariantCulture);
     }
 }
