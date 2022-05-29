@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace TIKSN.Framework.IntegrationTests
+namespace TIKSN.IntegrationTests
 {
     [CollectionDefinition("ServiceProviderCollection")]
     public class ServiceProviderCollection : ICollectionFixture<ServiceProviderFixture>

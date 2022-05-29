@@ -1,8 +1,7 @@
 using System;
 using MongoDB.Bson.Serialization.Attributes;
-using TIKSN.Data;
 
-namespace TIKSN.Framework.IntegrationTests.Data.Mongo
+namespace TIKSN.Data.Mongo.IntegrationTests
 {
     public class TestMongoEntity : IEntity<Guid>
     {

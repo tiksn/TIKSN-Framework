@@ -5,10 +5,11 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using TIKSN.Data.Mongo;
+using TIKSN.Data.Mongo.IntegrationTests;
 using TIKSN.DependencyInjection;
 using TIKSN.Framework.IntegrationTests.Data.Mongo;
 
-namespace TIKSN.Framework.IntegrationTests
+namespace TIKSN.IntegrationTests
 {
     public class ServiceProviderFixture : IDisposable
     {

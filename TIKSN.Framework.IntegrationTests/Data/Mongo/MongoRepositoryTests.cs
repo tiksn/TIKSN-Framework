@@ -2,9 +2,10 @@ using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using TIKSN.IntegrationTests;
 using Xunit;
 
-namespace TIKSN.Framework.IntegrationTests.Data.Mongo
+namespace TIKSN.Data.Mongo.IntegrationTests
 {
     [Collection("ServiceProviderCollection")]
     public class MongoRepositoryTests
