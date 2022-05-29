@@ -5,10 +5,10 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using Polly;
-using TIKSN.Data.Mongo;
+using TIKSN.IntegrationTests;
 using Xunit;
 
-namespace TIKSN.Framework.IntegrationTests.Data.Mongo
+namespace TIKSN.Data.Mongo.IntegrationTests
 {
     [Collection("ServiceProviderCollection")]
     public class MongoUnitOfWorkTests

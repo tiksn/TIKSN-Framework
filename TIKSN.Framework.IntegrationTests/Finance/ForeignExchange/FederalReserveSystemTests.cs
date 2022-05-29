@@ -7,7 +7,7 @@ using TIKSN.Globalization;
 using TIKSN.Time;
 using Xunit;
 
-namespace TIKSN.Finance.ForeignExchange.Tests
+namespace TIKSN.Finance.ForeignExchange.IntegrationTests
 {
     public class FederalReserveSystemTests
     {
