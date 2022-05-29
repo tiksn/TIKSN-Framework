@@ -11,28 +11,27 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
 {
     public class FederalReserveSystemTests
     {
-        const string skip = "API changed, code needs to be adopted";
 
-        private readonly ICurrencyFactory _currencyFactory;
-        private readonly ITimeProvider _timeProvider;
+        private readonly ICurrencyFactory currencyFactory;
+        private readonly ITimeProvider timeProvider;
 
         public FederalReserveSystemTests()
         {
             var services = new ServiceCollection();
-            services.AddMemoryCache();
-            services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
-            services.AddSingleton<IRegionFactory, RegionFactory>();
-            services.AddSingleton<ITimeProvider, TimeProvider>();
+            _ = services.AddMemoryCache();
+            _ = services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
+            _ = services.AddSingleton<IRegionFactory, RegionFactory>();
+            _ = services.AddSingleton<ITimeProvider, TimeProvider>();
 
             var serviceProvider = services.BuildServiceProvider();
-            _currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
-            _timeProvider = serviceProvider.GetRequiredService<ITimeProvider>();
+            this.currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+            this.timeProvider = serviceProvider.GetRequiredService<ITimeProvider>();
         }
 
-        [Fact(Skip = skip)]
+        [Fact]
         public async Task Calculation001()
         {
-            var Bank = new FederalReserveSystem(_currencyFactory, _timeProvider);
+            var Bank = new FederalReserveSystem(currencyFactory, timeProvider);
 
             var pairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -47,10 +46,10 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
             }
         }
 
-        [Fact(Skip = skip)]
+        [Fact]
         public async Task ConversionDirection001()
         {
-            var Bank = new FederalReserveSystem(_currencyFactory, _timeProvider);
+            var Bank = new FederalReserveSystem(currencyFactory, timeProvider);
 
             var USDollar = new CurrencyInfo(new System.Globalization.RegionInfo("US"));
             var PoundSterling = new CurrencyInfo(new System.Globalization.RegionInfo("GB"));
@@ -62,10 +61,10 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
             Assert.True(BeforeInPound.Amount < AfterInDollar.Amount);
         }
 
-        [Fact(Skip = skip)]
+        [Fact]
         public async Task ConvertCurrency001()
         {
-            var Bank = new FederalReserveSystem(_currencyFactory, _timeProvider);
+            var Bank = new FederalReserveSystem(currencyFactory, timeProvider);
 
             foreach (var pair in await Bank.GetCurrencyPairsAsync(DateTime.Now, default))
             {
@@ -77,10 +76,10 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
             }
         }
 
-        [Fact(Skip = skip)]
+        [Fact]
         public async Task ConvertCurrency002()
         {
-            var Bank = new FederalReserveSystem(_currencyFactory, _timeProvider);
+            var Bank = new FederalReserveSystem(currencyFactory, timeProvider);
 
             var LastYear = DateTime.Now.AddYears(-1);
 
@@ -94,39 +93,39 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
             }
         }
 
-        [Fact(Skip = skip)]
+        [Fact]
         public async Task ConvertCurrency003()
         {
-            var Bank = new FederalReserveSystem(_currencyFactory, _timeProvider);
+            var Bank = new FederalReserveSystem(currencyFactory, timeProvider);
 
             foreach (var pair in await Bank.GetCurrencyPairsAsync(DateTime.Now, default))
             {
                 var Before = new Money(pair.BaseCurrency, 10m);
 
-                await
+                _ = await
                     Assert.ThrowsAsync<ArgumentException>(
                         async () =>
                             await Bank.ConvertCurrencyAsync(Before, pair.CounterCurrency, DateTime.Now.AddMinutes(1d), default));
             }
         }
 
-        [Fact(Skip = skip)]
+        [Fact]
         public async Task ConvertCurrency004()
         {
-            var Bank = new FederalReserveSystem(_currencyFactory, _timeProvider);
+            var Bank = new FederalReserveSystem(currencyFactory, timeProvider);
 
             var Before = new Money(new CurrencyInfo(new System.Globalization.RegionInfo("AL")), 10m);
 
-            await
+            _ = await
                     Assert.ThrowsAsync<ArgumentException>(
                         async () =>
                             await Bank.ConvertCurrencyAsync(Before, new CurrencyInfo(new System.Globalization.RegionInfo("AM")), DateTime.Now.AddMinutes(1d), default));
         }
 
-        [Fact(Skip = skip)]
+        [Fact]
         public async Task GetCurrencyPairs001()
         {
-            var Bank = new FederalReserveSystem(_currencyFactory, _timeProvider);
+            var Bank = new FederalReserveSystem(currencyFactory, timeProvider);
 
             var pairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -138,10 +137,10 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
             }
         }
 
-        [Fact(Skip = skip)]
+        [Fact]
         public async Task GetCurrencyPairs002()
         {
-            var Bank = new FederalReserveSystem(_currencyFactory, _timeProvider);
+            var Bank = new FederalReserveSystem(currencyFactory, timeProvider);
 
             var pairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -155,21 +154,21 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
             Assert.True(uniquePairs.Count == pairs.Count());
         }
 
-        [Fact(Skip = skip)]
+        [Fact]
         public async Task GetCurrencyPairs003()
         {
-            var Bank = new FederalReserveSystem(_currencyFactory, _timeProvider);
+            var Bank = new FederalReserveSystem(currencyFactory, timeProvider);
 
-            await
+            _ = await
                 Assert.ThrowsAsync<ArgumentException>(
                     async () =>
                         await Bank.GetCurrencyPairsAsync(DateTime.Now.AddMinutes(1d), default));
         }
 
-        [Fact(Skip = skip)]
+        [Fact]
         public async Task GetCurrencyPairs004()
         {
-            var Bank = new FederalReserveSystem(_currencyFactory, _timeProvider);
+            var Bank = new FederalReserveSystem(currencyFactory, timeProvider);
 
             var pairs = await Bank.GetCurrencyPairsAsync(DateTime.Now, default);
 
@@ -220,10 +219,10 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
             Assert.Contains(pairs, C => C.ToString() == "USD/GBP");
         }
 
-        [Fact(Skip = skip)]
+        [Fact]
         public async Task GetExchangeRate001()
         {
-            var Bank = new FederalReserveSystem(_currencyFactory, _timeProvider);
+            var Bank = new FederalReserveSystem(currencyFactory, timeProvider);
 
             foreach (var pair in await Bank.GetCurrencyPairsAsync(DateTime.Now, default))
             {
@@ -233,10 +232,10 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
             }
         }
 
-        [Fact(Skip = skip)]
+        [Fact]
         public async Task GetExchangeRate002()
         {
-            var Bank = new FederalReserveSystem(_currencyFactory, _timeProvider);
+            var Bank = new FederalReserveSystem(currencyFactory, timeProvider);
 
             var LastYear = DateTime.Now.AddYears(-1);
 
@@ -248,33 +247,33 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
             }
         }
 
-        [Fact(Skip = skip)]
+        [Fact]
         public async Task GetExchangeRate003()
         {
-            var Bank = new FederalReserveSystem(_currencyFactory, _timeProvider);
+            var Bank = new FederalReserveSystem(currencyFactory, timeProvider);
 
             foreach (var pair in await Bank.GetCurrencyPairsAsync(DateTime.Now, default))
             {
-                await Assert.ThrowsAsync<ArgumentException>(
+                _ = await Assert.ThrowsAsync<ArgumentException>(
                     async () =>
                         await Bank.GetExchangeRateAsync(pair, DateTime.Now.AddMinutes(1d), default));
             }
         }
 
-        [Fact(Skip = skip)]
+        [Fact]
         public async Task GetExchangeRate004()
         {
-            var Bank = new FederalReserveSystem(_currencyFactory, _timeProvider);
+            var Bank = new FederalReserveSystem(currencyFactory, timeProvider);
 
             var pair = new CurrencyPair(new CurrencyInfo(new System.Globalization.RegionInfo("AL")), new CurrencyInfo(new System.Globalization.RegionInfo("AM")));
 
-            await Assert.ThrowsAsync<ArgumentException>(async () => await Bank.GetExchangeRateAsync(pair, DateTime.Now.AddMinutes(1d), default));
+            _ = await Assert.ThrowsAsync<ArgumentException>(async () => await Bank.GetExchangeRateAsync(pair, DateTime.Now.AddMinutes(1d), default));
         }
 
-        [Fact(Skip = skip)]
+        [Fact]
         public async Task GetExchangeRate005()
         {
-            var Bank = new FederalReserveSystem(_currencyFactory, _timeProvider);
+            var Bank = new FederalReserveSystem(currencyFactory, timeProvider);
 
             var pair = new CurrencyPair(new CurrencyInfo(new System.Globalization.RegionInfo("US")), new CurrencyInfo(new System.Globalization.RegionInfo("CN")));
 
@@ -283,10 +282,10 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
             Assert.True(rate > decimal.One);
         }
 
-        [Fact(Skip = skip)]
+        [Fact]
         public async Task GetExchangeRate006()
         {
-            var Bank = new FederalReserveSystem(_currencyFactory, _timeProvider);
+            var Bank = new FederalReserveSystem(currencyFactory, timeProvider);
 
             var pair = new CurrencyPair(new CurrencyInfo(new System.Globalization.RegionInfo("US")), new CurrencyInfo(new System.Globalization.RegionInfo("SG")));
 
@@ -295,10 +294,10 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
             Assert.True(rate > decimal.One);
         }
 
-        [Fact(Skip = skip)]
+        [Fact]
         public async Task GetExchangeRate007()
         {
-            var Bank = new FederalReserveSystem(_currencyFactory, _timeProvider);
+            var Bank = new FederalReserveSystem(currencyFactory, timeProvider);
 
             var pair = new CurrencyPair(new CurrencyInfo(new System.Globalization.RegionInfo("US")), new CurrencyInfo(new System.Globalization.RegionInfo("DE")));
 
@@ -307,10 +306,10 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
             Assert.True(rate < decimal.One);
         }
 
-        [Fact(Skip = skip)]
+        [Fact]
         public async Task GetExchangeRate008()
         {
-            var Bank = new FederalReserveSystem(_currencyFactory, _timeProvider);
+            var Bank = new FederalReserveSystem(currencyFactory, timeProvider);
 
             var pair = new CurrencyPair(new CurrencyInfo(new System.Globalization.RegionInfo("US")), new CurrencyInfo(new System.Globalization.RegionInfo("GB")));
 

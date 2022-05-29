@@ -16,16 +16,14 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         private const string DataUrlFormat =
             "https://www.federalreserve.gov/datadownload/Output.aspx?rel=H10&series=f72f395f2a6b3a4bbc83b2983ad62737&lastObs=7&from={0}&to={1}&filetype=sdmx&label=include&layout=seriescolumn";
 
-        private static readonly CurrencyInfo UnitedStatesDollar;
-        private readonly ICurrencyFactory _currencyFactory;
-        private readonly ITimeProvider _timeProvider;
-
-        static FederalReserveSystem() => UnitedStatesDollar = new CurrencyInfo(new RegionInfo("en-US"));
+        private static readonly CurrencyInfo UnitedStatesDollar = new(new RegionInfo("en-US"));
+        private readonly ICurrencyFactory currencyFactory;
+        private readonly ITimeProvider timeProvider;
 
         public FederalReserveSystem(ICurrencyFactory currencyFactory, ITimeProvider timeProvider)
         {
-            this._currencyFactory = currencyFactory;
-            this._timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+            this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
+            this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
@@ -41,7 +39,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            ValidateDate(asOn, this._timeProvider);
+            ValidateDate(asOn, this.timeProvider);
 
             var result = new List<CurrencyPair>();
 
@@ -59,7 +57,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            ValidateDate(asOn, this._timeProvider);
+            ValidateDate(asOn, this.timeProvider);
 
             var rates = await this.GetRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
 
@@ -85,8 +83,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             CancellationToken cancellationToken)
         {
             var DataUrl = string.Format(DataUrlFormat,
-                this._timeProvider.GetCurrentTime().AddDays(-10d).ToString("MM/dd/yyyy"),
-                this._timeProvider.GetCurrentTime().ToString("MM/dd/yyyy"));
+                this.timeProvider.GetCurrentTime().AddDays(-10d).ToString("MM/dd/yyyy"),
+                this.timeProvider.GetCurrentTime().ToString("MM/dd/yyyy"));
 
             using var httpClient = new HttpClient();
             var responseStream = await httpClient.GetStreamAsync(DataUrl).ConfigureAwait(false);
@@ -134,18 +132,18 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                     if (FX == "ZAL")
                     {
                         result.Add(new ExchangeRate(
-                            new CurrencyPair(UnitedStatesDollar, this._currencyFactory.Create(CurrencyCode)), date,
+                            new CurrencyPair(UnitedStatesDollar, this.currencyFactory.Create(CurrencyCode)), date,
                             rate));
                     }
                     else if (FX == "VEB")
                     {
                         result.Add(new ExchangeRate(
-                            new CurrencyPair(UnitedStatesDollar, this._currencyFactory.Create("VEF")), date, rate));
+                            new CurrencyPair(UnitedStatesDollar, this.currencyFactory.Create("VEF")), date, rate));
                     }
                     else
                     {
                         result.Add(new ExchangeRate(
-                            new CurrencyPair(UnitedStatesDollar, this._currencyFactory.Create(FX)), date, rate));
+                            new CurrencyPair(UnitedStatesDollar, this.currencyFactory.Create(FX)), date, rate));
                     }
                 }
             }
