@@ -15,14 +15,12 @@ namespace TIKSN.Finance.ForeignExchange
 {
     public abstract class ExchangeRateServiceBase : IExchangeRateService
     {
-        private static int nextID;
-        private static readonly SemaphoreSlim nextIdLocker = new(1, 1);
         protected readonly ICurrencyFactory _currencyFactory;
         private readonly IExchangeRateRepository _exchangeRateRepository;
         private readonly IForeignExchangeRepository _foreignExchangeRepository;
         protected readonly ILogger<ExchangeRateServiceBase> _logger;
 
-        private readonly Dictionary<int, (IExchangeRatesProvider BatchProvider, IExchangeRateProvider IndividualProvider
+        private readonly Dictionary<Guid, (IExchangeRatesProvider BatchProvider, IExchangeRateProvider IndividualProvider
             , int LongNameKey, int ShortNameKey, RegionInfo Country, TimeSpan InvalidationInterval)> _providers;
 
         private readonly Random _random;
@@ -46,7 +44,7 @@ namespace TIKSN.Finance.ForeignExchange
             this._foreignExchangeRepository = foreignExchangeRepository;
 
             this._providers =
-                new Dictionary<int, (IExchangeRatesProvider BatchProvider, IExchangeRateProvider IndividualProvider, int
+                new Dictionary<Guid, (IExchangeRatesProvider BatchProvider, IExchangeRateProvider IndividualProvider, int
                     LongNameKey, int ShortNameKey, RegionInfo Country, TimeSpan InvalidationInterval)>();
 
             this._currencyFactory = currencyFactory;
@@ -125,8 +123,8 @@ namespace TIKSN.Finance.ForeignExchange
                 .MinBy(item => Math.Abs((item.AsOn - asOn).Ticks))
                 .First();
 
-            this._logger.LogInformation("Exchange rate provided by {0}",
-                this._stringLocalizer.GetRequiredString(exchangeRateEntity.ForeignExchange.ShortNameKey));
+            this._logger.LogInformation("Exchange rate provided by Foreign Exchange with ID {0}",
+                exchangeRateEntity.ForeignExchangeID);
 
             return exchangeRateEntity.Rate;
         }
@@ -156,28 +154,21 @@ namespace TIKSN.Finance.ForeignExchange
 
                 await uow.CompleteAsync(cancellationToken).ConfigureAwait(false);
             }
-
-            await nextIdLocker.WaitAsync(cancellationToken).ConfigureAwait(false);
-            try
-            {
-                nextID = await this._exchangeRateRepository.GetMaximalIdAsync(cancellationToken).ConfigureAwait(false);
-            }
-            finally
-            {
-                _ = nextIdLocker.Release();
-            }
         }
 
-        protected void AddBatchProvider(int providerID, IExchangeRatesProvider provider, int longNameKey,
+        protected void AddBatchProvider(Guid providerID, IExchangeRatesProvider provider, int longNameKey,
             int shortNameKey, string country, TimeSpan invalidationInterval) => this._providers.Add(providerID,
             (provider, null, longNameKey, shortNameKey, this._regionFactory.Create(country), invalidationInterval));
 
-        protected void AddIndividualProvider(int providerID, IExchangeRateProvider provider, int longNameKey,
+        protected void AddIndividualProvider(Guid providerID, IExchangeRateProvider provider, int longNameKey,
             int shortNameKey, string country, TimeSpan invalidationInterval) => this._providers.Add(providerID,
             (null, provider, longNameKey, shortNameKey, this._regionFactory.Create(country), invalidationInterval));
 
-        private async Task FetchExchangeRatesAsync(int foreignExchangeID, IExchangeRatesProvider batchProvider,
-            DateTimeOffset asOn, CancellationToken cancellationToken)
+        private async Task FetchExchangeRatesAsync(
+            Guid foreignExchangeID,
+            IExchangeRatesProvider batchProvider,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
             try
             {
@@ -191,8 +182,12 @@ namespace TIKSN.Finance.ForeignExchange
             }
         }
 
-        private async Task FetchExchangeRatesAsync(int foreignExchangeID, IExchangeRateProvider individualProvider,
-            CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
+        private async Task FetchExchangeRatesAsync(
+            Guid foreignExchangeID,
+            IExchangeRateProvider individualProvider,
+            CurrencyPair pair,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
             try
             {
@@ -207,18 +202,18 @@ namespace TIKSN.Finance.ForeignExchange
             }
         }
 
-        private async Task SaveExchangeRatesAsync(int foreignExchangeID, IEnumerable<ExchangeRate> exchangeRates,
+        private async Task SaveExchangeRatesAsync(
+            Guid foreignExchangeID,
+            IEnumerable<ExchangeRate> exchangeRates,
             CancellationToken cancellationToken)
         {
             var entities = new List<ExchangeRateEntity>();
 
             foreach (var exchangeRate in exchangeRates)
             {
-                var id = Interlocked.Increment(ref nextID);
-
                 entities.Add(new ExchangeRateEntity
                 {
-                    ID = id,
+                    ID = Guid.NewGuid(),
                     AsOn = exchangeRate.AsOn,
                     BaseCurrencyCode = exchangeRate.Pair.BaseCurrency.ISOCurrencySymbol,
                     CounterCurrencyCode = exchangeRate.Pair.CounterCurrency.ISOCurrencySymbol,

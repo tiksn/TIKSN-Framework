@@ -6,20 +6,18 @@ using TIKSN.Data;
 
 namespace TIKSN.Finance.ForeignExchange.Data
 {
-    public interface IExchangeRateRepository : IQueryRepository<ExchangeRateEntity, int>,
+    public interface IExchangeRateRepository : IQueryRepository<ExchangeRateEntity, Guid>,
         IRepository<ExchangeRateEntity>
     {
         Task<ExchangeRateEntity> GetOrDefaultAsync(
-            int foreignExchangeID,
+            Guid foreignExchangeID,
             string baseCurrencyCode,
             string counterCurrencyCode,
             DateTimeOffset asOn,
             CancellationToken cancellationToken);
 
-        Task<int> GetMaximalIdAsync(CancellationToken cancellationToken);
-
         Task<IReadOnlyCollection<ExchangeRateEntity>> SearchAsync(
-            int foreignExchangeID,
+            Guid foreignExchangeID,
             string baseCurrencyCode,
             string counterCurrencyCode,
             DateTimeOffset dateFrom,
