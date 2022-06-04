@@ -22,8 +22,8 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
 
         public CurrencylayerDotComTests(ServiceProviderFixture serviceProviderFixture)
         {
-            this.currencyFactory = serviceProviderFixture.Services.GetRequiredService<ICurrencyFactory>();
-            this.timeProvider = serviceProviderFixture.Services.GetRequiredService<ITimeProvider>();
+            this.currencyFactory = serviceProviderFixture.GetServiceProvider().GetRequiredService<ICurrencyFactory>();
+            this.timeProvider = serviceProviderFixture.GetServiceProvider().GetRequiredService<ITimeProvider>();
             this.serviceProviderFixture = serviceProviderFixture ?? throw new ArgumentNullException(nameof(serviceProviderFixture));
         }
 
