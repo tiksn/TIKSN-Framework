@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,17 +11,21 @@ namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests
     [Collection("LiteDbServiceProviderCollection")]
     public class ExchangeRateServiceBaseTests
     {
-        private readonly LiteDbServiceProviderFixture liteDbServiceProviderFixture;
+        private readonly IReadOnlyDictionary<string, IServiceProvider> serviceProviders;
 
         public ExchangeRateServiceBaseTests(LiteDbServiceProviderFixture liteDbServiceProviderFixture)
-            => this.liteDbServiceProviderFixture = liteDbServiceProviderFixture ?? throw new ArgumentNullException(nameof(liteDbServiceProviderFixture));
+            => this.serviceProviders = new Dictionary<string, IServiceProvider>()
+            {
+                { "LiteDB", liteDbServiceProviderFixture.Services}
+            };
 
-        [Fact]
-        public async Task Given_10USD_When_ExchangedForEuro_Then_ResultShouldBeEuro()
+        [Theory]
+        [InlineData("LiteDB")]
+        public async Task Given_10USD_When_ExchangedForEuro_Then_ResultShouldBeEuro(string database)
         {
             // Arrange
-            var exchangeRateService = this.liteDbServiceProviderFixture.Services.GetRequiredService<IExchangeRateService>();
-            var currencyFactory = this.liteDbServiceProviderFixture.Services.GetRequiredService<ICurrencyFactory>();
+            var exchangeRateService = this.serviceProviders[database].GetRequiredService<IExchangeRateService>();
+            var currencyFactory = this.serviceProviders[database].GetRequiredService<ICurrencyFactory>();
             var usd = currencyFactory.Create("USD");
             var eur = currencyFactory.Create("EUR");
             var usd10 = new Money(usd, 10m);
