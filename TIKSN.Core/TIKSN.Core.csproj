@@ -55,7 +55,7 @@
     <PackageReference Include="NoDb" Version="1.2.2" />
     <PackageReference Include="NuGet.Versioning" Version="6.2.0" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.1" />
-    <PackageReference Include="RavenDB.Client" Version="5.3.102" />
+    <PackageReference Include="RavenDB.Client" Version="5.3.103" />
     <PackageReference Include="ReactiveUI" Version="18.0.10" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
