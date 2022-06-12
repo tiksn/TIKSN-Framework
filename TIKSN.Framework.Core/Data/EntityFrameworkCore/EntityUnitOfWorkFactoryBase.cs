@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,11 +13,11 @@ namespace TIKSN.Data.EntityFrameworkCore
         protected EntityUnitOfWorkFactoryBase(IServiceProvider serviceProvider) =>
             this.serviceProvider = serviceProvider;
 
-        public IUnitOfWork Create()
+        public async Task<IUnitOfWork> CreateAsync(CancellationToken cancellationToken)
         {
             var dbContexts = this.GetContexts();
 
-            return new EntityUnitOfWork(dbContexts);
+            return new EntityUnitOfWork(dbContexts, this.serviceProvider);
         }
 
         protected TContext GetContext<TContext>() where TContext : DbContext =>

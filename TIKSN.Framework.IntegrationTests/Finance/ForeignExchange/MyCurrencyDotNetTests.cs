@@ -19,14 +19,14 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
 
         public MyCurrencyDotNetTests(ServiceProviderFixture serviceProviderFixture)
         {
-            this.timeProvider = serviceProviderFixture.Services.GetRequiredService<ITimeProvider>();
+            this.timeProvider = serviceProviderFixture.GetServiceProvider().GetRequiredService<ITimeProvider>();
             this.serviceProviderFixture = serviceProviderFixture ?? throw new ArgumentNullException(nameof(serviceProviderFixture));
         }
 
         [Fact]
         public async Task GetCurrencyPairsAsync()
         {
-            var currencyFactory = this.serviceProviderFixture.Services.GetRequiredService<ICurrencyFactory>();
+            var currencyFactory = this.serviceProviderFixture.GetServiceProvider().GetRequiredService<ICurrencyFactory>();
 
             var myCurrencyDotNet = new MyCurrencyDotNet(currencyFactory, this.timeProvider);
 
@@ -38,7 +38,7 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
         [Fact]
         public async Task GetExchangeRateAsync001Async()
         {
-            var currencyFactory = this.serviceProviderFixture.Services.GetRequiredService<ICurrencyFactory>();
+            var currencyFactory = this.serviceProviderFixture.GetServiceProvider().GetRequiredService<ICurrencyFactory>();
 
             var myCurrencyDotNet = new MyCurrencyDotNet(currencyFactory, this.timeProvider);
 
@@ -54,7 +54,7 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
         [Fact]
         public async Task GetExchangeRateAsync002Async()
         {
-            var currencyFactory = this.serviceProviderFixture.Services.GetRequiredService<ICurrencyFactory>();
+            var currencyFactory = this.serviceProviderFixture.GetServiceProvider().GetRequiredService<ICurrencyFactory>();
 
             var myCurrencyDotNet = new MyCurrencyDotNet(currencyFactory, this.timeProvider);
 

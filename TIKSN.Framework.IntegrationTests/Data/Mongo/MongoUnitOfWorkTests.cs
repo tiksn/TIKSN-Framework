@@ -26,7 +26,7 @@ namespace TIKSN.Data.Mongo.IntegrationTests
             TestMongoEntity retrievedEntity = null;
 
             var mongoUnitOfWorkFactory =
-                this._serviceProviderFixture.Services.GetRequiredService<IMongoUnitOfWorkFactory>();
+                this._serviceProviderFixture.GetServiceProvider().GetRequiredService<IUnitOfWorkFactory>();
 
             await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default).ConfigureAwait(true))
             {
@@ -57,7 +57,7 @@ namespace TIKSN.Data.Mongo.IntegrationTests
             TestMongoEntity retrievedEntity = null;
 
             var mongoUnitOfWorkFactory =
-                this._serviceProviderFixture.Services.GetRequiredService<IMongoUnitOfWorkFactory>();
+                this._serviceProviderFixture.GetServiceProvider().GetRequiredService<IUnitOfWorkFactory>();
 
             await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default).ConfigureAwait(true))
             {
@@ -83,11 +83,11 @@ namespace TIKSN.Data.Mongo.IntegrationTests
 
             _ = retrievedEntity.Version.Should().Be(4);
 
-            static Task UpdateEntityWithRetry(IMongoUnitOfWorkFactory mongoUnitOfWorkFactory, Guid testEntityId) => Policy.Handle<MongoCommandException>()
+            static Task UpdateEntityWithRetry(IUnitOfWorkFactory mongoUnitOfWorkFactory, Guid testEntityId) => Policy.Handle<MongoCommandException>()
                     .WaitAndRetryAsync(10, i => TimeSpan.FromMilliseconds(i * 10))
                     .ExecuteAsync(() => UpdateEntity(mongoUnitOfWorkFactory, testEntityId));
 
-            static async Task UpdateEntity(IMongoUnitOfWorkFactory mongoUnitOfWorkFactory, Guid testEntityId)
+            static async Task UpdateEntity(IUnitOfWorkFactory mongoUnitOfWorkFactory, Guid testEntityId)
             {
                 await using var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default).ConfigureAwait(true);
                 var testRepository = mongoUnitOfWork.Services.GetRequiredService<ITestMongoRepository>();

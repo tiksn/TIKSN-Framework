@@ -18,7 +18,7 @@ namespace TIKSN.Data.Mongo.IntegrationTests
         [Fact]
         public async Task TestCreationAndRetrievalAsync()
         {
-            var testRepository = this._serviceProviderFixture.Services.GetRequiredService<ITestMongoRepository>();
+            var testRepository = this._serviceProviderFixture.GetServiceProvider().GetRequiredService<ITestMongoRepository>();
 
             var testEntityId = Guid.NewGuid();
             var testEntity = new TestMongoEntity { ID = testEntityId, Value = Guid.NewGuid() };

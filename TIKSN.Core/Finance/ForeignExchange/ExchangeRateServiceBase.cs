@@ -63,12 +63,14 @@ namespace TIKSN.Finance.ForeignExchange
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+        public async Task<decimal> GetExchangeRateAsync(
+            CurrencyPair pair,
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             var combinedRates = new List<ExchangeRateEntity>();
 
-            using (var uow = this._unitOfWorkFactory.Create())
+            using (var uow = await this._unitOfWorkFactory.CreateAsync(cancellationToken))
             {
                 foreach (var provider in this._providers)
                 {
@@ -131,7 +133,7 @@ namespace TIKSN.Finance.ForeignExchange
 
         public async Task InitializeAsync(CancellationToken cancellationToken)
         {
-            using (var uow = this._unitOfWorkFactory.Create())
+            using (var uow = await this._unitOfWorkFactory.CreateAsync(cancellationToken))
             {
                 foreach (var provider in this._providers)
                 {
@@ -214,7 +216,7 @@ namespace TIKSN.Finance.ForeignExchange
                 entities.Add(new ExchangeRateEntity
                 {
                     ID = Guid.NewGuid(),
-                    AsOn = exchangeRate.AsOn,
+                    AsOn = exchangeRate.AsOn.UtcDateTime,
                     BaseCurrencyCode = exchangeRate.Pair.BaseCurrency.ISOCurrencySymbol,
                     CounterCurrencyCode = exchangeRate.Pair.CounterCurrency.ISOCurrencySymbol,
                     ForeignExchangeID = foreignExchangeID,

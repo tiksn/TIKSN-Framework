@@ -6,7 +6,7 @@ using MongoDB.Driver;
 
 namespace TIKSN.Data.Mongo
 {
-    public class MongoUnitOfWork : UnitOfWorkBase, IMongoUnitOfWork
+    public class MongoUnitOfWork : UnitOfWorkBase
     {
         protected readonly IClientSessionHandle _clientSessionHandle;
         private readonly IServiceScope _serviceScope;
@@ -31,7 +31,7 @@ namespace TIKSN.Data.Mongo
             base.Dispose();
         }
 
-        public IServiceProvider Services => this._serviceScope.ServiceProvider;
+        public override IServiceProvider Services => this._serviceScope.ServiceProvider;
 
         protected override bool IsDirty() => this._clientSessionHandle.WrappedCoreSession.IsDirty;
     }

@@ -1,26 +1,31 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.Globalization;
+using TIKSN.IntegrationTests;
 using Xunit;
 
 namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests
 {
-    [Collection("LiteDbServiceProviderCollection")]
+    [Collection("ServiceProviderCollection")]
     public class ExchangeRateServiceBaseTests
     {
-        private readonly LiteDbServiceProviderFixture liteDbServiceProviderFixture;
+        private readonly ServiceProviderFixture serviceProviderFixture;
 
-        public ExchangeRateServiceBaseTests(LiteDbServiceProviderFixture liteDbServiceProviderFixture)
-            => this.liteDbServiceProviderFixture = liteDbServiceProviderFixture ?? throw new ArgumentNullException(nameof(liteDbServiceProviderFixture));
+        public ExchangeRateServiceBaseTests(
+            ServiceProviderFixture serviceProviderFixture)
+            => this.serviceProviderFixture = serviceProviderFixture ?? throw new ArgumentNullException(nameof(serviceProviderFixture));
 
-        [Fact]
-        public async Task Given_10USD_When_ExchangedForEuro_Then_ResultShouldBeEuro()
+        [Theory]
+        [InlineData("LiteDB")]
+        [InlineData("MongoDB")]
+        public async Task Given_10USD_When_ExchangedForEuro_Then_ResultShouldBeEuro(string database)
         {
             // Arrange
-            var exchangeRateService = this.liteDbServiceProviderFixture.Services.GetRequiredService<IExchangeRateService>();
-            var currencyFactory = this.liteDbServiceProviderFixture.Services.GetRequiredService<ICurrencyFactory>();
+            var exchangeRateService = this.serviceProviderFixture.GetServiceProvider(database).GetRequiredService<IExchangeRateService>();
+            var currencyFactory = this.serviceProviderFixture.GetServiceProvider(database).GetRequiredService<ICurrencyFactory>();
             var usd = currencyFactory.Create("USD");
             var eur = currencyFactory.Create("EUR");
             var usd10 = new Money(usd, 10m);
