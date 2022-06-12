@@ -24,6 +24,7 @@ namespace TIKSN.IntegrationTests
 
             this.CreateHost(string.Empty, builder => { });
             this.CreateHost("LiteDB", builder => builder.RegisterModule<LiteDbExchangeRateServiceTestModule>());
+            this.CreateHost("MongoDB", builder => builder.RegisterModule<MongoDbExchangeRateServiceTestModule>());
         }
 
         public void CreateHost(string key, Action<ContainerBuilder> configureContainer)
