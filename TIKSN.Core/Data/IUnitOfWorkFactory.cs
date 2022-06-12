@@ -1,7 +1,10 @@
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace TIKSN.Data
 {
     public interface IUnitOfWorkFactory
     {
-        IUnitOfWork Create();
+        Task<IUnitOfWork> CreateAsync(CancellationToken cancellationToken);
     }
 }

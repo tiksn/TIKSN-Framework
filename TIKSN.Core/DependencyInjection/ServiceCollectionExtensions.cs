@@ -62,8 +62,6 @@ namespace TIKSN.DependencyInjection
 
             _ = services.AddSingleton(MessageBus.Current);
 
-            services.TryAddScoped<IMongoUnitOfWorkFactory, MongoUnitOfWorkFactory>();
-
             return services;
         }
     }
