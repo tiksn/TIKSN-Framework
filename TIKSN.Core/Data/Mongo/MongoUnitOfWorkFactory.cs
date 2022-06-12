@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace TIKSN.Data.Mongo
 {
-    public class MongoUnitOfWorkFactory : IMongoUnitOfWorkFactory
+    public class MongoUnitOfWorkFactory : IUnitOfWorkFactory
     {
         private readonly IMongoClientProvider _mongoClientProvider;
         private readonly IServiceProvider _serviceProvider;
@@ -17,7 +17,7 @@ namespace TIKSN.Data.Mongo
             this._serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
-        public async Task<IMongoUnitOfWork> CreateAsync(CancellationToken cancellationToken)
+        public async Task<IUnitOfWork> CreateAsync(CancellationToken cancellationToken)
         {
             var mongoClient = this._mongoClientProvider.GetMongoClient();
             var clientSessionHandle = await mongoClient.StartSessionAsync(null, cancellationToken).ConfigureAwait(false);
