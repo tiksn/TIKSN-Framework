@@ -24,7 +24,7 @@
     <PackageReference Include="FluentValidation" Version="11.1.0" />
     <PackageReference Include="LanguageExt.Core" Version="4.2.9" />
     <PackageReference Include="LiteDB" Version="5.0.12" />
-    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.20.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.21.0" />
     <PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.8" />
     <PackageReference Include="Microsoft.Azure.Storage.Blob" Version="11.2.3" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.2">
