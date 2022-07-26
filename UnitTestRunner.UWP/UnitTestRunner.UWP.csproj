@@ -55,7 +55,7 @@
             <Version>4.5.3</Version>
         </PackageReference>
         <PackageReference Include="Microsoft.AppCenter.Crashes">
-            <Version>4.5.1</Version>
+            <Version>4.5.3</Version>
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets">
             <Version>6.0.1</Version>
