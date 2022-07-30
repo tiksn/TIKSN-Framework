@@ -26,7 +26,7 @@ namespace TIKSN.Data.Mongo.IntegrationTests
             TestMongoEntity retrievedEntity = null;
 
             var mongoUnitOfWorkFactory =
-                this._serviceProviderFixture.GetServiceProvider().GetRequiredService<IUnitOfWorkFactory>();
+                this._serviceProviderFixture.GetServiceProvider("MongoDB").GetRequiredService<IUnitOfWorkFactory>();
 
             await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default).ConfigureAwait(true))
             {
@@ -57,7 +57,7 @@ namespace TIKSN.Data.Mongo.IntegrationTests
             TestMongoEntity retrievedEntity = null;
 
             var mongoUnitOfWorkFactory =
-                this._serviceProviderFixture.GetServiceProvider().GetRequiredService<IUnitOfWorkFactory>();
+                this._serviceProviderFixture.GetServiceProvider("MongoDB").GetRequiredService<IUnitOfWorkFactory>();
 
             await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default).ConfigureAwait(true))
             {
