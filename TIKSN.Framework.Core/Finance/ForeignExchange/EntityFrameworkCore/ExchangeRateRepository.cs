@@ -15,20 +15,6 @@ namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
         {
         }
 
-        public Task<ExchangeRateEntity> GetOrDefaultAsync(
-            Guid foreignExchangeID,
-            string baseCurrencyCode,
-            string counterCurrencyCode,
-            DateTimeOffset asOn,
-            CancellationToken cancellationToken) =>
-            this.Entities
-                .Where(item =>
-                    item.ForeignExchangeID == foreignExchangeID && item.BaseCurrencyCode == baseCurrencyCode &&
-                    item.CounterCurrencyCode == counterCurrencyCode)
-                .OrderBy(entity => Math.Abs((entity.AsOn - asOn).Ticks))
-                .Include(item => item.ForeignExchange)
-                .FirstOrDefaultAsync(cancellationToken);
-
         public async Task<IReadOnlyCollection<ExchangeRateEntity>> SearchAsync(
             Guid foreignExchangeID,
             string baseCurrencyCode,
