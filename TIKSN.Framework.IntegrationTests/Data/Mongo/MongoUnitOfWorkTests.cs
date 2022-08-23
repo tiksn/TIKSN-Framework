@@ -5,10 +5,10 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using Polly;
-using TIKSN.Data.Mongo;
+using TIKSN.IntegrationTests;
 using Xunit;
 
-namespace TIKSN.Framework.IntegrationTests.Data.Mongo
+namespace TIKSN.Data.Mongo.IntegrationTests
 {
     [Collection("ServiceProviderCollection")]
     public class MongoUnitOfWorkTests
@@ -26,7 +26,7 @@ namespace TIKSN.Framework.IntegrationTests.Data.Mongo
             TestMongoEntity retrievedEntity = null;
 
             var mongoUnitOfWorkFactory =
-                this._serviceProviderFixture.Services.GetRequiredService<IMongoUnitOfWorkFactory>();
+                this._serviceProviderFixture.GetServiceProvider("MongoDB").GetRequiredService<IUnitOfWorkFactory>();
 
             await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default).ConfigureAwait(true))
             {
@@ -57,7 +57,7 @@ namespace TIKSN.Framework.IntegrationTests.Data.Mongo
             TestMongoEntity retrievedEntity = null;
 
             var mongoUnitOfWorkFactory =
-                this._serviceProviderFixture.Services.GetRequiredService<IMongoUnitOfWorkFactory>();
+                this._serviceProviderFixture.GetServiceProvider("MongoDB").GetRequiredService<IUnitOfWorkFactory>();
 
             await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default).ConfigureAwait(true))
             {
@@ -83,11 +83,11 @@ namespace TIKSN.Framework.IntegrationTests.Data.Mongo
 
             _ = retrievedEntity.Version.Should().Be(4);
 
-            static Task UpdateEntityWithRetry(IMongoUnitOfWorkFactory mongoUnitOfWorkFactory, Guid testEntityId) => Policy.Handle<MongoCommandException>()
+            static Task UpdateEntityWithRetry(IUnitOfWorkFactory mongoUnitOfWorkFactory, Guid testEntityId) => Policy.Handle<MongoCommandException>()
                     .WaitAndRetryAsync(10, i => TimeSpan.FromMilliseconds(i * 10))
                     .ExecuteAsync(() => UpdateEntity(mongoUnitOfWorkFactory, testEntityId));
 
-            static async Task UpdateEntity(IMongoUnitOfWorkFactory mongoUnitOfWorkFactory, Guid testEntityId)
+            static async Task UpdateEntity(IUnitOfWorkFactory mongoUnitOfWorkFactory, Guid testEntityId)
             {
                 await using var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default).ConfigureAwait(true);
                 var testRepository = mongoUnitOfWork.Services.GetRequiredService<ITestMongoRepository>();

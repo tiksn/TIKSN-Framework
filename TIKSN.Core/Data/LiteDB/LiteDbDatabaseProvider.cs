@@ -9,11 +9,11 @@ namespace TIKSN.Data.LiteDB
     /// </summary>
     public class LiteDbDatabaseProvider : ILiteDbDatabaseProvider
     {
-        private readonly IConfigurationRoot _configuration;
+        private readonly IConfiguration _configuration;
         private readonly string _connectionStringKey;
         private readonly IFileProvider _fileProvider;
 
-        public LiteDbDatabaseProvider(IConfigurationRoot configuration, string connectionStringKey,
+        public LiteDbDatabaseProvider(IConfiguration configuration, string connectionStringKey,
             IFileProvider fileProvider = null)
         {
             this._configuration = configuration;

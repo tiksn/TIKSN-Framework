@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.Finance.ForeignExchange.Cumulative;
-using TIKSN.Framework.IntegrationTests;
 using TIKSN.Globalization;
+using TIKSN.IntegrationTests;
 using TIKSN.Time;
 using Xunit;
 
-namespace TIKSN.Finance.ForeignExchange.Tests
+namespace TIKSN.Finance.ForeignExchange.IntegrationTests
 {
     [Collection("ServiceProviderCollection")]
     public class MyCurrencyDotNetTests
@@ -19,14 +19,14 @@ namespace TIKSN.Finance.ForeignExchange.Tests
 
         public MyCurrencyDotNetTests(ServiceProviderFixture serviceProviderFixture)
         {
-            this.timeProvider = serviceProviderFixture.Services.GetRequiredService<ITimeProvider>();
+            this.timeProvider = serviceProviderFixture.GetServiceProvider().GetRequiredService<ITimeProvider>();
             this.serviceProviderFixture = serviceProviderFixture ?? throw new ArgumentNullException(nameof(serviceProviderFixture));
         }
 
         [Fact]
         public async Task GetCurrencyPairsAsync()
         {
-            var currencyFactory = this.serviceProviderFixture.Services.GetRequiredService<ICurrencyFactory>();
+            var currencyFactory = this.serviceProviderFixture.GetServiceProvider().GetRequiredService<ICurrencyFactory>();
 
             var myCurrencyDotNet = new MyCurrencyDotNet(currencyFactory, this.timeProvider);
 
@@ -38,7 +38,7 @@ namespace TIKSN.Finance.ForeignExchange.Tests
         [Fact]
         public async Task GetExchangeRateAsync001Async()
         {
-            var currencyFactory = this.serviceProviderFixture.Services.GetRequiredService<ICurrencyFactory>();
+            var currencyFactory = this.serviceProviderFixture.GetServiceProvider().GetRequiredService<ICurrencyFactory>();
 
             var myCurrencyDotNet = new MyCurrencyDotNet(currencyFactory, this.timeProvider);
 
@@ -54,7 +54,7 @@ namespace TIKSN.Finance.ForeignExchange.Tests
         [Fact]
         public async Task GetExchangeRateAsync002Async()
         {
-            var currencyFactory = this.serviceProviderFixture.Services.GetRequiredService<ICurrencyFactory>();
+            var currencyFactory = this.serviceProviderFixture.GetServiceProvider().GetRequiredService<ICurrencyFactory>();
 
             var myCurrencyDotNet = new MyCurrencyDotNet(currencyFactory, this.timeProvider);
 

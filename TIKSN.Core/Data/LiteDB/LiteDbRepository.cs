@@ -61,7 +61,7 @@ namespace TIKSN.Data.LiteDB
         }
 
         public Task<TDocument> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken) =>
-            Task.FromResult(this.collection.FindOne(item => item.ID.Equals(id)));
+            Task.FromResult(this.collection.FindById(this.convertToBsonValue(id)));
 
         public Task<IEnumerable<TDocument>>
             ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken) =>

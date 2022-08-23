@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,35 +11,34 @@ using TIKSN.Time;
 
 namespace TIKSN.Finance.ForeignExchange.Bank
 {
-    public class BankOfEngland : ICurrencyConverter, IExchangeRateProvider
+    public class BankOfEngland : ICurrencyConverter, IExchangeRateProvider, IExchangeRatesProvider
     {
         private const string UrlFormat =
             "https://www.bankofengland.co.uk/boeapps/iadb/fromshowcolumns.asp?CodeVer=new&xml.x=yes&Datefrom={0}&Dateto={1}&SeriesCodes={2}";
 
+        private static readonly Dictionary<string, CurrencyPair> Pairs;
         private static readonly Dictionary<CurrencyPair, string> SeriesCodes;
-        private readonly ICurrencyFactory _currencyFactory;
-        private readonly IRegionFactory _regionFactory;
-        private readonly ITimeProvider _timeProvider;
+        private readonly ICurrencyFactory currencyFactory;
+        private readonly IRegionFactory regionFactory;
+        private readonly ITimeProvider timeProvider;
 
         static BankOfEngland()
         {
             SeriesCodes = new Dictionary<CurrencyPair, string>();
+            Pairs = new Dictionary<string, CurrencyPair>();
 
             AddSeriesCode("en-AU", "en-US", "XUDLADD");
             AddSeriesCode("en-AU", "en-GB", "XUDLADS");
 
-            AddSeriesCode("en-CA", "en-US", "XUDLCDD");
             AddSeriesCode("en-CA", "en-GB", "XUDLCDS");
 
             AddSeriesCode("zh-CN", "en-US", "XUDLBK73");
 
             AddSeriesCode("cs-CZ", "en-US", "XUDLBK27");
-            AddSeriesCode("cs-CZ", "de-DE", "XUDLBK26");
             AddSeriesCode("cs-CZ", "en-GB", "XUDLBK25");
 
             AddSeriesCode("da-DK", "en-US", "XUDLDKD");
             AddSeriesCode("da-DK", "en-GB", "XUDLDKS");
-            AddSeriesCode("da-DK", "de-DE", "XUDLBK76");
 
             AddSeriesCode("de-DE", "en-US", "XUDLERD");
             AddSeriesCode("de-DE", "en-GB", "XUDLERS");
@@ -47,7 +47,6 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             AddSeriesCode("zh-HK", "en-GB", "XUDLHDS");
 
             AddSeriesCode("hu-HU", "en-US", "XUDLBK35");
-            AddSeriesCode("hu-HU", "de-DE", "XUDLBK34");
             AddSeriesCode("hu-HU", "en-GB", "XUDLBK33");
 
             AddSeriesCode("hi-IN", "en-GB", "XUDLBK97");
@@ -58,8 +57,6 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
             AddSeriesCode("ja-JP", "en-US", "XUDLJYD");
             AddSeriesCode("ja-JP", "en-GB", "XUDLJYS");
-            AddSeriesCode("ja-JP", "de-DE", "XUDLBK63");
-            AddSeriesCode("de-CH", "de-DE", "XUDLBK68");
 
             //AddSeriesCode("LV", "en-US", "XUDLBK43");
             //AddSeriesCode("LV", "de-DE", "XUDLBK42");
@@ -79,11 +76,10 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             AddSeriesCode("nn-NO", "en-GB", "XUDLNKS");
 
             AddSeriesCode("pl-PL", "en-US", "XUDLBK49");
-            AddSeriesCode("pl-PL", "de-DE", "XUDLBK48");
             AddSeriesCode("pl-PL", "en-GB", "XUDLBK47");
 
-            AddSeriesCode("ru-RU", "en-GB", "XUDLBK85");
-            AddSeriesCode("ru-RU", "en-US", "XUDLBK69");
+            // AddSeriesCode("ru-RU", "en-GB", "XUDLBK85");
+            // AddSeriesCode("ru-RU", "en-US", "XUDLBK69");
 
             AddSeriesCode("ar-SA", "en-US", "XUDLSRD");
             AddSeriesCode("ar-SA", "en-GB", "XUDLSRS");
@@ -123,9 +119,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         public BankOfEngland(ICurrencyFactory currencyFactory, IRegionFactory regionFactory, ITimeProvider timeProvider)
         {
-            this._currencyFactory = currencyFactory;
-            this._regionFactory = regionFactory;
-            this._timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+            this.currencyFactory = currencyFactory;
+            this.regionFactory = regionFactory;
+            this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
@@ -159,83 +155,116 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             CancellationToken cancellationToken) =>
             (await this.GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken).ConfigureAwait(false)).Rate;
 
-        public async Task<ExchangeRate> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency,
-            DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<ExchangeRate> GetExchangeRateAsync(
+            CurrencyInfo baseCurrency,
+            CurrencyInfo counterCurrency,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
-            if (asOn > this._timeProvider.GetCurrentTime())
+            if (asOn > this.timeProvider.GetCurrentTime())
             {
                 throw new ArgumentException("Exchange rate forecasting are not supported.");
             }
 
-            string SerieCode;
+            string seriesCode;
             var pair = new CurrencyPair(baseCurrency, counterCurrency);
 
             try
             {
-                SerieCode = SeriesCodes[pair];
+                seriesCode = SeriesCodes[pair];
             }
             catch (KeyNotFoundException)
             {
                 throw new ArgumentException("Currency pair not supported.");
             }
 
-            var RequestUrl = string.Format(UrlFormat, ToInternalDataFormat(asOn.AddMonths(-1)),
-                ToInternalDataFormat(asOn), SerieCode);
+            var exchangeRates = await this.GetSeriesCodeExchangeRateAsync(seriesCode, asOn, cancellationToken).ConfigureAwait(false);
+
+            return exchangeRates
+                .Where(x => x.Pair == pair)
+                .MinByWithTies(x => x.AsOn - asOn)
+                .First();
+        }
+
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
+        {
+            List<ExchangeRate> rates = new();
+            foreach (var seriesCode in SeriesCodes)
+            {
+                var exchangeRates = await this.GetSeriesCodeExchangeRateAsync(seriesCode.Value, asOn, cancellationToken).ConfigureAwait(false);
+                rates.AddRange(exchangeRates);
+            }
+
+            return rates;
+        }
+
+        private static void AddSeriesCode(string baseCountryCode, string counterCountryCode, string serieCode)
+        {
+            var baseCountry = new RegionInfo(baseCountryCode);
+            var counterCountry = new RegionInfo(counterCountryCode);
+
+            var baseCurrency = new CurrencyInfo(baseCountry);
+            var counterCurrency = new CurrencyInfo(counterCountry);
+
+            var pair = new CurrencyPair(baseCurrency, counterCurrency);
+
+            SeriesCodes.Add(pair, serieCode);
+            Pairs.Add(serieCode, pair);
+        }
+
+        private static string ToInternalDataFormat(DateTimeOffset dt) =>
+            dt.ToString("dd/MMM/yyyy", CultureInfo.InvariantCulture);
+
+        private async Task<IReadOnlyList<ExchangeRate>> GetSeriesCodeExchangeRateAsync(
+            string seriesCode,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
+        {
+            var pair = Pairs[seriesCode];
+
+            if (asOn > this.timeProvider.GetCurrentTime())
+            {
+                throw new ArgumentException("Exchange rate forecasting are not supported.");
+            }
+
+            var requestUrl = string.Format(UrlFormat,
+                ToInternalDataFormat(asOn.AddMonths(-1)),
+                ToInternalDataFormat(asOn), seriesCode);
 
             using var httpClient = new HttpClient();
-            var responseStream = await httpClient.GetStreamAsync(RequestUrl).ConfigureAwait(false);
+            var responseStream = await httpClient.GetStreamAsync(requestUrl).ConfigureAwait(false);
 
             var xdoc = XDocument.Load(responseStream);
 
-            var date = DateTimeOffset.MinValue;
-            var reverseRate = decimal.Zero;
+            List<ExchangeRate> rates = new();
 
             foreach (var item in xdoc.Element("{http://www.gesmes.org/xml/2002-08-01}Envelope")
-                .Element("{http://www.bankofengland.co.uk/boeapps/iadb/agg_series}Cube")
-                .Elements("{http://www.bankofengland.co.uk/boeapps/iadb/agg_series}Cube"))
+                .Element("{https://www.bankofengland.co.uk/website/agg_series}Cube")
+                .Elements("{https://www.bankofengland.co.uk/website/agg_series}Cube"))
             {
                 var time = item.Attribute("TIME");
-                var EstimatedRate = item.Attribute("OBS_VALUE");
-
-                if (time != null && EstimatedRate != null)
+                if (time is not null)
                 {
-                    var Year = int.Parse(time.Value.Substring(0, 4));
-                    var Month = int.Parse(time.Value.Substring(5, 2));
-                    var Day = int.Parse(time.Value.Substring(8));
+                    var estimatedRate = item.Attribute("OBS_VALUE");
 
-                    var itemTime = new DateTimeOffset(Year, Month, Day, 0, 0, 0, TimeSpan.Zero);
-
-                    if (itemTime > date)
+                    if (time != null && estimatedRate != null)
                     {
-                        reverseRate = decimal.Parse(EstimatedRate.Value, CultureInfo.InvariantCulture);
-                        date = itemTime;
+                        var year = int.Parse(time.Value.Substring(0, 4), CultureInfo.InvariantCulture);
+                        var month = int.Parse(time.Value.Substring(5, 2), CultureInfo.InvariantCulture);
+                        var day = int.Parse(time.Value.Substring(8), CultureInfo.InvariantCulture);
+
+                        var itemTime = new DateTimeOffset(year, month, day, 0, 0, 0, TimeSpan.Zero);
+
+                        var reverseRate = decimal.Parse(estimatedRate.Value, CultureInfo.InvariantCulture);
+                        var rate = decimal.One / reverseRate;
+
+                        rates.Add(new ExchangeRate(pair, itemTime, rate));
+                        rates.Add(new ExchangeRate(pair.Reverse(), itemTime, reverseRate));
                     }
                 }
             }
 
-            var rate = decimal.Zero;
-            if (reverseRate != decimal.Zero)
-            {
-                rate = decimal.One / reverseRate;
-            }
-
-            return new ExchangeRate(pair, date, rate);
+            return rates;
         }
-
-        private static void AddSeriesCode(string BaseCountryCode, string CounterCountryCode, string SerieCode)
-        {
-            var BaseCountry = new RegionInfo(BaseCountryCode);
-            var CounterCountry = new RegionInfo(CounterCountryCode);
-
-            var BaseCurrency = new CurrencyInfo(BaseCountry);
-            var CounterCurrency = new CurrencyInfo(CounterCountry);
-
-            var pair = new CurrencyPair(BaseCurrency, CounterCurrency);
-
-            SeriesCodes.Add(pair, SerieCode);
-        }
-
-        private static string ToInternalDataFormat(DateTimeOffset DT) =>
-            DT.ToString("dd/MMM/yyyy", CultureInfo.InvariantCulture);
     }
 }

@@ -5,12 +5,12 @@ using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.Finance.ForeignExchange.Cumulative;
-using TIKSN.Framework.IntegrationTests;
 using TIKSN.Globalization;
+using TIKSN.IntegrationTests;
 using TIKSN.Time;
 using Xunit;
 
-namespace TIKSN.Finance.ForeignExchange.Tests
+namespace TIKSN.Finance.ForeignExchange.IntegrationTests
 {
     [Collection("ServiceProviderCollection")]
     public class CurrencyConverterApiDotComTests
@@ -21,17 +21,17 @@ namespace TIKSN.Finance.ForeignExchange.Tests
 
         public CurrencyConverterApiDotComTests(ServiceProviderFixture serviceProviderFixture)
         {
-            this.timeProvider = serviceProviderFixture.Services.GetRequiredService<ITimeProvider>();
-            this.currencyConverterApiKey = serviceProviderFixture.Services.GetRequiredService<IConfiguration>().GetValue<string>("CurrencyConverterApiKey");
+            this.timeProvider = serviceProviderFixture.GetServiceProvider().GetRequiredService<ITimeProvider>();
+            this.currencyConverterApiKey = serviceProviderFixture.GetServiceProvider().GetRequiredService<IConfiguration>().GetValue<string>("CurrencyConverterApiKey");
             this.serviceProviderFixture = serviceProviderFixture;
         }
 
         [Fact]
         public async Task GetCurrencyPairsAsync()
         {
-            var currencyFactory = this.serviceProviderFixture.Services.GetRequiredService<ICurrencyFactory>();
+            var currencyFactory = this.serviceProviderFixture.GetServiceProvider().GetRequiredService<ICurrencyFactory>();
 
-            _ = this.serviceProviderFixture.Services.GetRequiredService<IRegionFactory>();
+            _ = this.serviceProviderFixture.GetServiceProvider().GetRequiredService<IRegionFactory>();
 
             var myCurrencyDotNet = new CurrencyConverterApiDotCom(currencyFactory, this.timeProvider, new CurrencyConverterApiDotCom.FreePlan(this.currencyConverterApiKey));
 
@@ -43,9 +43,9 @@ namespace TIKSN.Finance.ForeignExchange.Tests
         [Fact]
         public async Task GetExchangeRateAsync001Async()
         {
-            var currencyFactory = this.serviceProviderFixture.Services.GetRequiredService<ICurrencyFactory>();
+            var currencyFactory = this.serviceProviderFixture.GetServiceProvider().GetRequiredService<ICurrencyFactory>();
 
-            _ = this.serviceProviderFixture.Services.GetRequiredService<IRegionFactory>();
+            _ = this.serviceProviderFixture.GetServiceProvider().GetRequiredService<IRegionFactory>();
 
             var myCurrencyDotNet = new CurrencyConverterApiDotCom(currencyFactory, this.timeProvider, new CurrencyConverterApiDotCom.FreePlan(this.currencyConverterApiKey));
 
@@ -61,9 +61,9 @@ namespace TIKSN.Finance.ForeignExchange.Tests
         [Fact]
         public async Task GetExchangeRateAsync002Async()
         {
-            var currencyFactory = this.serviceProviderFixture.Services.GetRequiredService<ICurrencyFactory>();
+            var currencyFactory = this.serviceProviderFixture.GetServiceProvider().GetRequiredService<ICurrencyFactory>();
 
-            _ = this.serviceProviderFixture.Services.GetRequiredService<IRegionFactory>();
+            _ = this.serviceProviderFixture.GetServiceProvider().GetRequiredService<IRegionFactory>();
 
             var myCurrencyDotNet = new CurrencyConverterApiDotCom(currencyFactory, this.timeProvider, new CurrencyConverterApiDotCom.FreePlan(this.currencyConverterApiKey));
 

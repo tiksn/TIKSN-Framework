@@ -3,17 +3,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.Finance.ForeignExchange.Cumulative;
-using TIKSN.Framework.IntegrationTests;
 using TIKSN.Globalization;
+using TIKSN.IntegrationTests;
 using TIKSN.Time;
 using Xunit;
 
-namespace TIKSN.Finance.Tests.ForeignExchange
+namespace TIKSN.Finance.ForeignExchange.IntegrationTests
 {
     [Collection("ServiceProviderCollection")]
     public class CurrencylayerDotComTests
     {
-        const string skip = "API changed, code needs to be adopted";
+        private const string skip = "API changed, code needs to be adopted";
 
         private readonly string accessKey = "<put your access key here>";
         private readonly ICurrencyFactory currencyFactory;
@@ -22,8 +22,8 @@ namespace TIKSN.Finance.Tests.ForeignExchange
 
         public CurrencylayerDotComTests(ServiceProviderFixture serviceProviderFixture)
         {
-            this.currencyFactory = serviceProviderFixture.Services.GetRequiredService<ICurrencyFactory>();
-            this.timeProvider = serviceProviderFixture.Services.GetRequiredService<ITimeProvider>();
+            this.currencyFactory = serviceProviderFixture.GetServiceProvider().GetRequiredService<ICurrencyFactory>();
+            this.timeProvider = serviceProviderFixture.GetServiceProvider().GetRequiredService<ITimeProvider>();
             this.serviceProviderFixture = serviceProviderFixture ?? throw new ArgumentNullException(nameof(serviceProviderFixture));
         }
 
