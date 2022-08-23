@@ -13,8 +13,8 @@ namespace TIKSN.Finance.ForeignExchange.Data
             Guid foreignExchangeID,
             string baseCurrencyCode,
             string counterCurrencyCode,
-            DateTimeOffset dateFrom,
-            DateTimeOffset dateTo,
+            DateTime dateFrom,
+            DateTime dateTo,
             CancellationToken cancellationToken);
     }
 }
