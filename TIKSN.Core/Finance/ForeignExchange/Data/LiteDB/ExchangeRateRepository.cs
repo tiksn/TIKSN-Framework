@@ -15,26 +15,12 @@ namespace TIKSN.Finance.ForeignExchange.Data.LiteDB
         {
         }
 
-        public Task<ExchangeRateEntity> GetOrDefaultAsync(
-            Guid foreignExchangeID,
-            string baseCurrencyCode,
-            string counterCurrencyCode,
-            DateTimeOffset asOn,
-            CancellationToken cancellationToken)
-        {
-            var result = this.collection.FindOne(x =>
-                x.ForeignExchangeID == foreignExchangeID && x.BaseCurrencyCode == baseCurrencyCode &&
-                x.CounterCurrencyCode == counterCurrencyCode && x.AsOn == asOn);
-
-            return Task.FromResult(result);
-        }
-
         public Task<IReadOnlyCollection<ExchangeRateEntity>> SearchAsync(
             Guid foreignExchangeID,
             string baseCurrencyCode,
             string counterCurrencyCode,
-            DateTimeOffset dateFrom,
-            DateTimeOffset dateTo,
+            DateTime dateFrom,
+            DateTime dateTo,
             CancellationToken cancellationToken)
         {
             var results = this.collection.Find(x =>

@@ -18,28 +18,12 @@ namespace TIKSN.Finance.ForeignExchange.Data.Mongo
         {
         }
 
-        public Task<ExchangeRateEntity> GetOrDefaultAsync(
-            Guid foreignExchangeID,
-            string baseCurrencyCode,
-            string counterCurrencyCode,
-            DateTimeOffset asOn,
-            CancellationToken cancellationToken)
-        {
-            var filter = Builders<ExchangeRateEntity>.Filter.And(
-                Builders<ExchangeRateEntity>.Filter.Eq(item => item.ForeignExchangeID, foreignExchangeID),
-                Builders<ExchangeRateEntity>.Filter.Eq(item => item.BaseCurrencyCode, baseCurrencyCode),
-                Builders<ExchangeRateEntity>.Filter.Eq(item => item.CounterCurrencyCode, counterCurrencyCode),
-                Builders<ExchangeRateEntity>.Filter.Eq(item => item.AsOn, asOn));
-
-            return base.SingleOrDefaultAsync(filter, cancellationToken);
-        }
-
         public Task<IReadOnlyCollection<ExchangeRateEntity>> SearchAsync(
             Guid foreignExchangeID,
             string baseCurrencyCode,
             string counterCurrencyCode,
-            DateTimeOffset dateFrom,
-            DateTimeOffset dateTo,
+            DateTime dateFrom,
+            DateTime dateTo,
             CancellationToken cancellationToken)
         {
             var filter = Builders<ExchangeRateEntity>.Filter.And(

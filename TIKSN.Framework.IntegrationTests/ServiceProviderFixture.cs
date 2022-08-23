@@ -5,6 +5,7 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Localization;
+using MongoDB.Bson;
 using TIKSN.Data.Mongo;
 using TIKSN.Data.Mongo.IntegrationTests;
 using TIKSN.DependencyInjection;
@@ -20,6 +21,8 @@ namespace TIKSN.IntegrationTests
 
         public ServiceProviderFixture()
         {
+            BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
+
             this.hosts = new Dictionary<string, IHost>();
 
             this.CreateHost(string.Empty, builder => { });

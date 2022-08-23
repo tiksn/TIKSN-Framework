@@ -9,19 +9,12 @@ namespace TIKSN.Finance.ForeignExchange.Data
     public interface IExchangeRateRepository : IQueryRepository<ExchangeRateEntity, Guid>,
         IRepository<ExchangeRateEntity>
     {
-        Task<ExchangeRateEntity> GetOrDefaultAsync(
-            Guid foreignExchangeID,
-            string baseCurrencyCode,
-            string counterCurrencyCode,
-            DateTimeOffset asOn,
-            CancellationToken cancellationToken);
-
         Task<IReadOnlyCollection<ExchangeRateEntity>> SearchAsync(
             Guid foreignExchangeID,
             string baseCurrencyCode,
             string counterCurrencyCode,
-            DateTimeOffset dateFrom,
-            DateTimeOffset dateTo,
+            DateTime dateFrom,
+            DateTime dateTo,
             CancellationToken cancellationToken);
     }
 }
