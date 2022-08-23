@@ -19,8 +19,8 @@ namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
             Guid foreignExchangeID,
             string baseCurrencyCode,
             string counterCurrencyCode,
-            DateTimeOffset dateFrom,
-            DateTimeOffset dateTo,
+            DateTime dateFrom,
+            DateTime dateTo,
             CancellationToken cancellationToken) =>
             await this.Entities
                 .Where(item =>
