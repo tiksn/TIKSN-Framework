@@ -19,8 +19,8 @@ namespace TIKSN.Finance.ForeignExchange.Data.LiteDB
             Guid foreignExchangeID,
             string baseCurrencyCode,
             string counterCurrencyCode,
-            DateTimeOffset dateFrom,
-            DateTimeOffset dateTo,
+            DateTime dateFrom,
+            DateTime dateTo,
             CancellationToken cancellationToken)
         {
             var results = this.collection.Find(x =>
