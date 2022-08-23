@@ -22,8 +22,8 @@ namespace TIKSN.Finance.ForeignExchange.Data.Mongo
             Guid foreignExchangeID,
             string baseCurrencyCode,
             string counterCurrencyCode,
-            DateTimeOffset dateFrom,
-            DateTimeOffset dateTo,
+            DateTime dateFrom,
+            DateTime dateTo,
             CancellationToken cancellationToken)
         {
             var filter = Builders<ExchangeRateEntity>.Filter.And(
