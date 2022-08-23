@@ -9,7 +9,6 @@ using Microsoft.Extensions.Logging;
 using TIKSN.Data;
 using TIKSN.Finance.ForeignExchange.Data;
 using TIKSN.Globalization;
-using TIKSN.Localization;
 
 namespace TIKSN.Finance.ForeignExchange
 {
@@ -76,10 +75,10 @@ namespace TIKSN.Finance.ForeignExchange
                 {
                     var ticksToIntervalRatio = asOn.Ticks / provider.Value.InvalidationInterval.Ticks;
                     var dateFrom = new DateTimeOffset(ticksToIntervalRatio * provider.Value.InvalidationInterval.Ticks,
-                        asOn.Offset);
+                        asOn.Offset).UtcDateTime;
                     var dateTo =
                         new DateTimeOffset((ticksToIntervalRatio + 1) * provider.Value.InvalidationInterval.Ticks,
-                            asOn.Offset);
+                            asOn.Offset).UtcDateTime;
 
                     var rates = await this._exchangeRateRepository.SearchAsync(provider.Key,
                         pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, dateFrom, dateTo,
@@ -103,14 +102,15 @@ namespace TIKSN.Finance.ForeignExchange
                                 $"{nameof(provider.Value.BatchProvider)} and {nameof(provider.Value.IndividualProvider)} are both null, one of them should be null and other should not.");
                         }
 
-                        var rate = await this._exchangeRateRepository.GetOrDefaultAsync(provider.Key,
-                            pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, asOn,
+                        rates = await this._exchangeRateRepository.SearchAsync(
+                            provider.Key,
+                            pair.BaseCurrency.ISOCurrencySymbol,
+                            pair.CounterCurrency.ISOCurrencySymbol,
+                            dateFrom,
+                            dateTo,
                             cancellationToken).ConfigureAwait(false);
 
-                        if (rate != null)
-                        {
-                            combinedRates.Add(rate);
-                        }
+                        combinedRates.AddRange(rates);
                     }
                     else
                     {
