@@ -32,7 +32,7 @@
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
     <PackageReference Include="MongoDB.Driver.GridFS" Version="2.17.1" />
     <PackageReference Include="Nito.AsyncEx.Context" Version="5.1.2" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="5.0.3" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="5.0.4" />
     <PackageReference Include="NoDb" Version="1.2.2" />
     <PackageReference Include="NuGet.Versioning" Version="6.3.0" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.1" />
