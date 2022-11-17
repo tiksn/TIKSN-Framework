@@ -1,4 +1,4 @@
-﻿using Autofac;
+using Autofac;
 using TIKSN.Data;
 using TIKSN.Data.LiteDB;
 using TIKSN.Finance.ForeignExchange.Data;
@@ -10,8 +10,10 @@ namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests
     {
         protected override void Load(ContainerBuilder builder)
         {
-            _ = builder.RegisterType<ExchangeRateRepository>().As<IExchangeRateRepository>().InstancePerLifetimeScope();
-            _ = builder.RegisterType<ForeignExchangeRepository>().As<IForeignExchangeRepository>().InstancePerLifetimeScope();
+            _ = builder.RegisterType<ExchangeRateDataRepository>().As<IExchangeRateDataRepository>().InstancePerLifetimeScope();
+            _ = builder.RegisterType<ForeignExchangeDataRepository>().As<IForeignExchangeDataRepository>().InstancePerLifetimeScope();
+            _ = builder.RegisterType<ExchangeRateRepositoryAdapter>().As<IExchangeRateRepository>().InstancePerLifetimeScope();
+            _ = builder.RegisterType<ForeignExchangeRepositoryAdapter>().As<IForeignExchangeRepository>().InstancePerLifetimeScope();
             _ = builder.RegisterType<TestLiteDbDatabaseProvider>().As<ILiteDbDatabaseProvider>().SingleInstance();
             _ = builder.RegisterType<NullUnitOfWorkFactory>().As<IUnitOfWorkFactory>().InstancePerLifetimeScope();
         }

@@ -165,6 +165,19 @@ namespace TIKSN.Data.Mongo
         protected static FilterDefinition<TDocument> GetIdentityFilter(TIdentity id) =>
             Builders<TDocument>.Filter.Eq(item => item.ID, id);
 
+        protected async Task<IReadOnlyList<TDocument>> SearchAsync(
+            FilterDefinition<TDocument> filter,
+            CancellationToken cancellationToken)
+        {
+            Task<List<TDocument>> None() => this.collection.Find(filter)
+                .ToListAsync(cancellationToken);
+
+            Task<List<TDocument>> Some(IClientSessionHandle clientSessionHandle) => this.collection.Find(clientSessionHandle, filter)
+                .ToListAsync(cancellationToken);
+
+            return await this.mongoClientSessionProvider.GetClientSessionHandle().Match(Some, None);
+        }
+
         protected Task<TDocument> SingleOrDefaultAsync(
             FilterDefinition<TDocument> filter,
             CancellationToken cancellationToken)
@@ -176,19 +189,6 @@ namespace TIKSN.Data.Mongo
                 .SingleOrDefaultAsync(cancellationToken);
 
             return this.mongoClientSessionProvider.GetClientSessionHandle().Match(Some, None);
-        }
-
-        protected async Task<IReadOnlyCollection<TDocument>> SearchAsync(
-            FilterDefinition<TDocument> filter,
-            CancellationToken cancellationToken)
-        {
-            Task<List<TDocument>> None() => this.collection.Find(filter)
-                .ToListAsync(cancellationToken);
-
-            Task<List<TDocument>> Some(IClientSessionHandle clientSessionHandle) => this.collection.Find(clientSessionHandle, filter)
-                .ToListAsync(cancellationToken);
-
-            return await this.mongoClientSessionProvider.GetClientSessionHandle().Match(Some, None);
         }
     }
 }

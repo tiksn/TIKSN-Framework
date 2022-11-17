@@ -8,14 +8,14 @@ using TIKSN.Data.LiteDB;
 
 namespace TIKSN.Finance.ForeignExchange.Data.LiteDB
 {
-    public class ExchangeRateRepository : LiteDbRepository<ExchangeRateEntity, Guid>, IExchangeRateRepository
+    public class ExchangeRateDataRepository : LiteDbRepository<ExchangeRateDataEntity, Guid>, IExchangeRateDataRepository
     {
-        public ExchangeRateRepository(ILiteDbDatabaseProvider databaseProvider) : base(databaseProvider,
+        public ExchangeRateDataRepository(ILiteDbDatabaseProvider databaseProvider) : base(databaseProvider,
             "ExchangeRates", x => new BsonValue(x))
         {
         }
 
-        public Task<IReadOnlyCollection<ExchangeRateEntity>> SearchAsync(
+        public Task<IReadOnlyList<ExchangeRateDataEntity>> SearchAsync(
             Guid foreignExchangeID,
             string baseCurrencyCode,
             string counterCurrencyCode,
@@ -27,7 +27,7 @@ namespace TIKSN.Finance.ForeignExchange.Data.LiteDB
                 x.ForeignExchangeID == foreignExchangeID && x.BaseCurrencyCode == baseCurrencyCode &&
                 x.CounterCurrencyCode == counterCurrencyCode && x.AsOn >= dateFrom && x.AsOn <= dateTo);
 
-            return Task.FromResult<IReadOnlyCollection<ExchangeRateEntity>>(results.ToArray());
+            return Task.FromResult<IReadOnlyList<ExchangeRateDataEntity>>(results.ToArray());
         }
     }
 }

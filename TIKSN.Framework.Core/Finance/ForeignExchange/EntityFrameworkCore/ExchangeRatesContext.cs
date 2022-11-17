@@ -8,12 +8,12 @@ namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
         {
         }
 
-        public virtual DbSet<ExchangeRateEntity> ExchangeRates { get; set; }
-        public virtual DbSet<ForeignExchangeEntity> ForeignExchanges { get; set; }
+        public virtual DbSet<ExchangeRateDataEntity> ExchangeRates { get; set; }
+        public virtual DbSet<ForeignExchangeDataEntity> ForeignExchanges { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            _ = modelBuilder.Entity<ExchangeRateEntity>(entity =>
+            _ = modelBuilder.Entity<ExchangeRateDataEntity>(entity =>
               {
                   _ = entity.ToTable("ExchangeRates");
 
@@ -42,7 +42,7 @@ namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
                       .HasForeignKey(d => d.ForeignExchangeID);
               });
 
-            _ = modelBuilder.Entity<ForeignExchangeEntity>(entity =>
+            _ = modelBuilder.Entity<ForeignExchangeDataEntity>(entity =>
               {
                   _ = entity.ToTable("ForeignExchanges");
                   _ = entity.Property(e => e.ID).HasColumnName("ID");

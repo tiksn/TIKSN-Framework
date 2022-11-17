@@ -2,14 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using TIKSN.Data;
 
-namespace TIKSN.Finance.ForeignExchange.Data
+namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
 {
-    public interface IExchangeRateRepository : IQueryRepository<ExchangeRateEntity, Guid>,
-        IRepository<ExchangeRateEntity>
+    public interface IExchangeRateDataRepository
     {
-        Task<IReadOnlyList<ExchangeRateEntity>> SearchAsync(
+        Task<IReadOnlyList<ExchangeRateDataEntity>> SearchAsync(
             Guid foreignExchangeID,
             string baseCurrencyCode,
             string counterCurrencyCode,

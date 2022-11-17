@@ -1,6 +1,6 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.44">
     <PropertyGroup>
-        <TargetFramework>uap10.0.19041</TargetFramework>
+        <TargetFramework>uap10.0.22000</TargetFramework>
         <DocumentationFile>bin\$(Configuration)\TIKSN.Framework.UWP.xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>

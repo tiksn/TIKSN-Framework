@@ -1,15 +1,17 @@
 using System;
 using TIKSN.Data;
 
-namespace TIKSN.Finance.ForeignExchange.Data
+namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
 {
-    public class ExchangeRateEntity : IEntity<Guid>
+    public class ExchangeRateDataEntity : IEntity<Guid>
     {
         public DateTime AsOn { get; set; }
 
         public string BaseCurrencyCode { get; set; }
 
         public string CounterCurrencyCode { get; set; }
+
+        public virtual ForeignExchangeDataEntity ForeignExchange { get; set; }
 
         public Guid? ForeignExchangeID { get; set; }
 
