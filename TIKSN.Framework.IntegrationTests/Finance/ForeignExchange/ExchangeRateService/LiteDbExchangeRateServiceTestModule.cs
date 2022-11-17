@@ -12,6 +12,8 @@ namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests
         {
             _ = builder.RegisterType<ExchangeRateDataRepository>().As<IExchangeRateDataRepository>().InstancePerLifetimeScope();
             _ = builder.RegisterType<ForeignExchangeDataRepository>().As<IForeignExchangeDataRepository>().InstancePerLifetimeScope();
+            _ = builder.RegisterType<ExchangeRateRepositoryAdapter>().As<IExchangeRateRepository>().InstancePerLifetimeScope();
+            _ = builder.RegisterType<ForeignExchangeRepositoryAdapter>().As<IForeignExchangeRepository>().InstancePerLifetimeScope();
             _ = builder.RegisterType<TestLiteDbDatabaseProvider>().As<ILiteDbDatabaseProvider>().SingleInstance();
             _ = builder.RegisterType<NullUnitOfWorkFactory>().As<IUnitOfWorkFactory>().InstancePerLifetimeScope();
         }
