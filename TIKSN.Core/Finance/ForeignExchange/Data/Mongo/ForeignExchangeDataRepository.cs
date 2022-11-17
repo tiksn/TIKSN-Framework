@@ -3,9 +3,9 @@ using TIKSN.Data.Mongo;
 
 namespace TIKSN.Finance.ForeignExchange.Data.Mongo
 {
-    public class ForeignExchangeRepository : MongoRepository<ForeignExchangeEntity, Guid>, IForeignExchangeRepository
+    public class ForeignExchangeDataRepository : MongoRepository<ForeignExchangeDataEntity, Guid>, IForeignExchangeDataRepository
     {
-        public ForeignExchangeRepository(
+        public ForeignExchangeDataRepository(
             IMongoClientSessionProvider mongoClientSessionProvider,
             IMongoDatabaseProvider mongoDatabaseProvider) : base(
                 mongoClientSessionProvider,
