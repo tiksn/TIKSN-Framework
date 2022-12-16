@@ -26,10 +26,7 @@ namespace TIKSN.Data.Mongo
                 dataIdentityToDomainIdentityMapper,
                 mongoRepository,
                 mongoRepository,
-                mongoRepository)
-        {
-            this.mongoRepository = mongoRepository ?? throw new ArgumentNullException(nameof(mongoRepository));
-        }
+                mongoRepository) => this.mongoRepository = mongoRepository ?? throw new ArgumentNullException(nameof(mongoRepository));
 
         public Task AddOrUpdateAsync(TDomainEntity entity, CancellationToken cancellationToken)
             => this.mongoRepository.AddOrUpdateAsync(this.Map(entity), cancellationToken);
