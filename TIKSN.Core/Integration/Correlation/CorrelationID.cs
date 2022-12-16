@@ -6,7 +6,7 @@ namespace TIKSN.Integration.Correlation
     /// <summary>
     ///     Correlation ID
     /// </summary>
-    public struct CorrelationID : IEquatable<CorrelationID>
+    public readonly struct CorrelationID : IEquatable<CorrelationID>
     {
         /// <summary>
         ///     Empty Correlation ID.
