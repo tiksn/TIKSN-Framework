@@ -168,7 +168,6 @@ Task Format -depends Restore {
 Task Restore -depends Clean {
     $solution = Resolve-Path -Path 'TIKSN Framework.sln'
     Exec { dotnet restore $solution }
-    Exec { nuget restore $solution }
 }
 
 Task Clean -depends Init {
