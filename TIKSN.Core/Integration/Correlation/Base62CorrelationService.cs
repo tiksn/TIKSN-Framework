@@ -24,7 +24,7 @@ namespace TIKSN.Integration.Correlation
 
             Alphabet
                 .ToCharArray()
-                .ForEach((x, i) => codeMap.Add(x, i));
+                .ForEach(codeMap.Add);
 
             CodeMap = codeMap;
         }
