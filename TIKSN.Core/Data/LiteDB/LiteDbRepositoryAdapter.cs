@@ -27,10 +27,7 @@ namespace TIKSN.Data.LiteDB
                 dataIdentityToDomainIdentityMapper,
                 liteDbRepository,
                 liteDbRepository,
-                liteDbRepository)
-        {
-            this.liteDbRepository = liteDbRepository ?? throw new ArgumentNullException(nameof(liteDbRepository));
-        }
+                liteDbRepository) => this.liteDbRepository = liteDbRepository ?? throw new ArgumentNullException(nameof(liteDbRepository));
 
         public Task AddOrUpdateAsync(TDomainEntity entity, CancellationToken cancellationToken)
             => this.liteDbRepository.AddOrUpdateAsync(this.Map(entity), cancellationToken);

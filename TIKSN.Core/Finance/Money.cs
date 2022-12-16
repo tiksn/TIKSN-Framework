@@ -16,33 +16,33 @@ namespace TIKSN.Finance
 
         public CurrencyInfo Currency { get; }
 
-        public int CompareTo(Money that)
+        public int CompareTo(Money other)
         {
-            if (ReferenceEquals(this, that))
+            if (ReferenceEquals(this, other))
             {
                 return 0;
             }
 
-            AssertCurrencyIdentity(this, that);
+            AssertCurrencyIdentity(this, other);
 
-            return this.Amount.CompareTo(that.Amount);
+            return this.Amount.CompareTo(other.Amount);
         }
 
-        public bool Equals(Money that)
+        public bool Equals(Money other)
         {
-            if (that is null)
+            if (other is null)
             {
                 return false;
             }
 
-            if (ReferenceEquals(this, that))
+            if (ReferenceEquals(this, other))
             {
                 return true;
             }
 
-            AssertCurrencyIdentity(this, that);
+            AssertCurrencyIdentity(this, other);
 
-            return this.Amount.Equals(that.Amount);
+            return this.Amount.Equals(other.Amount);
         }
 
         public string ToString(string format, IFormatProvider formatProvider)
@@ -171,14 +171,14 @@ namespace TIKSN.Finance
 
         public static bool operator >=(Money first, Money second) => first.CompareTo(second) >= 0;
 
-        public override bool Equals(object that)
+        public override bool Equals(object obj)
         {
-            if (ReferenceEquals(this, that))
+            if (ReferenceEquals(this, obj))
             {
                 return true;
             }
 
-            var thatMoney = that as Money;
+            var thatMoney = obj as Money;
 
             if (thatMoney is not null)
             {

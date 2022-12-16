@@ -46,25 +46,25 @@ namespace TIKSN.Data.NoDB
 
         public async Task<IEnumerable<TEntity>>
             ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken) =>
-            await BatchOperationHelper.BatchOperationAsync(ids, cancellationToken, (id, c) => this.GetAsync(id, c)).ConfigureAwait(false);
+            await BatchOperationHelper.BatchOperationAsync(ids, cancellationToken, this.GetAsync).ConfigureAwait(false);
 
         public Task AddAsync(TEntity entity, CancellationToken cancellationToken) =>
             this._basicCommands.CreateAsync(this._projectId, entity.ID.ToString(), entity, cancellationToken);
 
         public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken) =>
-            BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, (e, c) => this.AddAsync(e, c));
+            BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, this.AddAsync);
 
         public Task RemoveAsync(TEntity entity, CancellationToken cancellationToken) =>
             this._basicCommands.DeleteAsync(this._projectId, entity.ID.ToString(), cancellationToken);
 
         public Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken) =>
-            BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, (e, c) => this.RemoveAsync(e, c));
+            BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, this.RemoveAsync);
 
         public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken) =>
             this._basicCommands.UpdateAsync(this._projectId, entity.ID.ToString(), entity, cancellationToken);
 
         public Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken) =>
-            BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, (e, c) => this.UpdateAsync(e, c));
+            BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, this.UpdateAsync);
 
         public async IAsyncEnumerable<TEntity> StreamAllAsync(CancellationToken cancellationToken)
         {

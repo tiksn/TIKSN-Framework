@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
 using MsgPack.Serialization;
 using ReactiveUI;
-using TIKSN.Data.Mongo;
 using TIKSN.FileSystem;
 using TIKSN.Globalization;
 using TIKSN.Serialization;

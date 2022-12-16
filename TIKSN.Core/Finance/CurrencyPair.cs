@@ -19,39 +19,39 @@ namespace TIKSN.Finance
 
         public CurrencyInfo CounterCurrency { get; }
 
-        public bool Equals(CurrencyPair that)
+        public bool Equals(CurrencyPair other)
         {
-            if (that is null)
+            if (other is null)
             {
                 return false;
             }
 
-            if (ReferenceEquals(this, that))
+            if (ReferenceEquals(this, other))
             {
                 return true;
             }
 
-            return this.BaseCurrency == that.BaseCurrency && this.CounterCurrency == that.CounterCurrency;
+            return this.BaseCurrency == other.BaseCurrency && this.CounterCurrency == other.CounterCurrency;
         }
 
         public static bool operator !=(CurrencyPair pair1, CurrencyPair pair2) => !Equals(pair1, pair2);
 
         public static bool operator ==(CurrencyPair pair1, CurrencyPair pair2) => Equals(pair1, pair2);
 
-        public override bool Equals(object that)
+        public override bool Equals(object obj)
         {
-            if (that is null)
+            if (obj is null)
             {
                 return false;
             }
 
-            if (ReferenceEquals(this, that))
+            if (ReferenceEquals(this, obj))
             {
                 return true;
             }
 
 
-            if (that is not CurrencyPair another)
+            if (obj is not CurrencyPair another)
             {
                 return false;
             }

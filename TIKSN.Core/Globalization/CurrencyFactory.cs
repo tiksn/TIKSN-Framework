@@ -42,17 +42,13 @@ namespace TIKSN.Globalization
 
         public CurrencyInfo Create(RegionInfo region)
         {
-            if (this._regionalCurrencyRedirectionOptions.Value.RegionalCurrencyRedirections.ContainsKey(region.Name))
+            if (this._regionalCurrencyRedirectionOptions.Value.RegionalCurrencyRedirections.TryGetValue(region.Name, out var regionByName))
             {
-                region = this._regionFactory.Create(
-                    this._regionalCurrencyRedirectionOptions.Value.RegionalCurrencyRedirections[region.Name]);
+                region = this._regionFactory.Create(regionByName);
             }
-            else if (this._regionalCurrencyRedirectionOptions.Value.RegionalCurrencyRedirections.ContainsKey(
-                region.TwoLetterISORegionName))
+            else if (this._regionalCurrencyRedirectionOptions.Value.RegionalCurrencyRedirections.TryGetValue(region.TwoLetterISORegionName, out var regionByISOName))
             {
-                region = this._regionFactory.Create(
-                    this._regionalCurrencyRedirectionOptions.Value.RegionalCurrencyRedirections[
-                        region.TwoLetterISORegionName]);
+                region = this._regionFactory.Create(regionByISOName);
             }
 
             var cacheKey = Tuple.Create(entityType, region.ISOCurrencySymbol);

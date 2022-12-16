@@ -204,10 +204,7 @@ namespace TIKSN.Finance.Cache
             var cachedItem = cache.Where(item => IsActual(item.AsOn, asOn, interval))
                 .OrderBy(item => Absolute(item.AsOn - asOn)).FirstOrDefault();
 
-            if (cachedItem != null)
-            {
-                cachedItem.Update(this._timeProvider);
-            }
+            cachedItem?.Update(this._timeProvider);
 
             return cachedItem;
         }

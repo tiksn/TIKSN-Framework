@@ -22,34 +22,34 @@ namespace TIKSN.Finance
 
         public string ISOCurrencySymbol { get; private set; }
 
-        public bool Equals(CurrencyInfo that)
+        public bool Equals(CurrencyInfo other)
         {
-            if (that is null)
+            if (other is null)
             {
                 return false;
             }
 
-            return string.CompareOrdinal(this.ISOCurrencySymbol, that.ISOCurrencySymbol) == 0;
+            return string.CompareOrdinal(this.ISOCurrencySymbol, other.ISOCurrencySymbol) == 0;
         }
 
         public static bool operator !=(CurrencyInfo first, CurrencyInfo second) => !Equals(first, second);
 
         public static bool operator ==(CurrencyInfo first, CurrencyInfo second) => Equals(first, second);
 
-        public override bool Equals(object that)
+        public override bool Equals(object obj)
         {
-            if (ReferenceEquals(this, that))
+            if (ReferenceEquals(this, obj))
             {
                 return true;
             }
 
-            if (that is null)
+            if (obj is null)
             {
                 return false;
             }
 
 
-            if (that is not CurrencyInfo That)
+            if (obj is not CurrencyInfo That)
             {
                 return false;
             }

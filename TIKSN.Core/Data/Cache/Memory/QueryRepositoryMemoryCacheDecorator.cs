@@ -54,7 +54,7 @@ namespace TIKSN.Data.Cache.Memory
 
         public async Task<IEnumerable<TEntity>>
             ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken) =>
-            await BatchOperationHelper.BatchOperationAsync(ids, cancellationToken, (id, ct) => this.GetAsync(id, ct)).ConfigureAwait(false);
+            await BatchOperationHelper.BatchOperationAsync(ids, cancellationToken, this.GetAsync).ConfigureAwait(false);
 
         protected Task<IEnumerable<TEntity>> CreateMemoryCacheQueryAsync(ICacheEntry cacheEntry,
             Func<Task<IEnumerable<TEntity>>> queryFromSource)

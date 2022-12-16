@@ -21,10 +21,7 @@ namespace TIKSN.Finance.ForeignExchange.Data.LiteDB
                 dataEntityToDomainEntityMapper,
                 IdentityMapper<Guid>.Instance,
                 IdentityMapper<Guid>.Instance,
-                dataRepository)
-        {
-            this.dataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
-        }
+                dataRepository) => this.dataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
 
         public Task<IReadOnlyList<ExchangeRateEntity>> SearchAsync(
             Guid foreignExchangeID,
