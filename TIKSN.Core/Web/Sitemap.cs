@@ -34,7 +34,7 @@ namespace TIKSN.Web
                 if (P.ChangeFrequency.HasValue)
                 {
                     XWriter.WriteStartElement("changefreq");
-                    XWriter.WriteValue(P.ChangeFrequency.Value.ToString().ToLower());
+                    XWriter.WriteValue(P.ChangeFrequency.Value.ToString().ToLower(System.Globalization.CultureInfo.CurrentCulture));
                     XWriter.WriteEndElement();
                 }
 
@@ -103,39 +103,39 @@ namespace TIKSN.Web
                 }
             }
 
-            public bool Equals(Page that)
+            public bool Equals(Page other)
             {
-                if (that is null)
+                if (other is null)
                 {
                     return false;
                 }
 
-                if (ReferenceEquals(this, that))
+                if (ReferenceEquals(this, other))
                 {
                     return true;
                 }
 
-                return this.Address == that.Address;
+                return this.Address == other.Address;
             }
 
             public static bool operator !=(Page page1, Page page2) => !Equals(page1, page2);
 
             public static bool operator ==(Page page1, Page page2) => Equals(page1, page2);
 
-            public override bool Equals(object that)
+            public override bool Equals(object obj)
             {
-                if (that is null)
+                if (obj is null)
                 {
                     return false;
                 }
 
-                if (ReferenceEquals(this, that))
+                if (ReferenceEquals(this, obj))
                 {
                     return true;
                 }
 
 
-                if (that is not Page p)
+                if (obj is not Page p)
                 {
                     return false;
                 }
