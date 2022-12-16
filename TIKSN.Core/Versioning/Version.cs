@@ -366,59 +366,6 @@ namespace TIKSN.Versioning
             }
         }
 
-        public int CompareTo(Version other)
-        {
-            if (ReferenceEquals(this, other))
-            {
-                return 0;
-            }
-
-            var releaseComparison = this.Release.CompareTo(other.Release);
-
-            if (releaseComparison == 0)
-            {
-                _ = this.Milestone - other.Milestone;
-
-                if (this.Milestone > other.Milestone)
-                {
-                    return 1;
-                }
-
-                if (this.Milestone < other.Milestone)
-                {
-                    return -1;
-                }
-
-                Debug.Assert(this.Milestone == other.Milestone);
-
-                if (this.PrereleaseNumber > other.PrereleaseNumber)
-                {
-                    return 1;
-                }
-
-                if (this.PrereleaseNumber < other.PrereleaseNumber)
-                {
-                    return -1;
-                }
-
-                Debug.Assert(this.PrereleaseNumber == other.PrereleaseNumber);
-
-                return 0;
-            }
-
-            return releaseComparison;
-        }
-
-        public bool Equals(Version other)
-        {
-            if (other is null)
-            {
-                return false;
-            }
-
-            return this.CompareTo(other) == 0;
-        }
-
         public static explicit operator NuGetVersion(Version version)
         {
             var releaseLabels = GetReleaseLabels(version);
@@ -498,6 +445,101 @@ namespace TIKSN.Versioning
         public static bool operator >(Version v1, Version v2) => v1.CompareTo(v2) > 0;
 
         public static bool operator >=(Version v1, Version v2) => v1.CompareTo(v2) >= 0;
+
+        public int CompareTo(Version other)
+        {
+            if (ReferenceEquals(this, other))
+            {
+                return 0;
+            }
+
+            var releaseComparison = CompareReleaseTo(other.Release);
+
+            if (releaseComparison == 0)
+            {
+                _ = this.Milestone - other.Milestone;
+
+                if (this.Milestone > other.Milestone)
+                {
+                    return 1;
+                }
+
+                if (this.Milestone < other.Milestone)
+                {
+                    return -1;
+                }
+
+                Debug.Assert(this.Milestone == other.Milestone);
+
+                if (this.PrereleaseNumber > other.PrereleaseNumber)
+                {
+                    return 1;
+                }
+
+                if (this.PrereleaseNumber < other.PrereleaseNumber)
+                {
+                    return -1;
+                }
+
+                Debug.Assert(this.PrereleaseNumber == other.PrereleaseNumber);
+
+                return 0;
+            }
+
+            return releaseComparison;
+        }
+
+        public bool Equals(Version other)
+        {
+            if (other is null)
+            {
+                return false;
+            }
+
+            return this.CompareTo(other) == 0;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj is null)
+            {
+                return false;
+            }
+
+            var version = obj as Version;
+            if (version is not null)
+            {
+                return version.Equals(this);
+            }
+
+            var systemVersion = obj as System.Version;
+            if (systemVersion is not null)
+            {
+                return this.CompareReleaseTo(systemVersion) == 0 &&
+                    this.Milestone == DefaultMilestone &&
+                    this.prereleaseNumber == DefaultPrereleaseNumber;
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hash = 17;
+                hash = (hash * 23) + this.Release.GetHashCode();
+                hash = (hash * 23) + this.Milestone.GetHashCode();
+                hash = (hash * 23) + this.prereleaseNumber.GetHashCode();
+                hash = (hash * 23) + (this.ReleaseDate?.GetHashCode() ?? 0);
+                return hash;
+            }
+        }
 
         public string ToLongReleaseString() => this.Release.ToString();
 
@@ -586,6 +628,9 @@ namespace TIKSN.Versioning
             return new[] { milestoneTag, version.prereleaseNumber.ToString() };
         }
 
+        private int CompareReleaseTo(System.Version otherRelease)
+            => new NuGetVersion(this.Release).Version.CompareTo(new NuGetVersion(otherRelease).Version);
+
         private void ValidateMilestoneAndPrerelease()
         {
             if (this.Stability == Stability.Stable && this.PrereleaseNumber != DefaultPrereleaseNumber)
@@ -605,28 +650,5 @@ namespace TIKSN.Versioning
 
             throw new NotSupportedException($"Milestone '{this.Milestone}' value is not supported.");
         }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj is null)
-            {
-                return false;
-            }
-
-            throw new NotImplementedException();
-        }
-
-        public override int GetHashCode() => throw new NotImplementedException();
-
-        public static NuGetVersion ToNuGetVersion(Version left, Version right) => throw new NotImplementedException();
-
-        public static SemanticVersion ToSemanticVersion(Version left, Version right) => throw new NotImplementedException();
-
-        public static Version ToVersion(Version left, Version right) => throw new NotImplementedException();
     }
 }
