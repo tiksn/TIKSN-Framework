@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using FluentAssertions;
 using NuGet.Versioning;
 using Xunit;
@@ -99,6 +101,7 @@ namespace TIKSN.Versioning.Tests
             // Act
             var match = versionSeries.Matches(versionToTest);
 
+            // Assert
             match.IsSome.Should().Be(matches);
 
             if (match.IsSome)
@@ -106,6 +109,34 @@ namespace TIKSN.Versioning.Tests
                 match.Match(v => v, () => new Version(0, 0))
                     .Should().Be(versionToTest);
             }
+        }
+
+        [Theory]
+        [InlineData("", "")]
+        [InlineData("1.2", "1.2")]
+        [InlineData("1.2|1.3|1.4", "1.2")]
+        [InlineData("1.2-rc.5|1.2|1.3|1.4", "1.2-rc.5|1.2")]
+        [InlineData("1.3|1.3-rc|1.3-rc.5", "")]
+        public void GivenVersionsList_WhenMatch_ThenResultListShouldBe(string versionsList, string matchesList)
+        {
+            // Arrange
+            var versionSeries = VersionSeries.Parse("1.2");
+            var versions = versionsList.Split('|', StringSplitOptions.RemoveEmptyEntries)
+                .Select(x => (Version)NuGetVersion.Parse(x.Trim()))
+                .ToArray();
+            var expectedMatches = matchesList.Split('|', StringSplitOptions.RemoveEmptyEntries)
+                .Select(x => (Version)NuGetVersion.Parse(x.Trim()))
+                .ToArray();
+            var expectedHasMatches = expectedMatches.Any();
+
+            // Act
+            var match = versionSeries.Matches(versions);
+
+            // Assert
+            match.IsSome.Should().Be(expectedHasMatches);
+            match.Match(result => result, Array.Empty<Version>)
+                .Should()
+                .BeEquivalentTo(expectedMatches);
         }
     }
 }
