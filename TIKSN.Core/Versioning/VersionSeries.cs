@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using LanguageExt;
 using NuGet.Versioning;
 using SharpCompress.Common;
@@ -132,6 +134,12 @@ public sealed class VersionSeries : IEquatable<VersionSeries>
         return false;
     }
 
+    public static bool operator !=(VersionSeries versionSeries1, VersionSeries versionSeries2)
+        => versionSeries1?.Equals(versionSeries2) != true;
+
+    public static bool operator ==(VersionSeries versionSeries1, VersionSeries versionSeries2)
+        => versionSeries1?.Equals(versionSeries2) == true;
+
     public override int GetHashCode() => this.series.GetHashCode();
 
     public override string ToString()
@@ -173,5 +181,73 @@ public sealed class VersionSeries : IEquatable<VersionSeries>
 
         result = null;
         return false;
+    }
+
+    public Option<Version> Matches(Version version) =>
+        this.series.Match(
+            seriesVersion => MatchesVersion(seriesVersion, version),
+            releaseMajor => MatchesReleaseMajor(releaseMajor, version));
+
+    private static Option<Version> MatchesReleaseMajor(int releaseMajor, Version version)
+        => releaseMajor.Equals(version.Release.Major) ? version : Option<Version>.None;
+
+
+    private static Option<Version> MatchesVersion(Version seriesVersion, Version version)
+    {
+        var seriesVersionNumbers = new[]
+        {
+            seriesVersion.Release.Major, seriesVersion.Release.Minor, seriesVersion.Release.Build,
+            seriesVersion.Release.Revision
+        }.Where(x => x != -1).ToArray();
+
+        var versionNumbers = new[]
+        {
+            version.Release.Major, version.Release.Minor, version.Release.Build, version.Release.Revision
+        }.Where(x => x != -1).ToArray();
+
+        if (seriesVersionNumbers.Length > versionNumbers.Length)
+        {
+            return None;
+        }
+
+        if (seriesVersionNumbers.Where((seriesVersionNumber, i) => seriesVersionNumber != versionNumbers[i]).Any())
+        {
+            return None;
+        }
+
+        if (seriesVersion.Stability != Stability.Stable)
+        {
+            if (seriesVersionNumbers.Length != versionNumbers.Length)
+            {
+                return None;
+            }
+
+            if (seriesVersion.Milestone != version.Milestone)
+            {
+                return None;
+            }
+
+            if (seriesVersion.PrereleaseNumber != -1 && seriesVersion.PrereleaseNumber != version.PrereleaseNumber)
+            {
+                return None;
+            }
+        }
+
+        return version;
+    }
+
+    public Option<IReadOnlyList<Version>> Matches(IReadOnlyCollection<Version> versions)
+    {
+        var result = versions
+            .Select(this.Matches)
+            .SelectMany(x => x)
+            .ToArray();
+
+        if (result.Length == 0)
+        {
+            return None;
+        }
+
+        return result;
     }
 }
