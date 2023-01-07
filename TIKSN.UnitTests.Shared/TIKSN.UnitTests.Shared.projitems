@@ -30,6 +30,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Serialization\Numerics\SerializationTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\SettingsServiceTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Versioning\MilestoneTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Versioning\VersionSeriesTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Versioning\VersionTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Web\SitemapIndexTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Web\SitemapPageTests.cs" />
