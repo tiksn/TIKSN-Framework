@@ -7,7 +7,7 @@ using static LanguageExt.Prelude;
 
 namespace TIKSN.Versioning;
 
-public sealed class VersionSeries
+public sealed class VersionSeries : IEquatable<VersionSeries>
 {
     private readonly Either<int, Version> series;
 
@@ -95,6 +95,44 @@ public sealed class VersionSeries
         Milestone milestone,
         int prereleaseNumber) =>
         this.series = Right(new Version(release, milestone, prereleaseNumber));
+
+    public bool Equals(VersionSeries other)
+    {
+        if (other is null)
+        {
+            return false;
+        }
+
+        return this.series.Match(
+            thisVersion => other.series.Match(
+                thisVersion.Equals,
+                otherReleaseMajor => false),
+            thisReleaseVersion => other.series.Match(
+                otherVersion => false,
+                thisReleaseVersion.Equals));
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(this, obj))
+        {
+            return true;
+        }
+
+        if (obj is null)
+        {
+            return false;
+        }
+
+        if (obj is VersionSeries versionSeries)
+        {
+            return versionSeries.Equals(this);
+        }
+
+        return false;
+    }
+
+    public override int GetHashCode() => this.series.GetHashCode();
 
     public override string ToString()
         => this.series.Match(s => s.ToString(), m => m.ToString(CultureInfo.InvariantCulture));
