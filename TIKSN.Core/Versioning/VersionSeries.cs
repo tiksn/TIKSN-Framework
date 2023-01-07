@@ -191,7 +191,6 @@ public sealed class VersionSeries : IEquatable<VersionSeries>
     private static Option<Version> MatchesReleaseMajor(int releaseMajor, Version version)
         => releaseMajor.Equals(version.Release.Major) ? version : Option<Version>.None;
 
-
     private static Option<Version> MatchesVersion(Version seriesVersion, Version version)
     {
         var seriesVersionNumbers = new[]
