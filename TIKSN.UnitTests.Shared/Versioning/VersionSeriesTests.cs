@@ -1,4 +1,5 @@
 using FluentAssertions;
+using NuGet.Versioning;
 using Xunit;
 
 namespace TIKSN.Versioning.Tests
@@ -40,6 +41,71 @@ namespace TIKSN.Versioning.Tests
             var versionSeries2 = VersionSeries.Parse(series);
 
             versionSeries1.Equals(versionSeries2).Should().BeTrue();
+        }
+
+        [Theory]
+        [InlineData("1", "1.2", true)]
+        [InlineData("1", "1.0", true)]
+        [InlineData("1", "1.2.3.4-rc.5", true)]
+        [InlineData("1", "2.1", false)]
+        [InlineData("1", "2.2.3.4-rc.5", false)]
+        [InlineData("1.2", "1.1", false)]
+        [InlineData("1.2", "1.2.3.4-rc.5", true)]
+        [InlineData("1.2", "1.1.3.4-rc.5", false)]
+        [InlineData("1.2.3", "1.2.3.4-rc.5", true)]
+        [InlineData("1.2.3", "1.2.2.4-rc.5", false)]
+        [InlineData("1.2.3", "1.2.2", false)]
+        [InlineData("1.2.3", "1.2.4", false)]
+        [InlineData("1.2.3.4", "1.1", false)]
+        [InlineData("1.2.3.4", "1.2", false)]
+        [InlineData("1.2.3.4", "1.2.3", false)]
+        [InlineData("1.2.3.4", "1.2.3.4", true)]
+        [InlineData("1.2.3.4", "1.2.3.4-rc", true)]
+        [InlineData("1.2.3.4", "1.2.3.4-rc.5", true)]
+        [InlineData("1.2-rc", "1.2", false)]
+        [InlineData("1.2-rc", "1.2-rc", true)]
+        [InlineData("1.2-rc", "1.2-rc.5", true)]
+        [InlineData("1.2.3-rc", "1.2.3", false)]
+        [InlineData("1.2.3-rc", "1.2.3-rc", true)]
+        [InlineData("1.2.3-rc", "1.2.3-rc.5", true)]
+        [InlineData("1.2.3-rc", "1.2.3.4-rc.5", false)]
+        [InlineData("1.2.3.4-rc", "1.2.3", false)]
+        [InlineData("1.2.3.4-rc", "1.2.3.4", false)]
+        [InlineData("1.2.3.4-rc", "1.2.3.4-rc", true)]
+        [InlineData("1.2.3.4-rc", "1.2.3.4-alpha", false)]
+        [InlineData("1.2.3.4-rc", "1.2.3.4-rc.5", true)]
+        [InlineData("1.2.3.4-rc", "1.2.3.4-alpha.5", false)]
+        [InlineData("1.2-rc.5", "1.2-rc", false)]
+        [InlineData("1.2-rc.5", "1.2-rc.5", true)]
+        [InlineData("1.2-rc.5", "1.2.3-rc.5", false)]
+        [InlineData("1.2-rc.5", "1.2.3.4-rc.5", false)]
+        [InlineData("1.2.3-rc.5", "1.2.3", false)]
+        [InlineData("1.2.3-rc.5", "1.2.3-rc", false)]
+        [InlineData("1.2.3-rc.5", "1.2.3-rc.5", true)]
+        [InlineData("1.2.3-rc.5", "1.2.3-rc.4", false)]
+        [InlineData("1.2.3-rc.5", "1.2.3-rc.6", false)]
+        [InlineData("1.2.3-rc.5", "1.2.3.4-rc.5", false)]
+        [InlineData("1.2.3.4-rc.5", "1.2.3.4-rc", false)]
+        [InlineData("1.2.3.4-rc.5", "1.2.3.4-rc.5", true)]
+        [InlineData("1.2.3.4-rc.5", "1.2.3.4-rc.6", false)]
+        [InlineData("1.2.3.4-rc.5", "1.2.3-rc.5", false)]
+        public void GivenSeriesAndVersion_WhenMatchesChecked_ThenBeShouldBeAsExpected(
+            string series, string version, bool matches)
+        {
+            // Arrange
+            var versionSeries = VersionSeries.Parse(series);
+            var versionToTest = (Version)NuGetVersion.Parse(version);
+
+            // Act
+            var match = versionSeries.Matches(versionToTest);
+
+            match.IsSome.Should().Be(matches);
+
+            if (match.IsSome)
+            {
+                match.Match(v => v, () => new Version(0, 0))
+                    .Should().Be(versionToTest);
+            }
         }
     }
 }
