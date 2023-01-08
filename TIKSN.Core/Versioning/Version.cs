@@ -366,86 +366,6 @@ namespace TIKSN.Versioning
             }
         }
 
-        public static explicit operator NuGetVersion(Version version)
-        {
-            var releaseLabels = GetReleaseLabels(version);
-            var metadata = GetMetadata(version);
-
-            if (version.Release.Revision >= 0)
-            {
-                return new NuGetVersion(version.Release.Major, version.Release.Minor, version.Release.Build,
-                    version.Release.Revision, releaseLabels, metadata);
-            }
-
-            if (version.Release.Build >= 0)
-            {
-                return new NuGetVersion(version.Release.Major, version.Release.Minor, version.Release.Build,
-                    releaseLabels, metadata);
-            }
-
-            return new NuGetVersion(version.Release.Major, version.Release.Minor, 0, releaseLabels, metadata);
-        }
-
-        public static explicit operator SemanticVersion(Version version)
-        {
-            var releaseLabels = GetReleaseLabels(version);
-            var metadata = GetMetadata(version);
-
-            if (version.Release.Revision != -1)
-            {
-                throw new FormatException("There is no revision in semantic version.");
-            }
-
-            if (version.Release.Build >= 0)
-            {
-                return new SemanticVersion(version.Release.Major, version.Release.Minor, version.Release.Build,
-                    releaseLabels, metadata);
-            }
-
-            return new SemanticVersion(version.Release.Major, version.Release.Minor, 0, releaseLabels, metadata);
-        }
-
-        public static explicit operator Version(NuGetVersion nuGetVersion)
-        {
-            var (milestone, prereleaseNumber) =
-                GetMilestoneAndPrereleaseNumber(nuGetVersion.IsPrerelease, nuGetVersion.ReleaseLabels.ToArray());
-
-            if (nuGetVersion.HasMetadata)
-            {
-                return new Version(nuGetVersion.Version, milestone, prereleaseNumber,
-                    GetreleaseDate(nuGetVersion.Metadata));
-            }
-
-            return new Version(nuGetVersion.Version, milestone, prereleaseNumber);
-        }
-
-        public static explicit operator Version(SemanticVersion semanticVersion)
-        {
-            var (milestone, prereleaseNumber) = GetMilestoneAndPrereleaseNumber(semanticVersion.IsPrerelease,
-                semanticVersion.ReleaseLabels.ToArray());
-
-            if (semanticVersion.HasMetadata)
-            {
-                return new Version(semanticVersion.Major, semanticVersion.Minor, semanticVersion.Patch, milestone,
-                    prereleaseNumber, GetreleaseDate(semanticVersion.Metadata));
-            }
-
-            return new Version(semanticVersion.Major, semanticVersion.Minor, semanticVersion.Patch, milestone,
-                prereleaseNumber);
-        }
-
-        public static bool operator !=(Version v1, Version v2) => v1.CompareTo(v2) != 0;
-
-        public static bool operator <(Version v1, Version v2) => v1.CompareTo(v2) < 0;
-
-        public static bool operator <=(Version v1, Version v2) => v1.CompareTo(v2) <= 0;
-
-        public static bool operator ==(Version v1, Version v2) => v1.CompareTo(v2) == 0;
-
-        public static bool operator >(Version v1, Version v2) => v1.CompareTo(v2) > 0;
-
-        public static bool operator >=(Version v1, Version v2) => v1.CompareTo(v2) >= 0;
-
         public int CompareTo(Version other)
         {
             if (ReferenceEquals(this, other))
@@ -453,7 +373,7 @@ namespace TIKSN.Versioning
                 return 0;
             }
 
-            var releaseComparison = CompareReleaseTo(other.Release);
+            var releaseComparison = this.Release.CompareTo(other.Release);
 
             if (releaseComparison == 0)
             {
@@ -499,6 +419,105 @@ namespace TIKSN.Versioning
             return this.CompareTo(other) == 0;
         }
 
+        public static explicit operator NuGetVersion(Version version)
+        {
+            var releaseLabels = GetReleaseLabels(version);
+            var metadata = GetMetadata(version);
+
+            if (version.Release.Revision >= 0)
+            {
+                return new NuGetVersion(version.Release.Major, version.Release.Minor, version.Release.Build,
+                    version.Release.Revision, releaseLabels, metadata);
+            }
+
+            if (version.Release.Build >= 0)
+            {
+                return new NuGetVersion(version.Release.Major, version.Release.Minor, version.Release.Build,
+                    releaseLabels, metadata);
+            }
+
+            return new NuGetVersion(version.Release.Major, version.Release.Minor, 0, releaseLabels, metadata);
+        }
+
+        public static explicit operator SemanticVersion(Version version)
+        {
+            var releaseLabels = GetReleaseLabels(version);
+            var metadata = GetMetadata(version);
+
+            if (version.Release.Revision != -1)
+            {
+                throw new FormatException("There is no revision in semantic version.");
+            }
+
+            if (version.Release.Build >= 0)
+            {
+                return new SemanticVersion(version.Release.Major, version.Release.Minor, version.Release.Build,
+                    releaseLabels, metadata);
+            }
+
+            return new SemanticVersion(version.Release.Major, version.Release.Minor, 0, releaseLabels, metadata);
+        }
+
+        public static explicit operator Version(NuGetVersion nuGetVersion)
+        {
+            var (milestone, prereleaseNumber) =
+                GetMilestoneAndPrereleaseNumber(nuGetVersion.IsPrerelease, nuGetVersion.ReleaseLabels.ToArray());
+
+            var releaseNumbersCount =
+                nuGetVersion.OriginalVersion
+                    .Remove(nuGetVersion.OriginalVersion.Length - nuGetVersion.Release.Length)
+                    .Split('.')
+                    .Length;
+
+            var release = releaseNumbersCount == 2 ? new System.Version(
+                    nuGetVersion.Major,
+                    nuGetVersion.Minor) :
+                releaseNumbersCount == 3 ? new System.Version(
+                    nuGetVersion.Major,
+                    nuGetVersion.Minor,
+                    nuGetVersion.Patch) :
+                new System.Version(
+                    nuGetVersion.Major,
+                    nuGetVersion.Minor,
+                    nuGetVersion.Patch,
+                    nuGetVersion.Revision);
+
+            if (nuGetVersion.HasMetadata)
+            {
+                return new Version(release, milestone, prereleaseNumber,
+                    GetreleaseDate(nuGetVersion.Metadata));
+            }
+
+            return new Version(release, milestone, prereleaseNumber);
+        }
+
+        public static explicit operator Version(SemanticVersion semanticVersion)
+        {
+            var (milestone, prereleaseNumber) = GetMilestoneAndPrereleaseNumber(semanticVersion.IsPrerelease,
+                semanticVersion.ReleaseLabels.ToArray());
+
+            if (semanticVersion.HasMetadata)
+            {
+                return new Version(semanticVersion.Major, semanticVersion.Minor, semanticVersion.Patch, milestone,
+                    prereleaseNumber, GetreleaseDate(semanticVersion.Metadata));
+            }
+
+            return new Version(semanticVersion.Major, semanticVersion.Minor, semanticVersion.Patch, milestone,
+                prereleaseNumber);
+        }
+
+        public static bool operator !=(Version v1, Version v2) => v1.CompareTo(v2) != 0;
+
+        public static bool operator <(Version v1, Version v2) => v1.CompareTo(v2) < 0;
+
+        public static bool operator <=(Version v1, Version v2) => v1.CompareTo(v2) <= 0;
+
+        public static bool operator ==(Version v1, Version v2) => v1.CompareTo(v2) == 0;
+
+        public static bool operator >(Version v1, Version v2) => v1.CompareTo(v2) > 0;
+
+        public static bool operator >=(Version v1, Version v2) => v1.CompareTo(v2) >= 0;
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(this, obj))
@@ -511,18 +530,16 @@ namespace TIKSN.Versioning
                 return false;
             }
 
-            var version = obj as Version;
-            if (version is not null)
+            if (obj is Version version)
             {
                 return version.Equals(this);
             }
 
-            var systemVersion = obj as System.Version;
-            if (systemVersion is not null)
+            if (obj is System.Version systemVersion)
             {
-                return this.CompareReleaseTo(systemVersion) == 0 &&
-                    this.Milestone == DefaultMilestone &&
-                    this.prereleaseNumber == DefaultPrereleaseNumber;
+                return this.Release.CompareTo(systemVersion) == 0 &&
+                       this.Milestone == DefaultMilestone &&
+                       this.prereleaseNumber == DefaultPrereleaseNumber;
             }
 
             return false;
@@ -599,7 +616,7 @@ namespace TIKSN.Versioning
                 "alpha" => (Milestone.Alpha, prereleaseNumber),
                 "beta" => (Milestone.Beta, prereleaseNumber),
                 "rc" => (Milestone.ReleaseCandidate, prereleaseNumber),
-                _ => throw new FormatException($"Unknown milestone tag '{milestoneTag}'."),
+                _ => throw new FormatException($"Unknown milestone tag '{milestoneTag}'.")
             };
         }
 
@@ -618,7 +635,7 @@ namespace TIKSN.Versioning
                 Milestone.Beta => "beta",
                 Milestone.ReleaseCandidate => "rc",
                 Milestone.Release => null,
-                _ => throw new NotSupportedException("Unsupported milestone name."),
+                _ => throw new NotSupportedException("Unsupported milestone name.")
             };
             if (version.prereleaseNumber == DefaultPrereleaseNumber)
             {
@@ -627,9 +644,6 @@ namespace TIKSN.Versioning
 
             return new[] { milestoneTag, version.prereleaseNumber.ToString() };
         }
-
-        private int CompareReleaseTo(System.Version otherRelease)
-            => new NuGetVersion(this.Release).Version.CompareTo(new NuGetVersion(otherRelease).Version);
 
         private void ValidateMilestoneAndPrerelease()
         {
