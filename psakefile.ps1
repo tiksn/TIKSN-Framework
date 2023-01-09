@@ -124,7 +124,7 @@ Task BuildAndroid -depends EstimateVersions -precondition { $false } {
     Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
 
-Task BuildUWP -depends EstimateVersions {
+Task BuildUWP -depends EstimateVersions -precondition { $false } {
     $project = Resolve-Path -Path 'TIKSN.Framework.UWP/TIKSN.Framework.UWP.csproj'
 
     Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutputPath=$script:anyBuildArtifactsFolder }
