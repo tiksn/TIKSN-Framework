@@ -257,7 +257,7 @@
         <file src="any\TIKSN.Framework.Core.pdb" target="lib\net6.0" />
 
         <!-- Platform: UAP -->
-        <file src="any\TIKSN.Framework.UWP.dll" target="lib\uap10.0" />
-        <file src="any\TIKSN.Framework.UWP.xml" target="lib\uap10.0" />
+        <!-- <file src="any\TIKSN.Framework.UWP.dll" target="lib\uap10.0" />
+        <file src="any\TIKSN.Framework.UWP.xml" target="lib\uap10.0" /> -->
     </files>
 </package>

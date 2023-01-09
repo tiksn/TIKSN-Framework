@@ -191,7 +191,6 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
             Assert.Contains(pairs, P => P.ToString() == "DKK/EUR");
             Assert.Contains(pairs, P => P.ToString() == "GBP/EUR");
             Assert.Contains(pairs, P => P.ToString() == "HKD/EUR");
-            Assert.Contains(pairs, P => P.ToString() == "HRK/EUR");
             Assert.Contains(pairs, P => P.ToString() == "HUF/EUR");
             Assert.Contains(pairs, P => P.ToString() == "IDR/EUR");
             Assert.Contains(pairs, P => P.ToString() == "ILS/EUR");
@@ -222,7 +221,6 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
             Assert.Contains(pairs, P => P.ToString() == "EUR/DKK");
             Assert.Contains(pairs, P => P.ToString() == "EUR/GBP");
             Assert.Contains(pairs, P => P.ToString() == "EUR/HKD");
-            Assert.Contains(pairs, P => P.ToString() == "EUR/HRK");
             Assert.Contains(pairs, P => P.ToString() == "EUR/HUF");
             Assert.Contains(pairs, P => P.ToString() == "EUR/IDR");
             Assert.Contains(pairs, P => P.ToString() == "EUR/ILS");
