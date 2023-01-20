@@ -714,10 +714,6 @@
           <source>$ My Currency (mycurrency.net)</source>
           <target state="new">$ My Currency (mycurrency.net)</target>
         </trans-unit>
-        <trans-unit id="692585112" translate="yes" xml:space="preserve">
-          <source>CurrencyConverterApi.com</source>
-          <target state="new">CurrencyConverterApi.com</target>
-        </trans-unit>
         <trans-unit id="999430243" translate="yes" xml:space="preserve">
           <source>currencylayer.com</source>
           <target state="new">currencylayer.com</target>
