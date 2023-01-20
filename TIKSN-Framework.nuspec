@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>TIKSN-Framework</id>
-        <version>4.3.2-alpha.0</version>
+        <version>4.3.3-alpha.0</version>
         <title>TIKSN Framework</title>
         <authors>TIKSN</authors>
         <owners>TIKSN</owners>
@@ -14,7 +14,7 @@
         <license type="expression">MIT</license>
         <description>This is a .NET Framework enhancement framework. Main features are Versioning, Finance, Currency, Foreign Exchange, Money, Pricing strategy, Telemetry, Composite Weighted Progress, Repository and Unity of Wok pattern implementation with Entity Framework Core, Network Connectivity Service and Triggering, Settings, Windows Registry configuration source, Azure Storage Repository, MongoDB Repository, NoDB Repository, Lingual and Regional Localization, Serialization, Rest Requester, Rest Repository, Dependency Injection, Composition Root Setup base classes.</description>
         <copyright>Copyright © 2022, TIKSN Lab</copyright>
-        <releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/milestone/14</releaseNotes>
+        <releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/milestone/15</releaseNotes>
         <language />
         <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry, Configuration, Azure Storage, MongoDB, NoDB, Rest, Localization, Dependency Injection</tags>
         <dependencies>
@@ -32,12 +32,12 @@
         <file src="any\uk\TIKSN.LanguageLocalization.resources.dll" target="lib\MonoAndroid403\uk" />
         <file src="any\TIKSN.LanguageLocalization.xml" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.LanguageLocalization.pdb" target="lib\MonoAndroid403" />
-        <file src="any\TIKSN.LanguageLocalization.dll" target="lib\net6.0" />
-        <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\net6.0\hy" />
-        <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\net6.0\ru" />
-        <file src="any\uk\TIKSN.LanguageLocalization.resources.dll" target="lib\net6.0\uk" />
-        <file src="any\TIKSN.LanguageLocalization.xml" target="lib\net6.0" />
-        <file src="any\TIKSN.LanguageLocalization.pdb" target="lib\net6.0" />
+        <file src="any\TIKSN.LanguageLocalization.dll" target="lib\net7.0" />
+        <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\net7.0\hy" />
+        <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\net7.0\ru" />
+        <file src="any\uk\TIKSN.LanguageLocalization.resources.dll" target="lib\net7.0\uk" />
+        <file src="any\TIKSN.LanguageLocalization.xml" target="lib\net7.0" />
+        <file src="any\TIKSN.LanguageLocalization.pdb" target="lib\net7.0" />
         <file src="any\TIKSN.LanguageLocalization.dll" target="lib\netstandard2.0" />
         <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\netstandard2.0\hy" />
         <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\netstandard2.0\ru" />
@@ -90,28 +90,28 @@
         <file src="any\uk-UA\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\uk-UA" />
         <file src="any\TIKSN.RegionLocalization.xml" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.RegionLocalization.pdb" target="lib\MonoAndroid403" />
-        <file src="any\TIKSN.RegionLocalization.dll" target="lib\net6.0" />
-        <file src="any\en-001\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-001" />
-        <file src="any\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-150" />
-        <file src="any\en-AU\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-AU" />
-        <file src="any\en-CA\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-CA" />
-        <file src="any\en-CH\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-CH" />
-        <file src="any\en-DE\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-DE" />
-        <file src="any\en-GB\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-GB" />
-        <file src="any\en-GU\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-GU" />
-        <file src="any\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-IE" />
-        <file src="any\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-NZ" />
-        <file src="any\en-PR\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-PR" />
-        <file src="any\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-SG" />
-        <file src="any\en-US\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\en-US" />
-        <file src="any\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\hy-AM" />
-        <file src="any\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\ru-BY" />
-        <file src="any\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\ru-KZ" />
-        <file src="any\ru-RU\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\ru-RU" />
-        <file src="any\ru-UA\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\ru-UA" />
-        <file src="any\uk-UA\TIKSN.RegionLocalization.resources.dll" target="lib\net6.0\uk-UA" />
-        <file src="any\TIKSN.RegionLocalization.xml" target="lib\net6.0" />
-        <file src="any\TIKSN.RegionLocalization.pdb" target="lib\net6.0" />
+        <file src="any\TIKSN.RegionLocalization.dll" target="lib\net7.0" />
+        <file src="any\en-001\TIKSN.RegionLocalization.resources.dll" target="lib\net7.0\en-001" />
+        <file src="any\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\net7.0\en-150" />
+        <file src="any\en-AU\TIKSN.RegionLocalization.resources.dll" target="lib\net7.0\en-AU" />
+        <file src="any\en-CA\TIKSN.RegionLocalization.resources.dll" target="lib\net7.0\en-CA" />
+        <file src="any\en-CH\TIKSN.RegionLocalization.resources.dll" target="lib\net7.0\en-CH" />
+        <file src="any\en-DE\TIKSN.RegionLocalization.resources.dll" target="lib\net7.0\en-DE" />
+        <file src="any\en-GB\TIKSN.RegionLocalization.resources.dll" target="lib\net7.0\en-GB" />
+        <file src="any\en-GU\TIKSN.RegionLocalization.resources.dll" target="lib\net7.0\en-GU" />
+        <file src="any\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\net7.0\en-IE" />
+        <file src="any\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\net7.0\en-NZ" />
+        <file src="any\en-PR\TIKSN.RegionLocalization.resources.dll" target="lib\net7.0\en-PR" />
+        <file src="any\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\net7.0\en-SG" />
+        <file src="any\en-US\TIKSN.RegionLocalization.resources.dll" target="lib\net7.0\en-US" />
+        <file src="any\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\net7.0\hy-AM" />
+        <file src="any\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\net7.0\ru-BY" />
+        <file src="any\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\net7.0\ru-KZ" />
+        <file src="any\ru-RU\TIKSN.RegionLocalization.resources.dll" target="lib\net7.0\ru-RU" />
+        <file src="any\ru-UA\TIKSN.RegionLocalization.resources.dll" target="lib\net7.0\ru-UA" />
+        <file src="any\uk-UA\TIKSN.RegionLocalization.resources.dll" target="lib\net7.0\uk-UA" />
+        <file src="any\TIKSN.RegionLocalization.xml" target="lib\net7.0" />
+        <file src="any\TIKSN.RegionLocalization.pdb" target="lib\net7.0" />
         <file src="any\TIKSN.RegionLocalization.dll" target="lib\netstandard2.0" />
         <file src="any\en-001\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\en-001" />
         <file src="any\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\en-150" />
@@ -227,9 +227,9 @@
         <file src="any\TIKSN.Core.dll" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.Core.xml" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.Core.pdb" target="lib\MonoAndroid403" />
-        <file src="any\TIKSN.Core.dll" target="lib\net6.0" />
-        <file src="any\TIKSN.Core.xml" target="lib\net6.0" />
-        <file src="any\TIKSN.Core.pdb" target="lib\net6.0" />
+        <file src="any\TIKSN.Core.dll" target="lib\net7.0" />
+        <file src="any\TIKSN.Core.xml" target="lib\net7.0" />
+        <file src="any\TIKSN.Core.pdb" target="lib\net7.0" />
         <file src="any\TIKSN.Core.dll" target="lib\netstandard2.0" />
         <file src="any\TIKSN.Core.xml" target="lib\netstandard2.0" />
         <file src="any\TIKSN.Core.pdb" target="lib\netstandard2.0" />
@@ -252,12 +252,12 @@
         <file src="any\TIKSN.Framework.Android.pdb" target="lib\MonoAndroid403" /> -->
 
         <!-- Platform: .NET 5 -->
-        <file src="any\TIKSN.Framework.Core.dll" target="lib\net6.0" />
-        <file src="any\TIKSN.Framework.Core.xml" target="lib\net6.0" />
-        <file src="any\TIKSN.Framework.Core.pdb" target="lib\net6.0" />
+        <file src="any\TIKSN.Framework.Core.dll" target="lib\net7.0" />
+        <file src="any\TIKSN.Framework.Core.xml" target="lib\net7.0" />
+        <file src="any\TIKSN.Framework.Core.pdb" target="lib\net7.0" />
 
         <!-- Platform: UAP -->
-        <file src="any\TIKSN.Framework.UWP.dll" target="lib\uap10.0" />
-        <file src="any\TIKSN.Framework.UWP.xml" target="lib\uap10.0" />
+        <!-- <file src="any\TIKSN.Framework.UWP.dll" target="lib\uap10.0" />
+        <file src="any\TIKSN.Framework.UWP.xml" target="lib\uap10.0" /> -->
     </files>
 </package>

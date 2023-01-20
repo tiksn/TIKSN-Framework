@@ -57,7 +57,7 @@ Task Pack -depends Build, Test {
 
     $dependencyGroups = @(
         @{Packages = $packages.Standdard; TargetFramework = 'netstandard2.0' },
-        @{Packages = $packages.Core; TargetFramework = 'net6.0' },
+        @{Packages = $packages.Core; TargetFramework = 'net7.0' },
         @{Packages = $packages.UWP; TargetFramework = 'uap10.0.18362' },
         @{Packages = $packages.Android; TargetFramework = 'MonoAndroid8.1' }
     )
@@ -124,7 +124,7 @@ Task BuildAndroid -depends EstimateVersions -precondition { $false } {
     Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
 
-Task BuildUWP -depends EstimateVersions {
+Task BuildUWP -depends EstimateVersions -precondition { $false } {
     $project = Resolve-Path -Path 'TIKSN.Framework.UWP/TIKSN.Framework.UWP.csproj'
 
     Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutputPath=$script:anyBuildArtifactsFolder }
@@ -156,19 +156,114 @@ Task EstimateVersions -depends Restore {
 }
 
 Task DownloadCurrencyCodes -depends Clean {
-    Invoke-WebRequest -Uri 'https://www.currency-iso.org/dam/downloads/lists/list_one.xml' -OutFile 'TIKSN.Core/Finance/Resources/TableA1.xml'
-    Invoke-WebRequest -Uri 'https://www.currency-iso.org/dam/downloads/lists/list_three.xml' -OutFile 'TIKSN.Core/Finance/Resources/TableA3.xml'
+    Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml' -OutFile 'TIKSN.Core/Finance/Resources/TableA1.xml'
+    Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-three.xml' -OutFile 'TIKSN.Core/Finance/Resources/TableA3.xml'
 }
 
-Task Format -depends Restore {
+Task Format -depends Restore, FormatWhitespace, FormatStyle, FormatAnalyzers {
     $solution = Resolve-Path -Path 'TIKSN Framework.sln'
-    Exec { dotnet format --fix-whitespace --fix-style info --fix-analyzers info $solution }
+    $solution = Resolve-Path -Path 'TIKSN.Core\TIKSN.Core.csproj'
+    Exec { dotnet format analyzers --severity info --verbosity diagnostic $solution }
+}
+
+Task FormatAnalyzers -depends Restore, FormatAnalyzersLanguageLocalization, FormatAnalyzersRegionLocalization, FormatAnalyzersCommonCore, FormatAnalyzersNetCore, FormatAnalyzersAndroid, FormatAnalyzersUWP, FormatAnalyzersSolution {
+}
+
+Task FormatAnalyzersSolution -depends Restore -precondition { $false } {
+    $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+
+    Exec { dotnet format analyzers --severity info --verbosity diagnostic $solution }
+}
+
+Task FormatAnalyzersLanguageLocalization -depends Restore -precondition { $false } {
+    $project = Resolve-Path -Path 'TIKSN.LanguageLocalization/TIKSN.LanguageLocalization.csproj'
+
+    Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
+}
+
+Task FormatAnalyzersRegionLocalization -depends Restore -precondition { $false } {
+    $project = Resolve-Path -Path 'TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj'
+
+    Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
+}
+
+Task FormatAnalyzersCommonCore -depends Restore {
+    $project = Resolve-Path -Path 'TIKSN.Core/TIKSN.Core.csproj'
+
+    Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
+}
+
+Task FormatAnalyzersNetCore -depends Restore -precondition { $false } {
+    $project = Resolve-Path -Path 'TIKSN.Framework.Core/TIKSN.Framework.Core.csproj'
+
+    Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
+}
+
+Task FormatAnalyzersAndroid -depends Restore -precondition { $false } {
+    $project = Resolve-Path -Path 'TIKSN.Framework.Android/TIKSN.Framework.Android.csproj'
+
+    Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
+}
+
+Task FormatAnalyzersUWP -depends Restore -precondition { $false } {
+    $project = Resolve-Path -Path 'TIKSN.Framework.UWP/TIKSN.Framework.UWP.csproj'
+
+    Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
+}
+
+Task FormatStyle -depends Restore, FormatStyleLanguageLocalization, FormatStyleRegionLocalization, FormatStyleCommonCore, FormatStyleNetCore, FormatStyleAndroid, FormatStyleUWP, FormatStyleSolution {
+}
+
+Task FormatStyleSolution -depends Restore -precondition { $false } {
+    $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+
+    Exec { dotnet format style --severity info --verbosity diagnostic $solution }
+}
+
+Task FormatStyleLanguageLocalization -depends Restore -precondition { $false } {
+    $project = Resolve-Path -Path 'TIKSN.LanguageLocalization/TIKSN.LanguageLocalization.csproj'
+
+    Exec { dotnet format style --severity info --verbosity diagnostic $project }
+}
+
+Task FormatStyleRegionLocalization -depends Restore -precondition { $false } {
+    $project = Resolve-Path -Path 'TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj'
+
+    Exec { dotnet format style --severity info --verbosity diagnostic $project }
+}
+
+Task FormatStyleCommonCore -depends Restore {
+    $project = Resolve-Path -Path 'TIKSN.Core/TIKSN.Core.csproj'
+
+    Exec { dotnet format style --severity info --verbosity diagnostic $project }
+}
+
+Task FormatStyleNetCore -depends Restore -precondition { $false } {
+    $project = Resolve-Path -Path 'TIKSN.Framework.Core/TIKSN.Framework.Core.csproj'
+
+    Exec { dotnet format style --severity info --verbosity diagnostic $project }
+}
+
+Task FormatStyleAndroid -depends Restore -precondition { $false } {
+    $project = Resolve-Path -Path 'TIKSN.Framework.Android/TIKSN.Framework.Android.csproj'
+
+    Exec { dotnet format style --severity info --verbosity diagnostic $project }
+}
+
+Task FormatStyleUWP -depends Restore -precondition { $false } {
+    $project = Resolve-Path -Path 'TIKSN.Framework.UWP/TIKSN.Framework.UWP.csproj'
+
+    Exec { dotnet format style --severity info --verbosity diagnostic $project }
+}
+
+Task FormatWhitespace -depends Restore {
+    $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+    Exec { dotnet format whitespace --verbosity diagnostic $solution }
 }
 
 Task Restore -depends Clean {
     $solution = Resolve-Path -Path 'TIKSN Framework.sln'
     Exec { dotnet restore $solution }
-    Exec { nuget restore $solution }
 }
 
 Task Clean -depends Init {

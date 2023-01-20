@@ -8,14 +8,14 @@ using TIKSN.Data.EntityFrameworkCore;
 
 namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
 {
-    public class ExchangeRateRepository : EntityQueryRepository<ExchangeRatesContext, ExchangeRateEntity, Guid>,
-        IExchangeRateRepository
+    public class ExchangeRateDataRepository : EntityQueryRepository<ExchangeRatesContext, ExchangeRateDataEntity, Guid>,
+        IExchangeRateDataRepository
     {
-        public ExchangeRateRepository(ExchangeRatesContext dbContext) : base(dbContext)
+        public ExchangeRateDataRepository(ExchangeRatesContext dbContext) : base(dbContext)
         {
         }
 
-        public async Task<IReadOnlyCollection<ExchangeRateEntity>> SearchAsync(
+        public async Task<IReadOnlyList<ExchangeRateDataEntity>> SearchAsync(
             Guid foreignExchangeID,
             string baseCurrencyCode,
             string counterCurrencyCode,

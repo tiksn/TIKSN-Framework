@@ -8,11 +8,9 @@ services:
             - 8080:8080
 
     mongo1:
-        image: mongo:latest
+        image: mongo:5
         container_name: mongo1
         command: ["--replSet", "my-replica-set", "--bind_ip_all", "--port", "27017"]
-        volumes:
-        - mongodb_data_1:/data/db
         ports:
         - 27017:27017
         healthcheck:
@@ -21,24 +19,15 @@ services:
             start_period: 30s
 
     mongo2:
-        image: mongo:latest
+        image: mongo:5
         container_name: mongo2
         command: ["--replSet", "my-replica-set", "--bind_ip_all", "--port", "27018"]
-        volumes:
-        - mongodb_data_2:/data/db
         ports:
         - 27018:27018
 
     mongo3:
-        image: mongo:latest
+        image: mongo:5
         container_name: mongo3
         command: ["--replSet", "my-replica-set", "--bind_ip_all", "--port", "27019"]
-        volumes:
-        - mongodb_data_3:/data/db
         ports:
         - 27019:27019
-
-volumes:
-    mongodb_data_1:
-    mongodb_data_2:
-    mongodb_data_3:

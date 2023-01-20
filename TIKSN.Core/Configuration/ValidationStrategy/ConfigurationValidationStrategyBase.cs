@@ -14,10 +14,7 @@ namespace TIKSN.Configuration.ValidationStrategy
         {
             var validator = this.GetConfigurationValidator();
 
-            if (validator != null)
-            {
-                validator.ValidateConfiguration(instance);
-            }
+            validator?.ValidateConfiguration(instance);
         }
 
         protected abstract IPartialConfigurationValidator<T> GetConfigurationValidator();

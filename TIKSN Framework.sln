@@ -1,17 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29230.47
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2CE66F97-5B89-401D-AEE5-BF2228760097}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{38C873E2-88C6-435A-89B3-A3EBD5D4D171}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Core", "TIKSN.Core\TIKSN.Core.csproj", "{D1ECB169-BB57-4751-AECA-415E078E5996}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Framework.UWP", "TIKSN.Framework.UWP\TIKSN.Framework.UWP.csproj", "{3D7B87C7-B00C-4691-9BBD-F5836011345A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestRunner.UWP", "UnitTestRunner.UWP\UnitTestRunner.UWP.csproj", "{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Framework.Core", "TIKSN.Framework.Core\TIKSN.Framework.Core.csproj", "{ED598E91-6D8E-4132-A73D-A1A9A402F395}"
 EndProject
@@ -34,13 +30,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Framework.IntegrationTests", "TIKSN.Framework.IntegrationTests\TIKSN.Framework.IntegrationTests.csproj", "{C21074B3-47E9-4D3D-95FB-F7041143B218}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.projitems*{04326875-e3e6-4f1f-881d-4046d83913fc}*SharedItemsImports = 13
-		TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.projitems*{31dbb0ce-8360-41fd-a874-f4c6d907c5ee}*SharedItemsImports = 5
-		TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems*{3d7b87c7-b00c-4691-9bbd-f5836011345a}*SharedItemsImports = 5
-		TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems*{7a9b69cb-8abf-4474-a85a-11d5d9f3d005}*SharedItemsImports = 13
-		TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.projitems*{d906abe6-13f2-4ab0-bde2-e63f77cf54e9}*SharedItemsImports = 5
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
@@ -68,38 +57,6 @@ Global
 		{D1ECB169-BB57-4751-AECA-415E078E5996}.Release|x64.Build.0 = Release|Any CPU
 		{D1ECB169-BB57-4751-AECA-415E078E5996}.Release|x86.ActiveCfg = Release|Any CPU
 		{D1ECB169-BB57-4751-AECA-415E078E5996}.Release|x86.Build.0 = Release|Any CPU
-		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Debug|ARM.Build.0 = Debug|Any CPU
-		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Debug|x64.Build.0 = Debug|Any CPU
-		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Debug|x86.Build.0 = Debug|Any CPU
-		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Release|ARM.ActiveCfg = Release|Any CPU
-		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Release|ARM.Build.0 = Release|Any CPU
-		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Release|x64.ActiveCfg = Release|Any CPU
-		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Release|x64.Build.0 = Release|Any CPU
-		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Release|x86.ActiveCfg = Release|Any CPU
-		{3D7B87C7-B00C-4691-9BBD-F5836011345A}.Release|x86.Build.0 = Release|Any CPU
-		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Debug|ARM.Build.0 = Debug|Any CPU
-		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Debug|x64.Build.0 = Debug|Any CPU
-		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Debug|x86.Build.0 = Debug|Any CPU
-		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Release|ARM.ActiveCfg = Release|Any CPU
-		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Release|ARM.Build.0 = Release|Any CPU
-		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Release|x64.ActiveCfg = Release|Any CPU
-		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Release|x64.Build.0 = Release|Any CPU
-		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Release|x86.ActiveCfg = Release|Any CPU
-		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9}.Release|x86.Build.0 = Release|Any CPU
 		{ED598E91-6D8E-4132-A73D-A1A9A402F395}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ED598E91-6D8E-4132-A73D-A1A9A402F395}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED598E91-6D8E-4132-A73D-A1A9A402F395}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -186,8 +143,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D1ECB169-BB57-4751-AECA-415E078E5996} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
-		{3D7B87C7-B00C-4691-9BBD-F5836011345A} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
-		{D906ABE6-13F2-4AB0-BDE2-E63F77CF54E9} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
 		{ED598E91-6D8E-4132-A73D-A1A9A402F395} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{7A9B69CB-8ABF-4474-A85A-11D5D9F3D005} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{974DB7C5-CE2D-4232-B781-CFCBB1F7784F} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
@@ -198,5 +153,10 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3E79495C-F7F4-477F-BDCB-6260ECFD8B4E}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.projitems*{04326875-e3e6-4f1f-881d-4046d83913fc}*SharedItemsImports = 13
+		TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.projitems*{31dbb0ce-8360-41fd-a874-f4c6d907c5ee}*SharedItemsImports = 5
+		TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems*{7a9b69cb-8abf-4474-a85a-11d5d9f3d005}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

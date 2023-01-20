@@ -841,5 +841,57 @@ namespace TIKSN.Versioning.Tests
             _ = (version1 < version2).Should().Be(nv1 < nv2);
             _ = (version1 <= version2).Should().Be(nv1 <= nv2);
         }
+
+        [Fact]
+        public void GivenVersion_WhenHashCodeRequested_ThenItShouldBeValid()
+        {
+            // Arrange
+            var nv1 = new NuGetVersion("1.2.3");
+            var nv2 = new NuGetVersion("4.5.6-beta.12");
+            var nv3 = new NuGetVersion("7.8-rc");
+            var nv4 = new NuGetVersion("9.10-alpha.2");
+            var version1 = (Version)nv1;
+            var version2 = (Version)nv2;
+            var version3 = (Version)nv3;
+            var version4 = (Version)nv4;
+
+            // Act
+            var hash1 = version1.GetHashCode();
+            var hash2 = version2.GetHashCode();
+            var hash3 = version3.GetHashCode();
+            var hash4 = version4.GetHashCode();
+
+            // Assert
+            hash1.Should().NotBe(hash2);
+            hash2.Should().NotBe(hash3);
+            hash3.Should().NotBe(hash4);
+            hash4.Should().NotBe(hash1);
+        }
+
+        [Fact]
+        public void GivenVersions_WhenEqualityChecked_ThenItShouldBeCorrect()
+        {
+            // Arrange
+            var nv1 = new NuGetVersion("1.2.3");
+            var nv2 = new NuGetVersion("4.5.6-beta.12");
+            var nv3 = new NuGetVersion("7.8-rc");
+            var nv4 = new NuGetVersion("7.8-rc");
+            var version1 = (Version)nv1;
+            var version2 = (Version)nv2;
+            var version3 = (Version)nv3;
+            var version4 = (Version)nv4;
+            var version5 = new System.Version(1, 2, 3);
+            object version6 = new Version(1, 2, 3);
+
+            // Assert
+            version1.Equals(version1).Should().BeTrue();
+            version1.Equals(version2).Should().BeFalse();
+            version2.Equals(version3).Should().BeFalse();
+            version3.Equals(version4).Should().BeTrue();
+            version1.Equals(version5).Should().BeTrue();
+            version1.Equals(version6).Should().BeTrue();
+            version1.Equals("Welcome").Should().BeFalse();
+            version1.Equals(null).Should().BeFalse();
+        }
     }
 }

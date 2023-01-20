@@ -56,7 +56,7 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
 
             var currencies = currencyList.Results.Keys
                 .Where(item => !string.Equals(item, "BTC", StringComparison.OrdinalIgnoreCase))
-                .Select(item => this._currencyFactory.Create(item))
+                .Select(this._currencyFactory.Create)
                 .Distinct()
                 .ToArray();
 

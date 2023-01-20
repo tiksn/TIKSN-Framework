@@ -1,7 +1,5 @@
 using System;
 using TIKSN.Data;
-using LiteBsonIdAttribute = LiteDB.BsonIdAttribute;
-using MongoBsonIdAttribute = MongoDB.Bson.Serialization.Attributes.BsonIdAttribute;
 
 namespace TIKSN.Finance.ForeignExchange.Data
 {
@@ -13,12 +11,8 @@ namespace TIKSN.Finance.ForeignExchange.Data
 
         public string CounterCurrencyCode { get; set; }
 
-        public virtual ForeignExchangeEntity ForeignExchange { get; set; }
-
         public Guid? ForeignExchangeID { get; set; }
 
-        [MongoBsonId]
-        [LiteBsonId]
         public Guid ID { get; set; }
 
         public decimal Rate { get; set; }

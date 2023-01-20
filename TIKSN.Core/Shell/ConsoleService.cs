@@ -95,13 +95,13 @@ namespace TIKSN.Shell
 
         public void WriteError(string errorMessage) => ConsoleWriteLine(errorMessage, ConsoleColor.Red);
 
-        public void WriteObject<T>(T tableValue)
+        public void WriteObject<T>(T value)
         {
-            var tableValues = new List<T> { tableValue };
+            var tableValues = new List<T> { value };
             WriteObjects(tableValues, false);
         }
 
-        public void WriteObjects<T>(IEnumerable<T> tableValues) => WriteObjects(tableValues, true);
+        public void WriteObjects<T>(IEnumerable<T> values) => WriteObjects(values, true);
 
         private static void ConsoleWrite(string message) => Console.Write(message);
 
