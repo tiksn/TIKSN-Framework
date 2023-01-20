@@ -57,7 +57,7 @@ Task Pack -depends Build, Test {
 
     $dependencyGroups = @(
         @{Packages = $packages.Standdard; TargetFramework = 'netstandard2.0' },
-        @{Packages = $packages.Core; TargetFramework = 'net6.0' },
+        @{Packages = $packages.Core; TargetFramework = 'net7.0' },
         @{Packages = $packages.UWP; TargetFramework = 'uap10.0.18362' },
         @{Packages = $packages.Android; TargetFramework = 'MonoAndroid8.1' }
     )
