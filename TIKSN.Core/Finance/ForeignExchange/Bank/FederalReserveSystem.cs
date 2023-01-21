@@ -26,8 +26,11 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
-            DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<Money> ConvertCurrencyAsync(
+            Money baseMoney,
+            CurrencyInfo counterCurrency,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
             var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
@@ -36,7 +39,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return new Money(counterCurrency, rate * baseMoney.Amount);
         }
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             ValidateDate(asOn, this.timeProvider);
@@ -45,16 +49,18 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
             var rates = await this.GetRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
 
-            foreach (var SomeCurrency in rates.Keys)
+            foreach (var someCurrency in rates.Keys)
             {
-                result.Add(new CurrencyPair(UnitedStatesDollar, SomeCurrency));
-                result.Add(new CurrencyPair(SomeCurrency, UnitedStatesDollar));
+                result.Add(new CurrencyPair(UnitedStatesDollar, someCurrency));
+                result.Add(new CurrencyPair(someCurrency, UnitedStatesDollar));
             }
 
             return result;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+        public async Task<decimal> GetExchangeRateAsync(
+            CurrencyPair pair,
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             ValidateDate(asOn, this.timeProvider);
@@ -63,23 +69,24 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
             if (pair.BaseCurrency == UnitedStatesDollar)
             {
-                if (rates.ContainsKey(pair.CounterCurrency))
+                if (rates.TryGetValue(pair.CounterCurrency, out var rate))
                 {
-                    return rates[pair.CounterCurrency];
+                    return rate;
                 }
             }
             else if (pair.CounterCurrency == UnitedStatesDollar)
             {
-                if (rates.ContainsKey(pair.BaseCurrency))
+                if (rates.TryGetValue(pair.BaseCurrency, out var counterRate))
                 {
-                    return decimal.One / rates[pair.BaseCurrency];
+                    return decimal.One / counterRate;
                 }
             }
 
             throw new ArgumentException($"Currency pair '{pair}' not supported.");
         }
 
-        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn,
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             var DataUrl = string.Format(DataUrlFormat,
@@ -93,19 +100,19 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
             var result = new List<ExchangeRate>();
 
-            foreach (var SeriesElement in xdoc
+            foreach (var seriesElement in xdoc
                 .Element("{http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message}MessageGroup")
                 .Element("{http://www.federalreserve.gov/structure/compact/common}DataSet")
                 .Elements("{http://www.federalreserve.gov/structure/compact/H10_H10}Series"))
             {
-                var CurrencyCode = SeriesElement.Attribute("CURRENCY").Value;
-                var FX = SeriesElement.Attribute("FX").Value;
+                var currencyCode = seriesElement.Attribute("CURRENCY").Value;
+                var fx = seriesElement.Attribute("FX").Value;
 
-                if (CurrencyCode != "NA")
+                if (currencyCode != "NA")
                 {
                     var rates = new Dictionary<DateTime, decimal>();
 
-                    foreach (var ObsElement in SeriesElement.Elements(
+                    foreach (var ObsElement in seriesElement.Elements(
                         "{http://www.federalreserve.gov/structure/compact/common}Obs"))
                     {
                         var ObsValue = decimal.Parse(ObsElement.Attribute("OBS_VALUE").Value);
@@ -113,7 +120,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
                         decimal obsValueRate;
 
-                        if (string.Equals(SeriesElement.Attribute("UNIT").Value, "Currency:_Per_USD",
+                        if (string.Equals(seriesElement.Attribute("UNIT").Value, "Currency:_Per_USD",
                             StringComparison.OrdinalIgnoreCase))
                         {
                             obsValueRate = ObsValue;
@@ -129,13 +136,13 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                     var date = rates.Keys.Max();
                     var rate = rates[date];
 
-                    if (FX == "ZAL")
+                    if (fx == "ZAL")
                     {
                         result.Add(new ExchangeRate(
-                            new CurrencyPair(UnitedStatesDollar, this.currencyFactory.Create(CurrencyCode)), date,
+                            new CurrencyPair(UnitedStatesDollar, this.currencyFactory.Create(currencyCode)), date,
                             rate));
                     }
-                    else if (FX == "VEB")
+                    else if (fx == "VEB")
                     {
                         result.Add(new ExchangeRate(
                             new CurrencyPair(UnitedStatesDollar, this.currencyFactory.Create("VEF")), date, rate));
@@ -143,7 +150,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                     else
                     {
                         result.Add(new ExchangeRate(
-                            new CurrencyPair(UnitedStatesDollar, this.currencyFactory.Create(FX)), date, rate));
+                            new CurrencyPair(UnitedStatesDollar, this.currencyFactory.Create(fx)), date, rate));
                     }
                 }
             }

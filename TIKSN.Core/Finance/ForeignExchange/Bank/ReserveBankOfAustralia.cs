@@ -42,8 +42,11 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             this._timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
-            DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<Money> ConvertCurrencyAsync(
+            Money baseMoney,
+            CurrencyInfo counterCurrency,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
             var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
@@ -52,7 +55,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return new Money(counterCurrency, rate * baseMoney.Amount);
         }
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             await this.FetchOnDemandAsync(cancellationToken).ConfigureAwait(false);
@@ -61,13 +65,15 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
             var pairs = new List<CurrencyPair>();
 
-            pairs.AddRange(this.rates.Keys.Select(R => new CurrencyPair(AustralianDollar, R)));
-            pairs.AddRange(this.rates.Keys.Select(R => new CurrencyPair(R, AustralianDollar)));
+            pairs.AddRange(this.rates.Keys.Select(r => new CurrencyPair(AustralianDollar, r)));
+            pairs.AddRange(this.rates.Keys.Select(r => new CurrencyPair(r, AustralianDollar)));
 
             return pairs;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+        public async Task<decimal> GetExchangeRateAsync(
+            CurrencyPair pair,
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             await this.FetchOnDemandAsync(cancellationToken).ConfigureAwait(false);
@@ -76,23 +82,24 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
             if (pair.BaseCurrency == AustralianDollar)
             {
-                if (this.rates.ContainsKey(pair.CounterCurrency))
+                if (this.rates.TryGetValue(pair.CounterCurrency, out var rate))
                 {
-                    return this.rates[pair.CounterCurrency];
+                    return rate;
                 }
             }
             else if (pair.CounterCurrency == AustralianDollar)
             {
-                if (this.rates.ContainsKey(pair.BaseCurrency))
+                if (this.rates.TryGetValue(pair.BaseCurrency, out var counterRate))
                 {
-                    return decimal.One / this.rates[pair.BaseCurrency];
+                    return decimal.One / counterRate;
                 }
             }
 
             throw new ArgumentException("Currency pair not supported.");
         }
 
-        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn,
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             var result = new List<ExchangeRate>();
@@ -128,8 +135,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
                         var counterCurrencyCode = targetCurrencyElement.Value;
 
-                        var exchangeRate = decimal.Parse(observationValueElement.Value);
-                        var period = DateTimeOffset.Parse(periodElement.Value);
+                        var exchangeRate = decimal.Parse(observationValueElement.Value, CultureInfo.InvariantCulture);
+                        var period = DateTimeOffset.Parse(periodElement.Value, CultureInfo.InvariantCulture);
 
                         var foreignCurrency = this._currencyFactory.Create(counterCurrencyCode);
 

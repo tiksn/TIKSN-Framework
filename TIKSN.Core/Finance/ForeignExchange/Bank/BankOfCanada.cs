@@ -130,14 +130,6 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         private static DateTimeOffset ConvertToBankTimeZone(DateTimeOffset date) =>
             TimeZoneInfo.ConvertTime(date, bankTimeZone);
 
-        private async Task FetchOnDemandAsync(CancellationToken cancellationToken)
-        {
-            if (this._timeProvider.GetCurrentTime() - this.lastFetchDate > TimeSpan.FromDays(1d))
-            {
-                _ = await this.GetExchangeRatesAsync(this._timeProvider.GetCurrentTime(), cancellationToken).ConfigureAwait(false);
-            }
-        }
-
         private static async Task<List<Tuple<string, DateTime, decimal>>> FetchRawDataAsync(string restUrl)
         {
             using var httpClient = new HttpClient();
@@ -179,67 +171,76 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return result;
         }
 
-        private Dictionary<CurrencyInfo, decimal> GetRatesByDate(DateTimeOffset asOn)
-        {
-            _ = ConvertToBankTimeZone(this._timeProvider.GetCurrentTime());
-            var date = GetRatesDate(asOn);
-
-            if (this.rates.ContainsKey(date))
-            {
-                return this.rates[date];
-            }
-
-            if (date.DayOfWeek == DayOfWeek.Saturday && this.rates.ContainsKey(date.AddDays(-1).Date))
-            {
-                return this.rates[date.AddDays(-1).Date];
-            }
-
-            if (date.DayOfWeek == DayOfWeek.Sunday && this.rates.ContainsKey(date.AddDays(-2).Date))
-            {
-                return this.rates[date.AddDays(-2).Date];
-            }
-
-            if (date.DayOfWeek == DayOfWeek.Monday && this.rates.ContainsKey(date.AddDays(-3).Date))
-            {
-                return this.rates[date.AddDays(-3).Date];
-            }
-
-            if (this.rates.ContainsKey(date.AddDays(-1).Date))
-            {
-                return this.rates[date.AddDays(-1).Date];
-            }
-
-            return this.rates[date]; // Exception will be thrown
-        }
-
         private static DateTime GetRatesDate(DateTimeOffset asOn)
         {
             var date = ConvertToBankTimeZone(asOn).Date;
 
             if (date.DayOfWeek == DayOfWeek.Saturday)
             {
-                date = date.AddDays(-1);
+                return date.AddDays(-1);
             }
-            else if (date.DayOfWeek == DayOfWeek.Sunday)
+
+            if (date.DayOfWeek == DayOfWeek.Sunday)
             {
-                date = date.AddDays(-2);
+                return date.AddDays(-2);
             }
 
             return date;
         }
 
-        private bool IsHomeCurrencyPair(CurrencyPair Pair, DateTimeOffset asOn)
+        private async Task FetchOnDemandAsync(CancellationToken cancellationToken)
         {
-            if (Pair.BaseCurrency == CanadianDollar)
+            if (this._timeProvider.GetCurrentTime() - this.lastFetchDate > TimeSpan.FromDays(1d))
             {
-                if (this.GetRatesByDate(asOn).Any(R => R.Key == Pair.CounterCurrency))
+                _ = await this.GetExchangeRatesAsync(this._timeProvider.GetCurrentTime(), cancellationToken).ConfigureAwait(false);
+            }
+        }
+
+        private Dictionary<CurrencyInfo, decimal> GetRatesByDate(DateTimeOffset asOn)
+        {
+            _ = ConvertToBankTimeZone(this._timeProvider.GetCurrentTime());
+            var date = GetRatesDate(asOn);
+
+            if (this.rates.TryGetValue(date, out var valueAtDate))
+            {
+                return valueAtDate;
+            }
+
+            if (date.DayOfWeek == DayOfWeek.Saturday && this.rates.TryGetValue(date.AddDays(-1).Date, out var valueAtYesterday))
+            {
+                return valueAtYesterday;
+            }
+
+            if (date.DayOfWeek == DayOfWeek.Sunday && this.rates.TryGetValue(date.AddDays(-2).Date, out var valueAtTwoDaysAgo))
+            {
+                return valueAtTwoDaysAgo;
+            }
+
+            if (date.DayOfWeek == DayOfWeek.Monday && this.rates.TryGetValue(date.AddDays(-3).Date, out var valueAtThreeDaysAgo))
+            {
+                return valueAtThreeDaysAgo;
+            }
+
+            if (this.rates.TryGetValue(date.AddDays(-1).Date, out var otherwiseValueAtYesterday))
+            {
+                return otherwiseValueAtYesterday;
+            }
+
+            return this.rates[date]; // Exception will be thrown
+        }
+
+        private bool IsHomeCurrencyPair(CurrencyPair pair, DateTimeOffset asOn)
+        {
+            if (pair.BaseCurrency == CanadianDollar)
+            {
+                if (this.GetRatesByDate(asOn).Any(r => r.Key == pair.CounterCurrency))
                 {
                     return true;
                 }
             }
-            else if (Pair.CounterCurrency == CanadianDollar)
+            else if (pair.CounterCurrency == CanadianDollar)
             {
-                if (this.GetRatesByDate(asOn).Any(R => R.Key == Pair.BaseCurrency))
+                if (this.GetRatesByDate(asOn).Any(r => r.Key == pair.BaseCurrency))
                 {
                     return false;
                 }

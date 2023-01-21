@@ -100,17 +100,17 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                 {
                     this.rates.Clear();
 
-                    foreach (var ValuteElement in xdoc.Element("ValCurs").Elements("Valute"))
+                    foreach (var valuteElement in xdoc.Element("ValCurs").Elements("Valute"))
                     {
-                        var charCodeElement = ValuteElement.Element("CharCode");
+                        var charCodeElement = valuteElement.Element("CharCode");
 
                         if (charCodeElement == null)
                         {
                             continue;
                         }
 
-                        var nominalElement = ValuteElement.Element("Nominal");
-                        var valueElement = ValuteElement.Element("Value");
+                        var nominalElement = valuteElement.Element("Nominal");
+                        var valueElement = valuteElement.Element("Value");
 
                         var code = charCodeElement.Value;
 
@@ -163,20 +163,20 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             }
         }
 
-        private decimal GetRate(CurrencyInfo BaseCurrency, CurrencyInfo CounterCurrency)
+        private decimal GetRate(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency)
         {
-            if (BaseCurrency == RussianRuble)
+            if (baseCurrency == RussianRuble)
             {
-                if (this.rates.ContainsKey(CounterCurrency))
+                if (this.rates.TryGetValue(counterCurrency, out var counterRate))
                 {
-                    return decimal.One / this.rates[CounterCurrency];
+                    return decimal.One / counterRate;
                 }
             }
-            else if (CounterCurrency == RussianRuble)
+            else if (counterCurrency == RussianRuble)
             {
-                if (this.rates.ContainsKey(BaseCurrency))
+                if (this.rates.TryGetValue(baseCurrency, out var rate))
                 {
-                    return this.rates[BaseCurrency];
+                    return rate;
                 }
             }
 
