@@ -31,8 +31,11 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             this._timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
-            DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<Money> ConvertCurrencyAsync(
+            Money baseMoney,
+            CurrencyInfo counterCurrency,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
             var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
@@ -41,7 +44,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             await this.FetchOnDemandAsync(asOn, cancellationToken).ConfigureAwait(false);
@@ -57,30 +61,33 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return rates;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+        public async Task<decimal> GetExchangeRateAsync(
+            CurrencyPair pair,
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             await this.FetchOnDemandAsync(asOn, cancellationToken).ConfigureAwait(false);
 
             if (pair.CounterCurrency == AMD)
             {
-                if (this.oneWayRates.ContainsKey(pair.BaseCurrency))
+                if (this.oneWayRates.TryGetValue(pair.BaseCurrency, out var rate))
                 {
-                    return this.oneWayRates[pair.BaseCurrency];
+                    return rate;
                 }
             }
             else
             {
-                if (this.oneWayRates.ContainsKey(pair.CounterCurrency))
+                if (this.oneWayRates.TryGetValue(pair.CounterCurrency, out var counterRate))
                 {
-                    return decimal.One / this.oneWayRates[pair.CounterCurrency];
+                    return decimal.One / counterRate;
                 }
             }
 
             throw new ArgumentException("Currency pair was not found.");
         }
 
-        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn,
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             this.ValodateDate(asOn);
@@ -102,7 +109,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
                         var titleParts = title.Value.Split('-');
 
-                        var currencyCode = titleParts[0].Trim().ToUpper();
+                        var currencyCode = titleParts[0].Trim().ToUpper(CultureInfo.InvariantCulture);
                         var baseUnit = decimal.Parse(titleParts[1], CultureInfo.InvariantCulture);
                         var counterUnit = decimal.Parse(titleParts[2], CultureInfo.InvariantCulture);
 
