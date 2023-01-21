@@ -34,8 +34,11 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             this._timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
-            DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<Money> ConvertCurrencyAsync(
+            Money baseMoney,
+            CurrencyInfo counterCurrency,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
             await this.FetchOnDemandAsync(cancellationToken).ConfigureAwait(false);
 
@@ -44,7 +47,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             await this.FetchOnDemandAsync(cancellationToken).ConfigureAwait(false);
@@ -62,7 +66,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return pairs;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+        public async Task<decimal> GetExchangeRateAsync(
+            CurrencyPair pair,
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             await this.FetchOnDemandAsync(cancellationToken).ConfigureAwait(false);
@@ -70,7 +76,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return this.GetRate(pair.BaseCurrency, pair.CounterCurrency, asOn);
         }
 
-        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn,
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             var result = new List<ExchangeRate>();
@@ -121,7 +128,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             {
                 _ = await this.GetExchangeRatesAsync(this._timeProvider.GetCurrentTime(), cancellationToken).ConfigureAwait(false);
             }
-            else if (this.foreignRates.Any(R => R.Value.Item1.Date == this._timeProvider.GetCurrentTime().Date))
+            else if (this.foreignRates.Any(r => r.Value.Item1.Date == this._timeProvider.GetCurrentTime().Date))
             {
                 _ = await this.GetExchangeRatesAsync(this._timeProvider.GetCurrentTime(), cancellationToken).ConfigureAwait(false);
             }
@@ -134,8 +141,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                 throw new ArgumentException("Exchange rate forecasting not supported.");
             }
 
-            var maxDate = this.foreignRates.Max(R => R.Value.Item1);
-            var minDate = this.foreignRates.Min(R => R.Value.Item1);
+            var maxDate = this.foreignRates.Max(r => r.Value.Item1);
+            var minDate = this.foreignRates.Min(r => r.Value.Item1);
 
             if (asOn < minDate)
             {
@@ -153,35 +160,35 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                 filterDate = asOn;
             }
 
-            var filteredResults = this.foreignRates.Where(R => R.Value.Item1.Date == filterDate.Date)
-                .Select(R => new Tuple<CurrencyInfo, decimal>(R.Key, R.Value.Item2));
+            var filteredResults = this.foreignRates.Where(r => r.Value.Item1.Date == filterDate.Date)
+                .Select(r => new Tuple<CurrencyInfo, decimal>(r.Key, r.Value.Item2));
 
             var Results = new Dictionary<CurrencyInfo, decimal>();
 
-            foreach (var FilteredResult in filteredResults)
+            foreach (var filteredResult in filteredResults)
             {
-                Results.Add(FilteredResult.Item1, FilteredResult.Item2);
+                Results.Add(filteredResult.Item1, filteredResult.Item2);
             }
 
             return Results;
         }
 
-        private decimal GetRate(CurrencyInfo BaseCurrency, CurrencyInfo CounterCurrency, DateTimeOffset asOn)
+        private decimal GetRate(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn)
         {
             var filtered = this.FilterByDate(asOn);
 
-            if (BaseCurrency == SwissFranc)
+            if (baseCurrency == SwissFranc)
             {
-                if (filtered.ContainsKey(CounterCurrency))
+                if (filtered.TryGetValue(counterCurrency, out var counterRate))
                 {
-                    return 1 / filtered[CounterCurrency];
+                    return decimal.One / counterRate;
                 }
             }
-            else if (CounterCurrency == SwissFranc)
+            else if (counterCurrency == SwissFranc)
             {
-                if (filtered.ContainsKey(BaseCurrency))
+                if (filtered.TryGetValue(baseCurrency, out var rate))
                 {
-                    return filtered[BaseCurrency];
+                    return rate;
                 }
             }
 
