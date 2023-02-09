@@ -15,7 +15,7 @@
     <PackageReference Include="NSubstitute" Version="4.4.0" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.1" />
     <PackageReference Include="ReactiveUI" Version="18.4.20" />
-    <PackageReference Include="Serilog.Sinks.XUnit" Version="3.0.3" />
+    <PackageReference Include="Serilog.Sinks.XUnit" Version="3.0.5" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.analyzers" Version="1.1.0" />
     <PackageReference Include="xunit.assert" Version="2.4.2" />
