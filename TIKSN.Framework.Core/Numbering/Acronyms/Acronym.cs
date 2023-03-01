@@ -19,7 +19,23 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
     protected Acronym(string value)
         => this.value = value ?? throw new ArgumentNullException(nameof(value));
 
-    public override string ToString() => this.value;
+    public override string ToString()
+        => this.value;
+
+    public string ToString(string format, IFormatProvider formatProvider)
+        => this.value.ToString(formatProvider);
+
+    public bool TryFormat(
+        Span<char> destination,
+        out int charsWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider provider)
+    {
+        var result = this.value.ToString(provider);
+        charsWritten = Math.Min(result.Length, destination.Length);
+        result.CopyTo(destination[..charsWritten] );
+        return charsWritten == result.Length;
+    }
 
     public static TSelf Parse(string s, IFormatProvider provider)
     {

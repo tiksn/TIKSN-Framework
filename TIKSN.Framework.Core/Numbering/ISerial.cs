@@ -3,7 +3,7 @@ using LanguageExt;
 
 namespace TIKSN.Numbering;
 
-public interface ISerial<TSelf> : ISpanParsable<TSelf>
+public interface ISerial<TSelf> : ISpanParsable<TSelf>, ISpanFormattable
     where TSelf : ISerial<TSelf>
 {
 
