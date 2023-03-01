@@ -98,4 +98,40 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
     private static int GetLetterCount()
         => (int)typeof(TSelf).GetField("LetterCount", BindingFlags.NonPublic | BindingFlags.Static)
             .GetValue(null);
+
+    public bool Equals(TSelf other)
+    {
+        if (ReferenceEquals(null, other))
+        {
+            return false;
+        }
+
+        if (ReferenceEquals(this, other))
+        {
+            return true;
+        }
+
+        return this.value == other.value;
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj))
+        {
+            return false;
+        }
+
+        if (ReferenceEquals(this, obj))
+        {
+            return true;
+        }
+
+        return this.Equals(obj as TSelf);
+    }
+
+    public override int GetHashCode() => this.value != null ? this.value.GetHashCode() : 0;
+
+    public static bool operator ==(Acronym<TSelf> left, Acronym<TSelf> right) => Equals(left, right);
+
+    public static bool operator !=(Acronym<TSelf> left, Acronym<TSelf> right) => !Equals(left, right);
 }
