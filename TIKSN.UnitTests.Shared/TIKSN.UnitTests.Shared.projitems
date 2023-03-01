@@ -27,6 +27,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Integration\Correlation\MultibaseCorrelationServiceTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Localization\CompositeAssemblyStringLocalizerTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Localization\TestStringLocalizer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Numbering\Acronyms\AcronymTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Serialization\Numerics\SerializationTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\SettingsServiceTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Versioning\MilestoneTests.cs" />
