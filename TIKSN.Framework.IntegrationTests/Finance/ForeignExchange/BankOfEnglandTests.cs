@@ -290,9 +290,9 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
             // In case or failure, check currency pair information from BOE website and set deadline
             // up to 3 month.
 
-            System.DateTimeOffset Deadline = new DateTime(2023, 02, 01);
+            DateTimeOffset deadline = new DateTime(2023, 06, 01);
 
-            if (System.DateTimeOffset.Now > Deadline)
+            if (DateTimeOffset.Now > deadline)
                 throw new Exception("Source is out of date. Please update.");
         }
     }
