@@ -23,7 +23,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         private static readonly RegionInfo ukraine;
         private static readonly CultureInfo ukrainianCulture;
         private static readonly CurrencyInfo ukrainianHryvnia;
-        private readonly ICurrencyFactory _currencyFactory;
+        private readonly IHttpClientFactory httpClientFactory;
+        private readonly ICurrencyFactory currencyFactory;
 
         static NationalBankOfUkraine()
         {
@@ -32,7 +33,13 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             ukrainianHryvnia = new CurrencyInfo(ukraine);
         }
 
-        public NationalBankOfUkraine(ICurrencyFactory currencyFactory) => this._currencyFactory = currencyFactory;
+        public NationalBankOfUkraine(
+            IHttpClientFactory httpClientFactory,
+            ICurrencyFactory currencyFactory)
+        {
+            this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
+        }
 
         /// <summary>
         ///     Converts the currency asynchronous.
@@ -42,8 +49,11 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         /// <param name="asOn">As on.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
-            DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<Money> ConvertCurrencyAsync(
+            Money baseMoney,
+            CurrencyInfo counterCurrency,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
             var rate = await this.GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
 
@@ -56,7 +66,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         /// <param name="asOn">As on.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             var records = await this.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
@@ -71,14 +82,17 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         /// <param name="asOn">As on.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+        public Task<decimal> GetExchangeRateAsync(
+            CurrencyPair pair,
+            DateTimeOffset asOn,
             CancellationToken cancellationToken) =>
             this.GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken);
 
-        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn,
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            using var httpClient = new HttpClient();
+            var httpClient = this.httpClientFactory.CreateClient();
             var response = await httpClient.GetStringAsync(string.Format(WebServiceUrlFormat, asOn)).ConfigureAwait(false);
             var xdocument = XDocument.Parse(response);
             var result = new HashSet<ExchangeRate>();
@@ -97,10 +111,10 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                 if (!string.IsNullOrEmpty(currencyCode))
                 {
                     _ = result.Add(new ExchangeRate(
-                        new CurrencyPair(this._currencyFactory.Create(currencyCode), ukrainianHryvnia), asOn.Date,
+                        new CurrencyPair(this.currencyFactory.Create(currencyCode), ukrainianHryvnia), asOn.Date,
                         rate));
                     _ = result.Add(new ExchangeRate(
-                        new CurrencyPair(ukrainianHryvnia, this._currencyFactory.Create(currencyCode)), asOn.Date,
+                        new CurrencyPair(ukrainianHryvnia, this.currencyFactory.Create(currencyCode)), asOn.Date,
                         decimal.One / rate));
                 }
             }
