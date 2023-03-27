@@ -19,19 +19,27 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         private const string Since1999RatesUrl = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.xml";
 
         private static readonly CurrencyInfo Euro;
-        private readonly ICurrencyFactory _currencyFactory;
-        private readonly ITimeProvider _timeProvider;
+        private readonly IHttpClientFactory httpClientFactory;
+        private readonly ICurrencyFactory currencyFactory;
+        private readonly ITimeProvider timeProvider;
 
         static EuropeanCentralBank() => Euro = new CurrencyInfo(new RegionInfo("de-DE"));
 
-        public EuropeanCentralBank(ICurrencyFactory currencyFactory, ITimeProvider timeProvider)
+        public EuropeanCentralBank(
+            IHttpClientFactory httpClientFactory,
+            ICurrencyFactory currencyFactory,
+            ITimeProvider timeProvider)
         {
-            this._currencyFactory = currencyFactory;
-            this._timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+            this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
+            this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
-            DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<Money> ConvertCurrencyAsync(
+            Money baseMoney,
+            CurrencyInfo counterCurrency,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
             var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
             var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
@@ -39,7 +47,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             this.VerifyDate(asOn);
@@ -57,7 +66,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return result;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+        public async Task<decimal> GetExchangeRateAsync(
+            CurrencyPair pair,
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             this.VerifyDate(asOn);
@@ -79,12 +90,13 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             throw new ArgumentException($"Currency pair '{pair}' is not found.");
         }
 
-        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn,
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            var requestURL = GetRatesUrl(asOn, this._timeProvider);
+            var requestURL = GetRatesUrl(asOn, this.timeProvider);
 
-            using var httpClient = new HttpClient();
+            var httpClient = this.httpClientFactory.CreateClient();
             var responseStream = await httpClient.GetStreamAsync(requestURL).ConfigureAwait(false);
 
             var xdoc = XDocument.Load(responseStream);
@@ -112,7 +124,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                 var currencyCode = rateCube.Attribute("currency").Value;
                 var rate = decimal.Parse(rateCube.Attribute("rate").Value);
 
-                rates.Add(new ExchangeRate(new CurrencyPair(Euro, this._currencyFactory.Create(currencyCode)),
+                rates.Add(new ExchangeRate(new CurrencyPair(Euro, this.currencyFactory.Create(currencyCode)),
                     groupCubes.Item2, rate));
             }
 
@@ -136,7 +148,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         private void VerifyDate(DateTimeOffset asOn)
         {
-            if (asOn > this._timeProvider.GetCurrentTime())
+            if (asOn > this.timeProvider.GetCurrentTime())
             {
                 throw new ArgumentException("Exchange rate forecasting are not supported.");
             }
