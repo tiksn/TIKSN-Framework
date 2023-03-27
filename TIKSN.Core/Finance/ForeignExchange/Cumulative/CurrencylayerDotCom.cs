@@ -15,11 +15,16 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
     {
         private const string HistoricalBaseURL = "https://apilayer.net/api/historical?";
         private const string LiveBaseURL = "https://apilayer.net/api/live?";
-        private readonly ICurrencyFactory _currencyFactory;
-        private readonly ITimeProvider _timeProvider;
+        private readonly IHttpClientFactory httpClientFactory;
+        private readonly ICurrencyFactory currencyFactory;
+        private readonly ITimeProvider timeProvider;
         private readonly string accessKey;
 
-        public CurrencylayerDotCom(ICurrencyFactory currencyFactory, ITimeProvider timeProvider, string accessKey)
+        public CurrencylayerDotCom(
+            IHttpClientFactory httpClientFactory,
+            ICurrencyFactory currencyFactory,
+            ITimeProvider timeProvider,
+            string accessKey)
         {
             if (string.IsNullOrEmpty(accessKey))
             {
@@ -27,12 +32,16 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
             }
 
             this.accessKey = accessKey;
-            this._currencyFactory = currencyFactory;
-            this._timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+            this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
+            this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
-            DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<Money> ConvertCurrencyAsync(
+            Money baseMoney,
+            CurrencyInfo counterCurrency,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
             var rates = await this.GetRatesAasyncAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
 
@@ -41,7 +50,8 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             var pairsWithRates = await this.GetRatesAasyncAsync(null, null, asOn, cancellationToken).ConfigureAwait(false);
@@ -64,7 +74,9 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
             return pairs;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+        public async Task<decimal> GetExchangeRateAsync(
+            CurrencyPair pair,
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             var rates = await this.GetRatesAasyncAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken).ConfigureAwait(false);
@@ -72,15 +84,19 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
             return rates.Values.Single();
         }
 
-        public async Task<ExchangeRate> GetExchangeRateAsync(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency,
-            DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<ExchangeRate> GetExchangeRateAsync(
+            CurrencyInfo baseCurrency,
+            CurrencyInfo counterCurrency,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
             var rates = await this.GetRatesAasyncAsync(baseCurrency, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
 
             return new ExchangeRate(new CurrencyPair(baseCurrency, counterCurrency), asOn, rates.Single().Value);
         }
 
-        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn,
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             var rates = await this.GetRatesAasyncAsync(null, null, asOn, cancellationToken).ConfigureAwait(false);
@@ -91,13 +107,16 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
                 .ToArray();
         }
 
-        private async Task<IDictionary<CurrencyPair, decimal>> GetRatesAasyncAsync(CurrencyInfo baseCurrency,
-            CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
+        private async Task<IDictionary<CurrencyPair, decimal>> GetRatesAasyncAsync(
+            CurrencyInfo baseCurrency,
+            CurrencyInfo counterCurrency,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
-            using var client = new HttpClient();
+            var client = this.httpClientFactory.CreateClient();
             string requestUrl;
 
-            var difference = this._timeProvider.GetCurrentTime() - asOn;
+            var difference = this.timeProvider.GetCurrentTime() - asOn;
 
             if (difference < TimeSpan.FromDays(1.0))
             {
@@ -152,8 +171,8 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
                         IsSupportedCurrency(quoteCounterCurrencyCode) &&
                         quoteBaseCurrencyCode.ToUpperInvariant() != quoteCounterCurrencyCode.ToUpperInvariant())
                     {
-                        var quoteBaseCurrency = this._currencyFactory.Create(quoteBaseCurrencyCode);
-                        var quoteCounterCurrency = this._currencyFactory.Create(quoteCounterCurrencyCode);
+                        var quoteBaseCurrency = this.currencyFactory.Create(quoteBaseCurrencyCode);
+                        var quoteCounterCurrency = this.currencyFactory.Create(quoteCounterCurrencyCode);
 
                         var quotePair = new CurrencyPair(quoteBaseCurrency, quoteCounterCurrency);
 
