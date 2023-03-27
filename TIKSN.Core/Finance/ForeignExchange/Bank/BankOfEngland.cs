@@ -18,6 +18,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         private static readonly Dictionary<string, CurrencyPair> Pairs;
         private static readonly Dictionary<CurrencyPair, string> SeriesCodes;
+        private readonly IHttpClientFactory httpClientFactory;
         private readonly ICurrencyFactory currencyFactory;
         private readonly IRegionFactory regionFactory;
         private readonly ITimeProvider timeProvider;
@@ -117,30 +118,42 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             AddSeriesCode("zh-CN", "en-GB", "XUDLBK89");
         }
 
-        public BankOfEngland(ICurrencyFactory currencyFactory, IRegionFactory regionFactory, ITimeProvider timeProvider)
+        public BankOfEngland(
+            IHttpClientFactory httpClientFactory,
+            ICurrencyFactory currencyFactory,
+            IRegionFactory regionFactory,
+            ITimeProvider timeProvider)
         {
-            this.currencyFactory = currencyFactory;
-            this.regionFactory = regionFactory;
+            this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
+            this.regionFactory = regionFactory ?? throw new ArgumentNullException(nameof(regionFactory));
             this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
-            DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<Money> ConvertCurrencyAsync(
+            Money baseMoney,
+            CurrencyInfo counterCurrency,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
-            var rate = (await this.GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken).ConfigureAwait(false))
-                .Rate;
+            var exchangeRate = await this.GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
+            var rate = exchangeRate.Rate;
 
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             var pairs = new List<CurrencyPair>();
 
             foreach (var pair in SeriesCodes.Keys)
             {
-                var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
+                var rate = await this.GetExchangeRateAsync(
+                    pair,
+                    asOn,
+                    cancellationToken).ConfigureAwait(false);
 
                 if (rate != decimal.Zero)
                 {
@@ -151,9 +164,18 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return pairs;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
-            CancellationToken cancellationToken) =>
-            (await this.GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken).ConfigureAwait(false)).Rate;
+        public async Task<decimal> GetExchangeRateAsync(
+            CurrencyPair pair,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
+        {
+            var exchangeRate = await this.GetExchangeRateAsync(
+                pair.BaseCurrency,
+                pair.CounterCurrency,
+                asOn,
+                cancellationToken).ConfigureAwait(false);
+            return exchangeRate.Rate;
+        }
 
         public async Task<ExchangeRate> GetExchangeRateAsync(
             CurrencyInfo baseCurrency,
@@ -231,7 +253,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                 ToInternalDataFormat(asOn.AddMonths(-1)),
                 ToInternalDataFormat(asOn), seriesCode);
 
-            using var httpClient = new HttpClient();
+            var httpClient = this.httpClientFactory.CreateClient();
             var responseStream = await httpClient.GetStreamAsync(requestUrl).ConfigureAwait(false);
 
             var xdoc = XDocument.Load(responseStream);
