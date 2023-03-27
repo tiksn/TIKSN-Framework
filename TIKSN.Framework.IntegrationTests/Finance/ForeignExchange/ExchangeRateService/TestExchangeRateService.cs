@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using TIKSN.Data;
@@ -16,6 +17,7 @@ namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests
         public TestExchangeRateService(
             ILogger<TestExchangeRateService> logger,
             IStringLocalizer stringLocalizer,
+            IHttpClientFactory httpClientFactory,
             ICurrencyFactory currencyFactory,
             IRegionFactory regionFactory,
             IExchangeRateRepository exchangeRateRepository,
@@ -26,7 +28,7 @@ namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests
         {
             this.AddBatchProvider(
                 Guid.Parse("e3cabe08-7451-445b-aeec-d41824f11317"),
-                new BankOfCanada(currencyFactory, timeProvider),
+                new BankOfCanada(httpClientFactory, currencyFactory, timeProvider),
                 LocalizationKeys.Key734344590,
                 LocalizationKeys.Key734344590,
                 "CA",
@@ -34,7 +36,7 @@ namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests
 
             this.AddBatchProvider(
                 Guid.Parse("a007defa-4ff5-42b0-87fd-68f6cd032390"),
-                new BankOfEngland(currencyFactory, regionFactory, timeProvider),
+                new BankOfEngland(httpClientFactory, currencyFactory, regionFactory, timeProvider),
                 LocalizationKeys.Key758955736,
                 LocalizationKeys.Key758955736,
                 "GB",
@@ -42,7 +44,7 @@ namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests
 
             this.AddBatchProvider(
                 Guid.Parse("e0b68d68-5126-43a3-b0d1-4e006d6877b2"),
-                new BankOfRussia(currencyFactory, timeProvider),
+                new BankOfRussia(httpClientFactory, currencyFactory, timeProvider),
                 LocalizationKeys.Key937230874,
                 LocalizationKeys.Key466192205,
                 "RU",
@@ -50,7 +52,7 @@ namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests
 
             this.AddBatchProvider(
                 Guid.Parse("be2d5f28-7dc4-4f5c-a237-8de1e2f937fe"),
-                new NationalBankOfUkraine(this._currencyFactory),
+                new NationalBankOfUkraine(httpClientFactory, currencyFactory),
                 LocalizationKeys.Key344909065,
                 LocalizationKeys.Key344909065,
                 "UA",
@@ -58,7 +60,7 @@ namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests
 
             this.AddBatchProvider(
                 Guid.Parse("50d993fa-0442-4376-a1ae-c27162e0222d"),
-                new MyCurrencyDotNet(this._currencyFactory, timeProvider),
+                new MyCurrencyDotNet(httpClientFactory, currencyFactory, timeProvider),
                 LocalizationKeys.Key633405189,
                 LocalizationKeys.Key611756663,
                 "001",
