@@ -17,27 +17,32 @@ namespace TIKSN.Finance.ForeignExchange.Bank
     public class BankOfCanada : ICurrencyConverter, IExchangeRatesProvider
     {
         private const string RestURL = "https://www.bankofcanada.ca/valet/observations/group/FX_RATES_DAILY/json";
-        private static readonly TimeZoneInfo bankTimeZone;
+        private static readonly TimeZoneInfo BankTimeZone;
         private static readonly CurrencyInfo CanadianDollar;
-        private readonly ICurrencyFactory _currencyFactory;
-        private readonly ITimeProvider _timeProvider;
+        private readonly IHttpClientFactory httpClientFactory;
+        private readonly ICurrencyFactory currencyFactory;
+        private readonly ITimeProvider timeProvider;
         private readonly Dictionary<DateTime, Dictionary<CurrencyInfo, decimal>> rates;
         private DateTimeOffset lastFetchDate;
 
         static BankOfCanada()
         {
-            var Canada = new RegionInfo("en-CA");
-            CanadianDollar = new CurrencyInfo(Canada);
-            bankTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+            var canada = new RegionInfo("en-CA");
+            CanadianDollar = new CurrencyInfo(canada);
+            BankTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
         }
 
-        public BankOfCanada(ICurrencyFactory currencyFactory, ITimeProvider timeProvider)
+        public BankOfCanada(
+            IHttpClientFactory httpClientFactory,
+            ICurrencyFactory currencyFactory,
+            ITimeProvider timeProvider)
         {
             this.rates = new Dictionary<DateTime, Dictionary<CurrencyInfo, decimal>>();
 
             this.lastFetchDate = DateTimeOffset.MinValue;
-            this._currencyFactory = currencyFactory;
-            this._timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+            this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            this.currencyFactory = currencyFactory;
+            this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
         public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
@@ -55,7 +60,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             await this.FetchOnDemandAsync(cancellationToken).ConfigureAwait(false);
 
-            if (asOn > this._timeProvider.GetCurrentTime())
+            if (asOn > this.timeProvider.GetCurrentTime())
             {
                 throw new ArgumentException("Exchange rate forecasting are not supported.");
             }
@@ -76,7 +81,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         {
             await this.FetchOnDemandAsync(cancellationToken).ConfigureAwait(false);
 
-            if (asOn > this._timeProvider.GetCurrentTime())
+            if (asOn > this.timeProvider.GetCurrentTime())
             {
                 throw new ArgumentException("Exchange rate forecasting not supported.");
             }
@@ -101,7 +106,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             var asOnDate = GetRatesDate(asOn);
             foreach (var rawItem in rawData)
             {
-                var currency = this._currencyFactory.Create(rawItem.Item1);
+                var currency = this.currencyFactory.Create(rawItem.Item1);
 
                 if (asOnDate == rawItem.Item2.Date)
                 {
@@ -122,17 +127,17 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                 }
             }
 
-            this.lastFetchDate = this._timeProvider.GetCurrentTime(); // must stay at the end
+            this.lastFetchDate = this.timeProvider.GetCurrentTime(); // must stay at the end
 
             return result;
         }
 
         private static DateTimeOffset ConvertToBankTimeZone(DateTimeOffset date) =>
-            TimeZoneInfo.ConvertTime(date, bankTimeZone);
+            TimeZoneInfo.ConvertTime(date, BankTimeZone);
 
-        private static async Task<List<Tuple<string, DateTime, decimal>>> FetchRawDataAsync(string restUrl)
+        private async Task<List<Tuple<string, DateTime, decimal>>> FetchRawDataAsync(string restUrl)
         {
-            using var httpClient = new HttpClient();
+            var httpClient = this.httpClientFactory.CreateClient();
             var responseStream = await httpClient.GetStreamAsync(restUrl).ConfigureAwait(false);
 
             using var streamReader = new StreamReader(responseStream);
@@ -190,15 +195,15 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         private async Task FetchOnDemandAsync(CancellationToken cancellationToken)
         {
-            if (this._timeProvider.GetCurrentTime() - this.lastFetchDate > TimeSpan.FromDays(1d))
+            if (this.timeProvider.GetCurrentTime() - this.lastFetchDate > TimeSpan.FromDays(1d))
             {
-                _ = await this.GetExchangeRatesAsync(this._timeProvider.GetCurrentTime(), cancellationToken).ConfigureAwait(false);
+                _ = await this.GetExchangeRatesAsync(this.timeProvider.GetCurrentTime(), cancellationToken).ConfigureAwait(false);
             }
         }
 
         private Dictionary<CurrencyInfo, decimal> GetRatesByDate(DateTimeOffset asOn)
         {
-            _ = ConvertToBankTimeZone(this._timeProvider.GetCurrentTime());
+            _ = ConvertToBankTimeZone(this.timeProvider.GetCurrentTime());
             var date = GetRatesDate(asOn);
 
             if (this.rates.TryGetValue(date, out var valueAtDate))
