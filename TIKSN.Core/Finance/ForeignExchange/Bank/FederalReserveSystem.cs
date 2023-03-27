@@ -17,11 +17,16 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             "https://www.federalreserve.gov/datadownload/Output.aspx?rel=H10&series=f72f395f2a6b3a4bbc83b2983ad62737&lastObs=7&from={0}&to={1}&filetype=sdmx&label=include&layout=seriescolumn";
 
         private static readonly CurrencyInfo UnitedStatesDollar = new(new RegionInfo("en-US"));
+        private readonly IHttpClientFactory httpClientFactory;
         private readonly ICurrencyFactory currencyFactory;
         private readonly ITimeProvider timeProvider;
 
-        public FederalReserveSystem(ICurrencyFactory currencyFactory, ITimeProvider timeProvider)
+        public FederalReserveSystem(
+            IHttpClientFactory httpClientFactory,
+            ICurrencyFactory currencyFactory,
+            ITimeProvider timeProvider)
         {
+            this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
             this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
             this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
@@ -89,12 +94,12 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            var DataUrl = string.Format(DataUrlFormat,
+            var dataUrl = string.Format(DataUrlFormat,
                 this.timeProvider.GetCurrentTime().AddDays(-10d).ToString("MM/dd/yyyy"),
                 this.timeProvider.GetCurrentTime().ToString("MM/dd/yyyy"));
 
-            using var httpClient = new HttpClient();
-            var responseStream = await httpClient.GetStreamAsync(DataUrl).ConfigureAwait(false);
+            var httpClient = this.httpClientFactory.CreateClient();
+            var responseStream = await httpClient.GetStreamAsync(dataUrl).ConfigureAwait(false);
 
             var xdoc = XDocument.Load(responseStream);
 
@@ -112,25 +117,25 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                 {
                     var rates = new Dictionary<DateTime, decimal>();
 
-                    foreach (var ObsElement in seriesElement.Elements(
+                    foreach (var obsElement in seriesElement.Elements(
                         "{http://www.federalreserve.gov/structure/compact/common}Obs"))
                     {
-                        var ObsValue = decimal.Parse(ObsElement.Attribute("OBS_VALUE").Value);
-                        var Period = DateTime.Parse(ObsElement.Attribute("TIME_PERIOD").Value);
+                        var obsValue = decimal.Parse(obsElement.Attribute("OBS_VALUE").Value);
+                        var period = DateTime.Parse(obsElement.Attribute("TIME_PERIOD").Value);
 
                         decimal obsValueRate;
 
                         if (string.Equals(seriesElement.Attribute("UNIT").Value, "Currency:_Per_USD",
                             StringComparison.OrdinalIgnoreCase))
                         {
-                            obsValueRate = ObsValue;
+                            obsValueRate = obsValue;
                         }
                         else
                         {
-                            obsValueRate = decimal.One / ObsValue;
+                            obsValueRate = decimal.One / obsValue;
                         }
 
-                        rates.Add(Period, obsValueRate);
+                        rates.Add(period, obsValueRate);
                     }
 
                     var date = rates.Keys.Max();
@@ -158,7 +163,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return result;
         }
 
-        private async Task<Dictionary<CurrencyInfo, decimal>> GetRatesAsync(DateTimeOffset asOn,
+        private async Task<Dictionary<CurrencyInfo, decimal>> GetRatesAsync(
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             var rates = await this.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
