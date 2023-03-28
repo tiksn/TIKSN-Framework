@@ -137,7 +137,7 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
     {
         var result = this.ToString(null, provider);
         charsWritten = Math.Min(result.Length, destination.Length);
-        result.CopyTo(destination[..charsWritten] );
+        result.CopyTo(destination[..charsWritten]);
         return charsWritten == result.Length;
     }
 
