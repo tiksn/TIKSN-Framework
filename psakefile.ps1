@@ -1,9 +1,9 @@
 Properties {
     $PackageId = 'TIKSN-Framework'
     Import-Module -Name VSSetup
-    $vsinstance = Get-VSSetupInstance -All | Select-VSSetupInstance -Product * -Latest
-    $msbuildPath = Join-Path -Path $vsinstance.InstallationPath -ChildPath 'MSBuild\Current\Bin\MSBuild.exe'
-    Set-Alias -Name xmsbuild -Value $msbuildPath -Scope 'Script'
+    # $vsinstance = Get-VSSetupInstance -All | Select-VSSetupInstance -Product * -Latest
+    #$msbuildPath = Join-Path -Path $vsinstance.InstallationPath -ChildPath 'MSBuild\Current\Bin\MSBuild.exe'
+    #Set-Alias -Name xmsbuild -Value $msbuildPath -Scope 'Script'
 }
 
 Task Publish -depends Pack {
