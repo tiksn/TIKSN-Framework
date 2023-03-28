@@ -33,7 +33,7 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
     {
         var result = this.value.ToString(provider);
         charsWritten = Math.Min(result.Length, destination.Length);
-        result.CopyTo(destination[..charsWritten] );
+        result.CopyTo(destination[..charsWritten]);
         return charsWritten == result.Length;
     }
 
@@ -92,7 +92,7 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
         => (TSelf)Activator.CreateInstance(typeof(TSelf),
             BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
             null,
-            new object[] {s},
+            new object[] { s },
             culture);
 
     private static int GetLetterCount()
