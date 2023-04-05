@@ -36,7 +36,7 @@ namespace TIKSN.Analytics.Logging.NLog
                     IncludeMdc = options.IncludeMdc,
                     IncludeMdlc = options.IncludeMdlc,
                     IncludeNdc = options.IncludeNdc,
-                    Address = Layout.FromString(options.Url.AbsoluteUri)
+                    Address = Layout.FromString(options.Url.AbsoluteUri),
                 };
 
                 if (!string.IsNullOrWhiteSpace(options.AppInfo))
