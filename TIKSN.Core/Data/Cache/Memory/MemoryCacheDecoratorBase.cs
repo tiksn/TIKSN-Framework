@@ -7,17 +7,17 @@ namespace TIKSN.Data.Cache.Memory
 {
     public abstract class MemoryCacheDecoratorBase<T> : CacheDecoratorBase<T>
     {
-        protected readonly IOptions<MemoryCacheDecoratorOptions> _genericOptions;
-        protected readonly IMemoryCache _memoryCache;
-        protected readonly IOptions<MemoryCacheDecoratorOptions<T>> _specificOptions;
+        protected readonly IOptions<MemoryCacheDecoratorOptions> genericOptions;
+        protected readonly IMemoryCache memoryCache;
+        protected readonly IOptions<MemoryCacheDecoratorOptions<T>> specificOptions;
 
         protected MemoryCacheDecoratorBase(IMemoryCache memoryCache,
             IOptions<MemoryCacheDecoratorOptions> genericOptions,
             IOptions<MemoryCacheDecoratorOptions<T>> specificOptions)
         {
-            this._memoryCache = memoryCache;
-            this._genericOptions = genericOptions;
-            this._specificOptions = specificOptions;
+            this.memoryCache = memoryCache;
+            this.genericOptions = genericOptions;
+            this.specificOptions = specificOptions;
         }
 
         protected TResult CreateMemoryCacheItem<TResult>(ICacheEntry entry, Func<TResult> getFromSource)
@@ -36,19 +36,19 @@ namespace TIKSN.Data.Cache.Memory
         }
 
         protected TResult GetFromMemoryCache<TResult>(object cacheKey, Func<TResult> getFromSource) =>
-            this._memoryCache.GetOrCreate(cacheKey, x => this.CreateMemoryCacheItem(x, getFromSource));
+            this.memoryCache.GetOrCreate(cacheKey, x => this.CreateMemoryCacheItem(x, getFromSource));
 
         protected Task<TResult> GetFromMemoryCacheAsync<TResult>(object cacheKey, Func<Task<TResult>> getFromSource) =>
-            this._memoryCache.GetOrCreateAsync(cacheKey, x => this.CreateMemoryCacheItemAsync(x, getFromSource));
+            this.memoryCache.GetOrCreateAsync(cacheKey, x => this.CreateMemoryCacheItemAsync(x, getFromSource));
 
         protected void SpecifyOptions(ICacheEntry cacheEntry)
         {
-            cacheEntry.AbsoluteExpiration = this._specificOptions.Value.AbsoluteExpiration ??
-                                            this._genericOptions.Value.AbsoluteExpiration;
-            cacheEntry.AbsoluteExpirationRelativeToNow = this._specificOptions.Value.AbsoluteExpirationRelativeToNow ??
-                                                         this._genericOptions.Value.AbsoluteExpirationRelativeToNow;
-            cacheEntry.SlidingExpiration = this._specificOptions.Value.SlidingExpiration ??
-                                           this._genericOptions.Value.SlidingExpiration;
+            cacheEntry.AbsoluteExpiration = this.specificOptions.Value.AbsoluteExpiration ??
+                                            this.genericOptions.Value.AbsoluteExpiration;
+            cacheEntry.AbsoluteExpirationRelativeToNow = this.specificOptions.Value.AbsoluteExpirationRelativeToNow ??
+                                                         this.genericOptions.Value.AbsoluteExpirationRelativeToNow;
+            cacheEntry.SlidingExpiration = this.specificOptions.Value.SlidingExpiration ??
+                                           this.genericOptions.Value.SlidingExpiration;
         }
     }
 }
