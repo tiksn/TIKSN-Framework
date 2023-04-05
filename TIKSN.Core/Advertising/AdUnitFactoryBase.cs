@@ -2,7 +2,7 @@ namespace TIKSN.Advertising
 {
     public abstract class AdUnitFactoryBase : IAdUnitFactory
     {
-        protected readonly Dictionary<string, AdUnitBundle> adUnitBundles;
+        private readonly Dictionary<string, AdUnitBundle> adUnitBundles;
         private readonly IAdUnitSelector adUnitSelector;
 
         protected AdUnitFactoryBase(IAdUnitSelector adUnitSelector)
