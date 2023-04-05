@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using TIKSN.Configuration;
 
 namespace TIKSN.Analytics.Telemetry
@@ -36,7 +33,7 @@ namespace TIKSN.Analytics.Telemetry
             }
         }
 
-        public async Task TrackEventAsync(string name, IDictionary<string, string> properties)
+        public async Task TrackEventAsync(string name, IReadOnlyDictionary<string, string> properties)
         {
             if (this.commonConfiguration.GetConfiguration().IsEventTrackingEnabled)
             {
