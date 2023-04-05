@@ -7,6 +7,13 @@
   </PropertyGroup>
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
+    <Authors>TIKSN Development</Authors>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <WarningLevel>9999</WarningLevel>
+    <AnalysisLevel>latest-all</AnalysisLevel>
+    <NoWarn>1701;1702;CS1591</NoWarn>
+    <!-- <TreatWarningsAsErrors>True</TreatWarningsAsErrors> -->
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Finance\Resources\TableA1.xml" />
@@ -26,6 +33,10 @@
     <PackageReference Include="LanguageExt.FSharp" Version="4.4.2" />
     <PackageReference Include="LanguageExt.Parsec" Version="4.4.2" />
     <PackageReference Include="LiteDB" Version="5.0.16" />
+    <PackageReference Include="Meziantou.Analyzer" Version="2.0.29">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.21.0" />
     <PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.8" />
     <PackageReference Include="Microsoft.Azure.Storage.Blob" Version="11.2.3" />
@@ -60,6 +71,10 @@
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.1" />
     <PackageReference Include="RavenDB.Client" Version="5.4.103" />
     <PackageReference Include="ReactiveUI" Version="18.4.26" />
+    <PackageReference Include="Roslynator.Analyzers" Version="4.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Interactive" Version="6.0.1" />
