@@ -12,8 +12,8 @@ namespace TIKSN.Data.Cache.Memory
         where TEntity : IEntity<TIdentity>
         where TIdentity : IEquatable<TIdentity>
     {
-        protected readonly HashSet<object> _cacheKeychain;
-        protected readonly IRepository<TEntity> _repository;
+        protected readonly HashSet<object> cacheKeychain;
+        protected readonly IRepository<TEntity> repository;
 
         public RepositoryMemoryCacheDecorator(IRepository<TEntity> repository,
             IMemoryCache memoryCache,
@@ -21,48 +21,48 @@ namespace TIKSN.Data.Cache.Memory
             IOptions<MemoryCacheDecoratorOptions<TEntity>> specificOptions)
             : base(memoryCache, genericOptions, specificOptions)
         {
-            this._repository = repository;
-            this._cacheKeychain = new HashSet<object>();
+            this.repository = repository;
+            this.cacheKeychain = new HashSet<object>();
         }
 
         public async Task AddAsync(TEntity entity, CancellationToken cancellationToken)
         {
-            await this._repository.AddAsync(entity, cancellationToken).ConfigureAwait(false);
+            await this.repository.AddAsync(entity, cancellationToken).ConfigureAwait(false);
 
             this.InvalidateCacheItem(entity);
         }
 
         public async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
-            await this._repository.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
+            await this.repository.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
 
             this.InvalidateCacheItems(entities);
         }
 
         public async Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)
         {
-            await this._repository.RemoveAsync(entity, cancellationToken).ConfigureAwait(false);
+            await this.repository.RemoveAsync(entity, cancellationToken).ConfigureAwait(false);
 
             this.InvalidateCacheItem(entity);
         }
 
         public async Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
-            await this._repository.RemoveRangeAsync(entities, cancellationToken).ConfigureAwait(false);
+            await this.repository.RemoveRangeAsync(entities, cancellationToken).ConfigureAwait(false);
 
             this.InvalidateCacheItems(entities);
         }
 
         public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
         {
-            await this._repository.RemoveAsync(entity, cancellationToken).ConfigureAwait(false);
+            await this.repository.RemoveAsync(entity, cancellationToken).ConfigureAwait(false);
 
             this.InvalidateCacheItem(entity);
         }
 
         public async Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
-            await this._repository.UpdateRangeAsync(entities, cancellationToken).ConfigureAwait(false);
+            await this.repository.UpdateRangeAsync(entities, cancellationToken).ConfigureAwait(false);
 
             this.InvalidateCacheItems(entities);
         }
@@ -70,7 +70,7 @@ namespace TIKSN.Data.Cache.Memory
         protected Task<TResult> GetQueryFromMemoryCacheAsync<TResult>(object cacheKey,
             Func<Task<TResult>> getFromSource)
         {
-            _ = this._cacheKeychain.Add(cacheKey);
+            _ = this.cacheKeychain.Add(cacheKey);
 
             return this.GetFromMemoryCacheAsync(cacheKey, getFromSource);
         }
@@ -79,7 +79,7 @@ namespace TIKSN.Data.Cache.Memory
         {
             var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, entity.ID);
 
-            this._memoryCache.Remove(cacheKey);
+            this.memoryCache.Remove(cacheKey);
         }
 
         protected virtual void InvalidateCacheItem(TEntity entity)
@@ -101,12 +101,12 @@ namespace TIKSN.Data.Cache.Memory
 
         protected virtual void InvalidateCacheQueryItems()
         {
-            foreach (var cacheKey in this._cacheKeychain)
+            foreach (var cacheKey in this.cacheKeychain)
             {
-                this._memoryCache.Remove(cacheKey);
+                this.memoryCache.Remove(cacheKey);
             }
 
-            this._cacheKeychain.Clear();
+            this.cacheKeychain.Clear();
         }
     }
 }
