@@ -73,6 +73,6 @@ namespace TIKSN.Data.Cache.Memory
 
         protected Task<IEnumerable<TEntity>> QueryFromMemoryCacheAsync(object cacheKey,
             Func<Task<IEnumerable<TEntity>>> queryFromSource) =>
-            this._memoryCache.GetOrCreateAsync(cacheKey, x => this.CreateMemoryCacheQueryAsync(x, queryFromSource));
+            this.memoryCache.GetOrCreateAsync(cacheKey, x => this.CreateMemoryCacheQueryAsync(x, queryFromSource));
     }
 }

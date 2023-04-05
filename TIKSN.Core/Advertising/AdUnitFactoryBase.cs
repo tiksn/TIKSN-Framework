@@ -1,25 +1,23 @@
-using System.Collections.Generic;
-
 namespace TIKSN.Advertising
 {
     public abstract class AdUnitFactoryBase : IAdUnitFactory
     {
-        protected readonly Dictionary<string, AdUnitBundle> _adUnitBundles;
-        private readonly IAdUnitSelector _adUnitSelector;
+        private readonly Dictionary<string, AdUnitBundle> adUnitBundles;
+        private readonly IAdUnitSelector adUnitSelector;
 
         protected AdUnitFactoryBase(IAdUnitSelector adUnitSelector)
         {
-            this._adUnitSelector = adUnitSelector;
-            this._adUnitBundles = new Dictionary<string, AdUnitBundle>();
+            this.adUnitSelector = adUnitSelector;
+            this.adUnitBundles = new Dictionary<string, AdUnitBundle>();
 
             this.Register();
         }
 
         public AdUnit Create(string key)
         {
-            var adUnitBundle = this._adUnitBundles[key];
+            var adUnitBundle = this.adUnitBundles[key];
 
-            return this._adUnitSelector.Select(adUnitBundle);
+            return this.adUnitSelector.SelectAdUnit(adUnitBundle);
         }
 
         protected abstract void Register();

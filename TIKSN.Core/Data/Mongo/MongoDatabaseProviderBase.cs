@@ -6,24 +6,26 @@ namespace TIKSN.Data.Mongo
 {
     public abstract class MongoDatabaseProviderBase : IMongoDatabaseProvider
     {
-        private readonly IConfiguration _configuration;
-        private readonly string _connectionStringKey;
-        private readonly IMongoClientProvider _mongoClientProvider;
+        private readonly IConfiguration configuration;
+        private readonly string connectionStringKey;
+        private readonly IMongoClientProvider mongoClientProvider;
 
-        public MongoDatabaseProviderBase(IMongoClientProvider mongoClientProvider, IConfiguration configuration,
+        public MongoDatabaseProviderBase(
+            IMongoClientProvider mongoClientProvider,
+            IConfiguration configuration,
             string connectionStringKey)
         {
-            this._mongoClientProvider =
+            this.mongoClientProvider =
                 mongoClientProvider ?? throw new ArgumentNullException(nameof(mongoClientProvider));
-            this._configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            this._connectionStringKey =
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.connectionStringKey =
                 connectionStringKey ?? throw new ArgumentNullException(nameof(connectionStringKey));
         }
 
         public IMongoDatabase GetDatabase()
         {
-            var mongoClient = this._mongoClientProvider.GetMongoClient();
-            var connectionString = this._configuration.GetConnectionString(this._connectionStringKey);
+            var mongoClient = this.mongoClientProvider.GetMongoClient();
+            var connectionString = this.configuration.GetConnectionString(this.connectionStringKey);
             var databaseName = MongoUrl.Create(connectionString).DatabaseName;
             return mongoClient.GetDatabase(databaseName);
         }

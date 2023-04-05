@@ -13,7 +13,9 @@ namespace TIKSN.Data.LiteDB
         protected readonly ILiteCollection<TDocument> collection;
         protected readonly Func<TIdentity, BsonValue> convertToBsonValue;
 
-        protected LiteDbRepository(ILiteDbDatabaseProvider databaseProvider, string collectionName,
+        protected LiteDbRepository(
+            ILiteDbDatabaseProvider databaseProvider,
+            string collectionName,
             Func<TIdentity, BsonValue> convertToBsonValue)
         {
             var database = databaseProvider.GetDatabase();

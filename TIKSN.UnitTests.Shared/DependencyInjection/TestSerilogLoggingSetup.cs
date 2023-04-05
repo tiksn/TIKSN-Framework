@@ -6,15 +6,15 @@ namespace TIKSN.DependencyInjection.Tests
 {
     public class TestSerilogLoggingSetup : SerilogLoggingSetupBase
     {
-        private readonly ITestOutputHelper _testOutputHelper;
+        private readonly ITestOutputHelper testOutputHelper;
 
-        public TestSerilogLoggingSetup(ITestOutputHelper testOutputHelper) : base() => this._testOutputHelper = testOutputHelper;
+        public TestSerilogLoggingSetup(ITestOutputHelper testOutputHelper) : base() => this.testOutputHelper = testOutputHelper;
 
         protected override void SetupSerilog()
         {
             base.SetupSerilog();
 
-            _ = this._loggerConfiguration.WriteTo.TestOutput(this._testOutputHelper);
+            _ = this.loggerConfiguration.WriteTo.TestOutput(this.testOutputHelper);
         }
     }
 }

@@ -4,8 +4,10 @@ namespace TIKSN.Finance.Cache
 {
     public class MemoryCachedCurrencyConverterEntry
     {
-        private MemoryCachedCurrencyConverterEntry(MemoryCachedCurrencyConverterEntryKind kind,
-            IEnumerable<CurrencyPair> currencyPairs, decimal exchangeRate)
+        private MemoryCachedCurrencyConverterEntry(
+            MemoryCachedCurrencyConverterEntryKind kind,
+            IEnumerable<CurrencyPair> currencyPairs,
+            decimal exchangeRate)
         {
             this.Kind = kind;
             this.CurrencyPairs = currencyPairs;

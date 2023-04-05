@@ -142,12 +142,8 @@ namespace TIKSN.Settings
                         {
                             CheckType(BsonType.Guid);
                             return (T)(object)bsonValue.AsGuid;
-                            break;
                         }
-                        else
-                        {
-                            throw new NotSupportedException("Type is not supported.");
-                        }
+                        throw new NotSupportedException("Type is not supported.");
                 }
             }
 

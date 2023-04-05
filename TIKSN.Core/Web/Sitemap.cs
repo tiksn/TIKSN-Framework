@@ -134,7 +134,6 @@ namespace TIKSN.Web
                     return true;
                 }
 
-
                 if (obj is not Page p)
                 {
                     return false;
