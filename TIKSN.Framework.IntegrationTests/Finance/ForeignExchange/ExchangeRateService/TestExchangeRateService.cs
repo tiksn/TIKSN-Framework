@@ -16,15 +16,14 @@ namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests
     {
         public TestExchangeRateService(
             ILogger<TestExchangeRateService> logger,
-            IStringLocalizer stringLocalizer,
             IHttpClientFactory httpClientFactory,
             ICurrencyFactory currencyFactory,
             IRegionFactory regionFactory,
             IExchangeRateRepository exchangeRateRepository,
             IForeignExchangeRepository foreignExchangeRepository,
             IUnitOfWorkFactory unitOfWorkFactory,
-            ITimeProvider timeProvider,
-            Random random) : base(logger, stringLocalizer, currencyFactory, regionFactory, exchangeRateRepository, foreignExchangeRepository, unitOfWorkFactory, random)
+            ITimeProvider timeProvider)
+            : base(logger, regionFactory, exchangeRateRepository, foreignExchangeRepository, unitOfWorkFactory)
         {
             this.AddBatchProvider(
                 Guid.Parse("e3cabe08-7451-445b-aeec-d41824f11317"),
