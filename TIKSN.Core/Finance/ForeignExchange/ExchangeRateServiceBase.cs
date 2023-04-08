@@ -1,4 +1,6 @@
 using System.Globalization;
+using LanguageExt;
+using static LanguageExt.Prelude;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using TIKSN.Data;
@@ -14,8 +16,8 @@ namespace TIKSN.Finance.ForeignExchange
         private readonly IForeignExchangeRepository foreignExchangeRepository;
         protected readonly ILogger<ExchangeRateServiceBase> logger;
 
-        private readonly Dictionary<Guid, (IExchangeRatesProvider BatchProvider, IExchangeRateProvider IndividualProvider
-            , int LongNameKey, int ShortNameKey, RegionInfo Country, TimeSpan InvalidationInterval)> _providers;
+        private readonly Dictionary<Guid, (Either<IExchangeRateProvider, IExchangeRatesProvider> RateProvider,
+            int LongNameKey, int ShortNameKey, RegionInfo Country, TimeSpan InvalidationInterval)> providers;
 
         private readonly Random random;
         protected readonly IRegionFactory regionFactory;
@@ -37,9 +39,9 @@ namespace TIKSN.Finance.ForeignExchange
             this.exchangeRateRepository = exchangeRateRepository;
             this.foreignExchangeRepository = foreignExchangeRepository;
 
-            this._providers =
-                new Dictionary<Guid, (IExchangeRatesProvider BatchProvider, IExchangeRateProvider IndividualProvider, int
-                    LongNameKey, int ShortNameKey, RegionInfo Country, TimeSpan InvalidationInterval)>();
+            this.providers =
+                new Dictionary<Guid, (Either<IExchangeRateProvider, IExchangeRatesProvider> RateProvider,
+                    int LongNameKey, int ShortNameKey, RegionInfo Country, TimeSpan InvalidationInterval)>();
 
             this.currencyFactory = currencyFactory;
             this.regionFactory = regionFactory;
@@ -69,7 +71,7 @@ namespace TIKSN.Finance.ForeignExchange
 
             using (var uow = await this.unitOfWorkFactory.CreateAsync(cancellationToken))
             {
-                foreach (var provider in this._providers)
+                foreach (var provider in this.providers)
                 {
                     var ticksToIntervalRatio = asOn.Ticks / provider.Value.InvalidationInterval.Ticks;
                     var dateFrom = new DateTimeOffset(ticksToIntervalRatio * provider.Value.InvalidationInterval.Ticks,
@@ -84,21 +86,11 @@ namespace TIKSN.Finance.ForeignExchange
 
                     if (rates.Count == 0)
                     {
-                        if (provider.Value.BatchProvider != null)
-                        {
-                            await this.FetchExchangeRatesAsync(provider.Key, provider.Value.BatchProvider, asOn,
-                                cancellationToken).ConfigureAwait(false);
-                        }
-                        else if (provider.Value.IndividualProvider != null)
-                        {
-                            await this.FetchExchangeRatesAsync(provider.Key, provider.Value.IndividualProvider, pair,
-                                asOn, cancellationToken).ConfigureAwait(false);
-                        }
-                        else
-                        {
-                            throw new Exception(
-                                $"{nameof(provider.Value.BatchProvider)} and {nameof(provider.Value.IndividualProvider)} are both null, one of them should be null and other should not.");
-                        }
+                        await provider.Value.RateProvider.Match(
+                            batchProvider => this.FetchExchangeRatesAsync(provider.Key, batchProvider, asOn,
+                                cancellationToken),
+                            individualProvider => this.FetchExchangeRatesAsync(provider.Key, individualProvider, pair,
+                                asOn, cancellationToken)).ConfigureAwait(false);
 
                         rates = await this.exchangeRateRepository.SearchAsync(
                             provider.Key,
@@ -135,7 +127,7 @@ namespace TIKSN.Finance.ForeignExchange
         {
             using (var uow = await this.unitOfWorkFactory.CreateAsync(cancellationToken))
             {
-                foreach (var provider in this._providers)
+                foreach (var provider in this.providers)
                 {
                     var forex = await this.foreignExchangeRepository.GetOrDefaultAsync(provider.Key,
                         cancellationToken).ConfigureAwait(false);
@@ -159,12 +151,12 @@ namespace TIKSN.Finance.ForeignExchange
         }
 
         protected void AddBatchProvider(Guid providerID, IExchangeRatesProvider provider, int longNameKey,
-            int shortNameKey, string country, TimeSpan invalidationInterval) => this._providers.Add(providerID,
-            (provider, null, longNameKey, shortNameKey, this.regionFactory.Create(country), invalidationInterval));
+            int shortNameKey, string country, TimeSpan invalidationInterval) => this.providers.Add(providerID,
+            (Right(provider), longNameKey, shortNameKey, this.regionFactory.Create(country), invalidationInterval));
 
         protected void AddIndividualProvider(Guid providerID, IExchangeRateProvider provider, int longNameKey,
-            int shortNameKey, string country, TimeSpan invalidationInterval) => this._providers.Add(providerID,
-            (null, provider, longNameKey, shortNameKey, this.regionFactory.Create(country), invalidationInterval));
+            int shortNameKey, string country, TimeSpan invalidationInterval) => this.providers.Add(providerID,
+            (Left(provider), longNameKey, shortNameKey, this.regionFactory.Create(country), invalidationInterval));
 
         private async Task FetchExchangeRatesAsync(
             Guid foreignExchangeID,
