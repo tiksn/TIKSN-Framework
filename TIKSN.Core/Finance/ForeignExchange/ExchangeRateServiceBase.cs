@@ -57,53 +57,23 @@ namespace TIKSN.Finance.ForeignExchange
             DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            var combinedRates = new List<ExchangeRateEntity>();
+            await using var uow = await this.unitOfWorkFactory.CreateAsync(cancellationToken);
 
-            using (var uow = await this.unitOfWorkFactory.CreateAsync(cancellationToken))
+            var minInvalidationInterval = this.providers.Min(x => x.Value.InvalidationInterval);
+            var (dateFrom, dateTo) = EstimateDateRange(asOn, minInvalidationInterval);
+
+            var combinedRates = await this.exchangeRateRepository.SearchAsync(
+                pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, dateFrom, dateTo,
+                cancellationToken).ConfigureAwait(false);
+
+            if (combinedRates.Count == 0)
             {
-                foreach (var provider in this.providers)
-                {
-                    var ticksToIntervalRatio = asOn.Ticks / provider.Value.InvalidationInterval.Ticks;
-                    var dateFrom = new DateTimeOffset(ticksToIntervalRatio * provider.Value.InvalidationInterval.Ticks,
-                        asOn.Offset).UtcDateTime;
-                    var dateTo =
-                        new DateTimeOffset((ticksToIntervalRatio + 1) * provider.Value.InvalidationInterval.Ticks,
-                            asOn.Offset).UtcDateTime;
-
-                    var rates = await this.exchangeRateRepository.SearchAsync(provider.Key,
-                        pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, dateFrom, dateTo,
-                        cancellationToken).ConfigureAwait(false);
-
-                    if (rates.Count == 0)
-                    {
-                        await provider.Value.RateProvider.Match(
-                            batchProvider => this.FetchExchangeRatesAsync(provider.Key, batchProvider, asOn,
-                                cancellationToken),
-                            individualProvider => this.FetchExchangeRatesAsync(provider.Key, individualProvider, pair,
-                                asOn, cancellationToken)).ConfigureAwait(false);
-
-                        rates = await this.exchangeRateRepository.SearchAsync(
-                            provider.Key,
-                            pair.BaseCurrency.ISOCurrencySymbol,
-                            pair.CounterCurrency.ISOCurrencySymbol,
-                            dateFrom,
-                            dateTo,
-                            cancellationToken).ConfigureAwait(false);
-
-                        combinedRates.AddRange(rates);
-                    }
-                    else
-                    {
-                        combinedRates.AddRange(rates);
-                    }
-                }
-
-                await uow.CompleteAsync(cancellationToken).ConfigureAwait(false);
+                combinedRates = await this.FetchExchangeRatesAsync(pair, asOn, cancellationToken);
             }
 
-            var exchangeRateEntity = combinedRates
-                .MinByWithTies(item => Math.Abs((item.AsOn - asOn).Ticks))
-                .First();
+            await uow.CompleteAsync(cancellationToken).ConfigureAwait(false);
+
+            var exchangeRateEntity = GetPreferredExchangeRate(asOn, combinedRates);
 
             this.logger.LogInformation(
                 347982955,
@@ -111,6 +81,66 @@ namespace TIKSN.Finance.ForeignExchange
                 exchangeRateEntity.ForeignExchangeID);
 
             return exchangeRateEntity.Rate;
+        }
+
+        private static ExchangeRateEntity GetPreferredExchangeRate(DateTimeOffset asOn, IReadOnlyList<ExchangeRateEntity> combinedRates)
+        {
+            var exchangeRateEntity = combinedRates
+                .MinByWithTies(item => Math.Abs((item.AsOn - asOn).Ticks))
+                .First();
+            return exchangeRateEntity;
+        }
+
+        private async Task<IReadOnlyList<ExchangeRateEntity>> FetchExchangeRatesAsync(
+            CurrencyPair pair,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
+        {
+            var combinedRates = new List<ExchangeRateEntity>();
+
+            foreach (var provider in this.providers)
+            {
+                var (dateFrom, dateTo) = EstimateDateRange(asOn, provider.Value.InvalidationInterval);
+
+                var rates = await this.exchangeRateRepository.SearchAsync(provider.Key,
+                    pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, dateFrom, dateTo,
+                    cancellationToken).ConfigureAwait(false);
+
+                if (rates.Count == 0)
+                {
+                    await provider.Value.RateProvider.Match(
+                        batchProvider => this.FetchExchangeRatesAsync(provider.Key, batchProvider, asOn,
+                            cancellationToken),
+                        individualProvider => this.FetchExchangeRatesAsync(provider.Key, individualProvider, pair,
+                            asOn, cancellationToken)).ConfigureAwait(false);
+
+                    rates = await this.exchangeRateRepository.SearchAsync(
+                        provider.Key,
+                        pair.BaseCurrency.ISOCurrencySymbol,
+                        pair.CounterCurrency.ISOCurrencySymbol,
+                        dateFrom,
+                        dateTo,
+                        cancellationToken).ConfigureAwait(false);
+
+                    combinedRates.AddRange(rates);
+                }
+                else
+                {
+                    combinedRates.AddRange(rates);
+                }
+            }
+
+            return combinedRates;
+        }
+
+        private static (DateTime dateFrom, DateTime dateTo) EstimateDateRange(
+            DateTimeOffset asOn,
+            TimeSpan invalidationInterval)
+        {
+            var invalidationIntervalHalf = TimeSpan.FromMilliseconds(invalidationInterval.TotalMilliseconds / 2.0);
+            var dateFrom = (asOn - invalidationIntervalHalf).UtcDateTime;
+            var dateTo = (asOn + invalidationIntervalHalf).UtcDateTime;
+            return (dateFrom, dateTo);
         }
 
         public async Task InitializeAsync(CancellationToken cancellationToken)

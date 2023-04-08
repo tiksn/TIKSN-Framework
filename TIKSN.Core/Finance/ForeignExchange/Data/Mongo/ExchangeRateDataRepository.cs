@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using MongoDB.Driver;
 using TIKSN.Data.Mongo;
 
@@ -16,6 +12,22 @@ namespace TIKSN.Finance.ForeignExchange.Data.Mongo
                 mongoDatabaseProvider,
                 "ExchangeRates")
         {
+        }
+
+        public Task<IReadOnlyList<ExchangeRateDataEntity>> SearchAsync(
+            string baseCurrencyCode,
+            string counterCurrencyCode,
+            DateTime dateFrom,
+            DateTime dateTo,
+            CancellationToken cancellationToken)
+        {
+            var filter = Builders<ExchangeRateDataEntity>.Filter.And(
+                Builders<ExchangeRateDataEntity>.Filter.Eq(item => item.BaseCurrencyCode, baseCurrencyCode),
+                Builders<ExchangeRateDataEntity>.Filter.Eq(item => item.CounterCurrencyCode, counterCurrencyCode),
+                Builders<ExchangeRateDataEntity>.Filter.Gte(item => item.AsOn, dateFrom),
+                Builders<ExchangeRateDataEntity>.Filter.Lte(item => item.AsOn, dateTo));
+
+            return base.SearchAsync(filter, cancellationToken);
         }
 
         public Task<IReadOnlyList<ExchangeRateDataEntity>> SearchAsync(
