@@ -16,15 +16,14 @@ namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests
     {
         public TestExchangeRateService(
             ILogger<TestExchangeRateService> logger,
-            IStringLocalizer stringLocalizer,
             IHttpClientFactory httpClientFactory,
             ICurrencyFactory currencyFactory,
             IRegionFactory regionFactory,
             IExchangeRateRepository exchangeRateRepository,
             IForeignExchangeRepository foreignExchangeRepository,
             IUnitOfWorkFactory unitOfWorkFactory,
-            ITimeProvider timeProvider,
-            Random random) : base(logger, stringLocalizer, currencyFactory, regionFactory, exchangeRateRepository, foreignExchangeRepository, unitOfWorkFactory, random)
+            ITimeProvider timeProvider)
+            : base(logger, regionFactory, exchangeRateRepository, foreignExchangeRepository, unitOfWorkFactory)
         {
             this.AddBatchProvider(
                 Guid.Parse("e3cabe08-7451-445b-aeec-d41824f11317"),
@@ -51,11 +50,51 @@ namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests
                 TimeSpan.FromHours(24));
 
             this.AddBatchProvider(
+                Guid.Parse("183ed360-7176-47e1-b41c-56ec426c2f5a"),
+                new CentralBankOfArmenia(httpClientFactory, currencyFactory, timeProvider),
+                LocalizationKeys.Key171400643,
+                LocalizationKeys.Key171400643,
+                "AM",
+                TimeSpan.FromHours(24));
+
+            this.AddBatchProvider(
+                Guid.Parse("01583288-eb70-4fe9-a7f4-4576c5538acb"),
+                new EuropeanCentralBank(httpClientFactory, currencyFactory, timeProvider),
+                LocalizationKeys.Key224205610,
+                LocalizationKeys.Key224205610,
+                "150",
+                TimeSpan.FromHours(24));
+
+            this.AddBatchProvider(
+                Guid.Parse("cae0438f-af45-4fe1-95b5-8d13160aac89"),
+                new FederalReserveSystem(httpClientFactory, currencyFactory, timeProvider),
+                LocalizationKeys.Key729270460,
+                LocalizationKeys.Key724813953,
+                "US",
+                TimeSpan.FromHours(24));
+
+            this.AddBatchProvider(
                 Guid.Parse("be2d5f28-7dc4-4f5c-a237-8de1e2f937fe"),
                 new NationalBankOfUkraine(httpClientFactory, currencyFactory),
                 LocalizationKeys.Key344909065,
                 LocalizationKeys.Key344909065,
                 "UA",
+                TimeSpan.FromHours(24));
+
+            this.AddBatchProvider(
+                Guid.Parse("07bbe75c-dd2f-481b-80bb-e316b1cbad7b"),
+                new ReserveBankOfAustralia(httpClientFactory, currencyFactory, timeProvider),
+                LocalizationKeys.Key645369586,
+                LocalizationKeys.Key645369586,
+                "AU",
+                TimeSpan.FromHours(24));
+
+            this.AddBatchProvider(
+                Guid.Parse("3390a387-1fea-43ac-91b1-3e7ee77d85ae"),
+                new SwissNationalBank(httpClientFactory, currencyFactory, timeProvider),
+                LocalizationKeys.Key748923176,
+                LocalizationKeys.Key748923176,
+                "CH",
                 TimeSpan.FromHours(24));
 
             this.AddBatchProvider(

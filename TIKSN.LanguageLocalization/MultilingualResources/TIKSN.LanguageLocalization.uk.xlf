@@ -718,6 +718,10 @@
           <source>currencylayer.com</source>
           <target state="new">currencylayer.com</target>
         </trans-unit>
+        <trans-unit id="729270460" translate="yes" xml:space="preserve">
+          <source>The Federal Reserve, the central bank of the United States</source>
+          <target state="new">The Federal Reserve, the central bank of the United States</target>
+        </trans-unit>
       </group>
     </body>
   </file>
