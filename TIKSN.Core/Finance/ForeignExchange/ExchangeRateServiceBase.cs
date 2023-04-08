@@ -11,7 +11,6 @@ namespace TIKSN.Finance.ForeignExchange
 {
     public abstract class ExchangeRateServiceBase : IExchangeRateService
     {
-        protected readonly ICurrencyFactory currencyFactory;
         private readonly IExchangeRateRepository exchangeRateRepository;
         private readonly IForeignExchangeRepository foreignExchangeRepository;
         protected readonly ILogger<ExchangeRateServiceBase> logger;
@@ -19,9 +18,7 @@ namespace TIKSN.Finance.ForeignExchange
         private readonly Dictionary<Guid, (Either<IExchangeRateProvider, IExchangeRatesProvider> RateProvider,
             int LongNameKey, int ShortNameKey, RegionInfo Country, TimeSpan InvalidationInterval)> providers;
 
-        private readonly Random random;
         protected readonly IRegionFactory regionFactory;
-        protected readonly IStringLocalizer stringLocalizer;
         private readonly IUnitOfWorkFactory unitOfWorkFactory;
 
         protected ExchangeRateServiceBase(
@@ -35,7 +32,6 @@ namespace TIKSN.Finance.ForeignExchange
             Random random)
         {
             this.logger = logger;
-            this.stringLocalizer = stringLocalizer;
             this.exchangeRateRepository = exchangeRateRepository;
             this.foreignExchangeRepository = foreignExchangeRepository;
 
@@ -43,9 +39,7 @@ namespace TIKSN.Finance.ForeignExchange
                 new Dictionary<Guid, (Either<IExchangeRateProvider, IExchangeRatesProvider> RateProvider,
                     int LongNameKey, int ShortNameKey, RegionInfo Country, TimeSpan InvalidationInterval)>();
 
-            this.currencyFactory = currencyFactory;
             this.regionFactory = regionFactory;
-            this.random = random;
             this.unitOfWorkFactory = unitOfWorkFactory ?? throw new ArgumentNullException(nameof(unitOfWorkFactory));
         }
 
@@ -134,13 +128,11 @@ namespace TIKSN.Finance.ForeignExchange
 
                     if (forex == null)
                     {
-                        forex = new ForeignExchangeEntity
-                        {
-                            ID = provider.Key,
-                            LongNameKey = provider.Value.LongNameKey,
-                            ShortNameKey = provider.Value.ShortNameKey,
-                            CountryCode = provider.Value.Country.Name
-                        };
+                        forex = new ForeignExchangeEntity(
+                            provider.Key,
+                            provider.Value.Country.Name,
+                            provider.Value.LongNameKey,
+                            provider.Value.ShortNameKey);
 
                         await this.foreignExchangeRepository.AddAsync(forex, cancellationToken).ConfigureAwait(false);
                     }
@@ -205,15 +197,13 @@ namespace TIKSN.Finance.ForeignExchange
 
             foreach (var exchangeRate in exchangeRates)
             {
-                entities.Add(new ExchangeRateEntity
-                {
-                    ID = Guid.NewGuid(),
-                    AsOn = exchangeRate.AsOn.UtcDateTime,
-                    BaseCurrencyCode = exchangeRate.Pair.BaseCurrency.ISOCurrencySymbol,
-                    CounterCurrencyCode = exchangeRate.Pair.CounterCurrency.ISOCurrencySymbol,
-                    ForeignExchangeID = foreignExchangeID,
-                    Rate = exchangeRate.Rate
-                });
+                entities.Add(new ExchangeRateEntity(
+                    Guid.NewGuid(),
+                    exchangeRate.Pair.BaseCurrency.ISOCurrencySymbol,
+                    exchangeRate.Pair.CounterCurrency.ISOCurrencySymbol,
+                    foreignExchangeID,
+                    exchangeRate.AsOn.UtcDateTime,
+                    exchangeRate.Rate));
             }
 
             await this.exchangeRateRepository.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
