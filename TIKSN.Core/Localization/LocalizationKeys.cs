@@ -1309,6 +1309,12 @@ namespace TIKSN.Localization
 		public const int Key999430243 = 999430243;
 	
         /// <summary>
+		/// Key: 729270460
+		/// Original Value: The Federal Reserve, the central bank of the United States
+		/// </summary>
+		public const int Key729270460 = 729270460;
+	
+        /// <summary>
 		/// Key: 289384638
 		/// Original Value: Special drawing rights
 		/// </summary>
