@@ -1,7 +1,6 @@
 using System.Globalization;
 using LanguageExt;
 using static LanguageExt.Prelude;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using TIKSN.Data;
 using TIKSN.Finance.ForeignExchange.Data;
@@ -23,13 +22,10 @@ namespace TIKSN.Finance.ForeignExchange
 
         protected ExchangeRateServiceBase(
             ILogger<ExchangeRateServiceBase> logger,
-            IStringLocalizer stringLocalizer,
-            ICurrencyFactory currencyFactory,
             IRegionFactory regionFactory,
             IExchangeRateRepository exchangeRateRepository,
             IForeignExchangeRepository foreignExchangeRepository,
-            IUnitOfWorkFactory unitOfWorkFactory,
-            Random random)
+            IUnitOfWorkFactory unitOfWorkFactory)
         {
             this.logger = logger;
             this.exchangeRateRepository = exchangeRateRepository;
