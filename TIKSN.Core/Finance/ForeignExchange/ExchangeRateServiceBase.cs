@@ -39,7 +39,7 @@ namespace TIKSN.Finance.ForeignExchange
             this.unitOfWorkFactory = unitOfWorkFactory ?? throw new ArgumentNullException(nameof(unitOfWorkFactory));
         }
 
-        public async Task<Money> ConvertCurrencyAsync(
+        public async Task<Option<Money>> ConvertCurrencyAsync(
             Money baseMoney,
             CurrencyInfo counterCurrency,
             DateTimeOffset asOn,
@@ -47,12 +47,28 @@ namespace TIKSN.Finance.ForeignExchange
         {
             var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
-            var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
+            var rate = await this.GetExchangeRateAsync(
+                pair, asOn, cancellationToken).ConfigureAwait(false);
 
-            return new Money(counterCurrency, baseMoney.Amount * rate);
+            return rate.Map(r => new Money(counterCurrency, baseMoney.Amount * r));
         }
 
-        public async Task<decimal> GetExchangeRateAsync(
+        public async Task<Option<Money>> ConvertCurrencyAsync(
+            Money baseMoney,
+            CurrencyInfo counterCurrency,
+            DateTimeOffset asOn,
+            CurrencyInfo intermediaryCurrency,
+            CancellationToken cancellationToken)
+        {
+            var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
+
+            var rate = await this.GetExchangeRateAsync(
+                pair, asOn, intermediaryCurrency, cancellationToken).ConfigureAwait(false);
+
+            return rate.Map(r => new Money(counterCurrency, baseMoney.Amount * r));
+        }
+
+        public async Task<Option<decimal>> GetExchangeRateAsync(
             CurrencyPair pair,
             DateTimeOffset asOn,
             CancellationToken cancellationToken)
@@ -75,19 +91,47 @@ namespace TIKSN.Finance.ForeignExchange
 
             var exchangeRateEntity = GetPreferredExchangeRate(asOn, combinedRates);
 
-            this.logger.LogInformation(
-                347982955,
-                "Exchange rate provided by Foreign Exchange with ID {ForeignExchangeID}",
-                exchangeRateEntity.ForeignExchangeID);
+            exchangeRateEntity.Match(
+                s =>
+                    this.logger.LogInformation(
+                    347982955,
+                    "Exchange rate for {CurrencyPair} provided by Foreign Exchange with ID {ForeignExchangeID}",
+                    pair, s.ForeignExchangeID),
+                () =>
+                    this.logger.LogInformation(
+                    1617946673,
+                    "Exchange rate  for {CurrencyPair} is not found ", pair));
 
-            return exchangeRateEntity.Rate;
+
+            return exchangeRateEntity.Map(x => x.Rate);
         }
 
-        private static ExchangeRateEntity GetPreferredExchangeRate(DateTimeOffset asOn, IReadOnlyList<ExchangeRateEntity> combinedRates)
+        public async Task<Option<decimal>> GetExchangeRateAsync(
+            CurrencyPair pair,
+            DateTimeOffset asOn,
+            CurrencyInfo intermediaryCurrency,
+            CancellationToken cancellationToken)
+        {
+            var syntheticCurrencyPair1 = new CurrencyPair(pair.BaseCurrency, intermediaryCurrency);
+            var syntheticCurrencyPair2 = new CurrencyPair(intermediaryCurrency, pair.CounterCurrency);
+            var rate1 = await GetExchangeRateAsync(syntheticCurrencyPair1, asOn, cancellationToken);
+            var rate2 = await GetExchangeRateAsync(syntheticCurrencyPair2, asOn, cancellationToken);
+
+            var rate =
+                from r1 in rate1
+                from r2 in rate2
+                select r1 * r2;
+
+            return rate;
+        }
+
+        private static Option<ExchangeRateEntity> GetPreferredExchangeRate(
+            DateTimeOffset asOn,
+            IReadOnlyList<ExchangeRateEntity> combinedRates)
         {
             var exchangeRateEntity = combinedRates
-                .MinByWithTies(item => Math.Abs((item.AsOn - asOn).Ticks))
-                .First();
+                .OrderBy(item => Math.Abs((item.AsOn - asOn).Ticks))
+                .ToOption();
             return exchangeRateEntity;
         }
 
