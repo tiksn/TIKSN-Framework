@@ -102,7 +102,6 @@ namespace TIKSN.Finance.ForeignExchange
                     1617946673,
                     "Exchange rate  for {CurrencyPair} is not found ", pair));
 
-
             return exchangeRateEntity.Map(x => x.Rate);
         }
 
