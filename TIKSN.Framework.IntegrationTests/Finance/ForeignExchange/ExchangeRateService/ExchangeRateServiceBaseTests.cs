@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using FluentAssertions;
+using LanguageExt;
+using static LanguageExt.Prelude;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.Globalization;
 using TIKSN.IntegrationTests;
@@ -39,7 +41,44 @@ namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests
                 default);
 
             // Assert
-            _ = result.Currency.Should().Be(eur);
+            _ = result.IsSome.Should().BeTrue();
+            _ = result.Map(s => s.Currency).Should<Option<CurrencyInfo>>().Be(Some(eur));
+        }
+
+        [Theory]
+        [InlineData("LiteDB")]
+        [InlineData("MongoDB")]
+        public async Task Given_1000Dram_When_ExchangedForDanishKrone_Then_ResultShouldBeDoubleConverted(string database)
+        {
+            // Arrange
+            var exchangeRateService = this.serviceProviderFixture.GetServiceProvider(database).GetRequiredService<IExchangeRateService>();
+            var currencyFactory = this.serviceProviderFixture.GetServiceProvider(database).GetRequiredService<ICurrencyFactory>();
+            var usd = currencyFactory.Create("USD");
+            var amd = currencyFactory.Create("AMD");
+            var dkk = currencyFactory.Create("DKK");
+            var amd1000 = new Money(amd, 1000m);
+
+            await exchangeRateService.InitializeAsync(default);
+
+            // Act
+            var resultWithoutDoubleConversion  = await exchangeRateService.ConvertCurrencyAsync(
+                amd1000,
+                dkk,
+                DateTimeOffset.Now,
+                default);
+
+            var resultWithDoubleConversion = await exchangeRateService.ConvertCurrencyAsync(
+                amd1000,
+                dkk,
+                DateTimeOffset.Now,
+                usd,
+                default);
+
+            // Assert
+            _ = resultWithoutDoubleConversion.IsNone.Should().BeTrue();
+            _ = resultWithoutDoubleConversion.Map(s => s.Currency).Should<Option<CurrencyInfo>>().Be(None);
+            _ = resultWithDoubleConversion.IsSome.Should().BeTrue();
+            _ = resultWithDoubleConversion.Map(s => s.Currency).Should<Option<CurrencyInfo>>().Be(Some(dkk));
         }
     }
 }
