@@ -69,7 +69,7 @@
     <PackageReference Include="NoDb" Version="1.2.2" />
     <PackageReference Include="NuGet.Versioning" Version="6.5.0" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.1" />
-    <PackageReference Include="RavenDB.Client" Version="5.4.103" />
+    <PackageReference Include="RavenDB.Client" Version="5.4.104" />
     <PackageReference Include="ReactiveUI" Version="18.4.44" />
     <PackageReference Include="Roslynator.Analyzers" Version="4.3.0">
       <PrivateAssets>all</PrivateAssets>
