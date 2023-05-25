@@ -60,7 +60,7 @@
     <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="2.3.2" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.6.40" />
     <PackageReference Include="MongoDB.Driver" Version="2.19.1" />
-    <PackageReference Include="MongoDB.Driver.GridFS" Version="2.19.1" />
+    <PackageReference Include="MongoDB.Driver.GridFS" Version="2.19.2" />
     <PackageReference Include="MsgPack.Cli" Version="1.0.1" />
     <PackageReference Include="Multiformats.Base" Version="2.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
