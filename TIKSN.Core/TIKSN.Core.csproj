@@ -65,7 +65,7 @@
     <PackageReference Include="Multiformats.Base" Version="2.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Nito.AsyncEx.Context" Version="5.1.2" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="5.2.3" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="5.3.0" />
     <PackageReference Include="NoDb" Version="1.2.2" />
     <PackageReference Include="NuGet.Versioning" Version="6.6.0" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.1" />
