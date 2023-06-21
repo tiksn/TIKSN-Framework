@@ -1,5 +1,5 @@
-using TIKSN.Data;
 using TIKSN.Data.Mongo;
+using TIKSN.Mapping;
 
 namespace TIKSN.Finance.ForeignExchange.Data.Mongo
 {
