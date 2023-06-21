@@ -24,6 +24,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)GlobalSuppressions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integration\Correlation\Base62CorrelationServiceTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integration\Correlation\CuidCorrelationServiceTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\Correlation\GuidCorrelationServiceTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integration\Correlation\MultibaseCorrelationServiceTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Localization\CompositeAssemblyStringLocalizerTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Localization\TestStringLocalizer.cs" />
