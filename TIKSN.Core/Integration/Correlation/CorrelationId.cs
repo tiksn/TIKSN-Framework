@@ -6,17 +6,17 @@ namespace TIKSN.Integration.Correlation
     /// <summary>
     ///     Correlation ID
     /// </summary>
-    public readonly struct CorrelationID : IEquatable<CorrelationID>
+    public readonly struct CorrelationId : IEquatable<CorrelationId>
     {
         /// <summary>
         ///     Empty Correlation ID.
         /// </summary>
-        public static readonly CorrelationID Empty;
+        public static readonly CorrelationId Empty;
 
         private readonly byte[] _byteArrayRepresentation;
         private readonly string _stringRepresentation;
 
-        internal CorrelationID(string stringRepresentation, byte[] byteArrayRepresentation)
+        internal CorrelationId(string stringRepresentation, byte[] byteArrayRepresentation)
         {
             this._stringRepresentation =
                 stringRepresentation ?? throw new ArgumentNullException(nameof(stringRepresentation));
@@ -25,23 +25,23 @@ namespace TIKSN.Integration.Correlation
         }
 
         /// <summary>
-        ///     Implicitly convert <see cref="CorrelationID" /> to byte array.
+        ///     Implicitly convert <see cref="CorrelationId" /> to byte array.
         /// </summary>
         /// <param name="correlationId"></param>
-        public static implicit operator byte[](CorrelationID correlationId) => correlationId._byteArrayRepresentation;
+        public static implicit operator byte[](CorrelationId correlationId) => correlationId._byteArrayRepresentation;
 
         /// <summary>
-        ///     Implicitly convert <see cref="CorrelationID" /> to string.
+        ///     Implicitly convert <see cref="CorrelationId" /> to string.
         /// </summary>
         /// <param name="correlationId"></param>
-        public static implicit operator string(CorrelationID correlationId) => correlationId._stringRepresentation;
+        public static implicit operator string(CorrelationId correlationId) => correlationId._stringRepresentation;
 
         /// <summary>
         ///     Indicates whether this instance and a <paramref name="other" /> are equal by their binary representation.
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public bool Equals(CorrelationID other) =>
+        public bool Equals(CorrelationId other) =>
             this._byteArrayRepresentation.SequenceEqual(other._byteArrayRepresentation);
 
         /// <summary>
@@ -51,12 +51,12 @@ namespace TIKSN.Integration.Correlation
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            if (obj is null or not CorrelationID)
+            if (obj is null or not CorrelationId)
             {
                 return false;
             }
 
-            var other = (CorrelationID)obj;
+            var other = (CorrelationId)obj;
 
             return this.Equals(other);
         }
@@ -91,8 +91,8 @@ namespace TIKSN.Integration.Correlation
         /// <returns></returns>
         public override string ToString() => this._stringRepresentation;
 
-        public static bool operator ==(CorrelationID left, CorrelationID right) => left.Equals(right);
+        public static bool operator ==(CorrelationId left, CorrelationId right) => left.Equals(right);
 
-        public static bool operator !=(CorrelationID left, CorrelationID right) => !(left == right);
+        public static bool operator !=(CorrelationId left, CorrelationId right) => !(left == right);
     }
 }
