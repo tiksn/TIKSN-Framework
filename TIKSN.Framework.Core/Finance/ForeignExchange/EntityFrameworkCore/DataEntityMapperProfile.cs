@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
-using TIKSN.Data;
 using TIKSN.Finance.ForeignExchange.Data;
 using TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore;
+using TIKSN.Mapping;
 
 namespace TIKSN.Finance.ForeignExchange.EntityFrameworkCore
 {
