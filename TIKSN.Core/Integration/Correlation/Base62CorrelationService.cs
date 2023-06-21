@@ -1,90 +1,89 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
+using LanguageExt;
+using static LanguageExt.Prelude;
 using Microsoft.Extensions.Options;
 using TIKSN.Serialization;
 
-namespace TIKSN.Integration.Correlation
+namespace TIKSN.Integration.Correlation;
+
+public class Base62CorrelationService : ICorrelationService
 {
-    public class Base62CorrelationService : ICorrelationService
+    private const string Alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    private const int Radix = 62;
+    private static readonly IReadOnlyDictionary<char, int> CodeMap;
+
+    private readonly IOptions<Base62CorrelationServiceOptions> base62CorrelationServiceOptions;
+    private readonly ICustomDeserializer<byte[], BigInteger> bigIntegerBinaryDeserializer;
+    private readonly ICustomSerializer<byte[], BigInteger> bigIntegerBinarySerializer;
+    private readonly Random random;
+
+    static Base62CorrelationService()
     {
-        private const string Alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        private const int Radix = 62;
-        private static readonly IReadOnlyDictionary<char, int> CodeMap;
+        var codeMap = new Dictionary<char, int>();
 
-        private readonly IOptions<Base62CorrelationServiceOptions> _base62CorrelationServiceOptions;
-        private readonly ICustomDeserializer<byte[], BigInteger> _bigIntegerBinaryDeserializer;
-        private readonly ICustomSerializer<byte[], BigInteger> _bigIntegerBinarySerializer;
-        private readonly Random _random;
+        Alphabet
+            .ToCharArray()
+            .ForEach(codeMap.Add);
 
-        static Base62CorrelationService()
+        CodeMap = codeMap;
+    }
+
+    public Base62CorrelationService(
+        Random random,
+        IOptions<Base62CorrelationServiceOptions> base62CorrelationServiceOptions,
+        ICustomSerializer<byte[], BigInteger> bigIntegerBinarySerializer,
+        ICustomDeserializer<byte[], BigInteger> bigIntegerBinaryDeserializer)
+    {
+        this.random = random ?? throw new ArgumentNullException(nameof(random));
+        this.base62CorrelationServiceOptions = base62CorrelationServiceOptions ??
+                                                throw new ArgumentNullException(
+                                                    nameof(base62CorrelationServiceOptions));
+        this.bigIntegerBinarySerializer = bigIntegerBinarySerializer ??
+                                           throw new ArgumentNullException(nameof(bigIntegerBinarySerializer));
+        this.bigIntegerBinaryDeserializer = bigIntegerBinaryDeserializer ??
+                                             throw new ArgumentNullException(nameof(bigIntegerBinaryDeserializer));
+    }
+
+    public CorrelationId Create(string stringRepresentation)
+    {
+        var number = BigInteger.Zero;
+
+        foreach (var c in stringRepresentation)
         {
-            var codeMap = new Dictionary<char, int>();
-
-            Alphabet
-                .ToCharArray()
-                .ForEach(codeMap.Add);
-
-            CodeMap = codeMap;
+            number *= Radix;
+            number += CodeMap[c];
         }
 
-        public Base62CorrelationService(
-            Random random,
-            IOptions<Base62CorrelationServiceOptions> base62CorrelationServiceOptions,
-            ICustomSerializer<byte[], BigInteger> bigIntegerBinarySerializer,
-            ICustomDeserializer<byte[], BigInteger> bigIntegerBinaryDeserializer)
+        var binaryRepresentation = Seq(this.bigIntegerBinarySerializer.Serialize(number).Reverse().ToArray());
+        return new CorrelationId(stringRepresentation, binaryRepresentation);
+    }
+
+    public CorrelationId Create(Seq<byte> binaryRepresentation)
+    {
+        var number = this.bigIntegerBinaryDeserializer.Deserialize(binaryRepresentation.Reverse().ToArray());
+        var chars = new Stack<char>();
+
+        while (number != BigInteger.Zero)
         {
-            this._random = random ?? throw new ArgumentNullException(nameof(random));
-            this._base62CorrelationServiceOptions = base62CorrelationServiceOptions ??
-                                                    throw new ArgumentNullException(
-                                                        nameof(base62CorrelationServiceOptions));
-            this._bigIntegerBinarySerializer = bigIntegerBinarySerializer ??
-                                               throw new ArgumentNullException(nameof(bigIntegerBinarySerializer));
-            this._bigIntegerBinaryDeserializer = bigIntegerBinaryDeserializer ??
-                                                 throw new ArgumentNullException(nameof(bigIntegerBinaryDeserializer));
+            var code = (int)(number % Radix);
+            chars.Push(Alphabet[code]);
+            number /= Radix;
         }
 
-        public CorrelationID Create(string stringRepresentation)
+        if (chars.IsEmpty())
         {
-            var number = BigInteger.Zero;
-
-            foreach (var c in stringRepresentation)
-            {
-                number *= Radix;
-                number += CodeMap[c];
-            }
-
-            var byteArrayRepresentation = this._bigIntegerBinarySerializer.Serialize(number).Reverse().ToArray();
-            return new CorrelationID(stringRepresentation, byteArrayRepresentation);
+            chars.Push('0');
         }
 
-        public CorrelationID Create(byte[] byteArrayRepresentation)
-        {
-            var number = this._bigIntegerBinaryDeserializer.Deserialize(byteArrayRepresentation.Reverse().ToArray());
-            var chars = new Stack<char>();
+        var stringRepresentation = new string(chars.ToArray());
+        return new CorrelationId(stringRepresentation, binaryRepresentation);
+    }
 
-            while (number != BigInteger.Zero)
-            {
-                var code = (int)(number % Radix);
-                chars.Push(Alphabet[code]);
-                number /= Radix;
-            }
-
-            if (chars.IsEmpty())
-            {
-                chars.Push('0');
-            }
-
-            var stringRepresentation = new string(chars.ToArray());
-            return new CorrelationID(stringRepresentation, byteArrayRepresentation);
-        }
-
-        public CorrelationID Generate()
-        {
-            var byteArrayRepresentation = new byte[this._base62CorrelationServiceOptions.Value.ByteLength];
-            this._random.NextBytes(byteArrayRepresentation);
-            return this.Create(byteArrayRepresentation);
-        }
+    public CorrelationId Generate()
+    {
+        var byteArrayRepresentation = new byte[this.base62CorrelationServiceOptions.Value.ByteLength];
+        this.random.NextBytes(byteArrayRepresentation);
+        var binaryRepresentation = Seq(byteArrayRepresentation);
+        return this.Create(binaryRepresentation);
     }
 }
