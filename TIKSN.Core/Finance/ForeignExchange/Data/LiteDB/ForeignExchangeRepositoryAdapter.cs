@@ -1,6 +1,5 @@
-using System;
-using TIKSN.Data;
 using TIKSN.Data.LiteDB;
+using TIKSN.Mapping;
 
 namespace TIKSN.Finance.ForeignExchange.Data.LiteDB
 {
