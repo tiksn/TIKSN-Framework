@@ -1,6 +1,4 @@
-using System;
-
-namespace TIKSN.Data
+namespace TIKSN.Mapping
 {
     public class IdentityMapper<T> : IMapper<T, T>
     {
