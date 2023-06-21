@@ -2,6 +2,7 @@ using System;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.DependencyInjection;
+using TIKSN.Mapping;
 using Xunit;
 
 namespace TIKSN.Data.Tests
