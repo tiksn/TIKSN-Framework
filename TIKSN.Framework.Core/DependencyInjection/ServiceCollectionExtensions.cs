@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using TIKSN.Data;
 using TIKSN.FileSystem;
+using TIKSN.Mapping;
 
 namespace TIKSN.DependencyInjection
 {
