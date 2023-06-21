@@ -1,8 +1,7 @@
-using System;
 using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace TIKSN.Data
+namespace TIKSN.Mapping
 {
     public class MapperProfile : Profile
     {
