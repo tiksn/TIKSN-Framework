@@ -1,7 +1,6 @@
-using System;
 using AutoMapper;
 
-namespace TIKSN.Data
+namespace TIKSN.Mapping
 {
     public class AutoMapperAdapter<TSource, TDestination> : IMapper<TSource, TDestination>
     {
