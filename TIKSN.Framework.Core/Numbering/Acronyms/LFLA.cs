@@ -4,7 +4,7 @@ public sealed class LFLA : Acronym<LFLA>
 {
     private static readonly int LetterCount = 4;
 
-    protected LFLA(string value) : base(value)
+    private LFLA(string value) : base(value)
     {
     }
 }

@@ -1,6 +1,6 @@
 namespace TIKSN.Mapping
 {
-    public class IdentityMapper<T> : IMapper<T, T>, IAsyncMapper<T, T>
+    public sealed class IdentityMapper<T> : IMapper<T, T>, IAsyncMapper<T, T>
     {
         private static readonly Lazy<IdentityMapper<T>> LazyInstance = new(() => new IdentityMapper<T>());
 

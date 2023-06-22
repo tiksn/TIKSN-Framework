@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Numerics;
 using LanguageExt;
@@ -7,9 +5,6 @@ using LanguageExt.Parsec;
 using static LanguageExt.Prelude;
 using static LanguageExt.Parsec.Prim;
 using static LanguageExt.Parsec.Char;
-using static LanguageExt.Parsec.Expr;
-using static LanguageExt.Parsec.Token;
-using static LanguageExt.Parsec.Indent;
 
 namespace TIKSN.Numbering;
 

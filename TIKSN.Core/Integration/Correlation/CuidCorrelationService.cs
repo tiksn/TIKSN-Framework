@@ -146,23 +146,22 @@ public class CuidCorrelationService : ICorrelationService
 
         var timestamp = this.timeProvider.GetCurrentTime().ToUnixTimeMilliseconds();
 
-        int counter;
-
+        int oldCounter;
         lock (this.locker)
         {
-            counter = this.counter;
+            oldCounter = this.counter;
             this.counter = this.counter == QuartetteUpperBoundary ? 0 : this.counter + 1;
         }
 
         var pid = Process.GetCurrentProcess().Id % DuetteUpperBoundary;
-        var hostname = this.GetHostname();
-        var hostnameHash = hostname.Split().Aggregate(hostname.Length + 36, (prev, c) => prev + c[0]) %
+        var theHostname = this.GetHostname();
+        var hostnameHash = theHostname.Split().Aggregate(theHostname.Length + 36, (prev, c) => prev + c[0]) %
                            DuetteUpperBoundary;
         var randomNumber1 = this.random.Next() % QuartetteUpperBoundary;
         var randomNumber2 = this.random.Next() % QuartetteUpperBoundary;
 
         WriteBase36(timestamp, timestampChars, timestampBytes);
-        WriteBase36(counter, counterChars, counterBytes);
+        WriteBase36(oldCounter, counterChars, counterBytes);
         WriteBase36(pid, pidChars, pidBytes);
         WriteBase36(hostnameHash, hostnameChars, hostnameBytes);
         WriteBase36(randomNumber1, randomNumber1Chars, randomNumber1Bytes);
