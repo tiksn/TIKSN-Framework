@@ -152,7 +152,7 @@ Task EstimateVersions -depends Restore {
         $Script:NextVersion = [System.Management.Automation.SemanticVersion]::New($latestPackageVersion.Major, $latestPackageVersion.Minor, $latestPackageVersion.Patch, $nextPreReleaseLabel, $currentCommit)
     }
 
-    Write-Host "Next version estimated to be $Script:NextVersion"
+    Write-Output "Next version estimated to be $Script:NextVersion"
 }
 
 Task DownloadCurrencyCodes -depends Clean {
