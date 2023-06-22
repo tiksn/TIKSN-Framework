@@ -1,42 +1,43 @@
-using System;
+using LanguageExt;
+using static LanguageExt.Prelude;
 using Microsoft.Extensions.Options;
 using Multiformats.Base;
 
-namespace TIKSN.Integration.Correlation
+namespace TIKSN.Integration.Correlation;
+
+public class MultibaseCorrelationService : ICorrelationService
 {
-    public class MultibaseCorrelationService : ICorrelationService
+    private readonly IOptions<MultibaseCorrelationServiceOptions> multibaseCorrelationServiceOptions;
+    private readonly Random random;
+
+    public MultibaseCorrelationService(
+        Random random,
+        IOptions<MultibaseCorrelationServiceOptions> multibaseCorrelationServiceOptions)
     {
-        private readonly IOptions<MultibaseCorrelationServiceOptions> _multibaseCorrelationServiceOptions;
-        private readonly Random _random;
+        this.random = random ?? throw new ArgumentNullException(nameof(random));
+        this.multibaseCorrelationServiceOptions = multibaseCorrelationServiceOptions ??
+                                                   throw new ArgumentNullException(
+                                                       nameof(multibaseCorrelationServiceOptions));
+    }
 
-        public MultibaseCorrelationService(
-            Random random,
-            IOptions<MultibaseCorrelationServiceOptions> multibaseCorrelationServiceOptions)
-        {
-            this._random = random ?? throw new ArgumentNullException(nameof(random));
-            this._multibaseCorrelationServiceOptions = multibaseCorrelationServiceOptions ??
-                                                       throw new ArgumentNullException(
-                                                           nameof(multibaseCorrelationServiceOptions));
-        }
+    public CorrelationId Create(string stringRepresentation)
+    {
+        var binaryRepresentation = Seq(Multibase.Decode(stringRepresentation, out MultibaseEncoding _));
+        return new CorrelationId(stringRepresentation, binaryRepresentation);
+    }
 
-        public CorrelationID Create(string stringRepresentation)
-        {
-            var byteArrayRepresentation = Multibase.Decode(stringRepresentation, out MultibaseEncoding _);
-            return new CorrelationID(stringRepresentation, byteArrayRepresentation);
-        }
+    public CorrelationId Create(Seq<byte> binaryRepresentation)
+    {
+        var stringRepresentation = Multibase.Encode(this.multibaseCorrelationServiceOptions.Value.Encoding,
+            binaryRepresentation.ToArray());
+        return new CorrelationId(stringRepresentation, binaryRepresentation);
+    }
 
-        public CorrelationID Create(byte[] byteArrayRepresentation)
-        {
-            var stringRepresentation = Multibase.Encode(this._multibaseCorrelationServiceOptions.Value.Encoding,
-                byteArrayRepresentation);
-            return new CorrelationID(stringRepresentation, byteArrayRepresentation);
-        }
-
-        public CorrelationID Generate()
-        {
-            var byteArrayRepresentation = new byte[this._multibaseCorrelationServiceOptions.Value.ByteLength];
-            this._random.NextBytes(byteArrayRepresentation);
-            return this.Create(byteArrayRepresentation);
-        }
+    public CorrelationId Generate()
+    {
+        var byteArrayRepresentation = new byte[this.multibaseCorrelationServiceOptions.Value.ByteLength];
+        this.random.NextBytes(byteArrayRepresentation);
+        var binaryRepresentation = Seq(byteArrayRepresentation);
+        return this.Create(binaryRepresentation);
     }
 }

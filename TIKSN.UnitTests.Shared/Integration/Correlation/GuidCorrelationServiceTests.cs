@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.DependencyInjection;
@@ -7,16 +7,16 @@ using Xunit.Abstractions;
 
 namespace TIKSN.Integration.Correlation.Tests;
 
-public class Base62CorrelationServiceTests
+public class GuidCorrelationServiceTests
 {
     private readonly ICorrelationService correlationService;
     private readonly ITestOutputHelper testOutputHelper;
 
-    public Base62CorrelationServiceTests(ITestOutputHelper testOutputHelper)
+    public GuidCorrelationServiceTests(ITestOutputHelper testOutputHelper)
     {
         var services = new ServiceCollection();
         _ = services.AddFrameworkPlatform();
-        _ = services.AddSingleton<ICorrelationService, Base62CorrelationService>();
+        _ = services.AddSingleton<ICorrelationService, GuidCorrelationService>();
         var serviceProvider = services.BuildServiceProvider();
         this.correlationService = serviceProvider.GetRequiredService<ICorrelationService>();
         this.testOutputHelper = testOutputHelper ?? throw new ArgumentNullException(nameof(testOutputHelper));
@@ -35,17 +35,6 @@ public class Base62CorrelationServiceTests
         _ = correlationIDFromString.Should().Be(correlationID);
         _ = correlationIDFromBytes.Should().Be(correlationID);
         _ = correlationIDFromString.Should().Be(correlationIDFromBytes);
-    }
-
-    [Fact]
-    public void SampleTest()
-    {
-        var correlationIDFromString = this.correlationService.Create("5Rq2J6PNGnciW2thvTHQTa");
-        this.LogOutput(correlationIDFromString, nameof(correlationIDFromString));
-        var bytes = correlationIDFromString.ToBinary();
-        var hex = BitConverter.ToString(bytes.ToArray());
-
-        _ = hex.Should().Be("B3-09-A6-C1-6E-56-F0-6C-03-B2-AE-47-9B-A5-E7-FA");
     }
 
     private void LogOutput(CorrelationId correlationID, string name)
