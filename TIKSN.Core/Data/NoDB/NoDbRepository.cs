@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
@@ -66,7 +67,7 @@ namespace TIKSN.Data.NoDB
         public Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken) =>
             BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, this.UpdateAsync);
 
-        public async IAsyncEnumerable<TEntity> StreamAllAsync(CancellationToken cancellationToken)
+        public async IAsyncEnumerable<TEntity> StreamAllAsync([EnumeratorCancellation] CancellationToken cancellationToken)
         {
             var entities = await this._basicQueries.GetAllAsync(this._projectId, cancellationToken).ConfigureAwait(false);
             foreach (var entity in entities)

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,11 +16,13 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
     public class MyCurrencyDotNetTests
     {
         private readonly ITimeProvider timeProvider;
+        private readonly IHttpClientFactory httpClientFactory;
         private readonly ServiceProviderFixture serviceProviderFixture;
 
         public MyCurrencyDotNetTests(ServiceProviderFixture serviceProviderFixture)
         {
             this.timeProvider = serviceProviderFixture.GetServiceProvider().GetRequiredService<ITimeProvider>();
+            this.httpClientFactory = serviceProviderFixture.GetServiceProvider().GetRequiredService<IHttpClientFactory>();
             this.serviceProviderFixture = serviceProviderFixture ?? throw new ArgumentNullException(nameof(serviceProviderFixture));
         }
 
@@ -28,9 +31,9 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
         {
             var currencyFactory = this.serviceProviderFixture.GetServiceProvider().GetRequiredService<ICurrencyFactory>();
 
-            var myCurrencyDotNet = new MyCurrencyDotNet(currencyFactory, this.timeProvider);
+            var myCurrencyDotNet = new MyCurrencyDotNet(this.httpClientFactory, currencyFactory, this.timeProvider);
 
-            var pairs = await myCurrencyDotNet.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true);
+            var pairs = await myCurrencyDotNet.GetCurrencyPairsAsync(this.timeProvider.GetCurrentTime(), default).ConfigureAwait(true);
 
             _ = pairs.Count().Should().BeGreaterThan(0);
         }
@@ -40,13 +43,13 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
         {
             var currencyFactory = this.serviceProviderFixture.GetServiceProvider().GetRequiredService<ICurrencyFactory>();
 
-            var myCurrencyDotNet = new MyCurrencyDotNet(currencyFactory, this.timeProvider);
+            var myCurrencyDotNet = new MyCurrencyDotNet(this.httpClientFactory, currencyFactory, this.timeProvider);
 
             var amd = currencyFactory.Create("AMD");
             var usd = currencyFactory.Create("USD");
             var pair = new CurrencyPair(usd, amd);
 
-            var rate = await myCurrencyDotNet.GetExchangeRateAsync(pair, DateTimeOffset.Now, default).ConfigureAwait(true);
+            var rate = await myCurrencyDotNet.GetExchangeRateAsync(pair, this.timeProvider.GetCurrentTime(), default).ConfigureAwait(true);
 
             _ = rate.Should().BeGreaterThan(decimal.One);
         }
@@ -56,13 +59,13 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
         {
             var currencyFactory = this.serviceProviderFixture.GetServiceProvider().GetRequiredService<ICurrencyFactory>();
 
-            var myCurrencyDotNet = new MyCurrencyDotNet(currencyFactory, this.timeProvider);
+            var myCurrencyDotNet = new MyCurrencyDotNet(this.httpClientFactory, currencyFactory, this.timeProvider);
 
             var amd = currencyFactory.Create("AMD");
             var usd = currencyFactory.Create("USD");
             var pair = new CurrencyPair(amd, usd);
 
-            var rate = await myCurrencyDotNet.GetExchangeRateAsync(pair, DateTimeOffset.Now, default).ConfigureAwait(true);
+            var rate = await myCurrencyDotNet.GetExchangeRateAsync(pair, this.timeProvider.GetCurrentTime(), default).ConfigureAwait(true);
 
             _ = rate.Should().BeLessThan(decimal.One);
         }

@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TIKSN.DependencyInjection;
 using Xunit;
 
-namespace TIKSN.Data.Tests
+namespace TIKSN.Mapping.Tests
 {
     public class MapperProfileTests
     {

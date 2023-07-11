@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.Finance.ForeignExchange.Cumulative;
@@ -16,6 +17,7 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
         private const string skip = "API changed, code needs to be adopted";
 
         private readonly string accessKey = "<put your access key here>";
+        private readonly IHttpClientFactory httpClientFactory;
         private readonly ICurrencyFactory currencyFactory;
         private readonly ITimeProvider timeProvider;
         private readonly ServiceProviderFixture serviceProviderFixture;
@@ -24,13 +26,14 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
         {
             this.currencyFactory = serviceProviderFixture.GetServiceProvider().GetRequiredService<ICurrencyFactory>();
             this.timeProvider = serviceProviderFixture.GetServiceProvider().GetRequiredService<ITimeProvider>();
+            this.httpClientFactory = serviceProviderFixture.GetServiceProvider().GetRequiredService<IHttpClientFactory>();
             this.serviceProviderFixture = serviceProviderFixture ?? throw new ArgumentNullException(nameof(serviceProviderFixture));
         }
 
         [Fact(Skip = skip)]
         public async Task GetCurrencyPairs001Async()
         {
-            var exchange = new CurrencylayerDotCom(this.currencyFactory, this.timeProvider, this.accessKey);
+            var exchange = new CurrencylayerDotCom(this.httpClientFactory, this.currencyFactory, this.timeProvider, this.accessKey);
 
             var pairs = await exchange.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true);
 
@@ -40,7 +43,7 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
         [Fact(Skip = skip)]
         public async Task GetExchangeRateAsync001Async()
         {
-            var exchange = new CurrencylayerDotCom(this.currencyFactory, this.timeProvider, this.accessKey);
+            var exchange = new CurrencylayerDotCom(this.httpClientFactory, this.currencyFactory, this.timeProvider, this.accessKey);
 
             var pair = new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("UAH"));
 

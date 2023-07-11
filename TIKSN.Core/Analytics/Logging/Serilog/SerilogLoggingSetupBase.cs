@@ -5,21 +5,21 @@ namespace TIKSN.Analytics.Logging.Serilog
 {
     public class SerilogLoggingSetupBase : ILoggingSetup
     {
-        protected LoggerConfiguration _loggerConfiguration;
+        protected LoggerConfiguration loggerConfiguration;
 
-        protected SerilogLoggingSetupBase() => this._loggerConfiguration = new LoggerConfiguration();
+        protected SerilogLoggingSetupBase() => this.loggerConfiguration = new LoggerConfiguration();
 
         public void Setup(ILoggingBuilder loggingBuilder)
         {
             this.SetupSerilog();
 
-            _ = loggingBuilder.AddSerilog(this._loggerConfiguration.CreateLogger(), true);
+            _ = loggingBuilder.AddSerilog(this.loggerConfiguration.CreateLogger(), true);
         }
 
         protected virtual void SetupSerilog()
         {
-            _ = this._loggerConfiguration.MinimumLevel.Verbose();
-            _ = this._loggerConfiguration.Enrich.FromLogContext();
+            _ = this.loggerConfiguration.MinimumLevel.Verbose();
+            _ = this.loggerConfiguration.Enrich.FromLogContext();
         }
     }
 }

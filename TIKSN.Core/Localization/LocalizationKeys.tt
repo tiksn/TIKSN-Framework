@@ -1,4 +1,4 @@
-﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ template debug="false" hostspecific="true" language="C#" #>
 <#@ assembly name="System.Core" #>
 <#@ assembly name="System.Xml" #>
 <#@ assembly name="System.Xml.Linq" #>
@@ -30,11 +30,13 @@ namespace TIKSN.Localization
 	<#
     foreach (var dataElement in dataElements)
     {
-#>	/// <summary>
+#>
+
+        /// <summary>
 		/// Key: <#= dataElement.Attribute("name").Value #>
 		/// Original Value: <#= dataElement.Element("value").Value #>
 		/// </summary>
-		public const int Key<#= dataElement.Attribute("name").Value #> = <#= dataElement.Attribute("name").Value #>;
+		public static int Key<#= dataElement.Attribute("name").Value #> => <#= dataElement.Attribute("name").Value #>;
 	<#
     }
 #>}

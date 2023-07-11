@@ -17,33 +17,39 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         private const string RSS = "https://www.rba.gov.au/rss/rss-cb-exchange-rates.xml";
 
         private static readonly CurrencyInfo AustralianDollar;
-
-        private readonly ICurrencyFactory _currencyFactory;
-        private readonly ITimeProvider _timeProvider;
+        private readonly ICurrencyFactory currencyFactory;
+        private readonly IHttpClientFactory httpClientFactory;
         private readonly Dictionary<CurrencyInfo, decimal> rates;
+        private readonly ITimeProvider timeProvider;
         private DateTimeOffset lastFetchDate;
         private DateTimeOffset publishedDate;
 
         static ReserveBankOfAustralia()
         {
-            var Australia = new RegionInfo("en-AU");
-            AustralianDollar = new CurrencyInfo(Australia);
+            var australia = new RegionInfo("en-AU");
+            AustralianDollar = new CurrencyInfo(australia);
         }
 
-        public ReserveBankOfAustralia(ICurrencyFactory currencyFactory, ITimeProvider timeProvider)
+        public ReserveBankOfAustralia(
+            IHttpClientFactory httpClientFactory,
+            ICurrencyFactory currencyFactory,
+            ITimeProvider timeProvider)
         {
             this.publishedDate = DateTimeOffset.MinValue;
 
             this.rates = new Dictionary<CurrencyInfo, decimal>();
 
             this.lastFetchDate = DateTimeOffset.MinValue;
-
-            this._currencyFactory = currencyFactory;
-            this._timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+            this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
+            this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
-            DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<Money> ConvertCurrencyAsync(
+            Money baseMoney,
+            CurrencyInfo counterCurrency,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
             var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
@@ -52,7 +58,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return new Money(counterCurrency, rate * baseMoney.Amount);
         }
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             await this.FetchOnDemandAsync(cancellationToken).ConfigureAwait(false);
@@ -61,13 +68,15 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
             var pairs = new List<CurrencyPair>();
 
-            pairs.AddRange(this.rates.Keys.Select(R => new CurrencyPair(AustralianDollar, R)));
-            pairs.AddRange(this.rates.Keys.Select(R => new CurrencyPair(R, AustralianDollar)));
+            pairs.AddRange(this.rates.Keys.Select(r => new CurrencyPair(AustralianDollar, r)));
+            pairs.AddRange(this.rates.Keys.Select(r => new CurrencyPair(r, AustralianDollar)));
 
             return pairs;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+        public async Task<decimal> GetExchangeRateAsync(
+            CurrencyPair pair,
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             await this.FetchOnDemandAsync(cancellationToken).ConfigureAwait(false);
@@ -76,73 +85,72 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
             if (pair.BaseCurrency == AustralianDollar)
             {
-                if (this.rates.ContainsKey(pair.CounterCurrency))
+                if (this.rates.TryGetValue(pair.CounterCurrency, out var rate))
                 {
-                    return this.rates[pair.CounterCurrency];
+                    return rate;
                 }
             }
             else if (pair.CounterCurrency == AustralianDollar)
             {
-                if (this.rates.ContainsKey(pair.BaseCurrency))
+                if (this.rates.TryGetValue(pair.BaseCurrency, out var counterRate))
                 {
-                    return decimal.One / this.rates[pair.BaseCurrency];
+                    return decimal.One / counterRate;
                 }
             }
 
             throw new ArgumentException("Currency pair not supported.");
         }
 
-        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn,
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             var result = new List<ExchangeRate>();
 
-            using (var httpClient = new HttpClient())
+            var httpClient = this.httpClientFactory.CreateClient();
+            var responseStream = await httpClient.GetStreamAsync(RSS).ConfigureAwait(false);
+
+            var xdoc = XDocument.Load(responseStream);
+
+            lock (this.rates)
             {
-                var responseStream = await httpClient.GetStreamAsync(RSS).ConfigureAwait(false);
-
-                var xdoc = XDocument.Load(responseStream);
-
-                lock (this.rates)
+                foreach (var item in xdoc.Element("{http://www.w3.org/1999/02/22-rdf-syntax-ns#}RDF")
+                    .Elements("{http://purl.org/rss/1.0/}item"))
                 {
-                    foreach (var item in xdoc.Element("{http://www.w3.org/1999/02/22-rdf-syntax-ns#}RDF")
-                        .Elements("{http://purl.org/rss/1.0/}item"))
-                    {
-                        var exchangeRateElement =
-                            item.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}statistics")
-                                .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}exchangeRate");
-                        var baseCurrencyElement =
-                            exchangeRateElement.Element(
-                                "{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}baseCurrency");
-                        var targetCurrencyElement =
-                            exchangeRateElement.Element(
-                                "{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}targetCurrency");
-                        var observationValueElement = exchangeRateElement
-                            .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}observation")
-                            .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}value");
-                        var periodElement = exchangeRateElement
-                            .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}observationPeriod")
-                            .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}period");
+                    var exchangeRateElement =
+                        item.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}statistics")
+                            .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}exchangeRate");
+                    var baseCurrencyElement =
+                        exchangeRateElement.Element(
+                            "{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}baseCurrency");
+                    var targetCurrencyElement =
+                        exchangeRateElement.Element(
+                            "{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}targetCurrency");
+                    var observationValueElement = exchangeRateElement
+                        .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}observation")
+                        .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}value");
+                    var periodElement = exchangeRateElement
+                        .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}observationPeriod")
+                        .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}period");
 
-                        Debug.Assert(baseCurrencyElement.Value == "AUD");
+                    Debug.Assert(baseCurrencyElement.Value == "AUD");
 
-                        var counterCurrencyCode = targetCurrencyElement.Value;
+                    var counterCurrencyCode = targetCurrencyElement.Value;
 
-                        var exchangeRate = decimal.Parse(observationValueElement.Value);
-                        var period = DateTimeOffset.Parse(periodElement.Value);
+                    var exchangeRate = decimal.Parse(observationValueElement.Value, CultureInfo.InvariantCulture);
+                    var period = DateTimeOffset.Parse(periodElement.Value, CultureInfo.InvariantCulture);
 
-                        var foreignCurrency = this._currencyFactory.Create(counterCurrencyCode);
+                    var foreignCurrency = this.currencyFactory.Create(counterCurrencyCode);
 
-                        this.rates[foreignCurrency] = exchangeRate;
+                    this.rates[foreignCurrency] = exchangeRate;
 
-                        this.publishedDate = period;
+                    this.publishedDate = period;
 
-                        result.Add(new ExchangeRate(new CurrencyPair(AustralianDollar, foreignCurrency), period,
-                            exchangeRate));
-                    }
-
-                    this.lastFetchDate = this._timeProvider.GetCurrentTime();
+                    result.Add(new ExchangeRate(new CurrencyPair(AustralianDollar, foreignCurrency), period,
+                        exchangeRate));
                 }
+
+                this.lastFetchDate = this.timeProvider.GetCurrentTime();
             }
 
             return result;
@@ -150,15 +158,15 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         private async Task FetchOnDemandAsync(CancellationToken cancellationToken)
         {
-            if (this._timeProvider.GetCurrentTime() - this.lastFetchDate > TimeSpan.FromDays(1d))
+            if (this.timeProvider.GetCurrentTime() - this.lastFetchDate > TimeSpan.FromDays(1d))
             {
-                _ = await this.GetExchangeRatesAsync(this._timeProvider.GetCurrentTime(), cancellationToken).ConfigureAwait(false);
+                _ = await this.GetExchangeRatesAsync(this.timeProvider.GetCurrentTime(), cancellationToken).ConfigureAwait(false);
             }
         }
 
         private void VerifyDate(DateTimeOffset asOn)
         {
-            if (asOn > this._timeProvider.GetCurrentTime())
+            if (asOn > this.timeProvider.GetCurrentTime())
             {
                 throw new ArgumentException("Exchange rate forecasting are not supported.");
             }

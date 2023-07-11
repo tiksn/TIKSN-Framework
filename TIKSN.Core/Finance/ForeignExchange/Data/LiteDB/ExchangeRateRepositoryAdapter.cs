@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using TIKSN.Data;
 using TIKSN.Data.LiteDB;
+using TIKSN.Mapping;
 
 namespace TIKSN.Finance.ForeignExchange.Data.LiteDB
 {
@@ -22,6 +18,19 @@ namespace TIKSN.Finance.ForeignExchange.Data.LiteDB
                 IdentityMapper<Guid>.Instance,
                 IdentityMapper<Guid>.Instance,
                 dataRepository) => this.dataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
+
+        public Task<IReadOnlyList<ExchangeRateEntity>> SearchAsync(
+            string baseCurrencyCode,
+            string counterCurrencyCode,
+            DateTime dateFrom,
+            DateTime dateTo,
+            CancellationToken cancellationToken)
+            => this.MapAsync(() => this.dataRepository.SearchAsync(
+                baseCurrencyCode,
+                counterCurrencyCode,
+                dateFrom,
+                dateTo,
+                cancellationToken));
 
         public Task<IReadOnlyList<ExchangeRateEntity>> SearchAsync(
             Guid foreignExchangeID,

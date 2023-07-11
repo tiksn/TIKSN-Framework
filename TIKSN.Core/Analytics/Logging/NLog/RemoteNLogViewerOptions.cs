@@ -4,9 +4,9 @@ namespace TIKSN.Analytics.Logging.NLog
 {
     public class RemoteNLogViewerOptions
     {
-        public const string RemoteNLogViewerConfigurationSection = "RemoteNLogViewer";
+        public static string RemoteNLogViewerConfigurationSection => "RemoteNLogViewer";
 
-        private string _address;
+        private string address;
 
         /// <summary>
         ///     Gets or sets a value indicating whether to include NLog-specific extensions to log4j schema.
@@ -59,7 +59,7 @@ namespace TIKSN.Analytics.Logging.NLog
         /// </remarks>
         public string Address
         {
-            get => this._address;
+            get => this.address;
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
@@ -71,7 +71,7 @@ namespace TIKSN.Analytics.Logging.NLog
                     this.Url = new Uri(value);
                 }
 
-                this._address = value;
+                this.address = value;
             }
         }
 

@@ -5,11 +5,19 @@ namespace TIKSN.Finance.ForeignExchange.Data
 {
     public class ForeignExchangeEntity : IEntity<Guid>
     {
-        public string CountryCode { get; set; }
+        public ForeignExchangeEntity(Guid id, string countryCode, int longNameKey, int shortNameKey)
+        {
+            this.ID = id;
+            this.CountryCode = countryCode;
+            this.LongNameKey = longNameKey;
+            this.ShortNameKey = shortNameKey;
+        }
 
-        public Guid ID { get; set; }
+        public string CountryCode { get; }
 
-        public int LongNameKey { get; set; }
-        public int ShortNameKey { get; set; }
+        public Guid ID { get; }
+
+        public int LongNameKey { get; }
+        public int ShortNameKey { get; }
     }
 }

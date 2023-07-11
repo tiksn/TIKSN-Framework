@@ -19,8 +19,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
         private static readonly CurrencyInfo RussianRuble;
         private static readonly CultureInfo RussianRussia;
-        private readonly ICurrencyFactory _currencyFactory;
-        private readonly ITimeProvider _timeProvider;
+        private readonly IHttpClientFactory httpClientFactory;
+        private readonly ICurrencyFactory currencyFactory;
+        private readonly ITimeProvider timeProvider;
         private readonly Dictionary<CurrencyInfo, decimal> rates;
 
         private DateTimeOffset? published;
@@ -33,16 +34,23 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             RussianRussia = new CultureInfo("ru-RU");
         }
 
-        public BankOfRussia(ICurrencyFactory currencyFactory, ITimeProvider timeProvider)
+        public BankOfRussia(
+            IHttpClientFactory httpClientFactory,
+            ICurrencyFactory currencyFactory,
+            ITimeProvider timeProvider)
         {
             this.rates = new Dictionary<CurrencyInfo, decimal>();
             this.published = null;
-            this._currencyFactory = currencyFactory;
-            this._timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+            this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
+            this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
-            DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<Money> ConvertCurrencyAsync(
+            Money baseMoney,
+            CurrencyInfo counterCurrency,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
             await this.FetchOnDemandAsync(asOn, cancellationToken).ConfigureAwait(false);
 
@@ -51,7 +59,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return new Money(counterCurrency, baseMoney.Amount * rate);
         }
 
-        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+        public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             await this.FetchOnDemandAsync(asOn, cancellationToken).ConfigureAwait(false);
@@ -67,20 +76,21 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             return pairs;
         }
 
-        public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+        public async Task<decimal> GetExchangeRateAsync(
+            CurrencyPair pair,
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             await this.FetchOnDemandAsync(asOn, cancellationToken).ConfigureAwait(false);
 
-            var rate = this.GetRate(pair.BaseCurrency, pair.CounterCurrency);
-
-            return rate;
+            return this.GetRate(pair.BaseCurrency, pair.CounterCurrency);
         }
 
-        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn,
+        public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
+            DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
-            ValidateDate(asOn, this._timeProvider);
+            ValidateDate(asOn, this.timeProvider);
 
             var thatDay = asOn.Date;
 
@@ -88,62 +98,68 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
             var result = new List<ExchangeRate>();
 
-            using (var httpClient = new HttpClient())
+            var httpClient = this.httpClientFactory.CreateClient();
+            var responseStream = await httpClient.GetStreamAsync(address).ConfigureAwait(false);
+
+            var stream​Reader = new Stream​Reader(responseStream, Encoding.UTF7);
+
+            var xdoc = XDocument.Load(stream​Reader);
+
+            lock (this.rates)
             {
-                var responseStream = await httpClient.GetStreamAsync(address).ConfigureAwait(false);
+                this.rates.Clear();
 
-                var stream​Reader = new Stream​Reader(responseStream, Encoding.UTF7);
-
-                var xdoc = XDocument.Load(stream​Reader);
-
-                lock (this.rates)
+                foreach (var valuteElement in xdoc.Element("ValCurs").Elements("Valute"))
                 {
-                    this.rates.Clear();
+                    var charCodeElement = valuteElement.Element("CharCode");
 
-                    foreach (var ValuteElement in xdoc.Element("ValCurs").Elements("Valute"))
+                    if (charCodeElement == null)
                     {
-                        var charCodeElement = ValuteElement.Element("CharCode");
-
-                        if (charCodeElement == null)
-                        {
-                            continue;
-                        }
-
-                        var nominalElement = ValuteElement.Element("Nominal");
-                        var valueElement = ValuteElement.Element("Value");
-
-                        var code = charCodeElement.Value;
-
-                        if (code == "NULL")
-                        {
-                            continue;
-                        }
-
-                        var currency = this._currencyFactory.Create(charCodeElement.Value);
-
-                        var value = decimal.Parse(valueElement.Value, RussianRussia);
-                        var nominal = decimal.Parse(nominalElement.Value, RussianRussia);
-
-                        result.Add(new ExchangeRate(new CurrencyPair(currency, RussianRuble), thatDay,
-                            value / nominal));
-                        result.Add(new ExchangeRate(new CurrencyPair(RussianRuble, currency), thatDay,
-                            nominal / value));
-
-                        var rate = value / nominal;
-
-                        this.rates.Add(currency, rate);
+                        continue;
                     }
 
-                    this.published = asOn.Date;
+                    var nominalElement = valuteElement.Element("Nominal");
+                    var valueElement = valuteElement.Element("Value");
+
+                    var code = charCodeElement.Value;
+
+                    if (code == "NULL")
+                    {
+                        continue;
+                    }
+
+                    var currency = this.currencyFactory.Create(charCodeElement.Value);
+
+                    var value = decimal.Parse(valueElement.Value, RussianRussia);
+                    var nominal = decimal.Parse(nominalElement.Value, RussianRussia);
+
+                    result.Add(new ExchangeRate(new CurrencyPair(currency, RussianRuble), thatDay,
+                        value / nominal));
+                    result.Add(new ExchangeRate(new CurrencyPair(RussianRuble, currency), thatDay,
+                        nominal / value));
+
+                    var rate = value / nominal;
+
+                    this.rates.Add(currency, rate);
                 }
+
+                this.published = asOn.Date;
             }
 
             return result;
         }
 
+        private static void ValidateDate(DateTimeOffset asOn, ITimeProvider timeProvider)
+        {
+            if (asOn > timeProvider.GetCurrentTime())
+            {
+                throw new ArgumentException("Exchange rate forecasting not supported.");
+            }
+        }
+
         private async Task FetchOnDemandAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
         {
-            ValidateDate(asOn, this._timeProvider);
+            ValidateDate(asOn, this.timeProvider);
 
             if (!this.published.HasValue)
             {
@@ -155,28 +171,20 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             }
         }
 
-        private static void ValidateDate(DateTimeOffset asOn, ITimeProvider timeProvider)
+        private decimal GetRate(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency)
         {
-            if (asOn > timeProvider.GetCurrentTime())
+            if (baseCurrency == RussianRuble)
             {
-                throw new ArgumentException("Exchange rate forecasting not supported.");
-            }
-        }
-
-        private decimal GetRate(CurrencyInfo BaseCurrency, CurrencyInfo CounterCurrency)
-        {
-            if (BaseCurrency == RussianRuble)
-            {
-                if (this.rates.ContainsKey(CounterCurrency))
+                if (this.rates.TryGetValue(counterCurrency, out var counterRate))
                 {
-                    return decimal.One / this.rates[CounterCurrency];
+                    return decimal.One / counterRate;
                 }
             }
-            else if (CounterCurrency == RussianRuble)
+            else if (counterCurrency == RussianRuble)
             {
-                if (this.rates.ContainsKey(BaseCurrency))
+                if (this.rates.TryGetValue(baseCurrency, out var rate))
                 {
-                    return this.rates[BaseCurrency];
+                    return rate;
                 }
             }
 

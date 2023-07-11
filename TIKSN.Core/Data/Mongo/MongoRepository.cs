@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Driver;
@@ -127,7 +128,7 @@ namespace TIKSN.Data.Mongo
             return this.mongoClientSessionProvider.GetClientSessionHandle().Match(Some, None);
         }
 
-        public async IAsyncEnumerable<TDocument> StreamAllAsync(CancellationToken cancellationToken)
+        public async IAsyncEnumerable<TDocument> StreamAllAsync([EnumeratorCancellation] CancellationToken cancellationToken)
         {
             Task<IAsyncCursor<TDocument>> None() => this.collection.Find(FilterDefinition<TDocument>.Empty).ToCursorAsync(cancellationToken);
 

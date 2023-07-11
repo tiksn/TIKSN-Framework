@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using LanguageExt;
 
 namespace TIKSN.Settings
 {
@@ -6,7 +6,11 @@ namespace TIKSN.Settings
     {
         T GetLocalSetting<T>(string name, T defaultValue);
 
+        Option<T> GetLocalSetting<T>(string name);
+
         T GetRoamingSetting<T>(string name, T defaultValue);
+
+        Option<T> GetRoamingSetting<T>(string name);
 
         IReadOnlyCollection<string> ListLocalSetting();
 

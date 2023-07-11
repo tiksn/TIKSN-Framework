@@ -24,6 +24,7 @@ namespace TIKSN.DependencyInjection
         {
             _ = services.AddLocalization();
             _ = services.AddMemoryCache();
+            _ = services.AddHttpClient();
             _ = services.AddOptions();
 
             services.TryAddSingleton<IConsoleService, ConsoleService>();

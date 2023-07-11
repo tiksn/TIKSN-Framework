@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Localization;
+using LanguageExt;
+using static LanguageExt.Prelude;
 using Microsoft.Extensions.Logging;
 using TIKSN.Data;
 using TIKSN.Finance.ForeignExchange.Data;
@@ -14,143 +10,200 @@ namespace TIKSN.Finance.ForeignExchange
 {
     public abstract class ExchangeRateServiceBase : IExchangeRateService
     {
-        protected readonly ICurrencyFactory _currencyFactory;
-        private readonly IExchangeRateRepository _exchangeRateRepository;
-        private readonly IForeignExchangeRepository _foreignExchangeRepository;
-        protected readonly ILogger<ExchangeRateServiceBase> _logger;
+        private readonly IExchangeRateRepository exchangeRateRepository;
+        private readonly IForeignExchangeRepository foreignExchangeRepository;
+        protected readonly ILogger<ExchangeRateServiceBase> logger;
 
-        private readonly Dictionary<Guid, (IExchangeRatesProvider BatchProvider, IExchangeRateProvider IndividualProvider
-            , int LongNameKey, int ShortNameKey, RegionInfo Country, TimeSpan InvalidationInterval)> _providers;
+        private readonly Dictionary<Guid, (Either<IExchangeRateProvider, IExchangeRatesProvider> RateProvider,
+            int LongNameKey, int ShortNameKey, RegionInfo Country, TimeSpan InvalidationInterval)> providers;
 
-        private readonly Random _random;
-        protected readonly IRegionFactory _regionFactory;
-        protected readonly IStringLocalizer _stringLocalizer;
-        private readonly IUnitOfWorkFactory _unitOfWorkFactory;
+        protected readonly IRegionFactory regionFactory;
+        private readonly IUnitOfWorkFactory unitOfWorkFactory;
 
         protected ExchangeRateServiceBase(
             ILogger<ExchangeRateServiceBase> logger,
-            IStringLocalizer stringLocalizer,
-            ICurrencyFactory currencyFactory,
             IRegionFactory regionFactory,
             IExchangeRateRepository exchangeRateRepository,
             IForeignExchangeRepository foreignExchangeRepository,
-            IUnitOfWorkFactory unitOfWorkFactory,
-            Random random)
+            IUnitOfWorkFactory unitOfWorkFactory)
         {
-            this._logger = logger;
-            this._stringLocalizer = stringLocalizer;
-            this._exchangeRateRepository = exchangeRateRepository;
-            this._foreignExchangeRepository = foreignExchangeRepository;
+            this.logger = logger;
+            this.exchangeRateRepository = exchangeRateRepository;
+            this.foreignExchangeRepository = foreignExchangeRepository;
 
-            this._providers =
-                new Dictionary<Guid, (IExchangeRatesProvider BatchProvider, IExchangeRateProvider IndividualProvider, int
-                    LongNameKey, int ShortNameKey, RegionInfo Country, TimeSpan InvalidationInterval)>();
+            this.providers =
+                new Dictionary<Guid, (Either<IExchangeRateProvider, IExchangeRatesProvider> RateProvider,
+                    int LongNameKey, int ShortNameKey, RegionInfo Country, TimeSpan InvalidationInterval)>();
 
-            this._currencyFactory = currencyFactory;
-            this._regionFactory = regionFactory;
-            this._random = random;
-            this._unitOfWorkFactory = unitOfWorkFactory ?? throw new ArgumentNullException(nameof(unitOfWorkFactory));
+            this.regionFactory = regionFactory;
+            this.unitOfWorkFactory = unitOfWorkFactory ?? throw new ArgumentNullException(nameof(unitOfWorkFactory));
         }
 
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
-            DateTimeOffset asOn, CancellationToken cancellationToken)
+        public async Task<Option<Money>> ConvertCurrencyAsync(
+            Money baseMoney,
+            CurrencyInfo counterCurrency,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
         {
             var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
-            var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
+            var rate = await this.GetExchangeRateAsync(
+                pair, asOn, cancellationToken).ConfigureAwait(false);
 
-            return new Money(counterCurrency, baseMoney.Amount * rate);
+            return rate.Map(r => new Money(counterCurrency, baseMoney.Amount * r));
         }
 
-        public async Task<decimal> GetExchangeRateAsync(
+        public async Task<Option<Money>> ConvertCurrencyAsync(
+            Money baseMoney,
+            CurrencyInfo counterCurrency,
+            DateTimeOffset asOn,
+            CurrencyInfo intermediaryCurrency,
+            CancellationToken cancellationToken)
+        {
+            var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
+
+            var rate = await this.GetExchangeRateAsync(
+                pair, asOn, intermediaryCurrency, cancellationToken).ConfigureAwait(false);
+
+            return rate.Map(r => new Money(counterCurrency, baseMoney.Amount * r));
+        }
+
+        public async Task<Option<decimal>> GetExchangeRateAsync(
+            CurrencyPair pair,
+            DateTimeOffset asOn,
+            CancellationToken cancellationToken)
+        {
+            await using var uow = await this.unitOfWorkFactory.CreateAsync(cancellationToken);
+
+            var minInvalidationInterval = this.providers.Min(x => x.Value.InvalidationInterval);
+            var (dateFrom, dateTo) = EstimateDateRange(asOn, minInvalidationInterval);
+
+            var combinedRates = await this.exchangeRateRepository.SearchAsync(
+                pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, dateFrom, dateTo,
+                cancellationToken).ConfigureAwait(false);
+
+            if (combinedRates.Count == 0)
+            {
+                combinedRates = await this.FetchExchangeRatesAsync(pair, asOn, cancellationToken);
+            }
+
+            await uow.CompleteAsync(cancellationToken).ConfigureAwait(false);
+
+            var exchangeRateEntity = GetPreferredExchangeRate(asOn, combinedRates);
+
+            exchangeRateEntity.Match(
+                s =>
+                    this.logger.LogInformation(
+                    347982955,
+                    "Exchange rate for {CurrencyPair} provided by Foreign Exchange with ID {ForeignExchangeID}",
+                    pair, s.ForeignExchangeID),
+                () =>
+                    this.logger.LogInformation(
+                    1617946673,
+                    "Exchange rate  for {CurrencyPair} is not found ", pair));
+
+            return exchangeRateEntity.Map(x => x.Rate);
+        }
+
+        public async Task<Option<decimal>> GetExchangeRateAsync(
+            CurrencyPair pair,
+            DateTimeOffset asOn,
+            CurrencyInfo intermediaryCurrency,
+            CancellationToken cancellationToken)
+        {
+            var syntheticCurrencyPair1 = new CurrencyPair(pair.BaseCurrency, intermediaryCurrency);
+            var syntheticCurrencyPair2 = new CurrencyPair(intermediaryCurrency, pair.CounterCurrency);
+            var rate1 = await GetExchangeRateAsync(syntheticCurrencyPair1, asOn, cancellationToken);
+            var rate2 = await GetExchangeRateAsync(syntheticCurrencyPair2, asOn, cancellationToken);
+
+            var rate =
+                from r1 in rate1
+                from r2 in rate2
+                select r1 * r2;
+
+            return rate;
+        }
+
+        private static Option<ExchangeRateEntity> GetPreferredExchangeRate(
+            DateTimeOffset asOn,
+            IReadOnlyList<ExchangeRateEntity> combinedRates)
+        {
+            var exchangeRateEntity = combinedRates
+                .OrderBy(item => Math.Abs((item.AsOn - asOn).Ticks))
+                .ToOption();
+            return exchangeRateEntity;
+        }
+
+        private async Task<IReadOnlyList<ExchangeRateEntity>> FetchExchangeRatesAsync(
             CurrencyPair pair,
             DateTimeOffset asOn,
             CancellationToken cancellationToken)
         {
             var combinedRates = new List<ExchangeRateEntity>();
 
-            using (var uow = await this._unitOfWorkFactory.CreateAsync(cancellationToken))
+            foreach (var provider in this.providers)
             {
-                foreach (var provider in this._providers)
-                {
-                    var ticksToIntervalRatio = asOn.Ticks / provider.Value.InvalidationInterval.Ticks;
-                    var dateFrom = new DateTimeOffset(ticksToIntervalRatio * provider.Value.InvalidationInterval.Ticks,
-                        asOn.Offset).UtcDateTime;
-                    var dateTo =
-                        new DateTimeOffset((ticksToIntervalRatio + 1) * provider.Value.InvalidationInterval.Ticks,
-                            asOn.Offset).UtcDateTime;
+                var (dateFrom, dateTo) = EstimateDateRange(asOn, provider.Value.InvalidationInterval);
 
-                    var rates = await this._exchangeRateRepository.SearchAsync(provider.Key,
-                        pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, dateFrom, dateTo,
+                var rates = await this.exchangeRateRepository.SearchAsync(provider.Key,
+                    pair.BaseCurrency.ISOCurrencySymbol, pair.CounterCurrency.ISOCurrencySymbol, dateFrom, dateTo,
+                    cancellationToken).ConfigureAwait(false);
+
+                if (rates.Count == 0)
+                {
+                    await provider.Value.RateProvider.Match(
+                        batchProvider => this.FetchExchangeRatesAsync(provider.Key, batchProvider, asOn,
+                            cancellationToken),
+                        individualProvider => this.FetchExchangeRatesAsync(provider.Key, individualProvider, pair,
+                            asOn, cancellationToken)).ConfigureAwait(false);
+
+                    rates = await this.exchangeRateRepository.SearchAsync(
+                        provider.Key,
+                        pair.BaseCurrency.ISOCurrencySymbol,
+                        pair.CounterCurrency.ISOCurrencySymbol,
+                        dateFrom,
+                        dateTo,
                         cancellationToken).ConfigureAwait(false);
 
-                    if (rates.Count == 0)
-                    {
-                        if (provider.Value.BatchProvider != null)
-                        {
-                            await this.FetchExchangeRatesAsync(provider.Key, provider.Value.BatchProvider, asOn,
-                                cancellationToken).ConfigureAwait(false);
-                        }
-                        else if (provider.Value.IndividualProvider != null)
-                        {
-                            await this.FetchExchangeRatesAsync(provider.Key, provider.Value.IndividualProvider, pair,
-                                asOn, cancellationToken).ConfigureAwait(false);
-                        }
-                        else
-                        {
-                            throw new Exception(
-                                $"{nameof(provider.Value.BatchProvider)} and {nameof(provider.Value.IndividualProvider)} are both null, one of them should be null and other should not.");
-                        }
-
-                        rates = await this._exchangeRateRepository.SearchAsync(
-                            provider.Key,
-                            pair.BaseCurrency.ISOCurrencySymbol,
-                            pair.CounterCurrency.ISOCurrencySymbol,
-                            dateFrom,
-                            dateTo,
-                            cancellationToken).ConfigureAwait(false);
-
-                        combinedRates.AddRange(rates);
-                    }
-                    else
-                    {
-                        combinedRates.AddRange(rates);
-                    }
+                    combinedRates.AddRange(rates);
                 }
-
-                await uow.CompleteAsync(cancellationToken).ConfigureAwait(false);
+                else
+                {
+                    combinedRates.AddRange(rates);
+                }
             }
 
-            var exchangeRateEntity = combinedRates
-                .MinBy(item => Math.Abs((item.AsOn - asOn).Ticks))
-                .First();
+            return combinedRates;
+        }
 
-            this._logger.LogInformation("Exchange rate provided by Foreign Exchange with ID {0}",
-                exchangeRateEntity.ForeignExchangeID);
-
-            return exchangeRateEntity.Rate;
+        private static (DateTime dateFrom, DateTime dateTo) EstimateDateRange(
+            DateTimeOffset asOn,
+            TimeSpan invalidationInterval)
+        {
+            var invalidationIntervalHalf = TimeSpan.FromMilliseconds(invalidationInterval.TotalMilliseconds / 2.0);
+            var dateFrom = (asOn - invalidationIntervalHalf).UtcDateTime;
+            var dateTo = (asOn + invalidationIntervalHalf).UtcDateTime;
+            return (dateFrom, dateTo);
         }
 
         public async Task InitializeAsync(CancellationToken cancellationToken)
         {
-            using (var uow = await this._unitOfWorkFactory.CreateAsync(cancellationToken))
+            using (var uow = await this.unitOfWorkFactory.CreateAsync(cancellationToken))
             {
-                foreach (var provider in this._providers)
+                foreach (var provider in this.providers)
                 {
-                    var forex = await this._foreignExchangeRepository.GetOrDefaultAsync(provider.Key,
+                    var forex = await this.foreignExchangeRepository.GetOrDefaultAsync(provider.Key,
                         cancellationToken).ConfigureAwait(false);
 
                     if (forex == null)
                     {
-                        forex = new ForeignExchangeEntity
-                        {
-                            ID = provider.Key,
-                            LongNameKey = provider.Value.LongNameKey,
-                            ShortNameKey = provider.Value.ShortNameKey,
-                            CountryCode = provider.Value.Country.Name
-                        };
+                        forex = new ForeignExchangeEntity(
+                            provider.Key,
+                            provider.Value.Country.Name,
+                            provider.Value.LongNameKey,
+                            provider.Value.ShortNameKey);
 
-                        await this._foreignExchangeRepository.AddAsync(forex, cancellationToken).ConfigureAwait(false);
+                        await this.foreignExchangeRepository.AddAsync(forex, cancellationToken).ConfigureAwait(false);
                     }
                 }
 
@@ -159,12 +212,12 @@ namespace TIKSN.Finance.ForeignExchange
         }
 
         protected void AddBatchProvider(Guid providerID, IExchangeRatesProvider provider, int longNameKey,
-            int shortNameKey, string country, TimeSpan invalidationInterval) => this._providers.Add(providerID,
-            (provider, null, longNameKey, shortNameKey, this._regionFactory.Create(country), invalidationInterval));
+            int shortNameKey, string country, TimeSpan invalidationInterval) => this.providers.Add(providerID,
+            (Right(provider), longNameKey, shortNameKey, this.regionFactory.Create(country), invalidationInterval));
 
         protected void AddIndividualProvider(Guid providerID, IExchangeRateProvider provider, int longNameKey,
-            int shortNameKey, string country, TimeSpan invalidationInterval) => this._providers.Add(providerID,
-            (null, provider, longNameKey, shortNameKey, this._regionFactory.Create(country), invalidationInterval));
+            int shortNameKey, string country, TimeSpan invalidationInterval) => this.providers.Add(providerID,
+            (Left(provider), longNameKey, shortNameKey, this.regionFactory.Create(country), invalidationInterval));
 
         private async Task FetchExchangeRatesAsync(
             Guid foreignExchangeID,
@@ -180,7 +233,7 @@ namespace TIKSN.Finance.ForeignExchange
             }
             catch (Exception ex)
             {
-                this._logger.LogError(ex, ex.Message);
+                this.logger.LogError(ex, ex.Message);
             }
         }
 
@@ -200,7 +253,7 @@ namespace TIKSN.Finance.ForeignExchange
             }
             catch (Exception ex)
             {
-                this._logger.LogError(ex, ex.Message);
+                this.logger.LogError(ex, ex.Message);
             }
         }
 
@@ -213,18 +266,16 @@ namespace TIKSN.Finance.ForeignExchange
 
             foreach (var exchangeRate in exchangeRates)
             {
-                entities.Add(new ExchangeRateEntity
-                {
-                    ID = Guid.NewGuid(),
-                    AsOn = exchangeRate.AsOn.UtcDateTime,
-                    BaseCurrencyCode = exchangeRate.Pair.BaseCurrency.ISOCurrencySymbol,
-                    CounterCurrencyCode = exchangeRate.Pair.CounterCurrency.ISOCurrencySymbol,
-                    ForeignExchangeID = foreignExchangeID,
-                    Rate = exchangeRate.Rate
-                });
+                entities.Add(new ExchangeRateEntity(
+                    Guid.NewGuid(),
+                    exchangeRate.Pair.BaseCurrency.ISOCurrencySymbol,
+                    exchangeRate.Pair.CounterCurrency.ISOCurrencySymbol,
+                    foreignExchangeID,
+                    exchangeRate.AsOn.UtcDateTime,
+                    exchangeRate.Rate));
             }
 
-            await this._exchangeRateRepository.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
+            await this.exchangeRateRepository.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
         }
     }
 }

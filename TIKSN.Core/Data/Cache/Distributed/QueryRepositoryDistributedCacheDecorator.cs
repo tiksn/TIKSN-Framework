@@ -13,7 +13,7 @@ namespace TIKSN.Data.Cache.Distributed
         where TEntity : IEntity<TIdentity>
         where TIdentity : IEquatable<TIdentity>
     {
-        protected readonly IQueryRepository<TEntity, TIdentity> _queryRepository;
+        protected readonly IQueryRepository<TEntity, TIdentity> queryRepository;
 
         public QueryRepositoryDistributedCacheDecorator(IQueryRepository<TEntity, TIdentity> queryRepository,
             IRepository<TEntity> repository,
@@ -23,7 +23,7 @@ namespace TIKSN.Data.Cache.Distributed
             IOptions<DistributedCacheDecoratorOptions> genericOptions,
             IOptions<DistributedCacheDecoratorOptions<TEntity>> specificOptions)
             : base(repository, distributedCache, serializer, deserializer, genericOptions, specificOptions) =>
-            this._queryRepository = queryRepository;
+            this.queryRepository = queryRepository;
 
         public async Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken)
         {
@@ -36,7 +36,7 @@ namespace TIKSN.Data.Cache.Distributed
             var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, id).ToString();
 
             var result = this.GetFromDistributedCacheAsync(cacheKey, cancellationToken,
-                () => this._queryRepository.GetAsync(id, cancellationToken));
+                () => this.queryRepository.GetAsync(id, cancellationToken));
 
             if (result == null)
             {
@@ -51,7 +51,7 @@ namespace TIKSN.Data.Cache.Distributed
             var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, id).ToString();
 
             return this.GetFromDistributedCacheAsync(cacheKey, cancellationToken,
-                () => this._queryRepository.GetAsync(id, cancellationToken));
+                () => this.queryRepository.GetAsync(id, cancellationToken));
         }
 
         public async Task<IEnumerable<TEntity>>

@@ -1,6 +1,4 @@
-using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Microsoft.ApplicationInsights.DataContracts;
 
 namespace TIKSN.Analytics.Telemetry
@@ -30,7 +28,7 @@ namespace TIKSN.Analytics.Telemetry
                 Debug.WriteLine(ex);
             }
 
-            return Task.FromResult<object>(null);
+            return Task.CompletedTask;
         }
     }
 }
