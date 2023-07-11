@@ -7,7 +7,7 @@ namespace TIKSN.Settings.Tests
 {
     public partial class SettingsServiceTests
     {
-        partial void SetupDenepdencies()
+        private partial void SetupDenepdencies()
         {
             _ = this.services.AddFrameworkPlatform();
             _ = this.services.AddSingleton<ISettingsService, FileSettingsService>();
