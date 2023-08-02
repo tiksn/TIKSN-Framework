@@ -23,7 +23,7 @@ trim_trailing_whitespace = true
 # File Extension Settings
 ##########################################
 vsspell_section_id = 76c94d6a244544a4afc9ef87b4e38ae4
-vsspell_ignored_keywords_76c94d6a244544a4afc9ef87b4e38ae4 = TIKSN
+vsspell_ignored_keywords_76c94d6a244544a4afc9ef87b4e38ae4 = TIKSN|Mongo
 
 # Visual Studio Solution Files
 [*.sln]
