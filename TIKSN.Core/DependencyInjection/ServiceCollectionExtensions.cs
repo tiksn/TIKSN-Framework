@@ -1,4 +1,3 @@
-using System;
 using System.Numerics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -27,7 +26,6 @@ namespace TIKSN.DependencyInjection
             _ = services.AddHttpClient();
             _ = services.AddOptions();
 
-            services.TryAddSingleton<IConsoleService, ConsoleService>();
             services.TryAddSingleton<ICultureFactory, CultureFactory>();
             services.TryAddSingleton<ICurrencyFactory, CurrencyFactory>();
             services.TryAddSingleton<IRegionFactory, RegionFactory>();
