@@ -5,34 +5,41 @@ namespace TIKSN.Data.Mongo
 {
     public abstract class MongoClientProviderBase : IMongoClientProvider
     {
-        private readonly IConfiguration _configuration;
-        private readonly string _connectionStringKey;
-        private readonly object _locker;
-        private MongoClient _mongoClient;
+        private readonly IConfiguration configuration;
+        private readonly string connectionStringKey;
+        private readonly object locker;
+        private MongoClient mongoClient;
 
-        protected MongoClientProviderBase(IConfiguration configuration, string connectionStringKey)
+        protected MongoClientProviderBase(
+            IConfiguration configuration,
+            string connectionStringKey)
         {
-            this._locker = new object();
-            this._configuration = configuration;
-            this._connectionStringKey = connectionStringKey;
+            this.locker = new object();
+            this.configuration = configuration;
+            this.connectionStringKey = connectionStringKey;
         }
 
         public IMongoClient GetMongoClient()
         {
-            if (this._mongoClient == null)
+            if (this.mongoClient == null)
             {
-                lock (this._locker)
+                lock (this.locker)
                 {
-                    if (this._mongoClient == null)
+                    if (this.mongoClient == null)
                     {
-                        var connectionString = this._configuration.GetConnectionString(this._connectionStringKey);
-                        var mongoUrl = MongoUrl.Create(connectionString);
-                        this._mongoClient = new MongoClient(mongoUrl);
+                        var connectionString = this.configuration.GetConnectionString(this.connectionStringKey);
+                        var mongoClientSettings = MongoClientSettings.FromConnectionString(connectionString);
+                        ConfigureClientSettings(mongoClientSettings);
+                        this.mongoClient = new MongoClient(mongoClientSettings);
                     }
                 }
             }
 
-            return this._mongoClient;
+            return this.mongoClient;
+        }
+
+        protected virtual void ConfigureClientSettings(MongoClientSettings mongoClientSettings)
+        {
         }
     }
 }
