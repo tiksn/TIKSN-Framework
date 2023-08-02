@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using TIKSN.FileSystem;
 using TIKSN.Mapping;
+using TIKSN.Shell;
 
 namespace TIKSN.DependencyInjection
 {
@@ -15,6 +16,7 @@ namespace TIKSN.DependencyInjection
         {
             _ = services.AddFrameworkCore();
 
+            services.TryAddSingleton<IConsoleService, ConsoleService>();
             services.TryAddSingleton<IKnownFolders, KnownFolders>();
 
             mapperProfiles ??= Array.Empty<MapperProfile>();
