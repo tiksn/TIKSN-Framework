@@ -6,6 +6,7 @@ using MsgPack.Serialization;
 using ReactiveUI;
 using TIKSN.FileSystem;
 using TIKSN.Globalization;
+using TIKSN.Identity;
 using TIKSN.Serialization;
 using TIKSN.Serialization.Bond;
 using TIKSN.Serialization.MessagePack;
@@ -55,6 +56,7 @@ namespace TIKSN.DependencyInjection
             services.TryAddSingleton<SimpleJsonBondSerializer>();
             services.TryAddSingleton<SimpleXmlBondDeserializer>();
             services.TryAddSingleton<SimpleXmlBondSerializer>();
+            services.TryAddSingleton<IIdentityGenerator<long>, IdGenIdentityGenerator>();
 
             services.TryAddScoped<IShellCommandContext, ShellCommandContext>();
 
