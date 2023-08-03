@@ -28,6 +28,7 @@
     <PackageReference Include="Bond.CSharp" Version="10.0.0" />
     <PackageReference Include="Exceptionless.Signed" Version="4.3.2027" />
     <PackageReference Include="FluentValidation" Version="11.6.0" />
+    <PackageReference Include="IdGen" Version="3.0.3" />
     <PackageReference Include="LanguageExt.Core" Version="4.4.3" />
     <PackageReference Include="LanguageExt.FSharp" Version="4.4.3" />
     <PackageReference Include="LanguageExt.Parsec" Version="4.4.3" />
