@@ -1,9 +1,5 @@
 Properties {
     $PackageId = 'TIKSN-Framework'
-    Import-Module -Name VSSetup
-    # $vsinstance = Get-VSSetupInstance -All | Select-VSSetupInstance -Product * -Latest
-    #$msbuildPath = Join-Path -Path $vsinstance.InstallationPath -ChildPath 'MSBuild\Current\Bin\MSBuild.exe'
-    #Set-Alias -Name xmsbuild -Value $msbuildPath -Scope 'Script'
 }
 
 Task Publish -depends Pack {
@@ -82,6 +78,7 @@ Task Pack -depends Build, Test {
     $nuspec.Save($temporaryNuspec)
 
     Copy-Item -Path 'icon.png' -Destination $script:buildArtifactsFolder
+    Copy-Item -Path 'README.md' -Destination $script:buildArtifactsFolder
     Exec { nuget pack $temporaryNuspec -Version $Script:NextVersion -BasePath $script:buildArtifactsFolder -OutputDirectory $script:trashFolder -OutputFileNamesWithoutVersion -Verbosity detailed }
 }
 
