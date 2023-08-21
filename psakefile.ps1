@@ -78,6 +78,7 @@ Task Pack -depends Build, Test {
     $nuspec.Save($temporaryNuspec)
 
     Copy-Item -Path 'icon.png' -Destination $script:buildArtifactsFolder
+    Copy-Item -Path 'README.md' -Destination $script:buildArtifactsFolder
     Exec { nuget pack $temporaryNuspec -Version $Script:NextVersion -BasePath $script:buildArtifactsFolder -OutputDirectory $script:trashFolder -OutputFileNamesWithoutVersion -Verbosity detailed }
 }
 
