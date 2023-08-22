@@ -25,8 +25,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.RegionLocalization", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Framework.Core.Tests", "TIKSN.Framework.Core.Tests\TIKSN.Framework.Core.Tests.csproj", "{31DBB0CE-8360-41FD-A874-F4C6D907C5EE}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TIKSN.UnitTests.Shared", "TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.shproj", "{04326875-E3E6-4F1F-881D-4046D83913FC}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIKSN.Framework.IntegrationTests", "TIKSN.Framework.IntegrationTests\TIKSN.Framework.IntegrationTests.csproj", "{C21074B3-47E9-4D3D-95FB-F7041143B218}"
 EndProject
 Global
@@ -148,15 +146,12 @@ Global
 		{974DB7C5-CE2D-4232-B781-CFCBB1F7784F} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{9D8726CC-AC22-4597-90DB-A2809E22500C} = {38C873E2-88C6-435A-89B3-A3EBD5D4D171}
 		{31DBB0CE-8360-41FD-A874-F4C6D907C5EE} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
-		{04326875-E3E6-4F1F-881D-4046D83913FC} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
 		{C21074B3-47E9-4D3D-95FB-F7041143B218} = {2CE66F97-5B89-401D-AEE5-BF2228760097}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3E79495C-F7F4-477F-BDCB-6260ECFD8B4E}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.projitems*{04326875-e3e6-4f1f-881d-4046d83913fc}*SharedItemsImports = 13
-		TIKSN.UnitTests.Shared\TIKSN.UnitTests.Shared.projitems*{31dbb0ce-8360-41fd-a874-f4c6d907c5ee}*SharedItemsImports = 5
 		TIKSN.Framework.SharedMobile\TIKSN.Framework.SharedMobile.projitems*{7a9b69cb-8abf-4474-a85a-11d5d9f3d005}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal
