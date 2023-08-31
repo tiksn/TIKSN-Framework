@@ -31,4 +31,17 @@
     <ProjectReference Include="..\TIKSN.Core\TIKSN.Core.csproj" />
     <ProjectReference Include="..\TIKSN.Framework.Core\TIKSN.Framework.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Licensing\LicensingResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LicensingResource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Licensing\LicensingResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LicensingResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>
