@@ -9,6 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    <PackageReference Include="Bond.CSharp" Version="10.0.0" />
     <PackageReference Include="Meziantou.FluentAssertionsAnalyzers" Version="1.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -29,5 +30,18 @@
   <ItemGroup>
     <ProjectReference Include="..\TIKSN.Core\TIKSN.Core.csproj" />
     <ProjectReference Include="..\TIKSN.Framework.Core\TIKSN.Framework.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Licensing\LicensingResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LicensingResource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Licensing\LicensingResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LicensingResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

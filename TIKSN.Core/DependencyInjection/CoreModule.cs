@@ -1,5 +1,6 @@
 using Autofac;
 using TIKSN.Data.Mongo;
+using TIKSN.Licensing;
 using TIKSN.Serialization;
 using TIKSN.Web.Rest;
 
@@ -21,6 +22,14 @@ namespace TIKSN.DependencyInjection
                 .As<IMongoClientSessionStore>()
                 .As<IMongoClientSessionProvider>()
                 .InstancePerLifetimeScope();
+
+            _ = builder.RegisterGeneric(typeof(LicenseFactory<,>))
+                .As(typeof(ILicenseFactory<,>))
+                .SingleInstance();
+
+            _ = builder.RegisterType<RSACertificateSignatureService>()
+                .Named<ICertificateSignatureService>("1.2.840.113549.1.1.1")
+                .SingleInstance();
         }
     }
 }

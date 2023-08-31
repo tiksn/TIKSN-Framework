@@ -1,0 +1,11 @@
+namespace TIKSN.Framework.Core.Tests.Licensing
+
+
+struct TestLicenseEntitlements
+{
+    0: string Name;
+    1: int32 Quantity;
+    2: blob Salt;
+    3: int64 CompanyId;
+    4: int64 EmployeeId;
+}
