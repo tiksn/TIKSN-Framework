@@ -1,9 +1,9 @@
-using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Autofac.Features.Indexed;
 using LanguageExt;
 using LanguageExt.Common;
 using TIKSN.Serialization.Bond;
+using TIKSN.Time;
 
 namespace TIKSN.Licensing;
 
@@ -13,17 +13,20 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
     private readonly CompactBinaryBondDeserializer deserializer;
     private readonly IEntitlementsConverter<TEntitlements, TEntitlementsData> entitlementsConverter;
     private readonly CompactBinaryBondSerializer serializer;
+    private readonly ITimeProvider timeProvider;
 
     public LicenseFactory(
         IIndex<string, ICertificateSignatureService> certificateSignatureService,
         CompactBinaryBondSerializer serializer,
         CompactBinaryBondDeserializer deserializer,
-        IEntitlementsConverter<TEntitlements, TEntitlementsData> entitlementsConverter)
+        IEntitlementsConverter<TEntitlements, TEntitlementsData> entitlementsConverter,
+        ITimeProvider timeProvider)
     {
         this.certificateSignatureService = certificateSignatureService ?? throw new ArgumentNullException(nameof(certificateSignatureService));
         this.serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
         this.deserializer = deserializer ?? throw new ArgumentNullException(nameof(deserializer));
         this.entitlementsConverter = entitlementsConverter ?? throw new ArgumentNullException(nameof(entitlementsConverter));
+        this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
     public Validation<Error, License<TEntitlements>> Create(
@@ -106,7 +109,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
         LicenseTerms terms = null;
         TEntitlements entitlements = default;
 
-        _ = GetTerms(envelope)
+        _ = GetTerms(envelope, this.timeProvider)
             .Match(succ => terms = succ, fail => errors.AddRange(fail));
 
         _ = this.entitlementsConverter.Convert(this.deserializer.Deserialize<TEntitlementsData>(envelope.Message.Entitlements.ToArray()))
@@ -140,7 +143,8 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
     }
 
     private static Validation<Error, LicenseTerms> GetTerms(
-        LicenseEnvelope envelope)
+        LicenseEnvelope envelope,
+        ITimeProvider timeProvider)
     {
         if (envelope is null)
         {
@@ -155,8 +159,8 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
         }
 
         var serialNumber = Ulid.Empty;
-        var notBefore = DateTimeOffset.MinValue;
-        var notAfter = DateTimeOffset.MinValue;
+        var notBefore = Option<DateTimeOffset>.None;
+        var notAfter = Option<DateTimeOffset>.None;
         Party licensor = null;
         Party licensee = null;
 
@@ -171,6 +175,22 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
         _ = LicenseFactoryTermsValidation.ConvertToParty(envelope.Message.Licensee)
             .Match(succ => licensee = succ, fail => errors.AddRange(fail));
 
+        _ = notBefore.IfSome(notBeforeValue =>
+        {
+            if (timeProvider.GetCurrentTime() < notBeforeValue)
+            {
+                errors.Add(Error.New(504364885, "License is not valid yet"));
+            }
+        });
+
+        _ = notAfter.IfSome(notAfterValue =>
+        {
+            if (notAfterValue < timeProvider.GetCurrentTime())
+            {
+                errors.Add(Error.New(428925195, "License is not valid anymore"));
+            }
+        });
+
         if (errors.Any())
         {
             return errors.ToSeq();
@@ -180,8 +200,8 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
             serialNumber,
             licensor,
             licensee,
-            notBefore,
-            notAfter);
+            notBefore.IfNone(DateTimeOffset.MinValue),
+            notAfter.IfNone(DateTimeOffset.MinValue));
     }
 
     private static Validation<Error, LicenseEnvelope> Populate(

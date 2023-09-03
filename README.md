@@ -1,7 +1,6 @@
 # TIKSN Framework
 
 [![Version](https://img.shields.io/nuget/v/TIKSN-Framework.svg)](https://www.nuget.org/packages/TIKSN-Framework)
-[![TIKSN-Framework on fuget.org](https://www.fuget.org/packages/TIKSN-Framework/badge.svg)](https://www.fuget.org/packages/TIKSN-Framework)
 [![NuGet Pre Release](https://img.shields.io/nuget/vpre/TIKSN-Framework.svg)](https://www.nuget.org/packages/TIKSN-Framework)
 [![Developed by TIKSN Lab](https://img.shields.io/badge/Developed%20by-TIKSN%20Lab-orange.svg)](https://tiksn.com/project/tiksn-framework/)
 
