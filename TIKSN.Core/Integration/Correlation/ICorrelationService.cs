@@ -11,20 +11,20 @@ namespace TIKSN.Integration.Correlation
         ///     Creates <see cref="CorrelationId" /> from string representation.
         /// </summary>
         /// <param name="stringRepresentation"></param>
-        /// <returns></returns>
+        /// <returns>Created <see cref="CorrelationId"/></returns>
         CorrelationId Create(string stringRepresentation);
 
         /// <summary>
         ///     Creates <see cref="CorrelationId" /> from binary representation.
         /// </summary>
         /// <param name="binaryRepresentation"></param>
-        /// <returns></returns>
+        /// <returns>Created <see cref="CorrelationId"/></returns>
         CorrelationId Create(Seq<byte> binaryRepresentation);
 
         /// <summary>
         ///     Generates new <see cref="CorrelationId" />
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Generated <see cref="CorrelationId"/></returns>
         CorrelationId Generate();
     }
 }
