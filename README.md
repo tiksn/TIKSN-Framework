@@ -12,6 +12,7 @@
 * Money
 * Pricing strategy
 * Telemetry
+* Licensing
 * Composite Weighted Progress
 * Repository and Unity of Wok pattern implementation with Entity Framework Core
 * Network Connectivity Service and Triggering
