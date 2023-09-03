@@ -87,6 +87,41 @@ public class LicenseTests
         this.AssertSuccess(licensor, licensee, terms, result);
     }
 
+    [Theory]
+    [InlineData("RSA")]
+    public void GivenPrivateCertificate_WhenLicenseCreatedWithValidation_ThenItShouldBeInvalid(
+        string kind)
+    {
+        // Arrange
+
+        ILicenseFactory<TestEntitlements, TestLicenseEntitlements> licenseFactory;
+        IndividualParty licensor;
+        OrganizationParty licensee;
+        LicenseTerms terms;
+        TestEntitlements entitlements;
+        X509Certificate2 publicCertificate;
+        X509Certificate2 privateCertificate;
+        this.Arrange(
+            kind,
+            out licenseFactory,
+            out licensor,
+            out licensee,
+            out terms,
+            out entitlements,
+            out publicCertificate,
+            out privateCertificate);
+
+        // Act
+
+        var result = licenseFactory.Create(terms, entitlements, privateCertificate)
+            .Validate(license => license.Entitlements.CompanyId == 2000, 1638412088, "Wrong Company ID")
+            .Validate(license => license.Entitlements.EmployeeId == 20004000, 102340273, "Wrong Employee ID");
+
+        // Assert
+
+        _ = result.IsFail.Should().BeTrue();
+    }
+
     private void Arrange(
         string kind,
         out ILicenseFactory<TestEntitlements, TestLicenseEntitlements> licenseFactory,
