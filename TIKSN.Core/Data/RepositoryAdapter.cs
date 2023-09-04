@@ -68,7 +68,15 @@ namespace TIKSN.Data
         public Task UpdateRangeAsync(IEnumerable<TDomainEntity> entities, CancellationToken cancellationToken)
             => this.repository.UpdateRangeAsync(this.Map(entities), cancellationToken);
 
-        protected TDomainEntity Map(TDataEntity entity) => this.dataEntityToDomainEntityMapper.Map(entity);
+        protected TDomainEntity Map(TDataEntity entity)
+        {
+            if (entity is null)
+            {
+                return default;
+            }
+
+            return this.dataEntityToDomainEntityMapper.Map(entity);
+        }
 
         protected IReadOnlyList<TDomainEntity> Map(IEnumerable<TDataEntity> entities)
             => entities.Select(this.dataEntityToDomainEntityMapper.Map).ToArray();
@@ -80,7 +88,14 @@ namespace TIKSN.Data
             => this.dataIdentityToDomainIdentityMapper.Map(identity);
 
         protected TDataEntity Map(TDomainEntity entity)
-            => this.domainEntityToDataEntityMapper.Map(entity);
+        {
+            if (entity is null)
+            {
+                return default;
+            }
+
+            return this.domainEntityToDataEntityMapper.Map(entity);
+        }
 
         protected IReadOnlyList<TDataEntity> Map(IEnumerable<TDomainEntity> entities)
             => entities.Select(this.domainEntityToDataEntityMapper.Map).ToArray();
@@ -91,14 +106,15 @@ namespace TIKSN.Data
         protected IReadOnlyList<TDataIdentity> Map(IEnumerable<TDomainIdentity> identities)
             => identities.Select(this.domainIdentityToDataIdentityMapper.Map).ToArray();
 
-        protected async Task<IReadOnlyList<TDomainEntity>> MapAsync(Func<Task<IReadOnlyList<TDataEntity>>> retriever)
+        protected async Task<IReadOnlyList<TDomainEntity>> MapAsync(
+            Func<Task<IReadOnlyList<TDataEntity>>> retriever)
         {
             if (retriever is null)
             {
                 throw new ArgumentNullException(nameof(retriever));
             }
 
-            var entities = await retriever();
+            var entities = await retriever().ConfigureAwait(false);
 
             return this.Map(entities);
         }
