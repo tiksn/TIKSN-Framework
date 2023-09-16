@@ -1,10 +1,10 @@
-using System;
 using TIKSN.Data;
 
-namespace TIKSN.Finance.ForeignExchange.Data
+namespace TIKSN.Finance.ForeignExchange.Data;
+
+public interface IForeignExchangeRepository
+    : IRepository<ForeignExchangeEntity>
+    , IQueryRepository<ForeignExchangeEntity, Guid>
+    , IStreamRepository<ForeignExchangeEntity>
 {
-    public interface IForeignExchangeRepository : IQueryRepository<ForeignExchangeEntity, Guid>,
-        IRepository<ForeignExchangeEntity>
-    {
-    }
 }
