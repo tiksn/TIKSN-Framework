@@ -1,8 +1,7 @@
-namespace TIKSN.Data.Cache
+namespace TIKSN.Data.Cache;
+
+public enum CacheKeyKind
 {
-    public enum CacheKeyKind
-    {
-        Entity,
-        Query
-    }
+    Entity = 0,
+    Query = 1,
 }
