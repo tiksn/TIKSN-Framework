@@ -1,78 +1,78 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using TIKSN.Serialization;
 
-namespace TIKSN.Data.Cache.Distributed
+namespace TIKSN.Data.Cache.Distributed;
+
+public abstract class DistributedCacheDecoratorBase<T> : CacheDecoratorBase<T>
 {
-    public abstract class DistributedCacheDecoratorBase<T> : CacheDecoratorBase<T>
+    protected readonly IDeserializer<byte[]> deserializer;
+    protected readonly IDistributedCache distributedCache;
+    protected readonly IOptions<DistributedCacheDecoratorOptions> genericOptions;
+    protected readonly ISerializer<byte[]> serializer;
+    protected readonly IOptions<DistributedCacheDecoratorOptions<T>> specificOptions;
+
+    protected DistributedCacheDecoratorBase(
+        IDistributedCache distributedCache,
+        ISerializer<byte[]> serializer,
+        IDeserializer<byte[]> deserializer,
+        IOptions<DistributedCacheDecoratorOptions> genericOptions,
+        IOptions<DistributedCacheDecoratorOptions<T>> specificOptions)
     {
-        protected readonly IDeserializer<byte[]> _deserializer;
-        protected readonly IDistributedCache _distributedCache;
-        protected readonly IOptions<DistributedCacheDecoratorOptions> _genericOptions;
-        protected readonly ISerializer<byte[]> _serializer;
-        protected readonly IOptions<DistributedCacheDecoratorOptions<T>> _specificOptions;
+        this.distributedCache = distributedCache ?? throw new ArgumentNullException(nameof(distributedCache));
+        this.genericOptions = genericOptions ?? throw new ArgumentNullException(nameof(genericOptions));
+        this.specificOptions = specificOptions ?? throw new ArgumentNullException(nameof(specificOptions));
+        this.serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
+        this.deserializer = deserializer ?? throw new ArgumentNullException(nameof(deserializer));
+    }
 
-        protected DistributedCacheDecoratorBase(
-            IDistributedCache distributedCache,
-            ISerializer<byte[]> serializer,
-            IDeserializer<byte[]> deserializer,
-            IOptions<DistributedCacheDecoratorOptions> genericOptions,
-            IOptions<DistributedCacheDecoratorOptions<T>> specificOptions)
+    protected DistributedCacheEntryOptions CreateEntryOptions() =>
+        new()
         {
-            this._distributedCache = distributedCache;
-            this._genericOptions = genericOptions;
-            this._specificOptions = specificOptions;
-            this._serializer = serializer;
-            this._deserializer = deserializer;
-        }
+            AbsoluteExpiration =
+                this.specificOptions.Value.AbsoluteExpiration ?? this.genericOptions.Value.AbsoluteExpiration,
+            AbsoluteExpirationRelativeToNow =
+                this.specificOptions.Value.AbsoluteExpirationRelativeToNow ??
+                this.genericOptions.Value.AbsoluteExpirationRelativeToNow,
+            SlidingExpiration = this.specificOptions.Value.SlidingExpiration ??
+                                this.genericOptions.Value.SlidingExpiration,
+        };
 
-        protected Task SetToDistributedCacheAsync<TValue>(string cacheKey, TValue value,
-            CancellationToken cancellationToken)
+    protected async Task<TResult> GetFromDistributedCacheAsync<TResult>(
+        string cacheKey,
+        CancellationToken cancellationToken,
+        Func<Task<TResult>> getFromSource = null)
+    {
+        var cachedBytes = await this.distributedCache.GetAsync(cacheKey, cancellationToken).ConfigureAwait(false);
+
+        TResult result;
+
+        if (cachedBytes == null)
         {
-            var bytes = this._serializer.Serialize(value);
-
-            return this._distributedCache.SetAsync(cacheKey, bytes, this.CreateEntryOptions(), cancellationToken);
-        }
-
-        protected async Task<TResult> GetFromDistributedCacheAsync<TResult>(string cacheKey,
-            CancellationToken cancellationToken, Func<Task<TResult>> getFromSource = null)
-        {
-            var cachedBytes = await this._distributedCache.GetAsync(cacheKey, cancellationToken).ConfigureAwait(false);
-
-            TResult result;
-
-            if (cachedBytes == null)
+            if (getFromSource == null)
             {
-                if (getFromSource == null)
-                {
-                    return default;
-                }
-
-                result = await getFromSource().ConfigureAwait(false);
-
-                await this.SetToDistributedCacheAsync(cacheKey, result, cancellationToken).ConfigureAwait(false);
-            }
-            else
-            {
-                result = this._deserializer.Deserialize<TResult>(cachedBytes);
+                return default;
             }
 
-            return result;
+            result = await getFromSource().ConfigureAwait(false);
+
+            await this.SetToDistributedCacheAsync(cacheKey, result, cancellationToken).ConfigureAwait(false);
+        }
+        else
+        {
+            result = this.deserializer.Deserialize<TResult>(cachedBytes);
         }
 
-        protected DistributedCacheEntryOptions CreateEntryOptions() =>
-            new()
-            {
-                AbsoluteExpiration =
-                    this._specificOptions.Value.AbsoluteExpiration ?? this._genericOptions.Value.AbsoluteExpiration,
-                AbsoluteExpirationRelativeToNow =
-                    this._specificOptions.Value.AbsoluteExpirationRelativeToNow ??
-                    this._genericOptions.Value.AbsoluteExpirationRelativeToNow,
-                SlidingExpiration = this._specificOptions.Value.SlidingExpiration ??
-                                    this._genericOptions.Value.SlidingExpiration
-            };
+        return result;
+    }
+
+    protected Task SetToDistributedCacheAsync<TValue>(
+        string cacheKey,
+        TValue value,
+        CancellationToken cancellationToken)
+    {
+        var bytes = this.serializer.Serialize(value);
+
+        return this.distributedCache.SetAsync(cacheKey, bytes, this.CreateEntryOptions(), cancellationToken);
     }
 }
