@@ -2,7 +2,7 @@ using LanguageExt;
 
 namespace TIKSN.Data;
 
-public sealed class PageResult<T>
+public sealed class PageResult<T> : IPageResult<T>
 {
     public PageResult(Page page, IReadOnlyCollection<T> items, Option<long> totalItems)
     {
