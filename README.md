@@ -28,6 +28,39 @@
 * Dependency Injection
 * Composition Root Setup base classes
 
+## Setup
+
+```csharp
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using TIKSN.DependencyInjection;
+using TIKSN.Mapping;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+
+builder.Services.AddFrameworkPlatform();
+
+// Optional: Bulk register mappers or it can be done one by one
+builder.Services.Scan(scan => scan
+    .FromApplicationDependencies()
+        .AddClasses(classes => classes.AssignableTo(typeof(IMapper<,>)))
+            .AsImplementedInterfaces());
+
+builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+{
+  containerBuilder.RegisterModule<CoreModule>();
+  containerBuilder.RegisterModule<PlatformModule>();
+  // Optional: Register project modules
+});
+
+var app = builder.Build();
+
+await app.RunAsync().ConfigureAwait(false);
+
+```
+
 ## Acknowledgments
 
 * [JetBrains](https://www.jetbrains.com/?from=TIKSN-Framework) for providing free license.
