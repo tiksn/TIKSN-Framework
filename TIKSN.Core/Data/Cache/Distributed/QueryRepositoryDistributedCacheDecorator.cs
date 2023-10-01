@@ -32,8 +32,8 @@ public class QueryRepositoryDistributedCacheDecorator<TEntity, TIdentity>
     {
         var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, id).ToString();
 
-        return this.GetFromDistributedCacheAsync(cacheKey, cancellationToken,
-            () => this.queryRepository.GetAsync(id, cancellationToken))
+        return this.GetFromDistributedCacheAsync(cacheKey, () => this.queryRepository.GetAsync(id, cancellationToken),
+            cancellationToken)
             ?? throw new EntityNotFoundException("Result retrieved from cache or from original source is null.");
     }
 
@@ -41,8 +41,8 @@ public class QueryRepositoryDistributedCacheDecorator<TEntity, TIdentity>
     {
         var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, id).ToString();
 
-        return this.GetFromDistributedCacheAsync(cacheKey, cancellationToken,
-            () => this.queryRepository.GetAsync(id, cancellationToken));
+        return this.GetFromDistributedCacheAsync(cacheKey, () => this.queryRepository.GetAsync(id, cancellationToken),
+            cancellationToken);
     }
 
     public async Task<IEnumerable<TEntity>>
@@ -67,7 +67,7 @@ public class QueryRepositoryDistributedCacheDecorator<TEntity, TIdentity>
 
         return this.GetFromDistributedCacheAsync(
             cacheKey,
-            cancellationToken,
-            () => this.queryRepository.PageAsync(pageQuery, cancellationToken));
+            () => this.queryRepository.PageAsync(pageQuery, cancellationToken),
+            cancellationToken);
     }
 }
