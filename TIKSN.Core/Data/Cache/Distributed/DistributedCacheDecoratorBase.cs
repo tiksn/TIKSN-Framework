@@ -1,6 +1,8 @@
+using LanguageExt;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using TIKSN.Serialization;
+using static LanguageExt.Prelude;
 
 namespace TIKSN.Data.Cache.Distributed;
 
@@ -38,32 +40,63 @@ public abstract class DistributedCacheDecoratorBase<T> : CacheDecoratorBase<T>
                                 this.genericOptions.Value.SlidingExpiration,
         };
 
-    protected async Task<TResult> GetFromDistributedCacheAsync<TResult>(
+    protected async Task<Option<TResult>> FindFromDistributedCacheAsync<TResult>(
         string cacheKey,
-        CancellationToken cancellationToken,
-        Func<Task<TResult>> getFromSource = null)
+        Func<Task<Option<TResult>>> findFromSource,
+        CancellationToken cancellationToken)
     {
-        var cachedBytes = await this.distributedCache.GetAsync(cacheKey, cancellationToken).ConfigureAwait(false);
+        if (cacheKey is null)
+        {
+            throw new ArgumentNullException(nameof(cacheKey));
+        }
 
-        TResult result;
+        if (findFromSource is null)
+        {
+            throw new ArgumentNullException(nameof(findFromSource));
+        }
+
+        var cachedBytes = await this.distributedCache.GetAsync(cacheKey, cancellationToken).ConfigureAwait(false);
 
         if (cachedBytes == null)
         {
-            if (getFromSource == null)
-            {
-                return default;
-            }
+            var findings = await findFromSource().ConfigureAwait(false);
 
-            result = await getFromSource().ConfigureAwait(false);
+            _ = await findings
+                .IfSomeAsync(async foundItem => await this.SetToDistributedCacheAsync(cacheKey, foundItem, cancellationToken).ConfigureAwait(false)).ConfigureAwait(false);
+
+            return findings;
+        }
+
+        return Optional(this.deserializer.Deserialize<TResult>(cachedBytes));
+    }
+
+    protected async Task<TResult> GetFromDistributedCacheAsync<TResult>(
+        string cacheKey,
+        Func<Task<TResult>> getFromSource,
+        CancellationToken cancellationToken)
+    {
+        if (cacheKey is null)
+        {
+            throw new ArgumentNullException(nameof(cacheKey));
+        }
+
+        if (getFromSource is null)
+        {
+            throw new ArgumentNullException(nameof(getFromSource));
+        }
+
+        var cachedBytes = await this.distributedCache.GetAsync(cacheKey, cancellationToken).ConfigureAwait(false);
+
+        if (cachedBytes == null)
+        {
+            var result = await getFromSource().ConfigureAwait(false);
 
             await this.SetToDistributedCacheAsync(cacheKey, result, cancellationToken).ConfigureAwait(false);
-        }
-        else
-        {
-            result = this.deserializer.Deserialize<TResult>(cachedBytes);
+
+            return result;
         }
 
-        return result;
+        return this.deserializer.Deserialize<TResult>(cachedBytes);
     }
 
     protected Task SetToDistributedCacheAsync<TValue>(
