@@ -88,5 +88,34 @@ namespace TIKSN.Framework.Core.Tests.Licensing {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] LicensingTest2Private_pfx {
+            get {
+                object obj = ResourceManager.GetObject("LicensingTest2Private_pfx", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to i1YeHjzNRFBywAuBt9WG.
+        /// </summary>
+        internal static string LicensingTest2PrivatePassword {
+            get {
+                return ResourceManager.GetString("LicensingTest2PrivatePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] LicensingTest2Public {
+            get {
+                object obj = ResourceManager.GetObject("LicensingTest2Public", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }
