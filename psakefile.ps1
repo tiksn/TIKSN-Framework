@@ -16,15 +16,21 @@ Task Pack -depends Build, Test {
     Copy-Item -Path '.\TIKSN-Framework.nuspec' -Destination $temporaryNuspec
 
     $packages = @{
-        Standdard = New-Object System.Collections.Specialized.OrderedDictionary
-        Core      = New-Object System.Collections.Specialized.OrderedDictionary
-        UWP       = New-Object System.Collections.Specialized.OrderedDictionary
-        Android   = New-Object System.Collections.Specialized.OrderedDictionary
+        Standdard   = New-Object System.Collections.Specialized.OrderedDictionary
+        Core        = New-Object System.Collections.Specialized.OrderedDictionary
+        Android     = New-Object System.Collections.Specialized.OrderedDictionary
+        IOS         = New-Object System.Collections.Specialized.OrderedDictionary
+        MacCatalyst = New-Object System.Collections.Specialized.OrderedDictionary
+        Windows     = New-Object System.Collections.Specialized.OrderedDictionary
     }
 
     $projectMap = @(
-        @{PackageGroups = @($packages.Standdard, $packages.Core, $packages.UWP, $packages.Android); ProjectFile = '.\TIKSN.Core\TIKSN.Core.csproj' },
+        @{PackageGroups = @($packages.Standdard, $packages.Core, $packages.Android, $packages.IOS, $packages.MacCatalyst, $packages.Windows); ProjectFile = '.\TIKSN.Core\TIKSN.Core.csproj' },
         @{PackageGroups = @($packages.Core); ProjectFile = '.\TIKSN.Framework.Core\TIKSN.Framework.Core.csproj' }
+        @{PackageGroups = @($packages.Android); ProjectFile = '.\TIKSN.Framework.Maui\TIKSN.Framework.Maui.csproj' }
+        @{PackageGroups = @($packages.IOS); ProjectFile = '.\TIKSN.Framework.Maui\TIKSN.Framework.Maui.csproj' }
+        @{PackageGroups = @($packages.MacCatalyst); ProjectFile = '.\TIKSN.Framework.Maui\TIKSN.Framework.Maui.csproj' }
+        @{PackageGroups = @($packages.Windows); ProjectFile = '.\TIKSN.Framework.Maui\TIKSN.Framework.Maui.csproj' }
     )
 
     foreach ($projectMapEntry in $projectMap) {
@@ -54,8 +60,10 @@ Task Pack -depends Build, Test {
     $dependencyGroups = @(
         @{Packages = $packages.Standdard; TargetFramework = 'netstandard2.0' },
         @{Packages = $packages.Core; TargetFramework = 'net7.0' },
-        @{Packages = $packages.UWP; TargetFramework = 'uap10.0.18362' },
-        @{Packages = $packages.Android; TargetFramework = 'MonoAndroid8.1' }
+        @{Packages = $packages.Android; TargetFramework = 'net7.0-android21.0' }
+        @{Packages = $packages.IOS; TargetFramework = 'net7.0-ios14.2' }
+        @{Packages = $packages.MacCatalyst; TargetFramework = 'net7.0-maccatalyst14.0' }
+        @{Packages = $packages.Windows; TargetFramework = 'net7.0-windows10.0.19041.0' }
     )
 
     $nuspec = [xml](Get-Content -Path $temporaryNuspec -Raw)
@@ -88,7 +96,7 @@ Task Test -depends Build {
     Exec { dotnet test '.\TIKSN.Framework.IntegrationTests\TIKSN.Framework.IntegrationTests.csproj' }
 }
 
-Task Build -depends BuildLanguageLocalization, BuildRegionLocalization, BuildCommonCore, BuildNetCore, BuildAndroid, BuildUWP {
+Task Build -depends BuildLanguageLocalization, BuildRegionLocalization, BuildCommonCore, BuildNetCore, BuildMaui {
 }
 
 Task BuildLanguageLocalization -depends EstimateVersions {
@@ -115,16 +123,15 @@ Task BuildNetCore -depends EstimateVersions {
     Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
 
-Task BuildAndroid -depends EstimateVersions -precondition { $false } {
-    $project = Resolve-Path -Path 'TIKSN.Framework.Android/TIKSN.Framework.Android.csproj'
+Task BuildMaui -depends EstimateVersions {
+    $project = Resolve-Path -Path 'TIKSN.Framework.Maui/TIKSN.Framework.Maui.csproj'
 
-    Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
-}
+    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 
-Task BuildUWP -depends EstimateVersions -precondition { $false } {
-    $project = Resolve-Path -Path 'TIKSN.Framework.UWP/TIKSN.Framework.UWP.csproj'
-
-    Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutputPath=$script:anyBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net7.0-ios /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyIosBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net7.0-maccatalyst /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyMaccatalystBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net7.0-android /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyAndroidBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net7.0-windows10.0.19041.0 /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyWindowsBuildArtifactsFolder }
 }
 
 Task EstimateVersions -depends Restore {
@@ -284,6 +291,18 @@ Task Init {
 
     $script:anyBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'any'
     New-Item -Path $script:anyBuildArtifactsFolder -ItemType Directory | Out-Null
+
+    $script:anyIosBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'any-ios'
+    New-Item -Path $script:anyIosBuildArtifactsFolder -ItemType Directory | Out-Null
+
+    $script:anyMaccatalystBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'any-maccatalyst'
+    New-Item -Path $script:anyMaccatalystBuildArtifactsFolder -ItemType Directory | Out-Null
+
+    $script:anyAndroidBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'any-android'
+    New-Item -Path $script:anyAndroidBuildArtifactsFolder -ItemType Directory | Out-Null
+
+    $script:anyWindowsBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'any-windows'
+    New-Item -Path $script:anyWindowsBuildArtifactsFolder -ItemType Directory | Out-Null
 
     $script:armBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'arm'
     New-Item -Path $script:armBuildArtifactsFolder -ItemType Directory | Out-Null

@@ -29,12 +29,6 @@
         <file src="README.md" target="" />
 
         <!-- Standard 2.0 Language and Region Localization -->
-        <file src="any\TIKSN.LanguageLocalization.dll" target="lib\MonoAndroid403" />
-        <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\MonoAndroid403\hy" />
-        <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\MonoAndroid403\ru" />
-        <file src="any\uk\TIKSN.LanguageLocalization.resources.dll" target="lib\MonoAndroid403\uk" />
-        <file src="any\TIKSN.LanguageLocalization.xml" target="lib\MonoAndroid403" />
-        <file src="any\TIKSN.LanguageLocalization.pdb" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.LanguageLocalization.dll" target="lib\net7.0" />
         <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="lib\net7.0\hy" />
         <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="lib\net7.0\ru" />
@@ -47,52 +41,6 @@
         <file src="any\uk\TIKSN.LanguageLocalization.resources.dll" target="lib\netstandard2.0\uk" />
         <file src="any\TIKSN.LanguageLocalization.xml" target="lib\netstandard2.0" />
         <file src="any\TIKSN.LanguageLocalization.pdb" target="lib\netstandard2.0" />
-        <file src="any\TIKSN.LanguageLocalization.dll" target="ref\uap10.0" />
-        <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="ref\uap10.0\hy" />
-        <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="ref\uap10.0\ru" />
-        <file src="any\uk\TIKSN.LanguageLocalization.resources.dll" target="ref\uap10.0\uk" />
-        <file src="any\TIKSN.LanguageLocalization.xml" target="ref\uap10.0" />
-        <file src="any\TIKSN.LanguageLocalization.pdb" target="ref\uap10.0" />
-        <file src="any\TIKSN.LanguageLocalization.dll" target="runtimes\win10-x86\lib\uap10.0" />
-        <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\hy" />
-        <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\ru" />
-        <file src="any\uk\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\uk" />
-        <file src="any\TIKSN.LanguageLocalization.xml" target="runtimes\win10-x86\lib\uap10.0" />
-        <file src="any\TIKSN.LanguageLocalization.pdb" target="runtimes\win10-x86\lib\uap10.0" />
-        <file src="any\TIKSN.LanguageLocalization.dll" target="runtimes\win10-x64\lib\uap10.0" />
-        <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\hy" />
-        <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\ru" />
-        <file src="any\uk\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\uk" />
-        <file src="any\TIKSN.LanguageLocalization.xml" target="runtimes\win10-x64\lib\uap10.0" />
-        <file src="any\TIKSN.LanguageLocalization.pdb" target="runtimes\win10-x64\lib\uap10.0" />
-        <file src="any\TIKSN.LanguageLocalization.dll" target="runtimes\win10-arm\lib\uap10.0" />
-        <file src="any\hy\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\hy" />
-        <file src="any\ru\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\ru" />
-        <file src="any\uk\TIKSN.LanguageLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\uk" />
-        <file src="any\TIKSN.LanguageLocalization.xml" target="runtimes\win10-arm\lib\uap10.0" />
-        <file src="any\TIKSN.LanguageLocalization.pdb" target="runtimes\win10-arm\lib\uap10.0" />
-        <file src="any\TIKSN.RegionLocalization.dll" target="lib\MonoAndroid403" />
-        <file src="any\en-001\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-001" />
-        <file src="any\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-150" />
-        <file src="any\en-AU\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-AU" />
-        <file src="any\en-CA\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-CA" />
-        <file src="any\en-CH\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-CH" />
-        <file src="any\en-DE\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-DE" />
-        <file src="any\en-GB\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-GB" />
-        <file src="any\en-GU\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-GU" />
-        <file src="any\en-IE\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-IE" />
-        <file src="any\en-NZ\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-NZ" />
-        <file src="any\en-PR\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-PR" />
-        <file src="any\en-SG\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-SG" />
-        <file src="any\en-US\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\en-US" />
-        <file src="any\hy-AM\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\hy-AM" />
-        <file src="any\ru-BY\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\ru-BY" />
-        <file src="any\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\ru-KZ" />
-        <file src="any\ru-RU\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\ru-RU" />
-        <file src="any\ru-UA\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\ru-UA" />
-        <file src="any\uk-UA\TIKSN.RegionLocalization.resources.dll" target="lib\MonoAndroid403\uk-UA" />
-        <file src="any\TIKSN.RegionLocalization.xml" target="lib\MonoAndroid403" />
-        <file src="any\TIKSN.RegionLocalization.pdb" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.RegionLocalization.dll" target="lib\net7.0" />
         <file src="any\en-001\TIKSN.RegionLocalization.resources.dll" target="lib\net7.0\en-001" />
         <file src="any\en-150\TIKSN.RegionLocalization.resources.dll" target="lib\net7.0\en-150" />
@@ -137,130 +85,42 @@
         <file src="any\uk-UA\TIKSN.RegionLocalization.resources.dll" target="lib\netstandard2.0\uk-UA" />
         <file src="any\TIKSN.RegionLocalization.xml" target="lib\netstandard2.0" />
         <file src="any\TIKSN.RegionLocalization.pdb" target="lib\netstandard2.0" />
-        <file src="any\TIKSN.RegionLocalization.dll" target="ref\uap10.0" />
-        <file src="any\en-001\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-001" />
-        <file src="any\en-150\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-150" />
-        <file src="any\en-AU\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-AU" />
-        <file src="any\en-CA\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-CA" />
-        <file src="any\en-CH\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-CH" />
-        <file src="any\en-DE\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-DE" />
-        <file src="any\en-GB\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-GB" />
-        <file src="any\en-GU\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-GU" />
-        <file src="any\en-IE\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-IE" />
-        <file src="any\en-NZ\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-NZ" />
-        <file src="any\en-PR\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-PR" />
-        <file src="any\en-SG\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-SG" />
-        <file src="any\en-US\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\en-US" />
-        <file src="any\hy-AM\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\hy-AM" />
-        <file src="any\ru-BY\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\ru-BY" />
-        <file src="any\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\ru-KZ" />
-        <file src="any\ru-RU\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\ru-RU" />
-        <file src="any\ru-UA\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\ru-UA" />
-        <file src="any\uk-UA\TIKSN.RegionLocalization.resources.dll" target="ref\uap10.0\uk-UA" />
-        <file src="any\TIKSN.RegionLocalization.xml" target="ref\uap10.0" />
-        <file src="any\TIKSN.RegionLocalization.pdb" target="ref\uap10.0" />
-        <file src="any\TIKSN.RegionLocalization.dll" target="runtimes\win10-x86\lib\uap10.0" />
-        <file src="any\en-001\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-001" />
-        <file src="any\en-150\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-150" />
-        <file src="any\en-AU\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-AU" />
-        <file src="any\en-CA\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-CA" />
-        <file src="any\en-CH\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-CH" />
-        <file src="any\en-DE\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-DE" />
-        <file src="any\en-GB\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-GB" />
-        <file src="any\en-GU\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-GU" />
-        <file src="any\en-IE\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-IE" />
-        <file src="any\en-NZ\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-NZ" />
-        <file src="any\en-PR\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-PR" />
-        <file src="any\en-SG\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-SG" />
-        <file src="any\en-US\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\en-US" />
-        <file src="any\hy-AM\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\hy-AM" />
-        <file src="any\ru-BY\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\ru-BY" />
-        <file src="any\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\ru-KZ" />
-        <file src="any\ru-RU\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\ru-RU" />
-        <file src="any\ru-UA\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\ru-UA" />
-        <file src="any\uk-UA\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x86\lib\uap10.0\uk-UA" />
-        <file src="any\TIKSN.RegionLocalization.xml" target="runtimes\win10-x86\lib\uap10.0" />
-        <file src="any\TIKSN.RegionLocalization.pdb" target="runtimes\win10-x86\lib\uap10.0" />
-        <file src="any\TIKSN.RegionLocalization.dll" target="runtimes\win10-x64\lib\uap10.0" />
-        <file src="any\en-001\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-001" />
-        <file src="any\en-150\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-150" />
-        <file src="any\en-AU\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-AU" />
-        <file src="any\en-CA\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-CA" />
-        <file src="any\en-CH\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-CH" />
-        <file src="any\en-DE\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-DE" />
-        <file src="any\en-GB\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-GB" />
-        <file src="any\en-GU\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-GU" />
-        <file src="any\en-IE\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-IE" />
-        <file src="any\en-NZ\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-NZ" />
-        <file src="any\en-PR\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-PR" />
-        <file src="any\en-SG\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-SG" />
-        <file src="any\en-US\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\en-US" />
-        <file src="any\hy-AM\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\hy-AM" />
-        <file src="any\ru-BY\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\ru-BY" />
-        <file src="any\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\ru-KZ" />
-        <file src="any\ru-RU\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\ru-RU" />
-        <file src="any\ru-UA\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\ru-UA" />
-        <file src="any\uk-UA\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-x64\lib\uap10.0\uk-UA" />
-        <file src="any\TIKSN.RegionLocalization.xml" target="runtimes\win10-x64\lib\uap10.0" />
-        <file src="any\TIKSN.RegionLocalization.pdb" target="runtimes\win10-x64\lib\uap10.0" />
-        <file src="any\TIKSN.RegionLocalization.dll" target="runtimes\win10-arm\lib\uap10.0" />
-        <file src="any\en-001\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-001" />
-        <file src="any\en-150\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-150" />
-        <file src="any\en-AU\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-AU" />
-        <file src="any\en-CA\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-CA" />
-        <file src="any\en-CH\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-CH" />
-        <file src="any\en-DE\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-DE" />
-        <file src="any\en-GB\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-GB" />
-        <file src="any\en-GU\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-GU" />
-        <file src="any\en-IE\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-IE" />
-        <file src="any\en-NZ\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-NZ" />
-        <file src="any\en-PR\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-PR" />
-        <file src="any\en-SG\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-SG" />
-        <file src="any\en-US\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\en-US" />
-        <file src="any\hy-AM\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\hy-AM" />
-        <file src="any\ru-BY\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\ru-BY" />
-        <file src="any\ru-KZ\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\ru-KZ" />
-        <file src="any\ru-RU\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\ru-RU" />
-        <file src="any\ru-UA\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\ru-UA" />
-        <file src="any\uk-UA\TIKSN.RegionLocalization.resources.dll" target="runtimes\win10-arm\lib\uap10.0\uk-UA" />
-        <file src="any\TIKSN.RegionLocalization.xml" target="runtimes\win10-arm\lib\uap10.0" />
-        <file src="any\TIKSN.RegionLocalization.pdb" target="runtimes\win10-arm\lib\uap10.0" />
 
         <!-- Standard 2.0 -->
-        <file src="any\TIKSN.Core.dll" target="lib\MonoAndroid403" />
-        <file src="any\TIKSN.Core.xml" target="lib\MonoAndroid403" />
-        <file src="any\TIKSN.Core.pdb" target="lib\MonoAndroid403" />
         <file src="any\TIKSN.Core.dll" target="lib\net7.0" />
         <file src="any\TIKSN.Core.xml" target="lib\net7.0" />
         <file src="any\TIKSN.Core.pdb" target="lib\net7.0" />
         <file src="any\TIKSN.Core.dll" target="lib\netstandard2.0" />
         <file src="any\TIKSN.Core.xml" target="lib\netstandard2.0" />
         <file src="any\TIKSN.Core.pdb" target="lib\netstandard2.0" />
-        <file src="any\TIKSN.Core.dll" target="ref\uap10.0" />
-        <file src="any\TIKSN.Core.xml" target="ref\uap10.0" />
-        <file src="any\TIKSN.Core.pdb" target="ref\uap10.0" />
-        <file src="any\TIKSN.Core.dll" target="runtimes\win10-x86\lib\uap10.0" />
-        <file src="any\TIKSN.Core.xml" target="runtimes\win10-x86\lib\uap10.0" />
-        <file src="any\TIKSN.Core.pdb" target="runtimes\win10-x86\lib\uap10.0" />
-        <file src="any\TIKSN.Core.dll" target="runtimes\win10-x64\lib\uap10.0" />
-        <file src="any\TIKSN.Core.xml" target="runtimes\win10-x64\lib\uap10.0" />
-        <file src="any\TIKSN.Core.pdb" target="runtimes\win10-x64\lib\uap10.0" />
-        <file src="any\TIKSN.Core.dll" target="runtimes\win10-arm\lib\uap10.0" />
-        <file src="any\TIKSN.Core.xml" target="runtimes\win10-arm\lib\uap10.0" />
-        <file src="any\TIKSN.Core.pdb" target="runtimes\win10-arm\lib\uap10.0" />
 
-        <!-- Platform: Xamarin Android -->
-        <!-- <file src="any\TIKSN.Framework.Android.dll" target="lib\MonoAndroid403" />
-        <file src="any\TIKSN.Framework.Android.xml" target="lib\MonoAndroid403" />
-        <file src="any\TIKSN.Framework.Android.pdb" target="lib\MonoAndroid403" /> -->
-
-        <!-- Platform: .NET 5 -->
+        <!-- Platform: .NET 7 -->
         <file src="any\TIKSN.Framework.Core.dll" target="lib\net7.0" />
         <file src="any\TIKSN.Framework.Core.xml" target="lib\net7.0" />
         <file src="any\TIKSN.Framework.Core.pdb" target="lib\net7.0" />
+        <file src="any\TIKSN.Framework.Maui.dll" target="lib\net7.0" />
+        <file src="any\TIKSN.Framework.Maui.xml" target="lib\net7.0" />
+        <file src="any\TIKSN.Framework.Maui.pdb" target="lib\net7.0" />
 
-        <!-- Platform: UAP -->
-        <!-- <file src="any\TIKSN.Framework.UWP.dll" target="lib\uap10.0" />
-        <file src="any\TIKSN.Framework.UWP.xml" target="lib\uap10.0" /> -->
+        <!-- Platform: .NET 7 Android -->
+        <file src="any-android\TIKSN.Framework.Maui.dll" target="lib\net7.0-android21.0" />
+        <file src="any-android\TIKSN.Framework.Maui.xml" target="lib\net7.0-android21.0" />
+        <file src="any-android\TIKSN.Framework.Maui.pdb" target="lib\net7.0-android21.0" />
+
+        <!-- Platform: .NET 7 iOS -->
+        <file src="any-ios\TIKSN.Framework.Maui.dll" target="lib\net7.0-ios14.2" />
+        <file src="any-ios\TIKSN.Framework.Maui.xml" target="lib\net7.0-ios14.2" />
+        <file src="any-ios\TIKSN.Framework.Maui.pdb" target="lib\net7.0-ios14.2" />
+
+        <!-- Platform: .NET 7 Mac Catalyst -->
+        <file src="any-maccatalyst\TIKSN.Framework.Maui.dll" target="lib\net7.0-maccatalyst14.0" />
+        <file src="any-maccatalyst\TIKSN.Framework.Maui.xml" target="lib\net7.0-maccatalyst14.0" />
+        <file src="any-maccatalyst\TIKSN.Framework.Maui.pdb" target="lib\net7.0-maccatalyst14.0" />
+
+        <!-- Platform: .NET 7 Windows-->
+        <file src="any-windows\TIKSN.Framework.Maui.dll" target="lib\net7.0-windows10.0.19041.0" />
+        <file src="any-windows\TIKSN.Framework.Maui.xml" target="lib\net7.0-windows10.0.19041.0" />
+        <file src="any-windows\TIKSN.Framework.Maui.pdb" target="lib\net7.0-windows10.0.19041.0" />
+
     </files>
 </package>
