@@ -134,7 +134,7 @@ public class LicenseTests
     {
         var services = new ServiceCollection();
         _ = services.AddSingleton<IEntitlementsConverter<TestEntitlements, TestLicenseEntitlements>, TestEntitlementsConverter>();
-        _ = services.AddFrameworkPlatform();
+        _ = services.AddFrameworkCore();
 
         var fakeTimeProvider = Substitute.For<ITimeProvider>();
         _ = fakeTimeProvider.GetCurrentTime()
