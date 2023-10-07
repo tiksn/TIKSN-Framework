@@ -38,7 +38,6 @@ namespace TIKSN.IntegrationTests
                 .ConfigureContainer<ContainerBuilder>(builder =>
                 {
                     _ = builder.RegisterModule<CoreModule>();
-                    _ = builder.RegisterModule<PlatformModule>();
                     _ = builder.RegisterType<TextLocalizer>().As<IStringLocalizer>().SingleInstance();
                     _ = builder.RegisterType<TestMongoRepository>().As<ITestMongoRepository>().InstancePerLifetimeScope();
                     _ = builder.RegisterType<TestMongoDatabaseProvider>().As<IMongoDatabaseProvider>().SingleInstance();
