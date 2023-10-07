@@ -19,6 +19,10 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
+  </ItemGroup>
+
 	<ItemGroup>
 	  <ProjectReference Include="..\TIKSN.Framework.Core\TIKSN.Framework.Core.csproj" />
 	</ItemGroup>
