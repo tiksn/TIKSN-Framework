@@ -27,7 +27,7 @@ public class DistributedCacheDecoratorBaseTests
     public DistributedCacheDecoratorBaseTests()
     {
         var services = new ServiceCollection();
-        _ = services.AddFrameworkPlatform();
+        _ = services.AddFrameworkCore();
         _ = services.AddDistributedMemoryCache();
         _ = services.AddSingleton<ISerializer<byte[]>, MessagePackSerializer>();
         _ = services.AddSingleton<IDeserializer<byte[]>, MessagePackDeserializer>();
