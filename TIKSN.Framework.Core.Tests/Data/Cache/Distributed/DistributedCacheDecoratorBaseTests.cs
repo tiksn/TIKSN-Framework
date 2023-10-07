@@ -34,7 +34,6 @@ public class DistributedCacheDecoratorBaseTests
         var containerBuilder = new ContainerBuilder();
         containerBuilder.Populate(services);
         _ = containerBuilder.RegisterModule<CoreModule>();
-        _ = containerBuilder.RegisterModule<PlatformModule>();
         this.entityMap = new[]
         {
                 new TestEntity(1778174815, Guid.NewGuid(), "Item5"),
