@@ -33,7 +33,7 @@ namespace TIKSN.IntegrationTests
         public void CreateHost(string key, Action<ContainerBuilder> configureContainer)
         {
             var host = Host.CreateDefaultBuilder()
-                .ConfigureServices(services => _ = services.AddFrameworkPlatform())
+                .ConfigureServices(services => _ = services.AddFrameworkCore())
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureContainer<ContainerBuilder>(builder =>
                 {
