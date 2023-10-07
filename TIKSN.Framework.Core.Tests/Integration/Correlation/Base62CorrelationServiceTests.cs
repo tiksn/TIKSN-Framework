@@ -15,7 +15,7 @@ public class Base62CorrelationServiceTests
     public Base62CorrelationServiceTests(ITestOutputHelper testOutputHelper)
     {
         var services = new ServiceCollection();
-        _ = services.AddFrameworkPlatform();
+        _ = services.AddFrameworkCore();
         _ = services.AddSingleton<ICorrelationService, Base62CorrelationService>();
         var serviceProvider = services.BuildServiceProvider();
         this.correlationService = serviceProvider.GetRequiredService<ICorrelationService>();
