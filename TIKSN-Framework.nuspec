@@ -17,7 +17,7 @@
         <copyright>Copyright © 2023, TIKSN Lab</copyright>
         <releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/milestone/17</releaseNotes>
         <language />
-        <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry, Configuration, Azure Storage, MongoDB, NoDB, Rest, Localization, Dependency Injection</tags>
+        <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry, Configuration, Azure Storage, MongoDB, NoDB, Rest, Localization, Dependency Injection, MAUI</tags>
         <dependencies>
             <!-- will be propagated by build script-->
         </dependencies>
