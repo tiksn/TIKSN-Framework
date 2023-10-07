@@ -143,7 +143,6 @@ public class LicenseTests
         _ = services.AddSingleton(fakeTimeProvider);
         ContainerBuilder containerBuilder = new();
         _ = containerBuilder.RegisterModule<CoreModule>();
-        _ = containerBuilder.RegisterModule<PlatformModule>();
         containerBuilder.Populate(services);
         var serviceProvider = new AutofacServiceProvider(containerBuilder.Build());
 
