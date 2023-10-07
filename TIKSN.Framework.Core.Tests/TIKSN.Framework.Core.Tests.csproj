@@ -28,7 +28,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TIKSN.Core\TIKSN.Core.csproj" />
     <ProjectReference Include="..\TIKSN.Framework.Core\TIKSN.Framework.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
