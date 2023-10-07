@@ -15,7 +15,7 @@ public class CuidCorrelationServiceTests
     public CuidCorrelationServiceTests(ITestOutputHelper testOutputHelper)
     {
         var services = new ServiceCollection();
-        _ = services.AddFrameworkPlatform();
+        _ = services.AddFrameworkCore();
         _ = services.AddSingleton<ICorrelationService, CuidCorrelationService>();
         var serviceProvider = services.BuildServiceProvider();
         this.correlationService = serviceProvider.GetRequiredService<ICorrelationService>();
