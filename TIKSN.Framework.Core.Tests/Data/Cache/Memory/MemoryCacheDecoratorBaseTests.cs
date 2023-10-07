@@ -24,11 +24,10 @@ public class MemoryCacheDecoratorBaseTests
     public MemoryCacheDecoratorBaseTests()
     {
         var services = new ServiceCollection();
-        _ = services.AddFrameworkPlatform();
+        _ = services.AddFrameworkCore();
         var containerBuilder = new ContainerBuilder();
         containerBuilder.Populate(services);
         _ = containerBuilder.RegisterModule<CoreModule>();
-        _ = containerBuilder.RegisterModule<PlatformModule>();
         this.entityMap = new[]
         {
                 new TestEntity(1796652465, Guid.NewGuid(), "Item1"),

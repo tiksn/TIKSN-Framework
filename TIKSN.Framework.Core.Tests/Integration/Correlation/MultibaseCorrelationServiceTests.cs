@@ -15,7 +15,7 @@ public class MultibaseCorrelationServiceTests
     public MultibaseCorrelationServiceTests(ITestOutputHelper testOutputHelper)
     {
         var services = new ServiceCollection();
-        _ = services.AddFrameworkPlatform();
+        _ = services.AddFrameworkCore();
         _ = services.AddSingleton<ICorrelationService, MultibaseCorrelationService>();
         var serviceProvider = services.BuildServiceProvider();
         this.correlationService = serviceProvider.GetRequiredService<ICorrelationService>();

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.DependencyInjection;
@@ -15,7 +15,7 @@ public class GuidCorrelationServiceTests
     public GuidCorrelationServiceTests(ITestOutputHelper testOutputHelper)
     {
         var services = new ServiceCollection();
-        _ = services.AddFrameworkPlatform();
+        _ = services.AddFrameworkCore();
         _ = services.AddSingleton<ICorrelationService, GuidCorrelationService>();
         var serviceProvider = services.BuildServiceProvider();
         this.correlationService = serviceProvider.GetRequiredService<ICorrelationService>();

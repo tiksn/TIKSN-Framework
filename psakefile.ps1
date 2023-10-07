@@ -16,7 +16,6 @@ Task Pack -depends Build, Test {
     Copy-Item -Path '.\TIKSN-Framework.nuspec' -Destination $temporaryNuspec
 
     $packages = @{
-        Standdard   = New-Object System.Collections.Specialized.OrderedDictionary
         Core        = New-Object System.Collections.Specialized.OrderedDictionary
         Android     = New-Object System.Collections.Specialized.OrderedDictionary
         IOS         = New-Object System.Collections.Specialized.OrderedDictionary
@@ -25,8 +24,7 @@ Task Pack -depends Build, Test {
     }
 
     $projectMap = @(
-        @{PackageGroups = @($packages.Standdard, $packages.Core, $packages.Android, $packages.IOS, $packages.MacCatalyst, $packages.Windows); ProjectFile = '.\TIKSN.Core\TIKSN.Core.csproj' },
-        @{PackageGroups = @($packages.Core); ProjectFile = '.\TIKSN.Framework.Core\TIKSN.Framework.Core.csproj' }
+        @{PackageGroups = @($packages.Core, $packages.Android, $packages.IOS, $packages.MacCatalyst, $packages.Windows); ProjectFile = '.\TIKSN.Framework.Core\TIKSN.Framework.Core.csproj' }
         @{PackageGroups = @($packages.Android); ProjectFile = '.\TIKSN.Framework.Maui\TIKSN.Framework.Maui.csproj' }
         @{PackageGroups = @($packages.IOS); ProjectFile = '.\TIKSN.Framework.Maui\TIKSN.Framework.Maui.csproj' }
         @{PackageGroups = @($packages.MacCatalyst); ProjectFile = '.\TIKSN.Framework.Maui\TIKSN.Framework.Maui.csproj' }
@@ -58,7 +56,6 @@ Task Pack -depends Build, Test {
     }
 
     $dependencyGroups = @(
-        @{Packages = $packages.Standdard; TargetFramework = 'netstandard2.0' },
         @{Packages = $packages.Core; TargetFramework = 'net7.0' },
         @{Packages = $packages.Android; TargetFramework = 'net7.0-android21.0' }
         @{Packages = $packages.IOS; TargetFramework = 'net7.0-ios14.2' }
@@ -96,7 +93,7 @@ Task Test -depends Build {
     Exec { dotnet test '.\TIKSN.Framework.IntegrationTests\TIKSN.Framework.IntegrationTests.csproj' }
 }
 
-Task Build -depends BuildLanguageLocalization, BuildRegionLocalization, BuildCommonCore, BuildNetCore, BuildMaui {
+Task Build -depends BuildLanguageLocalization, BuildRegionLocalization, BuildNetCore, BuildMaui {
 }
 
 Task BuildLanguageLocalization -depends EstimateVersions {
@@ -107,12 +104,6 @@ Task BuildLanguageLocalization -depends EstimateVersions {
 
 Task BuildRegionLocalization -depends EstimateVersions {
     $project = Resolve-Path -Path 'TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj'
-
-    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
-}
-
-Task BuildCommonCore -depends DownloadCurrencyCodes, EstimateVersions {
-    $project = Resolve-Path -Path 'TIKSN.Core/TIKSN.Core.csproj'
 
     Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
@@ -160,17 +151,16 @@ Task EstimateVersions -depends Restore {
 }
 
 Task DownloadCurrencyCodes -depends Clean {
-    Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml' -OutFile 'TIKSN.Core/Finance/Resources/TableA1.xml'
-    Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-three.xml' -OutFile 'TIKSN.Core/Finance/Resources/TableA3.xml'
+    Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml' -OutFile 'TIKSN.Framework.Core/Finance/Resources/TableA1.xml'
+    Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-three.xml' -OutFile 'TIKSN.Framework.Core/Finance/Resources/TableA3.xml'
 }
 
 Task Format -depends Restore, FormatWhitespace, FormatStyle, FormatAnalyzers {
     $solution = Resolve-Path -Path 'TIKSN Framework.sln'
-    $solution = Resolve-Path -Path 'TIKSN.Core\TIKSN.Core.csproj'
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $solution }
 }
 
-Task FormatAnalyzers -depends Restore, FormatAnalyzersLanguageLocalization, FormatAnalyzersRegionLocalization, FormatAnalyzersCommonCore, FormatAnalyzersNetCore, FormatAnalyzersAndroid, FormatAnalyzersUWP, FormatAnalyzersSolution {
+Task FormatAnalyzers -depends Restore, FormatAnalyzersLanguageLocalization, FormatAnalyzersRegionLocalization, FormatAnalyzersNetCore, FormatAnalyzersAndroid, FormatAnalyzersUWP, FormatAnalyzersSolution {
 }
 
 Task FormatAnalyzersSolution -depends Restore -precondition { $false } {
@@ -187,12 +177,6 @@ Task FormatAnalyzersLanguageLocalization -depends Restore -precondition { $false
 
 Task FormatAnalyzersRegionLocalization -depends Restore -precondition { $false } {
     $project = Resolve-Path -Path 'TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj'
-
-    Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
-}
-
-Task FormatAnalyzersCommonCore -depends Restore {
-    $project = Resolve-Path -Path 'TIKSN.Core/TIKSN.Core.csproj'
 
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
 }
@@ -215,7 +199,7 @@ Task FormatAnalyzersUWP -depends Restore -precondition { $false } {
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
 }
 
-Task FormatStyle -depends Restore, FormatStyleLanguageLocalization, FormatStyleRegionLocalization, FormatStyleCommonCore, FormatStyleNetCore, FormatStyleAndroid, FormatStyleUWP, FormatStyleSolution {
+Task FormatStyle -depends Restore, FormatStyleLanguageLocalization, FormatStyleRegionLocalization, FormatStyleNetCore, FormatStyleAndroid, FormatStyleUWP, FormatStyleSolution {
 }
 
 Task FormatStyleSolution -depends Restore -precondition { $false } {
@@ -232,12 +216,6 @@ Task FormatStyleLanguageLocalization -depends Restore -precondition { $false } {
 
 Task FormatStyleRegionLocalization -depends Restore -precondition { $false } {
     $project = Resolve-Path -Path 'TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj'
-
-    Exec { dotnet format style --severity info --verbosity diagnostic $project }
-}
-
-Task FormatStyleCommonCore -depends Restore {
-    $project = Resolve-Path -Path 'TIKSN.Core/TIKSN.Core.csproj'
 
     Exec { dotnet format style --severity info --verbosity diagnostic $project }
 }

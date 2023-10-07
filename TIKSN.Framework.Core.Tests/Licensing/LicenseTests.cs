@@ -134,7 +134,7 @@ public class LicenseTests
     {
         var services = new ServiceCollection();
         _ = services.AddSingleton<IEntitlementsConverter<TestEntitlements, TestLicenseEntitlements>, TestEntitlementsConverter>();
-        _ = services.AddFrameworkPlatform();
+        _ = services.AddFrameworkCore();
 
         var fakeTimeProvider = Substitute.For<ITimeProvider>();
         _ = fakeTimeProvider.GetCurrentTime()
@@ -143,7 +143,6 @@ public class LicenseTests
         _ = services.AddSingleton(fakeTimeProvider);
         ContainerBuilder containerBuilder = new();
         _ = containerBuilder.RegisterModule<CoreModule>();
-        _ = containerBuilder.RegisterModule<PlatformModule>();
         containerBuilder.Populate(services);
         var serviceProvider = new AutofacServiceProvider(containerBuilder.Build());
 

@@ -27,14 +27,13 @@ public class DistributedCacheDecoratorBaseTests
     public DistributedCacheDecoratorBaseTests()
     {
         var services = new ServiceCollection();
-        _ = services.AddFrameworkPlatform();
+        _ = services.AddFrameworkCore();
         _ = services.AddDistributedMemoryCache();
         _ = services.AddSingleton<ISerializer<byte[]>, MessagePackSerializer>();
         _ = services.AddSingleton<IDeserializer<byte[]>, MessagePackDeserializer>();
         var containerBuilder = new ContainerBuilder();
         containerBuilder.Populate(services);
         _ = containerBuilder.RegisterModule<CoreModule>();
-        _ = containerBuilder.RegisterModule<PlatformModule>();
         this.entityMap = new[]
         {
                 new TestEntity(1778174815, Guid.NewGuid(), "Item5"),
