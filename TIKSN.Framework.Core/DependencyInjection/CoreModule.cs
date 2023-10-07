@@ -30,6 +30,21 @@ namespace TIKSN.DependencyInjection
             _ = builder.RegisterType<RSACertificateSignatureService>()
                 .Named<ICertificateSignatureService>("1.2.840.113549.1.1.1")
                 .SingleInstance();
+
+            _ = builder
+                .RegisterType<Finance.ForeignExchange.EntityFrameworkCore.DataEntityMapper>()
+                .AsImplementedInterfaces()
+                .SingleInstance();
+
+            _ = builder
+                .RegisterType<Finance.ForeignExchange.LiteDB.DataEntityMapper>()
+                .AsImplementedInterfaces()
+                .SingleInstance();
+
+            _ = builder
+                .RegisterType<Finance.ForeignExchange.Mongo.DataEntityMapper>()
+                .AsImplementedInterfaces()
+                .SingleInstance();
         }
     }
 }
