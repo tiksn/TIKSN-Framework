@@ -24,7 +24,7 @@ public class MemoryCacheDecoratorBaseTests
     public MemoryCacheDecoratorBaseTests()
     {
         var services = new ServiceCollection();
-        _ = services.AddFrameworkPlatform();
+        _ = services.AddFrameworkCore();
         var containerBuilder = new ContainerBuilder();
         containerBuilder.Populate(services);
         _ = containerBuilder.RegisterModule<CoreModule>();
