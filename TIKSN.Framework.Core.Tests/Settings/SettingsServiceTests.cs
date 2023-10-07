@@ -217,7 +217,7 @@ namespace TIKSN.Settings.Tests
 
         private void SetupDenepdencies()
         {
-            _ = this.services.AddFrameworkPlatform();
+            _ = this.services.AddFrameworkCore();
             _ = this.services.AddSingleton<ISettingsService, FileSettingsService>();
             _ = this.services.AddSingleton(new KnownFoldersConfiguration(this.GetType().Assembly,
                 KnownFolderVersionConsideration.None));
