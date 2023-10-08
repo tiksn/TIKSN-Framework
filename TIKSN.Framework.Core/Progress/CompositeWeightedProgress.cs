@@ -65,7 +65,7 @@ namespace TIKSN.Progress
             var overallWeight = this.progresses.Sum(item => item.Weight);
             var currentWeightedProgress = overallWeight == 0
                 ? 0d
-                : this.progresses.Sum(item => item.Weight * (item.Status == null ? 0d : item.Status.PercentComplete)) /
+                : this.progresses.Sum(item => item.Weight * ((item.Status?.PercentComplete) ?? 0d)) /
                   overallWeight;
 
             Debug.Assert(currentWeightedProgress >= 0d);
@@ -74,7 +74,7 @@ namespace TIKSN.Progress
             this.OnReport(this.createProgressReportWithPercentage(status, currentWeightedProgress));
         }
 
-        private class ProgressItem : Progress<T>
+        private sealed class ProgressItem : Progress<T>
         {
             public ProgressItem(int weight, Action<T> handler) : base(handler)
             {
