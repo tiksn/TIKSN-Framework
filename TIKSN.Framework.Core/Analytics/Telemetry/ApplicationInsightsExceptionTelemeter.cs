@@ -6,7 +6,7 @@ namespace TIKSN.Analytics.Telemetry
     public class ApplicationInsightsExceptionTelemeter : IExceptionTelemeter
     {
         [Obsolete]
-        public async Task TrackExceptionAsync(Exception exception) => await TrackExceptionInternalAsync(exception, null).ConfigureAwait(false);
+        public async Task TrackExceptionAsync(Exception exception) => await TrackExceptionInternalAsync(exception, severityLevel: null).ConfigureAwait(false);
 
         [Obsolete]
         public Task TrackExceptionAsync(Exception exception, TelemetrySeverityLevel severityLevel) =>
@@ -19,7 +19,7 @@ namespace TIKSN.Analytics.Telemetry
             {
                 var telemetry = new ExceptionTelemetry(exception)
                 {
-                    SeverityLevel = ApplicationInsightsHelper.ConvertSeverityLevel(severityLevel)
+                    SeverityLevel = ApplicationInsightsHelper.ConvertSeverityLevel(severityLevel),
                 };
                 ApplicationInsightsHelper.TrackException(telemetry);
             }
