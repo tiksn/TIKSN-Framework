@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Xunit;
 
 namespace TIKSN.Finance.Tests
@@ -10,8 +11,8 @@ namespace TIKSN.Finance.Tests
             var AM = new System.Globalization.RegionInfo("AM");
             var AMD = new CurrencyInfo(AM);
 
-            Assert.Equal("AMD", AMD.ISOCurrencySymbol);
-            Assert.Equal("\u058F", AMD.CurrencySymbol);
+            AMD.ISOCurrencySymbol.Should().Be("AMD");
+            AMD.CurrencySymbol.Should().Be("\u058F");
         }
 
         [Fact]
