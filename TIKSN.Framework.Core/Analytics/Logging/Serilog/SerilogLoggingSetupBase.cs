@@ -13,7 +13,7 @@ namespace TIKSN.Analytics.Logging.Serilog
         {
             this.SetupSerilog();
 
-            _ = loggingBuilder.AddSerilog(this.loggerConfiguration.CreateLogger(), true);
+            _ = loggingBuilder.AddSerilog(this.loggerConfiguration.CreateLogger(), dispose: true);
         }
 
         protected virtual void SetupSerilog()
