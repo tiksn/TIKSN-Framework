@@ -155,7 +155,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                 {
                     if (observationProperty.Name.StartsWith("FX", StringComparison.OrdinalIgnoreCase))
                     {
-                        Debug.Assert(observationProperty.Name.EndsWith("CAD"));
+                        Debug.Assert(observationProperty.Name.EndsWith("CAD", StringComparison.Ordinal));
 
                         var targetCurrencyCode = observationProperty.Name.Substring(2, 3);
 

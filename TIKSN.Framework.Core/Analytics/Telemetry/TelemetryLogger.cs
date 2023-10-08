@@ -24,7 +24,7 @@ namespace TIKSN.Analytics.Telemetry
                 1781631658,
                 "Telemetry Event '{EventName}' tracked. with properties {EventProperties}",
                 name,
-                string.Join(" ", properties.Select(item => string.Format("{0} is {1}", item.Key, item.Value))));
+                string.Join(' ', properties.Select(item => string.Format("{0} is {1}", item.Key, item.Value))));
 
             return Task.CompletedTask;
         }

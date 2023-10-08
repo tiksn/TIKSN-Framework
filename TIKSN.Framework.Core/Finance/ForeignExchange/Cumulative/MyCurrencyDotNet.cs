@@ -65,7 +65,7 @@ namespace TIKSN.Finance.ForeignExchange.Cumulative
             ValidateDate(asOn, this.timeProvider);
 
             using var httpClient = new HttpClient();
-            var jsonExchangeRates = await httpClient.GetStringAsync(ResourceUrl).ConfigureAwait(false);
+            var jsonExchangeRates = await httpClient.GetStringAsync(ResourceUrl, cancellationToken).ConfigureAwait(false);
 
             var exchangeResponse = JsonConvert.DeserializeObject<ExchangeResponse>(jsonExchangeRates);
             var exchangeRates = exchangeResponse.Rates;

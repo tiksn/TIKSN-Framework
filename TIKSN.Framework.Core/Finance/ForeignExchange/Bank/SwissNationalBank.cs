@@ -60,9 +60,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
             var pairs = new List<CurrencyPair>();
 
-            var todayCurrencies = this.FilterByDate(asOn);
-
-            foreach (var currency in todayCurrencies)
+            foreach (var currency in this.FilterByDate(asOn))
             {
                 pairs.Add(new CurrencyPair(SwissFranc, currency.Key));
                 pairs.Add(new CurrencyPair(currency.Key, SwissFranc));
@@ -88,7 +86,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             var result = new List<ExchangeRate>();
 
             var httpClient = this.httpClientFactory.CreateClient();
-            var responseStream = await httpClient.GetStreamAsync(RSSURL).ConfigureAwait(false);
+            var responseStream = await httpClient.GetStreamAsync(RSSURL, cancellationToken).ConfigureAwait(false);
 
             var xdoc = XDocument.Load(responseStream);
 
@@ -113,9 +111,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
                     var currency = this.currencyFactory.Create(currencyCode);
 
-                    Debug.Assert(exchangeRateElement
+                    Debug.Assert(string.Equals(exchangeRateElement
                         .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}observation")
-                        .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}unit").Value == "CHF");
+                        .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}unit").Value, "CHF", StringComparison.Ordinal));
 
                     this.foreignRates[currency] = new Tuple<DateTimeOffset, decimal>(date, rate);
                     result.Add(new ExchangeRate(new CurrencyPair(currency, SwissFranc), date, rate));

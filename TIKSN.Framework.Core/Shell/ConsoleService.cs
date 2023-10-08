@@ -29,7 +29,7 @@ namespace TIKSN.Shell
             var pwd = new SecureString();
             while (true)
             {
-                var i = Console.ReadKey(true);
+                var i = Console.ReadKey(intercept: true);
                 if (i.Key == ConsoleKey.Enter)
                 {
                     Console.WriteLine();
@@ -79,7 +79,7 @@ namespace TIKSN.Shell
             while (true)
             {
                 ConsoleWrite(
-                    $"{message} [{string.Join("/", options)}]{this._stringLocalizer.GetRequiredString(LocalizationKeys.Key444677337)}");
+                    $"{message} [{string.Join('/', options)}]{this._stringLocalizer.GetRequiredString(LocalizationKeys.Key444677337)}");
 
                 var answer = Console.ReadLine();
 
@@ -98,10 +98,10 @@ namespace TIKSN.Shell
         public void WriteObject<T>(T value)
         {
             var tableValues = new List<T> { value };
-            WriteObjects(tableValues, false);
+            WriteObjects(tableValues, enableCount: false);
         }
 
-        public void WriteObjects<T>(IEnumerable<T> values) => WriteObjects(values, true);
+        public void WriteObjects<T>(IEnumerable<T> values) => WriteObjects(values, enableCount: true);
 
         private static void ConsoleWrite(string message) => Console.Write(message);
 

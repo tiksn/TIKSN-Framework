@@ -196,12 +196,12 @@ namespace TIKSN.Versioning
             var seriesVersionNumbers = new[]
             {
             seriesVersion.Release.Major, seriesVersion.Release.Minor, seriesVersion.Release.Build,
-            seriesVersion.Release.Revision
+            seriesVersion.Release.Revision,
         }.Where(x => x != -1).ToArray();
 
             var versionNumbers = new[]
             {
-            version.Release.Major, version.Release.Minor, version.Release.Build, version.Release.Revision
+            version.Release.Major, version.Release.Minor, version.Release.Build, version.Release.Revision,
         }.Where(x => x != -1).ToArray();
 
             if (seriesVersionNumbers.Length > versionNumbers.Length)

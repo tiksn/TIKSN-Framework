@@ -10,7 +10,7 @@ namespace TIKSN.Data.Mongo
         private readonly string connectionStringKey;
         private readonly IMongoClientProvider mongoClientProvider;
 
-        public MongoDatabaseProviderBase(
+        protected MongoDatabaseProviderBase(
             IMongoClientProvider mongoClientProvider,
             IConfiguration configuration,
             string connectionStringKey)

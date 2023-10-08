@@ -12,14 +12,14 @@ namespace TIKSN.Analytics.Telemetry
 
         public Task TrackExceptionAsync(Exception exception, TelemetrySeverityLevel severityLevel)
         {
-            this.cmdlet.WriteError(new ErrorRecord(exception, null, ErrorCategory.InvalidOperation, null));
+            this.cmdlet.WriteError(new ErrorRecord(exception, errorId: null, ErrorCategory.InvalidOperation, targetObject: null));
 
             return Task.FromResult<object>(null);
         }
 
         public Task TrackExceptionAsync(Exception exception)
         {
-            this.cmdlet.WriteError(new ErrorRecord(exception, null, ErrorCategory.InvalidOperation, null));
+            this.cmdlet.WriteError(new ErrorRecord(exception, errorId: null, ErrorCategory.InvalidOperation, targetObject: null));
 
             return Task.FromResult<object>(null);
         }

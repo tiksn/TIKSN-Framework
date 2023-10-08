@@ -99,7 +99,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                 this.timeProvider.GetCurrentTime().ToString("MM/dd/yyyy"));
 
             var httpClient = this.httpClientFactory.CreateClient();
-            var responseStream = await httpClient.GetStreamAsync(dataUrl).ConfigureAwait(false);
+            var responseStream = await httpClient.GetStreamAsync(dataUrl, cancellationToken).ConfigureAwait(false);
 
             var xdoc = XDocument.Load(responseStream);
 
@@ -113,7 +113,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                 var currencyCode = seriesElement.Attribute("CURRENCY").Value;
                 var fx = seriesElement.Attribute("FX").Value;
 
-                if (currencyCode != "NA")
+                if (!string.Equals(currencyCode, "NA", StringComparison.Ordinal))
                 {
                     var rates = new Dictionary<DateTime, decimal>();
 
@@ -141,13 +141,13 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                     var date = rates.Keys.Max();
                     var rate = rates[date];
 
-                    if (fx == "ZAL")
+                    if (string.Equals(fx, "ZAL", StringComparison.Ordinal))
                     {
                         result.Add(new ExchangeRate(
                             new CurrencyPair(UnitedStatesDollar, this.currencyFactory.Create(currencyCode)), date,
                             rate));
                     }
-                    else if (fx == "VEB")
+                    else if (string.Equals(fx, "VEB", StringComparison.Ordinal))
                     {
                         result.Add(new ExchangeRate(
                             new CurrencyPair(UnitedStatesDollar, this.currencyFactory.Create("VEF")), date, rate));

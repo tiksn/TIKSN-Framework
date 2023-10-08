@@ -36,15 +36,15 @@ namespace TIKSN.Localization
         {
             var localizedStrings = this.Localizers.Select(localizer => singleLocalizer(localizer)).ToArray();
 
-            var localizableStrings = localizedStrings.Where(item => !item.ResourceNotFound && item.Name != item.Value)
+            var localizableStrings = localizedStrings.Where(item => !item.ResourceNotFound && !string.Equals(item.Name, item.Value, StringComparison.Ordinal))
                 .ToArray();
 
             if (localizableStrings.Length > 0)
             {
-                return localizableStrings.First();
+                return localizableStrings[0];
             }
 
-            return localizedStrings.First();
+            return localizedStrings[0];
         }
     }
 }

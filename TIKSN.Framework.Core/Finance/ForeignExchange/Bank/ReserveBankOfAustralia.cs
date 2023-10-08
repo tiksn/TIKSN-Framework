@@ -108,7 +108,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             var result = new List<ExchangeRate>();
 
             var httpClient = this.httpClientFactory.CreateClient();
-            var responseStream = await httpClient.GetStreamAsync(RSS).ConfigureAwait(false);
+            var responseStream = await httpClient.GetStreamAsync(RSS, cancellationToken).ConfigureAwait(false);
 
             var xdoc = XDocument.Load(responseStream);
 
@@ -133,7 +133,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                         .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}observationPeriod")
                         .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}period");
 
-                    Debug.Assert(baseCurrencyElement.Value == "AUD");
+                    Debug.Assert(string.Equals(baseCurrencyElement.Value, "AUD", StringComparison.Ordinal));
 
                     var counterCurrencyCode = targetCurrencyElement.Value;
 

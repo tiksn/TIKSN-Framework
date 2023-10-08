@@ -10,7 +10,7 @@ namespace TIKSN.Finance
         public CurrencyInfo(RegionInfo regionInfo) =>
             this.InitializeCurrency(regionInfo.ISOCurrencySymbol, regionInfo.CurrencySymbol);
 
-        public CurrencyInfo(string isoCurrencySymbol) => this.InitializeCurrency(isoCurrencySymbol, null);
+        public CurrencyInfo(string isoCurrencySymbol) => this.InitializeCurrency(isoCurrencySymbol, symbol: null);
 
         public string CurrencySymbol { get; private set; }
 
@@ -48,7 +48,6 @@ namespace TIKSN.Finance
                 return false;
             }
 
-
             if (obj is not CurrencyInfo That)
             {
                 return false;
@@ -57,7 +56,7 @@ namespace TIKSN.Finance
             return this.Equals(That);
         }
 
-        public override int GetHashCode() => this.ISOCurrencySymbol.GetHashCode();
+        public override int GetHashCode() => StringComparer.Ordinal.GetHashCode(this.ISOCurrencySymbol);
 
         public override string ToString() => this.ISOCurrencySymbol;
 
@@ -83,14 +82,11 @@ namespace TIKSN.Finance
 
         private void InitializeCurrency(string isoSymbol, string symbol)
         {
-            if (!this.TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA1.xml", isoSymbol, symbol, true,
-                "CcyTbl", "CcyNtry"))
-            {
-                if (!this.TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA3.xml", isoSymbol, symbol, false,
+            if (!this.TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA1.xml", isoSymbol, symbol, lookingForCurrent: true,
+                "CcyTbl", "CcyNtry") && !this.TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA3.xml", isoSymbol, symbol, lookingForCurrent: false,
                     "HstrcCcyTbl", "HstrcCcyNtry"))
-                {
-                    throw new CurrencyNotFoundException($"ISO symbol '{isoSymbol}' was not found in resources.");
-                }
+            {
+                throw new CurrencyNotFoundException($"ISO symbol '{isoSymbol}' was not found in resources.");
             }
         }
 
@@ -106,34 +102,31 @@ namespace TIKSN.Finance
                 {
                     var ccyElement = ccyNtryElement.Element("Ccy");
 
-                    if (ccyElement != null)
+                    if (ccyElement != null && string.Equals(ccyElement.Value, isoSymbol, StringComparison.OrdinalIgnoreCase))
                     {
-                        if (string.Equals(ccyElement.Value, isoSymbol, StringComparison.OrdinalIgnoreCase))
+                        this.IsCurrent = lookingForCurrent;
+                        this.ISOCurrencySymbol = ccyElement.Value;
+                        this.CurrencySymbol = string.IsNullOrEmpty(symbol) ? this.ISOCurrencySymbol : symbol;
+                        var ccyNbrElement = ccyNtryElement.Element("CcyNbr");
+                        this.ISOCurrencyNumber = ccyNbrElement is null ? null : int.Parse(ccyNbrElement.Value);
+
+                        var ccyNmElement = ccyNtryElement.Element("CcyNm");
+                        var isFundAttributeValue = ccyNmElement.Attribute("IsFund")?.Value;
+
+                        if (isFundAttributeValue != null)
                         {
-                            this.IsCurrent = lookingForCurrent;
-                            this.ISOCurrencySymbol = ccyElement.Value;
-                            this.CurrencySymbol = string.IsNullOrEmpty(symbol) ? this.ISOCurrencySymbol : symbol;
-                            var ccyNbrElement = ccyNtryElement.Element("CcyNbr");
-                            this.ISOCurrencyNumber = ccyNbrElement is null ? null : int.Parse(ccyNbrElement.Value);
-
-                            var ccyNmElement = ccyNtryElement.Element("CcyNm");
-                            var isFundAttributeValue = ccyNmElement.Attribute("IsFund")?.Value;
-
-                            if (isFundAttributeValue != null)
+                            isFundAttributeValue = isFundAttributeValue.Trim();
+                            if (string.Equals(isFundAttributeValue, "0", StringComparison.OrdinalIgnoreCase))
                             {
-                                isFundAttributeValue = isFundAttributeValue.Trim();
-                                if (string.Equals(isFundAttributeValue, "0", StringComparison.OrdinalIgnoreCase))
-                                {
-                                    isFundAttributeValue = false.ToString();
-                                }
+                                isFundAttributeValue = false.ToString();
                             }
-
-                            this.IsFund = !string.IsNullOrWhiteSpace(isFundAttributeValue) &&
-                                (string.Equals(isFundAttributeValue, "WAHR", StringComparison.OrdinalIgnoreCase) ||
-                                bool.Parse(isFundAttributeValue));
-
-                            return true;
                         }
+
+                        this.IsFund = !string.IsNullOrWhiteSpace(isFundAttributeValue) &&
+                            (string.Equals(isFundAttributeValue, "WAHR", StringComparison.OrdinalIgnoreCase) ||
+                            bool.Parse(isFundAttributeValue));
+
+                        return true;
                     }
                 }
             }

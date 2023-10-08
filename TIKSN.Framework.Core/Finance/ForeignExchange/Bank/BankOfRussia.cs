@@ -99,7 +99,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             var result = new List<ExchangeRate>();
 
             var httpClient = this.httpClientFactory.CreateClient();
-            var responseStream = await httpClient.GetStreamAsync(address).ConfigureAwait(false);
+            var responseStream = await httpClient.GetStreamAsync(address, cancellationToken).ConfigureAwait(false);
 
             var stream​Reader = new Stream​Reader(responseStream, Encoding.UTF7);
 
@@ -123,7 +123,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
                     var code = charCodeElement.Value;
 
-                    if (code == "NULL")
+                    if (string.Equals(code, "NULL", StringComparison.Ordinal))
                     {
                         continue;
                     }

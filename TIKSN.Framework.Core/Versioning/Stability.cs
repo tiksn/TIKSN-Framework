@@ -2,7 +2,7 @@ namespace TIKSN.Versioning
 {
     public enum Stability
     {
-        Stable,
-        Unstable
+        Stable = 0,
+        Unstable = 1,
     }
 }

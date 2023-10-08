@@ -64,9 +64,7 @@ namespace TIKSN.Configuration
         {
             this.PopulateValues(currentRegistryKey, parentConfigurationKey);
 
-            var subKeyNames = currentRegistryKey.GetSubKeyNames();
-
-            foreach (var subKeyName in subKeyNames)
+            foreach (var subKeyName in currentRegistryKey.GetSubKeyNames())
             {
                 using var registrySubKey = currentRegistryKey.OpenSubKey(subKeyName);
                 if (registrySubKey != null)
@@ -81,15 +79,13 @@ namespace TIKSN.Configuration
             using var registryKey = hiveKey.OpenSubKey(this._rootKey);
             if (registryKey != null)
             {
-                this.PopulateKeys(registryKey, null);
+                this.PopulateKeys(registryKey, parentConfigurationKey: null);
             }
         }
 
         private void PopulateValues(RegistryKey currentRegistryKey, string parentConfigurationKey)
         {
-            var valueNames = currentRegistryKey.GetValueNames();
-
-            foreach (var valueName in valueNames)
+            foreach (var valueName in currentRegistryKey.GetValueNames())
             {
                 var valueData = currentRegistryKey.GetValue(valueName);
 

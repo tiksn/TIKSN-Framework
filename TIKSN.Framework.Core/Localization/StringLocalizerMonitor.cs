@@ -35,7 +35,7 @@ namespace TIKSN.Localization
             if (localizedString.ResourceNotFound)
             {
                 this._logger.Log(this._options.Value.LogLevel, 414761847,
-                    $"Resource with name '{localizedString.Name}' is not found.", null, (s, e) => s);
+                    $"Resource with name '{localizedString.Name}' is not found.", exception: null, (s, e) => s);
             }
 
             return localizedString;

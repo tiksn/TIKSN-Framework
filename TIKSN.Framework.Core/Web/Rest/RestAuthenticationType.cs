@@ -2,8 +2,8 @@ namespace TIKSN.Web.Rest
 {
     public enum RestAuthenticationType
     {
-        None,
-        Basic,
-        Bearer
+        None = 0,
+        Basic = 1,
+        Bearer = 2,
     }
 }

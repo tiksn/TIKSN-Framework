@@ -36,7 +36,7 @@ namespace TIKSN.DependencyInjection
         {
             _ = services.AddSingleton<IPartialConfigurationValidator<TOptions>, TValidator>();
 
-            return services.ConfigurePartial<TOptions>(config, true);
+            return services.ConfigurePartial<TOptions>(config, mandatoryValidation: true);
         }
     }
 }

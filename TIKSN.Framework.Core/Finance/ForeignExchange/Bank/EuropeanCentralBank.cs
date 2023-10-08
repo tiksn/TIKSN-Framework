@@ -97,7 +97,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             var requestURL = GetRatesUrl(asOn, this.timeProvider);
 
             var httpClient = this.httpClientFactory.CreateClient();
-            var responseStream = await httpClient.GetStreamAsync(requestURL).ConfigureAwait(false);
+            var responseStream = await httpClient.GetStreamAsync(requestURL, cancellationToken).ConfigureAwait(false);
 
             var xdoc = XDocument.Load(responseStream);
 

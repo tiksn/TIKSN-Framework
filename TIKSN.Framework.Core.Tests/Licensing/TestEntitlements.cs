@@ -1,4 +1,4 @@
-﻿using LanguageExt;
+using LanguageExt;
 
 namespace TIKSN.Licensing.Tests;
 

@@ -10,7 +10,7 @@ namespace TIKSN.Finance.PricingStrategy
         {
             if (fitstImportantDigitsCount < 1)
             {
-                throw new ArgumentException(null, nameof(fitstImportantDigitsCount));
+                throw new ArgumentException(message: null, nameof(fitstImportantDigitsCount));
             }
 
             this.fitstImportantDigitsCount = fitstImportantDigitsCount;

@@ -80,12 +80,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                     return rate;
                 }
             }
-            else
+            else if (this.oneWayRates.TryGetValue(pair.CounterCurrency, out var counterRate))
             {
-                if (this.oneWayRates.TryGetValue(pair.CounterCurrency, out var counterRate))
-                {
-                    return decimal.One / counterRate;
-                }
+                return decimal.One / counterRate;
             }
 
             throw new ArgumentException("Currency pair was not found.");
@@ -100,7 +97,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
             var result = new List<ExchangeRate>();
 
             var httpClient = this.httpClientFactory.CreateClient();
-            var responseStream = await httpClient.GetStreamAsync(RSS).ConfigureAwait(false);
+            var responseStream = await httpClient.GetStreamAsync(RSS, cancellationToken).ConfigureAwait(false);
 
             var xdoc = XDocument.Load(responseStream);
 
@@ -117,12 +114,12 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                     var baseUnit = decimal.Parse(titleParts[1], CultureInfo.InvariantCulture);
                     var counterUnit = decimal.Parse(titleParts[2], CultureInfo.InvariantCulture);
 
-                    if (currencyCode == "BRC")
+                    if (string.Equals(currencyCode, "BRC", StringComparison.Ordinal))
                     {
                         currencyCode = "BRL";
                     }
 
-                    if (currencyCode == "LVL")
+                    if (string.Equals(currencyCode, "LVL", StringComparison.Ordinal))
                     {
                         continue;
                     }

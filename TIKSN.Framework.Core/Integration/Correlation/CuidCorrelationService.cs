@@ -153,7 +153,7 @@ public class CuidCorrelationService : ICorrelationService
             this.counter = this.counter == QuartetteUpperBoundary ? 0 : this.counter + 1;
         }
 
-        var pid = Process.GetCurrentProcess().Id % DuetteUpperBoundary;
+        var pid = Environment.ProcessId % DuetteUpperBoundary;
         var theHostname = this.GetHostname();
         var hostnameHash = theHostname.Split().Aggregate(theHostname.Length + 36, (prev, c) => prev + c[0]) %
                            DuetteUpperBoundary;
@@ -273,13 +273,10 @@ public class CuidCorrelationService : ICorrelationService
         {
             byteArrayRepresentation = CreateByteArray();
         }
-        else
+        else if (byteArrayRepresentation.Length != ByteArraySize)
         {
-            if (byteArrayRepresentation.Length != ByteArraySize)
-            {
-                throw new ArgumentOutOfRangeException(nameof(byteArrayRepresentation),
-                    "CUID byte array representation contains invalid number of characters.");
-            }
+            throw new ArgumentOutOfRangeException(nameof(byteArrayRepresentation),
+                "CUID byte array representation contains invalid number of characters.");
         }
 
         var chars = charArrayRepresentation.AsSpan();

@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Mapping;
+namespace TIKSN.Mapping;
 
 public interface IAsyncMapper<TSource, TDestination>
 {

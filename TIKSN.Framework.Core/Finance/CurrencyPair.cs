@@ -50,7 +50,6 @@ namespace TIKSN.Finance
                 return true;
             }
 
-
             if (obj is not CurrencyPair another)
             {
                 return false;
@@ -59,7 +58,7 @@ namespace TIKSN.Finance
             return this.Equals(another);
         }
 
-        public override int GetHashCode() => this.ToString().GetHashCode();
+        public override int GetHashCode() => StringComparer.Ordinal.GetHashCode(this.ToString());
 
         public CurrencyPair Reverse() => new(this.CounterCurrency, this.BaseCurrency);
 

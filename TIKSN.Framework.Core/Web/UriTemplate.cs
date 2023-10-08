@@ -11,7 +11,7 @@ namespace TIKSN.Web
         public UriTemplate(string template)
         {
             this._template = template;
-            this._values = new Dictionary<string, string>();
+            this._values = new Dictionary<string, string>(StringComparer.Ordinal);
         }
 
         public Uri Compose()
@@ -23,18 +23,18 @@ namespace TIKSN.Web
                 var parameterName = $"{{{parameter.Key}}}";
                 var escapedParameterValue = Uri.EscapeUriString(parameter.Value) ?? string.Empty;
 
-                if (resourceLocation.Contains(parameterName))
+                if (resourceLocation.Contains(parameterName, StringComparison.Ordinal))
                 {
-                    resourceLocation = resourceLocation.Replace(parameterName, escapedParameterValue);
+                    resourceLocation = resourceLocation.Replace(parameterName, escapedParameterValue, StringComparison.Ordinal);
                 }
                 else
                 {
                     var queryToAppend = $"{parameterName}={escapedParameterValue}";
-                    if (resourceLocation.EndsWith("?"))
+                    if (resourceLocation.EndsWith("?", StringComparison.Ordinal))
                     {
-                        resourceLocation = $"{resourceLocation}{queryToAppend}";
+                        resourceLocation = resourceLocation + queryToAppend;
                     }
-                    else if (resourceLocation.Contains("?"))
+                    else if (resourceLocation.Contains('?', StringComparison.Ordinal))
                     {
                         resourceLocation = $"{resourceLocation}&{queryToAppend}";
                     }
