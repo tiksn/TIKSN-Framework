@@ -1,4 +1,5 @@
 using System;
+using FluentAssertions;
 using Xunit;
 
 namespace TIKSN.Finance.Tests
@@ -12,7 +13,7 @@ namespace TIKSN.Finance.Tests
             var USD1 = new CurrencyInfo(USA);
             var USD2 = new CurrencyInfo(USA);
 
-            _ = Assert.Throws<ArgumentException>(() => new CurrencyPair(USD1, USD2));
+            _ = new Func<object>(() => new CurrencyPair(USD1, USD2)).Should().ThrowExactly<ArgumentException>();
         }
 
         [Fact]
@@ -32,7 +33,7 @@ namespace TIKSN.Finance.Tests
             var pair4 = new CurrencyPair(USD, EUR);
             var pair5 = new CurrencyPair(EUR, USD);
 
-            Assert.True(pair1.Equals(pair1));
+            pair1.Equals(pair1).Should().BeTrue();
             Assert.True(pair1.GetHashCode() == pair1.GetHashCode());
             Assert.True(pair1 == pair1);
             Assert.False(pair1 != pair1);
