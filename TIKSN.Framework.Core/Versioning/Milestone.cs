@@ -2,14 +2,24 @@ namespace TIKSN.Versioning
 {
     public enum Milestone
     {
-        // Unstable
+        /// <summary>
+        /// Alpha - Unstable
+        /// </summary>
         Alpha = 1,
 
+        /// <summary>
+        /// Beta - Unstable
+        /// </summary>
         Beta = 2,
 
+        /// <summary>
+        /// Release Candidate - Unstable
+        /// </summary>
         ReleaseCandidate = 3,
 
-        // Stable
-        Release = 4
+        /// <summary>
+        /// Release - Stable
+        /// </summary>
+        Release = 4,
     }
 }
