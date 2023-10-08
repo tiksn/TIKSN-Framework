@@ -1,6 +1,6 @@
 ﻿using LanguageExt;
 
-namespace TIKSN.Framework.Core.Tests.Licensing;
+namespace TIKSN.Licensing.Tests;
 
 public record TestEntitlements(
     string Name,
