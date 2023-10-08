@@ -16,8 +16,8 @@ namespace TIKSN.Analytics.Telemetry
             {
                 case TelemetrySeverityLevel.Critical:
                 case TelemetrySeverityLevel.Error:
-                    this.cmdlet.WriteError(new ErrorRecord(new Exception(message), null, ErrorCategory.InvalidOperation,
-                        null));
+                    this.cmdlet.WriteError(new ErrorRecord(new Exception(message), errorId: null, ErrorCategory.InvalidOperation,
+targetObject: null));
                     break;
 
                 case TelemetrySeverityLevel.Information:
