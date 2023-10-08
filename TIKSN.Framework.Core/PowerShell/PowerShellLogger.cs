@@ -98,7 +98,7 @@ namespace TIKSN.PowerShell
             if (exception != null)
             {
                 _ = logBuilder.AppendLine();
-                _ = logBuilder.AppendLine(exception.ToString());
+                _ = logBuilder.Append(exception).AppendLine();
             }
 
             switch (logLevel)
@@ -120,7 +120,7 @@ namespace TIKSN.PowerShell
                 case LogLevel.Critical:
                     this._currentCommandProvider.GetCurrentCommand().WriteError(
                         new ErrorRecord(new Exception(logBuilder.ToString(), exception), eventId.ToString(),
-                            ErrorCategory.InvalidOperation, null));
+                            ErrorCategory.InvalidOperation, targetObject: null));
                     break;
                 case LogLevel.None:
                     break;
