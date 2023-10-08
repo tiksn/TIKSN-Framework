@@ -11,13 +11,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using NSubstitute;
 using TIKSN.DependencyInjection;
-using TIKSN.Licensing;
+using TIKSN.Framework.Core.Tests.Licensing;
 using TIKSN.Time;
 using Xunit;
 using Xunit.Abstractions;
 using static LanguageExt.Prelude;
 
-namespace TIKSN.Framework.Core.Tests.Licensing;
+namespace TIKSN.Licensing.Tests;
 
 public class LicenseTests
 {
