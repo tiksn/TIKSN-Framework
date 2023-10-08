@@ -3,7 +3,7 @@ using LanguageExt;
 using LanguageExt.Common;
 using TIKSN.Licensing;
 
-namespace TIKSN.Framework.Core.Tests.Licensing;
+namespace TIKSN.Licensing.Tests;
 
 public class TestEntitlementsConverter : IEntitlementsConverter<TestEntitlements, TestLicenseEntitlements>
 {
