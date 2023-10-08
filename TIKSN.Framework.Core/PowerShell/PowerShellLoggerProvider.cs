@@ -8,7 +8,7 @@ namespace TIKSN.PowerShell
     public class PowerShellLoggerProvider : ILoggerProvider
     {
         private readonly ICurrentCommandProvider _currentCommandProvider;
-        private readonly ConcurrentDictionary<string, PowerShellLogger> _loggers = new();
+        private readonly ConcurrentDictionary<string, PowerShellLogger> _loggers = new(StringComparer.Ordinal);
         private readonly IOptions<PowerShellLoggerOptions> options;
 
         public PowerShellLoggerProvider(ICurrentCommandProvider currentCommandProvider,
