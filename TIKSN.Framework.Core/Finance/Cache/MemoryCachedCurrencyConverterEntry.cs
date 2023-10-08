@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace TIKSN.Finance.Cache
 {
-    public class MemoryCachedCurrencyConverterEntry
+    public sealed class MemoryCachedCurrencyConverterEntry
     {
         private MemoryCachedCurrencyConverterEntry(
             MemoryCachedCurrencyConverterEntryKind kind,
@@ -27,6 +27,6 @@ namespace TIKSN.Finance.Cache
 
         public static MemoryCachedCurrencyConverterEntry CreateForExchangeRate(decimal exchangeRate) =>
             new(MemoryCachedCurrencyConverterEntryKind.CurrencyPairs,
-                null, exchangeRate);
+currencyPairs: null, exchangeRate);
     }
 }
