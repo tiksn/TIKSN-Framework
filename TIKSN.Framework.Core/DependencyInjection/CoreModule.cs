@@ -31,6 +31,10 @@ namespace TIKSN.DependencyInjection
                 .Named<ICertificateSignatureService>("1.2.840.113549.1.1.1")
                 .SingleInstance();
 
+            _ = builder.RegisterType<DSACertificateSignatureService>()
+                .Named<ICertificateSignatureService>("1.2.840.10040.4.1")
+                .SingleInstance();
+
             _ = builder
                 .RegisterType<Finance.ForeignExchange.EntityFrameworkCore.DataEntityMapper>()
                 .AsImplementedInterfaces()
