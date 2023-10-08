@@ -26,7 +26,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
         static BankOfEngland()
         {
             SeriesCodes = new Dictionary<CurrencyPair, string>();
-            Pairs = new Dictionary<string, CurrencyPair>();
+            Pairs = new Dictionary<string, CurrencyPair>(StringComparer.Ordinal);
 
             AddSeriesCode("en-AU", "en-US", "XUDLADD");
             AddSeriesCode("en-AU", "en-GB", "XUDLADS");
@@ -254,7 +254,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank
                 ToInternalDataFormat(asOn), seriesCode);
 
             var httpClient = this.httpClientFactory.CreateClient();
-            var responseStream = await httpClient.GetStreamAsync(requestUrl).ConfigureAwait(false);
+            var responseStream = await httpClient.GetStreamAsync(requestUrl, cancellationToken).ConfigureAwait(false);
 
             var xdoc = XDocument.Load(responseStream);
 
@@ -271,9 +271,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank
 
                     if (time != null && estimatedRate != null)
                     {
-                        var year = int.Parse(time.Value.Substring(0, 4), CultureInfo.InvariantCulture);
-                        var month = int.Parse(time.Value.Substring(5, 2), CultureInfo.InvariantCulture);
-                        var day = int.Parse(time.Value.Substring(8), CultureInfo.InvariantCulture);
+                        var year = int.Parse(time.Value.AsSpan(0, 4), CultureInfo.InvariantCulture);
+                        var month = int.Parse(time.Value.AsSpan(5, 2), CultureInfo.InvariantCulture);
+                        var day = int.Parse(time.Value.AsSpan(8), CultureInfo.InvariantCulture);
 
                         var itemTime = new DateTimeOffset(year, month, day, 0, 0, 0, TimeSpan.Zero);
 
