@@ -1,4 +1,4 @@
-namespace TIKSN.Framework.Core.Tests.Licensing
+namespace TIKSN.Licensing.Tests
 
 
 struct TestLicenseEntitlements
