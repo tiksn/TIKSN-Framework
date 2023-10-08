@@ -39,7 +39,7 @@ public class RavenRepository<TEntity, TIdentity> : IRepository<TEntity>, IQueryR
     public Task<PageResult<TEntity>> PageAsync(
         PageQuery pageQuery,
         CancellationToken cancellationToken)
-        => this.PageAsync(
+        => PageAsync(
             this.session.Query<TEntity>(),
             pageQuery,
             cancellationToken);
