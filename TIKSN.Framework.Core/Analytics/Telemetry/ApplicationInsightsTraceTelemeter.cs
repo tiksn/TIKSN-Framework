@@ -12,7 +12,7 @@ namespace TIKSN.Analytics.Telemetry
             TrackTraceInternalAsync(message, severityLevel);
 
         [Obsolete]
-        public Task TrackTraceAsync(string message) => TrackTraceInternalAsync(message, null);
+        public Task TrackTraceAsync(string message) => TrackTraceInternalAsync(message, severityLevel: null);
 
         [Obsolete]
         private static Task TrackTraceInternalAsync(string message, TelemetrySeverityLevel? severityLevel)
@@ -21,7 +21,7 @@ namespace TIKSN.Analytics.Telemetry
             {
                 var telemetry = new TraceTelemetry(message)
                 {
-                    SeverityLevel = ApplicationInsightsHelper.ConvertSeverityLevel(severityLevel)
+                    SeverityLevel = ApplicationInsightsHelper.ConvertSeverityLevel(severityLevel),
                 };
                 ApplicationInsightsHelper.TrackTrace(telemetry);
             }
