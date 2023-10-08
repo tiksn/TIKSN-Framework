@@ -87,7 +87,7 @@ namespace TIKSN.Web.Rest
 
             var response = await httpClient.GetAsync(requestUrl, cancellationToken).ConfigureAwait(false);
 
-            return await this.ObjectifyResponseAsync<TEntity>(response, true).ConfigureAwait(false);
+            return await this.ObjectifyResponseAsync<TEntity>(response, defaultIfNotFound: true).ConfigureAwait(false);
         }
 
         public async Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)
@@ -133,7 +133,7 @@ namespace TIKSN.Web.Rest
 
             var response = await httpClient.GetAsync(requestUrl, cancellationToken).ConfigureAwait(false);
 
-            return await this.ObjectifyResponseAsync<IEnumerable<TEntity>>(response, false).ConfigureAwait(false);
+            return await this.ObjectifyResponseAsync<IEnumerable<TEntity>>(response, defaultIfNotFound: false).ConfigureAwait(false);
         }
 
         protected async Task<TEntity> SingleOrDefaultAsync(IEnumerable<KeyValuePair<string, string>> parameters,
@@ -151,7 +151,7 @@ namespace TIKSN.Web.Rest
 
             var response = await httpClient.GetAsync(requestUrl, cancellationToken).ConfigureAwait(false);
 
-            return await this.ObjectifyResponseAsync<TEntity>(response, true).ConfigureAwait(false);
+            return await this.ObjectifyResponseAsync<TEntity>(response, defaultIfNotFound: true).ConfigureAwait(false);
         }
 
         private async Task AddObjectAsync(object requestContent, CancellationToken cancellationToken)
