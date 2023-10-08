@@ -16,7 +16,8 @@ namespace TIKSN.Configuration
         }
 
         private static IDictionary<string, string> GetFrameworkSwitchMappings() => new Dictionary<string, string>
-            {
+(StringComparer.OrdinalIgnoreCase)
+        {
                 {
                     "--nlog-viewer-address",
                     ConfigurationPath.Combine(RemoteNLogViewerOptions.RemoteNLogViewerConfigurationSection,
@@ -31,7 +32,7 @@ namespace TIKSN.Configuration
                     "--nlog-viewer-include-source-info",
                     ConfigurationPath.Combine(RemoteNLogViewerOptions.RemoteNLogViewerConfigurationSection,
                     nameof(RemoteNLogViewerOptions.IncludeSourceInfo))
-                }
+                },
             };
 
         private static IDictionary<string, string> MergeFrameworkSwitchMappings(IDictionary<string, string> switchMappings)
