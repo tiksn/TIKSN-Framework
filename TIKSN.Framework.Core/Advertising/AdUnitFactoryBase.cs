@@ -8,7 +8,7 @@ namespace TIKSN.Advertising
         protected AdUnitFactoryBase(IAdUnitSelector adUnitSelector)
         {
             this.adUnitSelector = adUnitSelector;
-            this.adUnitBundles = new Dictionary<string, AdUnitBundle>();
+            this.adUnitBundles = new Dictionary<string, AdUnitBundle>(StringComparer.Ordinal);
 
             this.Register();
         }
