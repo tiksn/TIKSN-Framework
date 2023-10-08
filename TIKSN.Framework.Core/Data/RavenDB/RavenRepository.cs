@@ -64,7 +64,7 @@ public class RavenRepository<TEntity, TIdentity> : IRepository<TEntity>, IQueryR
     public Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken) =>
         BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, this.UpdateAsync);
 
-    protected Task<PageResult<TEntity>> PageAsync(
+    protected static Task<PageResult<TEntity>> PageAsync(
         IRavenQueryable<TEntity> query,
         PageQuery pageQuery,
         CancellationToken cancellationToken)
