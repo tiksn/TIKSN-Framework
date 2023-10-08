@@ -52,7 +52,7 @@ public class EntityQueryRepository<TContext, TEntity, TIdentity> : EntityReposit
         }
     }
 
-    protected Task<PageResult<TEntity>> PageAsync(
+    protected static Task<PageResult<TEntity>> PageAsync(
         IQueryable<TEntity> query,
         PageQuery pageQuery,
         CancellationToken cancellationToken)
