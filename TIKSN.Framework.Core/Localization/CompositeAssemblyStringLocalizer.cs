@@ -18,7 +18,7 @@ namespace TIKSN.Localization
             ILogger<CompositeAssemblyStringLocalizer> logger)
         {
             this.resourceNamesCache = resourceNamesCache;
-            this.localizers = new Lazy<IEnumerable<IStringLocalizer>>(this.CreateLocalizers, false);
+            this.localizers = new Lazy<IEnumerable<IStringLocalizer>>(this.CreateLocalizers, isThreadSafe: false);
             this._logger = logger;
         }
 
@@ -37,9 +37,7 @@ namespace TIKSN.Localization
         {
             var result = new List<IStringLocalizer>();
 
-            var assemblies = this.GetAssemblies().ToArray();
-
-            foreach (var assembly in assemblies)
+            foreach (var assembly in this.GetAssemblies().ToArray())
             {
                 foreach (var manifestResourceName in assembly.GetManifestResourceNames())
                 {
