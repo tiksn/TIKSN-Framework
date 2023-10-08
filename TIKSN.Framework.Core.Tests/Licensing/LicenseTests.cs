@@ -32,22 +32,26 @@ public class LicenseTests
 
         this.publicCertificates = new Dictionary<string, byte[]>()
         {
-            { "RSA", LicensingResource.LicensingTest1Public }
+            { "RSA", LicensingResource.LicensingTest1Public },
+            { "DSA", LicensingResource.LicensingTest2Public },
         };
 
         this.privateCertificates = new Dictionary<string, byte[]>()
         {
-            { "RSA", LicensingResource.LicensingTest1Private_pfx }
+            { "RSA", LicensingResource.LicensingTest1Private_pfx },
+            { "DSA", LicensingResource.LicensingTest2Private_pfx },
         };
 
         this.privateCertificatePasswords = new Dictionary<string, string>()
         {
-            { "RSA", LicensingResource.LicensingTest1PrivatePassword }
+            { "RSA", LicensingResource.LicensingTest1PrivatePassword },
+            { "DSA", LicensingResource.LicensingTest2PrivatePassword },
         };
     }
 
     [Theory]
     [InlineData("RSA")]
+    [InlineData("DSA")]
     public void GivenPrivateCertificate_WhenLicenseCreated_ThenItShouldBeValid(
         string kind)
     {
@@ -89,6 +93,7 @@ public class LicenseTests
 
     [Theory]
     [InlineData("RSA")]
+    [InlineData("DSA")]
     public void GivenPrivateCertificate_WhenLicenseCreatedWithValidation_ThenItShouldBeInvalid(
         string kind)
     {
@@ -178,10 +183,15 @@ public class LicenseTests
             10002000);
         this.testOutputHelper.WriteLine("License Entitlements:");
         this.testOutputHelper.WriteLine(JsonConvert.SerializeObject(entitlements, Formatting.Indented));
+
         publicCertificate = new X509Certificate2(this.publicCertificates[kind]);
+        this.testOutputHelper.WriteLine($"Public Certificate Serial Number: {publicCertificate.GetSerialNumberString()}");
+
         privateCertificate = new X509Certificate2(
             this.privateCertificates[kind],
             this.privateCertificatePasswords[kind]);
+
+        this.testOutputHelper.WriteLine($"Private Certificate Serial Number: {privateCertificate.GetSerialNumberString()}");
     }
 
     private void AssertSuccess(
