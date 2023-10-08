@@ -1,11 +1,8 @@
 using System.Globalization;
 using FluentAssertions;
 using Xunit;
-using LanguageExt;
-using TIKSN.Numbering.Acronyms;
-using static LanguageExt.Prelude;
 
-namespace TIKSN.Framework.Core.Tests.Numbering.Acronyms;
+namespace TIKSN.Numbering.Acronyms.Tests;
 
 public class AcronymTests
 {
