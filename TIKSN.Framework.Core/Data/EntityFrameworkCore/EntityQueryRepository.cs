@@ -39,7 +39,7 @@ public class EntityQueryRepository<TContext, TEntity, TIdentity> : EntityReposit
     public Task<PageResult<TEntity>> PageAsync(
         PageQuery pageQuery,
         CancellationToken cancellationToken)
-        => this.PageAsync(
+        => PageAsync(
             this.Entities,
             pageQuery,
             cancellationToken);
