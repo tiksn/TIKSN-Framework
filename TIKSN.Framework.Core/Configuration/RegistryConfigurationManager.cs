@@ -11,7 +11,7 @@ namespace TIKSN.Configuration
             var configuration = Activator.CreateInstance<T>();
             var keys = new List<string>
             {
-                rootKey
+                rootKey,
             };
 
             Initialize(configuration, keys);
@@ -58,9 +58,7 @@ namespace TIKSN.Configuration
                 }
             }
 
-            var result = regKey.GetValue(valueName);
-
-            return result;
+            return regKey.GetValue(valueName);
         }
 
         private static void Initialize(object obj, IEnumerable<string> keys)
