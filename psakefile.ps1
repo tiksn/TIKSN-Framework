@@ -80,6 +80,35 @@ Task Pack -depends Build, Test {
         $nuspec.package.metadata.dependencies.AppendChild($group) | Out-Null
     }
 
+    $multilingualResourcesFolders = Get-ChildItem -Path 'MultilingualResources' -Recurse -Directory
+    foreach ($multilingualResourcesFolder in $multilingualResourcesFolders) {
+
+        $projectName = $multilingualResourcesFolder.Parent.Name
+        $projectComment = $nuspec.CreateComment($projectName)
+        $nuspec.package.files.AppendChild($projectComment) | Out-Null
+
+        foreach ($dependencyGroup in $dependencyGroups) {
+
+            foreach ($mainFileExtension in ('dll', 'xml', 'pdb')) {
+                $file = $nuspec.CreateElement('file', $nuspec.DocumentElement.NamespaceURI)
+                $file.SetAttribute('src', "any\$projectName.$mainFileExtension")
+                $file.SetAttribute('target', "lib\$($dependencyGroup.TargetFramework)")
+                $nuspec.package.files.AppendChild($file) | Out-Null
+            }
+
+            $multilingualResourcesFiles = Get-ChildItem -Path $multilingualResourcesFolder
+            foreach ($multilingualResourcesFile in $multilingualResourcesFiles) {
+                $nameParts = $multilingualResourcesFile.Name -split '\.'
+                $code = $nameParts[-2]
+                
+                $file = $nuspec.CreateElement('file', $nuspec.DocumentElement.NamespaceURI)
+                $file.SetAttribute('src', "any\$code\$projectName.resources.dll")
+                $file.SetAttribute('target', "lib\$($dependencyGroup.TargetFramework)\$code")
+                $nuspec.package.files.AppendChild($file) | Out-Null
+            }
+        }
+    }
+
     $nuspec.Save($temporaryNuspec)
 
     Copy-Item -Path 'icon.png' -Destination $script:buildArtifactsFolder
