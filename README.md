@@ -28,7 +28,7 @@
 * Dependency Injection
 * Composition Root Setup base classes
 
-## Setup
+## Setup for Web Application
 
 ```csharp
 using Autofac;
@@ -51,7 +51,6 @@ builder.Services.Scan(scan => scan
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
   containerBuilder.RegisterModule<CoreModule>();
-  containerBuilder.RegisterModule<PlatformModule>();
   // Optional: Register project modules
 });
 

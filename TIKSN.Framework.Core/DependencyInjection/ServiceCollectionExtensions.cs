@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
 using MsgPack.Serialization;
+using NodaTime;
 using ReactiveUI;
 using TIKSN.FileSystem;
 using TIKSN.Globalization;
@@ -33,6 +34,7 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<IResourceNamesCache, ResourceNamesCache>();
         services.TryAddSingleton<IShellCommandEngine, ShellCommandEngine>();
         services.TryAddSingleton<ITimeProvider, TimeProvider>();
+        services.TryAddSingleton<IClock>(SystemClock.Instance);
         services.TryAddSingleton<Random>();
         services.TryAddSingleton(SerializationContext.Default);
         services.TryAddSingleton<IKnownFolders, KnownFolders>();
