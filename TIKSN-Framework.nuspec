@@ -36,9 +36,6 @@
         <file src="any\TIKSN.Framework.Core.dll" target="lib\net7.0" />
         <file src="any\TIKSN.Framework.Core.xml" target="lib\net7.0" />
         <file src="any\TIKSN.Framework.Core.pdb" target="lib\net7.0" />
-        <file src="any\TIKSN.Framework.Maui.dll" target="lib\net7.0" />
-        <file src="any\TIKSN.Framework.Maui.xml" target="lib\net7.0" />
-        <file src="any\TIKSN.Framework.Maui.pdb" target="lib\net7.0" />
 
         <!-- Platform: .NET 7 Android -->
         <file src="any-android\TIKSN.Framework.Core.dll" target="lib\net7.0-android21.0" />
