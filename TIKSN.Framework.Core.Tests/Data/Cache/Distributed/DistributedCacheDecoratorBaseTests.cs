@@ -7,6 +7,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FluentAssertions;
 using LanguageExt;
+using MessagePack.Resolvers;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -31,6 +32,7 @@ public class DistributedCacheDecoratorBaseTests
         _ = services.AddDistributedMemoryCache();
         _ = services.AddSingleton<ISerializer<byte[]>, MessagePackSerializer>();
         _ = services.AddSingleton<IDeserializer<byte[]>, MessagePackDeserializer>();
+        _ = services.AddSingleton(ContractlessStandardResolver.Options);
         var containerBuilder = new ContainerBuilder();
         containerBuilder.Populate(services);
         _ = containerBuilder.RegisterModule<CoreModule>();

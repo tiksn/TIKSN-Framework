@@ -1,8 +1,8 @@
 using System.Numerics;
+using MessagePack;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
-using MsgPack.Serialization;
 using NodaTime;
 using ReactiveUI;
 using TIKSN.FileSystem;
@@ -36,7 +36,7 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<ITimeProvider, TimeProvider>();
         services.TryAddSingleton<IClock>(SystemClock.Instance);
         services.TryAddSingleton<Random>();
-        services.TryAddSingleton(SerializationContext.Default);
+        services.TryAddSingleton(MessagePackSerializerOptions.Standard);
         services.TryAddSingleton<IKnownFolders, KnownFolders>();
 
         services.TryAddSingleton<CompactBinaryBondDeserializer>();
