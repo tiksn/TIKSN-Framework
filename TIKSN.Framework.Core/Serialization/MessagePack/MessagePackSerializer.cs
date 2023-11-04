@@ -1,22 +1,15 @@
-using System.IO;
-using MsgPack.Serialization;
+using MessagePack;
 
 namespace TIKSN.Serialization.MessagePack
 {
     public class MessagePackSerializer : SerializerBase<byte[]>
     {
-        private readonly SerializationContext _serializationContext;
+        private readonly MessagePackSerializerOptions messagePackSerializerOptions;
 
-        public MessagePackSerializer(SerializationContext serializationContext) =>
-            this._serializationContext = serializationContext;
+        public MessagePackSerializer(MessagePackSerializerOptions messagePackSerializerOptions)
+            => this.messagePackSerializerOptions = messagePackSerializerOptions ?? throw new ArgumentNullException(nameof(messagePackSerializerOptions));
 
         protected override byte[] SerializeInternal<T>(T obj)
-        {
-            var serializer = this._serializationContext.GetSerializer<T>();
-
-            using var stream = new MemoryStream();
-            serializer.Pack(stream, obj);
-            return stream.ToArray();
-        }
+            => global::MessagePack.MessagePackSerializer.Serialize(obj, this.messagePackSerializerOptions);
     }
 }
