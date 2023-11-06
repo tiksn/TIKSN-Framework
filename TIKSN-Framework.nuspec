@@ -1,73 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
-    <metadata>
-        <id>TIKSN-Framework</id>
-        <version>4.5.0-alpha.0</version>
-        <title>TIKSN Framework</title>
-        <authors>TIKSN</authors>
-        <owners>TIKSN</owners>
-        <projectUrl>https://tiksn.com/project/tiksn-framework/</projectUrl>
-        <repository type="git" url="https://github.com/tiksn/TIKSN-Framework" />
-        <icon>icon.png</icon>
-        <readme>README.md</readme>
-        <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <license type="expression">MIT</license>
-        <description>This is a .NET Framework enhancement framework. Main features are Versioning, Finance, Currency, Foreign Exchange, Money, Pricing strategy, Telemetry, Composite Weighted Progress, Repository and Unity of Wok pattern implementation with Entity Framework Core, Network Connectivity Service and Triggering, Settings, Windows Registry configuration source, Azure Storage Repository, MongoDB Repository, NoDB Repository, Lingual and Regional Localization, Serialization, Rest Requester, Rest Repository, Dependency Injection, Composition Root Setup base classes.</description>
-        <copyright>Copyright © 2023, TIKSN Lab</copyright>
-        <releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/milestone/17</releaseNotes>
-        <language />
-        <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry, Configuration, Azure Storage, MongoDB, NoDB, Rest, Localization, Dependency Injection, MAUI</tags>
-        <dependencies>
-            <!-- will be propagated by build script-->
-        </dependencies>
-    </metadata>
-    <files>
-        <!-- Icon -->
-        <file src="icon.png" target="" />
-        <!-- README -->
-        <file src="README.md" target="" />
+  <metadata>
+    <id>TIKSN-Framework</id>
+    <version>4.5.0-alpha.0</version>
+    <title>TIKSN Framework</title>
+    <authors>TIKSN</authors>
+    <owners>TIKSN</owners>
+    <projectUrl>https://tiksn.com/project/tiksn-framework/</projectUrl>
+    <repository type="git" url="https://github.com/tiksn/TIKSN-Framework" />
+    <icon>icon.png</icon>
+    <readme>README.md</readme>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <description>This is a .NET Framework enhancement framework. Main features are Versioning,
+      Finance, Currency, Foreign Exchange, Money, Pricing strategy, Telemetry, Composite Weighted
+      Progress, Repository and Unity of Wok pattern implementation with Entity Framework Core,
+      Network Connectivity Service and Triggering, Settings, Windows Registry configuration source,
+      Azure Storage Repository, MongoDB Repository, NoDB Repository, Lingual and Regional
+      Localization, Serialization, Rest Requester, Rest Repository, Dependency Injection,
+      Composition Root Setup base classes.</description>
+    <copyright>Copyright © 2023, TIKSN Lab</copyright>
+    <releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/milestone/17</releaseNotes>
+    <language />
+    <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry,
+      Configuration, Azure Storage, MongoDB, NoDB, Rest, Localization, Dependency Injection, MAUI</tags>
+    <dependencies>
+      <!-- will be propagated by build script-->
+    </dependencies>
+  </metadata>
+  <files>
+    <!-- Icon -->
+    <file src="icon.png" target="" />
+    <!-- README -->
+    <file src="README.md" target="" />
 
-        <!-- Language Localization will be filled by build script -->
+    <!-- Language Localization will be filled by build script -->
 
-        <!-- Region Localization will be filled by build script -->
+    <!-- Region Localization will be filled by build script -->
 
-        <!-- Platform: .NET 7 -->
-        <file src="any\TIKSN.Framework.Core.dll" target="lib\net7.0" />
-        <file src="any\TIKSN.Framework.Core.xml" target="lib\net7.0" />
-        <file src="any\TIKSN.Framework.Core.pdb" target="lib\net7.0" />
+    <!-- Platform: .NET 7 -->
+    <file src="any\TIKSN.Framework.Core.dll" target="lib\net7.0" />
+    <file src="any\TIKSN.Framework.Core.xml" target="lib\net7.0" />
+    <file src="any\TIKSN.Framework.Core.pdb" target="lib\net7.0" />
 
-        <!-- Platform: .NET 7 Android -->
-        <file src="any-android\TIKSN.Framework.Core.dll" target="lib\net7.0-android21.0" />
-        <file src="any-android\TIKSN.Framework.Core.xml" target="lib\net7.0-android21.0" />
-        <file src="any-android\TIKSN.Framework.Core.pdb" target="lib\net7.0-android21.0" />
-        <file src="any-android\TIKSN.Framework.Maui.dll" target="lib\net7.0-android21.0" />
-        <file src="any-android\TIKSN.Framework.Maui.xml" target="lib\net7.0-android21.0" />
-        <file src="any-android\TIKSN.Framework.Maui.pdb" target="lib\net7.0-android21.0" />
+    <!-- Platform: .NET 7 Android -->
+    <file src="any-android\TIKSN.Framework.Core.dll" target="lib\net7.0-android21.0" />
+    <file src="any-android\TIKSN.Framework.Core.xml" target="lib\net7.0-android21.0" />
+    <file src="any-android\TIKSN.Framework.Core.pdb" target="lib\net7.0-android21.0" />
+    <file src="any-android\TIKSN.Framework.Maui.dll" target="lib\net7.0-android21.0" />
+    <file src="any-android\TIKSN.Framework.Maui.xml" target="lib\net7.0-android21.0" />
+    <file src="any-android\TIKSN.Framework.Maui.pdb" target="lib\net7.0-android21.0" />
 
-        <!-- Platform: .NET 7 iOS -->
-        <file src="any-ios\TIKSN.Framework.Core.dll" target="lib\net7.0-ios14.2" />
-        <file src="any-ios\TIKSN.Framework.Core.xml" target="lib\net7.0-ios14.2" />
-        <file src="any-ios\TIKSN.Framework.Core.pdb" target="lib\net7.0-ios14.2" />
-        <file src="any-ios\TIKSN.Framework.Maui.dll" target="lib\net7.0-ios14.2" />
-        <file src="any-ios\TIKSN.Framework.Maui.xml" target="lib\net7.0-ios14.2" />
-        <file src="any-ios\TIKSN.Framework.Maui.pdb" target="lib\net7.0-ios14.2" />
+    <!-- Platform: .NET 7 iOS -->
+    <file src="any-ios\TIKSN.Framework.Core.dll" target="lib\net7.0-ios14.2" />
+    <file src="any-ios\TIKSN.Framework.Core.xml" target="lib\net7.0-ios14.2" />
+    <file src="any-ios\TIKSN.Framework.Core.pdb" target="lib\net7.0-ios14.2" />
+    <file src="any-ios\TIKSN.Framework.Maui.dll" target="lib\net7.0-ios14.2" />
+    <file src="any-ios\TIKSN.Framework.Maui.xml" target="lib\net7.0-ios14.2" />
+    <file src="any-ios\TIKSN.Framework.Maui.pdb" target="lib\net7.0-ios14.2" />
 
-        <!-- Platform: .NET 7 Mac Catalyst -->
-        <file src="any-maccatalyst\TIKSN.Framework.Core.dll" target="lib\net7.0-maccatalyst14.0" />
-        <file src="any-maccatalyst\TIKSN.Framework.Core.xml" target="lib\net7.0-maccatalyst14.0" />
-        <file src="any-maccatalyst\TIKSN.Framework.Core.pdb" target="lib\net7.0-maccatalyst14.0" />
-        <file src="any-maccatalyst\TIKSN.Framework.Maui.dll" target="lib\net7.0-maccatalyst14.0" />
-        <file src="any-maccatalyst\TIKSN.Framework.Maui.xml" target="lib\net7.0-maccatalyst14.0" />
-        <file src="any-maccatalyst\TIKSN.Framework.Maui.pdb" target="lib\net7.0-maccatalyst14.0" />
+    <!-- Platform: .NET 7 Mac Catalyst -->
+    <file src="any-maccatalyst\TIKSN.Framework.Core.dll" target="lib\net7.0-maccatalyst14.0" />
+    <file src="any-maccatalyst\TIKSN.Framework.Core.xml" target="lib\net7.0-maccatalyst14.0" />
+    <file src="any-maccatalyst\TIKSN.Framework.Core.pdb" target="lib\net7.0-maccatalyst14.0" />
+    <file src="any-maccatalyst\TIKSN.Framework.Maui.dll" target="lib\net7.0-maccatalyst14.0" />
+    <file src="any-maccatalyst\TIKSN.Framework.Maui.xml" target="lib\net7.0-maccatalyst14.0" />
+    <file src="any-maccatalyst\TIKSN.Framework.Maui.pdb" target="lib\net7.0-maccatalyst14.0" />
 
-        <!-- Platform: .NET 7 Windows-->
-        <file src="any-windows\TIKSN.Framework.Core.dll" target="lib\net7.0-windows10.0.19041.0" />
-        <file src="any-windows\TIKSN.Framework.Core.xml" target="lib\net7.0-windows10.0.19041.0" />
-        <file src="any-windows\TIKSN.Framework.Core.pdb" target="lib\net7.0-windows10.0.19041.0" />
-        <file src="any-windows\TIKSN.Framework.Maui.dll" target="lib\net7.0-windows10.0.19041.0" />
-        <file src="any-windows\TIKSN.Framework.Maui.xml" target="lib\net7.0-windows10.0.19041.0" />
-        <file src="any-windows\TIKSN.Framework.Maui.pdb" target="lib\net7.0-windows10.0.19041.0" />
+    <!-- Platform: .NET 7 Windows-->
+    <file src="any-windows\TIKSN.Framework.Core.dll" target="lib\net7.0-windows10.0.19041.0" />
+    <file src="any-windows\TIKSN.Framework.Core.xml" target="lib\net7.0-windows10.0.19041.0" />
+    <file src="any-windows\TIKSN.Framework.Core.pdb" target="lib\net7.0-windows10.0.19041.0" />
+    <file src="any-windows\TIKSN.Framework.Maui.dll" target="lib\net7.0-windows10.0.19041.0" />
+    <file src="any-windows\TIKSN.Framework.Maui.xml" target="lib\net7.0-windows10.0.19041.0" />
+    <file src="any-windows\TIKSN.Framework.Maui.pdb" target="lib\net7.0-windows10.0.19041.0" />
 
-    </files>
+  </files>
 </package>
