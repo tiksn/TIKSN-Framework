@@ -100,7 +100,7 @@ Task Pack -depends Build, Test {
             foreach ($multilingualResourcesFile in $multilingualResourcesFiles) {
                 $nameParts = $multilingualResourcesFile.Name -split '\.'
                 $code = $nameParts[-2]
-                
+
                 $file = $nuspec.CreateElement('file', $nuspec.DocumentElement.NamespaceURI)
                 $file.SetAttribute('src', "any\$code\$projectName.resources.dll")
                 $file.SetAttribute('target', "lib\$($dependencyGroup.TargetFramework)\$code")
