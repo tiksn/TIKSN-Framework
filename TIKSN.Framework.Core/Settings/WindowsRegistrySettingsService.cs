@@ -50,14 +50,14 @@ namespace TIKSN.Settings
                 RegistryHive.CurrentUser,
                 string.Empty,
                 value: null,
-                this.ListNames);
+                ListNames);
 
         public IReadOnlyCollection<string> ListRoamingSetting() =>
             this.Process<IReadOnlyCollection<string>>(
                 RegistryHive.LocalMachine,
                 string.Empty,
                 value: null,
-                this.ListNames);
+                ListNames);
 
         public void RemoveLocalSetting(string name) =>
             this.Process(
@@ -92,7 +92,7 @@ namespace TIKSN.Settings
             string name,
             Option<T> defaultValue)
         {
-            var value = subKey.GetValue(name, null);
+            var value = subKey.GetValue(name, defaultValue: null);
             if (value == null)
             {
                 return defaultValue;
@@ -125,7 +125,7 @@ namespace TIKSN.Settings
             return value;
         }
 
-        private IReadOnlyCollection<string> ListNames(
+        private static IReadOnlyCollection<string> ListNames(
             RegistryKey subKey,
             string name,
             IReadOnlyCollection<string> value) => subKey.GetValueNames();
@@ -144,7 +144,7 @@ namespace TIKSN.Settings
             this.ValidateOptions();
 
             using var rootKey = RegistryKey.OpenBaseKey(hiveKey, this.options.Value.RegistryView);
-            using var registrySubKey = rootKey.CreateSubKey(this.options.Value.SubKey, true);
+            using var registrySubKey = rootKey.CreateSubKey(this.options.Value.SubKey, writable: true);
             return processor(registrySubKey, name, value);
         }
 

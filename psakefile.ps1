@@ -1,9 +1,5 @@
 Properties {
     $PackageId = 'TIKSN-Framework'
-    Import-Module -Name VSSetup
-    # $vsinstance = Get-VSSetupInstance -All | Select-VSSetupInstance -Product * -Latest
-    #$msbuildPath = Join-Path -Path $vsinstance.InstallationPath -ChildPath 'MSBuild\Current\Bin\MSBuild.exe'
-    #Set-Alias -Name xmsbuild -Value $msbuildPath -Scope 'Script'
 }
 
 Task Publish -depends Pack {
@@ -20,15 +16,19 @@ Task Pack -depends Build, Test {
     Copy-Item -Path '.\TIKSN-Framework.nuspec' -Destination $temporaryNuspec
 
     $packages = @{
-        Standdard = New-Object System.Collections.Specialized.OrderedDictionary
-        Core      = New-Object System.Collections.Specialized.OrderedDictionary
-        UWP       = New-Object System.Collections.Specialized.OrderedDictionary
-        Android   = New-Object System.Collections.Specialized.OrderedDictionary
+        Core        = New-Object System.Collections.Specialized.OrderedDictionary
+        Android     = New-Object System.Collections.Specialized.OrderedDictionary
+        IOS         = New-Object System.Collections.Specialized.OrderedDictionary
+        MacCatalyst = New-Object System.Collections.Specialized.OrderedDictionary
+        Windows     = New-Object System.Collections.Specialized.OrderedDictionary
     }
 
     $projectMap = @(
-        @{PackageGroups = @($packages.Standdard, $packages.Core, $packages.UWP, $packages.Android); ProjectFile = '.\TIKSN.Core\TIKSN.Core.csproj' },
-        @{PackageGroups = @($packages.Core); ProjectFile = '.\TIKSN.Framework.Core\TIKSN.Framework.Core.csproj' }
+        @{PackageGroups = @($packages.Core, $packages.Android, $packages.IOS, $packages.MacCatalyst, $packages.Windows); ProjectFile = '.\TIKSN.Framework.Core\TIKSN.Framework.Core.csproj' }
+        @{PackageGroups = @($packages.Android); ProjectFile = '.\TIKSN.Framework.Maui\TIKSN.Framework.Maui.csproj' }
+        @{PackageGroups = @($packages.IOS); ProjectFile = '.\TIKSN.Framework.Maui\TIKSN.Framework.Maui.csproj' }
+        @{PackageGroups = @($packages.MacCatalyst); ProjectFile = '.\TIKSN.Framework.Maui\TIKSN.Framework.Maui.csproj' }
+        @{PackageGroups = @($packages.Windows); ProjectFile = '.\TIKSN.Framework.Maui\TIKSN.Framework.Maui.csproj' }
     )
 
     foreach ($projectMapEntry in $projectMap) {
@@ -56,10 +56,11 @@ Task Pack -depends Build, Test {
     }
 
     $dependencyGroups = @(
-        @{Packages = $packages.Standdard; TargetFramework = 'netstandard2.0' },
         @{Packages = $packages.Core; TargetFramework = 'net7.0' },
-        @{Packages = $packages.UWP; TargetFramework = 'uap10.0.18362' },
-        @{Packages = $packages.Android; TargetFramework = 'MonoAndroid8.1' }
+        @{Packages = $packages.Android; TargetFramework = 'net7.0-android21.0' }
+        @{Packages = $packages.IOS; TargetFramework = 'net7.0-ios14.2' }
+        @{Packages = $packages.MacCatalyst; TargetFramework = 'net7.0-maccatalyst14.0' }
+        @{Packages = $packages.Windows; TargetFramework = 'net7.0-windows10.0.19041.0' }
     )
 
     $nuspec = [xml](Get-Content -Path $temporaryNuspec -Raw)
@@ -79,9 +80,39 @@ Task Pack -depends Build, Test {
         $nuspec.package.metadata.dependencies.AppendChild($group) | Out-Null
     }
 
+    $multilingualResourcesFolders = Get-ChildItem -Path 'MultilingualResources' -Recurse -Directory
+    foreach ($multilingualResourcesFolder in $multilingualResourcesFolders) {
+
+        $projectName = $multilingualResourcesFolder.Parent.Name
+        $projectComment = $nuspec.CreateComment($projectName)
+        $nuspec.package.files.AppendChild($projectComment) | Out-Null
+
+        foreach ($dependencyGroup in $dependencyGroups) {
+
+            foreach ($mainFileExtension in ('dll', 'xml', 'pdb')) {
+                $file = $nuspec.CreateElement('file', $nuspec.DocumentElement.NamespaceURI)
+                $file.SetAttribute('src', "any\$projectName.$mainFileExtension")
+                $file.SetAttribute('target', "lib\$($dependencyGroup.TargetFramework)")
+                $nuspec.package.files.AppendChild($file) | Out-Null
+            }
+
+            $multilingualResourcesFiles = Get-ChildItem -Path $multilingualResourcesFolder
+            foreach ($multilingualResourcesFile in $multilingualResourcesFiles) {
+                $nameParts = $multilingualResourcesFile.Name -split '\.'
+                $code = $nameParts[-2]
+
+                $file = $nuspec.CreateElement('file', $nuspec.DocumentElement.NamespaceURI)
+                $file.SetAttribute('src', "any\$code\$projectName.resources.dll")
+                $file.SetAttribute('target', "lib\$($dependencyGroup.TargetFramework)\$code")
+                $nuspec.package.files.AppendChild($file) | Out-Null
+            }
+        }
+    }
+
     $nuspec.Save($temporaryNuspec)
 
     Copy-Item -Path 'icon.png' -Destination $script:buildArtifactsFolder
+    Copy-Item -Path 'README.md' -Destination $script:buildArtifactsFolder
     Exec { nuget pack $temporaryNuspec -Version $Script:NextVersion -BasePath $script:buildArtifactsFolder -OutputDirectory $script:trashFolder -OutputFileNamesWithoutVersion -Verbosity detailed }
 }
 
@@ -91,7 +122,7 @@ Task Test -depends Build {
     Exec { dotnet test '.\TIKSN.Framework.IntegrationTests\TIKSN.Framework.IntegrationTests.csproj' }
 }
 
-Task Build -depends BuildLanguageLocalization, BuildRegionLocalization, BuildCommonCore, BuildNetCore, BuildAndroid, BuildUWP {
+Task Build -depends BuildLanguageLocalization, BuildRegionLocalization, BuildNetCore, BuildMaui {
 }
 
 Task BuildLanguageLocalization -depends EstimateVersions {
@@ -106,28 +137,21 @@ Task BuildRegionLocalization -depends EstimateVersions {
     Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
 
-Task BuildCommonCore -depends DownloadCurrencyCodes, EstimateVersions {
-    $project = Resolve-Path -Path 'TIKSN.Core/TIKSN.Core.csproj'
-
-    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
-}
-
 Task BuildNetCore -depends EstimateVersions {
     $project = Resolve-Path -Path 'TIKSN.Framework.Core/TIKSN.Framework.Core.csproj'
 
     Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 }
 
-Task BuildAndroid -depends EstimateVersions -precondition { $false } {
-    $project = Resolve-Path -Path 'TIKSN.Framework.Android/TIKSN.Framework.Android.csproj'
+Task BuildMaui -depends EstimateVersions {
+    $project = Resolve-Path -Path 'TIKSN.Framework.Maui/TIKSN.Framework.Maui.csproj'
 
-    Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
-}
+    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 
-Task BuildUWP -depends EstimateVersions -precondition { $false } {
-    $project = Resolve-Path -Path 'TIKSN.Framework.UWP/TIKSN.Framework.UWP.csproj'
-
-    Exec { xmsbuild $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutputPath=$script:anyBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net7.0-ios /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyIosBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net7.0-maccatalyst /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyMaccatalystBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net7.0-android /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyAndroidBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net7.0-windows10.0.19041.0 /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyWindowsBuildArtifactsFolder }
 }
 
 Task EstimateVersions -depends Restore {
@@ -156,17 +180,16 @@ Task EstimateVersions -depends Restore {
 }
 
 Task DownloadCurrencyCodes -depends Clean {
-    Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml' -OutFile 'TIKSN.Core/Finance/Resources/TableA1.xml'
-    Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-three.xml' -OutFile 'TIKSN.Core/Finance/Resources/TableA3.xml'
+    Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml' -OutFile 'TIKSN.Framework.Core/Finance/Resources/TableA1.xml'
+    Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-three.xml' -OutFile 'TIKSN.Framework.Core/Finance/Resources/TableA3.xml'
 }
 
 Task Format -depends Restore, FormatWhitespace, FormatStyle, FormatAnalyzers {
     $solution = Resolve-Path -Path 'TIKSN Framework.sln'
-    $solution = Resolve-Path -Path 'TIKSN.Core\TIKSN.Core.csproj'
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $solution }
 }
 
-Task FormatAnalyzers -depends Restore, FormatAnalyzersLanguageLocalization, FormatAnalyzersRegionLocalization, FormatAnalyzersCommonCore, FormatAnalyzersNetCore, FormatAnalyzersAndroid, FormatAnalyzersUWP, FormatAnalyzersSolution {
+Task FormatAnalyzers -depends Restore, FormatAnalyzersLanguageLocalization, FormatAnalyzersRegionLocalization, FormatAnalyzersNetCore, FormatAnalyzersAndroid, FormatAnalyzersUWP, FormatAnalyzersSolution {
 }
 
 Task FormatAnalyzersSolution -depends Restore -precondition { $false } {
@@ -183,12 +206,6 @@ Task FormatAnalyzersLanguageLocalization -depends Restore -precondition { $false
 
 Task FormatAnalyzersRegionLocalization -depends Restore -precondition { $false } {
     $project = Resolve-Path -Path 'TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj'
-
-    Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
-}
-
-Task FormatAnalyzersCommonCore -depends Restore {
-    $project = Resolve-Path -Path 'TIKSN.Core/TIKSN.Core.csproj'
 
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
 }
@@ -211,7 +228,7 @@ Task FormatAnalyzersUWP -depends Restore -precondition { $false } {
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
 }
 
-Task FormatStyle -depends Restore, FormatStyleLanguageLocalization, FormatStyleRegionLocalization, FormatStyleCommonCore, FormatStyleNetCore, FormatStyleAndroid, FormatStyleUWP, FormatStyleSolution {
+Task FormatStyle -depends Restore, FormatStyleLanguageLocalization, FormatStyleRegionLocalization, FormatStyleNetCore, FormatStyleAndroid, FormatStyleUWP, FormatStyleSolution {
 }
 
 Task FormatStyleSolution -depends Restore -precondition { $false } {
@@ -228,12 +245,6 @@ Task FormatStyleLanguageLocalization -depends Restore -precondition { $false } {
 
 Task FormatStyleRegionLocalization -depends Restore -precondition { $false } {
     $project = Resolve-Path -Path 'TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj'
-
-    Exec { dotnet format style --severity info --verbosity diagnostic $project }
-}
-
-Task FormatStyleCommonCore -depends Restore {
-    $project = Resolve-Path -Path 'TIKSN.Core/TIKSN.Core.csproj'
 
     Exec { dotnet format style --severity info --verbosity diagnostic $project }
 }
@@ -287,6 +298,18 @@ Task Init {
 
     $script:anyBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'any'
     New-Item -Path $script:anyBuildArtifactsFolder -ItemType Directory | Out-Null
+
+    $script:anyIosBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'any-ios'
+    New-Item -Path $script:anyIosBuildArtifactsFolder -ItemType Directory | Out-Null
+
+    $script:anyMaccatalystBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'any-maccatalyst'
+    New-Item -Path $script:anyMaccatalystBuildArtifactsFolder -ItemType Directory | Out-Null
+
+    $script:anyAndroidBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'any-android'
+    New-Item -Path $script:anyAndroidBuildArtifactsFolder -ItemType Directory | Out-Null
+
+    $script:anyWindowsBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'any-windows'
+    New-Item -Path $script:anyWindowsBuildArtifactsFolder -ItemType Directory | Out-Null
 
     $script:armBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'arm'
     New-Item -Path $script:armBuildArtifactsFolder -ItemType Directory | Out-Null

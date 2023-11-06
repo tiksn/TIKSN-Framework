@@ -29,10 +29,10 @@ void Main()
 	    .Build().Services;
 
 	var rng = serviceProvider.GetRequiredService<Random>();
-	
+
 	var randomNumber = rng.Next();
-	
+
 	Clipboard.SetData(DataFormats.UnicodeText, randomNumber.ToString());
-	
+
 	randomNumber.Dump();
 }

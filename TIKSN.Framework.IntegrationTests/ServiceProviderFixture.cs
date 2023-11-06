@@ -33,12 +33,11 @@ namespace TIKSN.IntegrationTests
         public void CreateHost(string key, Action<ContainerBuilder> configureContainer)
         {
             var host = Host.CreateDefaultBuilder()
-                .ConfigureServices(services => _ = services.AddFrameworkPlatform())
+                .ConfigureServices(services => _ = services.AddFrameworkCore())
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureContainer<ContainerBuilder>(builder =>
                 {
                     _ = builder.RegisterModule<CoreModule>();
-                    _ = builder.RegisterModule<PlatformModule>();
                     _ = builder.RegisterType<TextLocalizer>().As<IStringLocalizer>().SingleInstance();
                     _ = builder.RegisterType<TestMongoRepository>().As<ITestMongoRepository>().InstancePerLifetimeScope();
                     _ = builder.RegisterType<TestMongoDatabaseProvider>().As<IMongoDatabaseProvider>().SingleInstance();

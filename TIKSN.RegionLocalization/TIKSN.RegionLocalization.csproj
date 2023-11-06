@@ -7,7 +7,7 @@
     <DocumentationFile>bin\$(Configuration)\netstandard2.0\TIKSN.RegionLocalization.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <NeutralLanguage>en-US</NeutralLanguage>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>TIKSN</RootNamespace>
@@ -17,12 +17,12 @@
     <Warning Text="$(MSBuildProjectFile) is Multilingual build enabled, but the Multilingual App Toolkit is unavailable during the build. If building with Visual Studio, please check to ensure that toolkit is properly installed." />
   </Target>
   <ItemGroup>
-    <PackageReference Include="Meziantou.Analyzer" Version="2.0.64">
+    <PackageReference Include="Meziantou.Analyzer" Version="2.0.103">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.6.40" />
-    <PackageReference Include="Roslynator.Analyzers" Version="4.3.0">
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.7.30" />
+    <PackageReference Include="Roslynator.Analyzers" Version="4.6.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

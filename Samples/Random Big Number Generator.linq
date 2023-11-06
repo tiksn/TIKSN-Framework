@@ -32,13 +32,13 @@ void Main()
 
 	var rng = serviceProvider.GetRequiredService<Random>();
 	var deserializer = serviceProvider.GetRequiredService<ICustomDeserializer<byte[], BigInteger>>();
-	
+
 	var bytes = new byte[16];
 	rng.NextBytes(bytes);
-	
+
 	var randomNumber = deserializer.Deserialize(bytes);
-	
+
 	Clipboard.SetData(DataFormats.UnicodeText, randomNumber.ToString());
-	
+
 	randomNumber.Dump();
 }

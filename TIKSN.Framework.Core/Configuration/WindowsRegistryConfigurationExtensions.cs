@@ -10,7 +10,7 @@ namespace TIKSN.Configuration
             configurationBuilder.Add(new WindowsRegistryConfigurationSource
             {
                 RootKey = rootKey,
-                RegistryView = registryView
+                RegistryView = registryView,
             });
     }
 }
