@@ -136,4 +136,13 @@
   <data name="LicensingTest2Public" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LicensingTest2Public.crt;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="LicensingTest3PrivatePassword" xml:space="preserve">
+    <value>qVTNVntZpdWa5lE8P2f7</value>
+  </data>
+  <data name="LicensingTest3Private_pfx" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LicensingTest3Private.pfx.dat;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="LicensingTest3Public" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LicensingTest3Public.crt;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>
