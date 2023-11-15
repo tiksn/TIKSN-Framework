@@ -8,11 +8,10 @@ using FluentAssertions;
 using LanguageExt;
 using LanguageExt.Common;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Time.Testing;
 using Newtonsoft.Json;
-using NSubstitute;
 using TIKSN.DependencyInjection;
 using TIKSN.Framework.Core.Tests.Licensing;
-using TIKSN.Time;
 using Xunit;
 using Xunit.Abstractions;
 using static LanguageExt.Prelude;
@@ -141,9 +140,8 @@ public class LicenseTests
         _ = services.AddSingleton<IEntitlementsConverter<TestEntitlements, TestLicenseEntitlements>, TestEntitlementsConverter>();
         _ = services.AddFrameworkCore();
 
-        var fakeTimeProvider = Substitute.For<ITimeProvider>();
-        _ = fakeTimeProvider.GetCurrentTime()
-            .Returns(new DateTimeOffset(2022, 9, 24, 0, 0, 0, TimeSpan.Zero));
+        var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(2022, 9, 24, 0, 0, 0, TimeSpan.Zero));
+        _ = services.AddSingleton<TimeProvider>(fakeTimeProvider);
 
         _ = services.AddSingleton(fakeTimeProvider);
         ContainerBuilder containerBuilder = new();
