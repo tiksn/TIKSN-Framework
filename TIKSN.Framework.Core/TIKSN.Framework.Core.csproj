@@ -70,7 +70,7 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.13" />
     <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="7.0.13" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" />
     <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="2.3.2" />
