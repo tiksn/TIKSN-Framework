@@ -19,13 +19,13 @@ namespace TIKSN.Finance.ForeignExchange.IntegrationTests
         private readonly string accessKey = "<put your access key here>";
         private readonly IHttpClientFactory httpClientFactory;
         private readonly ICurrencyFactory currencyFactory;
-        private readonly ITimeProvider timeProvider;
+        private readonly TimeProvider timeProvider;
         private readonly ServiceProviderFixture serviceProviderFixture;
 
         public CurrencylayerDotComTests(ServiceProviderFixture serviceProviderFixture)
         {
             this.currencyFactory = serviceProviderFixture.GetServiceProvider().GetRequiredService<ICurrencyFactory>();
-            this.timeProvider = serviceProviderFixture.GetServiceProvider().GetRequiredService<ITimeProvider>();
+            this.timeProvider = serviceProviderFixture.GetServiceProvider().GetRequiredService<TimeProvider>();
             this.httpClientFactory = serviceProviderFixture.GetServiceProvider().GetRequiredService<IHttpClientFactory>();
             this.serviceProviderFixture = serviceProviderFixture ?? throw new ArgumentNullException(nameof(serviceProviderFixture));
         }
