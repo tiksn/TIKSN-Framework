@@ -71,7 +71,7 @@
     <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.13" />
     <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
     <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="2.3.2" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.8.14" />
