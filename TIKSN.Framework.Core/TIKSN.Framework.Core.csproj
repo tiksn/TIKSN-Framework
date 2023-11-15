@@ -75,7 +75,7 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" />
     <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="2.3.2" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.7.30" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.5" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.22.0" />
     <PackageReference Include="MongoDB.Driver.GridFS" Version="2.22.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
