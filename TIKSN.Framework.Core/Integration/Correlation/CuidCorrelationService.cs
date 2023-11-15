@@ -1,8 +1,6 @@
-using System.Diagnostics;
 using System.Globalization;
 using LanguageExt;
 using static LanguageExt.Prelude;
-using TIKSN.Time;
 
 namespace TIKSN.Integration.Correlation;
 
@@ -17,7 +15,7 @@ public class CuidCorrelationService : ICorrelationService
     private static readonly IReadOnlyDictionary<char, int> CodeMap;
     private readonly object locker;
     private readonly Random random;
-    private readonly ITimeProvider timeProvider;
+    private readonly TimeProvider timeProvider;
     private int counter;
     private string hostname;
 
@@ -43,7 +41,7 @@ public class CuidCorrelationService : ICorrelationService
         CodeMap = codeMap;
     }
 
-    public CuidCorrelationService(ITimeProvider timeProvider, Random random)
+    public CuidCorrelationService(TimeProvider timeProvider, Random random)
     {
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         this.counter = 0;
@@ -53,10 +51,7 @@ public class CuidCorrelationService : ICorrelationService
 
     public CorrelationId Create(string stringRepresentation)
     {
-        if (stringRepresentation is null)
-        {
-            throw new ArgumentNullException(nameof(stringRepresentation));
-        }
+        ArgumentNullException.ThrowIfNull(stringRepresentation);
 
         var charArrayRepresentation = stringRepresentation.ToCharArray();
         var byteArrayRepresentation = CreateByteArray();
@@ -144,7 +139,7 @@ public class CuidCorrelationService : ICorrelationService
         var chars = charArrayRepresentation.AsSpan();
         var bytes = byteArrayRepresentation.AsSpan();
 
-        var timestamp = this.timeProvider.GetCurrentTime().ToUnixTimeMilliseconds();
+        var timestamp = this.timeProvider.GetUtcNow().ToUnixTimeMilliseconds();
 
         int oldCounter;
         lock (this.locker)
