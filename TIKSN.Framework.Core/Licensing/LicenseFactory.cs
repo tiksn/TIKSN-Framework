@@ -3,7 +3,6 @@ using Autofac.Features.Indexed;
 using LanguageExt;
 using LanguageExt.Common;
 using TIKSN.Serialization.Bond;
-using TIKSN.Time;
 
 namespace TIKSN.Licensing;
 
@@ -13,14 +12,14 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
     private readonly CompactBinaryBondDeserializer deserializer;
     private readonly IEntitlementsConverter<TEntitlements, TEntitlementsData> entitlementsConverter;
     private readonly CompactBinaryBondSerializer serializer;
-    private readonly ITimeProvider timeProvider;
+    private readonly TimeProvider timeProvider;
 
     public LicenseFactory(
         IIndex<string, ICertificateSignatureService> certificateSignatureService,
         CompactBinaryBondSerializer serializer,
         CompactBinaryBondDeserializer deserializer,
         IEntitlementsConverter<TEntitlements, TEntitlementsData> entitlementsConverter,
-        ITimeProvider timeProvider)
+        TimeProvider timeProvider)
     {
         this.certificateSignatureService = certificateSignatureService ?? throw new ArgumentNullException(nameof(certificateSignatureService));
         this.serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
@@ -144,7 +143,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
 
     private static Validation<Error, LicenseTerms> GetTerms(
         LicenseEnvelope envelope,
-        ITimeProvider timeProvider)
+        TimeProvider timeProvider)
     {
         if (envelope is null)
         {
@@ -177,7 +176,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
 
         _ = notBefore.IfSome(notBeforeValue =>
         {
-            if (timeProvider.GetCurrentTime() < notBeforeValue)
+            if (timeProvider.GetUtcNow() < notBeforeValue)
             {
                 errors.Add(Error.New(504364885, "License is not valid yet"));
             }
@@ -185,7 +184,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
 
         _ = notAfter.IfSome(notAfterValue =>
         {
-            if (notAfterValue < timeProvider.GetCurrentTime())
+            if (notAfterValue < timeProvider.GetUtcNow())
             {
                 errors.Add(Error.New(428925195, "License is not valid anymore"));
             }

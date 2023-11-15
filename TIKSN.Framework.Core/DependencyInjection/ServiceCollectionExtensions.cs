@@ -13,7 +13,6 @@ using TIKSN.Serialization.Bond;
 using TIKSN.Serialization.MessagePack;
 using TIKSN.Serialization.Numerics;
 using TIKSN.Shell;
-using TIKSN.Time;
 using TIKSN.Web.Rest;
 using MessagePackSerializer = TIKSN.Serialization.MessagePack.MessagePackSerializer;
 
@@ -33,7 +32,7 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<IRegionFactory, RegionFactory>();
         services.TryAddSingleton<IResourceNamesCache, ResourceNamesCache>();
         services.TryAddSingleton<IShellCommandEngine, ShellCommandEngine>();
-        services.TryAddSingleton<ITimeProvider, TimeProvider>();
+        services.TryAddSingleton(TimeProvider.System);
         services.TryAddSingleton<IClock>(SystemClock.Instance);
         services.TryAddSingleton<Random>();
         services.TryAddSingleton(MessagePackSerializerOptions.Standard);
