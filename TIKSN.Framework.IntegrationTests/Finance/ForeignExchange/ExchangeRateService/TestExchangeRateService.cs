@@ -22,7 +22,7 @@ namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests
             IExchangeRateRepository exchangeRateRepository,
             IForeignExchangeRepository foreignExchangeRepository,
             IUnitOfWorkFactory unitOfWorkFactory,
-            ITimeProvider timeProvider)
+            TimeProvider timeProvider)
             : base(logger, regionFactory, exchangeRateRepository, foreignExchangeRepository, unitOfWorkFactory)
         {
             this.AddBatchProvider(

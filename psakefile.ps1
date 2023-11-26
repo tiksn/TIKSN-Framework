@@ -56,11 +56,11 @@ Task Pack -depends Build, Test {
     }
 
     $dependencyGroups = @(
-        @{Packages = $packages.Core; TargetFramework = 'net7.0' },
-        @{Packages = $packages.Android; TargetFramework = 'net7.0-android21.0' }
-        @{Packages = $packages.IOS; TargetFramework = 'net7.0-ios14.2' }
-        @{Packages = $packages.MacCatalyst; TargetFramework = 'net7.0-maccatalyst14.0' }
-        @{Packages = $packages.Windows; TargetFramework = 'net7.0-windows10.0.19041.0' }
+        @{Packages = $packages.Core; TargetFramework = 'net8.0' },
+        @{Packages = $packages.Android; TargetFramework = 'net8.0-android21.0' }
+        @{Packages = $packages.IOS; TargetFramework = 'net8.0-ios14.2' }
+        @{Packages = $packages.MacCatalyst; TargetFramework = 'net8.0-maccatalyst14.0' }
+        @{Packages = $packages.Windows; TargetFramework = 'net8.0-windows10.0.19041.0' }
     )
 
     $nuspec = [xml](Get-Content -Path $temporaryNuspec -Raw)
@@ -148,10 +148,10 @@ Task BuildMaui -depends EstimateVersions {
 
     Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
 
-    Exec { dotnet build $project --framework net7.0-ios /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyIosBuildArtifactsFolder }
-    Exec { dotnet build $project --framework net7.0-maccatalyst /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyMaccatalystBuildArtifactsFolder }
-    Exec { dotnet build $project --framework net7.0-android /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyAndroidBuildArtifactsFolder }
-    Exec { dotnet build $project --framework net7.0-windows10.0.19041.0 /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyWindowsBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net8.0-ios /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyIosBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net8.0-maccatalyst /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyMaccatalystBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net8.0-android /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyAndroidBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net8.0-windows10.0.19041.0 /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyWindowsBuildArtifactsFolder }
 }
 
 Task EstimateVersions -depends Restore {
@@ -192,7 +192,7 @@ Task Format -depends Restore, FormatWhitespace, FormatStyle, FormatAnalyzers {
 Task FormatAnalyzers -depends Restore, FormatAnalyzersLanguageLocalization, FormatAnalyzersRegionLocalization, FormatAnalyzersNetCore, FormatAnalyzersAndroid, FormatAnalyzersUWP, FormatAnalyzersSolution {
 }
 
-Task FormatAnalyzersSolution -depends Restore -precondition { $false } {
+Task FormatAnalyzersSolution -depends Restore {
     $solution = Resolve-Path -Path 'TIKSN Framework.sln'
 
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $solution }
@@ -210,7 +210,7 @@ Task FormatAnalyzersRegionLocalization -depends Restore -precondition { $false }
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
 }
 
-Task FormatAnalyzersNetCore -depends Restore -precondition { $false } {
+Task FormatAnalyzersNetCore -depends Restore {
     $project = Resolve-Path -Path 'TIKSN.Framework.Core/TIKSN.Framework.Core.csproj'
 
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
@@ -231,7 +231,7 @@ Task FormatAnalyzersUWP -depends Restore -precondition { $false } {
 Task FormatStyle -depends Restore, FormatStyleLanguageLocalization, FormatStyleRegionLocalization, FormatStyleNetCore, FormatStyleAndroid, FormatStyleUWP, FormatStyleSolution {
 }
 
-Task FormatStyleSolution -depends Restore -precondition { $false } {
+Task FormatStyleSolution -depends Restore {
     $solution = Resolve-Path -Path 'TIKSN Framework.sln'
 
     Exec { dotnet format style --severity info --verbosity diagnostic $solution }
@@ -249,7 +249,7 @@ Task FormatStyleRegionLocalization -depends Restore -precondition { $false } {
     Exec { dotnet format style --severity info --verbosity diagnostic $project }
 }
 
-Task FormatStyleNetCore -depends Restore -precondition { $false } {
+Task FormatStyleNetCore -depends Restore {
     $project = Resolve-Path -Path 'TIKSN.Framework.Core/TIKSN.Framework.Core.csproj'
 
     Exec { dotnet format style --severity info --verbosity diagnostic $project }
