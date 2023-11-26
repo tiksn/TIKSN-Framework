@@ -192,7 +192,7 @@ Task Format -depends Restore, FormatWhitespace, FormatStyle, FormatAnalyzers {
 Task FormatAnalyzers -depends Restore, FormatAnalyzersLanguageLocalization, FormatAnalyzersRegionLocalization, FormatAnalyzersNetCore, FormatAnalyzersAndroid, FormatAnalyzersUWP, FormatAnalyzersSolution {
 }
 
-Task FormatAnalyzersSolution -depends Restore -precondition { $false } {
+Task FormatAnalyzersSolution -depends Restore {
     $solution = Resolve-Path -Path 'TIKSN Framework.sln'
 
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $solution }
@@ -210,7 +210,7 @@ Task FormatAnalyzersRegionLocalization -depends Restore -precondition { $false }
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
 }
 
-Task FormatAnalyzersNetCore -depends Restore -precondition { $false } {
+Task FormatAnalyzersNetCore -depends Restore {
     $project = Resolve-Path -Path 'TIKSN.Framework.Core/TIKSN.Framework.Core.csproj'
 
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
@@ -231,7 +231,7 @@ Task FormatAnalyzersUWP -depends Restore -precondition { $false } {
 Task FormatStyle -depends Restore, FormatStyleLanguageLocalization, FormatStyleRegionLocalization, FormatStyleNetCore, FormatStyleAndroid, FormatStyleUWP, FormatStyleSolution {
 }
 
-Task FormatStyleSolution -depends Restore -precondition { $false } {
+Task FormatStyleSolution -depends Restore {
     $solution = Resolve-Path -Path 'TIKSN Framework.sln'
 
     Exec { dotnet format style --severity info --verbosity diagnostic $solution }
@@ -249,7 +249,7 @@ Task FormatStyleRegionLocalization -depends Restore -precondition { $false } {
     Exec { dotnet format style --severity info --verbosity diagnostic $project }
 }
 
-Task FormatStyleNetCore -depends Restore -precondition { $false } {
+Task FormatStyleNetCore -depends Restore {
     $project = Resolve-Path -Path 'TIKSN.Framework.Core/TIKSN.Framework.Core.csproj'
 
     Exec { dotnet format style --severity info --verbosity diagnostic $project }
