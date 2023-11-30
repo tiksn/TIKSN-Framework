@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using System.Numerics;
 using MessagePack;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,6 +7,8 @@ using Microsoft.Extensions.Localization;
 using NodaTime;
 using ReactiveUI;
 using TIKSN.FileSystem;
+using TIKSN.Finance.ForeignExchange.Bank;
+using TIKSN.Finance.ForeignExchange.Cumulative;
 using TIKSN.Globalization;
 using TIKSN.Identity;
 using TIKSN.Serialization;
@@ -65,6 +68,18 @@ public static class ServiceCollectionExtensions
 
         services.TryAddSingleton<IConsoleService, ConsoleService>();
         services.TryAddSingleton<IKnownFolders, KnownFolders>();
+
+        _ = services.AddHttpClient<IBankOfCanada, BankOfCanada>();
+        _ = services.AddHttpClient<IBankOfEngland, BankOfEngland>();
+        _ = services.AddHttpClient<IBankOfRussia, BankOfRussia>();
+        _ = services.AddHttpClient<ICentralBankOfArmenia, CentralBankOfArmenia>()
+            .ConfigureHttpClient(config => config.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("TIKSN-Framework", typeof(ServiceCollectionExtensions).Assembly.GetName().Version.ToString())));
+        _ = services.AddHttpClient<IEuropeanCentralBank, EuropeanCentralBank>();
+        _ = services.AddHttpClient<IFederalReserveSystem, FederalReserveSystem>();
+        _ = services.AddHttpClient<INationalBankOfUkraine, NationalBankOfUkraine>();
+        _ = services.AddHttpClient<IReserveBankOfAustralia, ReserveBankOfAustralia>();
+        _ = services.AddHttpClient<ISwissNationalBank, SwissNationalBank>();
+        _ = services.AddHttpClient<ICurrencylayerDotCom, CurrencylayerDotCom>();
 
         return services;
     }
