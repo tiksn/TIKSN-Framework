@@ -8,41 +8,30 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Microsoft.Extensions.DependencyInjection;
-using TIKSN.Finance.ForeignExchange.Bank;
-using TIKSN.Globalization;
+using TIKSN.DependencyInjection;
 using Xunit;
 
-namespace TIKSN.Finance.ForeignExchange.IntegrationTests;
+namespace TIKSN.Finance.ForeignExchange.Bank.IntegrationTests;
 
 public class BankOfRussiaTests
 {
+    private readonly IBankOfRussia bank;
     private readonly IHttpClientFactory httpClientFactory;
-    private readonly ICurrencyFactory currencyFactory;
     private readonly TimeProvider timeProvider;
 
     public BankOfRussiaTests()
     {
         var services = new ServiceCollection();
-        _ = services.AddMemoryCache();
-        _ = services.AddHttpClient();
-        _ = services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
-        _ = services.AddSingleton<IRegionFactory, RegionFactory>();
-        _ = services.AddSingleton(TimeProvider.System);
-
+        _ = services.AddFrameworkCore();
         var serviceProvider = services.BuildServiceProvider();
-        this.currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
         this.timeProvider = serviceProvider.GetRequiredService<TimeProvider>();
+        this.bank = serviceProvider.GetRequiredService<IBankOfRussia>();
         this.httpClientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
     }
 
     [Fact]
     public async Task Calculate001Async()
     {
-        var bank = new BankOfRussia(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         foreach (var pair in await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true))
         {
             var before = new Money(pair.BaseCurrency, 10m);
@@ -57,11 +46,6 @@ public class BankOfRussiaTests
     [Fact]
     public async Task ConvertCurrency001Async()
     {
-        var bank = new BankOfRussia(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var moment = this.timeProvider.GetUtcNow();
 
         foreach (var pair in await bank.GetCurrencyPairsAsync(moment, default).ConfigureAwait(true))
@@ -78,11 +62,6 @@ public class BankOfRussiaTests
     [Fact]
     public async Task ConvertCurrency002Async()
     {
-        var bank = new BankOfRussia(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var us = new RegionInfo("US");
         var ru = new RegionInfo("RU");
 
@@ -100,11 +79,6 @@ public class BankOfRussiaTests
     [Fact]
     public async Task ConvertCurrency003Async()
     {
-        var bank = new BankOfRussia(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var ao = new RegionInfo("AO");
         var bw = new RegionInfo("BW");
 
@@ -122,11 +96,6 @@ public class BankOfRussiaTests
     [Fact]
     public async Task GetCurrencyPairs001Async()
     {
-        var bank = new BankOfRussia(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var currencyPairs = await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
 
         foreach (var pair in currencyPairs)
@@ -140,11 +109,6 @@ public class BankOfRussiaTests
     [Fact]
     public async Task GetCurrencyPairs002Async()
     {
-        var bank = new BankOfRussia(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var pairSet = new HashSet<CurrencyPair>();
 
         var currencyPairs = await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
@@ -160,11 +124,6 @@ public class BankOfRussiaTests
     [Fact]
     public async Task GetCurrencyPairs003Async()
     {
-        var bank = new BankOfRussia(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         _ = await
                 Assert.ThrowsAsync<ArgumentException>(
                     async () =>
@@ -174,11 +133,6 @@ public class BankOfRussiaTests
     [Fact]
     public async Task GetCurrencyPairs004Async()
     {
-        var bank = new BankOfRussia(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var pairs = await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
 
         Assert.Contains(pairs, c => c.ToString() == "AUD/RUB");
@@ -251,11 +205,6 @@ public class BankOfRussiaTests
     [Fact]
     public async Task GetCurrencyPairs005Async()
     {
-        var bank = new BankOfRussia(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var pairs = await bank.GetCurrencyPairsAsync(new DateTime(2010, 01, 01), default).ConfigureAwait(true);
 
         Assert.Contains(pairs, c => c.ToString() == "AUD/RUB");
@@ -298,11 +247,6 @@ public class BankOfRussiaTests
     [Fact]
     public async Task GetCurrencyPairs006Async()
     {
-        var bank = new BankOfRussia(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var atTheMoment = this.timeProvider.GetUtcNow();
 
         var pairs = await bank.GetCurrencyPairsAsync(atTheMoment, default).ConfigureAwait(true);
@@ -342,11 +286,6 @@ public class BankOfRussiaTests
     [Fact]
     public async Task GetCurrencyPairs007Async()
     {
-        var bank = new BankOfRussia(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         for (var year = 1994; year <= this.timeProvider.GetUtcNow().Year; year++)
         {
             for (var month = 1; (year < this.timeProvider.GetUtcNow().Year && month <= 12) || month <= this.timeProvider.GetUtcNow().Month; month++)
@@ -361,11 +300,6 @@ public class BankOfRussiaTests
     [Fact]
     public async Task GetExchangeRate001Async()
     {
-        var bank = new BankOfRussia(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         foreach (var pair in await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true))
         {
             var rate = await bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
@@ -377,11 +311,6 @@ public class BankOfRussiaTests
     [Fact]
     public async Task GetExchangeRate002Async()
     {
-        var bank = new BankOfRussia(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var us = new RegionInfo("US");
         var ru = new RegionInfo("RU");
 
@@ -399,11 +328,6 @@ public class BankOfRussiaTests
     [Fact]
     public async Task GetExchangeRate003Async()
     {
-        var bank = new BankOfRussia(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var ao = new RegionInfo("AO");
         var bw = new RegionInfo("BW");
 
@@ -421,11 +345,6 @@ public class BankOfRussiaTests
     [Fact]
     public async Task GetExchangeRate004Async()
     {
-        var bank = new BankOfRussia(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var moment = this.timeProvider.GetUtcNow().AddYears(-1);
 
         foreach (var pair in await bank.GetCurrencyPairsAsync(moment, default).ConfigureAwait(true))
