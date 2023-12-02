@@ -4,28 +4,29 @@ using TIKSN.Globalization;
 
 namespace TIKSN.Finance.ForeignExchange.Bank;
 
-public class CentralBankOfArmenia : ICurrencyConverter, IExchangeRatesProvider
+public class CentralBankOfArmenia : ICentralBankOfArmenia
 {
-    private const string RSS =
-        "https://www.cba.am/_layouts/rssreader.aspx?rss=280F57B8-763C-4EE4-90E0-8136C13E47DA";
-
     private static readonly CurrencyInfo AMD = new(new RegionInfo("hy-AM"));
+
+    private static readonly Uri RSS =
+            new("https://www.cba.am/_layouts/rssreader.aspx?rss=280F57B8-763C-4EE4-90E0-8136C13E47DA");
+
     private readonly ICurrencyFactory currencyFactory;
-    private readonly IHttpClientFactory httpClientFactory;
+    private readonly HttpClient httpClient;
     private readonly Dictionary<CurrencyInfo, decimal> oneWayRates;
     private readonly TimeProvider timeProvider;
     private DateTimeOffset lastFetchDate;
     private DateTimeOffset? publicationDate;
 
     public CentralBankOfArmenia(
-        IHttpClientFactory httpClientFactory,
+        HttpClient httpClient,
         ICurrencyFactory currencyFactory,
         TimeProvider timeProvider)
     {
-        this.oneWayRates = new Dictionary<CurrencyInfo, decimal>();
+        this.oneWayRates = [];
 
         this.lastFetchDate = DateTimeOffset.MinValue;
-        this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+        this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
@@ -36,6 +37,9 @@ public class CentralBankOfArmenia : ICurrencyConverter, IExchangeRatesProvider
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(baseMoney);
+        ArgumentNullException.ThrowIfNull(counterCurrency);
+
         var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
         var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
@@ -65,6 +69,8 @@ public class CentralBankOfArmenia : ICurrencyConverter, IExchangeRatesProvider
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(pair);
+
         await this.FetchOnDemandAsync(asOn, cancellationToken).ConfigureAwait(false);
 
         if (pair.CounterCurrency == AMD)
@@ -79,7 +85,7 @@ public class CentralBankOfArmenia : ICurrencyConverter, IExchangeRatesProvider
             return decimal.One / counterRate;
         }
 
-        throw new ArgumentException("Currency pair was not found.");
+        throw new ArgumentException("Currency pair was not found.", nameof(pair));
     }
 
     public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
@@ -90,8 +96,7 @@ public class CentralBankOfArmenia : ICurrencyConverter, IExchangeRatesProvider
 
         var result = new List<ExchangeRate>();
 
-        var httpClient = this.httpClientFactory.CreateClient();
-        var responseStream = await httpClient.GetStreamAsync(RSS, cancellationToken).ConfigureAwait(false);
+        var responseStream = await this.httpClient.GetStreamAsync(RSS, cancellationToken).ConfigureAwait(false);
 
         var xdoc = XDocument.Load(responseStream);
 
@@ -123,7 +128,7 @@ public class CentralBankOfArmenia : ICurrencyConverter, IExchangeRatesProvider
                     currencyCode = "XDR";
                 }
 
-                var publicationDate = DateTimeOffset.Parse(pubDate.Value, new CultureInfo("en-US"));
+                var publishedAt = DateTimeOffset.Parse(pubDate.Value, CultureInfo.InvariantCulture);
 
                 if (baseUnit != decimal.Zero && counterUnit != decimal.Zero)
                 {
@@ -131,14 +136,14 @@ public class CentralBankOfArmenia : ICurrencyConverter, IExchangeRatesProvider
 
                     var currency = this.currencyFactory.Create(currencyCode);
                     this.oneWayRates[currency] = rate;
-                    result.Add(new ExchangeRate(new CurrencyPair(AMD, currency), publicationDate, rate));
-                    result.Add(new ExchangeRate(new CurrencyPair(currency, AMD), publicationDate,
+                    result.Add(new ExchangeRate(new CurrencyPair(AMD, currency), publishedAt, rate));
+                    result.Add(new ExchangeRate(new CurrencyPair(currency, AMD), publishedAt,
                         baseUnit / counterUnit));
                 }
 
                 if (!this.publicationDate.HasValue)
                 {
-                    this.publicationDate = publicationDate;
+                    this.publicationDate = publishedAt;
                 }
             }
 
@@ -164,13 +169,13 @@ public class CentralBankOfArmenia : ICurrencyConverter, IExchangeRatesProvider
     {
         if (asOn > this.timeProvider.GetUtcNow())
         {
-            throw new ArgumentException("Exchange rate forecasting are not supported.");
+            throw new ArgumentException("Exchange rate forecasting are not supported.", nameof(asOn));
         }
 
         if ((this.publicationDate.HasValue && asOn < this.publicationDate.Value) ||
             asOn < this.timeProvider.GetUtcNow().AddDays(-1))
         {
-            throw new ArgumentException("Exchange rate history are not supported.");
+            throw new ArgumentException("Exchange rate history are not supported.", nameof(asOn));
         }
     }
 }
