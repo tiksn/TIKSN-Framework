@@ -2,41 +2,30 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using TIKSN.Finance.ForeignExchange.Bank;
-using TIKSN.Globalization;
+using TIKSN.DependencyInjection;
 using Xunit;
 
-namespace TIKSN.Finance.ForeignExchange.IntegrationTests;
+namespace TIKSN.Finance.ForeignExchange.Bank.IntegrationTests;
 
 public class ReserveBankOfAustraliaTests
 {
-    private readonly IHttpClientFactory httpClientFactory;
-    private readonly ICurrencyFactory currencyFactory;
+    private readonly IReserveBankOfAustralia bank;
     private readonly TimeProvider timeProvider;
 
     public ReserveBankOfAustraliaTests()
     {
         var services = new ServiceCollection();
-        _ = services.AddMemoryCache();
-        _ = services.AddHttpClient();
-        _ = services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
-        _ = services.AddSingleton<IRegionFactory, RegionFactory>();
-        _ = services.AddSingleton(TimeProvider.System);
-
+        _ = services.AddFrameworkCore();
         var serviceProvider = services.BuildServiceProvider();
-        this.currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+        this.bank = serviceProvider.GetRequiredService<IReserveBankOfAustralia>();
         this.timeProvider = serviceProvider.GetRequiredService<TimeProvider>();
-        this.httpClientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
     }
 
     [Fact]
     public async Task ConversionDirection001Async()
     {
-        var bank = new ReserveBankOfAustralia(this.httpClientFactory, this.currencyFactory, this.timeProvider);
-
         var australianDollar = new CurrencyInfo(new RegionInfo("AU"));
         var poundSterling = new CurrencyInfo(new RegionInfo("GB"));
 
@@ -50,8 +39,6 @@ public class ReserveBankOfAustraliaTests
     [Fact]
     public async Task ConvertCurrency001Async()
     {
-        var bank = new ReserveBankOfAustralia(this.httpClientFactory, this.currencyFactory, this.timeProvider);
-
         var currencyPairs = await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
 
         foreach (var pair in currencyPairs)
@@ -68,8 +55,6 @@ public class ReserveBankOfAustraliaTests
     [Fact]
     public async Task ConvertCurrency002Async()
     {
-        var bank = new ReserveBankOfAustralia(this.httpClientFactory, this.currencyFactory, this.timeProvider);
-
         var currencyPairs = await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
 
         foreach (var pair in currencyPairs)
@@ -87,8 +72,6 @@ public class ReserveBankOfAustraliaTests
     [Fact]
     public async Task ConvertCurrency003Async()
     {
-        var bank = new ReserveBankOfAustralia(this.httpClientFactory, this.currencyFactory, this.timeProvider);
-
         var currencyPairs = await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
 
         foreach (var pair in currencyPairs)
@@ -105,8 +88,6 @@ public class ReserveBankOfAustraliaTests
     [Fact]
     public async Task ConvertCurrency004Async()
     {
-        var bank = new ReserveBankOfAustralia(this.httpClientFactory, this.currencyFactory, this.timeProvider);
-
         var currencyPairs = await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
 
         foreach (var pair in currencyPairs)
@@ -123,8 +104,6 @@ public class ReserveBankOfAustraliaTests
     [Fact]
     public async Task ConvertCurrency005Async()
     {
-        var bank = new ReserveBankOfAustralia(this.httpClientFactory, this.currencyFactory, this.timeProvider);
-
         var armenia = new RegionInfo("AM");
         var belarus = new RegionInfo("BY");
 
@@ -142,16 +121,12 @@ public class ReserveBankOfAustraliaTests
     [Fact]
     public async Task Fetch001Async()
     {
-        var bank = new ReserveBankOfAustralia(this.httpClientFactory, this.currencyFactory, this.timeProvider);
-
         _ = await bank.GetExchangeRatesAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
     }
 
     [Fact]
     public async Task GetCurrencyPairs001Async()
     {
-        var bank = new ReserveBankOfAustralia(this.httpClientFactory, this.currencyFactory, this.timeProvider);
-
         var currencyPairs = await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
 
         Assert.Contains(currencyPairs, p => p.ToString() == "USD/AUD");
@@ -194,8 +169,6 @@ public class ReserveBankOfAustraliaTests
     [Fact]
     public async Task GetCurrencyPairs002Async()
     {
-        var bank = new ReserveBankOfAustralia(this.httpClientFactory, this.currencyFactory, this.timeProvider);
-
         var currencyPairs = await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
 
         foreach (var pair in currencyPairs)
@@ -209,8 +182,6 @@ public class ReserveBankOfAustraliaTests
     [Fact]
     public async Task GetCurrencyPairs003Async()
     {
-        var bank = new ReserveBankOfAustralia(this.httpClientFactory, this.currencyFactory, this.timeProvider);
-
         var pairSet = new HashSet<CurrencyPair>();
 
         var currencyPairs = await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
@@ -226,8 +197,6 @@ public class ReserveBankOfAustraliaTests
     [Fact]
     public async Task GetCurrencyPairs004Async()
     {
-        var bank = new ReserveBankOfAustralia(this.httpClientFactory, this.currencyFactory, this.timeProvider);
-
         _ = await
             Assert.ThrowsAsync<ArgumentException>(
                 async () =>
@@ -237,8 +206,6 @@ public class ReserveBankOfAustraliaTests
     [Fact]
     public async Task GetCurrencyPairs005Async()
     {
-        var bank = new ReserveBankOfAustralia(this.httpClientFactory, this.currencyFactory, this.timeProvider);
-
         _ = await Assert.ThrowsAsync<ArgumentException>(
                 async () =>
                     await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow().AddDays(-20), default).ConfigureAwait(true)).ConfigureAwait(true);
@@ -247,8 +214,6 @@ public class ReserveBankOfAustraliaTests
     [Fact]
     public async Task GetExchangeRate001Async()
     {
-        var bank = new ReserveBankOfAustralia(this.httpClientFactory, this.currencyFactory, this.timeProvider);
-
         var currencyPairs = await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
 
         foreach (var pair in currencyPairs)
@@ -260,8 +225,6 @@ public class ReserveBankOfAustraliaTests
     [Fact]
     public async Task GetExchangeRate002Async()
     {
-        var bank = new ReserveBankOfAustralia(this.httpClientFactory, this.currencyFactory, this.timeProvider);
-
         var currencyPairs = await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
 
         foreach (var pair in currencyPairs)
@@ -273,8 +236,6 @@ public class ReserveBankOfAustraliaTests
     [Fact]
     public async Task GetExchangeRate003Async()
     {
-        var bank = new ReserveBankOfAustralia(this.httpClientFactory, this.currencyFactory, this.timeProvider);
-
         var currencyPairs = await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
 
         foreach (var pair in currencyPairs)
@@ -286,8 +247,6 @@ public class ReserveBankOfAustraliaTests
     [Fact]
     public async Task GetExchangeRate004Async()
     {
-        var bank = new ReserveBankOfAustralia(this.httpClientFactory, this.currencyFactory, this.timeProvider);
-
         var armenia = new RegionInfo("AM");
         var belarus = new RegionInfo("BY");
 
