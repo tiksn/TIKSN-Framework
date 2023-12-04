@@ -1,9 +1,6 @@
-using System;
+namespace TIKSN.Finance.Cache;
 
-namespace TIKSN.Finance.Cache
+public class MemoryCachedCurrencyConverterOptions
 {
-    public class MemoryCachedCurrencyConverterOptions
-    {
-        public TimeSpan CacheInterval { get; set; }
-    }
+    public TimeSpan CacheInterval { get; set; }
 }
