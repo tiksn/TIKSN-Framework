@@ -32,8 +32,7 @@ public abstract class ExchangeRateServiceBase : IExchangeRateService
         this.foreignExchangeRepository = foreignExchangeRepository;
 
         this.providers =
-            new Dictionary<Guid, (Either<IExchangeRateProvider, IExchangeRatesProvider> RateProvider,
-                int LongNameKey, int ShortNameKey, RegionInfo Country, TimeSpan InvalidationInterval)>();
+            [];
 
         this.regionFactory = regionFactory;
         this.unitOfWorkFactory = unitOfWorkFactory ?? throw new ArgumentNullException(nameof(unitOfWorkFactory));
