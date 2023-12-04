@@ -25,10 +25,7 @@ public abstract class MemoryCacheDecoratorBase<T> : CacheDecoratorBase<T>
         ICacheEntry entry,
         Func<TResult> getFromSource)
     {
-        if (getFromSource is null)
-        {
-            throw new ArgumentNullException(nameof(getFromSource));
-        }
+        ArgumentNullException.ThrowIfNull(getFromSource);
 
         this.SpecifyOptions(entry);
 
@@ -39,10 +36,7 @@ public abstract class MemoryCacheDecoratorBase<T> : CacheDecoratorBase<T>
         ICacheEntry cacheEntry,
         Func<Task<TResult>> getFromSource)
     {
-        if (getFromSource is null)
-        {
-            throw new ArgumentNullException(nameof(getFromSource));
-        }
+        ArgumentNullException.ThrowIfNull(getFromSource);
 
         this.SpecifyOptions(cacheEntry);
 
@@ -53,10 +47,7 @@ public abstract class MemoryCacheDecoratorBase<T> : CacheDecoratorBase<T>
         object cacheKey,
         Func<Option<TResult>> findFromSource)
     {
-        if (findFromSource == null)
-        {
-            throw new ArgumentNullException(nameof(findFromSource));
-        }
+        ArgumentNullException.ThrowIfNull(findFromSource);
 
         if (!this.memoryCache.TryGetValue(cacheKey, out TResult? result))
         {
@@ -78,10 +69,7 @@ public abstract class MemoryCacheDecoratorBase<T> : CacheDecoratorBase<T>
         object cacheKey,
         Func<Task<Option<TResult>>> findFromSourceAsync)
     {
-        if (findFromSourceAsync == null)
-        {
-            throw new ArgumentNullException(nameof(findFromSourceAsync));
-        }
+        ArgumentNullException.ThrowIfNull(findFromSourceAsync);
 
         if (!this.memoryCache.TryGetValue(cacheKey, out TResult? result))
         {
@@ -112,10 +100,7 @@ public abstract class MemoryCacheDecoratorBase<T> : CacheDecoratorBase<T>
 
     protected void SpecifyOptions(ICacheEntry cacheEntry)
     {
-        if (cacheEntry is null)
-        {
-            throw new ArgumentNullException(nameof(cacheEntry));
-        }
+        ArgumentNullException.ThrowIfNull(cacheEntry);
 
         cacheEntry.AbsoluteExpiration = this.specificOptions.Value.AbsoluteExpiration ??
                                         this.genericOptions.Value.AbsoluteExpiration;
