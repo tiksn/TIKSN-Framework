@@ -6,7 +6,7 @@ namespace TIKSN.Time;
 
 public readonly struct AcademicYear : IYear<AcademicYear>
 {
-    private static readonly AnnualDate StartDate = new AnnualDate(9, 1);
+    private static readonly AnnualDate StartDate = new(9, 1);
     private readonly int absoluteStartYear;
 
     public AcademicYear(int startYear)
@@ -26,15 +26,8 @@ public readonly struct AcademicYear : IYear<AcademicYear>
 
     public AcademicYear(Era era, int startYearOfEra, CalendarSystem calendar)
     {
-        if (era is null)
-        {
-            throw new ArgumentNullException(nameof(era));
-        }
-
-        if (calendar is null)
-        {
-            throw new ArgumentNullException(nameof(calendar));
-        }
+        ArgumentNullException.ThrowIfNull(era);
+        ArgumentNullException.ThrowIfNull(calendar);
 
         this.absoluteStartYear = calendar.GetAbsoluteYear(startYearOfEra, era);
     }
