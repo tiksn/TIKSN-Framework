@@ -12,10 +12,7 @@ public static class RepositoryExtensions
           where TEntity : IEntity<TIdentity>
           where TIdentity : IEquatable<TIdentity>
     {
-        if (queryRepository is null)
-        {
-            throw new ArgumentNullException(nameof(queryRepository));
-        }
+        ArgumentNullException.ThrowIfNull(queryRepository);
 
         var entity = await queryRepository.GetOrDefaultAsync(id, cancellationToken).ConfigureAwait(false);
 
