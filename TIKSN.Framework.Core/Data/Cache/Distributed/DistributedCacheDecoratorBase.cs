@@ -45,15 +45,9 @@ public abstract class DistributedCacheDecoratorBase<T> : CacheDecoratorBase<T>
         Func<Task<Option<TResult>>> findFromSource,
         CancellationToken cancellationToken)
     {
-        if (cacheKey is null)
-        {
-            throw new ArgumentNullException(nameof(cacheKey));
-        }
+        ArgumentNullException.ThrowIfNull(cacheKey);
 
-        if (findFromSource is null)
-        {
-            throw new ArgumentNullException(nameof(findFromSource));
-        }
+        ArgumentNullException.ThrowIfNull(findFromSource);
 
         var cachedBytes = await this.distributedCache.GetAsync(cacheKey, cancellationToken).ConfigureAwait(false);
 
@@ -75,15 +69,9 @@ public abstract class DistributedCacheDecoratorBase<T> : CacheDecoratorBase<T>
         Func<Task<TResult>> getFromSource,
         CancellationToken cancellationToken)
     {
-        if (cacheKey is null)
-        {
-            throw new ArgumentNullException(nameof(cacheKey));
-        }
+        ArgumentNullException.ThrowIfNull(cacheKey);
 
-        if (getFromSource is null)
-        {
-            throw new ArgumentNullException(nameof(getFromSource));
-        }
+        ArgumentNullException.ThrowIfNull(getFromSource);
 
         var cachedBytes = await this.distributedCache.GetAsync(cacheKey, cancellationToken).ConfigureAwait(false);
 
