@@ -10,10 +10,7 @@ public abstract class RavenUnitOfWorkFactoryBase<TUnitOfWork> : IRavenUnitOfWork
 
     protected RavenUnitOfWorkFactoryBase(IOptions<RavenUnitOfWorkFactoryOptions<TUnitOfWork>> options)
     {
-        if (options == null)
-        {
-            throw new ArgumentNullException(nameof(options));
-        }
+        ArgumentNullException.ThrowIfNull(options);
 
         this._store = new DocumentStore { Urls = options.Value.Urls, Database = options.Value.Database }.Initialize();
     }
