@@ -11,10 +11,7 @@ public class MongoClientSessionContext : IMongoClientSessionStore, IMongoClientS
 
     public void SetClientSessionHandle(IClientSessionHandle clientSessionHandle)
     {
-        if (clientSessionHandle == null)
-        {
-            throw new ArgumentNullException(nameof(clientSessionHandle));
-        }
+        ArgumentNullException.ThrowIfNull(clientSessionHandle);
 
         this._clientSessionHandle = Option<IClientSessionHandle>.Some(clientSessionHandle);
     }
