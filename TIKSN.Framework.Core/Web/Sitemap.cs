@@ -72,10 +72,7 @@ public class Sitemap
             get => this.address;
             private set
             {
-                if (value is null)
-                {
-                    throw new ArgumentNullException("Address");
-                }
+                ArgumentNullException.ThrowIfNull(value);
 
                 this.address = value;
             }
