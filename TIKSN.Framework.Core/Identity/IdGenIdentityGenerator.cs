@@ -13,6 +13,6 @@ public class IdGenIdentityGenerator : IIdentityGenerator<long>
 
     public long Generate()
     {
-        return idGenerator.CreateId();
+        return this.idGenerator.CreateId();
     }
 }
