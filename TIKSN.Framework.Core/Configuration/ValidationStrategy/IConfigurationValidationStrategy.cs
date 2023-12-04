@@ -1,7 +1,6 @@
-namespace TIKSN.Configuration.ValidationStrategy
+namespace TIKSN.Configuration.ValidationStrategy;
+
+public interface IConfigurationValidationStrategy<T>
 {
-    public interface IConfigurationValidationStrategy<T>
-    {
-        void Validate(T instance);
-    }
+    void Validate(T instance);
 }
