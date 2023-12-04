@@ -39,7 +39,7 @@ public class CurrencylayerDotCom : ICurrencylayerDotCom
         ArgumentNullException.ThrowIfNull(baseMoney);
         ArgumentNullException.ThrowIfNull(counterCurrency);
 
-        var rates = await this.GetRatesAasyncAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
+        var rates = await this.GetRatesAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
 
         var rate = rates.Values.Single();
 
@@ -50,9 +50,9 @@ public class CurrencylayerDotCom : ICurrencylayerDotCom
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
-        var pairsWithRates = await this.GetRatesAasyncAsync(null, null, asOn, cancellationToken).ConfigureAwait(false);
+        var pairsWithRates = await this.GetRatesAsync(baseCurrency: null, counterCurrency: null, asOn, cancellationToken).ConfigureAwait(false);
 
-        var currencies = pairsWithRates.Keys.Select(item => item.CounterCurrency);
+        var currencies = pairsWithRates.Keys.Select(item => item.CounterCurrency).ToSeq();
 
         var pairs = new List<CurrencyPair>();
 
@@ -77,7 +77,7 @@ public class CurrencylayerDotCom : ICurrencylayerDotCom
     {
         ArgumentNullException.ThrowIfNull(pair);
 
-        var rates = await this.GetRatesAasyncAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken).ConfigureAwait(false);
+        var rates = await this.GetRatesAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken).ConfigureAwait(false);
 
         return rates.Values.Single();
     }
@@ -91,7 +91,7 @@ public class CurrencylayerDotCom : ICurrencylayerDotCom
         ArgumentNullException.ThrowIfNull(baseCurrency);
         ArgumentNullException.ThrowIfNull(counterCurrency);
 
-        var rates = await this.GetRatesAasyncAsync(baseCurrency, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
+        var rates = await this.GetRatesAsync(baseCurrency, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
 
         return new ExchangeRate(new CurrencyPair(baseCurrency, counterCurrency), asOn, rates.Single().Value);
     }
@@ -100,7 +100,7 @@ public class CurrencylayerDotCom : ICurrencylayerDotCom
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
-        var rates = await this.GetRatesAasyncAsync(null, null, asOn, cancellationToken).ConfigureAwait(false);
+        var rates = await this.GetRatesAsync(baseCurrency: null, counterCurrency: null, asOn, cancellationToken).ConfigureAwait(false);
 
         return rates.Select(item =>
                 new ExchangeRate(new CurrencyPair(item.Key.BaseCurrency, item.Key.CounterCurrency), asOn,
@@ -114,7 +114,7 @@ public class CurrencylayerDotCom : ICurrencylayerDotCom
         _ => true,
     };
 
-    private async Task<IDictionary<CurrencyPair, decimal>> GetRatesAasyncAsync(
+    private async Task<IDictionary<CurrencyPair, decimal>> GetRatesAsync(
         CurrencyInfo baseCurrency,
         CurrencyInfo counterCurrency,
         DateTimeOffset asOn,
@@ -131,7 +131,7 @@ public class CurrencylayerDotCom : ICurrencylayerDotCom
         else
         {
             requestUrl = HistoricalBaseURL;
-            requestUrl += string.Format(CultureInfo.InvariantCulture, "date={0}&", asOn.ToString("yyyy-MM-dd"));
+            requestUrl += string.Format(CultureInfo.InvariantCulture, "date={0}&", asOn.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
         }
 
         requestUrl += string.Format(CultureInfo.InvariantCulture, "access_key={0}", this.accessKey);
