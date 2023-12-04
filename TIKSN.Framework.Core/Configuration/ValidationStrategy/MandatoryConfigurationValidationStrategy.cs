@@ -1,16 +1,14 @@
-using System;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.Configuration.Validator;
 
-namespace TIKSN.Configuration.ValidationStrategy
-{
-    public class MandatoryConfigurationValidationStrategy<T> : ConfigurationValidationStrategyBase<T>
-    {
-        public MandatoryConfigurationValidationStrategy(IServiceProvider serviceProvider) : base(serviceProvider)
-        {
-        }
+namespace TIKSN.Configuration.ValidationStrategy;
 
-        protected override IPartialConfigurationValidator<T> GetConfigurationValidator() =>
-            this._serviceProvider.GetRequiredService<IPartialConfigurationValidator<T>>();
+public class MandatoryConfigurationValidationStrategy<T> : ConfigurationValidationStrategyBase<T>
+{
+    public MandatoryConfigurationValidationStrategy(IServiceProvider serviceProvider) : base(serviceProvider)
+    {
     }
+
+    protected override IPartialConfigurationValidator<T> GetConfigurationValidator() =>
+        this._serviceProvider.GetRequiredService<IPartialConfigurationValidator<T>>();
 }
