@@ -1,12 +1,9 @@
-using System;
+namespace TIKSN.Web.Rest;
 
-namespace TIKSN.Web.Rest
+[AttributeUsage(AttributeTargets.Property)]
+public class RestContentAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Property)]
-    public class RestContentAttribute : Attribute
-    {
-        public RestContentAttribute(string mediaType = "application/json") => this.MediaType = mediaType;
+    public RestContentAttribute(string mediaType = "application/json") => this.MediaType = mediaType;
 
-        public string MediaType { get; }
-    }
+    public string MediaType { get; }
 }
