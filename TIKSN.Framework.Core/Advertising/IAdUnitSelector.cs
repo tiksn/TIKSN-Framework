@@ -1,7 +1,6 @@
-namespace TIKSN.Advertising
+namespace TIKSN.Advertising;
+
+public interface IAdUnitSelector
 {
-    public interface IAdUnitSelector
-    {
-        AdUnit SelectAdUnit(AdUnitBundle adUnitBundle);
-    }
+    AdUnit SelectAdUnit(AdUnitBundle adUnitBundle);
 }
