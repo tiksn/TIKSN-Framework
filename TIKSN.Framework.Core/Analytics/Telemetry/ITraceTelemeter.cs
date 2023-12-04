@@ -1,11 +1,8 @@
-using System.Threading.Tasks;
+namespace TIKSN.Analytics.Telemetry;
 
-namespace TIKSN.Analytics.Telemetry
+public interface ITraceTelemeter
 {
-    public interface ITraceTelemeter
-    {
-        Task TrackTraceAsync(string message);
+    Task TrackTraceAsync(string message);
 
-        Task TrackTraceAsync(string message, TelemetrySeverityLevel severityLevel);
-    }
+    Task TrackTraceAsync(string message, TelemetrySeverityLevel severityLevel);
 }
