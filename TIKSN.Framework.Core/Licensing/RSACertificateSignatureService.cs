@@ -3,7 +3,9 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace TIKSN.Licensing;
 
+#pragma warning disable S101 // Types should be named in PascalCase
 public class RSACertificateSignatureService : ICertificateSignatureService
+#pragma warning restore S101 // Types should be named in PascalCase
 {
     public byte[] Sign(
         byte[] data,
