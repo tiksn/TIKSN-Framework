@@ -1,9 +1,8 @@
 using Microsoft.Extensions.Logging;
 
-namespace TIKSN.Analytics.Logging
+namespace TIKSN.Analytics.Logging;
+
+public abstract class LoggingSetupBase : ILoggingSetup
 {
-    public abstract class LoggingSetupBase : ILoggingSetup
-    {
-        public virtual void Setup(ILoggingBuilder loggingBuilder) => loggingBuilder.AddDebug();
-    }
+    public virtual void Setup(ILoggingBuilder loggingBuilder) => loggingBuilder.AddDebug();
 }
