@@ -110,10 +110,13 @@ public abstract class ExchangeRateServiceBase : IExchangeRateService
         CurrencyInfo intermediaryCurrency,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(pair);
+        ArgumentNullException.ThrowIfNull(intermediaryCurrency);
+
         var syntheticCurrencyPair1 = new CurrencyPair(pair.BaseCurrency, intermediaryCurrency);
         var syntheticCurrencyPair2 = new CurrencyPair(intermediaryCurrency, pair.CounterCurrency);
-        var rate1 = await GetExchangeRateAsync(syntheticCurrencyPair1, asOn, cancellationToken);
-        var rate2 = await GetExchangeRateAsync(syntheticCurrencyPair2, asOn, cancellationToken);
+        var rate1 = await this.GetExchangeRateAsync(syntheticCurrencyPair1, asOn, cancellationToken);
+        var rate2 = await this.GetExchangeRateAsync(syntheticCurrencyPair2, asOn, cancellationToken);
 
         var rate =
             from r1 in rate1
