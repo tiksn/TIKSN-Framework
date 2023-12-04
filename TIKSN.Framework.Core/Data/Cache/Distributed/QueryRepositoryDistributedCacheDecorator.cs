@@ -53,10 +53,7 @@ public class QueryRepositoryDistributedCacheDecorator<TEntity, TIdentity>
         PageQuery pageQuery,
         CancellationToken cancellationToken)
     {
-        if (pageQuery is null)
-        {
-            throw new ArgumentNullException(nameof(pageQuery));
-        }
+        ArgumentNullException.ThrowIfNull(pageQuery);
 
         var cacheKey = Tuple.Create(
             entityType,
