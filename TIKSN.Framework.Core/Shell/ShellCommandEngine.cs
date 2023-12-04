@@ -22,8 +22,7 @@ public class ShellCommandEngine : IShellCommandEngine
         IStringLocalizer stringLocalizer, IConsoleService consoleService)
     {
         this.commands =
-            new List<Tuple<Type, ShellCommandAttribute, ConstructorInfo,
-                IEnumerable<Tuple<ShellCommandParameterAttribute, PropertyInfo>>>>();
+            [];
 
         this._logger = logger;
         this._stringLocalizer = stringLocalizer;
