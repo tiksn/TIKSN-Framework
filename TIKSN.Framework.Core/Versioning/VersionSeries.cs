@@ -144,10 +144,7 @@ public sealed class VersionSeries : IEquatable<VersionSeries>
 
     public static VersionSeries Parse(string input)
     {
-        if (input == null)
-        {
-            throw new ArgumentNullException(nameof(input));
-        }
+        ArgumentNullException.ThrowIfNull(input);
 
         if (TryParse(input, out var result))
         {
@@ -159,10 +156,7 @@ public sealed class VersionSeries : IEquatable<VersionSeries>
 
     public static bool TryParse(string input, out VersionSeries result)
     {
-        if (input == null)
-        {
-            throw new ArgumentNullException(nameof(input));
-        }
+        ArgumentNullException.ThrowIfNull(input);
 
         if (int.TryParse(input, out var releaseMajor))
         {
