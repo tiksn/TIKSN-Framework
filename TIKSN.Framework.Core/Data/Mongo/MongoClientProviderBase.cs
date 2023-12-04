@@ -1,45 +1,44 @@
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 
-namespace TIKSN.Data.Mongo
+namespace TIKSN.Data.Mongo;
+
+public abstract class MongoClientProviderBase : IMongoClientProvider
 {
-    public abstract class MongoClientProviderBase : IMongoClientProvider
+    private readonly IConfiguration configuration;
+    private readonly string connectionStringKey;
+    private readonly object locker;
+    private MongoClient mongoClient;
+
+    protected MongoClientProviderBase(
+        IConfiguration configuration,
+        string connectionStringKey)
     {
-        private readonly IConfiguration configuration;
-        private readonly string connectionStringKey;
-        private readonly object locker;
-        private MongoClient mongoClient;
+        this.locker = new object();
+        this.configuration = configuration;
+        this.connectionStringKey = connectionStringKey;
+    }
 
-        protected MongoClientProviderBase(
-            IConfiguration configuration,
-            string connectionStringKey)
+    public IMongoClient GetMongoClient()
+    {
+        if (this.mongoClient == null)
         {
-            this.locker = new object();
-            this.configuration = configuration;
-            this.connectionStringKey = connectionStringKey;
-        }
-
-        public IMongoClient GetMongoClient()
-        {
-            if (this.mongoClient == null)
+            lock (this.locker)
             {
-                lock (this.locker)
+                if (this.mongoClient == null)
                 {
-                    if (this.mongoClient == null)
-                    {
-                        var connectionString = this.configuration.GetConnectionString(this.connectionStringKey);
-                        var mongoClientSettings = MongoClientSettings.FromConnectionString(connectionString);
-                        ConfigureClientSettings(mongoClientSettings);
-                        this.mongoClient = new MongoClient(mongoClientSettings);
-                    }
+                    var connectionString = this.configuration.GetConnectionString(this.connectionStringKey);
+                    var mongoClientSettings = MongoClientSettings.FromConnectionString(connectionString);
+                    ConfigureClientSettings(mongoClientSettings);
+                    this.mongoClient = new MongoClient(mongoClientSettings);
                 }
             }
-
-            return this.mongoClient;
         }
 
-        protected virtual void ConfigureClientSettings(MongoClientSettings mongoClientSettings)
-        {
-        }
+        return this.mongoClient;
+    }
+
+    protected virtual void ConfigureClientSettings(MongoClientSettings mongoClientSettings)
+    {
     }
 }
