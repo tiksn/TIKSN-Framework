@@ -14,7 +14,7 @@ public class UnsignedBigIntegerBinaryDeserializer : ICustomDeserializer<byte[], 
     /// <returns></returns>
     public BigInteger Deserialize(byte[] serial)
     {
-        var last = serial[serial.Length - 1];
+        var last = serial[^1];
 
         if (last < 0b_1000_0000)
         {
