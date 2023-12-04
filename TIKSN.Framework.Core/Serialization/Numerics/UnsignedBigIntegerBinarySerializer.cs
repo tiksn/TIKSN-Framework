@@ -12,6 +12,7 @@ public class UnsignedBigIntegerBinarySerializer : ICustomSerializer<byte[], BigI
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
     public byte[] Serialize(BigInteger obj)
     {
         if (obj.Sign < 0)
@@ -20,7 +21,7 @@ public class UnsignedBigIntegerBinarySerializer : ICustomSerializer<byte[], BigI
         }
 
         var underlyingBytes = obj.ToByteArray();
-        var last = underlyingBytes[underlyingBytes.Length - 1];
+        var last = underlyingBytes[^1];
         if (last == 0b_0000_0000 && underlyingBytes.Length > 1)
         {
             return underlyingBytes.SkipLast(1).ToArray();
