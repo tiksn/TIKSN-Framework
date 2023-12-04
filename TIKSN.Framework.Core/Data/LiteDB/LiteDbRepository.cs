@@ -16,10 +16,7 @@ public class LiteDbRepository<TDocument, TIdentity> : ILiteDbRepository<TDocumen
         string collectionName,
         Func<TIdentity, BsonValue> convertToBsonValue)
     {
-        if (databaseProvider is null)
-        {
-            throw new ArgumentNullException(nameof(databaseProvider));
-        }
+        ArgumentNullException.ThrowIfNull(databaseProvider);
 
         if (string.IsNullOrEmpty(collectionName))
         {
@@ -73,10 +70,7 @@ public class LiteDbRepository<TDocument, TIdentity> : ILiteDbRepository<TDocumen
         PageQuery pageQuery,
         CancellationToken cancellationToken)
     {
-        if (pageQuery is null)
-        {
-            throw new ArgumentNullException(nameof(pageQuery));
-        }
+        ArgumentNullException.ThrowIfNull(pageQuery);
 
         var items = this.collection.Find(
             Query.All(),
@@ -96,10 +90,7 @@ public class LiteDbRepository<TDocument, TIdentity> : ILiteDbRepository<TDocumen
 
     public Task RemoveRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken)
     {
-        if (entities == null)
-        {
-            throw new ArgumentNullException(nameof(entities));
-        }
+        ArgumentNullException.ThrowIfNull(entities);
 
         var ids = entities.Select(item => item.ID).ToArray();
 
