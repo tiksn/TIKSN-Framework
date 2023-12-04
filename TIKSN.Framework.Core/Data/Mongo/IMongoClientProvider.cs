@@ -1,9 +1,8 @@
 using MongoDB.Driver;
 
-namespace TIKSN.Data.Mongo
+namespace TIKSN.Data.Mongo;
+
+public interface IMongoClientProvider
 {
-    public interface IMongoClientProvider
-    {
-        IMongoClient GetMongoClient();
-    }
+    IMongoClient GetMongoClient();
 }
