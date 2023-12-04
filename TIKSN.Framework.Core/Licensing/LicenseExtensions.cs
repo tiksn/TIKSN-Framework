@@ -19,15 +19,8 @@ public static class LicenseExtensions
         Func<License<TEntitlements>, bool> predicate,
         Error fail)
     {
-        if (predicate is null)
-        {
-            throw new ArgumentNullException(nameof(predicate));
-        }
-
-        if (fail is null)
-        {
-            throw new ArgumentNullException(nameof(fail));
-        }
+        ArgumentNullException.ThrowIfNull(predicate);
+        ArgumentNullException.ThrowIfNull(fail);
 
         return licenseValidation
             .Bind(license => predicate.Invoke(license)
