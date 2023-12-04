@@ -1,10 +1,9 @@
 using Microsoft.Extensions.FileProviders;
 
-namespace TIKSN.FileSystem
+namespace TIKSN.FileSystem;
+
+public interface IKnownFolders
 {
-    public interface IKnownFolders
-    {
-        IFileProvider LocalAppData { get; }
-        IFileProvider RoamingAppData { get; }
-    }
+    IFileProvider LocalAppData { get; }
+    IFileProvider RoamingAppData { get; }
 }
