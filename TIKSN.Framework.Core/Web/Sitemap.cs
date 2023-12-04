@@ -4,7 +4,7 @@ namespace TIKSN.Web;
 
 public class Sitemap
 {
-    public Sitemap() => this.Pages = new HashSet<Page>();
+    public Sitemap() => this.Pages = [];
 
     public HashSet<Page> Pages { get; }
 
