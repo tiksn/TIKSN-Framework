@@ -1,44 +1,41 @@
-using System;
 using System.Management.Automation;
-using System.Threading.Tasks;
 
-namespace TIKSN.Analytics.Telemetry
+namespace TIKSN.Analytics.Telemetry;
+
+public class PowerShellTraceTelemeter : ITraceTelemeter
 {
-    public class PowerShellTraceTelemeter : ITraceTelemeter
+    private readonly Cmdlet cmdlet;
+
+    public PowerShellTraceTelemeter(Cmdlet cmdlet) => this.cmdlet = cmdlet;
+
+    public Task TrackTraceAsync(string message, TelemetrySeverityLevel severityLevel)
     {
-        private readonly Cmdlet cmdlet;
-
-        public PowerShellTraceTelemeter(Cmdlet cmdlet) => this.cmdlet = cmdlet;
-
-        public Task TrackTraceAsync(string message, TelemetrySeverityLevel severityLevel)
+        switch (severityLevel)
         {
-            switch (severityLevel)
-            {
-                case TelemetrySeverityLevel.Critical:
-                case TelemetrySeverityLevel.Error:
-                    this.cmdlet.WriteError(new ErrorRecord(new Exception(message), errorId: null, ErrorCategory.InvalidOperation,
+            case TelemetrySeverityLevel.Critical:
+            case TelemetrySeverityLevel.Error:
+                this.cmdlet.WriteError(new ErrorRecord(new Exception(message), errorId: null, ErrorCategory.InvalidOperation,
 targetObject: null));
-                    break;
+                break;
 
-                case TelemetrySeverityLevel.Information:
-                    this.cmdlet.WriteDebug(message);
-                    break;
+            case TelemetrySeverityLevel.Information:
+                this.cmdlet.WriteDebug(message);
+                break;
 
-                case TelemetrySeverityLevel.Verbose:
-                    this.cmdlet.WriteVerbose(message);
-                    break;
+            case TelemetrySeverityLevel.Verbose:
+                this.cmdlet.WriteVerbose(message);
+                break;
 
-                case TelemetrySeverityLevel.Warning:
-                    this.cmdlet.WriteWarning(message);
-                    break;
+            case TelemetrySeverityLevel.Warning:
+                this.cmdlet.WriteWarning(message);
+                break;
 
-                default:
-                    throw new NotSupportedException();
-            }
-
-            return Task.FromResult<object>(null);
+            default:
+                throw new NotSupportedException();
         }
 
-        public Task TrackTraceAsync(string message) => this.TrackTraceAsync(message, TelemetrySeverityLevel.Verbose);
+        return Task.FromResult<object>(null);
     }
+
+    public Task TrackTraceAsync(string message) => this.TrackTraceAsync(message, TelemetrySeverityLevel.Verbose);
 }
