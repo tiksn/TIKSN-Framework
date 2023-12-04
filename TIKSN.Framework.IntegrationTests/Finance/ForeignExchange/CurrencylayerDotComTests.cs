@@ -1,55 +1,42 @@
 using System;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using TIKSN.Finance.ForeignExchange.Cumulative;
-using TIKSN.Globalization;
-using TIKSN.IntegrationTests;
-using TIKSN.Time;
+using TIKSN.DependencyInjection;
 using Xunit;
 
-namespace TIKSN.Finance.ForeignExchange.IntegrationTests
+namespace TIKSN.Finance.ForeignExchange.Cumulative.IntegrationTests;
+
+public class CurrencylayerDotComTests
 {
-    [Collection("ServiceProviderCollection")]
-    public class CurrencylayerDotComTests
+    private const string skip = "API changed, code needs to be adopted";
+
+    private readonly string accessKey = "<put your access key here>";
+    private readonly ICurrencylayerDotCom exchange;
+
+    public CurrencylayerDotComTests()
     {
-        private const string skip = "API changed, code needs to be adopted";
+        var services = new ServiceCollection();
+        _ = services.AddFrameworkCore();
+        var serviceProvider = services.BuildServiceProvider();
+        this.exchange = serviceProvider.GetRequiredService<ICurrencylayerDotCom>();
+    }
 
-        private readonly string accessKey = "<put your access key here>";
-        private readonly IHttpClientFactory httpClientFactory;
-        private readonly ICurrencyFactory currencyFactory;
-        private readonly TimeProvider timeProvider;
-        private readonly ServiceProviderFixture serviceProviderFixture;
+    [Fact(Skip = skip)]
+    public async Task GetCurrencyPairs001Async()
+    {
+        var pairs = await this.exchange.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true);
 
-        public CurrencylayerDotComTests(ServiceProviderFixture serviceProviderFixture)
-        {
-            this.currencyFactory = serviceProviderFixture.GetServiceProvider().GetRequiredService<ICurrencyFactory>();
-            this.timeProvider = serviceProviderFixture.GetServiceProvider().GetRequiredService<TimeProvider>();
-            this.httpClientFactory = serviceProviderFixture.GetServiceProvider().GetRequiredService<IHttpClientFactory>();
-            this.serviceProviderFixture = serviceProviderFixture ?? throw new ArgumentNullException(nameof(serviceProviderFixture));
-        }
+        Assert.True(pairs.Count() > 0);
+    }
 
-        [Fact(Skip = skip)]
-        public async Task GetCurrencyPairs001Async()
-        {
-            var exchange = new CurrencylayerDotCom(this.httpClientFactory, this.currencyFactory, this.timeProvider, this.accessKey);
+    [Fact(Skip = skip)]
+    public async Task GetExchangeRateAsync001Async()
+    {
+        var pair = new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("UAH"));
 
-            var pairs = await exchange.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true);
+        var rate = await this.exchange.GetExchangeRateAsync(pair, DateTimeOffset.Now, default).ConfigureAwait(true);
 
-            Assert.True(pairs.Count() > 0);
-        }
-
-        [Fact(Skip = skip)]
-        public async Task GetExchangeRateAsync001Async()
-        {
-            var exchange = new CurrencylayerDotCom(this.httpClientFactory, this.currencyFactory, this.timeProvider, this.accessKey);
-
-            var pair = new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("UAH"));
-
-            var rate = await exchange.GetExchangeRateAsync(pair, DateTimeOffset.Now, default).ConfigureAwait(true);
-
-            Assert.True(rate > decimal.Zero);
-        }
+        Assert.True(rate > decimal.Zero);
     }
 }

@@ -1,26 +1,26 @@
 using System.Globalization;
 using System.Xml.Linq;
-using LanguageExt;
 using TIKSN.Globalization;
 
 namespace TIKSN.Finance.ForeignExchange.Bank;
 
-public class FederalReserveSystem : ICurrencyConverter, IExchangeRatesProvider
+public class FederalReserveSystem : IFederalReserveSystem
 {
     private const string DataUrlFormat =
         "https://www.federalreserve.gov/datadownload/Output.aspx?rel=H10&series=60f32914ab61dfab590e0e470153e3ae&lastObs=7&from={0}&to={1}&filetype=sdmx&label=include&layout=seriescolumn";
 
+    private static readonly CultureInfo EnglishUnitedStates = new("en-US");
     private static readonly CurrencyInfo UnitedStatesDollar = new(new RegionInfo("en-US"));
-    private readonly IHttpClientFactory httpClientFactory;
     private readonly ICurrencyFactory currencyFactory;
+    private readonly HttpClient httpClient;
     private readonly TimeProvider timeProvider;
 
     public FederalReserveSystem(
-        IHttpClientFactory httpClientFactory,
+        HttpClient httpClient,
         ICurrencyFactory currencyFactory,
         TimeProvider timeProvider)
     {
-        this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+        this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
@@ -31,6 +31,9 @@ public class FederalReserveSystem : ICurrencyConverter, IExchangeRatesProvider
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(baseMoney);
+        ArgumentNullException.ThrowIfNull(counterCurrency);
+
         var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
         var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
@@ -62,6 +65,8 @@ public class FederalReserveSystem : ICurrencyConverter, IExchangeRatesProvider
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(pair);
+
         ValidateDate(asOn, this.timeProvider);
 
         var rates = await this.GetRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
@@ -81,19 +86,18 @@ public class FederalReserveSystem : ICurrencyConverter, IExchangeRatesProvider
             }
         }
 
-        throw new ArgumentException($"Currency pair '{pair}' not supported.");
+        throw new ArgumentException($"Currency pair '{pair}' not supported.", nameof(pair));
     }
 
     public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
-        var dataUrl = string.Format(DataUrlFormat,
-            this.timeProvider.GetUtcNow().AddDays(-10d).ToString("MM/dd/yyyy"),
-            this.timeProvider.GetUtcNow().ToString("MM/dd/yyyy"));
+        var dataUrl = new Uri(string.Format(EnglishUnitedStates, DataUrlFormat,
+            this.timeProvider.GetUtcNow().AddDays(-10d).ToString("MM/dd/yyyy", EnglishUnitedStates),
+            this.timeProvider.GetUtcNow().ToString("MM/dd/yyyy", EnglishUnitedStates)));
 
-        var httpClient = this.httpClientFactory.CreateClient();
-        var responseStream = await httpClient.GetStreamAsync(dataUrl, cancellationToken).ConfigureAwait(false);
+        var responseStream = await this.httpClient.GetStreamAsync(dataUrl, cancellationToken).ConfigureAwait(false);
 
         var xdoc = XDocument.Load(responseStream);
 
@@ -109,7 +113,7 @@ public class FederalReserveSystem : ICurrencyConverter, IExchangeRatesProvider
 
             if (!string.Equals(currencyCode, "NA", StringComparison.Ordinal))
             {
-                var rates = new Dictionary<DateTime, decimal>();
+                var rates = new Dictionary<DateTimeOffset, decimal>();
 
                 foreach (var obsElement in seriesElement.Elements(
                     "{http://www.federalreserve.gov/structure/compact/common}Obs"))
@@ -117,8 +121,8 @@ public class FederalReserveSystem : ICurrencyConverter, IExchangeRatesProvider
                     var obsStatus = obsElement.Attribute("OBS_STATUS").Value;
                     if (!string.Equals(obsStatus, "ND", StringComparison.Ordinal))
                     {
-                        var obsValue = decimal.Parse(obsElement.Attribute("OBS_VALUE").Value);
-                        var period = DateTime.Parse(obsElement.Attribute("TIME_PERIOD").Value);
+                        var obsValue = decimal.Parse(obsElement.Attribute("OBS_VALUE").Value, EnglishUnitedStates);
+                        var period = DateTimeOffset.Parse(obsElement.Attribute("TIME_PERIOD").Value, EnglishUnitedStates);
 
                         decimal obsValueRate;
 
@@ -161,6 +165,14 @@ public class FederalReserveSystem : ICurrencyConverter, IExchangeRatesProvider
         return result;
     }
 
+    private static void ValidateDate(DateTimeOffset asOn, TimeProvider timeProvider)
+    {
+        if (asOn > timeProvider.GetUtcNow())
+        {
+            throw new ArgumentException("Exchange rate forecasting are not supported.", nameof(asOn));
+        }
+    }
+
     private async Task<Dictionary<CurrencyInfo, decimal>> GetRatesAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
@@ -174,13 +186,5 @@ public class FederalReserveSystem : ICurrencyConverter, IExchangeRatesProvider
         }
 
         return result;
-    }
-
-    private static void ValidateDate(DateTimeOffset asOn, TimeProvider timeProvider)
-    {
-        if (asOn > timeProvider.GetUtcNow())
-        {
-            throw new ArgumentException("Exchange rate forecasting are not supported.");
-        }
     }
 }

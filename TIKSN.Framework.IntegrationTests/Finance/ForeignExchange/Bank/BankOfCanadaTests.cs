@@ -5,41 +5,34 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using TIKSN.Finance.ForeignExchange.Bank;
+using TIKSN.DependencyInjection;
 using TIKSN.Globalization;
 using Xunit;
 
-namespace TIKSN.Finance.ForeignExchange.IntegrationTests;
+namespace TIKSN.Finance.ForeignExchange.Bank.IntegrationTests;
 
 public class BankOfCanadaTests
 {
-    private readonly IHttpClientFactory httpClientFactory;
+    private readonly IBankOfCanada bank;
     private readonly ICurrencyFactory currencyFactory;
+    private readonly IHttpClientFactory httpClientFactory;
     private readonly TimeProvider timeProvider;
 
     public BankOfCanadaTests()
     {
         var services = new ServiceCollection();
-        _ = services.AddMemoryCache();
-        _ = services.AddHttpClient();
-        _ = services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
-        _ = services.AddSingleton<IRegionFactory, RegionFactory>();
-        _ = services.AddSingleton(TimeProvider.System);
+        _ = services.AddFrameworkCore();
 
         var serviceProvider = services.BuildServiceProvider();
         this.currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
         this.timeProvider = serviceProvider.GetRequiredService<TimeProvider>();
         this.httpClientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
+        this.bank = serviceProvider.GetRequiredService<IBankOfCanada>();
     }
 
     [Fact]
     public async Task Calculate001Async()
     {
-        var bank = new BankOfCanada(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         foreach (var pair in await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true))
         {
             var before = new Money(pair.BaseCurrency, 10m);
@@ -54,11 +47,6 @@ public class BankOfCanadaTests
     [Fact]
     public async Task ConversionDirection001Async()
     {
-        var bank = new BankOfCanada(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var canadianDollar = new CurrencyInfo(new RegionInfo("CA"));
         var poundSterling = new CurrencyInfo(new RegionInfo("GB"));
 
@@ -76,11 +64,6 @@ public class BankOfCanadaTests
     [Fact]
     public async Task ConvertCurrency001Async()
     {
-        var bank = new BankOfCanada(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var currencyPairs = await bank.GetCurrencyPairsAsync(
             this.timeProvider.GetUtcNow(),
             default).ConfigureAwait(true);
@@ -102,11 +85,6 @@ public class BankOfCanadaTests
     [Fact]
     public async Task ConvertCurrency002Async()
     {
-        var bank = new BankOfCanada(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var currencyPairs = await bank.GetCurrencyPairsAsync(
             this.timeProvider.GetUtcNow(),
             default).ConfigureAwait(true);
@@ -124,11 +102,6 @@ public class BankOfCanadaTests
     [Fact]
     public async Task ConvertCurrency003Async()
     {
-        var bank = new BankOfCanada(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var currencyPairs = await bank.GetCurrencyPairsAsync(
             this.timeProvider.GetUtcNow(),
             default).ConfigureAwait(true);
@@ -149,11 +122,6 @@ public class BankOfCanadaTests
     [Fact]
     public async Task ConvertCurrency004Async()
     {
-        var bank = new BankOfCanada(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var us = new RegionInfo("US");
         var ca = new RegionInfo("CA");
 
@@ -169,11 +137,6 @@ public class BankOfCanadaTests
     [Fact]
     public async Task ConvertCurrency006Async()
     {
-        var bank = new BankOfCanada(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var ao = new RegionInfo("AO");
         var bw = new RegionInfo("BW");
 
@@ -189,11 +152,6 @@ public class BankOfCanadaTests
     [Fact]
     public async Task CurrencyPairs001Async()
     {
-        var bank = new BankOfCanada(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var currencyPairs = await bank.GetCurrencyPairsAsync(
             this.timeProvider.GetUtcNow(),
             default).ConfigureAwait(true);
@@ -248,11 +206,6 @@ public class BankOfCanadaTests
     [Fact]
     public async Task CurrencyPairs002Async()
     {
-        var bank = new BankOfCanada(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var currencyPairs = await bank.GetCurrencyPairsAsync(
             this.timeProvider.GetUtcNow(),
             default).ConfigureAwait(true);
@@ -268,11 +221,6 @@ public class BankOfCanadaTests
     [Fact]
     public async Task CurrencyPairs003Async()
     {
-        var bank = new BankOfCanada(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var pairSet = new HashSet<CurrencyPair>();
 
         var currencyPairs = await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
@@ -288,11 +236,6 @@ public class BankOfCanadaTests
     [Fact]
     public async Task CurrencyPairs005Async()
     {
-        var bank = new BankOfCanada(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         _ = await Assert.ThrowsAsync<ArgumentException>(
             async () => await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow().AddDays(10), default).ConfigureAwait(true)).ConfigureAwait(true);
     }
@@ -300,22 +243,12 @@ public class BankOfCanadaTests
     [Fact]
     public async Task Fetch001Async()
     {
-        var bank = new BankOfCanada(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         _ = await bank.GetExchangeRatesAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
     }
 
     [Fact]
     public async Task GetExchangeRate001Async()
     {
-        var bank = new BankOfCanada(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var currencyPairs = await bank.GetCurrencyPairsAsync(
             this.timeProvider.GetUtcNow(),
             default).ConfigureAwait(true);
@@ -331,11 +264,6 @@ public class BankOfCanadaTests
     [Fact]
     public async Task GetExchangeRate002Async()
     {
-        var bank = new BankOfCanada(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var us = new RegionInfo("US");
         var ca = new RegionInfo("CA");
 
@@ -351,11 +279,6 @@ public class BankOfCanadaTests
     [Fact]
     public async Task GetExchangeRate004Async()
     {
-        var bank = new BankOfCanada(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var ao = new RegionInfo("AO");
         var bw = new RegionInfo("BW");
 

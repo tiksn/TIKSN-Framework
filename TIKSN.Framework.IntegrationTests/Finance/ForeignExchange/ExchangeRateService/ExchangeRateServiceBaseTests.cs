@@ -61,7 +61,7 @@ namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests
             await exchangeRateService.InitializeAsync(default);
 
             // Act
-            var resultWithoutDoubleConversion  = await exchangeRateService.ConvertCurrencyAsync(
+            var resultWithoutDoubleConversion = await exchangeRateService.ConvertCurrencyAsync(
                 amd1000,
                 dkk,
                 DateTimeOffset.Now,

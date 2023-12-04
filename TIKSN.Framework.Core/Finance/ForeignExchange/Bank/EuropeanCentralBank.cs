@@ -4,26 +4,24 @@ using TIKSN.Globalization;
 
 namespace TIKSN.Finance.ForeignExchange.Bank;
 
-public class EuropeanCentralBank : ICurrencyConverter, IExchangeRatesProvider
+public class EuropeanCentralBank : IEuropeanCentralBank
 {
     //TODO: switch to https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml see https://www.ecb.europa.eu/stats/exchange/eurofxref/html/index.en.html (For Developers section)
-    private const string DailyRatesUrl = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
-    private const string Last90DaysRatesUrl = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml";
-    private const string Since1999RatesUrl = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.xml";
+    private static readonly Uri DailyRatesUrl = new("https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml");
 
-    private static readonly CurrencyInfo Euro;
-    private readonly IHttpClientFactory httpClientFactory;
+    private static readonly CurrencyInfo Euro = new(new RegionInfo("de-DE"));
+    private static readonly Uri Last90DaysRatesUrl = new("https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml");
+    private static readonly Uri Since1999RatesUrl = new("https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.xml");
     private readonly ICurrencyFactory currencyFactory;
+    private readonly HttpClient httpClient;
     private readonly TimeProvider timeProvider;
 
-    static EuropeanCentralBank() => Euro = new CurrencyInfo(new RegionInfo("de-DE"));
-
     public EuropeanCentralBank(
-        IHttpClientFactory httpClientFactory,
+        HttpClient httpClient,
         ICurrencyFactory currencyFactory,
         TimeProvider timeProvider)
     {
-        this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+        this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
@@ -34,6 +32,9 @@ public class EuropeanCentralBank : ICurrencyConverter, IExchangeRatesProvider
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(baseMoney);
+        ArgumentNullException.ThrowIfNull(counterCurrency);
+
         var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
         var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
 
@@ -64,6 +65,8 @@ public class EuropeanCentralBank : ICurrencyConverter, IExchangeRatesProvider
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(pair);
+
         this.VerifyDate(asOn);
 
         var rates = await this.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
@@ -80,7 +83,7 @@ public class EuropeanCentralBank : ICurrencyConverter, IExchangeRatesProvider
             return reverseRate.Reverse().Rate;
         }
 
-        throw new ArgumentException($"Currency pair '{pair}' is not found.");
+        throw new ArgumentException($"Currency pair '{pair}' is not found.", nameof(pair));
     }
 
     public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
@@ -89,8 +92,7 @@ public class EuropeanCentralBank : ICurrencyConverter, IExchangeRatesProvider
     {
         var requestURL = GetRatesUrl(asOn, this.timeProvider);
 
-        var httpClient = this.httpClientFactory.CreateClient();
-        var responseStream = await httpClient.GetStreamAsync(requestURL, cancellationToken).ConfigureAwait(false);
+        var responseStream = await this.httpClient.GetStreamAsync(requestURL, cancellationToken).ConfigureAwait(false);
 
         var xdoc = XDocument.Load(responseStream);
 
@@ -124,14 +126,14 @@ public class EuropeanCentralBank : ICurrencyConverter, IExchangeRatesProvider
         return rates;
     }
 
-    private static string GetRatesUrl(DateTimeOffset asOn, TimeProvider timeProvider)
+    private static Uri GetRatesUrl(DateTimeOffset asOn, TimeProvider timeProvider)
     {
         if (asOn.Date == timeProvider.GetUtcNow().Date)
         {
             return DailyRatesUrl;
         }
 
-        if (asOn.Date >= timeProvider.GetUtcNow().AddDays(-90))
+        if (asOn.Date >= timeProvider.GetUtcNow().AddDays(-90).Date)
         {
             return Last90DaysRatesUrl;
         }
@@ -143,7 +145,7 @@ public class EuropeanCentralBank : ICurrencyConverter, IExchangeRatesProvider
     {
         if (asOn > this.timeProvider.GetUtcNow())
         {
-            throw new ArgumentException("Exchange rate forecasting are not supported.");
+            throw new ArgumentException("Exchange rate forecasting are not supported.", nameof(asOn));
         }
     }
 }

@@ -1,23 +1,23 @@
 using System.Globalization;
 using LanguageExt;
-using static LanguageExt.Prelude;
 using Microsoft.Extensions.Logging;
 using TIKSN.Data;
 using TIKSN.Finance.ForeignExchange.Data;
 using TIKSN.Globalization;
+using static LanguageExt.Prelude;
 
 namespace TIKSN.Finance.ForeignExchange
 {
     public abstract class ExchangeRateServiceBase : IExchangeRateService
     {
+        protected readonly ILogger<ExchangeRateServiceBase> logger;
+        protected readonly IRegionFactory regionFactory;
         private readonly IExchangeRateRepository exchangeRateRepository;
         private readonly IForeignExchangeRepository foreignExchangeRepository;
-        protected readonly ILogger<ExchangeRateServiceBase> logger;
 
         private readonly Dictionary<Guid, (Either<IExchangeRateProvider, IExchangeRatesProvider> RateProvider,
             int LongNameKey, int ShortNameKey, RegionInfo Country, TimeSpan InvalidationInterval)> providers;
 
-        protected readonly IRegionFactory regionFactory;
         private readonly IUnitOfWorkFactory unitOfWorkFactory;
 
         protected ExchangeRateServiceBase(
@@ -124,8 +124,51 @@ namespace TIKSN.Finance.ForeignExchange
             return rate;
         }
 
-        private static Option<ExchangeRateEntity> GetPreferredExchangeRate(
+        public async Task InitializeAsync(CancellationToken cancellationToken)
+        {
+            using (var uow = await this.unitOfWorkFactory.CreateAsync(cancellationToken))
+            {
+                foreach (var provider in this.providers)
+                {
+                    var forex = await this.foreignExchangeRepository.GetOrDefaultAsync(provider.Key,
+                        cancellationToken).ConfigureAwait(false);
+
+                    if (forex == null)
+                    {
+                        forex = new ForeignExchangeEntity(
+                            provider.Key,
+                            provider.Value.Country.Name,
+                            provider.Value.LongNameKey,
+                            provider.Value.ShortNameKey);
+
+                        await this.foreignExchangeRepository.AddAsync(forex, cancellationToken).ConfigureAwait(false);
+                    }
+                }
+
+                await uow.CompleteAsync(cancellationToken).ConfigureAwait(false);
+            }
+        }
+
+        protected void AddBatchProvider(Guid providerID, IExchangeRatesProvider provider, int longNameKey,
+            int shortNameKey, string country, TimeSpan invalidationInterval) => this.providers.Add(providerID,
+            (Right(provider), longNameKey, shortNameKey, this.regionFactory.Create(country), invalidationInterval));
+
+        protected void AddIndividualProvider(Guid providerID, IExchangeRateProvider provider, int longNameKey,
+            int shortNameKey, string country, TimeSpan invalidationInterval) => this.providers.Add(providerID,
+            (Left(provider), longNameKey, shortNameKey, this.regionFactory.Create(country), invalidationInterval));
+
+        private static (DateTime dateFrom, DateTime dateTo) EstimateDateRange(
             DateTimeOffset asOn,
+            TimeSpan invalidationInterval)
+        {
+            var invalidationIntervalHalf = TimeSpan.FromMilliseconds(invalidationInterval.TotalMilliseconds / 2.0);
+            var dateFrom = (asOn - invalidationIntervalHalf).UtcDateTime;
+            var dateTo = (asOn + invalidationIntervalHalf).UtcDateTime;
+            return (dateFrom, dateTo);
+        }
+
+        private static Option<ExchangeRateEntity> GetPreferredExchangeRate(
+                                            DateTimeOffset asOn,
             IReadOnlyList<ExchangeRateEntity> combinedRates)
         {
             var exchangeRateEntity = combinedRates
@@ -175,49 +218,6 @@ namespace TIKSN.Finance.ForeignExchange
 
             return combinedRates;
         }
-
-        private static (DateTime dateFrom, DateTime dateTo) EstimateDateRange(
-            DateTimeOffset asOn,
-            TimeSpan invalidationInterval)
-        {
-            var invalidationIntervalHalf = TimeSpan.FromMilliseconds(invalidationInterval.TotalMilliseconds / 2.0);
-            var dateFrom = (asOn - invalidationIntervalHalf).UtcDateTime;
-            var dateTo = (asOn + invalidationIntervalHalf).UtcDateTime;
-            return (dateFrom, dateTo);
-        }
-
-        public async Task InitializeAsync(CancellationToken cancellationToken)
-        {
-            using (var uow = await this.unitOfWorkFactory.CreateAsync(cancellationToken))
-            {
-                foreach (var provider in this.providers)
-                {
-                    var forex = await this.foreignExchangeRepository.GetOrDefaultAsync(provider.Key,
-                        cancellationToken).ConfigureAwait(false);
-
-                    if (forex == null)
-                    {
-                        forex = new ForeignExchangeEntity(
-                            provider.Key,
-                            provider.Value.Country.Name,
-                            provider.Value.LongNameKey,
-                            provider.Value.ShortNameKey);
-
-                        await this.foreignExchangeRepository.AddAsync(forex, cancellationToken).ConfigureAwait(false);
-                    }
-                }
-
-                await uow.CompleteAsync(cancellationToken).ConfigureAwait(false);
-            }
-        }
-
-        protected void AddBatchProvider(Guid providerID, IExchangeRatesProvider provider, int longNameKey,
-            int shortNameKey, string country, TimeSpan invalidationInterval) => this.providers.Add(providerID,
-            (Right(provider), longNameKey, shortNameKey, this.regionFactory.Create(country), invalidationInterval));
-
-        protected void AddIndividualProvider(Guid providerID, IExchangeRateProvider provider, int longNameKey,
-            int shortNameKey, string country, TimeSpan invalidationInterval) => this.providers.Add(providerID,
-            (Left(provider), longNameKey, shortNameKey, this.regionFactory.Create(country), invalidationInterval));
 
         private async Task FetchExchangeRatesAsync(
             Guid foreignExchangeID,
@@ -275,7 +275,10 @@ namespace TIKSN.Finance.ForeignExchange
                     exchangeRate.Rate));
             }
 
-            await this.exchangeRateRepository.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
+            if (entities.Count > 0)
+            {
+                await this.exchangeRateRepository.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
+            }
         }
     }
 }

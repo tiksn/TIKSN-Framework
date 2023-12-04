@@ -4,17 +4,17 @@ using TIKSN.Globalization;
 
 namespace TIKSN.Finance.ForeignExchange.Cumulative;
 
-public class CurrencylayerDotCom : ICurrencyConverter, IExchangeRateProvider, IExchangeRatesProvider
+public class CurrencylayerDotCom : ICurrencylayerDotCom
 {
     private const string HistoricalBaseURL = "https://apilayer.net/api/historical?";
     private const string LiveBaseURL = "https://apilayer.net/api/live?";
-    private readonly IHttpClientFactory httpClientFactory;
-    private readonly ICurrencyFactory currencyFactory;
-    private readonly TimeProvider timeProvider;
     private readonly string accessKey;
+    private readonly ICurrencyFactory currencyFactory;
+    private readonly HttpClient httpClient;
+    private readonly TimeProvider timeProvider;
 
     public CurrencylayerDotCom(
-        IHttpClientFactory httpClientFactory,
+        HttpClient httpClient,
         ICurrencyFactory currencyFactory,
         TimeProvider timeProvider,
         string accessKey)
@@ -25,7 +25,7 @@ public class CurrencylayerDotCom : ICurrencyConverter, IExchangeRateProvider, IE
         }
 
         this.accessKey = accessKey;
-        this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+        this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
@@ -36,6 +36,9 @@ public class CurrencylayerDotCom : ICurrencyConverter, IExchangeRateProvider, IE
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(baseMoney);
+        ArgumentNullException.ThrowIfNull(counterCurrency);
+
         var rates = await this.GetRatesAasyncAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
 
         var rate = rates.Values.Single();
@@ -72,6 +75,8 @@ public class CurrencylayerDotCom : ICurrencyConverter, IExchangeRateProvider, IE
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(pair);
+
         var rates = await this.GetRatesAasyncAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken).ConfigureAwait(false);
 
         return rates.Values.Single();
@@ -83,6 +88,9 @@ public class CurrencylayerDotCom : ICurrencyConverter, IExchangeRateProvider, IE
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(baseCurrency);
+        ArgumentNullException.ThrowIfNull(counterCurrency);
+
         var rates = await this.GetRatesAasyncAsync(baseCurrency, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
 
         return new ExchangeRate(new CurrencyPair(baseCurrency, counterCurrency), asOn, rates.Single().Value);
@@ -100,13 +108,18 @@ public class CurrencylayerDotCom : ICurrencyConverter, IExchangeRateProvider, IE
             .ToArray();
     }
 
+    private static bool IsSupportedCurrency(string currencyCode) => currencyCode.ToUpperInvariant() switch
+    {
+        "BTC" or "GGP" or "IMP" or "JEP" => false,
+        _ => true,
+    };
+
     private async Task<IDictionary<CurrencyPair, decimal>> GetRatesAasyncAsync(
         CurrencyInfo baseCurrency,
         CurrencyInfo counterCurrency,
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
-        var client = this.httpClientFactory.CreateClient();
         string requestUrl;
 
         var difference = this.timeProvider.GetUtcNow() - asOn;
@@ -118,26 +131,26 @@ public class CurrencylayerDotCom : ICurrencyConverter, IExchangeRateProvider, IE
         else
         {
             requestUrl = HistoricalBaseURL;
-            requestUrl += string.Format("date={0}&", asOn.ToString("yyyy-MM-dd"));
+            requestUrl += string.Format(CultureInfo.InvariantCulture, "date={0}&", asOn.ToString("yyyy-MM-dd"));
         }
 
-        requestUrl += string.Format("access_key={0}", this.accessKey);
+        requestUrl += string.Format(CultureInfo.InvariantCulture, "access_key={0}", this.accessKey);
 
         if (baseCurrency != null)
         {
-            requestUrl += string.Format("&source={0}", baseCurrency.ISOCurrencySymbol);
+            requestUrl += string.Format(CultureInfo.InvariantCulture, "&source={0}", baseCurrency.ISOCurrencySymbol);
         }
 
         if (counterCurrency != null)
         {
-            requestUrl += string.Format("&currencies={0}", counterCurrency.ISOCurrencySymbol);
+            requestUrl += string.Format(CultureInfo.InvariantCulture, "&currencies={0}", counterCurrency.ISOCurrencySymbol);
         }
 
-        var response = await client.GetAsync(requestUrl, cancellationToken).ConfigureAwait(false);
+        var response = await this.httpClient.GetAsync(new Uri(requestUrl), cancellationToken).ConfigureAwait(false);
 
         _ = response.EnsureSuccessStatusCode();
 
-        var responseJsonString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+        var responseJsonString = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
         var jsonSerializerSettings = new JsonSerializerSettings { Culture = CultureInfo.InvariantCulture };
 
@@ -157,12 +170,12 @@ public class CurrencylayerDotCom : ICurrencyConverter, IExchangeRateProvider, IE
 
             foreach (var quote in quotes)
             {
-                var quoteBaseCurrencyCode = quote.Key.Substring(0, 3);
-                var quoteCounterCurrencyCode = quote.Key.Substring(3);
+                var quoteBaseCurrencyCode = quote.Key[..3];
+                var quoteCounterCurrencyCode = quote.Key[3..];
 
                 if (IsSupportedCurrency(quoteBaseCurrencyCode) &&
                     IsSupportedCurrency(quoteCounterCurrencyCode) &&
-                    quoteBaseCurrencyCode.ToUpperInvariant() != quoteCounterCurrencyCode.ToUpperInvariant())
+                    !quoteBaseCurrencyCode.Equals(quoteCounterCurrencyCode, StringComparison.OrdinalIgnoreCase))
                 {
                     var quoteBaseCurrency = this.currencyFactory.Create(quoteBaseCurrencyCode);
                     var quoteCounterCurrency = this.currencyFactory.Create(quoteCounterCurrencyCode);
@@ -179,12 +192,6 @@ public class CurrencylayerDotCom : ICurrencyConverter, IExchangeRateProvider, IE
         var errorDictionary =
             JsonConvert.DeserializeObject<Dictionary<string, object>>(responseJsonObject["error"].ToString());
 
-        throw new Exception(errorDictionary["info"].ToString());
+        throw new NotSupportedException(errorDictionary["info"].ToString());
     }
-
-    private static bool IsSupportedCurrency(string currencyCode) => currencyCode.ToUpperInvariant() switch
-    {
-        "BTC" or "GGP" or "IMP" or "JEP" => false,
-        _ => true,
-    };
 }

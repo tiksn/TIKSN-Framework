@@ -1,52 +1,38 @@
 using System;
 using System.Globalization;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using TIKSN.Finance.ForeignExchange.Bank;
-using TIKSN.Globalization;
+using TIKSN.DependencyInjection;
 using Xunit;
 
-namespace TIKSN.Finance.ForeignExchange.IntegrationTests;
+namespace TIKSN.Finance.ForeignExchange.Bank.IntegrationTests;
 
 public class FederalReserveSystemTests
 {
-    private readonly IHttpClientFactory httpClientFactory;
-    private readonly ICurrencyFactory currencyFactory;
+    private readonly IFederalReserveSystem bank;
     private readonly TimeProvider timeProvider;
 
     public FederalReserveSystemTests()
     {
         var services = new ServiceCollection();
-        _ = services.AddMemoryCache();
-        _ = services.AddHttpClient();
-        _ = services.AddSingleton<ICurrencyFactory, CurrencyFactory>();
-        _ = services.AddSingleton<IRegionFactory, RegionFactory>();
-        _ = services.AddSingleton(TimeProvider.System);
-
+        _ = services.AddFrameworkCore();
         var serviceProvider = services.BuildServiceProvider();
-        this.currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
         this.timeProvider = serviceProvider.GetRequiredService<TimeProvider>();
-        this.httpClientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
+        this.bank = serviceProvider.GetRequiredService<IFederalReserveSystem>();
     }
 
     [Fact]
     public async Task Calculation001()
     {
-        var bank = new FederalReserveSystem(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
-        var pairs = await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
+        var pairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
 
         foreach (var pair in pairs)
         {
             var before = new Money(pair.BaseCurrency);
-            var rate = await bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default);
+            var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default);
 
-            var after = await bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow(), default);
+            var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow(), default);
 
             Assert.True(after.Amount == rate * before.Amount);
         }
@@ -55,17 +41,12 @@ public class FederalReserveSystemTests
     [Fact]
     public async Task ConversionDirection001()
     {
-        var bank = new FederalReserveSystem(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var usDollar = new CurrencyInfo(new RegionInfo("US"));
         var poundSterling = new CurrencyInfo(new RegionInfo("GB"));
 
         var beforeInPound = new Money(poundSterling, 100m);
 
-        var afterInDollar = await bank.ConvertCurrencyAsync(beforeInPound, usDollar, this.timeProvider.GetUtcNow(), default);
+        var afterInDollar = await this.bank.ConvertCurrencyAsync(beforeInPound, usDollar, this.timeProvider.GetUtcNow(), default);
 
         Assert.True(beforeInPound.Amount < afterInDollar.Amount);
     }
@@ -73,15 +54,10 @@ public class FederalReserveSystemTests
     [Fact]
     public async Task ConvertCurrency001()
     {
-        var bank = new FederalReserveSystem(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
-        foreach (var pair in await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default))
+        foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default))
         {
             var before = new Money(pair.BaseCurrency, 10m);
-            var after = await bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow(), default);
+            var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow(), default);
 
             Assert.True(after.Amount > decimal.Zero);
             Assert.True(after.Currency == pair.CounterCurrency);
@@ -91,17 +67,12 @@ public class FederalReserveSystemTests
     [Fact]
     public async Task ConvertCurrency002()
     {
-        var bank = new FederalReserveSystem(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var lastYear = this.timeProvider.GetUtcNow().AddYears(-1);
 
-        foreach (var pair in await bank.GetCurrencyPairsAsync(lastYear, default))
+        foreach (var pair in await this.bank.GetCurrencyPairsAsync(lastYear, default))
         {
             var before = new Money(pair.BaseCurrency, 10m);
-            var after = await bank.ConvertCurrencyAsync(before, pair.CounterCurrency, lastYear, default);
+            var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, lastYear, default);
 
             Assert.True(after.Amount > decimal.Zero);
             Assert.True(after.Currency == pair.CounterCurrency);
@@ -111,47 +82,32 @@ public class FederalReserveSystemTests
     [Fact]
     public async Task ConvertCurrency003()
     {
-        var bank = new FederalReserveSystem(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
-        foreach (var pair in await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default))
+        foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default))
         {
             var before = new Money(pair.BaseCurrency, 10m);
 
             _ = await
                 Assert.ThrowsAsync<ArgumentException>(
                     async () =>
-                        await bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow().AddMinutes(1d), default));
+                        await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow().AddMinutes(1d), default));
         }
     }
 
     [Fact]
     public async Task ConvertCurrency004()
     {
-        var bank = new FederalReserveSystem(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var before = new Money(new CurrencyInfo(new RegionInfo("AL")), 10m);
 
         _ = await
                 Assert.ThrowsAsync<ArgumentException>(
                     async () =>
-                        await bank.ConvertCurrencyAsync(before, new CurrencyInfo(new RegionInfo("AM")), this.timeProvider.GetUtcNow().AddMinutes(1d), default));
+                        await this.bank.ConvertCurrencyAsync(before, new CurrencyInfo(new RegionInfo("AM")), this.timeProvider.GetUtcNow().AddMinutes(1d), default));
     }
 
     [Fact]
     public async Task GetCurrencyPairs001()
     {
-        var bank = new FederalReserveSystem(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
-        var pairs = await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
+        var pairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
 
         foreach (var pair in pairs)
         {
@@ -164,12 +120,7 @@ public class FederalReserveSystemTests
     [Fact]
     public async Task GetCurrencyPairs002()
     {
-        var bank = new FederalReserveSystem(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
-        var pairs = await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
+        var pairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
 
         var uniquePairs = new System.Collections.Generic.HashSet<CurrencyPair>();
 
@@ -184,26 +135,16 @@ public class FederalReserveSystemTests
     [Fact]
     public async Task GetCurrencyPairs003()
     {
-        var bank = new FederalReserveSystem(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         _ = await
             Assert.ThrowsAsync<ArgumentException>(
                 async () =>
-                    await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow().AddMinutes(1d), default));
+                    await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow().AddMinutes(1d), default));
     }
 
     [Fact]
     public async Task GetCurrencyPairs004()
     {
-        var bank = new FederalReserveSystem(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
-        var pairs = await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
+        var pairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
 
         Assert.Contains(pairs, c => c.ToString() == "AUD/USD");
         Assert.Contains(pairs, c => c.ToString() == "BRL/USD");
@@ -255,14 +196,9 @@ public class FederalReserveSystemTests
     [Fact]
     public async Task GetExchangeRate001()
     {
-        var bank = new FederalReserveSystem(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
-        foreach (var pair in await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default))
+        foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default))
         {
-            var rate = await bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default);
+            var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default);
 
             Assert.True(rate > decimal.Zero);
         }
@@ -271,16 +207,11 @@ public class FederalReserveSystemTests
     [Fact]
     public async Task GetExchangeRate002()
     {
-        var bank = new FederalReserveSystem(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var lastYear = this.timeProvider.GetUtcNow().AddYears(-1);
 
-        foreach (var pair in await bank.GetCurrencyPairsAsync(lastYear, default))
+        foreach (var pair in await this.bank.GetCurrencyPairsAsync(lastYear, default))
         {
-            var rate = await bank.GetExchangeRateAsync(pair, lastYear, default);
+            var rate = await this.bank.GetExchangeRateAsync(pair, lastYear, default);
 
             Assert.True(rate > decimal.Zero);
         }
@@ -289,43 +220,28 @@ public class FederalReserveSystemTests
     [Fact]
     public async Task GetExchangeRate003()
     {
-        var bank = new FederalReserveSystem(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
-        foreach (var pair in await bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default))
+        foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default))
         {
             _ = await Assert.ThrowsAsync<ArgumentException>(
                 async () =>
-                    await bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddMinutes(1d), default));
+                    await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddMinutes(1d), default));
         }
     }
 
     [Fact]
     public async Task GetExchangeRate004()
     {
-        var bank = new FederalReserveSystem(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var pair = new CurrencyPair(new CurrencyInfo(new RegionInfo("AL")), new CurrencyInfo(new RegionInfo("AM")));
 
-        _ = await Assert.ThrowsAsync<ArgumentException>(async () => await bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddMinutes(1d), default));
+        _ = await Assert.ThrowsAsync<ArgumentException>(async () => await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddMinutes(1d), default));
     }
 
     [Fact]
     public async Task GetExchangeRate005()
     {
-        var bank = new FederalReserveSystem(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var pair = new CurrencyPair(new CurrencyInfo(new RegionInfo("US")), new CurrencyInfo(new RegionInfo("CN")));
 
-        var rate = await bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default);
+        var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default);
 
         Assert.True(rate > decimal.One);
     }
@@ -333,14 +249,9 @@ public class FederalReserveSystemTests
     [Fact]
     public async Task GetExchangeRate006()
     {
-        var bank = new FederalReserveSystem(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var pair = new CurrencyPair(new CurrencyInfo(new RegionInfo("US")), new CurrencyInfo(new RegionInfo("SG")));
 
-        var rate = await bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default);
+        var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default);
 
         Assert.True(rate > decimal.One);
     }
@@ -348,14 +259,9 @@ public class FederalReserveSystemTests
     [Fact]
     public async Task GetExchangeRate007()
     {
-        var bank = new FederalReserveSystem(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var pair = new CurrencyPair(new CurrencyInfo(new RegionInfo("US")), new CurrencyInfo(new RegionInfo("DE")));
 
-        var rate = await bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default);
+        var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default);
 
         Assert.True(rate < decimal.One);
     }
@@ -363,14 +269,9 @@ public class FederalReserveSystemTests
     [Fact]
     public async Task GetExchangeRate008()
     {
-        var bank = new FederalReserveSystem(
-            this.httpClientFactory,
-            this.currencyFactory,
-            this.timeProvider);
-
         var pair = new CurrencyPair(new CurrencyInfo(new RegionInfo("US")), new CurrencyInfo(new RegionInfo("GB")));
 
-        var rate = await bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default);
+        var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default);
 
         Assert.True(rate < decimal.One);
     }
