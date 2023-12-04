@@ -15,10 +15,7 @@ public class MongoRepository<TDocument, TIdentity> : IMongoRepository<TDocument,
         IMongoClientSessionProvider mongoClientSessionProvider,
         IMongoDatabaseProvider mongoDatabaseProvider, string collectionName)
     {
-        if (mongoDatabaseProvider is null)
-        {
-            throw new ArgumentNullException(nameof(mongoDatabaseProvider));
-        }
+        ArgumentNullException.ThrowIfNull(mongoDatabaseProvider);
 
         if (string.IsNullOrEmpty(collectionName))
         {
@@ -124,10 +121,7 @@ public class MongoRepository<TDocument, TIdentity> : IMongoRepository<TDocument,
 
     public Task RemoveRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken)
     {
-        if (entities == null)
-        {
-            throw new ArgumentNullException(nameof(entities));
-        }
+        ArgumentNullException.ThrowIfNull(entities);
 
         var filters = entities.Select(item => GetIdentityFilter(item.ID)).ToArray();
 
@@ -189,15 +183,9 @@ public class MongoRepository<TDocument, TIdentity> : IMongoRepository<TDocument,
         PageQuery pageQuery,
         CancellationToken cancellationToken)
     {
-        if (filter is null)
-        {
-            throw new ArgumentNullException(nameof(filter));
-        }
+        ArgumentNullException.ThrowIfNull(filter);
 
-        if (pageQuery is null)
-        {
-            throw new ArgumentNullException(nameof(pageQuery));
-        }
+        ArgumentNullException.ThrowIfNull(pageQuery);
 
         Task<List<TDocument>> ItemsNone() => this.collection.Find(filter)
             .Skip(pageQuery.Page.Index * pageQuery.Page.Size)
