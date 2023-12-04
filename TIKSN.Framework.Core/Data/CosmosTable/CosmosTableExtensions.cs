@@ -8,10 +8,7 @@ public static class CosmosTableExtensions
         CancellationToken cancellationToken)
         where T : ITableEntity
     {
-        if (repository == null)
-        {
-            throw new ArgumentNullException(nameof(repository));
-        }
+        ArgumentNullException.ThrowIfNull(repository);
 
         var filters = new Dictionary<string, object>();
 
@@ -24,10 +21,7 @@ public static class CosmosTableExtensions
         CancellationToken cancellationToken)
         where T : ITableEntity
     {
-        if (repository == null)
-        {
-            throw new ArgumentNullException(nameof(repository));
-        }
+        ArgumentNullException.ThrowIfNull(repository);
 
         var filters = new Dictionary<string, object>
         {
