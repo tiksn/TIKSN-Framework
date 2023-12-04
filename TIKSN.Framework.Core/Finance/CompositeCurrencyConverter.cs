@@ -9,7 +9,7 @@ public abstract class CompositeCurrencyConverter : ICompositeCurrencyConverter
     {
         this.compositionStrategy =
             compositionStrategy ?? throw new ArgumentNullException(nameof(compositionStrategy));
-        this.converters = new List<ICurrencyConverter>();
+        this.converters = [];
     }
 
     public void Add(ICurrencyConverter converter) => this.converters.Add(converter);
