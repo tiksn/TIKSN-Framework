@@ -1,16 +1,13 @@
-using System;
+namespace TIKSN.Shell;
 
-namespace TIKSN.Shell
+[AttributeUsage(AttributeTargets.Class)]
+public sealed class ShellCommandAttribute : ShellAttributeBase
 {
-    [AttributeUsage(AttributeTargets.Class)]
-    public sealed class ShellCommandAttribute : ShellAttributeBase
+    public ShellCommandAttribute(int nameKey) : base(nameKey)
     {
-        public ShellCommandAttribute(int nameKey) : base(nameKey)
-        {
-        }
+    }
 
-        public ShellCommandAttribute(string nameKey) : base(nameKey)
-        {
-        }
+    public ShellCommandAttribute(string nameKey) : base(nameKey)
+    {
     }
 }
