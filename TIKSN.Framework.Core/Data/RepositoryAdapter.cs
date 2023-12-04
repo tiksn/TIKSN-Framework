@@ -115,10 +115,7 @@ public abstract class RepositoryAdapter<TDomainEntity, TDomainIdentity, TDataEnt
     protected async Task<IReadOnlyList<TDomainEntity>> MapAsync(
         Func<Task<IReadOnlyList<TDataEntity>>> retriever)
     {
-        if (retriever is null)
-        {
-            throw new ArgumentNullException(nameof(retriever));
-        }
+        ArgumentNullException.ThrowIfNull(retriever);
 
         var entities = await retriever().ConfigureAwait(false);
 
