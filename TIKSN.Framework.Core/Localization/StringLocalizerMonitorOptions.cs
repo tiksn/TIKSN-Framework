@@ -1,9 +1,8 @@
 using Microsoft.Extensions.Logging;
 
-namespace TIKSN.Localization
+namespace TIKSN.Localization;
+
+public class StringLocalizerMonitorOptions
 {
-    public class StringLocalizerMonitorOptions
-    {
-        public LogLevel LogLevel { get; set; }
-    }
+    public LogLevel LogLevel { get; set; }
 }
