@@ -10,16 +10,16 @@ public class CompositeWeightedProgress<T> : Progress<T> where T : ProgressReport
 
     public CompositeWeightedProgress(Func<T, double, T> createProgressReportWithPercentage)
     {
-        this.progresses = new List<ProgressItem>();
-        this.subscribers = new List<IProgress<T>>();
+        this.progresses = [];
+        this.subscribers = [];
         this.createProgressReportWithPercentage = createProgressReportWithPercentage;
     }
 
     public CompositeWeightedProgress(Action<T> handler, Func<T, double, T> createProgressReportWithPercentage) :
         base(handler)
     {
-        this.progresses = new List<ProgressItem>();
-        this.subscribers = new List<IProgress<T>>();
+        this.progresses = [];
+        this.subscribers = [];
         this.createProgressReportWithPercentage = createProgressReportWithPercentage;
     }
 
