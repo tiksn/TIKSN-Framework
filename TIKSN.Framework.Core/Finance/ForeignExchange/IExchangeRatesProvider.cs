@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+namespace TIKSN.Finance.ForeignExchange;
 
-namespace TIKSN.Finance.ForeignExchange
+public interface IExchangeRatesProvider
 {
-    public interface IExchangeRatesProvider
-    {
-        Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken);
-    }
+    Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken);
 }
