@@ -13,10 +13,7 @@ public class EntityRepository<TContext, TEntity> : IRepository<TEntity>
 
     public Task AddAsync(TEntity entity, CancellationToken cancellationToken)
     {
-        if (entity == null)
-        {
-            throw new ArgumentNullException(nameof(entity));
-        }
+        ArgumentNullException.ThrowIfNull(entity);
 
         _ = this.dbContext.Add(entity);
 
@@ -25,10 +22,7 @@ public class EntityRepository<TContext, TEntity> : IRepository<TEntity>
 
     public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
     {
-        if (entities == null)
-        {
-            throw new ArgumentNullException(nameof(entities));
-        }
+        ArgumentNullException.ThrowIfNull(entities);
 
         this.dbContext.AddRange(entities);
 
@@ -37,10 +31,7 @@ public class EntityRepository<TContext, TEntity> : IRepository<TEntity>
 
     public Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)
     {
-        if (entity == null)
-        {
-            throw new ArgumentNullException(nameof(entity));
-        }
+        ArgumentNullException.ThrowIfNull(entity);
 
         this.dbContext.Entry(entity).State = EntityState.Deleted;
 
@@ -49,10 +40,7 @@ public class EntityRepository<TContext, TEntity> : IRepository<TEntity>
 
     public Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
     {
-        if (entities == null)
-        {
-            throw new ArgumentNullException(nameof(entities));
-        }
+        ArgumentNullException.ThrowIfNull(entities);
 
         foreach (var entity in entities)
         {
@@ -64,10 +52,7 @@ public class EntityRepository<TContext, TEntity> : IRepository<TEntity>
 
     public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
     {
-        if (entity == null)
-        {
-            throw new ArgumentNullException(nameof(entity));
-        }
+        ArgumentNullException.ThrowIfNull(entity);
 
         this.dbContext.Entry(entity).State = EntityState.Modified;
 
@@ -76,10 +61,7 @@ public class EntityRepository<TContext, TEntity> : IRepository<TEntity>
 
     public Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
     {
-        if (entities == null)
-        {
-            throw new ArgumentNullException(nameof(entities));
-        }
+        ArgumentNullException.ThrowIfNull(entities);
 
         foreach (var entity in entities)
         {
