@@ -13,10 +13,7 @@ public class MongoFileRepository<TIdentity, TMetadata> : IFileRepository, IFileR
 
     public MongoFileRepository(IMongoDatabaseProvider mongoDatabaseProvider, string bucketName)
     {
-        if (mongoDatabaseProvider == null)
-        {
-            throw new ArgumentNullException(nameof(mongoDatabaseProvider));
-        }
+        ArgumentNullException.ThrowIfNull(mongoDatabaseProvider);
 
         if (string.IsNullOrEmpty(bucketName))
         {
