@@ -136,10 +136,7 @@ public class WindowsRegistrySettingsService : ISettingsService
         T value,
         Func<RegistryKey, string, T, T> processor)
     {
-        if (processor == null)
-        {
-            throw new ArgumentNullException(nameof(processor));
-        }
+        ArgumentNullException.ThrowIfNull(processor);
 
         this.ValidateOptions();
 
