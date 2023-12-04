@@ -9,10 +9,7 @@ public abstract class RavenUnitOfWorkBase : UnitOfWorkBase
 
     protected RavenUnitOfWorkBase(IDocumentStore store)
     {
-        if (store == null)
-        {
-            throw new ArgumentNullException(nameof(store));
-        }
+        ArgumentNullException.ThrowIfNull(store);
 
         this._session = store.OpenAsyncSession();
     }
