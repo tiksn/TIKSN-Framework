@@ -11,7 +11,7 @@ namespace TIKSN.Finance.ForeignExchange.Bank;
 /// <seealso cref="ICurrencyConverter" />
 public class NationalBankOfUkraine : INationalBankOfUkraine
 {
-    private static readonly string[] IgnoreList = { "___" };
+    private static readonly string[] IgnoreList = ["___"];
 
     private static readonly RegionInfo Ukraine = new("uk-UA");
 
