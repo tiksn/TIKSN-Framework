@@ -77,17 +77,17 @@ internal static class LicenseFactoryTermsValidation
         {
             errors.Add(Error.New(594495435, "URL is missing"));
         }
-        else if (!ValidUriSchemes.Contains(address?.Scheme))
+        else if (!ValidUriSchemes.Contains(address.Scheme))
         {
             errors.Add(Error.New(829727941, "Invalid URL scheme"));
         }
 
-        if (errors.Any())
+        if (errors.Count != 0)
         {
             return errors.ToSeq();
         }
 
-        return address?.AbsoluteUri;
+        return address.AbsoluteUri;
     }
 
     internal static Validation<Error, Uri> ConvertToUri(string address)
@@ -108,7 +108,7 @@ internal static class LicenseFactoryTermsValidation
             errors.Add(Error.New(122011466, "Invalid URL scheme"));
         }
 
-        if (errors.Any())
+        if (errors.Count != 0)
         {
             return errors.ToSeq();
         }
@@ -127,7 +127,7 @@ internal static class LicenseFactoryTermsValidation
             return Error.New(1048625068, "Mail Address is missing");
         }
 
-        return address?.Address;
+        return address.Address;
     }
 
     internal static Validation<Error, MailAddress> ConvertToMailAddress(string address)
@@ -170,10 +170,7 @@ internal static class LicenseFactoryTermsValidation
     private static Validation<Error, LicenseIndividualParty> ConvertFromIndividual(
         IndividualParty individualParty)
     {
-        if (individualParty is null)
-        {
-            throw new ArgumentNullException(nameof(individualParty));
-        }
+        ArgumentNullException.ThrowIfNull(individualParty);
 
         var errors = new List<Error>();
         var result = new LicenseIndividualParty
@@ -210,7 +207,7 @@ internal static class LicenseFactoryTermsValidation
 
         SetBasePartyProperties(individualParty, errors, result);
 
-        if (errors.Any())
+        if (errors.Count != 0)
         {
             return errors.ToSeq();
         }
@@ -221,10 +218,7 @@ internal static class LicenseFactoryTermsValidation
     private static Validation<Error, LicenseOrganizationParty> ConvertFromOrganization(
         OrganizationParty organizationParty)
     {
-        if (organizationParty is null)
-        {
-            throw new ArgumentNullException(nameof(organizationParty));
-        }
+        ArgumentNullException.ThrowIfNull(organizationParty);
 
         var errors = new List<Error>();
         var result = new LicenseOrganizationParty
@@ -252,7 +246,7 @@ internal static class LicenseFactoryTermsValidation
 
         SetBasePartyProperties(organizationParty, errors, result);
 
-        if (errors.Any())
+        if (errors.Count != 0)
         {
             return errors.ToSeq();
         }
@@ -263,10 +257,7 @@ internal static class LicenseFactoryTermsValidation
     private static Validation<Error, IndividualParty> ConvertToIndividual(
         LicenseIndividualParty licenseIndividualParty)
     {
-        if (licenseIndividualParty is null)
-        {
-            throw new ArgumentNullException(nameof(licenseIndividualParty));
-        }
+        ArgumentNullException.ThrowIfNull(licenseIndividualParty);
 
         var errors = new List<Error>();
 
@@ -286,7 +277,7 @@ internal static class LicenseFactoryTermsValidation
 
         var (email, website) = GetBasePartyProperties(licenseIndividualParty, errors);
 
-        if (errors.Any())
+        if (errors.Count != 0)
         {
             return errors.ToSeq();
         }
@@ -302,10 +293,7 @@ internal static class LicenseFactoryTermsValidation
     private static Validation<Error, OrganizationParty> ConvertToOrganization(
         LicenseOrganizationParty licenseOrganizationParty)
     {
-        if (licenseOrganizationParty is null)
-        {
-            throw new ArgumentNullException(nameof(licenseOrganizationParty));
-        }
+        ArgumentNullException.ThrowIfNull(licenseOrganizationParty);
 
         var errors = new List<Error>();
 
@@ -321,7 +309,7 @@ internal static class LicenseFactoryTermsValidation
 
         var (email, website) = GetBasePartyProperties(licenseOrganizationParty, errors);
 
-        if (errors.Any())
+        if (errors.Count != 0)
         {
             return errors.ToSeq();
         }
