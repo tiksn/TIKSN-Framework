@@ -54,10 +54,7 @@ public class CompositeWeightedProgress<T> : Progress<T> where T : ProgressReport
 
     private void SingleProgressItemHandler(T status)
     {
-        if (status == null)
-        {
-            throw new ArgumentNullException(nameof(status));
-        }
+        ArgumentNullException.ThrowIfNull(status);
 
         var overallWeight = this.progresses.Sum(item => item.Weight);
         var currentWeightedProgress = overallWeight == 0
