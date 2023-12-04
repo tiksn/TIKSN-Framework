@@ -1,15 +1,10 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
+namespace TIKSN.Data;
 
-namespace TIKSN.Data
+public interface IUnitOfWork : IDisposable, IAsyncDisposable
 {
-    public interface IUnitOfWork : IDisposable, IAsyncDisposable
-    {
-        public IServiceProvider Services { get; }
+    public IServiceProvider Services { get; }
 
-        Task CompleteAsync(CancellationToken cancellationToken);
+    Task CompleteAsync(CancellationToken cancellationToken);
 
-        Task DiscardAsync(CancellationToken cancellationToken);
-    }
+    Task DiscardAsync(CancellationToken cancellationToken);
 }
