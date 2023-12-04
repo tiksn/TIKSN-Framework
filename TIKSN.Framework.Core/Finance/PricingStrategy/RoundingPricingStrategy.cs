@@ -1,40 +1,37 @@
-using System;
+namespace TIKSN.Finance.PricingStrategy;
 
-namespace TIKSN.Finance.PricingStrategy
+public class RoundingPricingStrategy : IPricingStrategy
 {
-    public class RoundingPricingStrategy : IPricingStrategy
+    private readonly int fitstImportantDigitsCount;
+
+    public RoundingPricingStrategy(int fitstImportantDigitsCount)
     {
-        private readonly int fitstImportantDigitsCount;
-
-        public RoundingPricingStrategy(int fitstImportantDigitsCount)
+        if (fitstImportantDigitsCount < 1)
         {
-            if (fitstImportantDigitsCount < 1)
-            {
-                throw new ArgumentException(message: null, nameof(fitstImportantDigitsCount));
-            }
-
-            this.fitstImportantDigitsCount = fitstImportantDigitsCount;
+            throw new ArgumentException(message: null, nameof(fitstImportantDigitsCount));
         }
 
-        public Money EstimateMarketPrice(Money basePrice)
-        {
-            var estimatedPrice = this.EstimateMarketPrice(basePrice.Amount);
+        this.fitstImportantDigitsCount = fitstImportantDigitsCount;
+    }
 
-            return new Money(basePrice.Currency, estimatedPrice);
-        }
+    public Money EstimateMarketPrice(Money basePrice)
+    {
+        var estimatedPrice = this.EstimateMarketPrice(basePrice.Amount);
 
-        public decimal EstimateMarketPrice(decimal basePrice)
-        {
-            var degree = (int)Math.Log10((double)basePrice);
-            var norm = (decimal)Math.Pow(10.0, degree);
+        return new Money(basePrice.Currency, estimatedPrice);
+    }
 
-            var estimated = basePrice / norm;
+    public decimal EstimateMarketPrice(decimal basePrice)
+    {
+        var degree = (int)Math.Log10((double)basePrice);
+        var norm = (decimal)Math.Pow(10.0, degree);
 
-            estimated = Math.Round(estimated, this.fitstImportantDigitsCount - 1);
+        var estimated = basePrice / norm;
 
-            estimated *= norm;
+        estimated = Math.Round(estimated, this.fitstImportantDigitsCount - 1);
 
-            return estimated;
-        }
+        estimated *= norm;
+
+        return estimated;
     }
 }
