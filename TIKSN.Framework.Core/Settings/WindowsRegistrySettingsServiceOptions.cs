@@ -1,13 +1,12 @@
 using Microsoft.Win32;
 
-namespace TIKSN.Settings
+namespace TIKSN.Settings;
+
+public class WindowsRegistrySettingsServiceOptions
 {
-    public class WindowsRegistrySettingsServiceOptions
-    {
-        public WindowsRegistrySettingsServiceOptions() => this.RegistryView = RegistryView.Default;
+    public WindowsRegistrySettingsServiceOptions() => this.RegistryView = RegistryView.Default;
 
-        public RegistryView RegistryView { get; set; }
+    public RegistryView RegistryView { get; set; }
 
-        public string SubKey { get; set; }
-    }
+    public string SubKey { get; set; }
 }

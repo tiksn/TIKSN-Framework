@@ -1,7 +1,6 @@
-namespace TIKSN.Configuration.Validator
+namespace TIKSN.Configuration.Validator;
+
+public interface IPartialConfigurationValidator<in T>
 {
-    public interface IPartialConfigurationValidator<in T>
-    {
-        void ValidateConfiguration(T instance);
-    }
+    void ValidateConfiguration(T instance);
 }

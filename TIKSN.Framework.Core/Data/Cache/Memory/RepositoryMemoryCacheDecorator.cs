@@ -74,10 +74,7 @@ public class RepositoryMemoryCacheDecorator<TEntity, TIdentity>
 
     protected virtual void InvalidateCacheItems(IEnumerable<TEntity> entities)
     {
-        if (entities is null)
-        {
-            throw new ArgumentNullException(nameof(entities));
-        }
+        ArgumentNullException.ThrowIfNull(entities);
 
         foreach (var entity in entities)
         {

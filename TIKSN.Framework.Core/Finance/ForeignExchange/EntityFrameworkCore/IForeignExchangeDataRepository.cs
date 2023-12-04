@@ -1,6 +1,5 @@
-namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore
+namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore;
+
+public interface IForeignExchangeDataRepository
 {
-    public interface IForeignExchangeDataRepository
-    {
-    }
 }

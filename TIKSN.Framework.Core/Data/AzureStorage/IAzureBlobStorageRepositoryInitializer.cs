@@ -1,10 +1,6 @@
-using System.Threading;
-using System.Threading.Tasks;
+namespace TIKSN.Data.AzureStorage;
 
-namespace TIKSN.Data.AzureStorage
+public interface IAzureBlobStorageRepositoryInitializer
 {
-    public interface IAzureBlobStorageRepositoryInitializer
-    {
-        Task InitializeAsync(CancellationToken cancellationToken);
-    }
+    Task InitializeAsync(CancellationToken cancellationToken);
 }

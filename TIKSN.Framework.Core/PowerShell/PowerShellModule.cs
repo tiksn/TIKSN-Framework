@@ -1,15 +1,14 @@
 using Autofac;
 
-namespace TIKSN.PowerShell
-{
-    public class PowerShellModule : Module
-    {
-        protected override void Load(ContainerBuilder builder)
-        {
-            base.Load(builder);
+namespace TIKSN.PowerShell;
 
-            _ = builder.RegisterType<CurrentCommandContext>().As<ICurrentCommandStore>().As<ICurrentCommandProvider>()
-                .InstancePerLifetimeScope();
-        }
+public class PowerShellModule : Module
+{
+    protected override void Load(ContainerBuilder builder)
+    {
+        base.Load(builder);
+
+        _ = builder.RegisterType<CurrentCommandContext>().As<ICurrentCommandStore>().As<ICurrentCommandProvider>()
+            .InstancePerLifetimeScope();
     }
 }

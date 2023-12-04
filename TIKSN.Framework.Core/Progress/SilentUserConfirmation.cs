@@ -1,28 +1,27 @@
-namespace TIKSN.Progress
+namespace TIKSN.Progress;
+
+public class SilentUserConfirmation : IUserConfirmation
 {
-    public class SilentUserConfirmation : IUserConfirmation
+    public bool ShouldContinue(string query, string caption) => true;
+
+    public bool ShouldContinue(string query, string caption, ref bool yesToAll, ref bool noToAll)
     {
-        public bool ShouldContinue(string query, string caption) => true;
-
-        public bool ShouldContinue(string query, string caption, ref bool yesToAll, ref bool noToAll)
+        if (yesToAll)
         {
-            if (yesToAll)
-            {
-                return true;
-            }
-
-            if (noToAll)
-            {
-                return false;
-            }
-
             return true;
         }
 
-        public bool ShouldProcess(string target) => true;
+        if (noToAll)
+        {
+            return false;
+        }
 
-        public bool ShouldProcess(string target, string action) => true;
-
-        public bool ShouldProcess(string verboseDescription, string verboseWarning, string caption) => true;
+        return true;
     }
+
+    public bool ShouldProcess(string target) => true;
+
+    public bool ShouldProcess(string target, string action) => true;
+
+    public bool ShouldProcess(string verboseDescription, string verboseWarning, string caption) => true;
 }

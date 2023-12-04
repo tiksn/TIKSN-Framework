@@ -1,20 +1,18 @@
-using System.IO;
 using Bond.Protocols;
 
-namespace TIKSN.Serialization.Bond
+namespace TIKSN.Serialization.Bond;
+
+public class SimpleJsonBondSerializer : SerializerBase<string>
 {
-    public class SimpleJsonBondSerializer : SerializerBase<string>
+    protected override string SerializeInternal<T>(T obj)
     {
-        protected override string SerializeInternal<T>(T obj)
-        {
-            using var output = new StringWriter();
-            var writer = new SimpleJsonWriter(output);
+        using var output = new StringWriter();
+        var writer = new SimpleJsonWriter(output);
 
-            global::Bond.Serialize.To(writer, obj);
+        global::Bond.Serialize.To(writer, obj);
 
-            writer.Flush();
+        writer.Flush();
 
-            return output.GetStringBuilder().ToString();
-        }
+        return output.GetStringBuilder().ToString();
     }
 }

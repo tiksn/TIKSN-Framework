@@ -1,7 +1,6 @@
-namespace TIKSN.Advertising
+namespace TIKSN.Advertising;
+
+public interface IAdUnitFactory
 {
-    public interface IAdUnitFactory
-    {
-        AdUnit Create(string key);
-    }
+    AdUnit Create(string key);
 }

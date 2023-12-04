@@ -1,9 +1,6 @@
-using System.Threading.Tasks;
+namespace TIKSN.Speech;
 
-namespace TIKSN.Speech
+public interface ITextToSpeechService
 {
-    public interface ITextToSpeechService
-    {
-        Task SpeakAsync(string text);
-    }
+    Task SpeakAsync(string text);
 }

@@ -48,8 +48,8 @@ public class CachedCurrencyConverter : ICurrencyConverter
         this.RatesCacheCapacity = ratesCacheCapacity;
         this.CurrencyPairsCacheCapacity = currencyPairsCacheCapacity;
 
-        this.cachedCurrencyPairs = new List<CachedCurrencyPairs>();
-        this.cachedRates = new List<CachedRate>();
+        this.cachedCurrencyPairs = [];
+        this.cachedRates = [];
         this._timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 

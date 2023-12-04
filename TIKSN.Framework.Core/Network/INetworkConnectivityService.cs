@@ -1,11 +1,8 @@
-using System;
+namespace TIKSN.Network;
 
-namespace TIKSN.Network
+public interface INetworkConnectivityService
 {
-    public interface INetworkConnectivityService
-    {
-        IObservable<InternetConnectivityState> InternetConnectivityChanged { get; }
+    IObservable<InternetConnectivityState> InternetConnectivityChanged { get; }
 
-        InternetConnectivityState GetInternetConnectivityState();
-    }
+    InternetConnectivityState GetInternetConnectivityState();
 }

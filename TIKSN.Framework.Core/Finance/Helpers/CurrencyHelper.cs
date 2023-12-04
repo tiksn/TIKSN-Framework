@@ -1,35 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+namespace TIKSN.Finance.Helpers;
 
-namespace TIKSN.Finance.Helpers
+internal static class CurrencyHelper
 {
-    internal static class CurrencyHelper
+    public static async Task<IEnumerable<ICurrencyConverter>> FilterConvertersAsync(
+        IEnumerable<ICurrencyConverter> converters, CurrencyPair pair, DateTimeOffset asOn,
+        CancellationToken cancellationToken) => await FilterConvertersAsync(converters, pair.BaseCurrency,
+        pair.CounterCurrency, asOn, cancellationToken).ConfigureAwait(false);
+
+    public static async Task<IEnumerable<ICurrencyConverter>> FilterConvertersAsync(
+        IEnumerable<ICurrencyConverter> converters, CurrencyInfo baseCurrency, CurrencyInfo counterCurrency,
+        DateTimeOffset asOn, CancellationToken cancellationToken)
     {
-        public static async Task<IEnumerable<ICurrencyConverter>> FilterConvertersAsync(
-            IEnumerable<ICurrencyConverter> converters, CurrencyPair pair, DateTimeOffset asOn,
-            CancellationToken cancellationToken) => await FilterConvertersAsync(converters, pair.BaseCurrency,
-            pair.CounterCurrency, asOn, cancellationToken).ConfigureAwait(false);
+        var filteredConverters = new List<ICurrencyConverter>();
 
-        public static async Task<IEnumerable<ICurrencyConverter>> FilterConvertersAsync(
-            IEnumerable<ICurrencyConverter> converters, CurrencyInfo baseCurrency, CurrencyInfo counterCurrency,
-            DateTimeOffset asOn, CancellationToken cancellationToken)
+        foreach (var converter in converters)
         {
-            var filteredConverters = new List<ICurrencyConverter>();
+            var pairs = await converter.GetCurrencyPairsAsync(asOn, cancellationToken).ConfigureAwait(false);
 
-            foreach (var converter in converters)
+            if (pairs.Any(item => item.BaseCurrency == baseCurrency && item.CounterCurrency == counterCurrency))
             {
-                var pairs = await converter.GetCurrencyPairsAsync(asOn, cancellationToken).ConfigureAwait(false);
-
-                if (pairs.Any(item => item.BaseCurrency == baseCurrency && item.CounterCurrency == counterCurrency))
-                {
-                    filteredConverters.Add(converter);
-                }
+                filteredConverters.Add(converter);
             }
-
-            return filteredConverters;
         }
+
+        return filteredConverters;
     }
 }

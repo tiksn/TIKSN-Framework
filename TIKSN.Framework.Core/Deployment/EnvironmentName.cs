@@ -1,10 +1,8 @@
 using System.Globalization;
 using LanguageExt;
-using LanguageExt.Parsec;
 using static LanguageExt.Prelude;
 using static LanguageExt.Parsec.Prim;
 using static LanguageExt.Parsec.Char;
-using static LanguageExt.Parsec.Expr;
 
 namespace TIKSN.Deployment;
 

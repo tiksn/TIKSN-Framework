@@ -78,10 +78,7 @@ public class RepositoryDistributedCacheDecorator<TEntity, TIdentity>
         IEnumerable<TEntity> entities,
         CancellationToken cancellationToken)
     {
-        if (entities is null)
-        {
-            throw new ArgumentNullException(nameof(entities));
-        }
+        ArgumentNullException.ThrowIfNull(entities);
 
         foreach (var entity in entities)
         {

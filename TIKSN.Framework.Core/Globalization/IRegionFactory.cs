@@ -1,9 +1,8 @@
 using System.Globalization;
 
-namespace TIKSN.Globalization
+namespace TIKSN.Globalization;
+
+public interface IRegionFactory
 {
-    public interface IRegionFactory
-    {
-        RegionInfo Create(string name);
-    }
+    RegionInfo Create(string name);
 }

@@ -1,9 +1,8 @@
-namespace TIKSN.Analytics.Telemetry
-{
-    public interface IEventTelemeter
-    {
-        Task TrackEventAsync(string name);
+namespace TIKSN.Analytics.Telemetry;
 
-        Task TrackEventAsync(string name, IReadOnlyDictionary<string, string> properties);
-    }
+public interface IEventTelemeter
+{
+    Task TrackEventAsync(string name);
+
+    Task TrackEventAsync(string name, IReadOnlyDictionary<string, string> properties);
 }

@@ -49,10 +49,10 @@ public class SwissNationalBank : ISwissNationalBank
 
         var pairs = new List<CurrencyPair>();
 
-        foreach (var currency in this.FilterByDate(asOn))
+        foreach (var currency in this.FilterByDate(asOn).Select(x => x.Key))
         {
-            pairs.Add(new CurrencyPair(SwissFranc, currency.Key));
-            pairs.Add(new CurrencyPair(currency.Key, SwissFranc));
+            pairs.Add(new CurrencyPair(SwissFranc, currency));
+            pairs.Add(new CurrencyPair(currency, SwissFranc));
         }
 
         return pairs;

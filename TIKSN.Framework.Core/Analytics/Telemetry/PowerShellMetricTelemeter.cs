@@ -1,19 +1,17 @@
 using System.Management.Automation;
-using System.Threading.Tasks;
 
-namespace TIKSN.Analytics.Telemetry
+namespace TIKSN.Analytics.Telemetry;
+
+public class PowerShellMetricTelemeter : IMetricTelemeter
 {
-    public class PowerShellMetricTelemeter : IMetricTelemeter
+    private readonly Cmdlet cmdlet;
+
+    public PowerShellMetricTelemeter(Cmdlet cmdlet) => this.cmdlet = cmdlet;
+
+    public Task TrackMetricAsync(string metricName, decimal metricValue)
     {
-        private readonly Cmdlet cmdlet;
+        this.cmdlet.WriteVerbose($"METRIC: {metricName} - {metricValue}");
 
-        public PowerShellMetricTelemeter(Cmdlet cmdlet) => this.cmdlet = cmdlet;
-
-        public Task TrackMetricAsync(string metricName, decimal metricValue)
-        {
-            this.cmdlet.WriteVerbose($"METRIC: {metricName} - {metricValue}");
-
-            return Task.FromResult<object>(null);
-        }
+        return Task.FromResult<object>(null);
     }
 }

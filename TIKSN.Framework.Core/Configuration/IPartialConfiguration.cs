@@ -1,7 +1,6 @@
-namespace TIKSN.Configuration
+namespace TIKSN.Configuration;
+
+public interface IPartialConfiguration<T>
 {
-    public interface IPartialConfiguration<T>
-    {
-        T GetConfiguration();
-    }
+    T GetConfiguration();
 }

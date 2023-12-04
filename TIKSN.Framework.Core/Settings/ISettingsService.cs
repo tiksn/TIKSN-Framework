@@ -1,27 +1,26 @@
 using LanguageExt;
 
-namespace TIKSN.Settings
+namespace TIKSN.Settings;
+
+public interface ISettingsService
 {
-    public interface ISettingsService
-    {
-        T GetLocalSetting<T>(string name, T defaultValue);
+    T GetLocalSetting<T>(string name, T defaultValue);
 
-        Option<T> GetLocalSetting<T>(string name);
+    Option<T> GetLocalSetting<T>(string name);
 
-        T GetRoamingSetting<T>(string name, T defaultValue);
+    T GetRoamingSetting<T>(string name, T defaultValue);
 
-        Option<T> GetRoamingSetting<T>(string name);
+    Option<T> GetRoamingSetting<T>(string name);
 
-        IReadOnlyCollection<string> ListLocalSetting();
+    IReadOnlyCollection<string> ListLocalSetting();
 
-        IReadOnlyCollection<string> ListRoamingSetting();
+    IReadOnlyCollection<string> ListRoamingSetting();
 
-        void RemoveLocalSetting(string name);
+    void RemoveLocalSetting(string name);
 
-        void RemoveRoamingSetting(string name);
+    void RemoveRoamingSetting(string name);
 
-        void SetLocalSetting<T>(string name, T value);
+    void SetLocalSetting<T>(string name, T value);
 
-        void SetRoamingSetting<T>(string name, T value);
-    }
+    void SetRoamingSetting<T>(string name, T value);
 }

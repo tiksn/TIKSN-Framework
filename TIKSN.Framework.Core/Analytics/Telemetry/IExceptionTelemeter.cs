@@ -1,9 +1,8 @@
-namespace TIKSN.Analytics.Telemetry
-{
-    public interface IExceptionTelemeter
-    {
-        Task TrackExceptionAsync(Exception exception);
+namespace TIKSN.Analytics.Telemetry;
 
-        Task TrackExceptionAsync(Exception exception, TelemetrySeverityLevel severityLevel);
-    }
+public interface IExceptionTelemeter
+{
+    Task TrackExceptionAsync(Exception exception);
+
+    Task TrackExceptionAsync(Exception exception, TelemetrySeverityLevel severityLevel);
 }

@@ -9,37 +9,18 @@ public class CuidCorrelationService : ICorrelationService
     private const string Alphabet = "0123456789abcdefghijklmnopqrstuvwxyz";
     private const int ByteArraySize = 6 + 3 + 2 + 2 + 4 + 4;
     private const int CharsArraySize = 1 + 8 + 4 + 2 + 2 + 4 + 4;
+    private const string Digits = "0123456789";
     private const int DuetteUpperBoundary = 36 * 36;
+    private const string LowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
     private const int QuartetteUpperBoundary = 36 * 36 * 36 * 36;
     private const int Radix = 36;
-    private static readonly IReadOnlyDictionary<char, int> CodeMap;
+    private const string UppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static readonly IReadOnlyDictionary<char, int> CodeMap = CreateCodeMap();
     private readonly object locker;
     private readonly Random random;
     private readonly TimeProvider timeProvider;
     private int counter;
     private string hostname;
-
-    static CuidCorrelationService()
-    {
-        var codeMap = new Dictionary<char, int>();
-
-        _ = "0123456789"
-            .ToCharArray()
-            .Do(x => codeMap.Add(x, x - '0'))
-            .ToArray();
-
-        _ = "abcdefghijklmnopqrstuvwxyz"
-            .ToCharArray()
-            .Do(x => codeMap.Add(x, x - 'a' + 10))
-            .ToArray();
-
-        _ = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            .ToCharArray()
-            .Do(x => codeMap.Add(x, x - 'A' + 10))
-            .ToArray();
-
-        CodeMap = codeMap;
-    }
 
     public CuidCorrelationService(TimeProvider timeProvider, Random random)
     {
@@ -167,32 +148,6 @@ public class CuidCorrelationService : ICorrelationService
         return new CorrelationId(new string(charArrayRepresentation), binaryRepresentation);
     }
 
-    private static void WriteBase36(long value, Span<char> chars)
-    {
-        for (var i = chars.Length - 1; i >= 0; i--)
-        {
-            chars[i] = Alphabet[(int)(value % Radix)];
-            value /= Radix;
-        }
-    }
-
-    private static void WriteBase36(long value, Span<byte> bytes)
-    {
-        var valueBytes = BitConverter.GetBytes(value).AsSpan();
-        if (BitConverter.IsLittleEndian)
-        {
-            valueBytes.Reverse();
-        }
-
-        valueBytes.Slice(valueBytes.Length - bytes.Length).CopyTo(bytes);
-    }
-
-    private static void WriteBase36(long value, Span<char> chars, Span<byte> bytes)
-    {
-        WriteBase36(value, bytes);
-        WriteBase36(value, chars);
-    }
-
     private static void ConvertBytesToChars(Span<char> chars, Span<byte> bytes)
     {
         var value = 0L;
@@ -278,7 +233,7 @@ public class CuidCorrelationService : ICorrelationService
         var bytes = byteArrayRepresentation.AsSpan();
 
         timestampChars = chars.Slice(1, 8);
-        timestampBytes = bytes.Slice(0, 6);
+        timestampBytes = bytes[..6];
 
         counterChars = chars.Slice(1 + 8, 4);
         counterBytes = bytes.Slice(6, 3);
@@ -296,6 +251,53 @@ public class CuidCorrelationService : ICorrelationService
         randomNumber2Bytes = bytes.Slice(6 + 3 + 2 + 2 + 4, 4);
     }
 
+    private static Dictionary<char, int> CreateCodeMap()
+    {
+        var codeMap = new Dictionary<char, int>();
+
+        _ = Digits
+            .ToCharArray()
+            .Do(x => codeMap.Add(x, x - '0'))
+            .ToArray();
+
+        _ = LowercaseLetters
+            .ToCharArray()
+            .Do(x => codeMap.Add(x, x - 'a' + 10))
+            .ToArray();
+
+        _ = UppercaseLetters
+            .ToCharArray()
+            .Do(x => codeMap.Add(x, x - 'A' + 10))
+            .ToArray();
+        return codeMap;
+    }
+
+    private static void WriteBase36(long value, Span<char> chars)
+    {
+        for (var i = chars.Length - 1; i >= 0; i--)
+        {
+            chars[i] = Alphabet[(int)(value % Radix)];
+            value /= Radix;
+        }
+    }
+
+    private static void WriteBase36(long value, Span<byte> bytes)
+    {
+        var valueBytes = BitConverter.GetBytes(value).AsSpan();
+        if (BitConverter.IsLittleEndian)
+        {
+            valueBytes.Reverse();
+        }
+
+        valueBytes[^bytes.Length..].CopyTo(bytes);
+    }
+
+    private static void WriteBase36(long value, Span<char> chars, Span<byte> bytes)
+    {
+        WriteBase36(value, bytes);
+        WriteBase36(value, chars);
+    }
+
     private string GetHostname()
     {
         if (this.hostname == null)
@@ -310,7 +312,9 @@ public class CuidCorrelationService : ICorrelationService
                     }
                     catch
                     {
+#pragma warning disable CA5394 // Do not use insecure randomness
                         this.hostname = this.random.Next().ToString(CultureInfo.InvariantCulture);
+#pragma warning restore CA5394 // Do not use insecure randomness
                     }
                 }
             }

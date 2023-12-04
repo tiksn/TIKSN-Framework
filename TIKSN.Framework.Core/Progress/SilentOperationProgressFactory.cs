@@ -1,7 +1,6 @@
-namespace TIKSN.Progress
+namespace TIKSN.Progress;
+
+public class SilentOperationProgressFactory : IOperationProgressFactory
 {
-    public class SilentOperationProgressFactory : IOperationProgressFactory
-    {
-        public DisposableProgress<OperationProgressReport> Create(string activity, string statusDescription) => new();
-    }
+    public DisposableProgress<OperationProgressReport> Create(string activity, string statusDescription) => new();
 }

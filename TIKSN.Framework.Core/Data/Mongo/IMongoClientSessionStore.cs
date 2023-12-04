@@ -1,10 +1,9 @@
 using MongoDB.Driver;
 
-namespace TIKSN.Data.Mongo
+namespace TIKSN.Data.Mongo;
+
+public interface IMongoClientSessionStore
 {
-    public interface IMongoClientSessionStore
-    {
-        void SetClientSessionHandle(IClientSessionHandle clientSessionHandle);
-        void ClearClientSessionHandle();
-    }
+    void SetClientSessionHandle(IClientSessionHandle clientSessionHandle);
+    void ClearClientSessionHandle();
 }

@@ -1,9 +1,8 @@
 using TIKSN.Serialization;
 
-namespace TIKSN.Web.Rest
+namespace TIKSN.Web.Rest;
+
+public interface ISerializerRestFactory
 {
-    public interface ISerializerRestFactory
-    {
-        ISerializer<string> Create(string mediaType);
-    }
+    ISerializer<string> Create(string mediaType);
 }

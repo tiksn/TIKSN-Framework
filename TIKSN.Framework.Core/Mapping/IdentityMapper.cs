@@ -1,17 +1,16 @@
-namespace TIKSN.Mapping
+namespace TIKSN.Mapping;
+
+public sealed class IdentityMapper<T> : IMapper<T, T>, IAsyncMapper<T, T>
 {
-    public sealed class IdentityMapper<T> : IMapper<T, T>, IAsyncMapper<T, T>
-    {
-        private static readonly Lazy<IdentityMapper<T>> LazyInstance = new(() => new IdentityMapper<T>());
+    private static readonly Lazy<IdentityMapper<T>> LazyInstance = new(() => new IdentityMapper<T>());
 
-        private IdentityMapper()
-        { }
+    private IdentityMapper()
+    { }
 
-        public static IdentityMapper<T> Instance => LazyInstance.Value;
+    public static IdentityMapper<T> Instance => LazyInstance.Value;
 
-        public T Map(T source) => source;
+    public T Map(T source) => source;
 
-        public Task<T> MapAsync(T source, CancellationToken cancellationToken)
-            => Task.FromResult(source);
-    }
+    public Task<T> MapAsync(T source, CancellationToken cancellationToken)
+        => Task.FromResult(source);
 }

@@ -1,20 +1,19 @@
 using FluentValidation;
 
-namespace TIKSN.Configuration.Validator
+namespace TIKSN.Configuration.Validator;
+
+public abstract class PartialConfigurationFluentValidatorBase<T> : AbstractValidator<T>,
+    IPartialConfigurationValidator<T>
 {
-    public abstract class PartialConfigurationFluentValidatorBase<T> : AbstractValidator<T>,
-        IPartialConfigurationValidator<T>
+    public void ValidateConfiguration(T instance)
     {
-        public void ValidateConfiguration(T instance)
+        try
         {
-            try
-            {
-                this.ValidateAndThrow(instance);
-            }
-            catch (ValidationException ex)
-            {
-                throw new ConfigurationValidationException(ex.Message, ex);
-            }
+            this.ValidateAndThrow(instance);
+        }
+        catch (ValidationException ex)
+        {
+            throw new ConfigurationValidationException(ex.Message, ex);
         }
     }
 }

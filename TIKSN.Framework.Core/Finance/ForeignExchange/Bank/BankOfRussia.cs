@@ -11,7 +11,7 @@ public class BankOfRussia : IBankOfRussia
         "https://www.cbr.ru/scripts/XML_daily.asp?date_req={0:00}.{1:00}.{2}";
 
     private static readonly CurrencyInfo RussianRuble = new(new RegionInfo("ru-RU"));
-    private static readonly CultureInfo RussianRussia = new CultureInfo("ru-RU");
+    private static readonly CultureInfo RussianRussia = new("ru-RU");
     private readonly ICurrencyFactory currencyFactory;
     private readonly HttpClient httpClient;
     private readonly Dictionary<CurrencyInfo, decimal> rates;
@@ -83,7 +83,7 @@ public class BankOfRussia : IBankOfRussia
 
         var thatDay = asOn.Date;
 
-        var address = new Uri(string.Format(AddressFormat, thatDay.Day, thatDay.Month, thatDay.Year));
+        var address = new Uri(string.Format(RussianRussia, AddressFormat, thatDay.Day, thatDay.Month, thatDay.Year));
 
         var result = new List<ExchangeRate>();
 

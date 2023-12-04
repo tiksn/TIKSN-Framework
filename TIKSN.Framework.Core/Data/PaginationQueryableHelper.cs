@@ -12,25 +12,13 @@ public static class PaginationQueryableHelper
         Func<IQueryable<TEntity>, CancellationToken, Task<long>> requestCountAsync,
         CancellationToken cancellationToken)
     {
-        if (query is null)
-        {
-            throw new ArgumentNullException(nameof(query));
-        }
+        ArgumentNullException.ThrowIfNull(query);
 
-        if (pageQuery is null)
-        {
-            throw new ArgumentNullException(nameof(pageQuery));
-        }
+        ArgumentNullException.ThrowIfNull(pageQuery);
 
-        if (requestListAsync is null)
-        {
-            throw new ArgumentNullException(nameof(requestListAsync));
-        }
+        ArgumentNullException.ThrowIfNull(requestListAsync);
 
-        if (requestCountAsync is null)
-        {
-            throw new ArgumentNullException(nameof(requestCountAsync));
-        }
+        ArgumentNullException.ThrowIfNull(requestCountAsync);
 
         var itemsQuery = query
             .Skip(pageQuery.Page.Index * pageQuery.Page.Size)

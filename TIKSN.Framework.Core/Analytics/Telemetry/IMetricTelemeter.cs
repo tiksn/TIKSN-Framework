@@ -1,9 +1,6 @@
-using System.Threading.Tasks;
+namespace TIKSN.Analytics.Telemetry;
 
-namespace TIKSN.Analytics.Telemetry
+public interface IMetricTelemeter
 {
-    public interface IMetricTelemeter
-    {
-        Task TrackMetricAsync(string metricName, decimal metricValue);
-    }
+    Task TrackMetricAsync(string metricName, decimal metricValue);
 }

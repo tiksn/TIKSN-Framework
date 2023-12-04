@@ -1,18 +1,17 @@
 using Bond.IO.Safe;
 using Bond.Protocols;
 
-namespace TIKSN.Serialization.Bond
+namespace TIKSN.Serialization.Bond;
+
+public class FastBinaryBondSerializer : SerializerBase<byte[]>
 {
-    public class FastBinaryBondSerializer : SerializerBase<byte[]>
+    protected override byte[] SerializeInternal<T>(T obj)
     {
-        protected override byte[] SerializeInternal<T>(T obj)
-        {
-            var output = new OutputBuffer();
-            var writer = new FastBinaryWriter<OutputBuffer>(output);
+        var output = new OutputBuffer();
+        var writer = new FastBinaryWriter<OutputBuffer>(output);
 
-            global::Bond.Serialize.To(writer, obj);
+        global::Bond.Serialize.To(writer, obj);
 
-            return output.Data.Array;
-        }
+        return output.Data.Array;
     }
 }

@@ -12,10 +12,7 @@ public class DataEntityMapper
 {
     public ExchangeRateDataEntity Map(ExchangeRateEntity source)
     {
-        if (source == null)
-        {
-            throw new ArgumentNullException(nameof(source));
-        }
+        ArgumentNullException.ThrowIfNull(source);
 
         return new ExchangeRateDataEntity()
         {
@@ -31,10 +28,7 @@ public class DataEntityMapper
 
     public ExchangeRateEntity Map(ExchangeRateDataEntity source)
     {
-        if (source == null)
-        {
-            throw new ArgumentNullException(nameof(source));
-        }
+        ArgumentNullException.ThrowIfNull(source);
 
         return new ExchangeRateEntity(
             source.ID,
@@ -47,10 +41,7 @@ public class DataEntityMapper
 
     public ForeignExchangeDataEntity Map(ForeignExchangeEntity source)
     {
-        if (source == null)
-        {
-            throw new ArgumentNullException(nameof(source));
-        }
+        ArgumentNullException.ThrowIfNull(source);
 
         return new ForeignExchangeDataEntity()
         {
@@ -64,10 +55,7 @@ public class DataEntityMapper
 
     public ForeignExchangeEntity Map(ForeignExchangeDataEntity source)
     {
-        if (source == null)
-        {
-            throw new ArgumentNullException(nameof(source));
-        }
+        ArgumentNullException.ThrowIfNull(source);
 
         return new ForeignExchangeEntity(
             source.ID,

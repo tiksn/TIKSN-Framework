@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text;
 using System.Xml.Linq;
 using TIKSN.Globalization;
 
@@ -10,13 +11,17 @@ namespace TIKSN.Finance.ForeignExchange.Bank;
 /// <seealso cref="ICurrencyConverter" />
 public class NationalBankOfUkraine : INationalBankOfUkraine
 {
-    private const string WebServiceUrlFormat =
-        "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date={0:yyyyMMdd}";
+    private static readonly string[] IgnoreList = ["___"];
 
-    private static readonly string[] IgnoreList = { "___" };
     private static readonly RegionInfo Ukraine = new("uk-UA");
+
     private static readonly CultureInfo UkrainianCulture = new("uk-UA");
+
     private static readonly CurrencyInfo UkrainianHryvnia = new(Ukraine);
+
+    private static readonly CompositeFormat WebServiceUrlFormat =
+                        CompositeFormat.Parse("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date={0:yyyyMMdd}");
+
     private readonly ICurrencyFactory currencyFactory;
     private readonly HttpClient httpClient;
 
@@ -107,10 +112,10 @@ public class NationalBankOfUkraine : INationalBankOfUkraine
             if (!string.IsNullOrEmpty(currencyCode))
             {
                 _ = result.Add(new ExchangeRate(
-                    new CurrencyPair(this.currencyFactory.Create(currencyCode), UkrainianHryvnia), asOn.Date,
+                    new CurrencyPair(this.currencyFactory.Create(currencyCode), UkrainianHryvnia), asOn,
                     rate));
                 _ = result.Add(new ExchangeRate(
-                    new CurrencyPair(UkrainianHryvnia, this.currencyFactory.Create(currencyCode)), asOn.Date,
+                    new CurrencyPair(UkrainianHryvnia, this.currencyFactory.Create(currencyCode)), asOn,
                     decimal.One / rate));
             }
         }

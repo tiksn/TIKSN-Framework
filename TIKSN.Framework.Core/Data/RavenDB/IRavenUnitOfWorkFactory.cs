@@ -1,8 +1,7 @@
-namespace TIKSN.Data.RavenDB
+namespace TIKSN.Data.RavenDB;
+
+public interface IRavenUnitOfWorkFactory<TUnitOfWork>
+    where TUnitOfWork : IUnitOfWork
 {
-    public interface IRavenUnitOfWorkFactory<TUnitOfWork>
-        where TUnitOfWork : IUnitOfWork
-    {
-        TUnitOfWork Create();
-    }
+    TUnitOfWork Create();
 }
