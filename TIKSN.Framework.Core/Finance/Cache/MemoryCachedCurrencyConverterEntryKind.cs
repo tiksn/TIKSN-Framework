@@ -1,8 +1,7 @@
-namespace TIKSN.Finance.Cache
+namespace TIKSN.Finance.Cache;
+
+public enum MemoryCachedCurrencyConverterEntryKind
 {
-    public enum MemoryCachedCurrencyConverterEntryKind
-    {
-        ExchangeRate = 0,
-        CurrencyPairs = 1,
-    }
+    ExchangeRate = 0,
+    CurrencyPairs = 1,
 }
