@@ -1,7 +1,6 @@
-namespace TIKSN.Data
+namespace TIKSN.Data;
+
+public interface IStreamRepository<out T>
 {
-    public interface IStreamRepository<out T>
-    {
-        IAsyncEnumerable<T> StreamAllAsync(CancellationToken cancellationToken);
-    }
+    IAsyncEnumerable<T> StreamAllAsync(CancellationToken cancellationToken);
 }
