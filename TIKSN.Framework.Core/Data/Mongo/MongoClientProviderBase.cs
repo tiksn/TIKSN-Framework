@@ -29,7 +29,7 @@ public abstract class MongoClientProviderBase : IMongoClientProvider
                 {
                     var connectionString = this.configuration.GetConnectionString(this.connectionStringKey);
                     var mongoClientSettings = MongoClientSettings.FromConnectionString(connectionString);
-                    ConfigureClientSettings(mongoClientSettings);
+                    this.ConfigureClientSettings(mongoClientSettings);
                     this.mongoClient = new MongoClient(mongoClientSettings);
                 }
             }
