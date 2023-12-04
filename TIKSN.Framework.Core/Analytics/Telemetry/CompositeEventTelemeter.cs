@@ -1,52 +1,51 @@
 using System.Diagnostics;
 using TIKSN.Configuration;
 
-namespace TIKSN.Analytics.Telemetry
+namespace TIKSN.Analytics.Telemetry;
+
+public class CompositeEventTelemeter : IEventTelemeter
 {
-    public class CompositeEventTelemeter : IEventTelemeter
+    private readonly IPartialConfiguration<CommonTelemetryOptions> commonConfiguration;
+    private readonly IEnumerable<IEventTelemeter> eventTelemeters;
+
+    public CompositeEventTelemeter(IPartialConfiguration<CommonTelemetryOptions> commonConfiguration,
+        IEnumerable<IEventTelemeter> eventTelemeters)
     {
-        private readonly IPartialConfiguration<CommonTelemetryOptions> commonConfiguration;
-        private readonly IEnumerable<IEventTelemeter> eventTelemeters;
+        this.commonConfiguration = commonConfiguration;
+        this.eventTelemeters = eventTelemeters;
+    }
 
-        public CompositeEventTelemeter(IPartialConfiguration<CommonTelemetryOptions> commonConfiguration,
-            IEnumerable<IEventTelemeter> eventTelemeters)
+    public async Task TrackEventAsync(string name)
+    {
+        if (this.commonConfiguration.GetConfiguration().IsEventTrackingEnabled)
         {
-            this.commonConfiguration = commonConfiguration;
-            this.eventTelemeters = eventTelemeters;
-        }
-
-        public async Task TrackEventAsync(string name)
-        {
-            if (this.commonConfiguration.GetConfiguration().IsEventTrackingEnabled)
+            foreach (var eventTelemeter in this.eventTelemeters)
             {
-                foreach (var eventTelemeter in this.eventTelemeters)
+                try
                 {
-                    try
-                    {
-                        await eventTelemeter.TrackEventAsync(name).ConfigureAwait(false);
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine(ex);
-                    }
+                    await eventTelemeter.TrackEventAsync(name).ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
                 }
             }
         }
+    }
 
-        public async Task TrackEventAsync(string name, IReadOnlyDictionary<string, string> properties)
+    public async Task TrackEventAsync(string name, IReadOnlyDictionary<string, string> properties)
+    {
+        if (this.commonConfiguration.GetConfiguration().IsEventTrackingEnabled)
         {
-            if (this.commonConfiguration.GetConfiguration().IsEventTrackingEnabled)
+            foreach (var eventTelemeter in this.eventTelemeters)
             {
-                foreach (var eventTelemeter in this.eventTelemeters)
+                try
                 {
-                    try
-                    {
-                        await eventTelemeter.TrackEventAsync(name, properties).ConfigureAwait(false);
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine(ex);
-                    }
+                    await eventTelemeter.TrackEventAsync(name, properties).ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
                 }
             }
         }
