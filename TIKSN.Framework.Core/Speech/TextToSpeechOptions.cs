@@ -1,7 +1,6 @@
-namespace TIKSN.Speech
+namespace TIKSN.Speech;
+
+public class TextToSpeechOptions
 {
-    public class TextToSpeechOptions
-    {
-        public string VoiceId { get; set; }
-    }
+    public string VoiceId { get; set; }
 }
