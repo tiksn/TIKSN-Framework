@@ -28,10 +28,7 @@ public class EntityQueryRepository<TContext, TEntity, TIdentity> : EntityReposit
         IEnumerable<TIdentity> ids,
         CancellationToken cancellationToken)
     {
-        if (ids is null)
-        {
-            throw new ArgumentNullException(nameof(ids));
-        }
+        ArgumentNullException.ThrowIfNull(ids);
 
         return await this.Entities.Where(entity => ids.Contains(entity.ID)).ToListAsync(cancellationToken).ConfigureAwait(false);
     }
