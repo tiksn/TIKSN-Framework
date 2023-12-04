@@ -4,7 +4,7 @@ namespace TIKSN.Web;
 
 public class SitemapIndex
 {
-    public SitemapIndex() => this.Sitemaps = new Dictionary<Uri, DateTime?>();
+    public SitemapIndex() => this.Sitemaps = [];
 
     public Dictionary<Uri, DateTime?> Sitemaps { get; }
 
