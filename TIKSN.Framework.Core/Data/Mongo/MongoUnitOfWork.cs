@@ -5,30 +5,29 @@ namespace TIKSN.Data.Mongo;
 
 public class MongoUnitOfWork : UnitOfWorkBase
 {
-    protected readonly IClientSessionHandle _clientSessionHandle;
-    private readonly IServiceScope _serviceScope;
+    private readonly IClientSessionHandle clientSessionHandle;
+    private readonly AsyncServiceScope serviceScope;
 
-    public MongoUnitOfWork(IClientSessionHandle clientSessionHandle, IServiceScope serviceScope)
+    public MongoUnitOfWork(IClientSessionHandle clientSessionHandle, AsyncServiceScope serviceScope)
     {
-        this._clientSessionHandle =
+        this.clientSessionHandle =
             clientSessionHandle ?? throw new ArgumentNullException(nameof(clientSessionHandle));
-        this._serviceScope = serviceScope ?? throw new ArgumentNullException(nameof(serviceScope));
+        this.serviceScope = serviceScope;
     }
+
+    public override IServiceProvider Services => this.serviceScope.ServiceProvider;
 
     public override Task CompleteAsync(CancellationToken cancellationToken) =>
-        this._clientSessionHandle.CommitTransactionAsync(cancellationToken);
+        this.clientSessionHandle.CommitTransactionAsync(cancellationToken);
 
     public override Task DiscardAsync(CancellationToken cancellationToken) =>
-        this._clientSessionHandle.AbortTransactionAsync(cancellationToken);
+        this.clientSessionHandle.AbortTransactionAsync(cancellationToken);
 
-    public override void Dispose()
+    public override async ValueTask DisposeAsync()
     {
-        this._serviceScope?.Dispose();
-
-        base.Dispose();
+        await base.DisposeAsync().ConfigureAwait(false);
+        await this.serviceScope.DisposeAsync().ConfigureAwait(false);
     }
 
-    public override IServiceProvider Services => this._serviceScope.ServiceProvider;
-
-    protected override bool IsDirty() => this._clientSessionHandle.WrappedCoreSession.IsDirty;
+    protected override bool IsDirty() => this.clientSessionHandle.WrappedCoreSession.IsDirty;
 }
