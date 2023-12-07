@@ -10,8 +10,6 @@ namespace TIKSN.Finance.ForeignExchange;
 
 public abstract class ExchangeRateServiceBase : IExchangeRateService
 {
-    protected readonly ILogger<ExchangeRateServiceBase> logger;
-    protected readonly IRegionFactory regionFactory;
     private readonly IExchangeRateRepository exchangeRateRepository;
     private readonly IForeignExchangeRepository foreignExchangeRepository;
 
@@ -27,16 +25,18 @@ public abstract class ExchangeRateServiceBase : IExchangeRateService
         IForeignExchangeRepository foreignExchangeRepository,
         IUnitOfWorkFactory unitOfWorkFactory)
     {
-        this.logger = logger;
-        this.exchangeRateRepository = exchangeRateRepository;
-        this.foreignExchangeRepository = foreignExchangeRepository;
+        this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        this.RegionFactory = regionFactory ?? throw new ArgumentNullException(nameof(regionFactory));
+        this.exchangeRateRepository = exchangeRateRepository ?? throw new ArgumentNullException(nameof(exchangeRateRepository));
+        this.foreignExchangeRepository = foreignExchangeRepository ?? throw new ArgumentNullException(nameof(foreignExchangeRepository));
 
-        this.providers =
-            [];
+        this.providers = [];
 
-        this.regionFactory = regionFactory;
         this.unitOfWorkFactory = unitOfWorkFactory ?? throw new ArgumentNullException(nameof(unitOfWorkFactory));
     }
+
+    public ILogger<ExchangeRateServiceBase> Logger { get; }
+    public IRegionFactory RegionFactory { get; }
 
     public async Task<Option<Money>> ConvertCurrencyAsync(
         Money baseMoney,
@@ -44,6 +44,9 @@ public abstract class ExchangeRateServiceBase : IExchangeRateService
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(baseMoney);
+        ArgumentNullException.ThrowIfNull(counterCurrency);
+
         var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
         var rate = await this.GetExchangeRateAsync(
@@ -59,6 +62,10 @@ public abstract class ExchangeRateServiceBase : IExchangeRateService
         CurrencyInfo intermediaryCurrency,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(baseMoney);
+        ArgumentNullException.ThrowIfNull(counterCurrency);
+        ArgumentNullException.ThrowIfNull(intermediaryCurrency);
+
         var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
         var rate = await this.GetExchangeRateAsync(
@@ -72,7 +79,9 @@ public abstract class ExchangeRateServiceBase : IExchangeRateService
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
-        await using var uow = await this.unitOfWorkFactory.CreateAsync(cancellationToken);
+        ArgumentNullException.ThrowIfNull(pair);
+
+        await using var uow = await this.unitOfWorkFactory.CreateAsync(cancellationToken).ConfigureAwait(false);
 
         var minInvalidationInterval = this.providers.Min(x => x.Value.InvalidationInterval);
         var (dateFrom, dateTo) = EstimateDateRange(asOn, minInvalidationInterval);
@@ -83,21 +92,21 @@ public abstract class ExchangeRateServiceBase : IExchangeRateService
 
         if (combinedRates.Count == 0)
         {
-            combinedRates = await this.FetchExchangeRatesAsync(pair, asOn, cancellationToken);
+            combinedRates = await this.FetchExchangeRatesAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
         }
 
         await uow.CompleteAsync(cancellationToken).ConfigureAwait(false);
 
         var exchangeRateEntity = GetPreferredExchangeRate(asOn, combinedRates);
 
-        exchangeRateEntity.Match(
+        _ = exchangeRateEntity.Match(
             s =>
-                this.logger.LogInformation(
+                this.Logger.LogInformation(
                 347982955,
                 "Exchange rate for {CurrencyPair} provided by Foreign Exchange with ID {ForeignExchangeID}",
                 pair, s.ForeignExchangeID),
             () =>
-                this.logger.LogInformation(
+                this.Logger.LogInformation(
                 1617946673,
                 "Exchange rate  for {CurrencyPair} is not found ", pair));
 
@@ -115,8 +124,8 @@ public abstract class ExchangeRateServiceBase : IExchangeRateService
 
         var syntheticCurrencyPair1 = new CurrencyPair(pair.BaseCurrency, intermediaryCurrency);
         var syntheticCurrencyPair2 = new CurrencyPair(intermediaryCurrency, pair.CounterCurrency);
-        var rate1 = await this.GetExchangeRateAsync(syntheticCurrencyPair1, asOn, cancellationToken);
-        var rate2 = await this.GetExchangeRateAsync(syntheticCurrencyPair2, asOn, cancellationToken);
+        var rate1 = await this.GetExchangeRateAsync(syntheticCurrencyPair1, asOn, cancellationToken).ConfigureAwait(false);
+        var rate2 = await this.GetExchangeRateAsync(syntheticCurrencyPair2, asOn, cancellationToken).ConfigureAwait(false);
 
         var rate =
             from r1 in rate1
@@ -128,36 +137,34 @@ public abstract class ExchangeRateServiceBase : IExchangeRateService
 
     public async Task InitializeAsync(CancellationToken cancellationToken)
     {
-        using (var uow = await this.unitOfWorkFactory.CreateAsync(cancellationToken))
+        await using var uow = await this.unitOfWorkFactory.CreateAsync(cancellationToken).ConfigureAwait(false);
+        foreach (var provider in this.providers)
         {
-            foreach (var provider in this.providers)
+            var forex = await this.foreignExchangeRepository.GetOrDefaultAsync(provider.Key,
+                cancellationToken).ConfigureAwait(false);
+
+            if (forex == null)
             {
-                var forex = await this.foreignExchangeRepository.GetOrDefaultAsync(provider.Key,
-                    cancellationToken).ConfigureAwait(false);
+                forex = new ForeignExchangeEntity(
+                    provider.Key,
+                    provider.Value.Country.Name,
+                    provider.Value.LongNameKey,
+                    provider.Value.ShortNameKey);
 
-                if (forex == null)
-                {
-                    forex = new ForeignExchangeEntity(
-                        provider.Key,
-                        provider.Value.Country.Name,
-                        provider.Value.LongNameKey,
-                        provider.Value.ShortNameKey);
-
-                    await this.foreignExchangeRepository.AddAsync(forex, cancellationToken).ConfigureAwait(false);
-                }
+                await this.foreignExchangeRepository.AddAsync(forex, cancellationToken).ConfigureAwait(false);
             }
-
-            await uow.CompleteAsync(cancellationToken).ConfigureAwait(false);
         }
+
+        await uow.CompleteAsync(cancellationToken).ConfigureAwait(false);
     }
 
     protected void AddBatchProvider(Guid providerID, IExchangeRatesProvider provider, int longNameKey,
         int shortNameKey, string country, TimeSpan invalidationInterval) => this.providers.Add(providerID,
-        (Right(provider), longNameKey, shortNameKey, this.regionFactory.Create(country), invalidationInterval));
+        (Right(provider), longNameKey, shortNameKey, this.RegionFactory.Create(country), invalidationInterval));
 
     protected void AddIndividualProvider(Guid providerID, IExchangeRateProvider provider, int longNameKey,
         int shortNameKey, string country, TimeSpan invalidationInterval) => this.providers.Add(providerID,
-        (Left(provider), longNameKey, shortNameKey, this.regionFactory.Create(country), invalidationInterval));
+        (Left(provider), longNameKey, shortNameKey, this.RegionFactory.Create(country), invalidationInterval));
 
     private static (DateTime dateFrom, DateTime dateTo) EstimateDateRange(
         DateTimeOffset asOn,
@@ -170,7 +177,7 @@ public abstract class ExchangeRateServiceBase : IExchangeRateService
     }
 
     private static Option<ExchangeRateEntity> GetPreferredExchangeRate(
-                                        DateTimeOffset asOn,
+        DateTimeOffset asOn,
         IReadOnlyList<ExchangeRateEntity> combinedRates)
     {
         var exchangeRateEntity = combinedRates
@@ -184,6 +191,8 @@ public abstract class ExchangeRateServiceBase : IExchangeRateService
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(pair);
+
         var combinedRates = new List<ExchangeRateEntity>();
 
         foreach (var provider in this.providers)
@@ -235,7 +244,7 @@ public abstract class ExchangeRateServiceBase : IExchangeRateService
         }
         catch (Exception ex)
         {
-            this.logger.LogError(ex, ex.Message);
+            this.Logger.LogError(1029534511, ex, "Failed to fetch exchange rates.");
         }
     }
 
@@ -246,6 +255,8 @@ public abstract class ExchangeRateServiceBase : IExchangeRateService
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(pair);
+
         try
         {
             var exchangeRate = await individualProvider.GetExchangeRateAsync(pair.BaseCurrency,
@@ -255,7 +266,7 @@ public abstract class ExchangeRateServiceBase : IExchangeRateService
         }
         catch (Exception ex)
         {
-            this.logger.LogError(ex, ex.Message);
+            this.Logger.LogError(708818677, ex, "Failed to fetch exchange rate for {CurrencyPair}.", pair);
         }
     }
 
