@@ -7,8 +7,6 @@ public class ForeignExchangeRepositoryAdapter
     : MongoRepositoryAdapter<ForeignExchangeEntity, Guid, ForeignExchangeDataEntity, Guid>
     , IForeignExchangeRepository
 {
-    protected readonly IForeignExchangeDataRepository dataRepository;
-
     public ForeignExchangeRepositoryAdapter(
         IForeignExchangeDataRepository dataRepository,
         IMapper<ForeignExchangeEntity, ForeignExchangeDataEntity> domainEntityToDataEntityMapper,
@@ -17,5 +15,7 @@ public class ForeignExchangeRepositoryAdapter
             dataEntityToDomainEntityMapper,
             IdentityMapper<Guid>.Instance,
             IdentityMapper<Guid>.Instance,
-            dataRepository) => this.dataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
+            dataRepository) => this.DataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
+
+    protected IForeignExchangeDataRepository DataRepository { get; }
 }
