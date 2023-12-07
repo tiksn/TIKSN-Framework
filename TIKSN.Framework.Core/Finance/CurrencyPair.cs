@@ -1,21 +1,25 @@
 namespace TIKSN.Finance;
 
-public class CurrencyPair : IEquatable<CurrencyPair>
+public sealed class CurrencyPair : IEquatable<CurrencyPair>
 {
-    public CurrencyPair(CurrencyInfo BaseCurrency, CurrencyInfo CounterCurrency)
+    public CurrencyPair(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency)
     {
-        if (BaseCurrency == CounterCurrency)
+        if (baseCurrency == counterCurrency)
         {
-            throw new ArgumentException("Base currency and counter currency cannot be the same.");
+            throw new ArgumentException("Base currency and counter currency cannot be the same.", nameof(counterCurrency));
         }
 
-        this.BaseCurrency = BaseCurrency;
-        this.CounterCurrency = CounterCurrency;
+        this.BaseCurrency = baseCurrency;
+        this.CounterCurrency = counterCurrency;
     }
 
     public CurrencyInfo BaseCurrency { get; }
 
     public CurrencyInfo CounterCurrency { get; }
+
+    public static bool operator !=(CurrencyPair pair1, CurrencyPair pair2) => !Equals(pair1, pair2);
+
+    public static bool operator ==(CurrencyPair pair1, CurrencyPair pair2) => Equals(pair1, pair2);
 
     public bool Equals(CurrencyPair other)
     {
@@ -31,10 +35,6 @@ public class CurrencyPair : IEquatable<CurrencyPair>
 
         return this.BaseCurrency == other.BaseCurrency && this.CounterCurrency == other.CounterCurrency;
     }
-
-    public static bool operator !=(CurrencyPair pair1, CurrencyPair pair2) => !Equals(pair1, pair2);
-
-    public static bool operator ==(CurrencyPair pair1, CurrencyPair pair2) => Equals(pair1, pair2);
 
     public override bool Equals(object obj)
     {
@@ -60,7 +60,7 @@ public class CurrencyPair : IEquatable<CurrencyPair>
 
     public CurrencyPair Reverse() => new(this.CounterCurrency, this.BaseCurrency);
 
-    public override string ToString() => string.Format("{0}/{1}", this.BaseCurrency, this.CounterCurrency);
+    public override string ToString() => $"{this.BaseCurrency}/{this.CounterCurrency}";
 
     private static bool Equals(CurrencyPair pair1, CurrencyPair pair2)
     {

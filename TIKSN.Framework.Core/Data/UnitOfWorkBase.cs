@@ -16,7 +16,7 @@ public abstract class UnitOfWorkBase : IUnitOfWork
         }
     }
 
-    public async ValueTask DisposeAsync()
+    public virtual async ValueTask DisposeAsync()
     {
         if (this.IsDirty())
         {

@@ -4,67 +4,76 @@ namespace TIKSN.Web;
 
 public class Sitemap
 {
-    public Sitemap() => this.Pages = [];
+    public ISet<Page> Pages { get; } = new HashSet<Page>();
 
-    public HashSet<Page> Pages { get; }
-
-    public void Write(XmlWriter XWriter)
+    public void Write(XmlWriter xWriter)
     {
-        XWriter.WriteStartDocument();
+        ArgumentNullException.ThrowIfNull(xWriter);
 
-        XWriter.WriteStartElement("urlset", "http://www.sitemaps.org/schemas/sitemap/0.9");
+        xWriter.WriteStartDocument();
 
-        foreach (var P in this.Pages)
+        xWriter.WriteStartElement("urlset", "http://www.sitemaps.org/schemas/sitemap/0.9");
+
+        foreach (var p in this.Pages)
         {
-            XWriter.WriteStartElement("url");
+            xWriter.WriteStartElement("url");
 
-            XWriter.WriteStartElement("loc");
-            XWriter.WriteValue(P.Address.AbsoluteUri);
-            XWriter.WriteEndElement();
+            xWriter.WriteStartElement("loc");
+            xWriter.WriteValue(p.Address.AbsoluteUri);
+            xWriter.WriteEndElement();
 
-            if (P.LastModified.HasValue)
+            if (p.LastModified.HasValue)
             {
-                XWriter.WriteStartElement("lastmod");
-                XWriter.WriteValue(P.LastModified.Value.ToString("yyyy-MM-dd"));
-                XWriter.WriteEndElement();
+                xWriter.WriteStartElement("lastmod");
+                xWriter.WriteValue(p.LastModified.Value.ToString("yyyy-MM-dd"));
+                xWriter.WriteEndElement();
             }
 
-            if (P.ChangeFrequency.HasValue)
+            if (p.ChangeFrequency.HasValue)
             {
-                XWriter.WriteStartElement("changefreq");
-                XWriter.WriteValue(P.ChangeFrequency.Value.ToString().ToLower(System.Globalization.CultureInfo.CurrentCulture));
-                XWriter.WriteEndElement();
+                xWriter.WriteStartElement("changefreq");
+                xWriter.WriteValue(p.ChangeFrequency.Value.ToString().ToLower(System.Globalization.CultureInfo.CurrentCulture));
+                xWriter.WriteEndElement();
             }
 
-            if (P.Priority.HasValue)
+            if (p.Priority.HasValue)
             {
-                XWriter.WriteStartElement("priority");
-                XWriter.WriteValue(P.Priority.Value);
-                XWriter.WriteEndElement();
+                xWriter.WriteStartElement("priority");
+                xWriter.WriteValue(p.Priority.Value);
+                xWriter.WriteEndElement();
             }
 
-            XWriter.WriteEndElement();
+            xWriter.WriteEndElement();
         }
 
-        XWriter.WriteEndElement();
+        xWriter.WriteEndElement();
 
-        XWriter.Flush();
+        xWriter.Flush();
     }
 
-    public class Page : IEquatable<Page>
+    public sealed class Page : IEquatable<Page>
     {
-        public enum Frequency { Always = 0, Hourly = 1, Daily = 2, Weekly = 3, Monthly = 4, Yearly = 5, Never = 6 }
-
         private Uri address;
 
         private double? priority;
 
-        public Page(Uri Address, DateTime? LastModified, Frequency? ChangeFrequency, double? Priority)
+        public Page(Uri address, DateTime? lastModified, Frequency? changeFrequency, double? priority)
         {
-            this.Address = Address;
-            this.LastModified = LastModified;
-            this.ChangeFrequency = ChangeFrequency;
-            this.Priority = Priority;
+            this.Address = address;
+            this.LastModified = lastModified;
+            this.ChangeFrequency = changeFrequency;
+            this.Priority = priority;
+        }
+
+        public enum Frequency
+        {
+            Always = 0,
+            Hourly = 1,
+            Daily = 2,
+            Weekly = 3,
+            Monthly = 4,
+            Yearly = 5,
+            Never = 6,
         }
 
         public Uri Address
@@ -93,10 +102,14 @@ public class Sitemap
                 }
                 else
                 {
-                    throw new ArgumentOutOfRangeException("Valid values range from 0.0 to 1.0.");
+                    throw new ArgumentOutOfRangeException(nameof(value), "Valid values range from 0.0 to 1.0.");
                 }
             }
         }
+
+        public static bool operator !=(Page page1, Page page2) => !Equals(page1, page2);
+
+        public static bool operator ==(Page page1, Page page2) => Equals(page1, page2);
 
         public bool Equals(Page other)
         {
@@ -112,10 +125,6 @@ public class Sitemap
 
             return this.Address == other.Address;
         }
-
-        public static bool operator !=(Page page1, Page page2) => !Equals(page1, page2);
-
-        public static bool operator ==(Page page1, Page page2) => Equals(page1, page2);
 
         public override bool Equals(object obj)
         {

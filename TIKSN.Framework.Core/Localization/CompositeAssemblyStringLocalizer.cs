@@ -7,8 +7,8 @@ namespace TIKSN.Localization;
 
 public abstract class CompositeAssemblyStringLocalizer : CompositeStringLocalizer
 {
-    private readonly ILogger<CompositeAssemblyStringLocalizer> _logger;
     private readonly Lazy<IEnumerable<IStringLocalizer>> localizers;
+    private readonly ILogger<CompositeAssemblyStringLocalizer> logger;
     private readonly IResourceNamesCache resourceNamesCache;
 
     protected CompositeAssemblyStringLocalizer(IResourceNamesCache resourceNamesCache,
@@ -16,7 +16,7 @@ public abstract class CompositeAssemblyStringLocalizer : CompositeStringLocalize
     {
         this.resourceNamesCache = resourceNamesCache;
         this.localizers = new Lazy<IEnumerable<IStringLocalizer>>(this.CreateLocalizers, isThreadSafe: false);
-        this._logger = logger;
+        this.logger = logger;
     }
 
     public override IEnumerable<IStringLocalizer> Localizers => this.localizers.Value;
@@ -30,7 +30,7 @@ public abstract class CompositeAssemblyStringLocalizer : CompositeStringLocalize
         yield return typeof(RegionLocalizationParameters).GetTypeInfo().Assembly;
     }
 
-    private IEnumerable<IStringLocalizer> CreateLocalizers()
+    private List<IStringLocalizer> CreateLocalizers()
     {
         var result = new List<IStringLocalizer>();
 
@@ -40,10 +40,10 @@ public abstract class CompositeAssemblyStringLocalizer : CompositeStringLocalize
             {
                 if (manifestResourceName.EndsWith(".resources", StringComparison.OrdinalIgnoreCase))
                 {
-                    var resourceName = manifestResourceName.Substring(0, manifestResourceName.Length - 10);
+                    var resourceName = manifestResourceName[..^10];
                     var resourceManager = new ResourceManager(resourceName, assembly);
                     result.Add(new ResourceManagerStringLocalizer(resourceManager, assembly, resourceName,
-                        this.resourceNamesCache, this._logger));
+                        this.resourceNamesCache, this.logger));
                 }
             }
         }

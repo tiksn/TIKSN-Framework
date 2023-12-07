@@ -10,8 +10,6 @@ public abstract class MongoRepositoryAdapter<TDomainEntity, TDomainIdentity, TDa
     where TDataEntity : IEntity<TDataIdentity>
     where TDataIdentity : IEquatable<TDataIdentity>
 {
-    protected readonly IMongoRepository<TDataEntity, TDataIdentity> mongoRepository;
-
     protected MongoRepositoryAdapter(
         IMapper<TDomainEntity, TDataEntity> domainEntityToDataEntityMapper,
         IMapper<TDataEntity, TDomainEntity> dataEntityToDomainEntityMapper,
@@ -24,8 +22,10 @@ public abstract class MongoRepositoryAdapter<TDomainEntity, TDomainIdentity, TDa
             dataIdentityToDomainIdentityMapper,
             mongoRepository,
             mongoRepository,
-            mongoRepository) => this.mongoRepository = mongoRepository ?? throw new ArgumentNullException(nameof(mongoRepository));
+            mongoRepository) => this.MongoRepository = mongoRepository ?? throw new ArgumentNullException(nameof(mongoRepository));
+
+    protected IMongoRepository<TDataEntity, TDataIdentity> MongoRepository { get; }
 
     public Task AddOrUpdateAsync(TDomainEntity entity, CancellationToken cancellationToken)
-        => this.mongoRepository.AddOrUpdateAsync(this.Map(entity), cancellationToken);
+        => this.MongoRepository.AddOrUpdateAsync(this.Map(entity), cancellationToken);
 }

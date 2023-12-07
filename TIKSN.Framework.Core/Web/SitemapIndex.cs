@@ -4,36 +4,36 @@ namespace TIKSN.Web;
 
 public class SitemapIndex
 {
-    public SitemapIndex() => this.Sitemaps = [];
+    public IDictionary<Uri, DateOnly?> Sitemaps { get; } = new Dictionary<Uri, DateOnly?>();
 
-    public Dictionary<Uri, DateTime?> Sitemaps { get; }
-
-    public void Write(XmlWriter XWriter)
+    public void Write(XmlWriter xWriter)
     {
-        XWriter.WriteStartDocument();
+        ArgumentNullException.ThrowIfNull(xWriter);
 
-        XWriter.WriteStartElement("sitemapindex", "http://www.sitemaps.org/schemas/sitemap/0.9");
+        xWriter.WriteStartDocument();
 
-        foreach (var SM in this.Sitemaps)
+        xWriter.WriteStartElement("sitemapindex", "http://www.sitemaps.org/schemas/sitemap/0.9");
+
+        foreach (var sitemap in this.Sitemaps)
         {
-            XWriter.WriteStartElement("sitemap");
+            xWriter.WriteStartElement("sitemap");
 
-            XWriter.WriteStartElement("loc");
-            XWriter.WriteValue(SM.Key.AbsoluteUri);
-            XWriter.WriteEndElement();
+            xWriter.WriteStartElement("loc");
+            xWriter.WriteValue(sitemap.Key.AbsoluteUri);
+            xWriter.WriteEndElement();
 
-            if (SM.Value.HasValue)
+            if (sitemap.Value.HasValue)
             {
-                XWriter.WriteStartElement("lastmod");
-                XWriter.WriteValue(SM.Value.Value.ToString("yyyy-MM-dd"));
-                XWriter.WriteEndElement();
+                xWriter.WriteStartElement("lastmod");
+                xWriter.WriteValue(sitemap.Value.Value.ToString("yyyy-MM-dd"));
+                xWriter.WriteEndElement();
             }
 
-            XWriter.WriteEndElement();
+            xWriter.WriteEndElement();
         }
 
-        XWriter.WriteEndElement();
+        xWriter.WriteEndElement();
 
-        XWriter.Flush();
+        xWriter.Flush();
     }
 }

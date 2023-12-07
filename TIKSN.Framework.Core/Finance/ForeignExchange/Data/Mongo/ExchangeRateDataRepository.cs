@@ -27,7 +27,7 @@ public class ExchangeRateDataRepository : MongoRepository<ExchangeRateDataEntity
             Builders<ExchangeRateDataEntity>.Filter.Gte(item => item.AsOn, dateFrom),
             Builders<ExchangeRateDataEntity>.Filter.Lte(item => item.AsOn, dateTo));
 
-        return base.SearchAsync(filter, cancellationToken);
+        return this.SearchAsync(filter, cancellationToken);
     }
 
     public Task<IReadOnlyList<ExchangeRateDataEntity>> SearchAsync(
@@ -45,6 +45,6 @@ public class ExchangeRateDataRepository : MongoRepository<ExchangeRateDataEntity
             Builders<ExchangeRateDataEntity>.Filter.Gte(item => item.AsOn, dateFrom),
             Builders<ExchangeRateDataEntity>.Filter.Lte(item => item.AsOn, dateTo));
 
-        return base.SearchAsync(filter, cancellationToken);
+        return this.SearchAsync(filter, cancellationToken);
     }
 }

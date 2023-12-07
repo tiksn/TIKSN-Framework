@@ -18,9 +18,7 @@ public class RepositoryDistributedCacheDecorator<TEntity, TIdentity>
         IOptions<DistributedCacheDecoratorOptions> genericOptions,
         IOptions<DistributedCacheDecoratorOptions<TEntity>> specificOptions)
         : base(distributedCache, serializer, deserializer, genericOptions, specificOptions)
-    {
-        this.repository = repository;
-    }
+        => this.repository = repository;
 
     public async Task AddAsync(TEntity entity, CancellationToken cancellationToken)
     {

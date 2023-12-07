@@ -3,172 +3,400 @@ using System.Globalization;
 
 namespace TIKSN.Finance;
 
-public class Money : IEquatable<Money>, IComparable<Money>, IFormattable
+public sealed class Money : IEquatable<Money>, IComparable<Money>, IFormattable, IComparable
 {
-    public Money(CurrencyInfo Currency, decimal Amount = decimal.Zero)
+    public Money(CurrencyInfo currency, decimal amount = decimal.Zero)
     {
-        this.Currency = Currency;
-        this.Amount = Amount;
+        this.Currency = currency;
+        this.Amount = amount;
     }
 
     public decimal Amount { get; }
 
     public CurrencyInfo Currency { get; }
 
+    public static Money Add(Money left, Money right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+        ArgumentNullException.ThrowIfNull(right);
+
+        AssertCurrenciesIdentical(left, right);
+
+        return new(left.Currency, left.Amount + right.Amount);
+    }
+
+    public static int CompareTo(Money first, Money second)
+    {
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+
+        return first.CompareTo(second);
+    }
+
+    public static decimal Divide(Money left, Money right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+        ArgumentNullException.ThrowIfNull(right);
+
+        AssertCurrenciesIdentical(left, right);
+
+        return left.Amount / right.Amount;
+    }
+
+    public static Money Divide(Money left, byte right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount / right);
+    }
+
+    public static Money Divide(Money left, sbyte right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount / right);
+    }
+
+    public static Money Divide(Money left, short right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount / right);
+    }
+
+    public static Money Divide(Money left, ushort right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount / right);
+    }
+
+    public static Money Divide(Money left, int right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount / right);
+    }
+
+    public static Money Divide(Money left, uint right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount / right);
+    }
+
+    public static Money Divide(Money left, long right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount / right);
+    }
+
+    public static Money Divide(Money left, ulong right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount / right);
+    }
+
+    public static Money Divide(Money left, decimal right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount / right);
+    }
+
+    public static bool Equals(Money first, Money second)
+    {
+        if ((first is null) && (second is null))
+        {
+            return true;
+        }
+
+        if (first is null)
+        {
+            return false;
+        }
+
+        if (second is null)
+        {
+            return false;
+        }
+
+        if (ReferenceEquals(first, second))
+        {
+            return true;
+        }
+
+        AssertCurrenciesIdentical(first, second);
+
+        return first.Amount.Equals(second.Amount);
+    }
+
+    public static Money Mod(Money left, byte right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount % right);
+    }
+
+    public static decimal Mod(Money left, Money right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+        ArgumentNullException.ThrowIfNull(right);
+
+        AssertCurrenciesIdentical(left, right);
+
+        return left.Amount % right.Amount;
+    }
+
+    public static Money Mod(Money left, short right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount % right);
+    }
+
+    public static Money Mod(Money left, ushort right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount % right);
+    }
+
+    public static Money Mod(Money left, int right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount % right);
+    }
+
+    public static Money Mod(Money left, uint right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount % right);
+    }
+
+    public static Money Mod(Money left, long right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount % right);
+    }
+
+    public static Money Mod(Money left, ulong right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount % right);
+    }
+
+    public static Money Mod(Money left, decimal right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount % right);
+    }
+
+    public static Money Multiply(Money left, byte right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount * right);
+    }
+
+    public static Money Multiply(Money left, sbyte right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount * right);
+    }
+
+    public static Money Multiply(Money left, short right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount * right);
+    }
+
+    public static Money Multiply(Money left, ushort right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount * right);
+    }
+
+    public static Money Multiply(Money left, int right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount * right);
+    }
+
+    public static Money Multiply(Money left, uint right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount * right);
+    }
+
+    public static Money Multiply(Money left, long right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount * right);
+    }
+
+    public static Money Multiply(Money left, ulong right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount * right);
+    }
+
+    public static Money Multiply(Money left, decimal right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+
+        return new(left.Currency, left.Amount * right);
+    }
+
+    public static Money Negate(Money money)
+    {
+        ArgumentNullException.ThrowIfNull(money);
+
+        return new(money.Currency, -money.Amount);
+    }
+
+    public static Money operator -(Money money) => Negate(money);
+
+    public static Money operator -(Money first, Money second) => Subtract(first, second);
+
+    public static bool operator !=(Money first, Money second) => !Equals(first, second);
+
+    public static Money operator %(Money dividend, sbyte divisor) => Mod(dividend, divisor);
+
+    public static Money operator %(Money dividend, byte divisor) => Mod(dividend, divisor);
+
+    public static Money operator %(Money dividend, short divisor) => Mod(dividend, divisor);
+
+    public static Money operator %(Money dividend, ushort divisor) => Mod(dividend, divisor);
+
+    public static Money operator %(Money dividend, int divisor) => Mod(dividend, divisor);
+
+    public static Money operator %(Money dividend, uint divisor) => Mod(dividend, divisor);
+
+    public static Money operator %(Money dividend, long divisor) => Mod(dividend, divisor);
+
+    public static Money operator %(Money dividend, ulong divisor) => Mod(dividend, divisor);
+
+    public static Money operator %(Money dividend, decimal divisor) => Mod(dividend, divisor);
+
+    public static decimal operator %(Money dividend, Money divisor) => Mod(dividend, divisor);
+
+    public static Money operator *(Money first, sbyte second) => Multiply(first, second);
+
+    public static Money operator *(Money first, byte second) => Multiply(first, second);
+
+    public static Money operator *(Money first, short second) => Multiply(first, second);
+
+    public static Money operator *(Money first, ushort second) => Multiply(first, second);
+
+    public static Money operator *(Money first, int second) => Multiply(first, second);
+
+    public static Money operator *(Money first, uint second) => Multiply(first, second);
+
+    public static Money operator *(Money first, long second) => Multiply(first, second);
+
+    public static Money operator *(Money first, ulong second) => Multiply(first, second);
+
+    public static Money operator *(Money first, decimal second) => Multiply(first, second);
+
+    public static Money operator /(Money dividend, sbyte divisor) => Divide(dividend, divisor);
+
+    public static decimal operator /(Money dividend, Money divisor) => Divide(dividend, divisor);
+
+    public static Money operator /(Money dividend, byte divisor) => Divide(dividend, divisor);
+
+    public static Money operator /(Money dividend, short divisor) => Divide(dividend, divisor);
+
+    public static Money operator /(Money dividend, ushort divisor) => Divide(dividend, divisor);
+
+    public static Money operator /(Money dividend, int divisor) => Divide(dividend, divisor);
+
+    public static Money operator /(Money dividend, uint divisor) => Divide(dividend, divisor);
+
+    public static Money operator /(Money dividend, long divisor) => Divide(dividend, divisor);
+
+    public static Money operator /(Money dividend, ulong divisor) => Divide(dividend, divisor);
+
+    public static Money operator /(Money dividend, decimal divisor) => Divide(dividend, divisor);
+
+    public static Money operator +(Money money) => Plus(money);
+
+    public static Money operator +(Money first, Money second) => Add(first, second);
+
+    public static bool operator <(Money first, Money second) => CompareTo(first, second) < 0;
+
+    public static bool operator <=(Money first, Money second) => CompareTo(first, second) <= 0;
+
+    public static bool operator ==(Money first, Money second) => Equals(first, second);
+
+    public static bool operator >(Money first, Money second) => CompareTo(first, second) > 0;
+
+    public static bool operator >=(Money first, Money second) => CompareTo(first, second) >= 0;
+
+    public static Money Plus(Money money)
+    {
+        ArgumentNullException.ThrowIfNull(money);
+
+        return money;
+    }
+
+    public static Money Subtract(Money left, Money right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+        ArgumentNullException.ThrowIfNull(right);
+
+        AssertCurrenciesIdentical(left, right);
+
+        return new(left.Currency, left.Amount - right.Amount);
+    }
+
     public int CompareTo(Money other)
     {
+        if (other == null)
+        {
+            return 1;
+        }
+
         if (ReferenceEquals(this, other))
         {
             return 0;
         }
 
-        AssertCurrencyIdentity(this, other);
+        AssertCurrenciesIdentical(this, other);
 
         return this.Amount.CompareTo(other.Amount);
     }
 
-    public bool Equals(Money other)
+    public int CompareTo(object obj)
     {
-        if (other is null)
+        if (obj == null)
         {
-            return false;
+            return 1;
         }
 
-        if (ReferenceEquals(this, other))
+        if (obj is Money x)
         {
-            return true;
+            return this.CompareTo(x);
         }
 
-        AssertCurrencyIdentity(this, other);
-
-        return this.Amount.Equals(other.Amount);
+        throw new ArgumentException("", nameof(obj));
     }
 
-    public string ToString(string format, IFormatProvider formatProvider)
-    {
-        var NFI = (NumberFormatInfo)NumberFormatInfo.GetInstance(formatProvider).Clone();
-
-        Debug.Assert(!NFI.IsReadOnly);
-        var currencyFormat = "S";
-        var amountFormat = "C";
-
-        if (!string.IsNullOrEmpty(format))
-        {
-            currencyFormat = format.Substring(0, 1);
-
-            amountFormat += format.Substring(1);
-        }
-
-        NFI.CurrencySymbol = currencyFormat switch
-        {
-            "S" => this.Currency.CurrencySymbol,
-            "I" => this.Currency.ISOCurrencySymbol,
-            _ => throw new FormatException(),
-        };
-        return this.Amount.ToString(amountFormat, NFI);
-    }
-
-    public static Money operator -(Money money) => new(money.Currency, -money.Amount);
-
-    public static Money operator -(Money first, Money second)
-    {
-        AssertCurrencyIdentity(first, second);
-
-        return new Money(first.Currency, first.Amount - second.Amount);
-    }
-
-    public static bool operator !=(Money first, Money second) => !first.Equals(second);
-
-    public static Money operator %(Money dividend, sbyte divisor) =>
-        new(dividend.Currency, dividend.Amount % divisor);
-
-    public static Money operator %(Money dividend, byte divisor) =>
-        new(dividend.Currency, dividend.Amount % divisor);
-
-    public static Money operator %(Money dividend, short divisor) =>
-        new(dividend.Currency, dividend.Amount % divisor);
-
-    public static Money operator %(Money dividend, ushort divisor) =>
-        new(dividend.Currency, dividend.Amount % divisor);
-
-    public static Money operator %(Money dividend, int divisor) =>
-        new(dividend.Currency, dividend.Amount % divisor);
-
-    public static Money operator %(Money dividend, uint divisor) =>
-        new(dividend.Currency, dividend.Amount % divisor);
-
-    public static Money operator %(Money dividend, long divisor) =>
-        new(dividend.Currency, dividend.Amount % divisor);
-
-    public static Money operator %(Money dividend, ulong divisor) =>
-        new(dividend.Currency, dividend.Amount % divisor);
-
-    public static Money operator %(Money dividend, decimal divisor) =>
-        new(dividend.Currency, dividend.Amount % divisor);
-
-    public static Money operator *(Money first, sbyte second) => new(first.Currency, first.Amount * second);
-
-    public static Money operator *(Money first, byte second) => new(first.Currency, first.Amount * second);
-
-    public static Money operator *(Money first, short second) => new(first.Currency, first.Amount * second);
-
-    public static Money operator *(Money first, ushort second) => new(first.Currency, first.Amount * second);
-
-    public static Money operator *(Money first, int second) => new(first.Currency, first.Amount * second);
-
-    public static Money operator *(Money first, uint second) => new(first.Currency, first.Amount * second);
-
-    public static Money operator *(Money first, long second) => new(first.Currency, first.Amount * second);
-
-    public static Money operator *(Money first, ulong second) => new(first.Currency, first.Amount * second);
-
-    public static Money operator *(Money first, decimal second) => new(first.Currency, first.Amount * second);
-
-    public static Money operator /(Money dividend, sbyte divisor) =>
-        new(dividend.Currency, dividend.Amount / divisor);
-
-    public static Money operator /(Money dividend, byte divisor) =>
-        new(dividend.Currency, dividend.Amount / divisor);
-
-    public static Money operator /(Money dividend, short divisor) =>
-        new(dividend.Currency, dividend.Amount / divisor);
-
-    public static Money operator /(Money dividend, ushort divisor) =>
-        new(dividend.Currency, dividend.Amount / divisor);
-
-    public static Money operator /(Money dividend, int divisor) =>
-        new(dividend.Currency, dividend.Amount / divisor);
-
-    public static Money operator /(Money dividend, uint divisor) =>
-        new(dividend.Currency, dividend.Amount / divisor);
-
-    public static Money operator /(Money dividend, long divisor) =>
-        new(dividend.Currency, dividend.Amount / divisor);
-
-    public static Money operator /(Money dividend, ulong divisor) =>
-        new(dividend.Currency, dividend.Amount / divisor);
-
-    public static Money operator /(Money dividend, decimal divisor) =>
-        new(dividend.Currency, dividend.Amount / divisor);
-
-    public static Money operator +(Money money) => new(money.Currency, money.Amount);
-
-    public static Money operator +(Money first, Money second)
-    {
-        AssertCurrencyIdentity(first, second);
-
-        return new Money(first.Currency, first.Amount + second.Amount);
-    }
-
-    public static bool operator <(Money first, Money second) => first.CompareTo(second) < 0;
-
-    public static bool operator <=(Money first, Money second) => first.CompareTo(second) <= 0;
-
-    public static bool operator ==(Money first, Money second) => first.Equals(second);
-
-    public static bool operator >(Money first, Money second) => first.CompareTo(second) > 0;
-
-    public static bool operator >=(Money first, Money second) => first.CompareTo(second) >= 0;
+    public bool Equals(Money other) => Equals(this, other);
 
     public override bool Equals(object obj)
     {
@@ -187,31 +415,41 @@ public class Money : IEquatable<Money>, IComparable<Money>, IFormattable
         return false;
     }
 
-    public override string ToString() => this.ToString(string.Empty);
+    public override int GetHashCode() => HashCode.Combine(this.Currency, this.Amount);
+
+    public string ToString(string format, IFormatProvider formatProvider)
+    {
+        var nfi = (NumberFormatInfo)NumberFormatInfo.GetInstance(formatProvider).Clone();
+
+        Debug.Assert(!nfi.IsReadOnly);
+        var currencyFormat = "S";
+        var amountFormat = "C";
+
+        if (!string.IsNullOrEmpty(format))
+        {
+            currencyFormat = format[..1];
+
+            amountFormat += format[1..];
+        }
+
+        nfi.CurrencySymbol = currencyFormat switch
+        {
+            "S" => this.Currency.CurrencySymbol,
+            "I" => this.Currency.ISOCurrencySymbol,
+            _ => throw new FormatException(),
+        };
+        return this.Amount.ToString(amountFormat, nfi);
+    }
+
+    public override string ToString() => this.ToString(string.Empty, CultureInfo.CurrentCulture);
 
     public string ToString(string format) => this.ToString(format, CultureInfo.CurrentCulture);
 
-    private static void AssertCurrencyIdentity(Money first, Money second)
+    private static void AssertCurrenciesIdentical(Money first, Money second)
     {
         if (!first.Currency.Equals(second.Currency))
         {
             throw new InvalidOperationException("Money values are in different currencies.");
         }
     }
-
-    public override int GetHashCode() => throw new NotImplementedException();
-
-    public static Money Negate(Money item) => throw new NotImplementedException();
-
-    public static Money Subtract(Money left, Money right) => throw new NotImplementedException();
-
-    public static Money Mod(Money left, Money right) => throw new NotImplementedException();
-
-    public static Money Multiply(Money left, Money right) => throw new NotImplementedException();
-
-    public static Money Divide(Money left, Money right) => throw new NotImplementedException();
-
-    public static Money Plus(Money item) => throw new NotImplementedException();
-
-    public static Money Add(Money left, Money right) => throw new NotImplementedException();
 }

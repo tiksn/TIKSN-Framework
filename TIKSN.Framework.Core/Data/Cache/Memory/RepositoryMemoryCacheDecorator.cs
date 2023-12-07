@@ -16,9 +16,7 @@ public class RepositoryMemoryCacheDecorator<TEntity, TIdentity>
         IOptions<MemoryCacheDecoratorOptions> genericOptions,
         IOptions<MemoryCacheDecoratorOptions<TEntity>> specificOptions)
         : base(memoryCache, genericOptions, specificOptions)
-    {
-        this.repository = repository;
-    }
+        => this.repository = repository;
 
     public async Task AddAsync(TEntity entity, CancellationToken cancellationToken)
     {

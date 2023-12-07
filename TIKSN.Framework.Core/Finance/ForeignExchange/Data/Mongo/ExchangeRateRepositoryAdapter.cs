@@ -7,8 +7,6 @@ public class ExchangeRateRepositoryAdapter
     : MongoRepositoryAdapter<ExchangeRateEntity, Guid, ExchangeRateDataEntity, Guid>
     , IExchangeRateRepository
 {
-    protected readonly IExchangeRateDataRepository dataRepository;
-
     public ExchangeRateRepositoryAdapter(
         IExchangeRateDataRepository dataRepository,
         IMapper<ExchangeRateEntity, ExchangeRateDataEntity> domainEntityToDataEntityMapper,
@@ -17,7 +15,9 @@ public class ExchangeRateRepositoryAdapter
             dataEntityToDomainEntityMapper,
             IdentityMapper<Guid>.Instance,
             IdentityMapper<Guid>.Instance,
-            dataRepository) => this.dataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
+            dataRepository) => this.DataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
+
+    protected IExchangeRateDataRepository DataRepository { get; }
 
     public Task<IReadOnlyList<ExchangeRateEntity>> SearchAsync(
         string baseCurrencyCode,
@@ -25,7 +25,7 @@ public class ExchangeRateRepositoryAdapter
         DateTime dateFrom,
         DateTime dateTo,
         CancellationToken cancellationToken)
-        => this.MapAsync(() => this.dataRepository.SearchAsync(
+        => this.MapAsync(() => this.DataRepository.SearchAsync(
             baseCurrencyCode,
             counterCurrencyCode,
             dateFrom,
@@ -39,7 +39,7 @@ public class ExchangeRateRepositoryAdapter
         DateTime dateFrom,
         DateTime dateTo,
         CancellationToken cancellationToken)
-        => this.MapAsync(() => this.dataRepository.SearchAsync(
+        => this.MapAsync(() => this.DataRepository.SearchAsync(
             foreignExchangeID,
             baseCurrencyCode,
             counterCurrencyCode,

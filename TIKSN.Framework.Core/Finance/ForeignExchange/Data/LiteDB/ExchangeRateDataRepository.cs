@@ -17,7 +17,7 @@ public class ExchangeRateDataRepository : LiteDbRepository<ExchangeRateDataEntit
         DateTime dateTo,
         CancellationToken cancellationToken)
     {
-        var results = this.collection.Find(x =>
+        var results = this.Collection.Find(x =>
             x.BaseCurrencyCode == baseCurrencyCode &&
             x.CounterCurrencyCode == counterCurrencyCode && x.AsOn >= dateFrom && x.AsOn <= dateTo);
 
@@ -32,7 +32,7 @@ public class ExchangeRateDataRepository : LiteDbRepository<ExchangeRateDataEntit
         DateTime dateTo,
         CancellationToken cancellationToken)
     {
-        var results = this.collection.Find(x =>
+        var results = this.Collection.Find(x =>
             x.ForeignExchangeID == foreignExchangeID && x.BaseCurrencyCode == baseCurrencyCode &&
             x.CounterCurrencyCode == counterCurrencyCode && x.AsOn >= dateFrom && x.AsOn <= dateTo);
 

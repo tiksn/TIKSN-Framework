@@ -1,10 +1,8 @@
 using System.Net;
 using System.Net.Http.Headers;
-using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using TIKSN.Analytics.Telemetry;
 using TIKSN.Data;
-using TIKSN.Localization;
 
 namespace TIKSN.Web.Rest;
 
@@ -14,13 +12,12 @@ public class RestRepository<TEntity, TIdentity> :
     where TEntity : IEntity<TIdentity>
     where TIdentity : IEquatable<TIdentity>
 {
-    private readonly IDeserializerRestFactory _deserializerRestFactory;
-    private readonly IHttpClientFactory _httpClientFactory;
-    private readonly IOptions<RestRepositoryOptions<TEntity>> _options;
-    private readonly IRestAuthenticationTokenProvider _restAuthenticationTokenProvider;
-    private readonly ISerializerRestFactory _serializerRestFactory;
-    private readonly IStringLocalizer _stringLocalizer;
-    private readonly ITraceTelemeter _traceTelemeter;
+    private readonly IDeserializerRestFactory deserializerRestFactory;
+    private readonly IHttpClientFactory httpClientFactory;
+    private readonly ILogger<RestRepository<TEntity, TIdentity>> logger;
+    private readonly IOptions<RestRepositoryOptions<TEntity>> options;
+    private readonly IRestAuthenticationTokenProvider restAuthenticationTokenProvider;
+    private readonly ISerializerRestFactory serializerRestFactory;
 
     public RestRepository(
         IHttpClientFactory httpClientFactory,
@@ -28,53 +25,26 @@ public class RestRepository<TEntity, TIdentity> :
         IDeserializerRestFactory deserializerRestFactory,
         IRestAuthenticationTokenProvider restAuthenticationTokenProvider,
         IOptions<RestRepositoryOptions<TEntity>> options,
-        IStringLocalizer stringLocalizer,
-        ITraceTelemeter traceTelemeter)
+        ILogger<RestRepository<TEntity, TIdentity>> logger)
     {
-        this._httpClientFactory = httpClientFactory;
-        this._serializerRestFactory = serializerRestFactory;
-        this._options = options;
-        this._stringLocalizer = stringLocalizer;
-        this._traceTelemeter = traceTelemeter;
-        this._restAuthenticationTokenProvider = restAuthenticationTokenProvider;
-        this._deserializerRestFactory = deserializerRestFactory;
-    }
-
-    public async Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
-    {
-        await this._traceTelemeter.TrackTraceAsync(
-            this._stringLocalizer.GetRequiredString(LocalizationKeys.Key638306944)).ConfigureAwait(false);
-
-        foreach (var entity in entities)
-        {
-            await this.RemoveAsync(entity, cancellationToken).ConfigureAwait(false);
-        }
-    }
-
-    public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken) =>
-        this.AddObjectAsync(entities, cancellationToken);
-
-    public async Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
-    {
-        var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
-        var uriTemplate = new UriTemplate(this._options.Value.ResourceTemplate);
-
-        uriTemplate.Fill("ID", string.Empty);
-
-        var requestUrl = uriTemplate.Compose();
-
-        var response = await httpClient.PutAsync(requestUrl, this.GetContent(entities), cancellationToken).ConfigureAwait(false);
-
-        _ = response.EnsureSuccessStatusCode();
+        this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+        this.serializerRestFactory = serializerRestFactory ?? throw new ArgumentNullException(nameof(serializerRestFactory));
+        this.options = options ?? throw new ArgumentNullException(nameof(options));
+        this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        this.restAuthenticationTokenProvider = restAuthenticationTokenProvider ?? throw new ArgumentNullException(nameof(restAuthenticationTokenProvider));
+        this.deserializerRestFactory = deserializerRestFactory ?? throw new ArgumentNullException(nameof(deserializerRestFactory));
     }
 
     public Task AddAsync(TEntity entity, CancellationToken cancellationToken) =>
         this.AddObjectAsync(entity, cancellationToken);
 
+    public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken) =>
+        this.AddObjectAsync(entities, cancellationToken);
+
     public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
     {
         var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
-        var uriTemplate = new UriTemplate(this._options.Value.ResourceTemplate);
+        var uriTemplate = new UriTemplate(this.options.Value.ResourceTemplate);
 
         uriTemplate.Fill("ID", id.ToString());
 
@@ -88,7 +58,7 @@ public class RestRepository<TEntity, TIdentity> :
     public async Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)
     {
         var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
-        var uriTemplate = new UriTemplate(this._options.Value.ResourceTemplate);
+        var uriTemplate = new UriTemplate(this.options.Value.ResourceTemplate);
 
         uriTemplate.Fill("ID", entity.ID.ToString());
 
@@ -99,25 +69,56 @@ public class RestRepository<TEntity, TIdentity> :
         _ = response.EnsureSuccessStatusCode();
     }
 
+    public async Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(entities);
+
+        this.logger.LogWarning(1975130298, "TIKSN.Web.Rest.RestRepository.RemoveRangeAsync method is not advised to use");
+
+        foreach (var entity in entities)
+        {
+            await this.RemoveAsync(entity, cancellationToken).ConfigureAwait(false);
+        }
+    }
+
     public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
     {
         var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
-        var uriTemplate = new UriTemplate(this._options.Value.ResourceTemplate);
+        var uriTemplate = new UriTemplate(this.options.Value.ResourceTemplate);
 
         uriTemplate.Fill("ID", entity.ID.ToString());
 
         var requestUrl = uriTemplate.Compose();
 
-        var response = await httpClient.PutAsync(requestUrl, this.GetContent(entity), cancellationToken).ConfigureAwait(false);
+        using var content = this.GetContent(entity);
+        var response = await httpClient.PutAsync(requestUrl, content, cancellationToken).ConfigureAwait(false);
 
         _ = response.EnsureSuccessStatusCode();
     }
 
-    protected async Task<IEnumerable<TEntity>> SearchAsync(IEnumerable<KeyValuePair<string, string>> parameters,
-        CancellationToken cancellationToken)
+    public async Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
     {
         var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
-        var uriTemplate = new UriTemplate(this._options.Value.ResourceTemplate);
+        var uriTemplate = new UriTemplate(this.options.Value.ResourceTemplate);
+
+        uriTemplate.Fill("ID", string.Empty);
+
+        var requestUrl = uriTemplate.Compose();
+
+        using var content = this.GetContent(entities);
+        var response = await httpClient.PutAsync(requestUrl, content, cancellationToken).ConfigureAwait(false);
+
+        _ = response.EnsureSuccessStatusCode();
+    }
+
+    protected async Task<IEnumerable<TEntity>> SearchAsync(
+        IEnumerable<KeyValuePair<string, string>> parameters,
+        CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(parameters);
+
+        var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
+        var uriTemplate = new UriTemplate(this.options.Value.ResourceTemplate);
 
         foreach (var parameter in parameters)
         {
@@ -131,11 +132,14 @@ public class RestRepository<TEntity, TIdentity> :
         return await this.ObjectifyResponseAsync<IEnumerable<TEntity>>(response, defaultIfNotFound: false).ConfigureAwait(false);
     }
 
-    protected async Task<TEntity> SingleOrDefaultAsync(IEnumerable<KeyValuePair<string, string>> parameters,
+    protected async Task<TEntity> SingleOrDefaultAsync(
+        IEnumerable<KeyValuePair<string, string>> parameters,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(parameters);
+
         var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
-        var uriTemplate = new UriTemplate(this._options.Value.ResourceTemplate);
+        var uriTemplate = new UriTemplate(this.options.Value.ResourceTemplate);
 
         foreach (var parameter in parameters)
         {
@@ -152,31 +156,32 @@ public class RestRepository<TEntity, TIdentity> :
     private async Task AddObjectAsync(object requestContent, CancellationToken cancellationToken)
     {
         var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
-        var uriTemplate = new UriTemplate(this._options.Value.ResourceTemplate);
+        var uriTemplate = new UriTemplate(this.options.Value.ResourceTemplate);
 
         uriTemplate.Fill("ID", string.Empty);
 
         var requestUrl = uriTemplate.Compose();
 
-        var response = await httpClient.PostAsync(requestUrl, this.GetContent(requestContent), cancellationToken).ConfigureAwait(false);
+        using var content = this.GetContent(requestContent);
+        var response = await httpClient.PostAsync(requestUrl, content, cancellationToken).ConfigureAwait(false);
 
         _ = response.EnsureSuccessStatusCode();
     }
 
-    private HttpContent GetContent(object requestContent) => new StringContent(
-        this._serializerRestFactory.Create(this._options.Value.MediaType).Serialize(requestContent),
-        this._options.Value.Encoding, this._options.Value.MediaType);
+    private StringContent GetContent(object requestContent) => new(
+        this.serializerRestFactory.Create(this.options.Value.MediaType).Serialize(requestContent),
+        this.options.Value.Encoding, this.options.Value.MediaType);
 
     private async Task<HttpClient> GetHttpClientAsync()
     {
-        var httpClient = this._httpClientFactory.CreateClient(this._options.Value.ApiKey);
+        var httpClient = this.httpClientFactory.CreateClient(this.options.Value.ApiKey);
 
         httpClient.DefaultRequestHeaders.Accept.Add(
-            new MediaTypeWithQualityHeaderValue(this._options.Value.MediaType));
+            new MediaTypeWithQualityHeaderValue(this.options.Value.MediaType));
 
-        if (this._options.Value.AcceptLanguages != null)
+        if (this.options.Value.AcceptLanguages != null)
         {
-            foreach (var acceptLanguage in this._options.Value.AcceptLanguages)
+            foreach (var acceptLanguage in this.options.Value.AcceptLanguages)
             {
                 httpClient.DefaultRequestHeaders.AcceptLanguage.Add(
                     new StringWithQualityHeaderValue(acceptLanguage.Value, acceptLanguage.Key));
@@ -199,13 +204,13 @@ public class RestRepository<TEntity, TIdentity> :
 
         var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-        return this._deserializerRestFactory.Create(this._options.Value.MediaType).Deserialize<TResult>(content);
+        return this.deserializerRestFactory.Create(this.options.Value.MediaType).Deserialize<TResult>(content);
     }
 
     private async Task SetAuthenticationHeaderAsync(HttpClient httpClient)
     {
         string authenticationSchema;
-        switch (this._options.Value.Authentication)
+        switch (this.options.Value.Authentication)
         {
             case RestAuthenticationType.None:
                 return;
@@ -220,11 +225,11 @@ public class RestRepository<TEntity, TIdentity> :
 
             default:
                 throw new NotSupportedException(
-                    $"Authentication type '{this._options.Value.Authentication}' is not supported.");
+                    $"Authentication type '{this.options.Value.Authentication}' is not supported.");
         }
 
         var authenticationToken =
-            await this._restAuthenticationTokenProvider.GetAuthenticationTokenAsync(this._options.Value.ApiKey).ConfigureAwait(false);
+            await this.restAuthenticationTokenProvider.GetAuthenticationTokenAsync(this.options.Value.ApiKey).ConfigureAwait(false);
 
         httpClient.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue(authenticationSchema, authenticationToken);

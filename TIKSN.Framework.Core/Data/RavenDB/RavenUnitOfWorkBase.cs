@@ -5,29 +5,30 @@ namespace TIKSN.Data.RavenDB;
 
 public abstract class RavenUnitOfWorkBase : UnitOfWorkBase
 {
-    protected readonly IAsyncDocumentSession _session;
-
     protected RavenUnitOfWorkBase(IDocumentStore store)
     {
         ArgumentNullException.ThrowIfNull(store);
 
-        this._session = store.OpenAsyncSession();
+        this.Session = store.OpenAsyncSession();
     }
+
+    protected IAsyncDocumentSession Session { get; }
 
     public override async Task CompleteAsync(CancellationToken cancellationToken)
     {
-        await this._session.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await this.Session.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-        this._session.Advanced.Clear();
+        this.Session.Advanced.Clear();
     }
 
     public override void Dispose()
     {
-        this._session.Dispose();
+        this.Session.Dispose();
 
         base.Dispose();
     }
 
     protected override bool IsDirty() => false;
+
     //return _session.Advanced.HasChanges;
 }
