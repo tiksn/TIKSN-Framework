@@ -6,8 +6,12 @@ namespace TIKSN.Finance;
 
 public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
 {
-    public CurrencyInfo(RegionInfo regionInfo) =>
+    public CurrencyInfo(RegionInfo regionInfo)
+    {
+        ArgumentNullException.ThrowIfNull(regionInfo);
+
         this.InitializeCurrency(regionInfo.ISOCurrencySymbol, regionInfo.CurrencySymbol);
+    }
 
     public CurrencyInfo(string isoCurrencySymbol) => this.InitializeCurrency(isoCurrencySymbol, symbol: null);
 
@@ -21,6 +25,10 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
 
     public string ISOCurrencySymbol { get; private set; }
 
+    public static bool operator !=(CurrencyInfo first, CurrencyInfo second) => !Equals(first, second);
+
+    public static bool operator ==(CurrencyInfo first, CurrencyInfo second) => Equals(first, second);
+
     public bool Equals(CurrencyInfo other)
     {
         if (other is null)
@@ -30,10 +38,6 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
 
         return string.CompareOrdinal(this.ISOCurrencySymbol, other.ISOCurrencySymbol) == 0;
     }
-
-    public static bool operator !=(CurrencyInfo first, CurrencyInfo second) => !Equals(first, second);
-
-    public static bool operator ==(CurrencyInfo first, CurrencyInfo second) => Equals(first, second);
 
     public override bool Equals(object obj)
     {
@@ -47,12 +51,12 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
             return false;
         }
 
-        if (obj is not CurrencyInfo That)
+        if (obj is not CurrencyInfo that)
         {
             return false;
         }
 
-        return this.Equals(That);
+        return this.Equals(that);
     }
 
     public override int GetHashCode() => StringComparer.Ordinal.GetHashCode(this.ISOCurrencySymbol);
@@ -92,41 +96,39 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
     private bool TryExtractCurrencyInformation(string tableResource, string isoSymbol, string symbol,
         bool lookingForCurrent, string tableElementName, string entityElementName)
     {
-        using (var stream = this.GetType().GetTypeInfo().Assembly.GetManifestResourceStream(tableResource))
+        using var stream = this.GetType().GetTypeInfo().Assembly.GetManifestResourceStream(tableResource);
+        var tableXDoc = XDocument.Load(stream);
+
+        foreach (var ccyNtryElement in tableXDoc.Element("ISO_4217").Element(tableElementName)
+            .Elements(entityElementName))
         {
-            var tableXDoc = XDocument.Load(stream);
+            var ccyElement = ccyNtryElement.Element("Ccy");
 
-            foreach (var ccyNtryElement in tableXDoc.Element("ISO_4217").Element(tableElementName)
-                .Elements(entityElementName))
+            if (ccyElement != null && string.Equals(ccyElement.Value, isoSymbol, StringComparison.OrdinalIgnoreCase))
             {
-                var ccyElement = ccyNtryElement.Element("Ccy");
+                this.IsCurrent = lookingForCurrent;
+                this.ISOCurrencySymbol = ccyElement.Value;
+                this.CurrencySymbol = string.IsNullOrEmpty(symbol) ? this.ISOCurrencySymbol : symbol;
+                var ccyNbrElement = ccyNtryElement.Element("CcyNbr");
+                this.ISOCurrencyNumber = ccyNbrElement is null ? null : int.Parse(ccyNbrElement.Value, CultureInfo.InvariantCulture);
 
-                if (ccyElement != null && string.Equals(ccyElement.Value, isoSymbol, StringComparison.OrdinalIgnoreCase))
+                var ccyNmElement = ccyNtryElement.Element("CcyNm");
+                var isFundAttributeValue = ccyNmElement.Attribute("IsFund")?.Value;
+
+                if (isFundAttributeValue != null)
                 {
-                    this.IsCurrent = lookingForCurrent;
-                    this.ISOCurrencySymbol = ccyElement.Value;
-                    this.CurrencySymbol = string.IsNullOrEmpty(symbol) ? this.ISOCurrencySymbol : symbol;
-                    var ccyNbrElement = ccyNtryElement.Element("CcyNbr");
-                    this.ISOCurrencyNumber = ccyNbrElement is null ? null : int.Parse(ccyNbrElement.Value);
-
-                    var ccyNmElement = ccyNtryElement.Element("CcyNm");
-                    var isFundAttributeValue = ccyNmElement.Attribute("IsFund")?.Value;
-
-                    if (isFundAttributeValue != null)
+                    isFundAttributeValue = isFundAttributeValue.Trim();
+                    if (string.Equals(isFundAttributeValue, "0", StringComparison.OrdinalIgnoreCase))
                     {
-                        isFundAttributeValue = isFundAttributeValue.Trim();
-                        if (string.Equals(isFundAttributeValue, "0", StringComparison.OrdinalIgnoreCase))
-                        {
-                            isFundAttributeValue = false.ToString();
-                        }
+                        isFundAttributeValue = false.ToString();
                     }
-
-                    this.IsFund = !string.IsNullOrWhiteSpace(isFundAttributeValue) &&
-                        (string.Equals(isFundAttributeValue, "WAHR", StringComparison.OrdinalIgnoreCase) ||
-                        bool.Parse(isFundAttributeValue));
-
-                    return true;
                 }
+
+                this.IsFund = !string.IsNullOrWhiteSpace(isFundAttributeValue) &&
+                    (string.Equals(isFundAttributeValue, "WAHR", StringComparison.OrdinalIgnoreCase) ||
+                    bool.Parse(isFundAttributeValue));
+
+                return true;
             }
         }
 
