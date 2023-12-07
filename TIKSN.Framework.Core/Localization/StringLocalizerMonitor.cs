@@ -9,32 +9,34 @@ namespace TIKSN.Localization;
 /// </summary>
 public class StringLocalizerMonitor : IStringLocalizer
 {
-    private readonly ILogger<StringLocalizerMonitor> _logger;
-    private readonly IOptions<StringLocalizerMonitorOptions> _options;
-    private readonly IStringLocalizer _stringLocalizer;
+    private readonly ILogger<StringLocalizerMonitor> logger;
+    private readonly IOptions<StringLocalizerMonitorOptions> options;
+    private readonly IStringLocalizer stringLocalizer;
 
-    public StringLocalizerMonitor(IStringLocalizer stringLocalizer, ILogger<StringLocalizerMonitor> logger,
+    public StringLocalizerMonitor(
+        IStringLocalizer stringLocalizer,
+        ILogger<StringLocalizerMonitor> logger,
         IOptions<StringLocalizerMonitorOptions> options)
     {
-        this._stringLocalizer = stringLocalizer;
-        this._logger = logger;
-        this._options = options;
+        this.stringLocalizer = stringLocalizer;
+        this.logger = logger;
+        this.options = options;
     }
 
-    public LocalizedString this[string name] => this.Log(this._stringLocalizer[name]);
+    public LocalizedString this[string name] => this.Log(this.stringLocalizer[name]);
 
     public LocalizedString this[string name, params object[] arguments] =>
-        this.Log(this._stringLocalizer[name, arguments]);
+        this.Log(this.stringLocalizer[name, arguments]);
 
     public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures) =>
-        this._stringLocalizer.GetAllStrings(includeParentCultures);
+        this.stringLocalizer.GetAllStrings(includeParentCultures);
 
     private LocalizedString Log(LocalizedString localizedString)
     {
         if (localizedString.ResourceNotFound)
         {
-            this._logger.Log(this._options.Value.LogLevel, 414761847,
-                $"Resource with name '{localizedString.Name}' is not found.", exception: null, (s, e) => s);
+            this.logger.Log(this.options.Value.LogLevel, 414761847,
+                $"Resource with name '{localizedString.Name}' is not found.", exception: null, (s, _) => s);
         }
 
         return localizedString;
