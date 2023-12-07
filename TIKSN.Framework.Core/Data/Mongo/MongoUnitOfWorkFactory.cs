@@ -4,21 +4,21 @@ namespace TIKSN.Data.Mongo;
 
 public class MongoUnitOfWorkFactory : IUnitOfWorkFactory
 {
-    private readonly IMongoClientProvider _mongoClientProvider;
-    private readonly IServiceProvider _serviceProvider;
+    private readonly IMongoClientProvider mongoClientProvider;
+    private readonly IServiceProvider serviceProvider;
 
     public MongoUnitOfWorkFactory(IMongoClientProvider mongoClientProvider, IServiceProvider serviceProvider)
     {
-        this._mongoClientProvider =
+        this.mongoClientProvider =
             mongoClientProvider ?? throw new ArgumentNullException(nameof(mongoClientProvider));
-        this._serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+        this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
     }
 
     public async Task<IUnitOfWork> CreateAsync(CancellationToken cancellationToken)
     {
-        var mongoClient = this._mongoClientProvider.GetMongoClient();
+        var mongoClient = this.mongoClientProvider.GetMongoClient();
         var clientSessionHandle = await mongoClient.StartSessionAsync(options: null, cancellationToken).ConfigureAwait(false);
-        var serviceScope = this._serviceProvider.CreateScope();
+        var serviceScope = this.serviceProvider.CreateAsyncScope();
         var mongoClientSessionStore = serviceScope.ServiceProvider.GetRequiredService<IMongoClientSessionStore>();
         mongoClientSessionStore.SetClientSessionHandle(clientSessionHandle);
 
