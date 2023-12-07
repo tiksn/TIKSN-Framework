@@ -1,3 +1,6 @@
+using System;
+using System.Text;
+using System.Xml;
 using Xunit;
 
 namespace TIKSN.Web.Tests
@@ -7,47 +10,47 @@ namespace TIKSN.Web.Tests
         [Fact]
         public void SitemapIndex001()
         {
-            var SIndex = new SitemapIndex();
+            var sIndex = new SitemapIndex();
 
-            SIndex.Sitemaps.Add(new System.Uri("http://microsoft.com/"), new System.DateTime(2012, 8, 4, 15, 58, 58, System.DateTimeKind.Utc));
+            sIndex.Sitemaps.Add(new Uri("http://microsoft.com/"), new DateOnly(2012, 8, 4));
 
-            _ = Assert.Single(SIndex.Sitemaps);
+            _ = Assert.Single(sIndex.Sitemaps);
         }
 
         [Fact]
         public void Write001()
         {
-            var SIndex = new SitemapIndex();
+            var sIndex = new SitemapIndex();
 
-            var SBuilder = new System.Text.StringBuilder();
+            var sBuilder = new StringBuilder();
 
-            var XWriter = System.Xml.XmlWriter.Create(SBuilder);
+            var xWriter = XmlWriter.Create(sBuilder);
 
-            SIndex.Write(XWriter);
+            sIndex.Write(xWriter);
 
-            var XmlOutput = SBuilder.ToString();
+            var xmlOutput = sBuilder.ToString();
 
             Assert.Equal(
                 "<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
                 "<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" />",
-                XmlOutput);
+                xmlOutput);
         }
 
         [Fact]
         public void Write002()
         {
-            var SIndex = new SitemapIndex();
+            var sIndex = new SitemapIndex();
 
-            SIndex.Sitemaps.Add(new System.Uri("http://microsoft.com/"), null);
-            SIndex.Sitemaps.Add(new System.Uri("http://microsoft.com/siteindex.xml"), new System.DateTime(2012, 10, 25, 16, 45, 36, System.DateTimeKind.Utc));
+            sIndex.Sitemaps.Add(new Uri("http://microsoft.com/"), null);
+            sIndex.Sitemaps.Add(new Uri("http://microsoft.com/siteindex.xml"), new DateOnly(2012, 10, 25));
 
-            var SBuilder = new System.Text.StringBuilder();
+            var sBuilder = new StringBuilder();
 
-            var XWriter = System.Xml.XmlWriter.Create(SBuilder);
+            var xWriter = XmlWriter.Create(sBuilder);
 
-            SIndex.Write(XWriter);
+            sIndex.Write(xWriter);
 
-            var XmlOutput = SBuilder.ToString();
+            var xmlOutput = sBuilder.ToString();
 
             Assert.Equal(
                 "<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
@@ -63,7 +66,7 @@ namespace TIKSN.Web.Tests
                 "</sitemap>" +
 
                 "</sitemapindex>",
-                XmlOutput);
+                xmlOutput);
         }
     }
 }
