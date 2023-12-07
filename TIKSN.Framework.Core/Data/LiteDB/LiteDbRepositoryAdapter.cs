@@ -10,8 +10,6 @@ public abstract class LiteDbRepositoryAdapter<TDomainEntity, TDomainIdentity, TD
     where TDataEntity : IEntity<TDataIdentity>
     where TDataIdentity : IEquatable<TDataIdentity>
 {
-    protected readonly ILiteDbRepository<TDataEntity, TDataIdentity> liteDbRepository;
-
     protected LiteDbRepositoryAdapter(
         IMapper<TDomainEntity, TDataEntity> domainEntityToDataEntityMapper,
         IMapper<TDataEntity, TDomainEntity> dataEntityToDomainEntityMapper,
@@ -24,11 +22,13 @@ public abstract class LiteDbRepositoryAdapter<TDomainEntity, TDomainIdentity, TD
             dataIdentityToDomainIdentityMapper,
             liteDbRepository,
             liteDbRepository,
-            liteDbRepository) => this.liteDbRepository = liteDbRepository ?? throw new ArgumentNullException(nameof(liteDbRepository));
+            liteDbRepository) => this.LiteDbRepository = liteDbRepository ?? throw new ArgumentNullException(nameof(liteDbRepository));
+
+    protected ILiteDbRepository<TDataEntity, TDataIdentity> LiteDbRepository { get; }
 
     public Task AddOrUpdateAsync(TDomainEntity entity, CancellationToken cancellationToken)
-        => this.liteDbRepository.AddOrUpdateAsync(this.Map(entity), cancellationToken);
+        => this.LiteDbRepository.AddOrUpdateAsync(this.Map(entity), cancellationToken);
 
     public Task AddOrUpdateRangeAsync(IEnumerable<TDomainEntity> entities, CancellationToken cancellationToken)
-        => this.liteDbRepository.AddOrUpdateRangeAsync(this.Map(entities), cancellationToken);
+        => this.LiteDbRepository.AddOrUpdateRangeAsync(this.Map(entities), cancellationToken);
 }
