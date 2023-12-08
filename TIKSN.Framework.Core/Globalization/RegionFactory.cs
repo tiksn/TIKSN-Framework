@@ -15,7 +15,7 @@ public class RegionFactory : MemoryCacheDecoratorBase<RegionInfo>, IRegionFactor
 
     public RegionInfo Create(string name)
     {
-        var cacheKey = Tuple.Create(entityType, name);
+        var cacheKey = Tuple.Create(EntityType, name);
 
         return this.GetFromMemoryCache(cacheKey, () => new RegionInfo(name));
     }
