@@ -2,11 +2,10 @@ namespace TIKSN.Finance.Cache;
 
 public class CachedCurrencyConverter : ICurrencyConverter
 {
-    private readonly ICurrencyConverter _originalConverter;
-    private readonly TimeProvider _timeProvider;
     private readonly List<CachedCurrencyPairs> cachedCurrencyPairs;
-
     private readonly List<CachedRate> cachedRates;
+    private readonly ICurrencyConverter originalConverter;
+    private readonly TimeProvider timeProvider;
 
     public CachedCurrencyConverter(ICurrencyConverter originalConverter, TimeProvider timeProvider,
         TimeSpan ratesCacheInterval, TimeSpan currencyPairsCacheInterval, int? ratesCacheCapacity = null,
@@ -42,7 +41,7 @@ public class CachedCurrencyConverter : ICurrencyConverter
                 "Currency pairs cache interval can not be negative.");
         }
 
-        this._originalConverter = originalConverter ?? throw new ArgumentNullException(nameof(originalConverter));
+        this.originalConverter = originalConverter ?? throw new ArgumentNullException(nameof(originalConverter));
         this.RatesCacheInterval = ratesCacheInterval;
         this.CurrencyPairsCacheInterval = currencyPairsCacheInterval;
         this.RatesCacheCapacity = ratesCacheCapacity;
@@ -50,7 +49,7 @@ public class CachedCurrencyConverter : ICurrencyConverter
 
         this.cachedCurrencyPairs = [];
         this.cachedRates = [];
-        this._timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+        this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
     public int? CurrencyPairsCacheCapacity { get; }
@@ -65,9 +64,21 @@ public class CachedCurrencyConverter : ICurrencyConverter
 
     public int RatesCacheSize => this.cachedRates.Count;
 
-    public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
-        DateTimeOffset asOn, CancellationToken cancellationToken)
+    public void Clear()
     {
+        this.cachedCurrencyPairs.Clear();
+        this.cachedRates.Clear();
+    }
+
+    public async Task<Money> ConvertCurrencyAsync(
+        Money baseMoney,
+        CurrencyInfo counterCurrency,
+        DateTimeOffset asOn,
+        CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(baseMoney);
+        ArgumentNullException.ThrowIfNull(counterCurrency);
+
         if (baseMoney.Amount == decimal.Zero)
         {
             return new Money(counterCurrency);
@@ -84,17 +95,18 @@ public class CachedCurrencyConverter : ICurrencyConverter
         }
 
         var actualMoney =
-            await this._originalConverter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
+            await this.originalConverter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
 
         var actualRate = actualMoney.Amount / baseMoney.Amount;
 
         AddToCache(this.cachedRates, this.RatesCacheCapacity,
-            new CachedRate(pair, actualRate, asOn, this._timeProvider));
+            new CachedRate(pair, actualRate, asOn, this.timeProvider));
 
         return actualMoney;
     }
 
-    public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+    public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+        DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
         var cachedPairs = this.GetFromCache(this.cachedCurrencyPairs, this.CurrencyPairsCacheInterval, asOn);
@@ -104,17 +116,21 @@ public class CachedCurrencyConverter : ICurrencyConverter
             return cachedPairs.CurrencyPairs;
         }
 
-        var actualPairs = await this._originalConverter.GetCurrencyPairsAsync(asOn, cancellationToken).ConfigureAwait(false);
+        var actualPairs = await this.originalConverter.GetCurrencyPairsAsync(asOn, cancellationToken).ConfigureAwait(false);
 
         AddToCache(this.cachedCurrencyPairs, this.CurrencyPairsCacheCapacity,
-            new CachedCurrencyPairs(actualPairs, asOn, this._timeProvider));
+            new CachedCurrencyPairs(actualPairs, asOn, this.timeProvider));
 
         return actualPairs;
     }
 
-    public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+    public async Task<decimal> GetExchangeRateAsync(
+        CurrencyPair pair,
+        DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(pair);
+
         var cachedRate = this.GetFromCache(this.cachedRates.Where(item => item.Pair == pair),
             this.RatesCacheInterval, asOn);
 
@@ -123,18 +139,12 @@ public class CachedCurrencyConverter : ICurrencyConverter
             return cachedRate.ExchangeRate;
         }
 
-        var actualRate = await this._originalConverter.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
+        var actualRate = await this.originalConverter.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
 
         AddToCache(this.cachedRates, this.RatesCacheCapacity,
-            new CachedRate(pair, actualRate, asOn, this._timeProvider));
+            new CachedRate(pair, actualRate, asOn, this.timeProvider));
 
         return actualRate;
-    }
-
-    public void Clear()
-    {
-        this.cachedCurrencyPairs.Clear();
-        this.cachedRates.Clear();
     }
 
     private static TimeSpan Absolute(TimeSpan value)
@@ -145,26 +155,6 @@ public class CachedCurrencyConverter : ICurrencyConverter
         }
 
         return value;
-    }
-
-    private static bool IsActual(DateTimeOffset cachedAsOn, DateTimeOffset actualAsOn, TimeSpan interval)
-    {
-        if (cachedAsOn < actualAsOn)
-        {
-            if (actualAsOn - cachedAsOn <= interval)
-            {
-                return true;
-            }
-        }
-        else
-        {
-            if (cachedAsOn - actualAsOn < interval)
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private static void AddToCache<T>(List<T> cache, int? capacity, T itemToCache) where T : CachedData
@@ -192,12 +182,32 @@ public class CachedCurrencyConverter : ICurrencyConverter
         }
     }
 
+    private static bool IsActual(DateTimeOffset cachedAsOn, DateTimeOffset actualAsOn, TimeSpan interval)
+    {
+        if (cachedAsOn < actualAsOn)
+        {
+            if (actualAsOn - cachedAsOn <= interval)
+            {
+                return true;
+            }
+        }
+        else
+        {
+            if (cachedAsOn - actualAsOn < interval)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private T GetFromCache<T>(IEnumerable<T> cache, TimeSpan interval, DateTimeOffset asOn) where T : CachedData
     {
         var cachedItem = cache.Where(item => IsActual(item.AsOn, asOn, interval))
             .OrderBy(item => Absolute(item.AsOn - asOn)).FirstOrDefault();
 
-        cachedItem?.Update(this._timeProvider);
+        cachedItem?.Update(this.timeProvider);
 
         return cachedItem;
     }
