@@ -10,5 +10,5 @@ public class OptionalConfigurationValidationStrategy<T> : ConfigurationValidatio
     }
 
     protected override IPartialConfigurationValidator<T> GetConfigurationValidator() =>
-        this._serviceProvider.GetService<IPartialConfigurationValidator<T>>();
+        this.ServiceProvider.GetService<IPartialConfigurationValidator<T>>();
 }
