@@ -39,7 +39,7 @@ public class CurrencyFactory : MemoryCacheDecoratorBase<CurrencyInfo>, ICurrency
             return this.Create(this.regionFactory.Create(redirectedRegion));
         }
 
-        var cacheKey = Tuple.Create(entityType, isoCurrencySymbol.ToUpperInvariant());
+        var cacheKey = Tuple.Create(EntityType, isoCurrencySymbol.ToUpperInvariant());
 
         return this.GetFromMemoryCache(cacheKey, () => new CurrencyInfo(isoCurrencySymbol));
     }
@@ -57,7 +57,7 @@ public class CurrencyFactory : MemoryCacheDecoratorBase<CurrencyInfo>, ICurrency
             region = this.regionFactory.Create(regionByISOName);
         }
 
-        var cacheKey = Tuple.Create(entityType, region.ISOCurrencySymbol);
+        var cacheKey = Tuple.Create(EntityType, region.ISOCurrencySymbol);
 
         return this.GetFromMemoryCache(cacheKey, () => new CurrencyInfo(region));
     }
