@@ -14,7 +14,7 @@ namespace TIKSN.DependencyInjection.Tests
         {
             base.SetupSerilog();
 
-            _ = this.loggerConfiguration.WriteTo.TestOutput(this.testOutputHelper);
+            _ = this.LoggerConfiguration.WriteTo.TestOutput(this.testOutputHelper);
         }
     }
 }
