@@ -6,10 +6,10 @@ namespace TIKSN.PowerShell;
 
 public class PowerShellProgress : DisposableProgress<OperationProgressReport>
 {
-    private static readonly object activityIdLocker = new();
+    private static readonly object ActivityIdLocker = new();
     private static int nextActivityId;
 
-    private readonly ICurrentCommandProvider _currentCommandProvider;
+    private readonly ICurrentCommandProvider currentCommandProvider;
     private readonly ProgressRecord progressRecord;
     private readonly Stopwatch stopwatch;
 
@@ -20,14 +20,14 @@ public class PowerShellProgress : DisposableProgress<OperationProgressReport>
 
         this.stopwatch = Stopwatch.StartNew();
         this.progressRecord.RecordType = ProgressRecordType.Processing;
-        this._currentCommandProvider = currentCommandProvider ??
+        this.currentCommandProvider = currentCommandProvider ??
                                        throw new ArgumentNullException(nameof(currentCommandProvider));
-        this._currentCommandProvider.GetCurrentCommand().WriteProgress(this.progressRecord);
+        this.currentCommandProvider.GetCurrentCommand().WriteProgress(this.progressRecord);
     }
 
     public PowerShellProgress CreateChildProgress(string activity, string statusDescription)
     {
-        var childProgress = new PowerShellProgress(this._currentCommandProvider, activity, statusDescription);
+        var childProgress = new PowerShellProgress(this.currentCommandProvider, activity, statusDescription);
 
         childProgress.progressRecord.ParentActivityId = this.progressRecord.ActivityId;
 
@@ -38,7 +38,7 @@ public class PowerShellProgress : DisposableProgress<OperationProgressReport>
     {
         this.stopwatch.Stop();
         this.progressRecord.RecordType = ProgressRecordType.Completed;
-        this._currentCommandProvider.GetCurrentCommand().WriteProgress(this.progressRecord);
+        this.currentCommandProvider.GetCurrentCommand().WriteProgress(this.progressRecord);
     }
 
     protected override void OnReport(OperationProgressReport value)
@@ -59,13 +59,13 @@ public class PowerShellProgress : DisposableProgress<OperationProgressReport>
             this.progressRecord.StatusDescription = value.StatusDescription;
         }
 
-        this._currentCommandProvider.GetCurrentCommand().WriteProgress(this.progressRecord);
+        this.currentCommandProvider.GetCurrentCommand().WriteProgress(this.progressRecord);
         base.OnReport(value);
     }
 
     private static int GenerateNextActivityId()
     {
-        lock (activityIdLocker)
+        lock (ActivityIdLocker)
         {
             nextActivityId++;
         }

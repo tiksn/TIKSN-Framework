@@ -5,15 +5,15 @@ namespace TIKSN.Data.AzureStorage;
 
 public abstract class AzureStorageBase
 {
-    private readonly IConfigurationRoot _configuration;
-    private readonly string _connectionStringKey;
+    private readonly IConfigurationRoot configuration;
+    private readonly string connectionStringKey;
 
     protected AzureStorageBase(IConfigurationRoot configuration, string connectionStringKey)
     {
-        this._configuration = configuration;
-        this._connectionStringKey = connectionStringKey;
+        this.configuration = configuration;
+        this.connectionStringKey = connectionStringKey;
     }
 
     protected CloudStorageAccount GetCloudStorageAccount() =>
-        CloudStorageAccount.Parse(this._configuration.GetConnectionString(this._connectionStringKey));
+        CloudStorageAccount.Parse(this.configuration.GetConnectionString(this.connectionStringKey));
 }

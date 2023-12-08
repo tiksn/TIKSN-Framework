@@ -4,10 +4,10 @@ namespace TIKSN.Configuration.ValidationStrategy;
 
 public abstract class ConfigurationValidationStrategyBase<T> : IConfigurationValidationStrategy<T>
 {
-    protected readonly IServiceProvider _serviceProvider;
-
     protected ConfigurationValidationStrategyBase(IServiceProvider serviceProvider) =>
-        this._serviceProvider = serviceProvider;
+        this.ServiceProvider = serviceProvider;
+
+    protected IServiceProvider ServiceProvider { get; }
 
     public void Validate(T instance)
     {

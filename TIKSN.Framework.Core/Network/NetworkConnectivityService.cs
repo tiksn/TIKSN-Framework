@@ -6,7 +6,7 @@ namespace TIKSN.Network;
 public class NetworkConnectivityService : NetworkConnectivityServiceBase
 {
     public NetworkConnectivityService() =>
-        this.internetConnectivityStateInternal =
+        this.InternetConnectivityStateInternal =
             Observable.FromEvent<NetworkAvailabilityChangedEventHandler, InternetConnectivityState>(
                 h => (s, e) => this.GetInternetConnectivityStateInternal(),
                 h => NetworkChange.NetworkAvailabilityChanged += h,

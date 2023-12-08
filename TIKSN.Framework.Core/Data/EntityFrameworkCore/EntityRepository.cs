@@ -6,16 +6,16 @@ public class EntityRepository<TContext, TEntity> : IRepository<TEntity>
     where TContext : DbContext
     where TEntity : class, new()
 {
-    protected readonly TContext dbContext;
-
     public EntityRepository(TContext dbContext) =>
-        this.dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        this.DbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+
+    protected TContext DbContext { get; }
 
     public Task AddAsync(TEntity entity, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(entity);
 
-        _ = this.dbContext.Add(entity);
+        _ = this.DbContext.Add(entity);
 
         return Task.CompletedTask;
     }
@@ -24,7 +24,7 @@ public class EntityRepository<TContext, TEntity> : IRepository<TEntity>
     {
         ArgumentNullException.ThrowIfNull(entities);
 
-        this.dbContext.AddRange(entities);
+        this.DbContext.AddRange(entities);
 
         return Task.CompletedTask;
     }
@@ -33,7 +33,7 @@ public class EntityRepository<TContext, TEntity> : IRepository<TEntity>
     {
         ArgumentNullException.ThrowIfNull(entity);
 
-        this.dbContext.Entry(entity).State = EntityState.Deleted;
+        this.DbContext.Entry(entity).State = EntityState.Deleted;
 
         return Task.CompletedTask;
     }
@@ -44,7 +44,7 @@ public class EntityRepository<TContext, TEntity> : IRepository<TEntity>
 
         foreach (var entity in entities)
         {
-            this.dbContext.Entry(entity).State = EntityState.Deleted;
+            this.DbContext.Entry(entity).State = EntityState.Deleted;
         }
 
         return Task.CompletedTask;
@@ -54,7 +54,7 @@ public class EntityRepository<TContext, TEntity> : IRepository<TEntity>
     {
         ArgumentNullException.ThrowIfNull(entity);
 
-        this.dbContext.Entry(entity).State = EntityState.Modified;
+        this.DbContext.Entry(entity).State = EntityState.Modified;
 
         return Task.CompletedTask;
     }
@@ -65,7 +65,7 @@ public class EntityRepository<TContext, TEntity> : IRepository<TEntity>
 
         foreach (var entity in entities)
         {
-            this.dbContext.Entry(entity).State = EntityState.Modified;
+            this.DbContext.Entry(entity).State = EntityState.Modified;
         }
 
         return Task.CompletedTask;

@@ -8,63 +8,63 @@ public class RepositoryMemoryCacheDecorator<TEntity, TIdentity>
     where TEntity : IEntity<TIdentity>
     where TIdentity : IEquatable<TIdentity>
 {
-    protected readonly IRepository<TEntity> repository;
-
     public RepositoryMemoryCacheDecorator(
         IRepository<TEntity> repository,
         IMemoryCache memoryCache,
         IOptions<MemoryCacheDecoratorOptions> genericOptions,
         IOptions<MemoryCacheDecoratorOptions<TEntity>> specificOptions)
         : base(memoryCache, genericOptions, specificOptions)
-        => this.repository = repository;
+        => this.Repository = repository;
+
+    protected IRepository<TEntity> Repository { get; }
 
     public async Task AddAsync(TEntity entity, CancellationToken cancellationToken)
     {
-        await this.repository.AddAsync(entity, cancellationToken).ConfigureAwait(false);
+        await this.Repository.AddAsync(entity, cancellationToken).ConfigureAwait(false);
 
         this.InvalidateCacheItem(entity);
     }
 
     public async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
     {
-        await this.repository.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
+        await this.Repository.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
 
         this.InvalidateCacheItems(entities);
     }
 
     public async Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)
     {
-        await this.repository.RemoveAsync(entity, cancellationToken).ConfigureAwait(false);
+        await this.Repository.RemoveAsync(entity, cancellationToken).ConfigureAwait(false);
 
         this.InvalidateCacheItem(entity);
     }
 
     public async Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
     {
-        await this.repository.RemoveRangeAsync(entities, cancellationToken).ConfigureAwait(false);
+        await this.Repository.RemoveRangeAsync(entities, cancellationToken).ConfigureAwait(false);
 
         this.InvalidateCacheItems(entities);
     }
 
     public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
     {
-        await this.repository.RemoveAsync(entity, cancellationToken).ConfigureAwait(false);
+        await this.Repository.RemoveAsync(entity, cancellationToken).ConfigureAwait(false);
 
         this.InvalidateCacheItem(entity);
     }
 
     public async Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
     {
-        await this.repository.UpdateRangeAsync(entities, cancellationToken).ConfigureAwait(false);
+        await this.Repository.UpdateRangeAsync(entities, cancellationToken).ConfigureAwait(false);
 
         this.InvalidateCacheItems(entities);
     }
 
     protected virtual void InvalidateCacheEntity(TEntity entity)
     {
-        var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, entity.ID);
+        var cacheKey = Tuple.Create(EntityType, CacheKeyKind.Entity, entity.ID);
 
-        this.memoryCache.Remove(cacheKey);
+        this.MemoryCache.Remove(cacheKey);
     }
 
     protected virtual void InvalidateCacheItem(TEntity entity)

@@ -4,12 +4,12 @@ namespace TIKSN.PowerShell;
 
 public class PowerShellProgressFactory : IOperationProgressFactory
 {
-    private readonly ICurrentCommandProvider _currentCommandProvider;
+    private readonly ICurrentCommandProvider currentCommandProvider;
 
     public PowerShellProgressFactory(ICurrentCommandProvider currentCommandProvider) =>
-        this._currentCommandProvider = currentCommandProvider ??
+        this.currentCommandProvider = currentCommandProvider ??
                                        throw new ArgumentNullException(nameof(currentCommandProvider));
 
     public DisposableProgress<OperationProgressReport> Create(string activity, string statusDescription) =>
-        new PowerShellProgress(this._currentCommandProvider, activity, statusDescription);
+        new PowerShellProgress(this.currentCommandProvider, activity, statusDescription);
 }

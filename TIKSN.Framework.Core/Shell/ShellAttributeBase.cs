@@ -5,25 +5,25 @@ namespace TIKSN.Shell;
 
 public abstract class ShellAttributeBase : Attribute
 {
-    private readonly int? _integerNameKey;
-    private readonly string _stringNameKey;
+    private readonly int? integerNameKey;
+    private readonly string stringNameKey;
 
-    protected ShellAttributeBase(int nameKey) => this._integerNameKey = nameKey;
+    protected ShellAttributeBase(int nameKey) => this.integerNameKey = nameKey;
 
-    protected ShellAttributeBase(string nameKey) => this._stringNameKey = nameKey;
+    protected ShellAttributeBase(string nameKey) => this.stringNameKey = nameKey;
 
     public string GetName(IStringLocalizer stringLocalizer)
     {
-        if (this._integerNameKey.HasValue)
+        if (this.integerNameKey.HasValue)
         {
-            return stringLocalizer.GetRequiredString(this._integerNameKey.Value);
+            return stringLocalizer.GetRequiredString(this.integerNameKey.Value);
         }
 
-        if (Guid.TryParse(this._stringNameKey, out var key))
+        if (Guid.TryParse(this.stringNameKey, out var key))
         {
             return stringLocalizer.GetRequiredString(key);
         }
 
-        return stringLocalizer.GetRequiredString(this._stringNameKey);
+        return stringLocalizer.GetRequiredString(this.stringNameKey);
     }
 }

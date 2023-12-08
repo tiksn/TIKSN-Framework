@@ -9,7 +9,7 @@ public class CompositeCrossCurrencyConverter : CompositeCurrencyConverter
 
     public override async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
         DateTimeOffset asOn, CancellationToken cancellationToken) =>
-        await this.compositionStrategy.ConvertCurrencyAsync(baseMoney, this.converters, counterCurrency, asOn,
+        await this.CompositionStrategy.ConvertCurrencyAsync(baseMoney, this.Converters, counterCurrency, asOn,
             cancellationToken).ConfigureAwait(false);
 
     public override async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
@@ -17,7 +17,7 @@ public class CompositeCrossCurrencyConverter : CompositeCurrencyConverter
     {
         var pairs = new HashSet<CurrencyPair>();
 
-        foreach (var converter in this.converters)
+        foreach (var converter in this.Converters)
         {
             var currentPairs = await converter.GetCurrencyPairsAsync(asOn, cancellationToken).ConfigureAwait(false);
 
@@ -32,5 +32,5 @@ public class CompositeCrossCurrencyConverter : CompositeCurrencyConverter
 
     public override async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
         CancellationToken cancellationToken) =>
-        await this.compositionStrategy.GetExchangeRateAsync(this.converters, pair, asOn, cancellationToken).ConfigureAwait(false);
+        await this.CompositionStrategy.GetExchangeRateAsync(this.Converters, pair, asOn, cancellationToken).ConfigureAwait(false);
 }

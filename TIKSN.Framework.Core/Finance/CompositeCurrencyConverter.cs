@@ -2,17 +2,17 @@ namespace TIKSN.Finance;
 
 public abstract class CompositeCurrencyConverter : ICompositeCurrencyConverter
 {
-    protected ICurrencyConversionCompositionStrategy compositionStrategy;
-    protected List<ICurrencyConverter> converters;
-
     protected CompositeCurrencyConverter(ICurrencyConversionCompositionStrategy compositionStrategy)
     {
-        this.compositionStrategy =
+        this.CompositionStrategy =
             compositionStrategy ?? throw new ArgumentNullException(nameof(compositionStrategy));
-        this.converters = [];
+        this.Converters = [];
     }
 
-    public void Add(ICurrencyConverter converter) => this.converters.Add(converter);
+    protected ICurrencyConversionCompositionStrategy CompositionStrategy { get; }
+    protected List<ICurrencyConverter> Converters { get; }
+
+    public void Add(ICurrencyConverter converter) => this.Converters.Add(converter);
 
     public abstract Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
         DateTimeOffset asOn, CancellationToken cancellationToken);

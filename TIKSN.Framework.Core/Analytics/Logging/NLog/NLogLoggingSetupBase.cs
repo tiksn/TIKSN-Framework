@@ -11,14 +11,15 @@ namespace TIKSN.Analytics.Logging.NLog;
 
 public abstract class NLogLoggingSetupBase : ILoggingSetup
 {
-    protected readonly LoggingConfiguration loggingConfiguration;
     private readonly IPartialConfiguration<RemoteNLogViewerOptions> remoteNLogViewerOptions;
 
     protected NLogLoggingSetupBase(IPartialConfiguration<RemoteNLogViewerOptions> remoteNLogViewerOptions)
     {
-        this.loggingConfiguration = new LoggingConfiguration();
+        this.LoggingConfiguration = new LoggingConfiguration();
         this.remoteNLogViewerOptions = remoteNLogViewerOptions;
     }
+
+    protected LoggingConfiguration LoggingConfiguration { get; }
 
     public void Setup(ILoggingBuilder loggingBuilder)
     {
@@ -48,19 +49,19 @@ public abstract class NLogLoggingSetupBase : ILoggingSetup
         }
 
         _ = loggingBuilder.AddNLog();
-        LogManager.Configuration = this.loggingConfiguration;
+        LogManager.Configuration = this.LoggingConfiguration;
     }
 
     protected void AddForAllLevels(Target target)
     {
-        this.loggingConfiguration.AddTarget(target);
-        this.loggingConfiguration.AddRuleForAllLevels(target);
+        this.LoggingConfiguration.AddTarget(target);
+        this.LoggingConfiguration.AddRuleForAllLevels(target);
     }
 
     protected void AddForOneLevel(LogLevel level, Target target)
     {
-        this.loggingConfiguration.AddTarget(target);
-        this.loggingConfiguration.AddRuleForOneLevel(level, target);
+        this.LoggingConfiguration.AddTarget(target);
+        this.LoggingConfiguration.AddRuleForOneLevel(level, target);
     }
 
     protected abstract void SetupNLog();

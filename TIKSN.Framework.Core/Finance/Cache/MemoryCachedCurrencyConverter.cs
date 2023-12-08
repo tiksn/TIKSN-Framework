@@ -8,14 +8,13 @@ namespace TIKSN.Finance.Cache;
 public class MemoryCachedCurrencyConverter : MemoryCacheDecoratorBase<MemoryCachedCurrencyConverterEntry>,
     ICurrencyConverter
 {
-    private static readonly Type memoryCachedCurrencyConverterEntryType =
+    private static readonly Type MemoryCachedCurrencyConverterEntryType =
         typeof(MemoryCachedCurrencyConverterEntry);
 
-    private readonly ILogger<MemoryCachedCurrencyConverter> _logger;
-    private new readonly IMemoryCache _memoryCache;
-    private readonly IOptions<MemoryCachedCurrencyConverterOptions> _options;
-    private readonly ICurrencyConverter _originalConverter;
     private readonly Guid instanceID;
+    private readonly ILogger<MemoryCachedCurrencyConverter> logger;
+    private readonly IOptions<MemoryCachedCurrencyConverterOptions> options;
+    private readonly ICurrencyConverter originalConverter;
 
     public MemoryCachedCurrencyConverter(
         ICurrencyConverter originalConverter,
@@ -26,17 +25,22 @@ public class MemoryCachedCurrencyConverter : MemoryCacheDecoratorBase<MemoryCach
         IOptions<MemoryCacheDecoratorOptions<MemoryCachedCurrencyConverterEntry>> specificOptions)
         : base(memoryCache, genericOptions, specificOptions)
     {
-        this._options = options;
-        this._originalConverter = originalConverter;
-        this._memoryCache = memoryCache;
+        this.options = options ?? throw new ArgumentNullException(nameof(options));
+        this.originalConverter = originalConverter ?? throw new ArgumentNullException(nameof(originalConverter));
         this.instanceID = Guid.NewGuid();
-        this._logger = logger;
+        this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
-        DateTimeOffset asOn, CancellationToken cancellationToken)
+    public async Task<Money> ConvertCurrencyAsync(
+        Money baseMoney,
+        CurrencyInfo counterCurrency,
+        DateTimeOffset asOn,
+        CancellationToken cancellationToken)
     {
-        var cacheKey = Tuple.Create(memoryCachedCurrencyConverterEntryType,
+        ArgumentNullException.ThrowIfNull(baseMoney);
+        ArgumentNullException.ThrowIfNull(counterCurrency);
+
+        var cacheKey = Tuple.Create(MemoryCachedCurrencyConverterEntryType,
             MemoryCachedCurrencyConverterEntryKind.ExchangeRate, this.instanceID, this.GetCacheIntervalKey(asOn),
             baseMoney.Currency, counterCurrency);
 
@@ -46,10 +50,11 @@ public class MemoryCachedCurrencyConverter : MemoryCacheDecoratorBase<MemoryCach
         return new Money(counterCurrency, baseMoney.Amount * cacheEntry.ExchangeRate);
     }
 
-    public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+    public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+        DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
-        var cacheKey = Tuple.Create(memoryCachedCurrencyConverterEntryType,
+        var cacheKey = Tuple.Create(MemoryCachedCurrencyConverterEntryType,
             MemoryCachedCurrencyConverterEntryKind.CurrencyPairs, this.instanceID, this.GetCacheIntervalKey(asOn));
 
         var cacheEntry = await this.GetFromMemoryCacheAsync(cacheKey,
@@ -58,10 +63,14 @@ public class MemoryCachedCurrencyConverter : MemoryCacheDecoratorBase<MemoryCach
         return cacheEntry.CurrencyPairs;
     }
 
-    public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+    public async Task<decimal> GetExchangeRateAsync(
+        CurrencyPair pair,
+        DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
-        var cacheKey = Tuple.Create(memoryCachedCurrencyConverterEntryType,
+        ArgumentNullException.ThrowIfNull(pair);
+
+        var cacheKey = Tuple.Create(MemoryCachedCurrencyConverterEntryType,
             MemoryCachedCurrencyConverterEntryKind.ExchangeRate, this.instanceID, this.GetCacheIntervalKey(asOn),
             pair.BaseCurrency, pair.CounterCurrency);
 
@@ -73,37 +82,47 @@ public class MemoryCachedCurrencyConverter : MemoryCacheDecoratorBase<MemoryCach
 
     private long GetCacheIntervalKey(DateTimeOffset asOn)
     {
-        if (this._options.Value.CacheInterval.Ticks == 0L)
+        if (this.options.Value.CacheInterval.Ticks == 0L)
         {
-            this._logger.LogWarning("CacheInterval is 0, which makes caching redundant.");
+            this.logger.LogWarning("CacheInterval is 0, which makes caching redundant.");
 
             return 0L;
         }
 
-        return asOn.Ticks / this._options.Value.CacheInterval.Ticks;
+        return asOn.Ticks / this.options.Value.CacheInterval.Ticks;
     }
 
-    private async Task<MemoryCachedCurrencyConverterEntry> GetOriginalCurrencyPairsAsync(DateTimeOffset asOn,
+    private async Task<MemoryCachedCurrencyConverterEntry> GetOriginalCurrencyPairsAsync(
+        DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
-        var currencyPairs = await this._originalConverter.GetCurrencyPairsAsync(asOn, cancellationToken).ConfigureAwait(false);
+        var currencyPairs = await this.originalConverter.GetCurrencyPairsAsync(asOn, cancellationToken).ConfigureAwait(false);
 
         return MemoryCachedCurrencyConverterEntry.CreateForCurrencyPairs(currencyPairs);
     }
 
-    private async Task<MemoryCachedCurrencyConverterEntry> GetOriginalExchangeRateAsync(CurrencyPair pair,
+    private async Task<MemoryCachedCurrencyConverterEntry> GetOriginalExchangeRateAsync(
+        CurrencyPair pair,
         DateTimeOffset asOn, CancellationToken cancellationToken)
     {
-        var exchangeRate = await this._originalConverter.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
+        ArgumentNullException.ThrowIfNull(pair);
+
+        var exchangeRate = await this.originalConverter.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
 
         return MemoryCachedCurrencyConverterEntry.CreateForExchangeRate(exchangeRate);
     }
 
-    private async Task<MemoryCachedCurrencyConverterEntry> OriginalConvertCurrencyAsync(Money baseMoney,
-        CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
+    private async Task<MemoryCachedCurrencyConverterEntry> OriginalConvertCurrencyAsync(
+        Money baseMoney,
+        CurrencyInfo counterCurrency,
+        DateTimeOffset asOn,
+        CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(baseMoney);
+        ArgumentNullException.ThrowIfNull(counterCurrency);
+
         var convertedMoney =
-            await this._originalConverter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
+            await this.originalConverter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
 
         var exchangeRate = convertedMoney.Amount / baseMoney.Amount;
 

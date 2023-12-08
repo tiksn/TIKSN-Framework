@@ -8,12 +8,6 @@ namespace TIKSN.Data.Cache.Distributed;
 
 public abstract class DistributedCacheDecoratorBase<T> : CacheDecoratorBase<T>
 {
-    protected readonly IDeserializer<byte[]> deserializer;
-    protected readonly IDistributedCache distributedCache;
-    protected readonly IOptions<DistributedCacheDecoratorOptions> genericOptions;
-    protected readonly ISerializer<byte[]> serializer;
-    protected readonly IOptions<DistributedCacheDecoratorOptions<T>> specificOptions;
-
     protected DistributedCacheDecoratorBase(
         IDistributedCache distributedCache,
         ISerializer<byte[]> serializer,
@@ -21,23 +15,29 @@ public abstract class DistributedCacheDecoratorBase<T> : CacheDecoratorBase<T>
         IOptions<DistributedCacheDecoratorOptions> genericOptions,
         IOptions<DistributedCacheDecoratorOptions<T>> specificOptions)
     {
-        this.distributedCache = distributedCache ?? throw new ArgumentNullException(nameof(distributedCache));
-        this.genericOptions = genericOptions ?? throw new ArgumentNullException(nameof(genericOptions));
-        this.specificOptions = specificOptions ?? throw new ArgumentNullException(nameof(specificOptions));
-        this.serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
-        this.deserializer = deserializer ?? throw new ArgumentNullException(nameof(deserializer));
+        this.DistributedCache = distributedCache ?? throw new ArgumentNullException(nameof(distributedCache));
+        this.GenericOptions = genericOptions ?? throw new ArgumentNullException(nameof(genericOptions));
+        this.SpecificOptions = specificOptions ?? throw new ArgumentNullException(nameof(specificOptions));
+        this.Serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
+        this.Deserializer = deserializer ?? throw new ArgumentNullException(nameof(deserializer));
     }
+
+    protected IDeserializer<byte[]> Deserializer { get; }
+    protected IDistributedCache DistributedCache { get; }
+    protected IOptions<DistributedCacheDecoratorOptions> GenericOptions { get; }
+    protected ISerializer<byte[]> Serializer { get; }
+    protected IOptions<DistributedCacheDecoratorOptions<T>> SpecificOptions { get; }
 
     protected DistributedCacheEntryOptions CreateEntryOptions() =>
         new()
         {
             AbsoluteExpiration =
-                this.specificOptions.Value.AbsoluteExpiration ?? this.genericOptions.Value.AbsoluteExpiration,
+                this.SpecificOptions.Value.AbsoluteExpiration ?? this.GenericOptions.Value.AbsoluteExpiration,
             AbsoluteExpirationRelativeToNow =
-                this.specificOptions.Value.AbsoluteExpirationRelativeToNow ??
-                this.genericOptions.Value.AbsoluteExpirationRelativeToNow,
-            SlidingExpiration = this.specificOptions.Value.SlidingExpiration ??
-                                this.genericOptions.Value.SlidingExpiration,
+                this.SpecificOptions.Value.AbsoluteExpirationRelativeToNow ??
+                this.GenericOptions.Value.AbsoluteExpirationRelativeToNow,
+            SlidingExpiration = this.SpecificOptions.Value.SlidingExpiration ??
+                                this.GenericOptions.Value.SlidingExpiration,
         };
 
     protected async Task<Option<TResult>> FindFromDistributedCacheAsync<TResult>(
@@ -49,7 +49,7 @@ public abstract class DistributedCacheDecoratorBase<T> : CacheDecoratorBase<T>
 
         ArgumentNullException.ThrowIfNull(findFromSource);
 
-        var cachedBytes = await this.distributedCache.GetAsync(cacheKey, cancellationToken).ConfigureAwait(false);
+        var cachedBytes = await this.DistributedCache.GetAsync(cacheKey, cancellationToken).ConfigureAwait(false);
 
         if (cachedBytes == null)
         {
@@ -61,7 +61,7 @@ public abstract class DistributedCacheDecoratorBase<T> : CacheDecoratorBase<T>
             return findings;
         }
 
-        return Optional(this.deserializer.Deserialize<TResult>(cachedBytes));
+        return Optional(this.Deserializer.Deserialize<TResult>(cachedBytes));
     }
 
     protected async Task<TResult> GetFromDistributedCacheAsync<TResult>(
@@ -73,7 +73,7 @@ public abstract class DistributedCacheDecoratorBase<T> : CacheDecoratorBase<T>
 
         ArgumentNullException.ThrowIfNull(getFromSource);
 
-        var cachedBytes = await this.distributedCache.GetAsync(cacheKey, cancellationToken).ConfigureAwait(false);
+        var cachedBytes = await this.DistributedCache.GetAsync(cacheKey, cancellationToken).ConfigureAwait(false);
 
         if (cachedBytes == null)
         {
@@ -84,7 +84,7 @@ public abstract class DistributedCacheDecoratorBase<T> : CacheDecoratorBase<T>
             return result;
         }
 
-        return this.deserializer.Deserialize<TResult>(cachedBytes);
+        return this.Deserializer.Deserialize<TResult>(cachedBytes);
     }
 
     protected Task SetToDistributedCacheAsync<TValue>(
@@ -92,8 +92,8 @@ public abstract class DistributedCacheDecoratorBase<T> : CacheDecoratorBase<T>
         TValue value,
         CancellationToken cancellationToken)
     {
-        var bytes = this.serializer.Serialize(value);
+        var bytes = this.Serializer.Serialize(value);
 
-        return this.distributedCache.SetAsync(cacheKey, bytes, this.CreateEntryOptions(), cancellationToken);
+        return this.DistributedCache.SetAsync(cacheKey, bytes, this.CreateEntryOptions(), cancellationToken);
     }
 }

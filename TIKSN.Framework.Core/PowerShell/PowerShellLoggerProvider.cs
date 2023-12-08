@@ -6,25 +6,26 @@ namespace TIKSN.PowerShell;
 
 public class PowerShellLoggerProvider : ILoggerProvider
 {
-    private readonly ICurrentCommandProvider _currentCommandProvider;
-    private readonly ConcurrentDictionary<string, PowerShellLogger> _loggers = new(StringComparer.Ordinal);
+    private readonly ICurrentCommandProvider currentCommandProvider;
+    private readonly ConcurrentDictionary<string, PowerShellLogger> loggers = new(StringComparer.Ordinal);
     private readonly IOptions<PowerShellLoggerOptions> options;
 
-    public PowerShellLoggerProvider(ICurrentCommandProvider currentCommandProvider,
+    public PowerShellLoggerProvider(
+        ICurrentCommandProvider currentCommandProvider,
         IOptions<PowerShellLoggerOptions> options)
     {
         this.options = options;
-        this._currentCommandProvider = currentCommandProvider ??
+        this.currentCommandProvider = currentCommandProvider ??
                                        throw new ArgumentNullException(nameof(currentCommandProvider));
     }
 
     public ILogger CreateLogger(string categoryName) =>
-        this._loggers.GetOrAdd(categoryName, this.CreateLoggerImplementation);
+        this.loggers.GetOrAdd(categoryName, this.CreateLoggerImplementation);
 
     public void Dispose()
     {
     }
 
     private PowerShellLogger CreateLoggerImplementation(string name) =>
-        new(this._currentCommandProvider, this.options, name);
+        new(this.currentCommandProvider, this.options, name);
 }

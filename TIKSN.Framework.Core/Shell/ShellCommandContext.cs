@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.Extensions.Localization;
 using TIKSN.Localization;
 
@@ -5,8 +6,8 @@ namespace TIKSN.Shell;
 
 public class ShellCommandContext : IShellCommandContext, IShellCommandContextStore
 {
-    private readonly IConsoleService _consoleService;
-    private readonly IStringLocalizer _stringLocalizer;
+    private readonly IConsoleService consoleService;
+    private readonly IStringLocalizer stringLocalizer;
 
     private string commandName;
     private bool noToAll;
@@ -14,18 +15,20 @@ public class ShellCommandContext : IShellCommandContext, IShellCommandContextSto
 
     public ShellCommandContext(IStringLocalizer stringLocalizer, IConsoleService consoleService)
     {
-        this._stringLocalizer = stringLocalizer;
-        this._consoleService = consoleService;
+        this.stringLocalizer = stringLocalizer;
+        this.consoleService = consoleService;
     }
+
+    public void SetCommandName(string commandName) => this.commandName = commandName;
 
     public bool ShouldContinue(string query, string caption)
     {
-        var message = $"{caption}{Environment.NewLine}{query}";
+        var message = caption + Environment.NewLine + query;
 
-        var answer = this._consoleService.UserPrompt(message,
-            this._stringLocalizer.GetRequiredString(LocalizationKeys.Key592470584),
-            this._stringLocalizer.GetRequiredString(LocalizationKeys.Key132999259),
-            this._stringLocalizer.GetRequiredString(LocalizationKeys.Key777755530));
+        var answer = this.consoleService.UserPrompt(message,
+            this.stringLocalizer.GetRequiredString(LocalizationKeys.Key592470584),
+            this.stringLocalizer.GetRequiredString(LocalizationKeys.Key132999259),
+            this.stringLocalizer.GetRequiredString(LocalizationKeys.Key777755530));
 
         return answer switch
         {
@@ -48,14 +51,14 @@ public class ShellCommandContext : IShellCommandContext, IShellCommandContextSto
             return false;
         }
 
-        var message = $"{caption}{Environment.NewLine}{query}";
+        var message = caption + Environment.NewLine + query;
 
-        var answer = this._consoleService.UserPrompt(message,
-            this._stringLocalizer.GetRequiredString(LocalizationKeys.Key592470584),
-            this._stringLocalizer.GetRequiredString(LocalizationKeys.Key268507527),
-            this._stringLocalizer.GetRequiredString(LocalizationKeys.Key132999259),
-            this._stringLocalizer.GetRequiredString(LocalizationKeys.Key191067042),
-            this._stringLocalizer.GetRequiredString(LocalizationKeys.Key777755530));
+        var answer = this.consoleService.UserPrompt(message,
+            this.stringLocalizer.GetRequiredString(LocalizationKeys.Key592470584),
+            this.stringLocalizer.GetRequiredString(LocalizationKeys.Key268507527),
+            this.stringLocalizer.GetRequiredString(LocalizationKeys.Key132999259),
+            this.stringLocalizer.GetRequiredString(LocalizationKeys.Key191067042),
+            this.stringLocalizer.GetRequiredString(LocalizationKeys.Key777755530));
 
         switch (answer)
         {
@@ -82,14 +85,12 @@ public class ShellCommandContext : IShellCommandContext, IShellCommandContextSto
     }
 
     public bool ShouldProcess(string target, string action) =>
-        this.ShouldContinue(this._stringLocalizer.GetRequiredString(LocalizationKeys.Key439104548),
-            string.Format(this._stringLocalizer.GetRequiredString(LocalizationKeys.Key284914810), action, target),
+        this.ShouldContinue(this.stringLocalizer.GetRequiredString(LocalizationKeys.Key439104548),
+            string.Format(CultureInfo.InvariantCulture, this.stringLocalizer.GetRequiredString(LocalizationKeys.Key284914810), action, target),
             ref this.yesToAll, ref this.noToAll);
 
     public bool ShouldProcess(string target) => this.ShouldProcess(target, this.commandName);
 
     public bool ShouldProcess(string verboseDescription, string verboseWarning, string caption) =>
         this.ShouldContinue(verboseWarning, caption, ref this.yesToAll, ref this.noToAll);
-
-    public void SetCommandName(string commandName) => this.commandName = commandName;
 }

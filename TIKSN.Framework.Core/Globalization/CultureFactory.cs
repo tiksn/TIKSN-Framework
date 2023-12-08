@@ -15,7 +15,7 @@ public class CultureFactory : MemoryCacheDecoratorBase<CultureInfo>, ICultureFac
 
     public CultureInfo Create(string name)
     {
-        var cacheKey = Tuple.Create(entityType, name);
+        var cacheKey = Tuple.Create(EntityType, name);
 
         return this.GetFromMemoryCache(cacheKey, () => new CultureInfo(name));
     }

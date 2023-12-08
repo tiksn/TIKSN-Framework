@@ -6,8 +6,8 @@ namespace TIKSN.Configuration;
 
 public class WindowsRegistryConfigurationProvider : ConfigurationProvider
 {
-    private readonly RegistryView _registryView;
-    private readonly string _rootKey;
+    private readonly RegistryView registryView;
+    private readonly string rootKey;
 
     public WindowsRegistryConfigurationProvider(string rootKey, RegistryView registryView)
     {
@@ -16,8 +16,8 @@ public class WindowsRegistryConfigurationProvider : ConfigurationProvider
             throw new ArgumentException("Parameter is null or white space.", nameof(rootKey));
         }
 
-        this._registryView = registryView;
-        this._rootKey = rootKey;
+        this.registryView = registryView;
+        this.rootKey = rootKey;
     }
 
     public override void Load()
@@ -26,7 +26,7 @@ public class WindowsRegistryConfigurationProvider : ConfigurationProvider
 
         try
         {
-            using var machineKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, this._registryView);
+            using var machineKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, this.registryView);
             if (machineKey != null)
             {
                 this.PopulateRootKey(machineKey);
@@ -38,7 +38,7 @@ public class WindowsRegistryConfigurationProvider : ConfigurationProvider
 
         try
         {
-            using var userKey = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, this._registryView);
+            using var userKey = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, this.registryView);
             if (userKey != null)
             {
                 this.PopulateRootKey(userKey);
@@ -75,7 +75,7 @@ public class WindowsRegistryConfigurationProvider : ConfigurationProvider
 
     private void PopulateRootKey(RegistryKey hiveKey)
     {
-        using var registryKey = hiveKey.OpenSubKey(this._rootKey);
+        using var registryKey = hiveKey.OpenSubKey(this.rootKey);
         if (registryKey != null)
         {
             this.PopulateKeys(registryKey, parentConfigurationKey: null);
