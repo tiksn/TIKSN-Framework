@@ -8,9 +8,9 @@ namespace TIKSN.Shell;
 
 public class ConsoleService : IConsoleService
 {
-    private readonly IStringLocalizer _stringLocalizer;
+    private readonly IStringLocalizer stringLocalizer;
 
-    public ConsoleService(IStringLocalizer stringLocalizer) => this._stringLocalizer = stringLocalizer;
+    public ConsoleService(IStringLocalizer stringLocalizer) => this.stringLocalizer = stringLocalizer;
 
     public string ReadLine(string promptMessage, ConsoleColor promptForegroundColor)
     {
@@ -75,7 +75,7 @@ public class ConsoleService : IConsoleService
         while (true)
         {
             ConsoleWrite(
-                $"{message} [{string.Join('/', options)}]{this._stringLocalizer.GetRequiredString(LocalizationKeys.Key444677337)}");
+                $"{message} [{string.Join('/', options)}]{this.stringLocalizer.GetRequiredString(LocalizationKeys.Key444677337)}");
 
             var answer = Console.ReadLine();
 
@@ -126,6 +126,6 @@ public class ConsoleService : IConsoleService
     private void WritePromptMessage(string promptMessage, ConsoleColor promptForegroundColor)
     {
         ConsoleWrite(promptMessage, promptForegroundColor);
-        ConsoleWrite(this._stringLocalizer.GetRequiredString(LocalizationKeys.Key444677337), promptForegroundColor);
+        ConsoleWrite(this.stringLocalizer.GetRequiredString(LocalizationKeys.Key444677337), promptForegroundColor);
     }
 }
