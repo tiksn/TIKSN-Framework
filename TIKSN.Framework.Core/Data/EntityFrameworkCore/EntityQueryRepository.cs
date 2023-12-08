@@ -13,7 +13,7 @@ public class EntityQueryRepository<TContext, TEntity, TIdentity> : EntityReposit
     {
     }
 
-    protected IQueryable<TEntity> Entities => this.dbContext.Set<TEntity>().AsNoTracking();
+    protected IQueryable<TEntity> Entities => this.DbContext.Set<TEntity>().AsNoTracking();
 
     public Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken) =>
         this.Entities.AnyAsync(a => a.ID.Equals(id), cancellationToken);
