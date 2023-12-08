@@ -10,28 +10,31 @@ namespace TIKSN.Shell;
 
 public class ShellCommandEngine : IShellCommandEngine
 {
-    private readonly IConsoleService _consoleService;
-    private readonly ILogger<ShellCommandEngine> _logger;
-    private readonly IServiceProvider _serviceProvider;
-    private readonly IStringLocalizer _stringLocalizer;
-
     private readonly List<Tuple<Type, ShellCommandAttribute, ConstructorInfo,
         IEnumerable<Tuple<ShellCommandParameterAttribute, PropertyInfo>>>> commands;
 
-    public ShellCommandEngine(IServiceProvider serviceProvider, ILogger<ShellCommandEngine> logger,
-        IStringLocalizer stringLocalizer, IConsoleService consoleService)
-    {
-        this.commands =
-            [];
+    private readonly IConsoleService consoleService;
+    private readonly ILogger<ShellCommandEngine> logger;
+    private readonly IServiceProvider serviceProvider;
+    private readonly IStringLocalizer stringLocalizer;
 
-        this._logger = logger;
-        this._stringLocalizer = stringLocalizer;
-        this._consoleService = consoleService;
-        this._serviceProvider = serviceProvider;
+    public ShellCommandEngine(
+        IServiceProvider serviceProvider,
+        ILogger<ShellCommandEngine> logger,
+        IStringLocalizer stringLocalizer,
+        IConsoleService consoleService)
+    {
+        this.commands = [];
+        this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        this.stringLocalizer = stringLocalizer ?? throw new ArgumentNullException(nameof(stringLocalizer));
+        this.consoleService = consoleService ?? throw new ArgumentNullException(nameof(consoleService));
+        this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
     }
 
     public void AddAssembly(Assembly assembly)
     {
+        ArgumentNullException.ThrowIfNull(assembly);
+
         foreach (var definedType in assembly.DefinedTypes)
         {
             _ = this.TryAddType(definedType.AsType());
@@ -40,7 +43,9 @@ public class ShellCommandEngine : IShellCommandEngine
 
     public void AddType(Type type)
     {
-        if (this.commands.Any(item => item.Item1 == type))
+        ArgumentNullException.ThrowIfNull(type);
+
+        if (this.commands.Exists(item => item.Item1 == type))
         {
             return;
         }
@@ -48,7 +53,7 @@ public class ShellCommandEngine : IShellCommandEngine
         if (!type.GetInterfaces().Contains(typeof(IShellCommand)))
         {
             throw new ArgumentException(
-                this._stringLocalizer.GetRequiredString(LocalizationKeys.Key588506767, type.FullName,
+                this.stringLocalizer.GetRequiredString(LocalizationKeys.Key588506767, type.FullName,
                     typeof(IShellCommand).FullName), nameof(type));
         }
 
@@ -56,18 +61,18 @@ public class ShellCommandEngine : IShellCommandEngine
         if (commandAttribute == null)
         {
             throw new ArgumentException(
-                this._stringLocalizer.GetRequiredString(LocalizationKeys.Key491461331, type.FullName,
+                this.stringLocalizer.GetRequiredString(LocalizationKeys.Key491461331, type.FullName,
                     typeof(ShellCommandAttribute).FullName), nameof(type));
         }
 
-        this._logger.LogDebug(804856258, $"Checking command name localization for '{type.FullName}' command.");
-        _ = commandAttribute.GetName(this._stringLocalizer);
+        this.logger.LogDebug(804856258, "Checking command name localization for '{TypeFullName}' command.", type.FullName);
+        _ = commandAttribute.GetName(this.stringLocalizer);
 
         var constructors = type.GetConstructors();
         if (constructors.Length != 1)
         {
             throw new ArgumentException(
-                this._stringLocalizer.GetRequiredString(LocalizationKeys.Key225262334, type.FullName),
+                this.stringLocalizer.GetRequiredString(LocalizationKeys.Key225262334, type.FullName),
                 nameof(type));
         }
 
@@ -77,9 +82,10 @@ public class ShellCommandEngine : IShellCommandEngine
             var commandParameterAttribute = propertyInfo.GetCustomAttribute<ShellCommandParameterAttribute>();
             if (commandParameterAttribute != null)
             {
-                this._logger.LogDebug(804856258,
-                    $"Checking string localization for '{type.FullName}' command's '{propertyInfo.Name}' parameter.");
-                _ = commandParameterAttribute.GetName(this._stringLocalizer);
+                this.logger.LogDebug(804856258,
+                    "Checking string localization for '{TypeFullName}' command's '{PropertyName}' parameter.",
+                    type.FullName, propertyInfo.Name);
+                _ = commandParameterAttribute.GetName(this.stringLocalizer);
 
                 properties.Add(
                     new Tuple<ShellCommandParameterAttribute, PropertyInfo>(commandParameterAttribute,
@@ -97,8 +103,8 @@ public class ShellCommandEngine : IShellCommandEngine
     {
         while (true)
         {
-            var command = this._consoleService.ReadLine(
-                this._stringLocalizer.GetRequiredString(LocalizationKeys.Key671767216), ConsoleColor.Green);
+            var command = this.consoleService.ReadLine(
+                this.stringLocalizer.GetRequiredString(LocalizationKeys.Key671767216), ConsoleColor.Green);
 
             if (string.IsNullOrWhiteSpace(command))
             {
@@ -107,54 +113,55 @@ public class ShellCommandEngine : IShellCommandEngine
 
             command = NormalizeCommandName(command);
 
-            if (string.Equals(command, this._stringLocalizer.GetRequiredString(LocalizationKeys.Key785393579),
+            if (string.Equals(command, this.stringLocalizer.GetRequiredString(LocalizationKeys.Key785393579),
                 StringComparison.OrdinalIgnoreCase))
             {
                 break;
             }
 
-            if (string.Equals(command, this._stringLocalizer.GetRequiredString(LocalizationKeys.Key427524976),
+            if (string.Equals(command, this.stringLocalizer.GetRequiredString(LocalizationKeys.Key427524976),
                 StringComparison.OrdinalIgnoreCase))
             {
                 var helpItems = new List<ShellCommandHelpItem>
                 {
                     new ShellCommandHelpItem(
                     NormalizeCommandName(
-                        this._stringLocalizer.GetRequiredString(LocalizationKeys.Key785393579)),
+                        this.stringLocalizer.GetRequiredString(LocalizationKeys.Key785393579)),
                     Enumerable.Empty<string>()),
                     new ShellCommandHelpItem(
                     NormalizeCommandName(
-                        this._stringLocalizer.GetRequiredString(LocalizationKeys.Key427524976)),
+                        this.stringLocalizer.GetRequiredString(LocalizationKeys.Key427524976)),
                     Enumerable.Empty<string>())
                 };
 
                 foreach (var commandItem in this.commands)
                 {
                     helpItems.Add(new ShellCommandHelpItem(
-                        NormalizeCommandName(commandItem.Item2.GetName(this._stringLocalizer)),
-                        commandItem.Item4.Select(item => item.Item1.GetName(this._stringLocalizer))));
+                        NormalizeCommandName(commandItem.Item2.GetName(this.stringLocalizer)),
+                        commandItem.Item4.Select(item => item.Item1.GetName(this.stringLocalizer))));
                 }
 
                 helpItems = helpItems.OrderBy(i => i.CommandName).ToList();
 
-                this._consoleService.WriteObjects(helpItems);
+                this.consoleService.WriteObjects(helpItems);
             }
             else
             {
                 var matches = this.commands.Where(item => string.Equals(command,
-                    NormalizeCommandName(item.Item2.GetName(this._stringLocalizer)),
+                    NormalizeCommandName(item.Item2.GetName(this.stringLocalizer)),
                     StringComparison.OrdinalIgnoreCase));
 
                 switch (matches.Count())
                 {
                     case 0:
-                        this._consoleService.WriteError(
-                            this._stringLocalizer.GetRequiredString(LocalizationKeys.Key879318823));
+                        this.consoleService.WriteError(
+                            this.stringLocalizer.GetRequiredString(LocalizationKeys.Key879318823));
                         break;
 
                     case 1:
                         await this.RunCommandAsync(command, matches.Single()).ConfigureAwait(false);
                         break;
+
                     default:
                         break;
                 }
@@ -175,16 +182,6 @@ public class ShellCommandEngine : IShellCommandEngine
         }
     }
 
-    private void AppendException(StringBuilder messageBuilder, Exception exception)
-    {
-        AppendExceptionMessage(messageBuilder, exception);
-
-        if (exception.InnerException != null)
-        {
-            this.AppendException(messageBuilder, exception.InnerException);
-        }
-    }
-
     private static string NormalizeCommandName(string command)
     {
         if (command != null)
@@ -201,6 +198,16 @@ public class ShellCommandEngine : IShellCommandEngine
         return command;
     }
 
+    private void AppendException(StringBuilder messageBuilder, Exception exception)
+    {
+        AppendExceptionMessage(messageBuilder, exception);
+
+        if (exception.InnerException != null)
+        {
+            this.AppendException(messageBuilder, exception.InnerException);
+        }
+    }
+
     private void PrintError(EventId eventId, Exception exception)
     {
         var messageBuilder = new StringBuilder();
@@ -210,8 +217,8 @@ public class ShellCommandEngine : IShellCommandEngine
 
         var builtMessage = messageBuilder.ToString();
 
-        this._consoleService.WriteError(builtMessage);
-        this._logger.LogError(eventId, exception, builtMessage);
+        this.consoleService.WriteError(builtMessage);
+        this.logger.LogError(eventId, exception, builtMessage);
     }
 
     private object ReadCommandParameter(Tuple<ShellCommandParameterAttribute, PropertyInfo> property)
@@ -219,7 +226,7 @@ public class ShellCommandEngine : IShellCommandEngine
         if (property.Item2.PropertyType == typeof(SecureString))
         {
             var secureStringParameter =
-                this._consoleService.ReadPasswordLine(property.Item1.GetName(this._stringLocalizer),
+                this.consoleService.ReadPasswordLine(property.Item1.GetName(this.stringLocalizer),
                     ConsoleColor.Green);
             if (property.Item1.Mandatory && secureStringParameter.Length == 0)
             {
@@ -230,7 +237,7 @@ public class ShellCommandEngine : IShellCommandEngine
         }
 
         var stringParameter =
-            this._consoleService.ReadLine(property.Item1.GetName(this._stringLocalizer), ConsoleColor.Green);
+            this.consoleService.ReadLine(property.Item1.GetName(this.stringLocalizer), ConsoleColor.Green);
 
         if (string.IsNullOrEmpty(stringParameter))
         {
@@ -256,7 +263,7 @@ public class ShellCommandEngine : IShellCommandEngine
         Tuple<Type, ShellCommandAttribute, ConstructorInfo,
             IEnumerable<Tuple<ShellCommandParameterAttribute, PropertyInfo>>> commandInfo)
     {
-        using var commandScope = this._serviceProvider.CreateScope();
+        using var commandScope = this.serviceProvider.CreateScope();
         try
         {
             var commandContextStore =
@@ -283,8 +290,8 @@ public class ShellCommandEngine : IShellCommandEngine
                     property.Item2.SetValue(obj, parameter);
                 }
 
-                this._logger.LogTrace(
-                    $"Parameter '{property.Item1.GetName(this._stringLocalizer)}' has value '{property.Item2.GetValue(obj)}'");
+                this.logger.LogTrace(
+                    $"Parameter '{property.Item1.GetName(this.stringLocalizer)}' has value '{property.Item2.GetValue(obj)}'");
             }
 
             var command = obj as IShellCommand;
@@ -292,7 +299,7 @@ public class ShellCommandEngine : IShellCommandEngine
             try
             {
                 using (var cancellationTokenSource = new CancellationTokenSource())
-                using (this._consoleService.RegisterCancellation(cancellationTokenSource))
+                using (this.consoleService.RegisterCancellation(cancellationTokenSource))
                 {
                     await command.ExecuteAsync(cancellationTokenSource.Token).ConfigureAwait(false);
                 }
@@ -319,10 +326,9 @@ public class ShellCommandEngine : IShellCommandEngine
 
             return true;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            //_logger.LogError(1955486110, ex, "Failed to add type {0} as command.", type.FullName);
-            //_logger.LogDebug(650126203, ex, string.Empty);
+            this.logger.LogError(1955486110, ex, "Failed to add type {TypeFullName} as command.", type.FullName);
             return false;
         }
     }
