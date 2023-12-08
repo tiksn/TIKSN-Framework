@@ -6,25 +6,25 @@ namespace TIKSN.Session;
 public class UserSessionScopeStorage<TIdentity> : IUserSessionScopeStorage<TIdentity>
     where TIdentity : IEquatable<TIdentity>
 {
-    private readonly ConcurrentDictionary<TIdentity, IServiceScope> _scopes;
-    private readonly IServiceProvider _serviceProvider;
+    private readonly ConcurrentDictionary<TIdentity, AsyncServiceScope> scopes;
+    private readonly IServiceProvider serviceProvider;
 
     public UserSessionScopeStorage(IServiceProvider serviceProvider)
     {
-        this._scopes = new ConcurrentDictionary<TIdentity, IServiceScope>();
-        this._serviceProvider = serviceProvider;
+        this.scopes = new ConcurrentDictionary<TIdentity, AsyncServiceScope>();
+        this.serviceProvider = serviceProvider;
     }
 
     public IServiceProvider GetOrAddServiceProvider(TIdentity id) =>
-        this._scopes.GetOrAdd(id, key => this._serviceProvider.CreateScope()).ServiceProvider;
+        this.scopes.GetOrAdd(id, _ => this.serviceProvider.CreateAsyncScope()).ServiceProvider;
 
-    public bool TryRemoveServiceProvider(TIdentity id)
+    public async ValueTask<bool> TryRemoveServiceProviderAsync(TIdentity id)
     {
-        var removed = this._scopes.TryRemove(id, out var removedScope);
+        var removed = this.scopes.TryRemove(id, out var removedScope);
 
         if (removed)
         {
-            removedScope.Dispose();
+            await removedScope.DisposeAsync().ConfigureAwait(false);
         }
 
         return removed;
