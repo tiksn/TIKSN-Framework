@@ -7,10 +7,10 @@ namespace TIKSN.Data.AzureStorage;
 public class AzureBlobStorageRepository : AzureStorageBase, IAzureBlobStorageRepository,
     IAzureBlobStorageRepositoryInitializer
 {
-    private readonly BlobContainerPublicAccessType _accessType;
-    private readonly string _containerName;
-    private readonly OperationContext _operationContext;
-    private readonly BlobRequestOptions _options;
+    private readonly BlobContainerPublicAccessType accessType;
+    private readonly string containerName;
+    private readonly OperationContext operationContext;
+    private readonly BlobRequestOptions options;
 
     public AzureBlobStorageRepository(
         string containerName,
@@ -20,10 +20,10 @@ public class AzureBlobStorageRepository : AzureStorageBase, IAzureBlobStorageRep
         BlobRequestOptions options,
         OperationContext operationContext) : base(configuration, connectionStringKey)
     {
-        this._containerName = containerName;
-        this._accessType = accessType;
-        this._options = options;
-        this._operationContext = operationContext;
+        this.containerName = containerName;
+        this.accessType = accessType;
+        this.options = options;
+        this.operationContext = operationContext;
     }
 
     public Task DeleteAsync(string path, CancellationToken cancellationToken)
@@ -31,7 +31,7 @@ public class AzureBlobStorageRepository : AzureStorageBase, IAzureBlobStorageRep
         var blob = this.GetCloudBlobContainer().GetBlobReference(path);
 
         return blob.DeleteAsync(DeleteSnapshotsOption.IncludeSnapshots, AccessCondition.GenerateEmptyCondition(),
-            this._options, this._operationContext, cancellationToken);
+            this.options, this.operationContext, cancellationToken);
     }
 
     public async Task<IFile> DownloadAsync(string path, CancellationToken cancellationToken)
@@ -39,8 +39,8 @@ public class AzureBlobStorageRepository : AzureStorageBase, IAzureBlobStorageRep
         var blob = this.GetCloudBlobContainer().GetBlobReference(path);
 
         using var stream = new MemoryStream();
-        await blob.DownloadToStreamAsync(stream, AccessCondition.GenerateEmptyCondition(), this._options,
-            this._operationContext, cancellationToken).ConfigureAwait(false);
+        await blob.DownloadToStreamAsync(stream, AccessCondition.GenerateEmptyCondition(), this.options,
+            this.operationContext, cancellationToken).ConfigureAwait(false);
 
         return new File(blob.Name, stream.ToArray());
     }
@@ -49,7 +49,7 @@ public class AzureBlobStorageRepository : AzureStorageBase, IAzureBlobStorageRep
     {
         var blob = this.GetCloudBlobContainer().GetBlobReference(path);
 
-        return blob.ExistsAsync(this._options, this._operationContext, cancellationToken);
+        return blob.ExistsAsync(this.options, this.operationContext, cancellationToken);
     }
 
     public Task UploadAsync(string path, byte[] content, CancellationToken cancellationToken)
@@ -57,11 +57,11 @@ public class AzureBlobStorageRepository : AzureStorageBase, IAzureBlobStorageRep
         var blob = this.GetCloudBlobContainer().GetBlockBlobReference(path);
 
         return blob.UploadFromByteArrayAsync(content, 0, content.Length, AccessCondition.GenerateEmptyCondition(),
-            this._options, this._operationContext, cancellationToken);
+            this.options, this.operationContext, cancellationToken);
     }
 
     public Task InitializeAsync(CancellationToken cancellationToken) => this.GetCloudBlobContainer()
-        .CreateIfNotExistsAsync(this._accessType, this._options, this._operationContext, cancellationToken);
+        .CreateIfNotExistsAsync(this.accessType, this.options, this.operationContext, cancellationToken);
 
     protected CloudBlobContainer GetCloudBlobContainer()
     {
@@ -69,6 +69,6 @@ public class AzureBlobStorageRepository : AzureStorageBase, IAzureBlobStorageRep
 
         var blobClient = storageAccount.CreateCloudBlobClient();
 
-        return blobClient.GetContainerReference(this._containerName);
+        return blobClient.GetContainerReference(this.containerName);
     }
 }
