@@ -4,10 +4,10 @@ namespace TIKSN.Configuration;
 
 public abstract class DatabaseConfigurationBase
 {
-    private readonly IConfigurationRoot _configurationRoot;
+    private readonly IConfigurationRoot configurationRoot;
 
     protected DatabaseConfigurationBase(IConfigurationRoot configurationRoot) =>
-        this._configurationRoot = configurationRoot;
+        this.configurationRoot = configurationRoot;
 
-    protected string GetConnectionString(string name) => this._configurationRoot.GetConnectionString(name);
+    protected string GetConnectionString(string name) => this.configurationRoot.GetConnectionString(name);
 }
