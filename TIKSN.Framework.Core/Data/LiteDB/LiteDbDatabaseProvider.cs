@@ -9,31 +9,33 @@ namespace TIKSN.Data.LiteDB;
 /// </summary>
 public class LiteDbDatabaseProvider : ILiteDbDatabaseProvider
 {
-    private readonly IConfiguration _configuration;
-    private readonly string _connectionStringKey;
-    private readonly IFileProvider _fileProvider;
+    private readonly IConfiguration configuration;
+    private readonly string connectionStringKey;
+    private readonly IFileProvider fileProvider;
 
-    public LiteDbDatabaseProvider(IConfiguration configuration, string connectionStringKey,
+    public LiteDbDatabaseProvider(
+        IConfiguration configuration,
+        string connectionStringKey,
         IFileProvider fileProvider = null)
     {
-        this._configuration = configuration;
-        this._connectionStringKey = connectionStringKey;
-        this._fileProvider = fileProvider;
+        this.configuration = configuration;
+        this.connectionStringKey = connectionStringKey;
+        this.fileProvider = fileProvider;
     }
 
     /// <summary>
     ///     Creates LiteDB database with mapper
     /// </summary>
     /// <param name="mapper">Mapper</param>
-    /// <returns></returns>
+    /// <returns>Database instance</returns>
     public LiteDatabase GetDatabase(BsonMapper mapper)
     {
         var connectionString =
-            new ConnectionString(this._configuration.GetConnectionString(this._connectionStringKey));
+            new ConnectionString(this.configuration.GetConnectionString(this.connectionStringKey));
 
-        if (this._fileProvider != null)
+        if (this.fileProvider != null)
         {
-            connectionString.Filename = this._fileProvider.GetFileInfo(connectionString.Filename).PhysicalPath;
+            connectionString.Filename = this.fileProvider.GetFileInfo(connectionString.Filename).PhysicalPath;
         }
 
         return new LiteDatabase(connectionString);
@@ -42,6 +44,6 @@ public class LiteDbDatabaseProvider : ILiteDbDatabaseProvider
     /// <summary>
     ///     Creates LiteDB database
     /// </summary>
-    /// <returns></returns>
-    public LiteDatabase GetDatabase() => this.GetDatabase(null);
+    /// <returns>Database instance</returns>
+    public LiteDatabase GetDatabase() => this.GetDatabase(mapper: null);
 }
