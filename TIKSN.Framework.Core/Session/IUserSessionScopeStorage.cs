@@ -4,5 +4,5 @@ public interface IUserSessionScopeStorage<TIdentity> where TIdentity : IEquatabl
 {
     IServiceProvider GetOrAddServiceProvider(TIdentity id);
 
-    bool TryRemoveServiceProvider(TIdentity id);
+    ValueTask<bool> TryRemoveServiceProviderAsync(TIdentity id);
 }
