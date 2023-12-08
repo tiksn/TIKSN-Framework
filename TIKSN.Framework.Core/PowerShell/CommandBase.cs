@@ -7,12 +7,19 @@ namespace TIKSN.PowerShell;
 
 public abstract class CommandBase : PSCmdlet, IDisposable
 {
-    protected CancellationTokenSource cancellationTokenSource;
+    private CancellationTokenSource cancellationTokenSource;
+    private bool disposedValue;
     private IServiceScope serviceScope;
 
     protected CommandBase() => this.cancellationTokenSource = new CancellationTokenSource();
 
-    protected IServiceProvider ServiceProvider => this.serviceScope.ServiceProvider;
+    protected IServiceProvider Services => this.serviceScope.ServiceProvider;
+
+    public void Dispose()
+    {
+        this.Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
 
     protected override void BeginProcessing()
     {
@@ -22,16 +29,30 @@ public abstract class CommandBase : PSCmdlet, IDisposable
 
         var topServiceProvider = this.GetServiceProvider();
         this.serviceScope = topServiceProvider.CreateScope();
-        this.ServiceProvider.GetRequiredService<ICurrentCommandStore>().SetCurrentCommand(this);
-        this.ConfigureLogger(this.ServiceProvider.GetRequiredService<ILoggerFactory>());
+        this.Services.GetRequiredService<ICurrentCommandStore>().SetCurrentCommand(this);
+        this.ConfigureLogger(this.Services.GetRequiredService<ILoggerFactory>());
     }
 
     protected virtual void ConfigureLogger(ILoggerFactory loggerFactory) =>
-        loggerFactory.AddPowerShell(this.ServiceProvider);
+        loggerFactory.AddPowerShell(this.Services);
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!this.disposedValue)
+        {
+            if (disposing)
+            {
+                this.cancellationTokenSource.Dispose();
+                this.serviceScope.Dispose();
+            }
+
+            this.disposedValue = true;
+        }
+    }
 
     protected abstract IServiceProvider GetServiceProvider();
 
-    protected sealed override void ProcessRecord() => AsyncContext.Run(async () =>
+    protected override void ProcessRecord() => AsyncContext.Run(async () =>
         await this.ProcessRecordAsync(this.cancellationTokenSource.Token).ConfigureAwait(false));
 
     protected abstract Task ProcessRecordAsync(CancellationToken cancellationToken);
@@ -40,8 +61,6 @@ public abstract class CommandBase : PSCmdlet, IDisposable
     {
         this.cancellationTokenSource.Cancel();
         base.StopProcessing();
-        this.serviceScope.Dispose();
+        this.Dispose();
     }
-
-    public void Dispose() => throw new NotImplementedException();
 }
