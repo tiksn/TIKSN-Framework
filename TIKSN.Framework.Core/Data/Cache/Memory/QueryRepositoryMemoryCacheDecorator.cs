@@ -9,8 +9,6 @@ public class QueryRepositoryMemoryCacheDecorator<TEntity, TIdentity>
     where TEntity : IEntity<TIdentity>
     where TIdentity : IEquatable<TIdentity>
 {
-    protected readonly IQueryRepository<TEntity, TIdentity> queryRepository;
-
     public QueryRepositoryMemoryCacheDecorator(
         IQueryRepository<TEntity, TIdentity> queryRepository,
         IRepository<TEntity> repository,
@@ -18,30 +16,32 @@ public class QueryRepositoryMemoryCacheDecorator<TEntity, TIdentity>
         IOptions<MemoryCacheDecoratorOptions> genericOptions,
         IOptions<MemoryCacheDecoratorOptions<TEntity>> specificOptions)
         : base(repository, memoryCache, genericOptions, specificOptions) =>
-        this.queryRepository = queryRepository;
+        this.QueryRepository = queryRepository;
+
+    protected IQueryRepository<TEntity, TIdentity> QueryRepository { get; }
 
     public Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken)
     {
-        var cacheKey = Tuple.Create(entityType, CacheKeyKind.Query, id);
+        var cacheKey = Tuple.Create(EntityType, CacheKeyKind.Query, id);
 
         return this.GetFromMemoryCacheAsync(cacheKey,
-            () => this.queryRepository.ExistsAsync(id, cancellationToken));
+            () => this.QueryRepository.ExistsAsync(id, cancellationToken));
     }
 
     public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
     {
-        var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, id);
+        var cacheKey = Tuple.Create(EntityType, CacheKeyKind.Entity, id);
 
         return await this.GetFromMemoryCacheAsync(cacheKey,
-            () => this.queryRepository.GetAsync(id, cancellationToken)).ConfigureAwait(false)
+            () => this.QueryRepository.GetAsync(id, cancellationToken)).ConfigureAwait(false)
             ?? throw new EntityNotFoundException("Result retrieved from cache or from original source is null.");
     }
 
     public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
     {
-        var cacheKey = Tuple.Create(entityType, CacheKeyKind.Entity, id);
+        var cacheKey = Tuple.Create(EntityType, CacheKeyKind.Entity, id);
 
-        return this.GetFromMemoryCacheAsync(cacheKey, () => this.queryRepository.GetAsync(id, cancellationToken));
+        return this.GetFromMemoryCacheAsync(cacheKey, () => this.QueryRepository.GetAsync(id, cancellationToken));
     }
 
     public async Task<IEnumerable<TEntity>>
@@ -52,16 +52,19 @@ public class QueryRepositoryMemoryCacheDecorator<TEntity, TIdentity>
         PageQuery pageQuery,
         CancellationToken cancellationToken)
     {
-        var cacheKey = Tuple.Create(entityType, CacheKeyKind.Query, pageQuery);
+        var cacheKey = Tuple.Create(EntityType, CacheKeyKind.Query, pageQuery);
 
         return this.GetFromMemoryCacheAsync(cacheKey,
-            () => this.queryRepository.PageAsync(pageQuery, cancellationToken));
+            () => this.QueryRepository.PageAsync(pageQuery, cancellationToken));
     }
 
     protected Task<IEnumerable<TEntity>> CreateMemoryCacheQueryAsync(
         ICacheEntry cacheEntry,
         Func<Task<IEnumerable<TEntity>>> queryFromSource)
     {
+        ArgumentNullException.ThrowIfNull(cacheEntry);
+        ArgumentNullException.ThrowIfNull(queryFromSource);
+
         this.SpecifyOptions(cacheEntry);
 
         return queryFromSource();
@@ -70,12 +73,12 @@ public class QueryRepositoryMemoryCacheDecorator<TEntity, TIdentity>
     protected Task<IEnumerable<TEntity>> QueryFromMemoryCacheAsync(
         Func<Task<IEnumerable<TEntity>>> queryFromSource)
     {
-        var cacheKey = Tuple.Create(entityType, CacheKeyKind.Query);
+        var cacheKey = Tuple.Create(EntityType, CacheKeyKind.Query);
 
         return this.QueryFromMemoryCacheAsync(cacheKey, queryFromSource);
     }
 
     protected Task<IEnumerable<TEntity>> QueryFromMemoryCacheAsync(object cacheKey,
         Func<Task<IEnumerable<TEntity>>> queryFromSource) =>
-        this.memoryCache.GetOrCreateAsync(cacheKey, x => this.CreateMemoryCacheQueryAsync(x, queryFromSource));
+        this.MemoryCache.GetOrCreateAsync(cacheKey, x => this.CreateMemoryCacheQueryAsync(x, queryFromSource));
 }
