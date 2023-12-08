@@ -10,5 +10,5 @@ public class MandatoryConfigurationValidationStrategy<T> : ConfigurationValidati
     }
 
     protected override IPartialConfigurationValidator<T> GetConfigurationValidator() =>
-        this._serviceProvider.GetRequiredService<IPartialConfigurationValidator<T>>();
+        this.ServiceProvider.GetRequiredService<IPartialConfigurationValidator<T>>();
 }
