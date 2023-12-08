@@ -8,7 +8,7 @@ namespace TIKSN.PowerShell;
 
 public class PowerShellLogger : ILogger, IDisposable
 {
-    private readonly ICurrentCommandProvider _currentCommandProvider;
+    private readonly ICurrentCommandProvider currentCommandProvider;
     private readonly string name;
     private readonly IOptions<PowerShellLoggerOptions> options;
     private readonly PowerShellLoggerScopeDisposable scopeDisposable;
@@ -21,7 +21,7 @@ public class PowerShellLogger : ILogger, IDisposable
         this.scopes = new ConcurrentStack<object>();
         this.scopeDisposable = new PowerShellLoggerScopeDisposable(this.scopes);
         this.name = name;
-        this._currentCommandProvider = currentCommandProvider;
+        this.currentCommandProvider = currentCommandProvider;
     }
 
     public IDisposable BeginScope<TState>(TState state)
@@ -101,20 +101,20 @@ public class PowerShellLogger : ILogger, IDisposable
         {
             case LogLevel.Trace:
             case LogLevel.Information:
-                this._currentCommandProvider.GetCurrentCommand().WriteVerbose(logBuilder.ToString());
+                this.currentCommandProvider.GetCurrentCommand().WriteVerbose(logBuilder.ToString());
                 break;
 
             case LogLevel.Debug:
-                this._currentCommandProvider.GetCurrentCommand().WriteDebug(logBuilder.ToString());
+                this.currentCommandProvider.GetCurrentCommand().WriteDebug(logBuilder.ToString());
                 break;
 
             case LogLevel.Warning:
-                this._currentCommandProvider.GetCurrentCommand().WriteWarning(logBuilder.ToString());
+                this.currentCommandProvider.GetCurrentCommand().WriteWarning(logBuilder.ToString());
                 break;
 
             case LogLevel.Error:
             case LogLevel.Critical:
-                this._currentCommandProvider.GetCurrentCommand().WriteError(
+                this.currentCommandProvider.GetCurrentCommand().WriteError(
                     new ErrorRecord(new Exception(logBuilder.ToString(), exception), eventId.ToString(),
                         ErrorCategory.InvalidOperation, targetObject: null));
                 break;
