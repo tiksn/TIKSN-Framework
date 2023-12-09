@@ -12,6 +12,6 @@ public class CompactBinaryBondSerializer : SerializerBase<byte[]>
 
         global::Bond.Serialize.To(writer, obj);
 
-        return output.Data.Array;
+        return [.. output.Data];
     }
 }
