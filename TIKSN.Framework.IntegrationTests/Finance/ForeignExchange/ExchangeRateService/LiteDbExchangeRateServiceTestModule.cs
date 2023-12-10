@@ -4,18 +4,17 @@ using TIKSN.Data.LiteDB;
 using TIKSN.Finance.ForeignExchange.Data;
 using TIKSN.Finance.ForeignExchange.Data.LiteDB;
 
-namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests
+namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests;
+
+public class LiteDbExchangeRateServiceTestModule : Module
 {
-    public class LiteDbExchangeRateServiceTestModule : Module
+    protected override void Load(ContainerBuilder builder)
     {
-        protected override void Load(ContainerBuilder builder)
-        {
-            _ = builder.RegisterType<ExchangeRateDataRepository>().As<IExchangeRateDataRepository>().InstancePerLifetimeScope();
-            _ = builder.RegisterType<ForeignExchangeDataRepository>().As<IForeignExchangeDataRepository>().InstancePerLifetimeScope();
-            _ = builder.RegisterType<ExchangeRateRepositoryAdapter>().As<IExchangeRateRepository>().InstancePerLifetimeScope();
-            _ = builder.RegisterType<ForeignExchangeRepositoryAdapter>().As<IForeignExchangeRepository>().InstancePerLifetimeScope();
-            _ = builder.RegisterType<TestLiteDbDatabaseProvider>().As<ILiteDbDatabaseProvider>().SingleInstance();
-            _ = builder.RegisterType<NullUnitOfWorkFactory>().As<IUnitOfWorkFactory>().InstancePerLifetimeScope();
-        }
+        _ = builder.RegisterType<ExchangeRateDataRepository>().As<IExchangeRateDataRepository>().InstancePerLifetimeScope();
+        _ = builder.RegisterType<ForeignExchangeDataRepository>().As<IForeignExchangeDataRepository>().InstancePerLifetimeScope();
+        _ = builder.RegisterType<ExchangeRateRepositoryAdapter>().As<IExchangeRateRepository>().InstancePerLifetimeScope();
+        _ = builder.RegisterType<ForeignExchangeRepositoryAdapter>().As<IForeignExchangeRepository>().InstancePerLifetimeScope();
+        _ = builder.RegisterType<TestLiteDbDatabaseProvider>().As<ILiteDbDatabaseProvider>().SingleInstance();
+        _ = builder.RegisterType<NullUnitOfWorkFactory>().As<IUnitOfWorkFactory>().InstancePerLifetimeScope();
     }
 }

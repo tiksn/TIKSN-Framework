@@ -115,7 +115,7 @@ public class RestRequester : IRestRequester
         return resourceLocation.Replace($"{{{parameterName}}}", escapedParameterValue, StringComparison.Ordinal);
     }
 
-    private StringContent GetContent(object requestContent, string requestContentMediaType) => new StringContent(
+    private StringContent GetContent(object requestContent, string requestContentMediaType) => new(
         this.serializerRestFactory.Create(requestContentMediaType).Serialize(requestContent), Encoding.UTF8,
         requestContentMediaType);
 

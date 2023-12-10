@@ -1,12 +1,11 @@
 using Microsoft.Extensions.Configuration;
 using TIKSN.Data.LiteDB;
 
-namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests
+namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests;
+
+public class TestLiteDbDatabaseProvider : LiteDbDatabaseProvider
 {
-    public class TestLiteDbDatabaseProvider : LiteDbDatabaseProvider
+    public TestLiteDbDatabaseProvider(IConfiguration configuration) : base(configuration, "LiteDB")
     {
-        public TestLiteDbDatabaseProvider(IConfiguration configuration) : base(configuration, "LiteDB")
-        {
-        }
     }
 }

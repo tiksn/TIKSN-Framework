@@ -1,10 +1,10 @@
 namespace TIKSN.Numbering.Acronyms;
 
-public sealed class TLA : Acronym<TLA>
+public sealed class TLA : Acronym<TLA>, IAcronymLength<TLA>
 {
-    private static readonly int LetterCount = 3;
-
     private TLA(string value) : base(value)
     {
     }
+
+    public static int LetterCount => 3;
 }

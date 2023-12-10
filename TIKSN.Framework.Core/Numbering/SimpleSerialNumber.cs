@@ -1,10 +1,9 @@
 using System.Globalization;
 using System.Numerics;
 using LanguageExt;
-using LanguageExt.Parsec;
-using static LanguageExt.Prelude;
-using static LanguageExt.Parsec.Prim;
 using static LanguageExt.Parsec.Char;
+using static LanguageExt.Parsec.Prim;
+using static LanguageExt.Prelude;
 
 namespace TIKSN.Numbering;
 
@@ -14,7 +13,7 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
 {
     public bool Equals(SimpleSerialNumber<TSerial, TNumber> other)
     {
-        if (ReferenceEquals(null, other))
+        if (other is null)
         {
             return false;
         }
@@ -75,7 +74,7 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
             return None;
         }
 
-        var parseNumber = (string value) =>
+        Option<TNumber> parseNumber(string value)
         {
             if (TNumber.TryParse(value, provider, out var num))
             {
@@ -83,14 +82,14 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
             }
 
             return None;
-        };
+        }
 
         var serialParser =
             from xs in many(letter)
             let r = new string(xs.ToArray())
             let val = TSerial.Parse(r, asciiOnly, provider)
-            from res in val.Match<Parser<TSerial>>(
-                Some: x => result<TSerial>(x),
+            from res in val.Match(
+                Some: result<TSerial>,
                 None: failure<TSerial>("Failed to parse a serial'"))
             select res;
 
@@ -98,8 +97,8 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
             from xs in many(digit)
             let r = new string(xs.ToArray())
             let val = parseNumber(r)
-            from res in val.Match<Parser<TNumber>>(
-                Some: x => result<TNumber>(x),
+            from res in val.Match(
+                Some: result<TNumber>,
                 None: failure<TNumber>("Failed to parse a number'"))
             select res;
 
