@@ -1,9 +1,9 @@
 using System.Globalization;
 using System.Reflection;
 using LanguageExt;
-using static LanguageExt.Prelude;
-using static LanguageExt.Parsec.Prim;
 using static LanguageExt.Parsec.Char;
+using static LanguageExt.Parsec.Prim;
+using static LanguageExt.Prelude;
 
 namespace TIKSN.Numbering.Acronyms;
 
@@ -97,7 +97,7 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
 
     public bool Equals(TSelf other)
     {
-        if (ReferenceEquals(null, other))
+        if (other is null)
         {
             return false;
         }
@@ -112,7 +112,7 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
 
     public override bool Equals(object obj)
     {
-        if (ReferenceEquals(null, obj))
+        if (obj is null)
         {
             return false;
         }
