@@ -36,17 +36,17 @@ public class CoreModule : Module
             .SingleInstance();
 
         _ = builder
-            .RegisterType<Finance.ForeignExchange.EntityFrameworkCore.DataEntityMapper>()
+            .RegisterType<Finance.ForeignExchange.Data.EntityFrameworkCore.DataEntityMapper>()
             .AsImplementedInterfaces()
             .SingleInstance();
 
         _ = builder
-            .RegisterType<Finance.ForeignExchange.LiteDB.DataEntityMapper>()
+            .RegisterType<Finance.ForeignExchange.Data.LiteDB.DataEntityMapper>()
             .AsImplementedInterfaces()
             .SingleInstance();
 
         _ = builder
-            .RegisterType<Finance.ForeignExchange.Mongo.DataEntityMapper>()
+            .RegisterType<Finance.ForeignExchange.Data.Mongo.DataEntityMapper>()
             .AsImplementedInterfaces()
             .SingleInstance();
     }
