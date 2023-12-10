@@ -57,13 +57,9 @@ public class ShellCommandEngine : IShellCommandEngine
                     typeof(IShellCommand).FullName), nameof(type));
         }
 
-        var commandAttribute = type.GetTypeInfo().GetCustomAttribute<ShellCommandAttribute>();
-        if (commandAttribute == null)
-        {
-            throw new ArgumentException(
+        var commandAttribute = type.GetTypeInfo().GetCustomAttribute<ShellCommandAttribute>() ?? throw new ArgumentException(
                 this.stringLocalizer.GetRequiredString(LocalizationKeys.Key491461331, type.FullName,
                     typeof(ShellCommandAttribute).FullName), nameof(type));
-        }
 
         this.logger.LogDebug(804856258, "Checking command name localization for '{TypeFullName}' command.", type.FullName);
         _ = commandAttribute.GetName(this.stringLocalizer);
@@ -124,11 +120,11 @@ public class ShellCommandEngine : IShellCommandEngine
             {
                 var helpItems = new List<ShellCommandHelpItem>
                 {
-                    new ShellCommandHelpItem(
+                    new(
                     NormalizeCommandName(
                         this.stringLocalizer.GetRequiredString(LocalizationKeys.Key785393579)),
                     Enumerable.Empty<string>()),
-                    new ShellCommandHelpItem(
+                    new(
                     NormalizeCommandName(
                         this.stringLocalizer.GetRequiredString(LocalizationKeys.Key427524976)),
                     Enumerable.Empty<string>())
@@ -141,7 +137,7 @@ public class ShellCommandEngine : IShellCommandEngine
                         commandItem.Item4.Select(item => item.Item1.GetName(this.stringLocalizer))));
                 }
 
-                helpItems = helpItems.OrderBy(i => i.CommandName).ToList();
+                helpItems = [.. helpItems.OrderBy(i => i.CommandName)];
 
                 this.consoleService.WriteObjects(helpItems);
             }
@@ -279,7 +275,7 @@ public class ShellCommandEngine : IShellCommandEngine
                 args.Add(commandScope.ServiceProvider.GetRequiredService(parameterInfo.ParameterType));
             }
 
-            var obj = Activator.CreateInstance(commandInfo.Item1, args.ToArray());
+            var obj = Activator.CreateInstance(commandInfo.Item1, [.. args]);
 
             foreach (var property in commandInfo.Item4)
             {
