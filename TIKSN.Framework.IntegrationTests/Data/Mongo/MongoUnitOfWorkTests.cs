@@ -8,98 +8,97 @@ using Polly;
 using TIKSN.IntegrationTests;
 using Xunit;
 
-namespace TIKSN.Data.Mongo.IntegrationTests
+namespace TIKSN.Data.Mongo.IntegrationTests;
+
+[Collection("ServiceProviderCollection")]
+public class MongoUnitOfWorkTests
 {
-    [Collection("ServiceProviderCollection")]
-    public class MongoUnitOfWorkTests
+    private readonly ServiceProviderFixture _serviceProviderFixture;
+
+    public MongoUnitOfWorkTests(ServiceProviderFixture serviceProviderFixture) =>
+        this._serviceProviderFixture = serviceProviderFixture;
+
+    [Fact]
+    public async Task TestCreationAndRetrievalAsync()
     {
-        private readonly ServiceProviderFixture _serviceProviderFixture;
+        var testEntityId = Guid.NewGuid();
+        var testEntity = new TestMongoEntity { ID = testEntityId, Value = Guid.NewGuid() };
+        TestMongoEntity retrievedEntity = null;
 
-        public MongoUnitOfWorkTests(ServiceProviderFixture serviceProviderFixture) =>
-            this._serviceProviderFixture = serviceProviderFixture;
+        var mongoUnitOfWorkFactory =
+            this._serviceProviderFixture.GetServiceProvider("MongoDB").GetRequiredService<IUnitOfWorkFactory>();
 
-        [Fact]
-        public async Task TestCreationAndRetrievalAsync()
+        await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default).ConfigureAwait(true))
         {
-            var testEntityId = Guid.NewGuid();
-            var testEntity = new TestMongoEntity { ID = testEntityId, Value = Guid.NewGuid() };
-            TestMongoEntity retrievedEntity = null;
+            var testRepository = mongoUnitOfWork.Services.GetRequiredService<ITestMongoRepository>();
 
-            var mongoUnitOfWorkFactory =
-                this._serviceProviderFixture.GetServiceProvider("MongoDB").GetRequiredService<IUnitOfWorkFactory>();
+            await testRepository.AddAsync(testEntity, default).ConfigureAwait(true);
 
-            await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default).ConfigureAwait(true))
-            {
-                var testRepository = mongoUnitOfWork.Services.GetRequiredService<ITestMongoRepository>();
-
-                await testRepository.AddAsync(testEntity, default).ConfigureAwait(true);
-
-                await mongoUnitOfWork.CompleteAsync(default).ConfigureAwait(true);
-            }
-
-            await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default).ConfigureAwait(true))
-            {
-                var testRepository = mongoUnitOfWork.Services.GetRequiredService<ITestMongoRepository>();
-
-                retrievedEntity = await testRepository.GetAsync(testEntityId, default).ConfigureAwait(true);
-
-                await mongoUnitOfWork.CompleteAsync(default).ConfigureAwait(true);
-            }
-
-            _ = retrievedEntity.Value.Should().Be(testEntity.Value);
+            await mongoUnitOfWork.CompleteAsync(default).ConfigureAwait(true);
         }
 
-        [Fact]
-        public async Task TestConcurrentUpdatesAsync()
+        await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default).ConfigureAwait(true))
         {
-            var testEntityId = Guid.NewGuid();
-            var testEntity = new TestMongoEntity { ID = testEntityId, Value = Guid.NewGuid(), Version = 1 };
-            TestMongoEntity retrievedEntity = null;
+            var testRepository = mongoUnitOfWork.Services.GetRequiredService<ITestMongoRepository>();
 
-            var mongoUnitOfWorkFactory =
-                this._serviceProviderFixture.GetServiceProvider("MongoDB").GetRequiredService<IUnitOfWorkFactory>();
+            retrievedEntity = await testRepository.GetAsync(testEntityId, default).ConfigureAwait(true);
 
-            await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default).ConfigureAwait(true))
-            {
-                var testRepository = mongoUnitOfWork.Services.GetRequiredService<ITestMongoRepository>();
+            await mongoUnitOfWork.CompleteAsync(default).ConfigureAwait(true);
+        }
 
-                await testRepository.AddAsync(testEntity, default).ConfigureAwait(true);
+        _ = retrievedEntity.Value.Should().Be(testEntity.Value);
+    }
 
-                await mongoUnitOfWork.CompleteAsync(default).ConfigureAwait(true);
-            }
+    [Fact]
+    public async Task TestConcurrentUpdatesAsync()
+    {
+        var testEntityId = Guid.NewGuid();
+        var testEntity = new TestMongoEntity { ID = testEntityId, Value = Guid.NewGuid(), Version = 1 };
+        TestMongoEntity retrievedEntity = null;
 
-            var tasks = Enumerable.Repeat(0, 3).Select(_ => UpdateEntityWithRetry(mongoUnitOfWorkFactory, testEntityId))
-                .ToArray();
-            await Task.WhenAll(tasks).ConfigureAwait(true);
+        var mongoUnitOfWorkFactory =
+            this._serviceProviderFixture.GetServiceProvider("MongoDB").GetRequiredService<IUnitOfWorkFactory>();
 
-            await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default).ConfigureAwait(true))
-            {
-                var testRepository = mongoUnitOfWork.Services.GetRequiredService<ITestMongoRepository>();
+        await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default).ConfigureAwait(true))
+        {
+            var testRepository = mongoUnitOfWork.Services.GetRequiredService<ITestMongoRepository>();
 
-                retrievedEntity = await testRepository.GetAsync(testEntityId, default).ConfigureAwait(true);
+            await testRepository.AddAsync(testEntity, default).ConfigureAwait(true);
 
-                await mongoUnitOfWork.CompleteAsync(default).ConfigureAwait(true);
-            }
+            await mongoUnitOfWork.CompleteAsync(default).ConfigureAwait(true);
+        }
 
-            _ = retrievedEntity.Version.Should().Be(4);
+        var tasks = Enumerable.Repeat(0, 3).Select(_ => UpdateEntityWithRetry(mongoUnitOfWorkFactory, testEntityId))
+            .ToArray();
+        await Task.WhenAll(tasks).ConfigureAwait(true);
 
-            static Task UpdateEntityWithRetry(IUnitOfWorkFactory mongoUnitOfWorkFactory, Guid testEntityId) => Policy.Handle<MongoCommandException>()
-                    .WaitAndRetryAsync(10, i => TimeSpan.FromMilliseconds(i * 10))
-                    .ExecuteAsync(() => UpdateEntity(mongoUnitOfWorkFactory, testEntityId));
+        await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default).ConfigureAwait(true))
+        {
+            var testRepository = mongoUnitOfWork.Services.GetRequiredService<ITestMongoRepository>();
 
-            static async Task UpdateEntity(IUnitOfWorkFactory mongoUnitOfWorkFactory, Guid testEntityId)
-            {
-                await using var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default).ConfigureAwait(true);
-                var testRepository = mongoUnitOfWork.Services.GetRequiredService<ITestMongoRepository>();
+            retrievedEntity = await testRepository.GetAsync(testEntityId, default).ConfigureAwait(true);
 
-                var entity = await testRepository.GetAsync(testEntityId, default).ConfigureAwait(true);
+            await mongoUnitOfWork.CompleteAsync(default).ConfigureAwait(true);
+        }
 
-                entity.Version += 1;
+        _ = retrievedEntity.Version.Should().Be(4);
 
-                await testRepository.UpdateAsync(entity, default).ConfigureAwait(true);
+        static Task UpdateEntityWithRetry(IUnitOfWorkFactory mongoUnitOfWorkFactory, Guid testEntityId) => Policy.Handle<MongoCommandException>()
+                .WaitAndRetryAsync(10, i => TimeSpan.FromMilliseconds(i * 10))
+                .ExecuteAsync(() => UpdateEntity(mongoUnitOfWorkFactory, testEntityId));
 
-                await mongoUnitOfWork.CompleteAsync(default).ConfigureAwait(true);
-            }
+        static async Task UpdateEntity(IUnitOfWorkFactory mongoUnitOfWorkFactory, Guid testEntityId)
+        {
+            await using var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default).ConfigureAwait(true);
+            var testRepository = mongoUnitOfWork.Services.GetRequiredService<ITestMongoRepository>();
+
+            var entity = await testRepository.GetAsync(testEntityId, default).ConfigureAwait(true);
+
+            entity.Version += 1;
+
+            await testRepository.UpdateAsync(entity, default).ConfigureAwait(true);
+
+            await mongoUnitOfWork.CompleteAsync(default).ConfigureAwait(true);
         }
     }
 }
