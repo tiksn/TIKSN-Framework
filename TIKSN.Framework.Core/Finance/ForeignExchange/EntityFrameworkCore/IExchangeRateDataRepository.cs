@@ -1,6 +1,8 @@
+using TIKSN.Data;
+
 namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore;
 
-public interface IExchangeRateDataRepository
+public interface IExchangeRateDataRepository : IRepository<ExchangeRateDataEntity>, IQueryRepository<ExchangeRateDataEntity, Guid>
 {
     Task<IReadOnlyList<ExchangeRateDataEntity>> SearchAsync(
         Guid foreignExchangeID,
