@@ -8,30 +8,16 @@ using static LanguageExt.Prelude;
 namespace TIKSN.Numbering.Acronyms;
 
 public abstract class Acronym<TSelf> : ISerial<TSelf>
-    where TSelf : Acronym<TSelf>
+    where TSelf : Acronym<TSelf>, IAcronymLength<TSelf>
 {
     private readonly string value;
 
     protected Acronym(string value)
         => this.value = value ?? throw new ArgumentNullException(nameof(value));
 
-    public override string ToString()
-        => this.value;
+    public static bool operator !=(Acronym<TSelf> left, Acronym<TSelf> right) => !Equals(left, right);
 
-    public string ToString(string format, IFormatProvider formatProvider)
-        => this.value.ToString(formatProvider);
-
-    public bool TryFormat(
-        Span<char> destination,
-        out int charsWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider provider)
-    {
-        var result = this.value.ToString(provider);
-        charsWritten = Math.Min(result.Length, destination.Length);
-        result.CopyTo(destination[..charsWritten]);
-        return charsWritten == result.Length;
-    }
+    public static bool operator ==(Acronym<TSelf> left, Acronym<TSelf> right) => Equals(left, right);
 
     public static TSelf Parse(string s, IFormatProvider provider)
     {
@@ -43,18 +29,8 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
         throw new FormatException("Input string was not in a correct format.");
     }
 
-    public static bool TryParse(string s, IFormatProvider provider, out TSelf result)
-    {
-        var acronym = Parse(s, asciiOnly: false, provider);
-        result = acronym.MatchUnsafe(x => x, () => default);
-        return acronym.IsSome;
-    }
-
     public static TSelf Parse(ReadOnlySpan<char> s, IFormatProvider provider)
         => Parse(s.ToString(), provider);
-
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out TSelf result)
-        => TryParse(s.ToString(), provider, out result);
 
     public static Option<TSelf> Parse(string s, bool asciiOnly, IFormatProvider provider)
     {
@@ -70,7 +46,7 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
         var culture = provider as CultureInfo ?? CultureInfo.InvariantCulture;
 
         var lettersParser =
-            from letters in count(GetLetterCount(), letterParser.Map(x => char.ToUpper(x, culture)))
+            from letters in count(TSelf.LetterCount, letterParser.Map(x => char.ToUpper(x, culture)))
             from _ in eof
             select letters;
 
@@ -84,16 +60,15 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
     public static Option<TSelf> Parse(ReadOnlySpan<char> s, bool asciiOnly, IFormatProvider provider)
         => Parse(s.ToString(), asciiOnly, provider);
 
-    private static TSelf Create(string s, CultureInfo culture)
-        => (TSelf)Activator.CreateInstance(typeof(TSelf),
-            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
-            null,
-            new object[] { s },
-            culture);
+    public static bool TryParse(string s, IFormatProvider provider, out TSelf result)
+    {
+        var acronym = Parse(s, asciiOnly: false, provider);
+        result = acronym.MatchUnsafe(x => x, () => default);
+        return acronym.IsSome;
+    }
 
-    private static int GetLetterCount()
-        => (int)typeof(TSelf).GetField("LetterCount", BindingFlags.NonPublic | BindingFlags.Static)
-            .GetValue(null);
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out TSelf result)
+        => TryParse(s.ToString(), provider, out result);
 
     public bool Equals(TSelf other)
     {
@@ -125,9 +100,31 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
         return this.Equals(obj as TSelf);
     }
 
-    public override int GetHashCode() => this.value != null ? this.value.GetHashCode() : 0;
+    public override int GetHashCode()
+        => this.value != null ? this.value.GetHashCode() : 0;
 
-    public static bool operator ==(Acronym<TSelf> left, Acronym<TSelf> right) => Equals(left, right);
+    public override string ToString()
+        => this.value;
 
-    public static bool operator !=(Acronym<TSelf> left, Acronym<TSelf> right) => !Equals(left, right);
+    public string ToString(string format, IFormatProvider formatProvider)
+        => this.value.ToString(formatProvider);
+
+    public bool TryFormat(
+        Span<char> destination,
+        out int charsWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider provider)
+    {
+        var result = this.value.ToString(provider);
+        charsWritten = Math.Min(result.Length, destination.Length);
+        result.CopyTo(destination[..charsWritten]);
+        return charsWritten == result.Length;
+    }
+
+    private static TSelf Create(string s, CultureInfo culture)
+        => (TSelf)Activator.CreateInstance(typeof(TSelf),
+            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
+            null,
+            new object[] { s },
+            culture);
 }
