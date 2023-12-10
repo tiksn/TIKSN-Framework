@@ -1,8 +1,7 @@
 using System;
 
-namespace TIKSN.Data.Mongo.IntegrationTests
+namespace TIKSN.Data.Mongo.IntegrationTests;
+
+public interface ITestMongoRepository : IMongoRepository<TestMongoEntity, Guid>
 {
-    public interface ITestMongoRepository : IMongoRepository<TestMongoEntity, Guid>
-    {
-    }
 }
