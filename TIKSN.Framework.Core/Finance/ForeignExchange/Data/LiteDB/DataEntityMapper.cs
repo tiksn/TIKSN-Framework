@@ -1,8 +1,6 @@
-using TIKSN.Finance.ForeignExchange.Data;
-using TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore;
 using TIKSN.Mapping;
 
-namespace TIKSN.Finance.ForeignExchange.EntityFrameworkCore;
+namespace TIKSN.Finance.ForeignExchange.Data.LiteDB;
 
 public class DataEntityMapper
     : IMapper<ExchangeRateEntity, ExchangeRateDataEntity>
@@ -16,7 +14,6 @@ public class DataEntityMapper
 
         return new ExchangeRateDataEntity()
         {
-            ForeignExchange = null,
             Rate = source.Rate,
             AsOn = source.AsOn,
             ID = source.ID,
@@ -47,7 +44,6 @@ public class DataEntityMapper
         {
             ID = source.ID,
             CountryCode = source.CountryCode,
-            ExchangeRates = null,
             LongNameKey = source.LongNameKey,
             ShortNameKey = source.ShortNameKey,
         };
