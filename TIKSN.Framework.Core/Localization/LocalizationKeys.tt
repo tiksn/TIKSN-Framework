@@ -32,10 +32,10 @@ foreach (var dataElement in dataElements)
 #>
 
     /// <summary>
-	/// Key: <#= dataElement.Attribute("name").Value #>
-	/// Original Value: <#= dataElement.Element("value").Value #>
-	/// </summary>
-	public static int Key<#= dataElement.Attribute("name").Value #> => <#= dataElement.Attribute("name").Value #>;
+    /// Key: <#= dataElement.Attribute("name").Value #>
+    /// Original Value: <#= dataElement.Element("value").Value #>
+    /// </summary>
+    public static int Key<#= dataElement.Attribute("name").Value #> => <#= dataElement.Attribute("name").Value #>;
 <#
 }
 #>}
