@@ -714,6 +714,10 @@
           <source>The Federal Reserve, the central bank of the United States</source>
           <target state="new">The Federal Reserve, the central bank of the United States</target>
         </trans-unit>
+        <trans-unit id="553783564" translate="yes" xml:space="preserve">
+          <source>National Bank of Poland</source>
+          <target state="new">National Bank of Poland</target>
+        </trans-unit>
       </group>
     </body>
   </file>
