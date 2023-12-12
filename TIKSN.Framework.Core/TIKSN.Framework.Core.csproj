@@ -76,8 +76,8 @@
     <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="2.3.2" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.8.14" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.0" />
-    <PackageReference Include="MongoDB.Driver" Version="2.22.0" />
-    <PackageReference Include="MongoDB.Driver.GridFS" Version="2.22.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.23.0" />
+    <PackageReference Include="MongoDB.Driver.GridFS" Version="2.23.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Nito.AsyncEx.Context" Version="5.1.2" />
     <PackageReference Include="NLog.Extensions.Logging" Version="5.3.7" />
