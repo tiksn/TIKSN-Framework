@@ -2,7 +2,7 @@ namespace TIKSN.Numbering.Acronyms;
 
 public sealed class VLFLA : Acronym<VLFLA>, IAcronymLength<VLFLA>
 {
-    private VLFLA(string value) : base(value)
+    protected VLFLA(string value) : base(value)
     {
     }
 
