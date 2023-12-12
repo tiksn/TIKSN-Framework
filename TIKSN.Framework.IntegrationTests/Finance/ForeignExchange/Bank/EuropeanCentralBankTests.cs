@@ -4,11 +4,14 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.DependencyInjection;
+using TIKSN.Finance;
+using TIKSN.Finance.ForeignExchange.Bank;
 using Xunit;
 
-namespace TIKSN.Finance.ForeignExchange.Bank.IntegrationTests;
+namespace TIKSN.IntegrationTests.Finance.ForeignExchange.Bank;
 
 public class EuropeanCentralBankTests
 {
@@ -35,8 +38,8 @@ public class EuropeanCentralBankTests
             var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
             var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
 
-            Assert.True(after.Amount == before.Amount * rate);
-            Assert.True(after.Currency == pair.CounterCurrency);
+            _ = (after.Amount == before.Amount * rate).Should().BeTrue();
+            _ = (after.Currency == pair.CounterCurrency).Should().BeTrue();
         }
     }
 
@@ -52,8 +55,8 @@ public class EuropeanCentralBankTests
             var rate = await this.bank.GetExchangeRateAsync(pair, oneYearsAgo, default).ConfigureAwait(true);
             var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, oneYearsAgo, default).ConfigureAwait(true);
 
-            Assert.True(after.Amount == before.Amount * rate);
-            Assert.True(after.Currency == pair.CounterCurrency);
+            _ = (after.Amount == before.Amount * rate).Should().BeTrue();
+            _ = (after.Currency == pair.CounterCurrency).Should().BeTrue();
         }
     }
 
@@ -67,7 +70,7 @@ public class EuropeanCentralBankTests
 
         var afterInPound = await this.bank.ConvertCurrencyAsync(beforeInEuro, poundSterling, this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
 
-        Assert.True(beforeInEuro.Amount > afterInPound.Amount);
+        _ = (beforeInEuro.Amount > afterInPound.Amount).Should().BeTrue();
     }
 
     [Fact]
@@ -80,7 +83,7 @@ public class EuropeanCentralBankTests
             var before = new Money(pair.BaseCurrency, 10m);
             var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
 
-            Assert.True(after.Amount > 0m);
+            _ = (after.Amount > 0m).Should().BeTrue();
         }
     }
 
@@ -94,9 +97,8 @@ public class EuropeanCentralBankTests
             var before = new Money(pair.BaseCurrency, 10m);
 
             _ = await
-                Assert.ThrowsAsync<ArgumentException>(
-                    async () =>
-                        await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow().AddMinutes(10d), default).ConfigureAwait(true)).ConfigureAwait(true);
+                new Func<Task>(async () =>
+                        await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow().AddMinutes(10d), default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>().ConfigureAwait(true);
         }
     }
 
@@ -108,9 +110,8 @@ public class EuropeanCentralBankTests
 
         var before = new Money(amd, 10m);
 
-        _ = await Assert.ThrowsAsync<ArgumentException>(
-            async () =>
-                await this.bank.ConvertCurrencyAsync(before, all, this.timeProvider.GetUtcNow(), default).ConfigureAwait(true)).ConfigureAwait(true);
+        _ = await new Func<Task>(async () =>
+                await this.bank.ConvertCurrencyAsync(before, all, this.timeProvider.GetUtcNow(), default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>().ConfigureAwait(true);
     }
 
     [Fact]
@@ -122,7 +123,7 @@ public class EuropeanCentralBankTests
         {
             var reversedPair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
 
-            Assert.Contains(pairs, p => p == reversedPair);
+            _ = pairs.Should().Contain(p => p == reversedPair);
         }
     }
 
@@ -142,151 +143,147 @@ public class EuropeanCentralBankTests
             }
         }
 
-        Assert.True(uniquePairs.Count == pairs.Count());
+        _ = (uniquePairs.Count == pairs.Count()).Should().BeTrue();
     }
 
     [Fact]
-    public async Task GetCurrencyPairs003Async()
-    {
-        _ = await Assert.ThrowsAsync<ArgumentException>(
-            async () =>
-                await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow().AddMinutes(10d), default).ConfigureAwait(true)).ConfigureAwait(true);
-    }
+    public async Task GetCurrencyPairs003Async() =>
+        _ = await new Func<Task>(async () => await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow().AddMinutes(10d), default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>().ConfigureAwait(true);
 
     [Fact]
     public async Task GetCurrencyPairs004Async()
     {
         var pairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
 
-        Assert.Contains(pairs, p => p.ToString() == "AUD/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "BGN/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "BRL/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "CAD/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "CHF/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "CNY/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "CZK/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "DKK/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "GBP/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "HKD/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "HUF/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "IDR/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "ILS/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "INR/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "JPY/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "KRW/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "MXN/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "MYR/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "NOK/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "NZD/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "PHP/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "PLN/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "RON/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "SEK/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "SGD/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "THB/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "TRY/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "USD/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "ZAR/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "AUD/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "BGN/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "BRL/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "CAD/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "CHF/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "CNY/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "CZK/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "DKK/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "GBP/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "HKD/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "HUF/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "IDR/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "ILS/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "INR/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "JPY/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "KRW/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "MXN/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "MYR/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "NOK/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "NZD/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "PHP/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "PLN/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "RON/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "SEK/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "SGD/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "THB/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "TRY/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "USD/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "ZAR/EUR");
 
-        Assert.Contains(pairs, p => p.ToString() == "EUR/AUD");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/BGN");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/BRL");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/CAD");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/CHF");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/CNY");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/CZK");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/DKK");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/GBP");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/HKD");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/HUF");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/IDR");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/ILS");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/INR");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/JPY");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/KRW");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/MXN");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/MYR");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/NOK");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/NZD");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/PHP");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/PLN");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/RON");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/SEK");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/SGD");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/THB");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/TRY");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/USD");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/ZAR");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/AUD");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/BGN");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/BRL");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/CAD");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/CHF");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/CNY");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/CZK");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/DKK");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/GBP");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/HKD");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/HUF");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/IDR");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/ILS");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/INR");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/JPY");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/KRW");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/MXN");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/MYR");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/NOK");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/NZD");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/PHP");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/PLN");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/RON");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/SEK");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/SGD");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/THB");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/TRY");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/USD");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/ZAR");
     }
 
     [Fact]
     public async Task GetCurrencyPairs005Async()
     {
-        var pairs = await this.bank.GetCurrencyPairsAsync(new DateTime(2010, 1, 1), default).ConfigureAwait(true);
+        var pairs = await this.bank.GetCurrencyPairsAsync(new DateTimeOffset(2010, 1, 1, 0, 0, 0, TimeSpan.Zero), default).ConfigureAwait(true);
 
-        Assert.Contains(pairs, p => p.ToString() == "AUD/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "BGN/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "BRL/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "CAD/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "CHF/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "CNY/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "CZK/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "DKK/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "GBP/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "HKD/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "HRK/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "HUF/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "IDR/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "INR/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "JPY/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "KRW/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "LTL/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "MXN/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "MYR/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "NOK/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "NZD/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "PHP/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "PLN/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "RON/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "RUB/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "SEK/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "SGD/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "THB/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "TRY/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "USD/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "ZAR/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "AUD/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "BGN/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "BRL/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "CAD/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "CHF/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "CNY/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "CZK/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "DKK/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "GBP/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "HKD/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "HRK/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "HUF/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "IDR/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "INR/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "JPY/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "KRW/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "LTL/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "MXN/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "MYR/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "NOK/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "NZD/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "PHP/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "PLN/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "RON/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "RUB/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "SEK/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "SGD/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "THB/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "TRY/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "USD/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "ZAR/EUR");
 
-        Assert.Contains(pairs, p => p.ToString() == "EUR/AUD");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/BGN");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/BRL");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/CAD");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/CHF");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/CNY");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/CZK");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/DKK");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/GBP");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/HKD");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/HRK");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/HUF");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/IDR");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/INR");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/JPY");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/KRW");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/LTL");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/MXN");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/MYR");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/NOK");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/NZD");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/PHP");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/PLN");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/RON");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/RUB");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/SEK");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/SGD");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/THB");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/TRY");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/USD");
-        Assert.Contains(pairs, p => p.ToString() == "EUR/ZAR");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/AUD");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/BGN");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/BRL");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/CAD");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/CHF");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/CNY");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/CZK");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/DKK");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/GBP");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/HKD");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/HRK");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/HUF");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/IDR");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/INR");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/JPY");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/KRW");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/LTL");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/MXN");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/MYR");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/NOK");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/NZD");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/PHP");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/PLN");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/RON");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/RUB");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/SEK");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/SGD");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/THB");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/TRY");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/USD");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/ZAR");
     }
 
     [Fact]
@@ -298,7 +295,7 @@ public class EuropeanCentralBankTests
         {
             var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
 
-            Assert.True(rate > 0m);
+            _ = (rate > 0m).Should().BeTrue();
         }
     }
 
@@ -309,9 +306,8 @@ public class EuropeanCentralBankTests
 
         foreach (var pair in pairs)
         {
-            _ = await Assert.ThrowsAsync<ArgumentException>(
-            async () =>
-                await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddMinutes(10d), default).ConfigureAwait(true)).ConfigureAwait(true);
+            _ = await new Func<Task>(async () =>
+                await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddMinutes(10d), default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>().ConfigureAwait(true);
         }
     }
 
@@ -324,7 +320,7 @@ public class EuropeanCentralBankTests
         {
             var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddYears(-1), default).ConfigureAwait(true);
 
-            Assert.True(rate > 0m);
+            _ = (rate > 0m).Should().BeTrue();
         }
     }
 
@@ -336,8 +332,7 @@ public class EuropeanCentralBankTests
 
         var pair = new CurrencyPair(amd, all);
 
-        _ = await Assert.ThrowsAsync<ArgumentException>(
-            async () =>
-                await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default).ConfigureAwait(true)).ConfigureAwait(true);
+        _ = await new Func<Task>(async () =>
+                await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>().ConfigureAwait(true);
     }
 }
