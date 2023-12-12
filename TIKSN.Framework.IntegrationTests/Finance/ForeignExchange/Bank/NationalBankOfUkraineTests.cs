@@ -1,11 +1,14 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.DependencyInjection;
+using TIKSN.Finance;
+using TIKSN.Finance.ForeignExchange.Bank;
 using Xunit;
 
-namespace TIKSN.Finance.ForeignExchange.Bank.IntegrationTests;
+namespace TIKSN.IntegrationTests.Finance.ForeignExchange.Bank;
 
 public class NationalBankOfUkraineTests
 {
@@ -30,8 +33,8 @@ public class NationalBankOfUkraineTests
             var baseMoney = new Money(pair.BaseCurrency, 100);
             var convertedMoney = await this.bank.ConvertCurrencyAsync(baseMoney, pair.CounterCurrency, date, default).ConfigureAwait(true);
 
-            Assert.Equal(pair.CounterCurrency, convertedMoney.Currency);
-            Assert.True(convertedMoney.Amount > decimal.Zero);
+            _ = convertedMoney.Currency.Should().Be(pair.CounterCurrency);
+            _ = (convertedMoney.Amount > decimal.Zero).Should().BeTrue();
         }
     }
 
@@ -40,7 +43,7 @@ public class NationalBankOfUkraineTests
     {
         var pairs = await this.bank.GetCurrencyPairsAsync(new DateTimeOffset(2016, 05, 06, 0, 0, 0, TimeSpan.Zero), default).ConfigureAwait(true);
 
-        Assert.True(pairs.Any());
+        _ = pairs.Any().Should().BeTrue();
     }
 
     [Fact]
@@ -53,7 +56,7 @@ public class NationalBankOfUkraineTests
         {
             var rate = await this.bank.GetExchangeRateAsync(pair, date, default).ConfigureAwait(true);
 
-            Assert.True(rate > decimal.Zero);
+            _ = (rate > decimal.Zero).Should().BeTrue();
         }
     }
 }
