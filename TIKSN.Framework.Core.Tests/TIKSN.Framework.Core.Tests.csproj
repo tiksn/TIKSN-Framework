@@ -6,6 +6,7 @@
     <Company>TIKSN Development</Company>
     <Product>TIKSN Framework Tests</Product>
     <Authors>TIKSN Development</Authors>
+    <RootNamespace>TIKSN.Tests</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.12.0" />
@@ -42,6 +43,7 @@
     <EmbeddedResource Update="Licensing\LicensingResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LicensingResource.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>TIKSN.Tests.Licensing</CustomToolNamespace>
     </EmbeddedResource>
   </ItemGroup>
 </Project>
