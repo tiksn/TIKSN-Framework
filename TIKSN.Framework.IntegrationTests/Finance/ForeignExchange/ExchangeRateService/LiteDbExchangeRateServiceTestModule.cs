@@ -4,7 +4,7 @@ using TIKSN.Data.LiteDB;
 using TIKSN.Finance.ForeignExchange.Data;
 using TIKSN.Finance.ForeignExchange.Data.LiteDB;
 
-namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests;
+namespace TIKSN.IntegrationTests.Finance.ForeignExchange.ExchangeRateService;
 
 public class LiteDbExchangeRateServiceTestModule : Module
 {
