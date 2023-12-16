@@ -1,9 +1,10 @@
 using FluentAssertions;
 using LanguageExt;
+using TIKSN.Data;
 using Xunit;
 using static LanguageExt.Prelude;
 
-namespace TIKSN.Data.Tests;
+namespace TIKSN.Tests.Data;
 
 public class PageResultTests
 {
