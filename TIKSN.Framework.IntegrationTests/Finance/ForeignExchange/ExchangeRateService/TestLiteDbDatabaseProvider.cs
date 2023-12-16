@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using TIKSN.Data.LiteDB;
 
-namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests;
+namespace TIKSN.IntegrationTests.Finance.ForeignExchange.ExchangeRateService;
 
 public class TestLiteDbDatabaseProvider : LiteDbDatabaseProvider
 {
