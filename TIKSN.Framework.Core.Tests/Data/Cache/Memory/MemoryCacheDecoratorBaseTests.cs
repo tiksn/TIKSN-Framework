@@ -10,11 +10,13 @@ using LanguageExt;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using TIKSN.Data;
+using TIKSN.Data.Cache.Memory;
 using TIKSN.DependencyInjection;
 using Xunit;
 using static LanguageExt.Prelude;
 
-namespace TIKSN.Data.Cache.Memory.Tests;
+namespace TIKSN.Tests.Data.Cache.Memory;
 
 public class MemoryCacheDecoratorBaseTests
 {
