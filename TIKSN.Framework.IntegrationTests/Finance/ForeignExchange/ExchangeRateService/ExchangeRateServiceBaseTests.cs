@@ -5,10 +5,11 @@ using LanguageExt;
 using static LanguageExt.Prelude;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.Globalization;
-using TIKSN.IntegrationTests;
 using Xunit;
+using TIKSN.Finance;
+using TIKSN.Finance.ForeignExchange;
 
-namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests;
+namespace TIKSN.IntegrationTests.Finance.ForeignExchange.ExchangeRateService;
 
 [Collection("ServiceProviderCollection")]
 public class ExchangeRateServiceBaseTests
