@@ -2,10 +2,11 @@ using System;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.DependencyInjection;
+using TIKSN.Integration.Correlation;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace TIKSN.Integration.Correlation.Tests;
+namespace TIKSN.Tests.Integration.Correlation;
 
 public class Base62CorrelationServiceTests
 {
@@ -43,7 +44,7 @@ public class Base62CorrelationServiceTests
         var correlationIDFromString = this.correlationService.Create("5Rq2J6PNGnciW2thvTHQTa");
         this.LogOutput(correlationIDFromString, nameof(correlationIDFromString));
         var bytes = correlationIDFromString.ToBinary();
-        var hex = BitConverter.ToString(bytes.ToArray());
+        var hex = BitConverter.ToString([.. bytes]);
 
         _ = hex.Should().Be("B3-09-A6-C1-6E-56-F0-6C-03-B2-AE-47-9B-A5-E7-FA");
     }
@@ -53,7 +54,7 @@ public class Base62CorrelationServiceTests
         this.testOutputHelper.WriteLine("-------------------------");
         this.testOutputHelper.WriteLine(name);
         this.testOutputHelper.WriteLine(correlationID.ToString());
-        this.testOutputHelper.WriteLine(BitConverter.ToString(correlationID.ToBinary().ToArray()));
+        this.testOutputHelper.WriteLine(BitConverter.ToString([.. correlationID.ToBinary()]));
         this.testOutputHelper.WriteLine("");
     }
 }
