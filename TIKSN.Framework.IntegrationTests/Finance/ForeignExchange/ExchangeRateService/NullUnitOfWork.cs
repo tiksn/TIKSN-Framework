@@ -3,23 +3,38 @@ using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Data;
 
-namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests;
+namespace TIKSN.IntegrationTests.Finance.ForeignExchange.ExchangeRateService;
 
 public class NullUnitOfWork : IUnitOfWork
 {
-    private readonly IServiceProvider serviceProvider;
+    private bool disposedValue;
 
     public NullUnitOfWork(IServiceProvider serviceProvider)
-        => this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+        => this.Services = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
-    public IServiceProvider Services => this.serviceProvider;
+    public IServiceProvider Services { get; }
 
     public Task CompleteAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
     public Task DiscardAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
     public void Dispose()
-    { }
+    {
+        this.Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
 
-    public ValueTask DisposeAsync() => ValueTask.CompletedTask;
+    public ValueTask DisposeAsync()
+    {
+        GC.SuppressFinalize(this);
+        return ValueTask.CompletedTask;
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!this.disposedValue)
+        {
+            this.disposedValue = true;
+        }
+    }
 }
