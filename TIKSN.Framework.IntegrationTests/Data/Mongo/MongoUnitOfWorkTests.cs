@@ -5,18 +5,18 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using Polly;
-using TIKSN.IntegrationTests;
+using TIKSN.Data;
 using Xunit;
 
-namespace TIKSN.Data.Mongo.IntegrationTests;
+namespace TIKSN.IntegrationTests.Data.Mongo;
 
 [Collection("ServiceProviderCollection")]
 public class MongoUnitOfWorkTests
 {
-    private readonly ServiceProviderFixture _serviceProviderFixture;
+    private readonly ServiceProviderFixture serviceProviderFixture;
 
     public MongoUnitOfWorkTests(ServiceProviderFixture serviceProviderFixture) =>
-        this._serviceProviderFixture = serviceProviderFixture;
+        this.serviceProviderFixture = serviceProviderFixture;
 
     [Fact]
     public async Task TestCreationAndRetrievalAsync()
@@ -26,7 +26,7 @@ public class MongoUnitOfWorkTests
         TestMongoEntity retrievedEntity = null;
 
         var mongoUnitOfWorkFactory =
-            this._serviceProviderFixture.GetServiceProvider("MongoDB").GetRequiredService<IUnitOfWorkFactory>();
+            this.serviceProviderFixture.GetServiceProvider("MongoDB").GetRequiredService<IUnitOfWorkFactory>();
 
         await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default).ConfigureAwait(true))
         {
@@ -57,7 +57,7 @@ public class MongoUnitOfWorkTests
         TestMongoEntity retrievedEntity = null;
 
         var mongoUnitOfWorkFactory =
-            this._serviceProviderFixture.GetServiceProvider("MongoDB").GetRequiredService<IUnitOfWorkFactory>();
+            this.serviceProviderFixture.GetServiceProvider("MongoDB").GetRequiredService<IUnitOfWorkFactory>();
 
         await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default).ConfigureAwait(true))
         {
@@ -94,7 +94,7 @@ public class MongoUnitOfWorkTests
 
             var entity = await testRepository.GetAsync(testEntityId, default).ConfigureAwait(true);
 
-            entity.Version += 1;
+            entity.Version++;
 
             await testRepository.UpdateAsync(entity, default).ConfigureAwait(true);
 
