@@ -2,10 +2,11 @@ using System;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.DependencyInjection;
+using TIKSN.Integration.Correlation;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace TIKSN.Integration.Correlation.Tests;
+namespace TIKSN.Tests.Integration.Correlation;
 
 public class CuidCorrelationServiceTests
 {
@@ -22,13 +23,6 @@ public class CuidCorrelationServiceTests
         this.testOutputHelper = testOutputHelper ?? throw new ArgumentNullException(nameof(testOutputHelper));
     }
 
-    [Fact]
-    public void GenerateCoupleOfIds()
-    {
-        this.LogOutput(this.correlationService.Generate(), "Correlation ID 1");
-        this.LogOutput(this.correlationService.Generate(), "Correlation ID 2");
-        this.LogOutput(this.correlationService.Generate(), "Correlation ID 3");
-    }
     [Fact]
     public void GenerateAndParse()
     {
@@ -49,13 +43,14 @@ public class CuidCorrelationServiceTests
         _ = correlationIDFromString.Should().Be(correlationIDFromBytes);
     }
 
-    private void LogOutput(CorrelationId correlationID, string name)
+    [Fact]
+    public void GenerateCoupleOfIds()
     {
-        this.testOutputHelper.WriteLine("-------------------------");
-        this.testOutputHelper.WriteLine(name);
-        this.testOutputHelper.WriteLine(correlationID.ToString());
-        this.testOutputHelper.WriteLine(BitConverter.ToString(correlationID.ToBinary().ToArray()));
-        this.testOutputHelper.WriteLine("");
+        this.LogOutput(this.correlationService.Generate(), "Correlation ID 1");
+        this.LogOutput(this.correlationService.Generate(), "Correlation ID 2");
+        this.LogOutput(this.correlationService.Generate(), "Correlation ID 3");
+
+        _ = this.correlationService.Generate().Should().NotBe(this.correlationService.Generate());
     }
 
     [Fact]
@@ -64,5 +59,14 @@ public class CuidCorrelationServiceTests
         var correlationID = this.correlationService.Create("ch72gsb320000udocl363eofy");
 
         this.LogOutput(correlationID, nameof(correlationID));
+    }
+
+    private void LogOutput(CorrelationId correlationID, string name)
+    {
+        this.testOutputHelper.WriteLine("-------------------------");
+        this.testOutputHelper.WriteLine(name);
+        this.testOutputHelper.WriteLine(correlationID.ToString());
+        this.testOutputHelper.WriteLine(BitConverter.ToString([.. correlationID.ToBinary()]));
+        this.testOutputHelper.WriteLine("");
     }
 }
