@@ -1,14 +1,13 @@
 using System;
-using System.Net.Http;
 using Microsoft.Extensions.Logging;
 using TIKSN.Data;
+using TIKSN.Finance.ForeignExchange;
 using TIKSN.Finance.ForeignExchange.Bank;
-using TIKSN.Finance.ForeignExchange.Cumulative;
 using TIKSN.Finance.ForeignExchange.Data;
 using TIKSN.Globalization;
 using TIKSN.Localization;
 
-namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests;
+namespace TIKSN.IntegrationTests.Finance.ForeignExchange.ExchangeRateService;
 
 public sealed class TestExchangeRateService : ExchangeRateServiceBase
 {
@@ -24,13 +23,10 @@ public sealed class TestExchangeRateService : ExchangeRateServiceBase
         IReserveBankOfAustralia reserveBankOfAustralia,
         ISwissNationalBank swissNationalBank,
         ILogger<TestExchangeRateService> logger,
-        IHttpClientFactory httpClientFactory,
-        ICurrencyFactory currencyFactory,
         IRegionFactory regionFactory,
         IExchangeRateRepository exchangeRateRepository,
         IForeignExchangeRepository foreignExchangeRepository,
-        IUnitOfWorkFactory unitOfWorkFactory,
-        TimeProvider timeProvider)
+        IUnitOfWorkFactory unitOfWorkFactory)
         : base(logger, regionFactory, exchangeRateRepository, foreignExchangeRepository, unitOfWorkFactory)
     {
         this.AddBatchProvider(
