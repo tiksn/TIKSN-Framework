@@ -337,10 +337,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
         get => this.prereleaseNumber;
         private set
         {
-            if (value < -1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(this.PrereleaseNumber));
-            }
+            ArgumentOutOfRangeException.ThrowIfLessThan(value, -1);
 
             this.prereleaseNumber = value;
         }
@@ -361,59 +358,6 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
 
             return Stability.Unstable;
         }
-    }
-
-    public int CompareTo(Version other)
-    {
-        if (ReferenceEquals(this, other))
-        {
-            return 0;
-        }
-
-        var releaseComparison = this.Release.CompareTo(other.Release);
-
-        if (releaseComparison == 0)
-        {
-            _ = this.Milestone - other.Milestone;
-
-            if (this.Milestone > other.Milestone)
-            {
-                return 1;
-            }
-
-            if (this.Milestone < other.Milestone)
-            {
-                return -1;
-            }
-
-            Debug.Assert(this.Milestone == other.Milestone);
-
-            if (this.PrereleaseNumber > other.PrereleaseNumber)
-            {
-                return 1;
-            }
-
-            if (this.PrereleaseNumber < other.PrereleaseNumber)
-            {
-                return -1;
-            }
-
-            Debug.Assert(this.PrereleaseNumber == other.PrereleaseNumber);
-
-            return 0;
-        }
-
-        return releaseComparison;
-    }
-
-    public bool Equals(Version other)
-    {
-        if (other is null)
-        {
-            return false;
-        }
-
-        return this.CompareTo(other) == 0;
     }
 
     public static explicit operator NuGetVersion(Version version)
@@ -514,6 +458,64 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
     public static bool operator >(Version v1, Version v2) => v1.CompareTo(v2) > 0;
 
     public static bool operator >=(Version v1, Version v2) => v1.CompareTo(v2) >= 0;
+
+    public int CompareTo(Version other)
+    {
+        if (ReferenceEquals(this, other))
+        {
+            return 0;
+        }
+
+        if (other is null)
+        {
+            return 1;
+        }
+
+        var releaseComparison = this.Release.CompareTo(other.Release);
+
+        if (releaseComparison == 0)
+        {
+            _ = this.Milestone - other.Milestone;
+
+            if (this.Milestone > other.Milestone)
+            {
+                return 1;
+            }
+
+            if (this.Milestone < other.Milestone)
+            {
+                return -1;
+            }
+
+            Debug.Assert(this.Milestone == other.Milestone);
+
+            if (this.PrereleaseNumber > other.PrereleaseNumber)
+            {
+                return 1;
+            }
+
+            if (this.PrereleaseNumber < other.PrereleaseNumber)
+            {
+                return -1;
+            }
+
+            Debug.Assert(this.PrereleaseNumber == other.PrereleaseNumber);
+
+            return 0;
+        }
+
+        return releaseComparison;
+    }
+
+    public bool Equals(Version other)
+    {
+        if (other is null)
+        {
+            return false;
+        }
+
+        return this.CompareTo(other) == 0;
+    }
 
     public override bool Equals(object obj)
     {
