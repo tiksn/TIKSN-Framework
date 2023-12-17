@@ -2,12 +2,12 @@ using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using LanguageExt;
-using static LanguageExt.Prelude;
 using Microsoft.Extensions.DependencyInjection;
-using TIKSN.Globalization;
-using Xunit;
 using TIKSN.Finance;
 using TIKSN.Finance.ForeignExchange;
+using TIKSN.Globalization;
+using Xunit;
+using static LanguageExt.Prelude;
 
 namespace TIKSN.IntegrationTests.Finance.ForeignExchange.ExchangeRateService;
 
