@@ -2,38 +2,38 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using TIKSN.Finance;
 using Xunit;
 
-namespace TIKSN.Finance.Tests
+namespace TIKSN.Tests.Finance;
+
+public class CompositeCrossCurrencyConverterTests
 {
-    public class CompositeCrossCurrencyConverterTests
+    [Fact]
+    public async Task GetCurrencyPairsAsync001()
     {
-        [Fact]
-        public async Task GetCurrencyPairsAsync001Async()
-        {
-            var converter = new CompositeCrossCurrencyConverter(new AverageCurrencyConversionCompositionStrategy());
+        var converter = new CompositeCrossCurrencyConverter(new AverageCurrencyConversionCompositionStrategy());
 
-            converter.Add(new FixedRateCurrencyConverter(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("EUR")), 1.12m));
-            converter.Add(new FixedRateCurrencyConverter(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("GBP")), 1.13m));
-            converter.Add(new FixedRateCurrencyConverter(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("CHF")), 1.14m));
+        converter.Add(new FixedRateCurrencyConverter(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("EUR")), 1.12m));
+        converter.Add(new FixedRateCurrencyConverter(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("GBP")), 1.13m));
+        converter.Add(new FixedRateCurrencyConverter(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("CHF")), 1.14m));
 
-            var pairs = await converter.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true);
+        var pairs = await converter.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true);
 
-            _ = pairs.Count().Should().Be(3);
-        }
+        _ = pairs.Count().Should().Be(3);
+    }
 
-        [Fact]
-        public async Task GetExchangeRateAsync001Async()
-        {
-            var converter = new CompositeCrossCurrencyConverter(new AverageCurrencyConversionCompositionStrategy());
+    [Fact]
+    public async Task GetExchangeRateAsync001()
+    {
+        var converter = new CompositeCrossCurrencyConverter(new AverageCurrencyConversionCompositionStrategy());
 
-            converter.Add(new FixedRateCurrencyConverter(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("EUR")), 1.12m));
-            converter.Add(new FixedRateCurrencyConverter(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("GBP")), 1.13m));
-            converter.Add(new FixedRateCurrencyConverter(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("CHF")), 1.14m));
+        converter.Add(new FixedRateCurrencyConverter(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("EUR")), 1.12m));
+        converter.Add(new FixedRateCurrencyConverter(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("GBP")), 1.13m));
+        converter.Add(new FixedRateCurrencyConverter(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("CHF")), 1.14m));
 
-            var rate = await converter.GetExchangeRateAsync(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("EUR")), DateTimeOffset.Now, default).ConfigureAwait(true);
+        var rate = await converter.GetExchangeRateAsync(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("EUR")), DateTimeOffset.Now, default).ConfigureAwait(true);
 
-            _ = rate.Should().Be(1.12m);
-        }
+        _ = rate.Should().Be(1.12m);
     }
 }
