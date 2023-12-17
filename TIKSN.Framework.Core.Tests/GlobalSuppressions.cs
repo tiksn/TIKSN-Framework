@@ -4,5 +4,6 @@
 // Project-level suppressions either have no target or are given
 // a specific target and scoped to a namespace, type, member, etc.
 
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "DateTimeNowAnalyzer:DateTime.Now should not be used.", Justification = "Ignore in tests")]
+using System.Diagnostics.CodeAnalysis;
 
+[assembly: SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "Test method name can have underscores", Scope = "module")]
