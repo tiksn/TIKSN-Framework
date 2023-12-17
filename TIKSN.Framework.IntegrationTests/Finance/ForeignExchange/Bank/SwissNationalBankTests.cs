@@ -2,11 +2,14 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.DependencyInjection;
+using TIKSN.Finance;
+using TIKSN.Finance.ForeignExchange.Bank;
 using Xunit;
 
-namespace TIKSN.Finance.ForeignExchange.Bank.IntegrationTests;
+namespace TIKSN.IntegrationTests.Finance.ForeignExchange.Bank;
 
 public class SwissNationalBankTests
 {
@@ -35,8 +38,8 @@ public class SwissNationalBankTests
 
             var rate = await this.bank.GetExchangeRateAsync(pair, atTheMoment, default).ConfigureAwait(true);
 
-            Assert.True(after.Amount == before.Amount * rate);
-            Assert.Equal(pair.CounterCurrency, after.Currency);
+            _ = (after.Amount == before.Amount * rate).Should().BeTrue();
+            _ = after.Currency.Should().Be(pair.CounterCurrency);
         }
     }
 
@@ -50,8 +53,8 @@ public class SwissNationalBankTests
             var before = new Money(pair.BaseCurrency, 100m);
             var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, atTheMoment, default).ConfigureAwait(true);
 
-            Assert.True(after.Amount > decimal.Zero);
-            Assert.Equal(pair.CounterCurrency, after.Currency);
+            _ = (after.Amount > decimal.Zero).Should().BeTrue();
+            _ = after.Currency.Should().Be(pair.CounterCurrency);
         }
     }
 
@@ -65,9 +68,8 @@ public class SwissNationalBankTests
             var before = new Money(pair.BaseCurrency, 100m);
 
             _ = await
-                Assert.ThrowsAsync<ArgumentException>(
-                    async () =>
-                        await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, moment, default).ConfigureAwait(true)).ConfigureAwait(true);
+                new Func<Task>(async () =>
+                        await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, moment, default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>().ConfigureAwait(true);
         }
     }
 
@@ -81,9 +83,8 @@ public class SwissNationalBankTests
             var before = new Money(pair.BaseCurrency, 100m);
 
             _ = await
-            Assert.ThrowsAsync<ArgumentException>(
-                async () =>
-                    await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, moment, default).ConfigureAwait(true)).ConfigureAwait(true);
+            new Func<Task>(async () =>
+                    await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, moment, default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>().ConfigureAwait(true);
         }
     }
 
@@ -98,9 +99,8 @@ public class SwissNationalBankTests
 
         var before = new Money(aoa, 100m);
 
-        _ = await Assert.ThrowsAsync<ArgumentException>(
-                async () =>
-                    await this.bank.ConvertCurrencyAsync(before, bwp, this.timeProvider.GetUtcNow(), default).ConfigureAwait(true)).ConfigureAwait(true);
+        _ = await new Func<Task>(async () =>
+                    await this.bank.ConvertCurrencyAsync(before, bwp, this.timeProvider.GetUtcNow(), default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>().ConfigureAwait(true);
     }
 
     [Fact]
@@ -108,7 +108,7 @@ public class SwissNationalBankTests
     {
         var moment = this.timeProvider.GetUtcNow().AddMinutes(10d);
 
-        _ = await Assert.ThrowsAsync<ArgumentException>(async () => await this.bank.GetCurrencyPairsAsync(moment, default).ConfigureAwait(true)).ConfigureAwait(true);
+        _ = await new Func<Task>(async () => await this.bank.GetCurrencyPairsAsync(moment, default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>().ConfigureAwait(true);
     }
 
     [Fact]
@@ -118,7 +118,7 @@ public class SwissNationalBankTests
 
         var distinctPairs = pairs.Distinct();
 
-        Assert.True(pairs.Count() == distinctPairs.Count());
+        _ = (pairs.Count() == distinctPairs.Count()).Should().BeTrue();
     }
 
     [Fact]
@@ -126,7 +126,7 @@ public class SwissNationalBankTests
     {
         var moment = this.timeProvider.GetUtcNow().AddDays(-10d);
 
-        _ = await Assert.ThrowsAsync<ArgumentException>(async () => await this.bank.GetCurrencyPairsAsync(moment, default).ConfigureAwait(true)).ConfigureAwait(true);
+        _ = await new Func<Task>(async () => await this.bank.GetCurrencyPairsAsync(moment, default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>().ConfigureAwait(true);
     }
 
     [Fact]
@@ -138,7 +138,7 @@ public class SwissNationalBankTests
         {
             var reversed = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
 
-            Assert.Contains(pairs, p => p == reversed);
+            _ = pairs.Should().Contain(p => p == reversed);
         }
     }
 
@@ -147,17 +147,17 @@ public class SwissNationalBankTests
     {
         var pairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
 
-        Assert.Contains(pairs, p => p.ToString() == "EUR/CHF");
-        Assert.Contains(pairs, p => p.ToString() == "USD/CHF");
-        Assert.Contains(pairs, p => p.ToString() == "JPY/CHF");
-        Assert.Contains(pairs, p => p.ToString() == "GBP/CHF");
+        _ = pairs.Should().Contain(p => p.ToString() == "EUR/CHF");
+        _ = pairs.Should().Contain(p => p.ToString() == "USD/CHF");
+        _ = pairs.Should().Contain(p => p.ToString() == "JPY/CHF");
+        _ = pairs.Should().Contain(p => p.ToString() == "GBP/CHF");
 
-        Assert.Contains(pairs, p => p.ToString() == "CHF/EUR");
-        Assert.Contains(pairs, p => p.ToString() == "CHF/USD");
-        Assert.Contains(pairs, p => p.ToString() == "CHF/JPY");
-        Assert.Contains(pairs, p => p.ToString() == "CHF/GBP");
+        _ = pairs.Should().Contain(p => p.ToString() == "CHF/EUR");
+        _ = pairs.Should().Contain(p => p.ToString() == "CHF/USD");
+        _ = pairs.Should().Contain(p => p.ToString() == "CHF/JPY");
+        _ = pairs.Should().Contain(p => p.ToString() == "CHF/GBP");
 
-        Assert.Equal(8, pairs.Count());
+        _ = pairs.Count().Should().Be(8);
     }
 
     [Fact]
@@ -169,7 +169,7 @@ public class SwissNationalBankTests
         {
             var rate = await this.bank.GetExchangeRateAsync(pair, atTheMoment, default).ConfigureAwait(true);
 
-            Assert.True(rate > decimal.Zero);
+            _ = (rate > decimal.Zero).Should().BeTrue();
         }
     }
 
@@ -180,7 +180,7 @@ public class SwissNationalBankTests
 
         foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true))
         {
-            _ = await Assert.ThrowsAsync<ArgumentException>(async () => await this.bank.GetExchangeRateAsync(pair, moment, default).ConfigureAwait(true)).ConfigureAwait(true);
+            _ = await new Func<Task>(async () => await this.bank.GetExchangeRateAsync(pair, moment, default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>().ConfigureAwait(true);
         }
     }
 
@@ -195,7 +195,7 @@ public class SwissNationalBankTests
 
         var pair = new CurrencyPair(aoa, bwp);
 
-        _ = await Assert.ThrowsAsync<ArgumentException>(async () => await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default).ConfigureAwait(true)).ConfigureAwait(true);
+        _ = await new Func<Task>(async () => await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>().ConfigureAwait(true);
     }
 
     [Fact]
@@ -205,7 +205,7 @@ public class SwissNationalBankTests
 
         foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true))
         {
-            _ = await Assert.ThrowsAsync<ArgumentException>(async () => await this.bank.GetExchangeRateAsync(pair, moment, default).ConfigureAwait(true)).ConfigureAwait(true);
+            _ = await new Func<Task>(async () => await this.bank.GetExchangeRateAsync(pair, moment, default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>().ConfigureAwait(true);
         }
     }
 }

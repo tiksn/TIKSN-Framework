@@ -7,23 +7,23 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Localization;
 using MongoDB.Bson;
 using TIKSN.Data.Mongo;
-using TIKSN.Data.Mongo.IntegrationTests;
+using TIKSN.IntegrationTests.Data.Mongo;
 using TIKSN.DependencyInjection;
 using TIKSN.Finance.ForeignExchange;
-using TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests;
-using TIKSN.Framework.IntegrationTests.Data.Mongo;
+using TIKSN.IntegrationTests.Finance.ForeignExchange.ExchangeRateService;
 
 namespace TIKSN.IntegrationTests;
 
 public class ServiceProviderFixture : IDisposable
 {
     private readonly Dictionary<string, IHost> hosts;
+    private bool disposedValue;
 
     public ServiceProviderFixture()
     {
         BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
 
-        this.hosts = new Dictionary<string, IHost>();
+        this.hosts = [];
 
         this.CreateHost(string.Empty, builder => { });
         this.CreateHost("LiteDB", builder => builder.RegisterModule<LiteDbExchangeRateServiceTestModule>());
@@ -70,13 +70,27 @@ public class ServiceProviderFixture : IDisposable
 
     public void Dispose()
     {
-        foreach (var host in this.hosts.Values)
-        {
-            host.Dispose();
-        }
+        this.Dispose(disposing: true);
+        GC.SuppressFinalize(this);
     }
 
     public IServiceProvider GetServiceProvider() => this.hosts[string.Empty].Services;
 
     public IServiceProvider GetServiceProvider(string key) => this.hosts[key].Services;
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!this.disposedValue)
+        {
+            if (disposing)
+            {
+                foreach (var host in this.hosts.Values)
+                {
+                    host.Dispose();
+                }
+            }
+
+            this.disposedValue = true;
+        }
+    }
 }

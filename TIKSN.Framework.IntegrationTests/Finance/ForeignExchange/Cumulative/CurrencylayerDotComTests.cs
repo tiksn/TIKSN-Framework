@@ -1,17 +1,19 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.DependencyInjection;
+using TIKSN.Finance;
+using TIKSN.Finance.ForeignExchange.Cumulative;
 using Xunit;
 
-namespace TIKSN.Finance.ForeignExchange.Cumulative.IntegrationTests;
+namespace TIKSN.IntegrationTests.Finance.ForeignExchange.Cumulative;
 
 public class CurrencylayerDotComTests
 {
-    private const string skip = "API changed, code needs to be adopted";
+    private const string Skip = "API changed, code needs to be adopted";
 
-    private readonly string accessKey = "<put your access key here>";
     private readonly ICurrencylayerDotCom exchange;
 
     public CurrencylayerDotComTests()
@@ -22,21 +24,21 @@ public class CurrencylayerDotComTests
         this.exchange = serviceProvider.GetRequiredService<ICurrencylayerDotCom>();
     }
 
-    [Fact(Skip = skip)]
-    public async Task GetCurrencyPairs001Async()
+    [Fact(Skip = Skip)]
+    public async Task GetCurrencyPairs001()
     {
         var pairs = await this.exchange.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true);
 
-        Assert.True(pairs.Count() > 0);
+        _ = pairs.Any().Should().BeTrue();
     }
 
-    [Fact(Skip = skip)]
-    public async Task GetExchangeRateAsync001Async()
+    [Fact(Skip = Skip)]
+    public async Task GetExchangeRateAsync001()
     {
         var pair = new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("UAH"));
 
         var rate = await this.exchange.GetExchangeRateAsync(pair, DateTimeOffset.Now, default).ConfigureAwait(true);
 
-        Assert.True(rate > decimal.Zero);
+        _ = (rate > decimal.Zero).Should().BeTrue();
     }
 }

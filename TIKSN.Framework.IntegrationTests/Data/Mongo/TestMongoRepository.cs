@@ -1,6 +1,7 @@
 using System;
+using TIKSN.Data.Mongo;
 
-namespace TIKSN.Data.Mongo.IntegrationTests;
+namespace TIKSN.IntegrationTests.Data.Mongo;
 
 public class TestMongoRepository : MongoRepository<TestMongoEntity, Guid>, ITestMongoRepository
 {

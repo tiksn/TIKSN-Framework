@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Xunit;
 
 namespace TIKSN.Finance.Tests
@@ -18,7 +19,7 @@ namespace TIKSN.Finance.Tests
 
             var pairs = await converter.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true);
 
-            Assert.Equal(3, pairs.Count());
+            _ = pairs.Count().Should().Be(3);
         }
 
         [Fact]
@@ -32,7 +33,7 @@ namespace TIKSN.Finance.Tests
 
             var rate = await converter.GetExchangeRateAsync(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("EUR")), DateTimeOffset.Now, default).ConfigureAwait(true);
 
-            Assert.Equal(1.12m, rate);
+            _ = rate.Should().Be(1.12m);
         }
     }
 }

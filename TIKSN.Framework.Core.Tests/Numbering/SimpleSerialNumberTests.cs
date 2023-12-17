@@ -1,10 +1,11 @@
 using System;
 using System.Globalization;
 using FluentAssertions;
+using TIKSN.Numbering;
 using TIKSN.Numbering.Acronyms;
 using Xunit;
 
-namespace TIKSN.Numbering.Tests;
+namespace TIKSN.Tests.Numbering;
 
 public class SimpleSerialNumberTests
 {
@@ -62,7 +63,7 @@ public class SimpleSerialNumberTests
         var actualValue = actual.Map(x => x.ToString()).MatchUnsafe(x => x, () => null);
 
         // Assert
-        actualValue.Should().Be(expectedValue);
+        _ = actualValue.Should().Be(expectedValue);
     }
 
     [Theory]
@@ -84,7 +85,7 @@ public class SimpleSerialNumberTests
         var nextSerialNumberValue = nextSerialNumber.MatchUnsafe(s => s.ToString(), () => null);
 
         // Assert
-        previousSerialNumberValue.Should().Be(previous);
-        nextSerialNumberValue.Should().Be(next);
+        _ = previousSerialNumberValue.Should().Be(previous);
+        _ = nextSerialNumberValue.Should().Be(next);
     }
 }

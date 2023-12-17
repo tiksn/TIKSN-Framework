@@ -2,10 +2,11 @@ using System;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.DependencyInjection;
+using TIKSN.Integration.Correlation;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace TIKSN.Integration.Correlation.Tests;
+namespace TIKSN.Tests.Integration.Correlation;
 
 public class GuidCorrelationServiceTests
 {
@@ -42,7 +43,7 @@ public class GuidCorrelationServiceTests
         this.testOutputHelper.WriteLine("-------------------------");
         this.testOutputHelper.WriteLine(name);
         this.testOutputHelper.WriteLine(correlationID.ToString());
-        this.testOutputHelper.WriteLine(BitConverter.ToString(correlationID.ToBinary().ToArray()));
+        this.testOutputHelper.WriteLine(BitConverter.ToString([.. correlationID.ToBinary()]));
         this.testOutputHelper.WriteLine("");
     }
 }

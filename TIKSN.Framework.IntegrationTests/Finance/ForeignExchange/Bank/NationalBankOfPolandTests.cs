@@ -3,10 +3,12 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.DependencyInjection;
+using TIKSN.Finance;
+using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Globalization;
 using Xunit;
 
-namespace TIKSN.Finance.ForeignExchange.Bank.IntegrationTests;
+namespace TIKSN.IntegrationTests.Finance.ForeignExchange.Bank;
 
 public class NationalBankOfPolandTests
 {

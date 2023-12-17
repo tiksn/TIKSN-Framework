@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Data;
 
-namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests;
+namespace TIKSN.IntegrationTests.Finance.ForeignExchange.ExchangeRateService;
 
 public class NullUnitOfWorkFactory : IUnitOfWorkFactory
 {

@@ -4,7 +4,7 @@ using TIKSN.Data.Mongo;
 using TIKSN.Finance.ForeignExchange.Data;
 using TIKSN.Finance.ForeignExchange.Data.Mongo;
 
-namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests;
+namespace TIKSN.IntegrationTests.Finance.ForeignExchange.ExchangeRateService;
 
 public class MongoDbExchangeRateServiceTestModule : Module
 {

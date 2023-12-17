@@ -11,12 +11,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Time.Testing;
 using Newtonsoft.Json;
 using TIKSN.DependencyInjection;
-using TIKSN.Framework.Core.Tests.Licensing;
+using TIKSN.Licensing;
 using Xunit;
 using Xunit.Abstractions;
 using static LanguageExt.Prelude;
 
-namespace TIKSN.Licensing.Tests;
+namespace TIKSN.Tests.Licensing;
 
 public class LicenseTests
 {
@@ -56,22 +56,15 @@ public class LicenseTests
     {
         // Arrange
 
-        ILicenseFactory<TestEntitlements, TestLicenseEntitlements> licenseFactory;
-        IndividualParty licensor;
-        OrganizationParty licensee;
-        LicenseTerms terms;
-        TestEntitlements entitlements;
-        X509Certificate2 publicCertificate;
-        X509Certificate2 privateCertificate;
         this.Arrange(
             kind,
-            out licenseFactory,
-            out licensor,
-            out licensee,
-            out terms,
-            out entitlements,
-            out publicCertificate,
-            out privateCertificate);
+            out var licenseFactory,
+            out var licensor,
+            out var licensee,
+            out var terms,
+            out var entitlements,
+            out var publicCertificate,
+            out var privateCertificate);
 
         // Act
 
@@ -98,22 +91,15 @@ public class LicenseTests
     {
         // Arrange
 
-        ILicenseFactory<TestEntitlements, TestLicenseEntitlements> licenseFactory;
-        IndividualParty licensor;
-        OrganizationParty licensee;
-        LicenseTerms terms;
-        TestEntitlements entitlements;
-        X509Certificate2 publicCertificate;
-        X509Certificate2 privateCertificate;
         this.Arrange(
             kind,
-            out licenseFactory,
-            out licensor,
-            out licensee,
-            out terms,
-            out entitlements,
-            out publicCertificate,
-            out privateCertificate);
+            out var licenseFactory,
+            out var licensor,
+            out var licensee,
+            out var terms,
+            out var entitlements,
+            out var publicCertificate,
+            out var privateCertificate);
 
         // Act
 
