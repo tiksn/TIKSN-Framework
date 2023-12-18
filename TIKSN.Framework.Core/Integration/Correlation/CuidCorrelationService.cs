@@ -117,9 +117,6 @@ public class CuidCorrelationService : ICorrelationService
             out var randomNumber2Chars,
             out var randomNumber2Bytes);
 
-        var chars = charArrayRepresentation.AsSpan();
-        var bytes = byteArrayRepresentation.AsSpan();
-
         var timestamp = this.timeProvider.GetUtcNow().ToUnixTimeMilliseconds();
 
         int oldCounter;
@@ -133,8 +130,10 @@ public class CuidCorrelationService : ICorrelationService
         var theHostname = this.GetHostname();
         var hostnameHash = theHostname.Split().Aggregate(theHostname.Length + 36, (prev, c) => prev + c[0]) %
                            DuetteUpperBoundary;
+#pragma warning disable CA5394 // Do not use insecure randomness
         var randomNumber1 = this.random.Next() % QuartetteUpperBoundary;
         var randomNumber2 = this.random.Next() % QuartetteUpperBoundary;
+#pragma warning restore CA5394 // Do not use insecure randomness
 
         WriteBase36(timestamp, timestampChars, timestampBytes);
         WriteBase36(oldCounter, counterChars, counterBytes);
@@ -306,6 +305,7 @@ public class CuidCorrelationService : ICorrelationService
             {
                 if (this.hostname == null)
                 {
+#pragma warning disable CA1031 // Do not catch general exception types
                     try
                     {
                         this.hostname = Environment.MachineName;
@@ -316,6 +316,7 @@ public class CuidCorrelationService : ICorrelationService
                         this.hostname = this.random.Next().ToString(CultureInfo.InvariantCulture);
 #pragma warning restore CA5394 // Do not use insecure randomness
                     }
+#pragma warning restore CA1031 // Do not catch general exception types
                 }
             }
         }
