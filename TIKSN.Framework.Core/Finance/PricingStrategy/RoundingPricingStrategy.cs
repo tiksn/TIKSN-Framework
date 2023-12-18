@@ -2,20 +2,19 @@ namespace TIKSN.Finance.PricingStrategy;
 
 public class RoundingPricingStrategy : IPricingStrategy
 {
-    private readonly int fitstImportantDigitsCount;
+    private readonly int firstImportantDigitsCount;
 
-    public RoundingPricingStrategy(int fitstImportantDigitsCount)
+    public RoundingPricingStrategy(int firstImportantDigitsCount)
     {
-        if (fitstImportantDigitsCount < 1)
-        {
-            throw new ArgumentException(message: null, nameof(fitstImportantDigitsCount));
-        }
+        ArgumentOutOfRangeException.ThrowIfLessThan(firstImportantDigitsCount, 1);
 
-        this.fitstImportantDigitsCount = fitstImportantDigitsCount;
+        this.firstImportantDigitsCount = firstImportantDigitsCount;
     }
 
     public Money EstimateMarketPrice(Money basePrice)
     {
+        ArgumentNullException.ThrowIfNull(basePrice);
+
         var estimatedPrice = this.EstimateMarketPrice(basePrice.Amount);
 
         return new Money(basePrice.Currency, estimatedPrice);
@@ -28,7 +27,7 @@ public class RoundingPricingStrategy : IPricingStrategy
 
         var estimated = basePrice / norm;
 
-        estimated = Math.Round(estimated, this.fitstImportantDigitsCount - 1);
+        estimated = Math.Round(estimated, this.firstImportantDigitsCount - 1);
 
         estimated *= norm;
 
