@@ -9,8 +9,8 @@ public class SitemapTests
     [Fact]
     public void Pages001()
     {
-        var p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
-        var p2 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
+        var p1 = new SitemapPage(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now, SitemapPage.Frequency.Always, 0.5);
+        var p2 = new SitemapPage(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now, SitemapPage.Frequency.Always, 0.5);
 
         var map = new Sitemap();
 
@@ -21,7 +21,7 @@ public class SitemapTests
     [Fact]
     public void Pages002()
     {
-        var p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
+        var p1 = new SitemapPage(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now, SitemapPage.Frequency.Always, 0.5);
 
         var map = new Sitemap();
 
@@ -32,8 +32,8 @@ public class SitemapTests
     [Fact]
     public void Pages003()
     {
-        var p1 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now, Sitemap.Page.Frequency.Always, 0.5);
-        var p2 = new Sitemap.Page(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now.AddDays(10d), Sitemap.Page.Frequency.Monthly, 0.2);
+        var p1 = new SitemapPage(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now, SitemapPage.Frequency.Always, 0.5);
+        var p2 = new SitemapPage(new System.Uri("http://www.microsoft.com/"), System.DateTime.Now.AddDays(10d), SitemapPage.Frequency.Monthly, 0.2);
 
         var map = new Sitemap();
 
@@ -65,9 +65,9 @@ public class SitemapTests
 
         var map = new Sitemap();
 
-        _ = map.Pages.Add(new Sitemap.Page(new System.Uri("http://microsoft.com/"), new System.DateTime(2012, 8, 3), Sitemap.Page.Frequency.Daily, 0.2));
-        _ = map.Pages.Add(new Sitemap.Page(new System.Uri("http://microsoft.com/sitemap.aspx"), new System.DateTime(2012, 8, 3), Sitemap.Page.Frequency.Daily, 0.2));
-        _ = map.Pages.Add(new Sitemap.Page(new System.Uri("http://microsoft.com/default.aspx"), new System.DateTime(2012, 4, 5), Sitemap.Page.Frequency.Monthly, 0.8));
+        _ = map.Pages.Add(new SitemapPage(new System.Uri("http://microsoft.com/"), new System.DateTime(2012, 8, 3), SitemapPage.Frequency.Daily, 0.2));
+        _ = map.Pages.Add(new SitemapPage(new System.Uri("http://microsoft.com/sitemap.aspx"), new System.DateTime(2012, 8, 3), SitemapPage.Frequency.Daily, 0.2));
+        _ = map.Pages.Add(new SitemapPage(new System.Uri("http://microsoft.com/default.aspx"), new System.DateTime(2012, 4, 5), SitemapPage.Frequency.Monthly, 0.8));
 
         map.Write(xwriter);
 
