@@ -10,8 +10,8 @@ public class UnsignedBigIntegerBinarySerializer : ICustomSerializer<byte[], BigI
     /// <summary>
     ///     Serializes unsigned <see cref="BigInteger" /> to byte array
     /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
+    /// <param name="obj">Model to serialize</param>
+    /// <returns>Serialized bytes</returns>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     public byte[] Serialize(BigInteger obj)
     {
