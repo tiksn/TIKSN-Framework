@@ -5,36 +5,27 @@ using TIKSN.Globalization;
 
 namespace TIKSN.Finance.ForeignExchange.Bank;
 
-public class BankOfRussia : ICurrencyConverter, IExchangeRatesProvider
+public class BankOfRussia : IBankOfRussia
 {
     private const string AddressFormat =
         "https://www.cbr.ru/scripts/XML_daily.asp?date_req={0:00}.{1:00}.{2}";
 
-    private static readonly CurrencyInfo RussianRuble;
-    private static readonly CultureInfo RussianRussia;
-    private readonly IHttpClientFactory httpClientFactory;
+    private static readonly CurrencyInfo RussianRuble = new(new RegionInfo("ru-RU"));
+    private static readonly CultureInfo RussianRussia = new("ru-RU");
     private readonly ICurrencyFactory currencyFactory;
-    private readonly TimeProvider timeProvider;
+    private readonly HttpClient httpClient;
     private readonly Dictionary<CurrencyInfo, decimal> rates;
-
+    private readonly TimeProvider timeProvider;
     private DateTimeOffset? published;
 
-    static BankOfRussia()
-    {
-        var russia = new RegionInfo("ru-RU");
-
-        RussianRuble = new CurrencyInfo(russia);
-        RussianRussia = new CultureInfo("ru-RU");
-    }
-
     public BankOfRussia(
-        IHttpClientFactory httpClientFactory,
+        HttpClient httpClient,
         ICurrencyFactory currencyFactory,
         TimeProvider timeProvider)
     {
-        this.rates = new Dictionary<CurrencyInfo, decimal>();
+        this.rates = [];
         this.published = null;
-        this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+        this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
@@ -45,6 +36,9 @@ public class BankOfRussia : ICurrencyConverter, IExchangeRatesProvider
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(baseMoney);
+        ArgumentNullException.ThrowIfNull(counterCurrency);
+
         await this.FetchOnDemandAsync(asOn, cancellationToken).ConfigureAwait(false);
 
         var rate = this.GetRate(baseMoney.Currency, counterCurrency);
@@ -74,6 +68,8 @@ public class BankOfRussia : ICurrencyConverter, IExchangeRatesProvider
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(pair);
+
         await this.FetchOnDemandAsync(asOn, cancellationToken).ConfigureAwait(false);
 
         return this.GetRate(pair.BaseCurrency, pair.CounterCurrency);
@@ -87,14 +83,13 @@ public class BankOfRussia : ICurrencyConverter, IExchangeRatesProvider
 
         var thatDay = asOn.Date;
 
-        var address = string.Format(AddressFormat, thatDay.Day, thatDay.Month, thatDay.Year);
+        var address = new Uri(string.Format(RussianRussia, AddressFormat, thatDay.Day, thatDay.Month, thatDay.Year));
 
         var result = new List<ExchangeRate>();
 
-        var httpClient = this.httpClientFactory.CreateClient();
-        var responseStream = await httpClient.GetStreamAsync(address, cancellationToken).ConfigureAwait(false);
+        var responseStream = await this.httpClient.GetStreamAsync(address, cancellationToken).ConfigureAwait(false);
 
-        var stream​Reader = new Stream​Reader(responseStream, Encoding.UTF7);
+        using var stream​Reader = new Stream​Reader(responseStream, Encoding.UTF7);
 
         var xdoc = XDocument.Load(stream​Reader);
 
@@ -146,7 +141,7 @@ public class BankOfRussia : ICurrencyConverter, IExchangeRatesProvider
     {
         if (asOn > timeProvider.GetUtcNow())
         {
-            throw new ArgumentException("Exchange rate forecasting not supported.");
+            throw new ArgumentException("Exchange rate forecasting not supported.", nameof(asOn));
         }
     }
 
@@ -158,7 +153,7 @@ public class BankOfRussia : ICurrencyConverter, IExchangeRatesProvider
         {
             _ = await this.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
         }
-        else if (this.published.Value != asOn.Date)
+        else if (this.published.Value.Date != asOn.Date)
         {
             _ = await this.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
         }

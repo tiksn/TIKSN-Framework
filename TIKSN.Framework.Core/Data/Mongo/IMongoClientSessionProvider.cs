@@ -1,10 +1,9 @@
 using LanguageExt;
 using MongoDB.Driver;
 
-namespace TIKSN.Data.Mongo
+namespace TIKSN.Data.Mongo;
+
+public interface IMongoClientSessionProvider
 {
-    public interface IMongoClientSessionProvider
-    {
-        Option<IClientSessionHandle> GetClientSessionHandle();
-    }
+    Option<IClientSessionHandle> GetClientSessionHandle();
 }

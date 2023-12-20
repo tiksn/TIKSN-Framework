@@ -12,7 +12,7 @@ public class GuidCorrelationService : ICorrelationService
     ///     Creates <see cref="CorrelationId" /> from string representation.
     /// </summary>
     /// <param name="stringRepresentation"></param>
-    /// <returns></returns>
+    /// <returns>Created <see cref="CorrelationId"/></returns>
     public CorrelationId Create(string stringRepresentation)
     {
         var guid = Guid.Parse(stringRepresentation);
@@ -23,7 +23,7 @@ public class GuidCorrelationService : ICorrelationService
     ///     Creates <see cref="CorrelationId" /> from binary representation.
     /// </summary>
     /// <param name="binaryRepresentation"></param>
-    /// <returns></returns>
+    /// <returns>Created <see cref="CorrelationId"/></returns>
     public CorrelationId Create(Seq<byte> binaryRepresentation)
     {
         var guid = new Guid(binaryRepresentation.ToArray());
@@ -33,7 +33,7 @@ public class GuidCorrelationService : ICorrelationService
     /// <summary>
     ///     Generates new <see cref="CorrelationId" />
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Created <see cref="CorrelationId"/></returns>
     public CorrelationId Generate()
     {
         var guid = Guid.NewGuid();

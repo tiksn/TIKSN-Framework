@@ -1,77 +1,75 @@
-using System;
 using System.Diagnostics;
 using System.Management.Automation;
 using TIKSN.Progress;
 
-namespace TIKSN.PowerShell
+namespace TIKSN.PowerShell;
+
+public class PowerShellProgress : DisposableProgress<OperationProgressReport>
 {
-    public class PowerShellProgress : DisposableProgress<OperationProgressReport>
+    private static readonly object ActivityIdLocker = new();
+    private static int nextActivityId;
+
+    private readonly ICurrentCommandProvider currentCommandProvider;
+    private readonly ProgressRecord progressRecord;
+    private readonly Stopwatch stopwatch;
+
+    public PowerShellProgress(ICurrentCommandProvider currentCommandProvider, string activity,
+        string statusDescription)
     {
-        private static readonly object activityIdLocker = new();
-        private static int nextActivityId;
+        this.progressRecord = new ProgressRecord(GenerateNextActivityId(), activity, statusDescription);
 
-        private readonly ICurrentCommandProvider _currentCommandProvider;
-        private readonly ProgressRecord progressRecord;
-        private readonly Stopwatch stopwatch;
+        this.stopwatch = Stopwatch.StartNew();
+        this.progressRecord.RecordType = ProgressRecordType.Processing;
+        this.currentCommandProvider = currentCommandProvider ??
+                                       throw new ArgumentNullException(nameof(currentCommandProvider));
+        this.currentCommandProvider.GetCurrentCommand().WriteProgress(this.progressRecord);
+    }
 
-        public PowerShellProgress(ICurrentCommandProvider currentCommandProvider, string activity,
-            string statusDescription)
+    public PowerShellProgress CreateChildProgress(string activity, string statusDescription)
+    {
+        var childProgress = new PowerShellProgress(this.currentCommandProvider, activity, statusDescription);
+
+        childProgress.progressRecord.ParentActivityId = this.progressRecord.ActivityId;
+
+        return childProgress;
+    }
+
+    public override void Dispose()
+    {
+        this.stopwatch.Stop();
+        this.progressRecord.RecordType = ProgressRecordType.Completed;
+        this.currentCommandProvider.GetCurrentCommand().WriteProgress(this.progressRecord);
+    }
+
+    protected override void OnReport(OperationProgressReport value)
+    {
+        this.progressRecord.RecordType = ProgressRecordType.Processing;
+        this.progressRecord.PercentComplete = (int)value.PercentComplete;
+
+        this.progressRecord.SecondsRemaining = (int)(this.stopwatch.Elapsed.TotalSeconds *
+            (100d - value.PercentComplete) / value.PercentComplete);
+
+        if (value.CurrentOperation != null)
         {
-            this.progressRecord = new ProgressRecord(GenerateNextActivityId(), activity, statusDescription);
-
-            this.stopwatch = Stopwatch.StartNew();
-            this.progressRecord.RecordType = ProgressRecordType.Processing;
-            this._currentCommandProvider = currentCommandProvider ??
-                                           throw new ArgumentNullException(nameof(currentCommandProvider));
-            this._currentCommandProvider.GetCurrentCommand().WriteProgress(this.progressRecord);
+            this.progressRecord.CurrentOperation = value.CurrentOperation;
         }
 
-        public PowerShellProgress CreateChildProgress(string activity, string statusDescription)
+        if (value.StatusDescription != null)
         {
-            var childProgress = new PowerShellProgress(this._currentCommandProvider, activity, statusDescription);
-
-            childProgress.progressRecord.ParentActivityId = this.progressRecord.ActivityId;
-
-            return childProgress;
+            this.progressRecord.StatusDescription = value.StatusDescription;
         }
 
-        public override void Dispose()
+        this.currentCommandProvider.GetCurrentCommand().WriteProgress(this.progressRecord);
+        base.OnReport(value);
+    }
+
+    private static int GenerateNextActivityId()
+    {
+        lock (ActivityIdLocker)
         {
-            this.stopwatch.Stop();
-            this.progressRecord.RecordType = ProgressRecordType.Completed;
-            this._currentCommandProvider.GetCurrentCommand().WriteProgress(this.progressRecord);
+            nextActivityId++;
         }
 
-        protected override void OnReport(OperationProgressReport value)
-        {
-            this.progressRecord.RecordType = ProgressRecordType.Processing;
-            this.progressRecord.PercentComplete = (int)value.PercentComplete;
-
-            this.progressRecord.SecondsRemaining = (int)(this.stopwatch.Elapsed.TotalSeconds *
-                (100d - value.PercentComplete) / value.PercentComplete);
-
-            if (value.CurrentOperation != null)
-            {
-                this.progressRecord.CurrentOperation = value.CurrentOperation;
-            }
-
-            if (value.StatusDescription != null)
-            {
-                this.progressRecord.StatusDescription = value.StatusDescription;
-            }
-
-            this._currentCommandProvider.GetCurrentCommand().WriteProgress(this.progressRecord);
-            base.OnReport(value);
-        }
-
-        private static int GenerateNextActivityId()
-        {
-            lock (activityIdLocker)
-            {
-                nextActivityId++;
-            }
-
-            return nextActivityId;
-        }
+        return nextActivityId;
     }
 }

@@ -23,7 +23,7 @@ trim_trailing_whitespace = true
 # File Extension Settings
 ##########################################
 vsspell_section_id = 76c94d6a244544a4afc9ef87b4e38ae4
-vsspell_ignored_keywords_76c94d6a244544a4afc9ef87b4e38ae4 = Deserializer|Mongo|Serializer|TIKSN
+vsspell_ignored_keywords_76c94d6a244544a4afc9ef87b4e38ae4 = Antimalware|Cuid|Currencylayer|Deserializer|Metadata|Mongo|Serializer|Serilog|Sitemap|Sitemaps|TIKSN|Validator
 
 # Visual Studio Solution Files
 [*.sln]
@@ -171,6 +171,9 @@ csharp_using_directive_placement = outside_namespace:warning
 csharp_prefer_static_local_function = true:warning
 # Undocumented
 csharp_style_namespace_declarations = file_scoped:warning
+
+## Project Specific
+csharp_style_prefer_primary_constructors = false
 
 ##########################################
 # Unnecessary Code Rules

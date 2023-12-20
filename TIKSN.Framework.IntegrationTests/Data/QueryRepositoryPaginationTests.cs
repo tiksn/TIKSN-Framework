@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using LanguageExt;
 using Microsoft.Extensions.DependencyInjection;
+using TIKSN.Data;
 using TIKSN.Finance;
 using TIKSN.Finance.ForeignExchange;
 using TIKSN.Finance.ForeignExchange.Data;
 using TIKSN.Globalization;
-using TIKSN.IntegrationTests;
 using Xunit;
 
-namespace TIKSN.Data.IntegrationTests;
+namespace TIKSN.IntegrationTests.Data;
 
 [Collection("ServiceProviderCollection")]
 public class QueryRepositoryPaginationTests

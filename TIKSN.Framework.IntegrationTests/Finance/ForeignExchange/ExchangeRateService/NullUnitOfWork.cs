@@ -3,24 +3,38 @@ using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Data;
 
-namespace TIKSN.Finance.ForeignExchange.ExchangeRateService.IntegrationTests
+namespace TIKSN.IntegrationTests.Finance.ForeignExchange.ExchangeRateService;
+
+public class NullUnitOfWork : IUnitOfWork
 {
-    public class NullUnitOfWork : IUnitOfWork
+    private bool disposedValue;
+
+    public NullUnitOfWork(IServiceProvider serviceProvider)
+        => this.Services = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+
+    public IServiceProvider Services { get; }
+
+    public Task CompleteAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+
+    public Task DiscardAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+
+    public void Dispose()
     {
-        private readonly IServiceProvider serviceProvider;
+        this.Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
 
-        public NullUnitOfWork(IServiceProvider serviceProvider)
-            => this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+    public ValueTask DisposeAsync()
+    {
+        GC.SuppressFinalize(this);
+        return ValueTask.CompletedTask;
+    }
 
-        public IServiceProvider Services => this.serviceProvider;
-
-        public Task CompleteAsync(CancellationToken cancellationToken) => Task.CompletedTask;
-
-        public Task DiscardAsync(CancellationToken cancellationToken) => Task.CompletedTask;
-
-        public void Dispose()
-        { }
-
-        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!this.disposedValue)
+        {
+            this.disposedValue = true;
+        }
     }
 }

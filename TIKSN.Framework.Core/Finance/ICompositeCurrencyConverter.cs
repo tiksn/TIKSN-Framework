@@ -1,7 +1,6 @@
-namespace TIKSN.Finance
+namespace TIKSN.Finance;
+
+public interface ICompositeCurrencyConverter : ICurrencyConverter
 {
-    public interface ICompositeCurrencyConverter : ICurrencyConverter
-    {
-        void Add(ICurrencyConverter converter);
-    }
+    void Add(ICurrencyConverter converter);
 }

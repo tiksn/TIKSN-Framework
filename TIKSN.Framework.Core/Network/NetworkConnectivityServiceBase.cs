@@ -1,37 +1,54 @@
-using System;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
-namespace TIKSN.Network
+namespace TIKSN.Network;
+
+public abstract class NetworkConnectivityServiceBase : INetworkConnectivityService, IDisposable
 {
-    public abstract class NetworkConnectivityServiceBase : INetworkConnectivityService, IDisposable
+    private readonly Subject<InternetConnectivityState> manualChecks;
+    private bool disposedValue;
+
+    protected NetworkConnectivityServiceBase() => this.manualChecks = new Subject<InternetConnectivityState>();
+
+    public IObservable<InternetConnectivityState> InternetConnectivityChanged =>
+        this.InternetConnectivityStateInternal
+            .Merge(this.manualChecks)
+            .DistinctUntilChanged();
+
+    protected IObservable<InternetConnectivityState> InternetConnectivityStateInternal { get; set; }
+
+    public void Dispose()
     {
-        private readonly Subject<InternetConnectivityState> manualChecks;
-        protected IObservable<InternetConnectivityState> internetConnectivityStateInternal;
+        this.Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
 
-        protected NetworkConnectivityServiceBase() => this.manualChecks = new Subject<InternetConnectivityState>();
+    public InternetConnectivityState GetInternetConnectivityState() => this.GetInternetConnectivityState(true);
 
-        public IObservable<InternetConnectivityState> InternetConnectivityChanged =>
-            this.internetConnectivityStateInternal
-                .Merge(this.manualChecks)
-                .DistinctUntilChanged();
-
-        public InternetConnectivityState GetInternetConnectivityState() => this.GetInternetConnectivityState(true);
-
-        protected abstract InternetConnectivityState GetInternetConnectivityStateInternal();
-
-        private InternetConnectivityState GetInternetConnectivityState(bool broadcast)
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!this.disposedValue)
         {
-            var result = this.GetInternetConnectivityStateInternal();
-
-            if (broadcast)
+            if (disposing)
             {
-                this.manualChecks.OnNext(result);
+                this.manualChecks?.Dispose();
             }
 
-            return result;
+            this.disposedValue = true;
+        }
+    }
+
+    protected abstract InternetConnectivityState GetInternetConnectivityStateInternal();
+
+    private InternetConnectivityState GetInternetConnectivityState(bool broadcast)
+    {
+        var result = this.GetInternetConnectivityStateInternal();
+
+        if (broadcast)
+        {
+            this.manualChecks.OnNext(result);
         }
 
-        public void Dispose() => throw new NotImplementedException();
+        return result;
     }
 }

@@ -1,10 +1,10 @@
 namespace TIKSN.Numbering.Acronyms;
 
-public sealed class VLFLA : Acronym<VLFLA>
+public sealed class VLFLA : Acronym<VLFLA>, IAcronymLength<VLFLA>
 {
-    private static readonly int LetterCount = 5;
-
-    private VLFLA(string value) : base(value)
+    protected VLFLA(string value) : base(value)
     {
     }
+
+    public static int LetterCount => 5;
 }

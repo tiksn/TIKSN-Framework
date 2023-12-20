@@ -7,15 +7,9 @@ public static class BatchOperationHelper
         CancellationToken cancellationToken,
         Func<T, CancellationToken, Task> singleOperation)
     {
-        if (entities == null)
-        {
-            throw new ArgumentNullException(nameof(entities));
-        }
+        ArgumentNullException.ThrowIfNull(entities);
 
-        if (singleOperation == null)
-        {
-            throw new ArgumentNullException(nameof(singleOperation));
-        }
+        ArgumentNullException.ThrowIfNull(singleOperation);
 
         var tasks = entities.Select(entity => singleOperation.Invoke(entity, cancellationToken));
 
@@ -27,15 +21,9 @@ public static class BatchOperationHelper
         CancellationToken cancellationToken,
         Func<T, CancellationToken, Task<TResult>> singleOperation)
     {
-        if (entities == null)
-        {
-            throw new ArgumentNullException(nameof(entities));
-        }
+        ArgumentNullException.ThrowIfNull(entities);
 
-        if (singleOperation == null)
-        {
-            throw new ArgumentNullException(nameof(singleOperation));
-        }
+        ArgumentNullException.ThrowIfNull(singleOperation);
 
         var tasks = entities.Select(entity => singleOperation.Invoke(entity, cancellationToken));
 

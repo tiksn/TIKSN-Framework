@@ -1,21 +1,18 @@
-using System;
+namespace TIKSN.PowerShell;
 
-namespace TIKSN.PowerShell
+public class CurrentCommandContext : ICurrentCommandStore, ICurrentCommandProvider
 {
-    public class CurrentCommandContext : ICurrentCommandStore, ICurrentCommandProvider
+    private CommandBase command;
+
+    public CommandBase GetCurrentCommand()
     {
-        private CommandBase _command;
-
-        public CommandBase GetCurrentCommand()
+        if (this.command == null)
         {
-            if (this._command == null)
-            {
-                throw new NullReferenceException("Command is not set yet.");
-            }
-
-            return this._command;
+            throw new InvalidOperationException("Command is not set yet.");
         }
 
-        public void SetCurrentCommand(CommandBase command) => this._command = command ?? throw new ArgumentNullException(nameof(command));
+        return this.command;
     }
+
+    public void SetCurrentCommand(CommandBase command) => this.command = command ?? throw new ArgumentNullException(nameof(command));
 }

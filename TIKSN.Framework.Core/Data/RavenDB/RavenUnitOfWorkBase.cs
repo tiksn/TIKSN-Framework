@@ -1,40 +1,34 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
 
-namespace TIKSN.Data.RavenDB
+namespace TIKSN.Data.RavenDB;
+
+public abstract class RavenUnitOfWorkBase : UnitOfWorkBase
 {
-    public abstract class RavenUnitOfWorkBase : UnitOfWorkBase
+    protected RavenUnitOfWorkBase(IDocumentStore store)
     {
-        protected readonly IAsyncDocumentSession _session;
+        ArgumentNullException.ThrowIfNull(store);
 
-        protected RavenUnitOfWorkBase(IDocumentStore store)
-        {
-            if (store == null)
-            {
-                throw new ArgumentNullException(nameof(store));
-            }
-
-            this._session = store.OpenAsyncSession();
-        }
-
-        public override async Task CompleteAsync(CancellationToken cancellationToken)
-        {
-            await this._session.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-
-            this._session.Advanced.Clear();
-        }
-
-        public override void Dispose()
-        {
-            this._session.Dispose();
-
-            base.Dispose();
-        }
-
-        protected override bool IsDirty() => false;
-        //return _session.Advanced.HasChanges;
+        this.Session = store.OpenAsyncSession();
     }
+
+    protected IAsyncDocumentSession Session { get; }
+
+    public override async Task CompleteAsync(CancellationToken cancellationToken)
+    {
+        await this.Session.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+        this.Session.Advanced.Clear();
+    }
+
+    public override void Dispose()
+    {
+        this.Session.Dispose();
+
+        base.Dispose();
+    }
+
+    protected override bool IsDirty() => false;
+
+    //return _session.Advanced.HasChanges;
 }

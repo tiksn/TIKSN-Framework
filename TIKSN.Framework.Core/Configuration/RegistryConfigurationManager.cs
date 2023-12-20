@@ -1,75 +1,72 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.Win32;
 
-namespace TIKSN.Configuration
+namespace TIKSN.Configuration;
+
+public static class RegistryConfigurationManager
 {
-    public static class RegistryConfigurationManager
+    public static T ReadObject<T>(string rootKey)
     {
-        public static T ReadObject<T>(string rootKey)
+        var configuration = Activator.CreateInstance<T>();
+        var keys = new List<string>
         {
-            var configuration = Activator.CreateInstance<T>();
-            var keys = new List<string>
-            {
-                rootKey,
-            };
+            rootKey,
+        };
 
-            Initialize(configuration, keys);
+        Initialize(configuration, keys);
 
-            return configuration;
+        return configuration;
+    }
+
+    private static object GetValueFromRegistry(IEnumerable<string> keys, string valueName)
+    {
+        var globalValue = GetValueFromRegistry(RegistryHive.LocalMachine, keys, valueName);
+        var localValue = GetValueFromRegistry(RegistryHive.CurrentUser, keys, valueName);
+
+        object result = null;
+
+        if (globalValue != null)
+        {
+            result = globalValue;
         }
 
-        private static object GetValueFromRegistry(IEnumerable<string> keys, string valueName)
+        if (localValue != null)
         {
-            var globalValue = GetValueFromRegistry(RegistryHive.LocalMachine, keys, valueName);
-            var localValue = GetValueFromRegistry(RegistryHive.CurrentUser, keys, valueName);
-
-            object result = null;
-
-            if (globalValue != null)
-            {
-                result = globalValue;
-            }
-
-            if (localValue != null)
-            {
-                result = localValue;
-            }
-
-            if (result == null)
-            {
-                throw new Exception("Value not found");
-            }
-
-            return result;
+            result = localValue;
         }
 
-        private static object GetValueFromRegistry(RegistryHive hKey, IEnumerable<string> keys, string valueName)
+        if (result == null)
         {
-            var regKey = RegistryKey.OpenBaseKey(hKey, RegistryView.Default);
-
-            foreach (var key in keys)
-            {
-                regKey = regKey.OpenSubKey(key);
-
-                if (regKey == null)
-                {
-                    return null;
-                }
-            }
-
-            return regKey.GetValue(valueName);
+            throw new Exception("Value not found");
         }
 
-        private static void Initialize(object obj, IEnumerable<string> keys)
+        return result;
+    }
+
+    private static object GetValueFromRegistry(RegistryHive hKey, IEnumerable<string> keys, string valueName)
+    {
+        var regKey = RegistryKey.OpenBaseKey(hKey, RegistryView.Default);
+
+        foreach (var key in keys)
         {
-            foreach (var propertyInfo in obj.GetType().GetProperties())
+            regKey = regKey.OpenSubKey(key);
+
+            if (regKey == null)
             {
-                if (propertyInfo.PropertyType.IsPrimitive || propertyInfo.PropertyType == typeof(string))
-                {
-                    propertyInfo.SetValue(obj,
-                        GetValueFromRegistry(keys, propertyInfo.Name));
-                }
+                return null;
+            }
+        }
+
+        return regKey.GetValue(valueName);
+    }
+
+    private static void Initialize(object obj, IEnumerable<string> keys)
+    {
+        foreach (var propertyInfo in obj.GetType().GetProperties())
+        {
+            if (propertyInfo.PropertyType.IsPrimitive || propertyInfo.PropertyType == typeof(string))
+            {
+                propertyInfo.SetValue(obj,
+                    GetValueFromRegistry(keys, propertyInfo.Name));
             }
         }
     }

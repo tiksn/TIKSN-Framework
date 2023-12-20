@@ -5,35 +5,27 @@ using TIKSN.Globalization;
 
 namespace TIKSN.Finance.ForeignExchange.Bank;
 
-public class ReserveBankOfAustralia : ICurrencyConverter, IExchangeRatesProvider
+public class ReserveBankOfAustralia : IReserveBankOfAustralia
 {
     private const string RSS = "https://www.rba.gov.au/rss/rss-cb-exchange-rates.xml";
 
-    private static readonly CurrencyInfo AustralianDollar;
+    private static readonly CurrencyInfo AustralianDollar = new(new RegionInfo("en-AU"));
     private readonly ICurrencyFactory currencyFactory;
-    private readonly IHttpClientFactory httpClientFactory;
+    private readonly HttpClient httpClient;
     private readonly Dictionary<CurrencyInfo, decimal> rates;
     private readonly TimeProvider timeProvider;
     private DateTimeOffset lastFetchDate;
     private DateTimeOffset publishedDate;
 
-    static ReserveBankOfAustralia()
-    {
-        var australia = new RegionInfo("en-AU");
-        AustralianDollar = new CurrencyInfo(australia);
-    }
-
     public ReserveBankOfAustralia(
-        IHttpClientFactory httpClientFactory,
+        HttpClient httpClient,
         ICurrencyFactory currencyFactory,
         TimeProvider timeProvider)
     {
         this.publishedDate = DateTimeOffset.MinValue;
-
-        this.rates = new Dictionary<CurrencyInfo, decimal>();
-
+        this.rates = [];
         this.lastFetchDate = DateTimeOffset.MinValue;
-        this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+        this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
@@ -44,6 +36,9 @@ public class ReserveBankOfAustralia : ICurrencyConverter, IExchangeRatesProvider
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(baseMoney);
+        ArgumentNullException.ThrowIfNull(counterCurrency);
+
         var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
         var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
@@ -72,6 +67,8 @@ public class ReserveBankOfAustralia : ICurrencyConverter, IExchangeRatesProvider
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(pair);
+
         await this.FetchOnDemandAsync(cancellationToken).ConfigureAwait(false);
 
         this.VerifyDate(asOn);
@@ -91,7 +88,7 @@ public class ReserveBankOfAustralia : ICurrencyConverter, IExchangeRatesProvider
             }
         }
 
-        throw new ArgumentException("Currency pair not supported.");
+        throw new ArgumentException("Currency pair not supported.", nameof(pair));
     }
 
     public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
@@ -100,8 +97,7 @@ public class ReserveBankOfAustralia : ICurrencyConverter, IExchangeRatesProvider
     {
         var result = new List<ExchangeRate>();
 
-        var httpClient = this.httpClientFactory.CreateClient();
-        var responseStream = await httpClient.GetStreamAsync(RSS, cancellationToken).ConfigureAwait(false);
+        var responseStream = await this.httpClient.GetStreamAsync(new Uri(RSS), cancellationToken).ConfigureAwait(false);
 
         var xdoc = XDocument.Load(responseStream);
 
@@ -161,12 +157,12 @@ public class ReserveBankOfAustralia : ICurrencyConverter, IExchangeRatesProvider
     {
         if (asOn > this.timeProvider.GetUtcNow())
         {
-            throw new ArgumentException("Exchange rate forecasting are not supported.");
+            throw new ArgumentException("Exchange rate forecasting are not supported.", nameof(asOn));
         }
 
         if (asOn < this.publishedDate)
         {
-            throw new ArgumentException("Exchange rate history not supported.");
+            throw new ArgumentException("Exchange rate history not supported.", nameof(asOn));
         }
     }
 }

@@ -1,8 +1,9 @@
 using System.Globalization;
 using FluentAssertions;
+using TIKSN.Numbering.Acronyms;
 using Xunit;
 
-namespace TIKSN.Numbering.Acronyms.Tests;
+namespace TIKSN.Tests.Numbering.Acronyms;
 
 public class AcronymTests
 {
@@ -38,6 +39,6 @@ public class AcronymTests
         var actualValue = actual.Map(x => x.ToString()).MatchUnsafe(x => x, () => null);
 
         // Assert
-        actualValue.Should().Be(expectedValue);
+        _ = actualValue.Should().Be(expectedValue);
     }
 }

@@ -1,16 +1,14 @@
 using System.Globalization;
 using LanguageExt;
-using LanguageExt.Parsec;
-using static LanguageExt.Prelude;
-using static LanguageExt.Parsec.Prim;
 using static LanguageExt.Parsec.Char;
-using static LanguageExt.Parsec.Expr;
+using static LanguageExt.Parsec.Prim;
+using static LanguageExt.Prelude;
 
 namespace TIKSN.Deployment;
 
 public sealed class EnvironmentName : ISpanFormattable, IEquatable<EnvironmentName>
 {
-    private static readonly char[] SeparatorCharacters = { '-', '_', '+' };
+    private static readonly char[] SeparatorCharacters = ['-', '_', '+'];
 
     private readonly Seq<string> segments;
 
@@ -74,26 +72,13 @@ public sealed class EnvironmentName : ISpanFormattable, IEquatable<EnvironmentNa
         return string.Join(SeparatorCharacters[0], properCaseSegments);
 
         static Seq<string> GetProperCaseSegments(
-            Seq<string> segments, string format, CultureInfo culture)
-        {
-            switch (format)
+            Seq<string> segments, string format, CultureInfo culture) => format switch
             {
-                case "U":
-                case "u":
-                    return segments.Map(x => culture.TextInfo.ToUpper(x));
-
-                case "L":
-                case "l":
-                    return segments.Map(x => culture.TextInfo.ToLower(x));
-
-                case "T":
-                case "t":
-                    return segments.Map(x => culture.TextInfo.ToTitleCase(culture.TextInfo.ToLower(x)));
-
-                default:
-                    return segments;
-            }
-        }
+                "U" or "u" => segments.Map(culture.TextInfo.ToUpper),
+                "L" or "l" => segments.Map(culture.TextInfo.ToLower),
+                "T" or "t" => segments.Map(x => culture.TextInfo.ToTitleCase(culture.TextInfo.ToLower(x))),
+                _ => segments,
+            };
     }
 
     public bool TryFormat(
@@ -114,7 +99,7 @@ public sealed class EnvironmentName : ISpanFormattable, IEquatable<EnvironmentNa
 
     public bool Equals(EnvironmentName other)
     {
-        if (ReferenceEquals(null, other))
+        if (other is null)
         {
             return false;
         }
@@ -145,7 +130,7 @@ public sealed class EnvironmentName : ISpanFormattable, IEquatable<EnvironmentNa
 
     public bool Matches(EnvironmentName other)
     {
-        if (ReferenceEquals(null, other))
+        if (other is null)
         {
             return false;
         }

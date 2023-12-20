@@ -706,14 +706,6 @@
           <source>The Central Bank of the Russian Federation</source>
           <target state="translated">Центральный банк Российской Федерации</target>
         </trans-unit>
-        <trans-unit id="611756663" translate="yes" xml:space="preserve">
-          <source>$ My Currency</source>
-          <target state="new">$ My Currency</target>
-        </trans-unit>
-        <trans-unit id="633405189" translate="yes" xml:space="preserve">
-          <source>$ My Currency (mycurrency.net)</source>
-          <target state="new">$ My Currency (mycurrency.net)</target>
-        </trans-unit>
         <trans-unit id="999430243" translate="yes" xml:space="preserve">
           <source>currencylayer.com</source>
           <target state="new">currencylayer.com</target>
@@ -721,6 +713,10 @@
         <trans-unit id="729270460" translate="yes" xml:space="preserve">
           <source>The Federal Reserve, the central bank of the United States</source>
           <target state="new">The Federal Reserve, the central bank of the United States</target>
+        </trans-unit>
+        <trans-unit id="553783564" translate="yes" xml:space="preserve">
+          <source>National Bank of Poland</source>
+          <target state="new">National Bank of Poland</target>
         </trans-unit>
       </group>
     </body>

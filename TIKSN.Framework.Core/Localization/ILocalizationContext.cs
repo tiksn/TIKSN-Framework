@@ -1,10 +1,8 @@
-using System.Collections.Generic;
 using System.Globalization;
 
-namespace TIKSN.Localization
+namespace TIKSN.Localization;
+
+public interface ILocalizationContext
 {
-    public interface ILocalizationContext
-    {
-        IReadOnlyCollection<CultureInfo> SupportedCultures { get; }
-    }
+    IReadOnlyCollection<CultureInfo> SupportedCultures { get; }
 }

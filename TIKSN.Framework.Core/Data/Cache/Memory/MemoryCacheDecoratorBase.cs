@@ -7,28 +7,25 @@ namespace TIKSN.Data.Cache.Memory;
 
 public abstract class MemoryCacheDecoratorBase<T> : CacheDecoratorBase<T>
 {
-    protected readonly IOptions<MemoryCacheDecoratorOptions> genericOptions;
-    protected readonly IMemoryCache memoryCache;
-    protected readonly IOptions<MemoryCacheDecoratorOptions<T>> specificOptions;
-
     protected MemoryCacheDecoratorBase(
         IMemoryCache memoryCache,
         IOptions<MemoryCacheDecoratorOptions> genericOptions,
         IOptions<MemoryCacheDecoratorOptions<T>> specificOptions)
     {
-        this.memoryCache = memoryCache;
-        this.genericOptions = genericOptions;
-        this.specificOptions = specificOptions;
+        this.MemoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
+        this.GenericOptions = genericOptions ?? throw new ArgumentNullException(nameof(genericOptions));
+        this.SpecificOptions = specificOptions ?? throw new ArgumentNullException(nameof(specificOptions));
     }
+
+    protected IOptions<MemoryCacheDecoratorOptions> GenericOptions { get; }
+    protected IMemoryCache MemoryCache { get; }
+    protected IOptions<MemoryCacheDecoratorOptions<T>> SpecificOptions { get; }
 
     protected TResult CreateMemoryCacheItem<TResult>(
         ICacheEntry entry,
         Func<TResult> getFromSource)
     {
-        if (getFromSource is null)
-        {
-            throw new ArgumentNullException(nameof(getFromSource));
-        }
+        ArgumentNullException.ThrowIfNull(getFromSource);
 
         this.SpecifyOptions(entry);
 
@@ -39,10 +36,7 @@ public abstract class MemoryCacheDecoratorBase<T> : CacheDecoratorBase<T>
         ICacheEntry cacheEntry,
         Func<Task<TResult>> getFromSource)
     {
-        if (getFromSource is null)
-        {
-            throw new ArgumentNullException(nameof(getFromSource));
-        }
+        ArgumentNullException.ThrowIfNull(getFromSource);
 
         this.SpecifyOptions(cacheEntry);
 
@@ -53,16 +47,13 @@ public abstract class MemoryCacheDecoratorBase<T> : CacheDecoratorBase<T>
         object cacheKey,
         Func<Option<TResult>> findFromSource)
     {
-        if (findFromSource == null)
-        {
-            throw new ArgumentNullException(nameof(findFromSource));
-        }
+        ArgumentNullException.ThrowIfNull(findFromSource);
 
-        if (!this.memoryCache.TryGetValue(cacheKey, out TResult? result))
+        if (!this.MemoryCache.TryGetValue(cacheKey, out TResult? result))
         {
             _ = findFromSource().IfSome(foundItem =>
             {
-                using var entry = this.memoryCache.CreateEntry(cacheKey);
+                using var entry = this.MemoryCache.CreateEntry(cacheKey);
 
                 this.SpecifyOptions(entry);
 
@@ -78,17 +69,14 @@ public abstract class MemoryCacheDecoratorBase<T> : CacheDecoratorBase<T>
         object cacheKey,
         Func<Task<Option<TResult>>> findFromSourceAsync)
     {
-        if (findFromSourceAsync == null)
-        {
-            throw new ArgumentNullException(nameof(findFromSourceAsync));
-        }
+        ArgumentNullException.ThrowIfNull(findFromSourceAsync);
 
-        if (!this.memoryCache.TryGetValue(cacheKey, out TResult? result))
+        if (!this.MemoryCache.TryGetValue(cacheKey, out TResult? result))
         {
             var findings = await findFromSourceAsync().ConfigureAwait(false);
             _ = await findings.IfSomeAsync(foundItem =>
             {
-                using var entry = this.memoryCache.CreateEntry(cacheKey);
+                using var entry = this.MemoryCache.CreateEntry(cacheKey);
 
                 this.SpecifyOptions(entry);
 
@@ -103,25 +91,22 @@ public abstract class MemoryCacheDecoratorBase<T> : CacheDecoratorBase<T>
     protected TResult GetFromMemoryCache<TResult>(
             object cacheKey,
         Func<TResult> getFromSource) =>
-        this.memoryCache.GetOrCreate(cacheKey, x => this.CreateMemoryCacheItem(x, getFromSource));
+        this.MemoryCache.GetOrCreate(cacheKey, x => this.CreateMemoryCacheItem(x, getFromSource));
 
     protected Task<TResult> GetFromMemoryCacheAsync<TResult>(
         object cacheKey,
         Func<Task<TResult>> getFromSource) =>
-        this.memoryCache.GetOrCreateAsync(cacheKey, x => this.CreateMemoryCacheItemAsync(x, getFromSource));
+        this.MemoryCache.GetOrCreateAsync(cacheKey, x => this.CreateMemoryCacheItemAsync(x, getFromSource));
 
     protected void SpecifyOptions(ICacheEntry cacheEntry)
     {
-        if (cacheEntry is null)
-        {
-            throw new ArgumentNullException(nameof(cacheEntry));
-        }
+        ArgumentNullException.ThrowIfNull(cacheEntry);
 
-        cacheEntry.AbsoluteExpiration = this.specificOptions.Value.AbsoluteExpiration ??
-                                        this.genericOptions.Value.AbsoluteExpiration;
-        cacheEntry.AbsoluteExpirationRelativeToNow = this.specificOptions.Value.AbsoluteExpirationRelativeToNow ??
-                                                     this.genericOptions.Value.AbsoluteExpirationRelativeToNow;
-        cacheEntry.SlidingExpiration = this.specificOptions.Value.SlidingExpiration ??
-                                       this.genericOptions.Value.SlidingExpiration;
+        cacheEntry.AbsoluteExpiration = this.SpecificOptions.Value.AbsoluteExpiration ??
+                                        this.GenericOptions.Value.AbsoluteExpiration;
+        cacheEntry.AbsoluteExpirationRelativeToNow = this.SpecificOptions.Value.AbsoluteExpirationRelativeToNow ??
+                                                     this.GenericOptions.Value.AbsoluteExpirationRelativeToNow;
+        cacheEntry.SlidingExpiration = this.SpecificOptions.Value.SlidingExpiration ??
+                                       this.GenericOptions.Value.SlidingExpiration;
     }
 }

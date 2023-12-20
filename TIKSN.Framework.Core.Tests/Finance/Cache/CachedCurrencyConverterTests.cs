@@ -1,10 +1,11 @@
 using System;
 using FluentAssertions;
 using Microsoft.Extensions.Time.Testing;
-using TIKSN.Finance.Tests;
+using TIKSN.Finance;
+using TIKSN.Finance.Cache;
 using Xunit;
 
-namespace TIKSN.Finance.Cache.Tests;
+namespace TIKSN.Tests.Finance.Cache;
 
 public class CachedCurrencyConverterTests
 {

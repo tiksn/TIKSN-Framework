@@ -1,34 +1,32 @@
-using System;
 using System.Collections.Concurrent;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace TIKSN.Session
+namespace TIKSN.Session;
+
+public class UserSessionScopeStorage<TIdentity> : IUserSessionScopeStorage<TIdentity>
+    where TIdentity : IEquatable<TIdentity>
 {
-    public class UserSessionScopeStorage<TIdentity> : IUserSessionScopeStorage<TIdentity>
-        where TIdentity : IEquatable<TIdentity>
+    private readonly ConcurrentDictionary<TIdentity, AsyncServiceScope> scopes;
+    private readonly IServiceProvider serviceProvider;
+
+    public UserSessionScopeStorage(IServiceProvider serviceProvider)
     {
-        private readonly ConcurrentDictionary<TIdentity, IServiceScope> _scopes;
-        private readonly IServiceProvider _serviceProvider;
+        this.scopes = new ConcurrentDictionary<TIdentity, AsyncServiceScope>();
+        this.serviceProvider = serviceProvider;
+    }
 
-        public UserSessionScopeStorage(IServiceProvider serviceProvider)
+    public IServiceProvider GetOrAddServiceProvider(TIdentity id) =>
+        this.scopes.GetOrAdd(id, _ => this.serviceProvider.CreateAsyncScope()).ServiceProvider;
+
+    public async ValueTask<bool> TryRemoveServiceProviderAsync(TIdentity id)
+    {
+        var removed = this.scopes.TryRemove(id, out var removedScope);
+
+        if (removed)
         {
-            this._scopes = new ConcurrentDictionary<TIdentity, IServiceScope>();
-            this._serviceProvider = serviceProvider;
+            await removedScope.DisposeAsync().ConfigureAwait(false);
         }
 
-        public IServiceProvider GetOrAddServiceProvider(TIdentity id) =>
-            this._scopes.GetOrAdd(id, key => this._serviceProvider.CreateScope()).ServiceProvider;
-
-        public bool TryRemoveServiceProvider(TIdentity id)
-        {
-            var removed = this._scopes.TryRemove(id, out var removedScope);
-
-            if (removed)
-            {
-                removedScope.Dispose();
-            }
-
-            return removed;
-        }
+        return removed;
     }
 }

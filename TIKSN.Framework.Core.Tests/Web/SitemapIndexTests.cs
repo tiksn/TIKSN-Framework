@@ -1,69 +1,69 @@
+using System;
+using System.Text;
+using System.Xml;
+using FluentAssertions;
+using TIKSN.Web;
 using Xunit;
 
-namespace TIKSN.Web.Tests
+namespace TIKSN.Tests.Web;
+
+public class SitemapIndexTests
 {
-    public class SitemapIndexTests
+    [Fact]
+    public void SitemapIndex001()
     {
-        [Fact]
-        public void SitemapIndex001()
-        {
-            var SIndex = new SitemapIndex();
+        var sIndex = new SitemapIndex();
 
-            SIndex.Sitemaps.Add(new System.Uri("http://microsoft.com/"), new System.DateTime(2012, 8, 4, 15, 58, 58, System.DateTimeKind.Utc));
+        sIndex.Sitemaps.Add(new Uri("http://microsoft.com/"), new DateOnly(2012, 8, 4));
 
-            _ = Assert.Single(SIndex.Sitemaps);
-        }
+        _ = sIndex.Sitemaps.Should().ContainSingle();
+    }
 
-        [Fact]
-        public void Write001()
-        {
-            var SIndex = new SitemapIndex();
+    [Fact]
+    public void Write001()
+    {
+        var sIndex = new SitemapIndex();
 
-            var SBuilder = new System.Text.StringBuilder();
+        var sBuilder = new StringBuilder();
 
-            var XWriter = System.Xml.XmlWriter.Create(SBuilder);
+        var xWriter = XmlWriter.Create(sBuilder);
 
-            SIndex.Write(XWriter);
+        sIndex.Write(xWriter);
 
-            var XmlOutput = SBuilder.ToString();
+        var xmlOutput = sBuilder.ToString();
 
-            Assert.Equal(
-                "<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
-                "<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" />",
-                XmlOutput);
-        }
+        _ = xmlOutput.Should().Be("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
+            "<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" />");
+    }
 
-        [Fact]
-        public void Write002()
-        {
-            var SIndex = new SitemapIndex();
+    [Fact]
+    public void Write002()
+    {
+        var sIndex = new SitemapIndex();
 
-            SIndex.Sitemaps.Add(new System.Uri("http://microsoft.com/"), null);
-            SIndex.Sitemaps.Add(new System.Uri("http://microsoft.com/siteindex.xml"), new System.DateTime(2012, 10, 25, 16, 45, 36, System.DateTimeKind.Utc));
+        sIndex.Sitemaps.Add(new Uri("http://microsoft.com/"), null);
+        sIndex.Sitemaps.Add(new Uri("http://microsoft.com/siteindex.xml"), new DateOnly(2012, 10, 25));
 
-            var SBuilder = new System.Text.StringBuilder();
+        var sBuilder = new StringBuilder();
 
-            var XWriter = System.Xml.XmlWriter.Create(SBuilder);
+        var xWriter = XmlWriter.Create(sBuilder);
 
-            SIndex.Write(XWriter);
+        sIndex.Write(xWriter);
 
-            var XmlOutput = SBuilder.ToString();
+        var xmlOutput = sBuilder.ToString();
 
-            Assert.Equal(
-                "<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
-                "<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" +
+        _ = xmlOutput.Should().Be("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
+            "<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" +
 
-                "<sitemap>" +
-                "<loc>http://microsoft.com/</loc>" +
-                "</sitemap>" +
+            "<sitemap>" +
+            "<loc>http://microsoft.com/</loc>" +
+            "</sitemap>" +
 
-                "<sitemap>" +
-                "<loc>http://microsoft.com/siteindex.xml</loc>" +
-                "<lastmod>2012-10-25</lastmod>" +
-                "</sitemap>" +
+            "<sitemap>" +
+            "<loc>http://microsoft.com/siteindex.xml</loc>" +
+            "<lastmod>2012-10-25</lastmod>" +
+            "</sitemap>" +
 
-                "</sitemapindex>",
-                XmlOutput);
-        }
+            "</sitemapindex>");
     }
 }

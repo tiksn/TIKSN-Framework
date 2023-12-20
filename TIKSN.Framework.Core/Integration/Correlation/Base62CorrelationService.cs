@@ -1,8 +1,8 @@
 using System.Numerics;
 using LanguageExt;
-using static LanguageExt.Prelude;
 using Microsoft.Extensions.Options;
 using TIKSN.Serialization;
+using static LanguageExt.Prelude;
 
 namespace TIKSN.Integration.Correlation;
 

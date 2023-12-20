@@ -10,7 +10,6 @@
     {
         @"EnglishOnly.resx",
         @"..\Shell\ShellCommand.resx",
-        @"..\Web\Rest\RestRepository.resx",
         @"..\..\TIKSN.LanguageLocalization\Strings.resx",
         @"..\..\TIKSN.RegionLocalization\Strings.resx"
     };
@@ -20,24 +19,24 @@
         .Select(XDocument.Load)
         .SelectMany(doc => doc.Element("root").Elements("data"));
 #>
-namespace TIKSN.Localization
+namespace TIKSN.Localization;
+
+/// <summary>
+/// Keys to known localization resources
+/// </summary>
+public static class LocalizationKeys
 {
-	/// <summary>
-	/// Keys to known localization resources
-	/// </summary>
-	public static class LocalizationKeys
-	{
-	<#
-    foreach (var dataElement in dataElements)
-    {
+<#
+foreach (var dataElement in dataElements)
+{
 #>
 
-        /// <summary>
-		/// Key: <#= dataElement.Attribute("name").Value #>
-		/// Original Value: <#= dataElement.Element("value").Value #>
-		/// </summary>
-		public static int Key<#= dataElement.Attribute("name").Value #> => <#= dataElement.Attribute("name").Value #>;
-	<#
-    }
-#>}
+    /// <summary>
+    /// Key: <#= dataElement.Attribute("name").Value #>
+    /// Original Value: <#= dataElement.Element("value").Value #>
+    /// </summary>
+    public static int Key<#= dataElement.Attribute("name").Value #> => <#= dataElement.Attribute("name").Value #>;
+<#
 }
+#>}
+

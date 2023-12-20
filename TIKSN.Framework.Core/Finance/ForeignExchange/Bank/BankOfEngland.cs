@@ -1,24 +1,21 @@
 using System.Globalization;
 using System.Xml.Linq;
-using TIKSN.Globalization;
 
 namespace TIKSN.Finance.ForeignExchange.Bank;
 
-public class BankOfEngland : ICurrencyConverter, IExchangeRateProvider, IExchangeRatesProvider
+public class BankOfEngland : IBankOfEngland
 {
     private const string UrlFormat =
         "https://www.bankofengland.co.uk/boeapps/iadb/fromshowcolumns.asp?CodeVer=new&xml.x=yes&Datefrom={0}&Dateto={1}&SeriesCodes={2}";
 
     private static readonly Dictionary<string, CurrencyPair> Pairs;
     private static readonly Dictionary<CurrencyPair, string> SeriesCodes;
-    private readonly IHttpClientFactory httpClientFactory;
-    private readonly ICurrencyFactory currencyFactory;
-    private readonly IRegionFactory regionFactory;
+    private readonly HttpClient httpClient;
     private readonly TimeProvider timeProvider;
 
     static BankOfEngland()
     {
-        SeriesCodes = new Dictionary<CurrencyPair, string>();
+        SeriesCodes = [];
         Pairs = new Dictionary<string, CurrencyPair>(StringComparer.Ordinal);
 
         AddSeriesCode("en-AU", "en-US", "XUDLADD");
@@ -112,14 +109,10 @@ public class BankOfEngland : ICurrencyConverter, IExchangeRateProvider, IExchang
     }
 
     public BankOfEngland(
-        IHttpClientFactory httpClientFactory,
-        ICurrencyFactory currencyFactory,
-        IRegionFactory regionFactory,
+        HttpClient httpClient,
         TimeProvider timeProvider)
     {
-        this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-        this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
-        this.regionFactory = regionFactory ?? throw new ArgumentNullException(nameof(regionFactory));
+        this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
@@ -129,6 +122,9 @@ public class BankOfEngland : ICurrencyConverter, IExchangeRateProvider, IExchang
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(baseMoney);
+        ArgumentNullException.ThrowIfNull(counterCurrency);
+
         var exchangeRate = await this.GetExchangeRateAsync(baseMoney.Currency, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
         var rate = exchangeRate.Rate;
 
@@ -162,6 +158,8 @@ public class BankOfEngland : ICurrencyConverter, IExchangeRateProvider, IExchang
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(pair);
+
         var exchangeRate = await this.GetExchangeRateAsync(
             pair.BaseCurrency,
             pair.CounterCurrency,
@@ -176,9 +174,12 @@ public class BankOfEngland : ICurrencyConverter, IExchangeRateProvider, IExchang
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(baseCurrency);
+        ArgumentNullException.ThrowIfNull(counterCurrency);
+
         if (asOn > this.timeProvider.GetUtcNow())
         {
-            throw new ArgumentException("Exchange rate forecasting are not supported.");
+            throw new ArgumentException("Exchange rate forecasting are not supported.", nameof(asOn));
         }
 
         string seriesCode;
@@ -190,7 +191,7 @@ public class BankOfEngland : ICurrencyConverter, IExchangeRateProvider, IExchang
         }
         catch (KeyNotFoundException)
         {
-            throw new ArgumentException("Currency pair not supported.");
+            throw new ArgumentException($"Currency pair {pair} not supported.");
         }
 
         var exchangeRates = await this.GetSeriesCodeExchangeRateAsync(seriesCode, asOn, cancellationToken).ConfigureAwait(false);
@@ -203,7 +204,7 @@ public class BankOfEngland : ICurrencyConverter, IExchangeRateProvider, IExchang
 
     public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
     {
-        List<ExchangeRate> rates = new();
+        List<ExchangeRate> rates = [];
         foreach (var seriesCode in SeriesCodes)
         {
             var exchangeRates = await this.GetSeriesCodeExchangeRateAsync(seriesCode.Value, asOn, cancellationToken).ConfigureAwait(false);
@@ -239,19 +240,18 @@ public class BankOfEngland : ICurrencyConverter, IExchangeRateProvider, IExchang
 
         if (asOn > this.timeProvider.GetUtcNow())
         {
-            throw new ArgumentException("Exchange rate forecasting are not supported.");
+            throw new ArgumentException("Exchange rate forecasting are not supported.", nameof(asOn));
         }
 
-        var requestUrl = string.Format(UrlFormat,
+        var requestUrl = new Uri(string.Format(CultureInfo.InvariantCulture, UrlFormat,
             ToInternalDataFormat(asOn.AddMonths(-1)),
-            ToInternalDataFormat(asOn), seriesCode);
+            ToInternalDataFormat(asOn), seriesCode));
 
-        var httpClient = this.httpClientFactory.CreateClient();
-        var responseStream = await httpClient.GetStreamAsync(requestUrl, cancellationToken).ConfigureAwait(false);
+        var responseStream = await this.httpClient.GetStreamAsync(requestUrl, cancellationToken).ConfigureAwait(false);
 
         var xdoc = XDocument.Load(responseStream);
 
-        List<ExchangeRate> rates = new();
+        List<ExchangeRate> rates = [];
 
         foreach (var item in xdoc.Element("{http://www.gesmes.org/xml/2002-08-01}Envelope")
             .Element("{https://www.bankofengland.co.uk/website/agg_series}Cube")
@@ -262,7 +262,7 @@ public class BankOfEngland : ICurrencyConverter, IExchangeRateProvider, IExchang
             {
                 var estimatedRate = item.Attribute("OBS_VALUE");
 
-                if (time != null && estimatedRate != null)
+                if (estimatedRate != null)
                 {
                     var year = int.Parse(time.Value.AsSpan(0, 4), CultureInfo.InvariantCulture);
                     var month = int.Parse(time.Value.AsSpan(5, 2), CultureInfo.InvariantCulture);

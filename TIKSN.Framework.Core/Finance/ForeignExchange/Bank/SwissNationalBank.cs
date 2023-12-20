@@ -5,29 +5,22 @@ using TIKSN.Globalization;
 
 namespace TIKSN.Finance.ForeignExchange.Bank;
 
-public class SwissNationalBank : ICurrencyConverter, IExchangeRatesProvider
+public class SwissNationalBank : ISwissNationalBank
 {
     private const string RSSURL = "https://www.snb.ch/selector/en/mmr/exfeed/rss";
-    private static readonly CurrencyInfo SwissFranc;
+    private static readonly CurrencyInfo SwissFranc = new(new RegionInfo("de-CH"));
     private readonly ICurrencyFactory currencyFactory;
     private readonly Dictionary<CurrencyInfo, Tuple<DateTimeOffset, decimal>> foreignRates;
-    private readonly IHttpClientFactory httpClientFactory;
+    private readonly HttpClient httpClient;
     private readonly TimeProvider timeProvider;
 
-    static SwissNationalBank()
-    {
-        var Switzerland = new RegionInfo("de-CH");
-
-        SwissFranc = new CurrencyInfo(Switzerland);
-    }
-
     public SwissNationalBank(
-        IHttpClientFactory httpClientFactory,
+        HttpClient httpClient,
         ICurrencyFactory currencyFactory,
         TimeProvider timeProvider)
     {
-        this.foreignRates = new Dictionary<CurrencyInfo, Tuple<DateTimeOffset, decimal>>();
-        this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+        this.foreignRates = [];
+        this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
@@ -38,6 +31,9 @@ public class SwissNationalBank : ICurrencyConverter, IExchangeRatesProvider
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(baseMoney);
+        ArgumentNullException.ThrowIfNull(counterCurrency);
+
         await this.FetchOnDemandAsync(cancellationToken).ConfigureAwait(false);
 
         var rate = this.GetRate(baseMoney.Currency, counterCurrency, asOn);
@@ -53,10 +49,10 @@ public class SwissNationalBank : ICurrencyConverter, IExchangeRatesProvider
 
         var pairs = new List<CurrencyPair>();
 
-        foreach (var currency in this.FilterByDate(asOn))
+        foreach (var currency in this.FilterByDate(asOn).Select(x => x.Key))
         {
-            pairs.Add(new CurrencyPair(SwissFranc, currency.Key));
-            pairs.Add(new CurrencyPair(currency.Key, SwissFranc));
+            pairs.Add(new CurrencyPair(SwissFranc, currency));
+            pairs.Add(new CurrencyPair(currency, SwissFranc));
         }
 
         return pairs;
@@ -67,6 +63,8 @@ public class SwissNationalBank : ICurrencyConverter, IExchangeRatesProvider
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(pair);
+
         await this.FetchOnDemandAsync(cancellationToken).ConfigureAwait(false);
 
         return this.GetRate(pair.BaseCurrency, pair.CounterCurrency, asOn);
@@ -78,17 +76,16 @@ public class SwissNationalBank : ICurrencyConverter, IExchangeRatesProvider
     {
         var result = new List<ExchangeRate>();
 
-        var httpClient = this.httpClientFactory.CreateClient();
-        var responseStream = await httpClient.GetStreamAsync(RSSURL, cancellationToken).ConfigureAwait(false);
+        var responseStream = await this.httpClient.GetStreamAsync(new Uri(RSSURL), cancellationToken).ConfigureAwait(false);
 
         var xdoc = XDocument.Load(responseStream);
 
         lock (this.foreignRates)
         {
-            foreach (var ItemElement in xdoc.Element("rss").Element("channel").Elements("item"))
+            foreach (var itemElement in xdoc.Element("rss").Element("channel").Elements("item"))
             {
-                var dateElement = ItemElement.Element("{http://purl.org/dc/elements/1.1/}date");
-                var exchangeRateElement = ItemElement
+                var dateElement = itemElement.Element("{http://purl.org/dc/elements/1.1/}date");
+                var exchangeRateElement = itemElement
                     .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}statistics")
                     .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}exchangeRate");
                 var valueElement = exchangeRateElement
@@ -98,9 +95,9 @@ public class SwissNationalBank : ICurrencyConverter, IExchangeRatesProvider
                     exchangeRateElement.Element(
                         "{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}targetCurrency");
 
-                var date = DateTimeOffset.Parse(dateElement.Value);
+                var date = DateTimeOffset.Parse(dateElement.Value, CultureInfo.InvariantCulture);
                 var currencyCode = targetCurrencyElement.Value;
-                var rate = decimal.Parse(valueElement.Value);
+                var rate = decimal.Parse(valueElement.Value, CultureInfo.InvariantCulture);
 
                 var currency = this.currencyFactory.Create(currencyCode);
 
@@ -132,7 +129,7 @@ public class SwissNationalBank : ICurrencyConverter, IExchangeRatesProvider
     {
         if (asOn > this.timeProvider.GetUtcNow())
         {
-            throw new ArgumentException("Exchange rate forecasting not supported.");
+            throw new ArgumentException("Exchange rate forecasting not supported.", nameof(asOn));
         }
 
         var maxDate = this.foreignRates.Max(r => r.Value.Item1);
@@ -140,7 +137,7 @@ public class SwissNationalBank : ICurrencyConverter, IExchangeRatesProvider
 
         if (asOn < minDate)
         {
-            throw new ArgumentException("Exchange rate history not supported.");
+            throw new ArgumentException("Exchange rate history not supported.", nameof(asOn));
         }
 
         DateTimeOffset filterDate;
@@ -167,7 +164,10 @@ public class SwissNationalBank : ICurrencyConverter, IExchangeRatesProvider
         return results;
     }
 
-    private decimal GetRate(CurrencyInfo baseCurrency, CurrencyInfo counterCurrency, DateTimeOffset asOn)
+    private decimal GetRate(
+        CurrencyInfo baseCurrency,
+        CurrencyInfo counterCurrency,
+        DateTimeOffset asOn)
     {
         var filtered = this.FilterByDate(asOn);
 

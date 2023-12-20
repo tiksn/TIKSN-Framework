@@ -1,51 +1,66 @@
-using System;
 using System.Management.Automation;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Nito.AsyncEx;
 
-namespace TIKSN.PowerShell
+namespace TIKSN.PowerShell;
+
+public abstract class CommandBase : PSCmdlet, IDisposable
 {
-    public abstract class CommandBase : PSCmdlet, IDisposable
+    private CancellationTokenSource cancellationTokenSource;
+    private bool disposedValue;
+    private IServiceScope serviceScope;
+
+    protected CommandBase() => this.cancellationTokenSource = new CancellationTokenSource();
+
+    protected IServiceProvider Services => this.serviceScope.ServiceProvider;
+
+    public void Dispose()
     {
-        protected CancellationTokenSource cancellationTokenSource;
-        private IServiceScope serviceScope;
+        this.Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
 
-        protected CommandBase() => this.cancellationTokenSource = new CancellationTokenSource();
+    protected override void BeginProcessing()
+    {
+        this.cancellationTokenSource = new CancellationTokenSource();
 
-        protected IServiceProvider ServiceProvider => this.serviceScope.ServiceProvider;
+        base.BeginProcessing();
 
-        protected override void BeginProcessing()
+        var topServiceProvider = this.GetServiceProvider();
+        this.serviceScope = topServiceProvider.CreateScope();
+        this.Services.GetRequiredService<ICurrentCommandStore>().SetCurrentCommand(this);
+        this.ConfigureLogger(this.Services.GetRequiredService<ILoggerFactory>());
+    }
+
+    protected virtual void ConfigureLogger(ILoggerFactory loggerFactory) =>
+        loggerFactory.AddPowerShell(this.Services);
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!this.disposedValue)
         {
-            this.cancellationTokenSource = new CancellationTokenSource();
+            if (disposing)
+            {
+                this.cancellationTokenSource.Dispose();
+                this.serviceScope.Dispose();
+            }
 
-            base.BeginProcessing();
-
-            var topServiceProvider = this.GetServiceProvider();
-            this.serviceScope = topServiceProvider.CreateScope();
-            this.ServiceProvider.GetRequiredService<ICurrentCommandStore>().SetCurrentCommand(this);
-            this.ConfigureLogger(this.ServiceProvider.GetRequiredService<ILoggerFactory>());
+            this.disposedValue = true;
         }
+    }
 
-        protected virtual void ConfigureLogger(ILoggerFactory loggerFactory) =>
-            loggerFactory.AddPowerShell(this.ServiceProvider);
+    protected abstract IServiceProvider GetServiceProvider();
 
-        protected abstract IServiceProvider GetServiceProvider();
+    protected override void ProcessRecord() => AsyncContext.Run(async () =>
+        await this.ProcessRecordAsync(this.cancellationTokenSource.Token).ConfigureAwait(false));
 
-        protected sealed override void ProcessRecord() => AsyncContext.Run(async () =>
-            await this.ProcessRecordAsync(this.cancellationTokenSource.Token).ConfigureAwait(false));
+    protected abstract Task ProcessRecordAsync(CancellationToken cancellationToken);
 
-        protected abstract Task ProcessRecordAsync(CancellationToken cancellationToken);
-
-        protected override void StopProcessing()
-        {
-            this.cancellationTokenSource.Cancel();
-            base.StopProcessing();
-            this.serviceScope.Dispose();
-        }
-
-        public void Dispose() => throw new NotImplementedException();
+    protected override void StopProcessing()
+    {
+        this.cancellationTokenSource.Cancel();
+        base.StopProcessing();
+        this.Dispose();
     }
 }

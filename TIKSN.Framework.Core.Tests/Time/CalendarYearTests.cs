@@ -1,8 +1,9 @@
 using FluentAssertions;
 using NodaTime;
+using TIKSN.Time;
 using Xunit;
 
-namespace TIKSN.Time.Tests;
+namespace TIKSN.Tests.Time;
 
 public class CalendarYearTests
 {

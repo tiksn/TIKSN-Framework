@@ -1,55 +1,49 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using TIKSN.Finance.Helpers;
 
-namespace TIKSN.Finance
+namespace TIKSN.Finance;
+
+public class AverageCurrencyConversionCompositionStrategy : ICurrencyConversionCompositionStrategy
 {
-    public class AverageCurrencyConversionCompositionStrategy : ICurrencyConversionCompositionStrategy
+    public async Task<Money> ConvertCurrencyAsync(Money baseMoney, IEnumerable<ICurrencyConverter> converters,
+        CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
     {
-        public async Task<Money> ConvertCurrencyAsync(Money baseMoney, IEnumerable<ICurrencyConverter> converters,
-            CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
+        var filteredConverters = await CurrencyHelper.FilterConvertersAsync(converters, baseMoney.Currency,
+            counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
+
+        var amounts = new List<decimal>();
+
+        foreach (var converter in filteredConverters)
         {
-            var filteredConverters = await CurrencyHelper.FilterConvertersAsync(converters, baseMoney.Currency,
-                counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
+            var convertedMoney =
+                await converter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
 
-            var amounts = new List<decimal>();
-
-            foreach (var converter in filteredConverters)
+            if (convertedMoney.Currency != counterCurrency)
             {
-                var convertedMoney =
-                    await converter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
-
-                if (convertedMoney.Currency != counterCurrency)
-                {
-                    throw new Exception("Converted into wrong currency.");
-                }
-
-                amounts.Add(convertedMoney.Amount);
+                throw new Exception("Converted into wrong currency.");
             }
 
-            var amount = amounts.Average();
-
-            return new Money(counterCurrency, amount);
+            amounts.Add(convertedMoney.Amount);
         }
 
-        public async Task<decimal> GetExchangeRateAsync(IEnumerable<ICurrencyConverter> converters, CurrencyPair pair,
-            DateTimeOffset asOn, CancellationToken cancellationToken)
+        var amount = amounts.Average();
+
+        return new Money(counterCurrency, amount);
+    }
+
+    public async Task<decimal> GetExchangeRateAsync(IEnumerable<ICurrencyConverter> converters, CurrencyPair pair,
+        DateTimeOffset asOn, CancellationToken cancellationToken)
+    {
+        var filteredConverters = await CurrencyHelper.FilterConvertersAsync(converters, pair, asOn, cancellationToken).ConfigureAwait(false);
+
+        var rates = new List<decimal>();
+
+        foreach (var converter in filteredConverters)
         {
-            var filteredConverters = await CurrencyHelper.FilterConvertersAsync(converters, pair, asOn, cancellationToken).ConfigureAwait(false);
+            var rate = await converter.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
 
-            var rates = new List<decimal>();
-
-            foreach (var converter in filteredConverters)
-            {
-                var rate = await converter.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
-
-                rates.Add(rate);
-            }
-
-            return rates.Average();
+            rates.Add(rate);
         }
+
+        return rates.Average();
     }
 }

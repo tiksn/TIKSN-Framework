@@ -22,15 +22,9 @@ public readonly struct CalendarYear : IYear<CalendarYear>
 
     public CalendarYear(Era era, int yearOfEra, CalendarSystem calendar)
     {
-        if (era is null)
-        {
-            throw new ArgumentNullException(nameof(era));
-        }
+        ArgumentNullException.ThrowIfNull(era);
 
-        if (calendar is null)
-        {
-            throw new ArgumentNullException(nameof(calendar));
-        }
+        ArgumentNullException.ThrowIfNull(calendar);
 
         this.absoluteYear = calendar.GetAbsoluteYear(yearOfEra, era);
     }

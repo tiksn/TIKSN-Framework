@@ -1,9 +1,8 @@
 using System.Globalization;
 
-namespace TIKSN.Globalization
+namespace TIKSN.Globalization;
+
+public interface ICultureFactory
 {
-    public interface ICultureFactory
-    {
-        CultureInfo Create(string name);
-    }
+    CultureInfo Create(string name);
 }

@@ -1,42 +1,39 @@
-using System;
-using System.Collections.Generic;
 using System.Xml;
 
-namespace TIKSN.Web
+namespace TIKSN.Web;
+
+public class SitemapIndex
 {
-    public class SitemapIndex
+    public IDictionary<Uri, DateOnly?> Sitemaps { get; } = new Dictionary<Uri, DateOnly?>();
+
+    public void Write(XmlWriter xWriter)
     {
-        public SitemapIndex() => this.Sitemaps = new Dictionary<Uri, DateTime?>();
+        ArgumentNullException.ThrowIfNull(xWriter);
 
-        public Dictionary<Uri, DateTime?> Sitemaps { get; }
+        xWriter.WriteStartDocument();
 
-        public void Write(XmlWriter XWriter)
+        xWriter.WriteStartElement("sitemapindex", "http://www.sitemaps.org/schemas/sitemap/0.9");
+
+        foreach (var sitemap in this.Sitemaps)
         {
-            XWriter.WriteStartDocument();
+            xWriter.WriteStartElement("sitemap");
 
-            XWriter.WriteStartElement("sitemapindex", "http://www.sitemaps.org/schemas/sitemap/0.9");
+            xWriter.WriteStartElement("loc");
+            xWriter.WriteValue(sitemap.Key.AbsoluteUri);
+            xWriter.WriteEndElement();
 
-            foreach (var SM in this.Sitemaps)
+            if (sitemap.Value.HasValue)
             {
-                XWriter.WriteStartElement("sitemap");
-
-                XWriter.WriteStartElement("loc");
-                XWriter.WriteValue(SM.Key.AbsoluteUri);
-                XWriter.WriteEndElement();
-
-                if (SM.Value.HasValue)
-                {
-                    XWriter.WriteStartElement("lastmod");
-                    XWriter.WriteValue(SM.Value.Value.ToString("yyyy-MM-dd"));
-                    XWriter.WriteEndElement();
-                }
-
-                XWriter.WriteEndElement();
+                xWriter.WriteStartElement("lastmod");
+                xWriter.WriteValue(sitemap.Value.Value.ToString("yyyy-MM-dd"));
+                xWriter.WriteEndElement();
             }
 
-            XWriter.WriteEndElement();
-
-            XWriter.Flush();
+            xWriter.WriteEndElement();
         }
+
+        xWriter.WriteEndElement();
+
+        xWriter.Flush();
     }
 }

@@ -1,133 +1,136 @@
 using System;
 using FluentAssertions;
+using TIKSN.Finance;
 using Xunit;
 
-namespace TIKSN.Finance.Tests
+namespace TIKSN.Tests.Finance;
+
+public class CurrencyPairTests
 {
-    public class CurrencyPairTests
+    [Fact]
+    public void CurrencyPair001()
     {
-        [Fact]
-        public void CurrencyPair001()
-        {
-            var USA = new System.Globalization.RegionInfo("US");
-            var USD1 = new CurrencyInfo(USA);
-            var USD2 = new CurrencyInfo(USA);
+        var unitedStates = new System.Globalization.RegionInfo("US");
+        var usDollar1 = new CurrencyInfo(unitedStates);
+        var usDollar2 = new CurrencyInfo(unitedStates);
 
-            _ = new Func<object>(() => new CurrencyPair(USD1, USD2)).Should().ThrowExactly<ArgumentException>();
-        }
+        _ = new Func<object>(() => new CurrencyPair(usDollar1, usDollar2)).Should().ThrowExactly<ArgumentException>();
+    }
 
-        [Fact]
-        public void Equals001()
-        {
-            var USA = new System.Globalization.RegionInfo("US");
-            var GBR = new System.Globalization.RegionInfo("GB");
-            var ITA = new System.Globalization.RegionInfo("IT");
+    [Fact]
+    public void Equals001()
+    {
+        var unitedStates = new System.Globalization.RegionInfo("US");
+        var unitedKingdom = new System.Globalization.RegionInfo("GB");
+        var italy = new System.Globalization.RegionInfo("IT");
 
-            var USD = new CurrencyInfo(USA);
-            var GBP = new CurrencyInfo(GBR);
-            var EUR = new CurrencyInfo(ITA);
+        var usDollar = new CurrencyInfo(unitedStates);
+        var poundSterling = new CurrencyInfo(unitedKingdom);
+        var euro = new CurrencyInfo(italy);
 
-            var pair1 = new CurrencyPair(GBP, USD);
-            var pair2 = new CurrencyPair(GBP, USD);
-            var pair3 = new CurrencyPair(GBP, EUR);
-            var pair4 = new CurrencyPair(USD, EUR);
-            var pair5 = new CurrencyPair(EUR, USD);
+        var pair1 = new CurrencyPair(poundSterling, usDollar);
+        var pair2 = new CurrencyPair(poundSterling, usDollar);
+        var pair3 = new CurrencyPair(poundSterling, euro);
+        var pair4 = new CurrencyPair(usDollar, euro);
+        var pair5 = new CurrencyPair(euro, usDollar);
 
-            pair1.Equals(pair1).Should().BeTrue();
-            Assert.True(pair1.GetHashCode() == pair1.GetHashCode());
-            Assert.True(pair1 == pair1);
-            Assert.False(pair1 != pair1);
+        _ = pair1.Equals(pair1).Should().BeTrue();
+        _ = (pair1.GetHashCode() == pair1.GetHashCode()).Should().BeTrue();
 
-            Assert.True(pair2.Equals(pair1));
-            Assert.True(pair1.Equals(pair2));
-            Assert.True(pair1.GetHashCode() == pair2.GetHashCode());
-            Assert.True(pair2.GetHashCode() == pair1.GetHashCode());
-            Assert.True(pair1 == pair2);
-            Assert.True(pair2 == pair1);
-            Assert.False(pair1 != pair2);
-            Assert.False(pair2 != pair1);
+#pragma warning disable CS1718 // Comparison made to same variable
+        _ = (pair1 == pair1).Should().BeTrue();
+        _ = (pair1 != pair1).Should().BeFalse();
+#pragma warning restore CS1718 // Comparison made to same variable
 
-            Assert.False(pair1.Equals(pair3));
-            Assert.False(pair3.Equals(pair1));
-            Assert.False(pair1.GetHashCode() == pair3.GetHashCode());
-            Assert.False(pair3.GetHashCode() == pair1.GetHashCode());
-            Assert.False(pair1 == pair3);
-            Assert.False(pair3 == pair1);
-            Assert.True(pair1 != pair3);
-            Assert.True(pair3 != pair1);
+        _ = pair2.Equals(pair1).Should().BeTrue();
+        _ = pair1.Equals(pair2).Should().BeTrue();
+        _ = (pair1.GetHashCode() == pair2.GetHashCode()).Should().BeTrue();
+        _ = (pair2.GetHashCode() == pair1.GetHashCode()).Should().BeTrue();
+        _ = (pair1 == pair2).Should().BeTrue();
+        _ = (pair2 == pair1).Should().BeTrue();
+        _ = (pair1 != pair2).Should().BeFalse();
+        _ = (pair2 != pair1).Should().BeFalse();
 
-            Assert.False(pair4.Equals(pair5));
-            Assert.False(pair5.Equals(pair4));
-            Assert.False(pair4.GetHashCode() == pair5.GetHashCode());
-            Assert.False(pair5.GetHashCode() == pair4.GetHashCode());
-            Assert.False(pair4 == pair5);
-            Assert.False(pair5 == pair4);
-            Assert.True(pair4 != pair5);
-        }
+        _ = pair1.Equals(pair3).Should().BeFalse();
+        _ = pair3.Equals(pair1).Should().BeFalse();
+        _ = (pair1.GetHashCode() == pair3.GetHashCode()).Should().BeFalse();
+        _ = (pair3.GetHashCode() == pair1.GetHashCode()).Should().BeFalse();
+        _ = (pair1 == pair3).Should().BeFalse();
+        _ = (pair3 == pair1).Should().BeFalse();
+        _ = (pair1 != pair3).Should().BeTrue();
+        _ = (pair3 != pair1).Should().BeTrue();
 
-        [Fact]
-        public void Equals002()
-        {
-            var USA = new System.Globalization.RegionInfo("US");
-            var GBR = new System.Globalization.RegionInfo("GB");
+        _ = pair4.Equals(pair5).Should().BeFalse();
+        _ = pair5.Equals(pair4).Should().BeFalse();
+        _ = (pair4.GetHashCode() == pair5.GetHashCode()).Should().BeFalse();
+        _ = (pair5.GetHashCode() == pair4.GetHashCode()).Should().BeFalse();
+        _ = (pair4 == pair5).Should().BeFalse();
+        _ = (pair5 == pair4).Should().BeFalse();
+        _ = (pair4 != pair5).Should().BeTrue();
+    }
 
-            var USD = new CurrencyInfo(USA);
-            var GBP = new CurrencyInfo(GBR);
+    [Fact]
+    public void Equals002()
+    {
+        var unitedStates = new System.Globalization.RegionInfo("US");
+        var unitedKingdom = new System.Globalization.RegionInfo("GB");
 
-            var pair1 = new CurrencyPair(GBP, USD);
-            var pair2 = pair1;
-            object pair3 = pair1;
-            var something = new object();
-            object pair4 = new CurrencyPair(GBP, USD);
+        var usDollar = new CurrencyInfo(unitedStates);
+        var poundSterling = new CurrencyInfo(unitedKingdom);
 
-            Assert.True(pair1.Equals(pair2));
-            Assert.True(pair1.Equals(pair3));
-            Assert.True(pair1 == pair2);
-            Assert.True(pair2 == pair1);
-            Assert.False(pair1 != pair2);
-            Assert.False(pair2 != pair1);
+        var pair1 = new CurrencyPair(poundSterling, usDollar);
+        var pair2 = pair1;
+        object pair3 = pair1;
+        var something = new object();
+        object pair4 = new CurrencyPair(poundSterling, usDollar);
 
-            Assert.False(pair1.Equals(something));
+        _ = pair1.Equals(pair2).Should().BeTrue();
+        _ = pair1.Equals(pair3).Should().BeTrue();
+        _ = (pair1 == pair2).Should().BeTrue();
+        _ = (pair2 == pair1).Should().BeTrue();
+        _ = (pair1 != pair2).Should().BeFalse();
+        _ = (pair2 != pair1).Should().BeFalse();
 
-            Assert.True(pair1.Equals(pair4));
-        }
+        _ = pair1.Equals(something).Should().BeFalse();
 
-        [Fact]
-        public void Equals003()
-        {
-            var USA = new System.Globalization.RegionInfo("US");
-            var GBR = new System.Globalization.RegionInfo("GB");
+        _ = pair1.Equals(pair4).Should().BeTrue();
+    }
 
-            var USD = new CurrencyInfo(USA);
-            var GBP = new CurrencyInfo(GBR);
+    [Fact]
+    public void Equals003()
+    {
+        var unitedStates = new System.Globalization.RegionInfo("US");
+        var unitedKingdom = new System.Globalization.RegionInfo("GB");
 
-            var pair1 = new CurrencyPair(GBP, USD);
-            CurrencyPair pair2 = null;
-            object pair3 = null;
-            CurrencyPair pair4 = null;
+        var usDollar = new CurrencyInfo(unitedStates);
+        var poundSterling = new CurrencyInfo(unitedKingdom);
 
-            Assert.False(pair1.Equals(pair2));
-            Assert.False(pair1.Equals(pair3));
-            Assert.False(pair1 == pair2);
-            Assert.False(pair2 == pair1);
-            Assert.True(pair2 == pair4);
-            Assert.True(pair1 != pair2);
-            Assert.True(pair2 != pair1);
-            Assert.False(pair2 != pair4);
-        }
+        var pair1 = new CurrencyPair(poundSterling, usDollar);
+        CurrencyPair pair2 = null;
+        object pair3 = null;
+        CurrencyPair pair4 = null;
 
-        [Fact]
-        public void ToString001()
-        {
-            var USA = new System.Globalization.RegionInfo("US");
-            var GBR = new System.Globalization.RegionInfo("GB");
+        _ = pair1.Equals(pair2).Should().BeFalse();
+        _ = pair1.Equals(pair3).Should().BeFalse();
+        _ = (pair1 == pair2).Should().BeFalse();
+        _ = (pair2 == pair1).Should().BeFalse();
+        _ = (pair2 == pair4).Should().BeTrue();
+        _ = (pair1 != pair2).Should().BeTrue();
+        _ = (pair2 != pair1).Should().BeTrue();
+        _ = (pair2 != pair4).Should().BeFalse();
+    }
 
-            var USD = new CurrencyInfo(USA);
-            var GBP = new CurrencyInfo(GBR);
+    [Fact]
+    public void ToString001()
+    {
+        var unitedStates = new System.Globalization.RegionInfo("US");
+        var unitedKingdom = new System.Globalization.RegionInfo("GB");
 
-            var pair = new CurrencyPair(GBP, USD);
+        var usDollar = new CurrencyInfo(unitedStates);
+        var poundSterling = new CurrencyInfo(unitedKingdom);
 
-            Assert.Equal("GBP/USD", pair.ToString());
-        }
+        var pair = new CurrencyPair(poundSterling, usDollar);
+
+        _ = pair.ToString().Should().Be("GBP/USD");
     }
 }

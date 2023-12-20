@@ -1,7 +1,6 @@
-namespace TIKSN.Mapping
+namespace TIKSN.Mapping;
+
+public interface IMapper<in TSource, out TDestination>
 {
-    public interface IMapper<in TSource, out TDestination>
-    {
-        TDestination Map(TSource source);
-    }
+    TDestination Map(TSource source);
 }

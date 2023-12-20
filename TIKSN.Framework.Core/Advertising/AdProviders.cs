@@ -1,7 +1,6 @@
-namespace TIKSN.Advertising
+namespace TIKSN.Advertising;
+
+public static class AdProviders
 {
-    public static class AdProviders
-    {
-        public const string Microsoft = "Microsoft";
-    }
+    public const string Microsoft = "Microsoft";
 }

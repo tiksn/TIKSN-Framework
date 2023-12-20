@@ -6,11 +6,12 @@
     <Company>TIKSN Development</Company>
     <Product>TIKSN Framework Tests</Product>
     <Authors>TIKSN Development</Authors>
+    <RootNamespace>TIKSN.Tests</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.12.0" />
     <PackageReference Include="Bond.CSharp" Version="10.0.0" />
-    <PackageReference Include="Meziantou.FluentAssertionsAnalyzers" Version="1.0.10">
+    <PackageReference Include="Meziantou.FluentAssertionsAnalyzers" Version="1.0.16">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -19,12 +20,12 @@
     <PackageReference Include="Nito.AsyncEx.Context" Version="5.1.2" />
     <PackageReference Include="NSubstitute" Version="5.1.0" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.1" />
-    <PackageReference Include="ReactiveUI" Version="19.5.1" />
+    <PackageReference Include="ReactiveUI" Version="19.5.31" />
     <PackageReference Include="Serilog.Sinks.XUnit" Version="3.0.5" />
-    <PackageReference Include="xunit" Version="2.6.2" />
-    <PackageReference Include="xunit.analyzers" Version="1.6.0" />
-    <PackageReference Include="xunit.assert" Version="2.6.2" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.4">
+    <PackageReference Include="xunit" Version="2.6.3" />
+    <PackageReference Include="xunit.analyzers" Version="1.7.0" />
+    <PackageReference Include="xunit.assert" Version="2.6.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.5">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
@@ -42,6 +43,7 @@
     <EmbeddedResource Update="Licensing\LicensingResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LicensingResource.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>TIKSN.Tests.Licensing</CustomToolNamespace>
     </EmbeddedResource>
   </ItemGroup>
 </Project>

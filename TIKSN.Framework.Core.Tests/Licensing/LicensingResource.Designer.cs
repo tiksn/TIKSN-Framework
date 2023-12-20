@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TIKSN.Framework.Core.Tests.Licensing {
+namespace TIKSN.Tests.Licensing {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace TIKSN.Framework.Core.Tests.Licensing {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TIKSN.Framework.Core.Tests.Licensing.LicensingResource", typeof(LicensingResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TIKSN.Tests.Licensing.LicensingResource", typeof(LicensingResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

@@ -33,20 +33,9 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
         TEntitlements entitlements,
         X509Certificate2 privateCertificate)
     {
-        if (terms is null)
-        {
-            throw new ArgumentNullException(nameof(terms));
-        }
-
-        if (entitlements is null)
-        {
-            throw new ArgumentNullException(nameof(entitlements));
-        }
-
-        if (privateCertificate is null)
-        {
-            throw new ArgumentNullException(nameof(privateCertificate));
-        }
+        ArgumentNullException.ThrowIfNull(terms);
+        ArgumentNullException.ThrowIfNull(entitlements);
+        ArgumentNullException.ThrowIfNull(privateCertificate);
 
         var errors = new List<Error>();
         var envelope = new LicenseEnvelope();
@@ -65,7 +54,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
             errors.Add(Error.New(124921383, "Certificate Private Key is missing"));
         }
 
-        if (errors.Any())
+        if (errors.Count != 0)
         {
             return errors.ToSeq();
         }
@@ -90,10 +79,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
         Seq<byte> data,
         X509Certificate2 publicCertificate)
     {
-        if (publicCertificate is null)
-        {
-            throw new ArgumentNullException(nameof(publicCertificate));
-        }
+        ArgumentNullException.ThrowIfNull(publicCertificate);
 
         var errors = new List<Error>();
 
@@ -103,7 +89,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
             return errors.ToSeq();
         }
 
-        var envelope = this.deserializer.Deserialize<LicenseEnvelope>(data.ToArray());
+        var envelope = this.deserializer.Deserialize<LicenseEnvelope>([.. data]);
 
         LicenseTerms terms = null;
         TEntitlements entitlements = default;
@@ -111,7 +97,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
         _ = GetTerms(envelope, this.timeProvider)
             .Match(succ => terms = succ, fail => errors.AddRange(fail));
 
-        _ = this.entitlementsConverter.Convert(this.deserializer.Deserialize<TEntitlementsData>(envelope.Message.Entitlements.ToArray()))
+        _ = this.entitlementsConverter.Convert(this.deserializer.Deserialize<TEntitlementsData>([.. envelope.Message.Entitlements]))
             .Match(succ => entitlements = succ, fail => errors.AddRange(fail));
 
         var keyAlgorithm = publicCertificate.GetKeyAlgorithm();
@@ -125,12 +111,12 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
 
         var messageData = this.serializer.Serialize(envelope.Message);
 
-        if (!signatureService.Verify(messageData, envelope.Signature.ToArray(), publicCertificate))
+        if (!signatureService.Verify(messageData, [.. envelope.Signature], publicCertificate))
         {
             errors.Add(Error.New(1311896038, "License signature is invalid"));
         }
 
-        if (errors.Any())
+        if (errors.Count != 0)
         {
             return errors.ToSeq();
         }
@@ -145,10 +131,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
         LicenseEnvelope envelope,
         TimeProvider timeProvider)
     {
-        if (envelope is null)
-        {
-            throw new ArgumentNullException(nameof(envelope));
-        }
+        ArgumentNullException.ThrowIfNull(envelope);
 
         var errors = new List<Error>();
 
@@ -190,7 +173,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
             }
         });
 
-        if (errors.Any())
+        if (errors.Count != 0)
         {
             return errors.ToSeq();
         }
@@ -207,15 +190,8 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
         LicenseEnvelope envelope,
         LicenseTerms terms)
     {
-        if (envelope is null)
-        {
-            throw new ArgumentNullException(nameof(envelope));
-        }
-
-        if (terms is null)
-        {
-            throw new ArgumentNullException(nameof(terms));
-        }
+        ArgumentNullException.ThrowIfNull(envelope);
+        ArgumentNullException.ThrowIfNull(terms);
 
         var errors = new List<Error>();
 
@@ -237,7 +213,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
         _ = LicenseFactoryTermsValidation.ConvertFromParty(terms.Licensee)
             .Match(succ => envelope.Message.Licensee = succ, fail => errors.AddRange(fail));
 
-        if (errors.Any())
+        if (errors.Count != 0)
         {
             return errors.ToSeq();
         }

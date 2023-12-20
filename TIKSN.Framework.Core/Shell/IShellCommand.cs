@@ -1,10 +1,6 @@
-using System.Threading;
-using System.Threading.Tasks;
+namespace TIKSN.Shell;
 
-namespace TIKSN.Shell
+public interface IShellCommand
 {
-    public interface IShellCommand
-    {
-        Task ExecuteAsync(CancellationToken cancellationToken);
-    }
+    Task ExecuteAsync(CancellationToken cancellationToken);
 }

@@ -1,7 +1,6 @@
-namespace TIKSN.PowerShell
+namespace TIKSN.PowerShell;
+
+public interface ICurrentCommandProvider
 {
-    public interface ICurrentCommandProvider
-    {
-        CommandBase GetCurrentCommand();
-    }
+    CommandBase GetCurrentCommand();
 }

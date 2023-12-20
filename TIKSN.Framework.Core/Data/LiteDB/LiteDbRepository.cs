@@ -8,18 +8,12 @@ namespace TIKSN.Data.LiteDB;
 public class LiteDbRepository<TDocument, TIdentity> : ILiteDbRepository<TDocument, TIdentity>
     where TDocument : IEntity<TIdentity> where TIdentity : IEquatable<TIdentity>
 {
-    protected readonly ILiteCollection<TDocument> collection;
-    protected readonly Func<TIdentity, BsonValue> convertToBsonValue;
-
     protected LiteDbRepository(
         ILiteDbDatabaseProvider databaseProvider,
         string collectionName,
         Func<TIdentity, BsonValue> convertToBsonValue)
     {
-        if (databaseProvider is null)
-        {
-            throw new ArgumentNullException(nameof(databaseProvider));
-        }
+        ArgumentNullException.ThrowIfNull(databaseProvider);
 
         if (string.IsNullOrEmpty(collectionName))
         {
@@ -27,98 +21,95 @@ public class LiteDbRepository<TDocument, TIdentity> : ILiteDbRepository<TDocumen
         }
 
         var database = databaseProvider.GetDatabase();
-        this.collection = database.GetCollection<TDocument>(collectionName);
-        this.convertToBsonValue = convertToBsonValue ?? throw new ArgumentNullException(nameof(convertToBsonValue));
+        this.Collection = database.GetCollection<TDocument>(collectionName);
+        this.ConvertToBsonValue = convertToBsonValue ?? throw new ArgumentNullException(nameof(convertToBsonValue));
     }
+
+    protected ILiteCollection<TDocument> Collection { get; }
+    protected Func<TIdentity, BsonValue> ConvertToBsonValue { get; }
 
     public Task AddAsync(TDocument entity, CancellationToken cancellationToken)
     {
-        _ = this.collection.Insert(entity);
+        _ = this.Collection.Insert(entity);
         return Task.CompletedTask;
     }
 
     public Task AddOrUpdateAsync(TDocument entity, CancellationToken cancellationToken)
     {
-        _ = this.collection.Upsert(entity);
+        _ = this.Collection.Upsert(entity);
         return Task.CompletedTask;
     }
 
     public Task AddOrUpdateRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken)
     {
-        _ = this.collection.Upsert(entities);
+        _ = this.Collection.Upsert(entities);
         return Task.CompletedTask;
     }
 
     public Task AddRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken)
     {
-        _ = this.collection.Insert(entities);
+        _ = this.Collection.Insert(entities);
         return Task.CompletedTask;
     }
 
     public Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken) =>
-        Task.FromResult(this.collection.Exists(item => item.ID.Equals(id)));
+        Task.FromResult(this.Collection.Exists(item => item.ID.Equals(id)));
 
     public async Task<TDocument> GetAsync(TIdentity id, CancellationToken cancellationToken)
         => await this.GetOrDefaultAsync(id, cancellationToken).ConfigureAwait(false)
             ?? throw new EntityNotFoundException("Result retrieved from database is null.");
 
     public Task<TDocument> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken) =>
-        Task.FromResult(this.collection.FindById(this.convertToBsonValue(id)));
+        Task.FromResult(this.Collection.FindById(this.ConvertToBsonValue(id)));
 
     public Task<IEnumerable<TDocument>>
         ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken) =>
-        Task.FromResult<IEnumerable<TDocument>>(this.collection.Find(item => ids.Contains(item.ID)).ToArray());
+        Task.FromResult<IEnumerable<TDocument>>(this.Collection.Find(item => ids.Contains(item.ID)).ToArray());
 
     public Task<PageResult<TDocument>> PageAsync(
         PageQuery pageQuery,
         CancellationToken cancellationToken)
     {
-        if (pageQuery is null)
-        {
-            throw new ArgumentNullException(nameof(pageQuery));
-        }
+        ArgumentNullException.ThrowIfNull(pageQuery);
 
-        var items = this.collection.Find(
+        var items = this.Collection.Find(
             Query.All(),
             pageQuery.Page.Index * pageQuery.Page.Size,
             pageQuery.Page.Size)
             .ToArray();
 
         Option<long> totalItems = pageQuery.EstimateTotalItems
-            ? this.collection.LongCount(Query.All())
+            ? this.Collection.LongCount(Query.All())
             : None;
 
         return Task.FromResult(new PageResult<TDocument>(pageQuery.Page, items, totalItems));
     }
 
     public Task RemoveAsync(TDocument entity, CancellationToken cancellationToken) =>
-        Task.FromResult(this.collection.Delete(this.convertToBsonValue(entity.ID)));
+        Task.FromResult(this.Collection.Delete(this.ConvertToBsonValue(entity.ID)));
 
     public Task RemoveRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken)
     {
-        if (entities == null)
-        {
-            throw new ArgumentNullException(nameof(entities));
-        }
+        ArgumentNullException.ThrowIfNull(entities);
 
         var ids = entities.Select(item => item.ID).ToArray();
 
-        _ = this.collection.DeleteMany(item => ids.Contains(item.ID));
+        _ = this.Collection.DeleteMany(item => ids.Contains(item.ID));
         return Task.CompletedTask;
     }
 
     public IAsyncEnumerable<TDocument> StreamAllAsync(CancellationToken cancellationToken) =>
-        this.collection.FindAll().ToAsyncEnumerable();
+        this.Collection.FindAll().ToAsyncEnumerable();
 
     public Task UpdateAsync(TDocument entity, CancellationToken cancellationToken)
     {
-        _ = this.collection.Update(entity);
+        _ = this.Collection.Update(entity);
         return Task.CompletedTask;
     }
 
     public Task UpdateRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken)
     {
-        _ = this.collection.Update(entities);
+        _ = this.Collection.Update(entities);
         return Task.CompletedTask;
     }
 }

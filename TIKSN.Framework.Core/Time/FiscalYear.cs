@@ -26,15 +26,9 @@ public readonly struct FiscalYear : IYear<FiscalYear>
 
     public FiscalYear(Era era, int startYearOfEra, AnnualDate startDate, CalendarSystem calendar)
     {
-        if (era is null)
-        {
-            throw new ArgumentNullException(nameof(era));
-        }
+        ArgumentNullException.ThrowIfNull(era);
 
-        if (calendar is null)
-        {
-            throw new ArgumentNullException(nameof(calendar));
-        }
+        ArgumentNullException.ThrowIfNull(calendar);
 
         this.absoluteStartYear = calendar.GetAbsoluteYear(startYearOfEra, era);
         this.startDate = startDate;

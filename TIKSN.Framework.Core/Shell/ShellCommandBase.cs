@@ -1,19 +1,14 @@
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+namespace TIKSN.Shell;
 
-namespace TIKSN.Shell
+public abstract class ShellCommandBase : IShellCommand
 {
-    public abstract class ShellCommandBase : IShellCommand
-    {
-        private readonly IConsoleService _consoleService;
+    private readonly IConsoleService consoleService;
 
-        protected ShellCommandBase(IConsoleService consoleService) => this._consoleService = consoleService;
+    protected ShellCommandBase(IConsoleService consoleService) => this.consoleService = consoleService;
 
-        public abstract Task ExecuteAsync(CancellationToken cancellationToken);
+    public abstract Task ExecuteAsync(CancellationToken cancellationToken);
 
-        protected void WriteObject<T>(T tableValue) => this._consoleService.WriteObject(tableValue);
+    protected void WriteObject<T>(T tableValue) => this.consoleService.WriteObject(tableValue);
 
-        protected void WriteObjects<T>(IEnumerable<T> tableValues) => this._consoleService.WriteObjects(tableValues);
-    }
+    protected void WriteObjects<T>(IEnumerable<T> tableValues) => this.consoleService.WriteObjects(tableValues);
 }

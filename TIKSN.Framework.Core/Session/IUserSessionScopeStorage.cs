@@ -1,11 +1,8 @@
-using System;
+namespace TIKSN.Session;
 
-namespace TIKSN.Session
+public interface IUserSessionScopeStorage<TIdentity> where TIdentity : IEquatable<TIdentity>
 {
-    public interface IUserSessionScopeStorage<TIdentity> where TIdentity : IEquatable<TIdentity>
-    {
-        IServiceProvider GetOrAddServiceProvider(TIdentity id);
+    IServiceProvider GetOrAddServiceProvider(TIdentity id);
 
-        bool TryRemoveServiceProvider(TIdentity id);
-    }
+    ValueTask<bool> TryRemoveServiceProviderAsync(TIdentity id);
 }

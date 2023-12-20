@@ -1,21 +1,18 @@
-using System;
+namespace TIKSN.Serialization;
 
-namespace TIKSN.Serialization
+public abstract class SerializerBase<TSerial> : ISerializer<TSerial> where TSerial : class
 {
-    public abstract class SerializerBase<TSerial> : ISerializer<TSerial> where TSerial : class
+    public TSerial Serialize<T>(T obj)
     {
-        public TSerial Serialize<T>(T obj)
+        try
         {
-            try
-            {
-                return this.SerializeInternal(obj);
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException("Serialization failed.", ex);
-            }
+            return this.SerializeInternal(obj);
         }
-
-        protected abstract TSerial SerializeInternal<T>(T obj);
+        catch (Exception ex)
+        {
+            throw new SerializerException("Serialization failed.", ex);
+        }
     }
+
+    protected abstract TSerial SerializeInternal<T>(T obj);
 }

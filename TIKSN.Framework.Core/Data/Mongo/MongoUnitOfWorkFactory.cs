@@ -1,33 +1,29 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace TIKSN.Data.Mongo
+namespace TIKSN.Data.Mongo;
+
+public class MongoUnitOfWorkFactory : IUnitOfWorkFactory
 {
-    public class MongoUnitOfWorkFactory : IUnitOfWorkFactory
+    private readonly IMongoClientProvider mongoClientProvider;
+    private readonly IServiceProvider serviceProvider;
+
+    public MongoUnitOfWorkFactory(IMongoClientProvider mongoClientProvider, IServiceProvider serviceProvider)
     {
-        private readonly IMongoClientProvider _mongoClientProvider;
-        private readonly IServiceProvider _serviceProvider;
+        this.mongoClientProvider =
+            mongoClientProvider ?? throw new ArgumentNullException(nameof(mongoClientProvider));
+        this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+    }
 
-        public MongoUnitOfWorkFactory(IMongoClientProvider mongoClientProvider, IServiceProvider serviceProvider)
-        {
-            this._mongoClientProvider =
-                mongoClientProvider ?? throw new ArgumentNullException(nameof(mongoClientProvider));
-            this._serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-        }
+    public async Task<IUnitOfWork> CreateAsync(CancellationToken cancellationToken)
+    {
+        var mongoClient = this.mongoClientProvider.GetMongoClient();
+        var clientSessionHandle = await mongoClient.StartSessionAsync(options: null, cancellationToken).ConfigureAwait(false);
+        var serviceScope = this.serviceProvider.CreateAsyncScope();
+        var mongoClientSessionStore = serviceScope.ServiceProvider.GetRequiredService<IMongoClientSessionStore>();
+        mongoClientSessionStore.SetClientSessionHandle(clientSessionHandle);
 
-        public async Task<IUnitOfWork> CreateAsync(CancellationToken cancellationToken)
-        {
-            var mongoClient = this._mongoClientProvider.GetMongoClient();
-            var clientSessionHandle = await mongoClient.StartSessionAsync(options: null, cancellationToken).ConfigureAwait(false);
-            var serviceScope = this._serviceProvider.CreateScope();
-            var mongoClientSessionStore = serviceScope.ServiceProvider.GetRequiredService<IMongoClientSessionStore>();
-            mongoClientSessionStore.SetClientSessionHandle(clientSessionHandle);
+        clientSessionHandle.StartTransaction();
 
-            clientSessionHandle.StartTransaction();
-
-            return new MongoUnitOfWork(clientSessionHandle, serviceScope);
-        }
+        return new MongoUnitOfWork(clientSessionHandle, serviceScope);
     }
 }

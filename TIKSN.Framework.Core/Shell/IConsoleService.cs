@@ -1,24 +1,20 @@
-using System;
-using System.Collections.Generic;
 using System.Security;
-using System.Threading;
 
-namespace TIKSN.Shell
+namespace TIKSN.Shell;
+
+public interface IConsoleService
 {
-    public interface IConsoleService
-    {
-        string ReadLine(string promptMessage, ConsoleColor promptForegroundColor);
+    string ReadLine(string promptMessage, ConsoleColor promptForegroundColor);
 
-        SecureString ReadPasswordLine(string promptMessage, ConsoleColor promptForegroundColor);
+    SecureString ReadPasswordLine(string promptMessage, ConsoleColor promptForegroundColor);
 
-        IDisposable RegisterCancellation(CancellationTokenSource cancellationTokenSource);
+    IDisposable RegisterCancellation(CancellationTokenSource cancellationTokenSource);
 
-        int UserPrompt(string message, params string[] options);
+    int UserPrompt(string message, params string[] options);
 
-        void WriteError(string errorMessage);
+    void WriteError(string errorMessage);
 
-        void WriteObject<T>(T value);
+    void WriteObject<T>(T value);
 
-        void WriteObjects<T>(IEnumerable<T> values);
-    }
+    void WriteObjects<T>(IEnumerable<T> values);
 }

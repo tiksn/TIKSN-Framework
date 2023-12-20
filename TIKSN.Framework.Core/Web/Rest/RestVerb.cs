@@ -1,10 +1,9 @@
-namespace TIKSN.Web.Rest
+namespace TIKSN.Web.Rest;
+
+public enum RestVerb
 {
-    public enum RestVerb
-    {
-        Get = 0,
-        Delete = 1,
-        Put = 2,
-        Post = 3,
-    }
+    Get = 0,
+    Delete = 1,
+    Put = 2,
+    Post = 3,
 }

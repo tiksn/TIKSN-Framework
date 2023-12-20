@@ -1,31 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+namespace TIKSN.Finance;
 
-namespace TIKSN.Finance
+public abstract class CompositeCurrencyConverter : ICompositeCurrencyConverter
 {
-    public abstract class CompositeCurrencyConverter : ICompositeCurrencyConverter
+    protected CompositeCurrencyConverter(ICurrencyConversionCompositionStrategy compositionStrategy)
     {
-        protected ICurrencyConversionCompositionStrategy compositionStrategy;
-        protected List<ICurrencyConverter> converters;
-
-        protected CompositeCurrencyConverter(ICurrencyConversionCompositionStrategy compositionStrategy)
-        {
-            this.compositionStrategy =
-                compositionStrategy ?? throw new ArgumentNullException(nameof(compositionStrategy));
-            this.converters = new List<ICurrencyConverter>();
-        }
-
-        public void Add(ICurrencyConverter converter) => this.converters.Add(converter);
-
-        public abstract Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
-            DateTimeOffset asOn, CancellationToken cancellationToken);
-
-        public abstract Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
-            CancellationToken cancellationToken);
-
-        public abstract Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
-            CancellationToken cancellationToken);
+        this.CompositionStrategy =
+            compositionStrategy ?? throw new ArgumentNullException(nameof(compositionStrategy));
+        this.Converters = [];
     }
+
+    protected ICurrencyConversionCompositionStrategy CompositionStrategy { get; }
+    protected List<ICurrencyConverter> Converters { get; }
+
+    public void Add(ICurrencyConverter converter) => this.Converters.Add(converter);
+
+    public abstract Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
+        DateTimeOffset asOn, CancellationToken cancellationToken);
+
+    public abstract Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+        CancellationToken cancellationToken);
+
+    public abstract Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+        CancellationToken cancellationToken);
 }

@@ -1,34 +1,31 @@
-using System;
+namespace TIKSN.Data;
 
-namespace TIKSN.Data
+public class FileInfo : IFileInfo
 {
-    public class FileInfo : IFileInfo
+    public FileInfo(string path)
     {
-        public FileInfo(string path)
+        if (string.IsNullOrWhiteSpace(path))
         {
-            if (string.IsNullOrWhiteSpace(path))
-            {
-                throw new ArgumentException("Argument is null, empty or whitespace.", nameof(path));
-            }
-
-            this.Path = path;
+            throw new ArgumentException("Argument is null, empty or whitespace.", nameof(path));
         }
 
-        public string Path { get; }
+        this.Path = path;
     }
 
-    public class FileInfo<TIdentity> : FileInfo, IFileInfo<TIdentity> where TIdentity : IEquatable<TIdentity>
-    {
-        public FileInfo(TIdentity id, string path) : base(path) => this.ID = id;
+    public string Path { get; }
+}
 
-        public TIdentity ID { get; }
-    }
+public class FileInfo<TIdentity> : FileInfo, IFileInfo<TIdentity> where TIdentity : IEquatable<TIdentity>
+{
+    public FileInfo(TIdentity id, string path) : base(path) => this.ID = id;
 
-    public class FileInfo<TIdentity, TMetadata> : FileInfo<TIdentity>, IFileInfo<TIdentity, TMetadata>
-        where TIdentity : IEquatable<TIdentity>
-    {
-        public FileInfo(TIdentity id, string path, TMetadata metadata) : base(id, path) => this.Metadata = metadata;
+    public TIdentity ID { get; }
+}
 
-        public TMetadata Metadata { get; }
-    }
+public class FileInfo<TIdentity, TMetadata> : FileInfo<TIdentity>, IFileInfo<TIdentity, TMetadata>
+    where TIdentity : IEquatable<TIdentity>
+{
+    public FileInfo(TIdentity id, string path, TMetadata metadata) : base(id, path) => this.Metadata = metadata;
+
+    public TMetadata Metadata { get; }
 }

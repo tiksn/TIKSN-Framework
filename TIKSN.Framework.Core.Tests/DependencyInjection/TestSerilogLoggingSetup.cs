@@ -2,19 +2,18 @@ using Serilog;
 using TIKSN.Analytics.Logging.Serilog;
 using Xunit.Abstractions;
 
-namespace TIKSN.DependencyInjection.Tests
+namespace TIKSN.Tests.DependencyInjection;
+
+public class TestSerilogLoggingSetup : SerilogLoggingSetupBase
 {
-    public class TestSerilogLoggingSetup : SerilogLoggingSetupBase
+    private readonly ITestOutputHelper testOutputHelper;
+
+    public TestSerilogLoggingSetup(ITestOutputHelper testOutputHelper) : base() => this.testOutputHelper = testOutputHelper;
+
+    protected override void SetupSerilog()
     {
-        private readonly ITestOutputHelper testOutputHelper;
+        base.SetupSerilog();
 
-        public TestSerilogLoggingSetup(ITestOutputHelper testOutputHelper) : base() => this.testOutputHelper = testOutputHelper;
-
-        protected override void SetupSerilog()
-        {
-            base.SetupSerilog();
-
-            _ = this.loggerConfiguration.WriteTo.TestOutput(this.testOutputHelper);
-        }
+        _ = this.LoggerConfiguration.WriteTo.TestOutput(this.testOutputHelper);
     }
 }

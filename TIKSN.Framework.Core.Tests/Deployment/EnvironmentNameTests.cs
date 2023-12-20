@@ -1,8 +1,9 @@
 using System.Globalization;
 using FluentAssertions;
+using TIKSN.Deployment;
 using Xunit;
 
-namespace TIKSN.Deployment.Tests;
+namespace TIKSN.Tests.Deployment;
 
 public class EnvironmentNameTests
 {

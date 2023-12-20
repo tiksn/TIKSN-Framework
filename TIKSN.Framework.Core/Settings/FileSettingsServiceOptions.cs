@@ -1,7 +1,6 @@
-namespace TIKSN.Settings
+namespace TIKSN.Settings;
+
+public class FileSettingsServiceOptions
 {
-    public class FileSettingsServiceOptions
-    {
-        public string RelativePath { get; set; }
-    }
+    public string RelativePath { get; set; }
 }

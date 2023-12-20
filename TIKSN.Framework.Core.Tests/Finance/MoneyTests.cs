@@ -1,1022 +1,1011 @@
 using System;
 using System.Globalization;
 using System.Threading;
+using FluentAssertions;
+using TIKSN.Finance;
 using Xunit;
 
-namespace TIKSN.Finance.Tests
+namespace TIKSN.Tests.Finance;
+
+public class MoneyTests
 {
-    public class MoneyTests
+    [Fact]
+    public void ATMWithdraw001()
     {
-        [Fact]
-        public void ATMWithdraw001()
-        {
-            var Armenia = new RegionInfo("hy-AM");
-            var ArmenianDram = new CurrencyInfo(Armenia);
+        var armenia = new RegionInfo("hy-AM");
+        var armenianDram = new CurrencyInfo(armenia);
 
-            var Account = new Money(ArmenianDram, 150600);
-            var Requested = new Money(ArmenianDram, 5600);
+        var account = new Money(armenianDram, 150600);
+        var requested = new Money(armenianDram, 5600);
 
-            var Withdrawal = Requested - (Requested % 1000);
-            Account -= Withdrawal;
+        var withdrawal = requested - (requested % 1000);
+        account -= withdrawal;
 
-            Assert.Equal(145600m, Account.Amount);
-        }
+        _ = account.Amount.Should().Be(145600m);
+    }
 
-        [Fact]
-        public void ATMWithdraw002()
-        {
-            var Spain = new RegionInfo("ES");
-            var Euro = new CurrencyInfo(Spain);
+    [Fact]
+    public void ATMWithdraw002()
+    {
+        var spain = new RegionInfo("ES");
+        var euro = new CurrencyInfo(spain);
 
-            var Account = new Money(Euro, 2520.2m);
-            var Requested = new Money(Euro, 6.8m);
+        var account = new Money(euro, 2520.2m);
+        var requested = new Money(euro, 6.8m);
 
-            var Withdrawal = Requested - (Requested % 0.5m);
-            Account -= Withdrawal;
+        var withdrawal = requested - (requested % 0.5m);
+        account -= withdrawal;
 
-            Assert.Equal(2513.7m, Account.Amount);
-        }
+        _ = account.Amount.Should().Be(2513.7m);
+    }
 
-        [Fact]
-        public void BuyAndSell001()
-        {
-            var Italy = new RegionInfo("IT");
-            var Euro = new CurrencyInfo(Italy);
+    [Fact]
+    public void BuyAndSell001()
+    {
+        var italy = new RegionInfo("IT");
+        var euro = new CurrencyInfo(italy);
 
-            var BuyerWallet = new Money(Euro, 650m);
-            var SellerWallet = new Money(Euro, 1256.7m);
-            var Payment = new Money(Euro, 1.50m);
+        var buyerWallet = new Money(euro, 650m);
+        var sellerWallet = new Money(euro, 1256.7m);
+        var payment = new Money(euro, 1.50m);
 
-            BuyerWallet -= Payment;
-            SellerWallet += Payment;
+        buyerWallet -= payment;
+        sellerWallet += payment;
 
-            Assert.Equal(648.5m, BuyerWallet.Amount);
-            Assert.Equal(1258.2m, SellerWallet.Amount);
-        }
+        _ = buyerWallet.Amount.Should().Be(648.5m);
+        _ = sellerWallet.Amount.Should().Be(1258.2m);
+    }
 
-        [Fact]
-        public void BuyAndSell002()
-        {
-            var Armenia = new RegionInfo("hy-AM");
-            var ArmenianDram = new CurrencyInfo(Armenia);
+    [Fact]
+    public void BuyAndSell002()
+    {
+        var armenia = new RegionInfo("hy-AM");
+        var armenianDram = new CurrencyInfo(armenia);
 
-            var BuyerWallet = new Money(ArmenianDram, 5000m);
+        var buyerWallet = new Money(armenianDram, 5000m);
 
-            var BreadPrice = new Money(ArmenianDram, 250);
-            var BreadQuantity = 4;
+        var breadPrice = new Money(armenianDram, 250m);
+        var breadQuantity = 4m;
 
-            var MilkPrice = new Money(ArmenianDram, 350);
-            var MilkBottleVolume = 1.5m;
-            var MilkQuantity = 2;
+        var milkPrice = new Money(armenianDram, 350m);
+        var milkBottleVolume = 1.5m;
+        var milkQuantity = 2;
 
-            var ButterPrice = new Money(ArmenianDram, 2500);
-            var ButterPart = 2.5m;
+        var butterPrice = new Money(armenianDram, 2500m);
+        var butterPart = 2.5m;
 
-            BuyerWallet -= (BreadPrice * BreadQuantity) + (MilkPrice * MilkBottleVolume * MilkQuantity) + (ButterPrice / ButterPart);
+        buyerWallet -= (breadPrice * breadQuantity) + (milkPrice * milkBottleVolume * milkQuantity) + (butterPrice / butterPart);
 
-            Assert.Equal(1950m, BuyerWallet.Amount);
-        }
+        _ = buyerWallet.Amount.Should().Be(1950m);
+    }
 
-        [Fact]
-        public void Commonwealth001()
-        {
-            var Russia = new RegionInfo("RU");
-            var RussianRuble = new CurrencyInfo(Russia);
+    [Fact]
+    public void Commonwealth001()
+    {
+        var russia = new RegionInfo("RU");
+        var russianRuble = new CurrencyInfo(russia);
 
-            var Ivan = new Money(RussianRuble, 1250m);
-            var Olga = new Money(RussianRuble, 2360m);
+        var ivan = new Money(russianRuble, 1250m);
+        var olga = new Money(russianRuble, 2360m);
 
-            var Commonwealth = (Ivan + Olga) / 2;
+        var commonwealth = (ivan + olga) / 2;
 
-            Assert.Equal(1805m, Commonwealth.Amount);
-        }
+        _ = commonwealth.Amount.Should().Be(1805m);
+    }
 
-        [Fact]
-        public void Commonwealth002()
-        {
-            var Britain = new RegionInfo("GB");
-            var Pound = new CurrencyInfo(Britain);
-
-            var BritainWealth = new Money(Pound, 356000000000m);
+    [Fact]
+    public void Commonwealth002()
+    {
+        var britain = new RegionInfo("GB");
+        var pound = new CurrencyInfo(britain);
 
-            var EnglandWealth = BritainWealth * 45m / 100m;
-            var ScotlandWealth = BritainWealth * 36m / 100m;
+        var britainWealth = new Money(pound, 356000000000m);
 
-            Assert.Equal(160200000000m, EnglandWealth.Amount);
-            Assert.Equal(128160000000m, ScotlandWealth.Amount);
-        }
+        var englandWealth = britainWealth * 45m / 100m;
+        var scotlandWealth = britainWealth * 36m / 100m;
 
-        [Fact]
-        public void CompareDifferentCurrency001()
-        {
-            var Denmark = new RegionInfo("DK");
-            var Krone = new CurrencyInfo(Denmark);
-
-            var Switzerland = new RegionInfo("CH");
-            var Franc = new CurrencyInfo(Switzerland);
-
-            var Wallet1 = new Money(Franc, 12.6m);
-            var Wallet2 = new Money(Krone, 12.6m);
-
-            _ = Assert.Throws<InvalidOperationException>(
-                () =>
-                    Wallet1.CompareTo(Wallet2));
-        }
-
-        [Fact]
-        public void CompareDifferentCurrency002()
-        {
-            var Denmark = new RegionInfo("DK");
-            var Krone = new CurrencyInfo(Denmark);
-
-            var Switzerland = new RegionInfo("CH");
-            var Franc = new CurrencyInfo(Switzerland);
-
-            var Wallet1 = new Money(Franc, 12.6m);
-            var Wallet2 = new Money(Krone, 12.6m);
-
-            _ = Assert.Throws<InvalidOperationException>(
-                () =>
-                    Wallet1.Equals(Wallet2));
-        }
-
-        [Fact]
-        public void CompareDifferentCurrency003()
-        {
-            var Denmark = new RegionInfo("DK");
-            var Krone = new CurrencyInfo(Denmark);
-
-            var Switzerland = new RegionInfo("CH");
-            var Franc = new CurrencyInfo(Switzerland);
-
-            var Wallet1 = new Money(Franc, 12.6m);
-            var Wallet2 = new Money(Krone, 12.6m);
-
-            _ = Assert.Throws<InvalidOperationException>(
-                () =>
-                    Wallet1 > Wallet2);
-        }
-
-        [Fact]
-        public void CompareDifferentCurrency004()
-        {
-            var Denmark = new RegionInfo("DK");
-            var Krone = new CurrencyInfo(Denmark);
-
-            var Switzerland = new RegionInfo("CH");
-            var Franc = new CurrencyInfo(Switzerland);
-
-            var Wallet1 = new Money(Franc, 12.6m);
-            var Wallet2 = new Money(Krone, 12.6m);
-
-            _ = Assert.Throws<InvalidOperationException>(
-                () =>
-                    Wallet1 < Wallet2);
-        }
-
-        [Fact]
-        public void CompareDifferentCurrency005()
-        {
-            var Denmark = new RegionInfo("DK");
-            var Krone = new CurrencyInfo(Denmark);
-
-            var Switzerland = new RegionInfo("CH");
-            var Franc = new CurrencyInfo(Switzerland);
-
-            var Wallet1 = new Money(Franc, 12.6m);
-            var Wallet2 = new Money(Krone, 12.6m);
-
-            _ = Assert.Throws<InvalidOperationException>(
-                () =>
-                    Wallet1 >= Wallet2);
-        }
-
-        [Fact]
-        public void CompareDifferentCurrency006()
-        {
-            var Denmark = new RegionInfo("DK");
-            var Krone = new CurrencyInfo(Denmark);
-
-            var Switzerland = new RegionInfo("CH");
-            var Franc = new CurrencyInfo(Switzerland);
-
-            var Wallet1 = new Money(Franc, 12.6m);
-            var Wallet2 = new Money(Krone, 12.6m);
-
-            _ = Assert.Throws<InvalidOperationException>(
-                () =>
-                    Wallet1 <= Wallet2);
-        }
-
-        [Fact]
-        public void CompareDifferentCurrency007()
-        {
-            var Denmark = new RegionInfo("DK");
-            var Krone = new CurrencyInfo(Denmark);
-
-            var Switzerland = new RegionInfo("CH");
-            var Franc = new CurrencyInfo(Switzerland);
-
-            var Wallet1 = new Money(Franc, 12.6m);
-            var Wallet2 = new Money(Krone, 12.6m);
-
-            _ = Assert.Throws<InvalidOperationException>(
-                () =>
-                    Wallet1 == Wallet2);
-        }
-
-        [Fact]
-        public void CompareDifferentCurrency008()
-        {
-            var Denmark = new RegionInfo("DK");
-            var Krone = new CurrencyInfo(Denmark);
-
-            var Switzerland = new RegionInfo("CH");
-            var Franc = new CurrencyInfo(Switzerland);
-
-            var Wallet1 = new Money(Franc, 12.6m);
-            var Wallet2 = new Money(Krone, 12.6m);
-
-            _ = Assert.Throws<InvalidOperationException>(
-                () =>
-                    Wallet1 != Wallet2);
-        }
-
-        [Fact]
-        public void CreateMoney001()
-        {
-            var UnitedStates = new RegionInfo("US");
-            var USDollar = new CurrencyInfo(UnitedStates);
-
-            var payment = new Money(USDollar);
-
-            Assert.Equal(decimal.Zero, payment.Amount);
-            Assert.Equal(USDollar, payment.Currency);
-            Assert.Equal("USD", payment.Currency.ISOCurrencySymbol);
-        }
-
-        [Fact]
-        public void CreateMoney002()
-        {
-            var Armenia = new RegionInfo("AM");
-            var ArmenianDram = new CurrencyInfo(Armenia);
-
-            var payment = new Money(ArmenianDram, 1000m);
-
-            Assert.Equal(1000m, payment.Amount);
-            Assert.Equal(ArmenianDram, payment.Currency);
-            Assert.Equal("AMD", payment.Currency.ISOCurrencySymbol);
-        }
-
-        [Fact]
-        public void Equality001()
-        {
-            var UnitedStates1 = new RegionInfo("en-US");
-            var UnitedStates2 = new RegionInfo("es-US");
-
-            var Dollar1 = new CurrencyInfo(UnitedStates1);
-            var Dollar2 = new CurrencyInfo(UnitedStates2);
-
-            var Money1 = new Money(Dollar1, 125.6m);
-            var Money2 = new Money(Dollar2, 125.6m);
-
-            Assert.True(Money1 == Money2);
-            Assert.False(Money1 != Money2);
-            Assert.True(Money1.Equals(Money2));
-            Assert.True(Money2.Equals(Money1));
-            Assert.Equal(0, Money1.CompareTo(Money2));
-            Assert.Equal(0, Money2.CompareTo(Money1));
-        }
-
-        [Fact]
-        public void Equals001()
-        {
-            var UnitedStates = new RegionInfo("en-US");
-            var Dollar = new CurrencyInfo(UnitedStates);
-
-            var M = new Money(Dollar, 145.6m);
-
-            Assert.True(M.Equals(M));
-        }
-
-        [Fact]
-        public void Equals002()
-        {
-            var UnitedStates = new RegionInfo("en-US");
-            var Dollar = new CurrencyInfo(UnitedStates);
-
-            var M = new Money(Dollar, 145.6m);
-
-            Assert.False(M.Equals(null));
-        }
-
-        [Fact]
-        public void Equals003()
-        {
-            var UnitedStates = new RegionInfo("en-US");
-            var Dollar = new CurrencyInfo(UnitedStates);
-
-            var M1 = new Money(Dollar, 145.6m);
-            object M2 = new Money(Dollar, 145.6m);
-
-            Assert.True(M1.Equals(M2));
-        }
-
-        [Fact]
-        public void GreaterThan001()
-        {
-            var UnitedStates = new RegionInfo("US");
-            var Dollar = new CurrencyInfo(UnitedStates);
-
-            var Hundred = new Money(Dollar, 100m);
-            var Thousand = new Money(Dollar, 1000m);
-
-            Assert.True(Thousand > Hundred);
-            Assert.False(Thousand < Hundred);
-        }
-
-        [Fact]
-        public void GreaterThanOrEqual001()
-        {
-            var UnitedStates = new RegionInfo("US");
-            var Dollar = new CurrencyInfo(UnitedStates);
-
-            var M1 = new Money(Dollar, 100m);
-            var M2 = new Money(Dollar, 1000m);
-
-            Assert.False(M1 >= M2);
-            Assert.True(M2 >= M1);
-            Assert.False(M1.CompareTo(M2) >= 0);
-            Assert.True(M2.CompareTo(M1) >= 0);
-        }
-
-        [Fact]
-        public void GreaterThanOrEqual002()
-        {
-            var UnitedStates = new RegionInfo("US");
-            var Dollar = new CurrencyInfo(UnitedStates);
-
-            var M1 = new Money(Dollar, 100m);
-            var M2 = new Money(Dollar, 100m);
-
-            Assert.True(M1 >= M2);
-            Assert.True(M2 >= M1);
-            Assert.True(M1.CompareTo(M2) >= 0);
-            Assert.True(M2.CompareTo(M1) >= 0);
-        }
-
-        [Fact]
-        public void Inequality001()
-        {
-            var UnitedStates = new RegionInfo("US");
-            var Dollar = new CurrencyInfo(UnitedStates);
-
-            var Hundred = new Money(Dollar, 100m);
-            var Thousand = new Money(Dollar, 1000m);
-
-            Assert.False(Hundred == Thousand);
-            Assert.True(Hundred != Thousand);
-            Assert.False(Hundred.Equals(Thousand));
-            Assert.False(Thousand.Equals(Hundred));
-            Assert.NotEqual(0, Hundred.CompareTo(Thousand));
-            Assert.NotEqual(0, Thousand.CompareTo(Hundred));
-        }
-
-        [Fact]
-        public void LessThan001()
-        {
-            var UnitedStates = new RegionInfo("US");
-            var Dollar = new CurrencyInfo(UnitedStates);
-
-            var Hundred = new Money(Dollar, 100m);
-            var Thousand = new Money(Dollar, 1000m);
-
-            Assert.True(Hundred < Thousand);
-            Assert.False(Hundred > Thousand);
-            Assert.True(Hundred.CompareTo(Thousand) < 0);
-            Assert.True(Thousand.CompareTo(Hundred) > 0);
-        }
-
-        [Fact]
-        public void LessThanOrEqual001()
-        {
-            var UnitedStates = new RegionInfo("US");
-            var Dollar = new CurrencyInfo(UnitedStates);
-
-            var Hundred = new Money(Dollar, 100m);
-            var Thousand = new Money(Dollar, 1000m);
-
-            Assert.True(Hundred <= Thousand);
-            Assert.False(Thousand <= Hundred);
-            Assert.True(Hundred.CompareTo(Thousand) <= 0);
-        }
-
-        [Fact]
-        public void LessThanOrEqual002()
-        {
-            var UnitedStates = new RegionInfo("US");
-            var Dollar = new CurrencyInfo(UnitedStates);
-
-            var M1 = new Money(Dollar, 100m);
-            var M2 = new Money(Dollar, 100m);
-
-            Assert.True(M1 <= M2);
-            Assert.True(M2 <= M1);
-            Assert.True(M1.CompareTo(M2) <= 0);
-            Assert.True(M2.CompareTo(M2) <= 0);
-        }
-
-        [Fact]
-        public void LessThanOrEqual003()
-        {
-            var UnitedStates = new RegionInfo("US");
-            var Dollar = new CurrencyInfo(UnitedStates);
-
-            var M1 = new Money(Dollar, 100m);
-            var M2 = new Money(Dollar, 1000m);
-
-            Assert.True(M1 <= M2);
-            Assert.False(M2 <= M1);
-            Assert.True(M1.CompareTo(M2) <= 0);
-            Assert.False(M2.CompareTo(M1) <= 0);
-        }
-
-        [Fact]
-        public void OperatorDivision001()
-        {
-            var Switzerland = new RegionInfo("CH");
-            var Franc = new CurrencyInfo(Switzerland);
+        _ = englandWealth.Amount.Should().Be(160200000000m);
+        _ = scotlandWealth.Amount.Should().Be(128160000000m);
+    }
 
-            var Budget = new Money(Franc, 1520m);
-
-            sbyte part = 4;
-
-            var Fund = Budget / part;
-
-            Assert.Equal(380m, Fund.Amount);
-        }
+    [Fact]
+    public void CompareDifferentCurrency001()
+    {
+        var denmark = new RegionInfo("DK");
+        var krone = new CurrencyInfo(denmark);
 
-        [Fact]
-        public void OperatorDivision002()
-        {
-            var Switzerland = new RegionInfo("CH");
-            var Franc = new CurrencyInfo(Switzerland);
+        var switzerland = new RegionInfo("CH");
+        var franc = new CurrencyInfo(switzerland);
 
-            var Budget = new Money(Franc, 650m);
+        var wallet1 = new Money(franc, 12.6m);
+        var wallet2 = new Money(krone, 12.6m);
 
-            byte part = 5;
+        _ = new Func<object>(() =>
+                wallet1.CompareTo(wallet2)).Should().ThrowExactly<InvalidOperationException>();
+    }
 
-            var Fund = Budget / part;
+    [Fact]
+    public void CompareDifferentCurrency002()
+    {
+        var denmark = new RegionInfo("DK");
+        var krone = new CurrencyInfo(denmark);
 
-            Assert.Equal(130m, Fund.Amount);
-        }
+        var switzerland = new RegionInfo("CH");
+        var franc = new CurrencyInfo(switzerland);
 
-        [Fact]
-        public void OperatorDivision003()
-        {
-            var Switzerland = new RegionInfo("CH");
-            var Franc = new CurrencyInfo(Switzerland);
+        var wallet1 = new Money(franc, 12.6m);
+        var wallet2 = new Money(krone, 12.6m);
 
-            var Budget = new Money(Franc, 420m);
+        _ = new Func<object>(() =>
+                wallet1.Equals(wallet2)).Should().ThrowExactly<InvalidOperationException>();
+    }
 
-            short part = 6;
+    [Fact]
+    public void CompareDifferentCurrency003()
+    {
+        var denmark = new RegionInfo("DK");
+        var krone = new CurrencyInfo(denmark);
 
-            var Fund = Budget / part;
+        var switzerland = new RegionInfo("CH");
+        var franc = new CurrencyInfo(switzerland);
 
-            Assert.Equal(70m, Fund.Amount);
-        }
+        var wallet1 = new Money(franc, 12.6m);
+        var wallet2 = new Money(krone, 12.6m);
 
-        [Fact]
-        public void OperatorDivision004()
-        {
-            var Switzerland = new RegionInfo("CH");
-            var Franc = new CurrencyInfo(Switzerland);
+        _ = new Func<object>(() =>
+                wallet1 > wallet2).Should().ThrowExactly<InvalidOperationException>();
+    }
 
-            var Budget = new Money(Franc, 712m);
+    [Fact]
+    public void CompareDifferentCurrency004()
+    {
+        var denmark = new RegionInfo("DK");
+        var krone = new CurrencyInfo(denmark);
+
+        var switzerland = new RegionInfo("CH");
+        var franc = new CurrencyInfo(switzerland);
 
-            ushort part = 10;
+        var wallet1 = new Money(franc, 12.6m);
+        var wallet2 = new Money(krone, 12.6m);
+
+        _ = new Func<object>(() =>
+                wallet1 < wallet2).Should().ThrowExactly<InvalidOperationException>();
+    }
 
-            var Fund = Budget / part;
+    [Fact]
+    public void CompareDifferentCurrency005()
+    {
+        var denmark = new RegionInfo("DK");
+        var krone = new CurrencyInfo(denmark);
+
+        var switzerland = new RegionInfo("CH");
+        var franc = new CurrencyInfo(switzerland);
+
+        var wallet1 = new Money(franc, 12.6m);
+        var wallet2 = new Money(krone, 12.6m);
+
+        _ = new Func<object>(() =>
+                wallet1 >= wallet2).Should().ThrowExactly<InvalidOperationException>();
+    }
+
+    [Fact]
+    public void CompareDifferentCurrency006()
+    {
+        var denmark = new RegionInfo("DK");
+        var krone = new CurrencyInfo(denmark);
+
+        var switzerland = new RegionInfo("CH");
+        var franc = new CurrencyInfo(switzerland);
+
+        var wallet1 = new Money(franc, 12.6m);
+        var wallet2 = new Money(krone, 12.6m);
+
+        _ = new Func<object>(() =>
+                wallet1 <= wallet2).Should().ThrowExactly<InvalidOperationException>();
+    }
+
+    [Fact]
+    public void CompareDifferentCurrency007()
+    {
+        var denmark = new RegionInfo("DK");
+        var krone = new CurrencyInfo(denmark);
+
+        var switzerland = new RegionInfo("CH");
+        var franc = new CurrencyInfo(switzerland);
+
+        var wallet1 = new Money(franc, 12.6m);
+        var wallet2 = new Money(krone, 12.6m);
+
+        _ = new Func<object>(() =>
+                wallet1 == wallet2).Should().ThrowExactly<InvalidOperationException>();
+    }
+
+    [Fact]
+    public void CompareDifferentCurrency008()
+    {
+        var denmark = new RegionInfo("DK");
+        var krone = new CurrencyInfo(denmark);
+
+        var switzerland = new RegionInfo("CH");
+        var franc = new CurrencyInfo(switzerland);
+
+        var wallet1 = new Money(franc, 12.6m);
+        var wallet2 = new Money(krone, 12.6m);
+
+        _ = new Func<object>(() =>
+                wallet1 != wallet2).Should().ThrowExactly<InvalidOperationException>();
+    }
+
+    [Fact]
+    public void CreateMoney001()
+    {
+        var unitedStates = new RegionInfo("US");
+        var usdollar = new CurrencyInfo(unitedStates);
+
+        var payment = new Money(usdollar);
+
+        _ = payment.Amount.Should().Be(decimal.Zero);
+        _ = payment.Currency.Should().Be(usdollar);
+        _ = payment.Currency.ISOCurrencySymbol.Should().Be("USD");
+    }
+
+    [Fact]
+    public void CreateMoney002()
+    {
+        var armenia = new RegionInfo("AM");
+        var armenianDram = new CurrencyInfo(armenia);
+
+        var payment = new Money(armenianDram, 1000m);
+
+        _ = payment.Amount.Should().Be(1000m);
+        _ = payment.Currency.Should().Be(armenianDram);
+        _ = payment.Currency.ISOCurrencySymbol.Should().Be("AMD");
+    }
+
+    [Fact]
+    public void Equality001()
+    {
+        var unitedStates1 = new RegionInfo("en-US");
+        var unitedStates2 = new RegionInfo("es-US");
+
+        var dollar1 = new CurrencyInfo(unitedStates1);
+        var dollar2 = new CurrencyInfo(unitedStates2);
+
+        var money1 = new Money(dollar1, 125.6m);
+        var money2 = new Money(dollar2, 125.6m);
+
+        _ = (money1 == money2).Should().BeTrue();
+        _ = (money1 != money2).Should().BeFalse();
+        _ = money1.Equals(money2).Should().BeTrue();
+        _ = money2.Equals(money1).Should().BeTrue();
+        _ = money1.CompareTo(money2).Should().Be(0);
+        _ = money2.CompareTo(money1).Should().Be(0);
+    }
+
+    [Fact]
+    public void Equals001()
+    {
+        var unitedStates = new RegionInfo("en-US");
+        var dollar = new CurrencyInfo(unitedStates);
+
+        var m = new Money(dollar, 145.6m);
+
+        _ = m.Equals(m).Should().BeTrue();
+    }
+
+    [Fact]
+    public void Equals002()
+    {
+        var unitedStates = new RegionInfo("en-US");
+        var dollar = new CurrencyInfo(unitedStates);
+
+        var m = new Money(dollar, 145.6m);
+
+        _ = m.Equals(null).Should().BeFalse();
+    }
+
+    [Fact]
+    public void Equals003()
+    {
+        var unitedStates = new RegionInfo("en-US");
+        var dollar = new CurrencyInfo(unitedStates);
+
+        var m1 = new Money(dollar, 145.6m);
+        object m2 = new Money(dollar, 145.6m);
+
+        _ = m1.Equals(m2).Should().BeTrue();
+    }
+
+    [Fact]
+    public void GreaterThan001()
+    {
+        var unitedStates = new RegionInfo("US");
+        var dollar = new CurrencyInfo(unitedStates);
+
+        var hundred = new Money(dollar, 100m);
+        var thousand = new Money(dollar, 1000m);
+
+        _ = (thousand > hundred).Should().BeTrue();
+        _ = (thousand < hundred).Should().BeFalse();
+    }
+
+    [Fact]
+    public void GreaterThanOrEqual001()
+    {
+        var unitedStates = new RegionInfo("US");
+        var dollar = new CurrencyInfo(unitedStates);
+
+        var m1 = new Money(dollar, 100m);
+        var m2 = new Money(dollar, 1000m);
+
+        _ = (m1 >= m2).Should().BeFalse();
+        _ = (m2 >= m1).Should().BeTrue();
+        _ = (m1.CompareTo(m2) >= 0).Should().BeFalse();
+        _ = (m2.CompareTo(m1) >= 0).Should().BeTrue();
+    }
+
+    [Fact]
+    public void GreaterThanOrEqual002()
+    {
+        var unitedStates = new RegionInfo("US");
+        var dollar = new CurrencyInfo(unitedStates);
+
+        var m1 = new Money(dollar, 100m);
+        var m2 = new Money(dollar, 100m);
+
+        _ = (m1 >= m2).Should().BeTrue();
+        _ = (m2 >= m1).Should().BeTrue();
+        _ = (m1.CompareTo(m2) >= 0).Should().BeTrue();
+        _ = (m2.CompareTo(m1) >= 0).Should().BeTrue();
+    }
+
+    [Fact]
+    public void Inequality001()
+    {
+        var unitedStates = new RegionInfo("US");
+        var dollar = new CurrencyInfo(unitedStates);
+
+        var hundred = new Money(dollar, 100m);
+        var thousand = new Money(dollar, 1000m);
+
+        _ = (hundred == thousand).Should().BeFalse();
+        _ = (hundred != thousand).Should().BeTrue();
+        _ = hundred.Equals(thousand).Should().BeFalse();
+        _ = thousand.Equals(hundred).Should().BeFalse();
+        _ = hundred.CompareTo(thousand).Should().NotBe(0);
+        _ = thousand.CompareTo(hundred).Should().NotBe(0);
+    }
+
+    [Fact]
+    public void LessThan001()
+    {
+        var unitedStates = new RegionInfo("US");
+        var dollar = new CurrencyInfo(unitedStates);
+
+        var hundred = new Money(dollar, 100m);
+        var thousand = new Money(dollar, 1000m);
+
+        _ = (hundred < thousand).Should().BeTrue();
+        _ = (hundred > thousand).Should().BeFalse();
+        _ = (hundred.CompareTo(thousand) < 0).Should().BeTrue();
+        _ = (thousand.CompareTo(hundred) > 0).Should().BeTrue();
+    }
+
+    [Fact]
+    public void LessThanOrEqual001()
+    {
+        var unitedStates = new RegionInfo("US");
+        var dollar = new CurrencyInfo(unitedStates);
+
+        var hundred = new Money(dollar, 100m);
+        var thousand = new Money(dollar, 1000m);
+
+        _ = (hundred <= thousand).Should().BeTrue();
+        _ = (thousand <= hundred).Should().BeFalse();
+        _ = (hundred.CompareTo(thousand) <= 0).Should().BeTrue();
+    }
+
+    [Fact]
+    public void LessThanOrEqual002()
+    {
+        var unitedStates = new RegionInfo("US");
+        var dollar = new CurrencyInfo(unitedStates);
 
-            Assert.Equal(71.2m, Fund.Amount);
-        }
+        var m1 = new Money(dollar, 100m);
+        var m2 = new Money(dollar, 100m);
+
+        _ = (m1 <= m2).Should().BeTrue();
+        _ = (m2 <= m1).Should().BeTrue();
+        _ = (m1.CompareTo(m2) <= 0).Should().BeTrue();
+        _ = (m2.CompareTo(m2) <= 0).Should().BeTrue();
+    }
 
-        [Fact]
-        public void OperatorDivision005()
-        {
-            var Switzerland = new RegionInfo("CH");
-            var Franc = new CurrencyInfo(Switzerland);
+    [Fact]
+    public void LessThanOrEqual003()
+    {
+        var unitedStates = new RegionInfo("US");
+        var dollar = new CurrencyInfo(unitedStates);
 
-            var Budget = new Money(Franc, 1260m);
+        var m1 = new Money(dollar, 100m);
+        var m2 = new Money(dollar, 1000m);
 
-            var part = 42;
+        _ = (m1 <= m2).Should().BeTrue();
+        _ = (m2 <= m1).Should().BeFalse();
+        _ = (m1.CompareTo(m2) <= 0).Should().BeTrue();
+        _ = (m2.CompareTo(m1) <= 0).Should().BeFalse();
+    }
 
-            var Fund = Budget / part;
+    [Fact]
+    public void OperatorDivision001()
+    {
+        var switzerland = new RegionInfo("CH");
+        var franc = new CurrencyInfo(switzerland);
 
-            Assert.Equal(30.0m, Fund.Amount);
-        }
+        var budget = new Money(franc, 1520m);
 
-        [Fact]
-        public void OperatorDivision006()
-        {
-            var Switzerland = new RegionInfo("CH");
-            var Franc = new CurrencyInfo(Switzerland);
+        sbyte part = 4;
 
-            var Budget = new Money(Franc, 252m);
+        var fund = budget / part;
 
-            uint part = 6;
+        _ = fund.Amount.Should().Be(380m);
+    }
 
-            var Fund = Budget / part;
+    [Fact]
+    public void OperatorDivision002()
+    {
+        var switzerland = new RegionInfo("CH");
+        var franc = new CurrencyInfo(switzerland);
 
-            Assert.Equal(42m, Fund.Amount);
-        }
+        var budget = new Money(franc, 650m);
 
-        [Fact]
-        public void OperatorDivision007()
-        {
-            var Switzerland = new RegionInfo("CH");
-            var Franc = new CurrencyInfo(Switzerland);
+        byte part = 5;
 
-            var Budget = new Money(Franc, 48m);
+        var fund = budget / part;
 
-            long part = 12;
+        _ = fund.Amount.Should().Be(130m);
+    }
 
-            var Fund = Budget / part;
+    [Fact]
+    public void OperatorDivision003()
+    {
+        var switzerland = new RegionInfo("CH");
+        var franc = new CurrencyInfo(switzerland);
 
-            Assert.Equal(4m, Fund.Amount);
-        }
+        var budget = new Money(franc, 420m);
 
-        [Fact]
-        public void OperatorDivision008()
-        {
-            var Switzerland = new RegionInfo("CH");
-            var Franc = new CurrencyInfo(Switzerland);
+        short part = 6;
 
-            var Budget = new Money(Franc, 43.2m);
+        var fund = budget / part;
 
-            ulong part = 36;
+        _ = fund.Amount.Should().Be(70m);
+    }
 
-            var Fund = Budget / part;
+    [Fact]
+    public void OperatorDivision004()
+    {
+        var switzerland = new RegionInfo("CH");
+        var franc = new CurrencyInfo(switzerland);
 
-            Assert.Equal(1.2m, Fund.Amount);
-        }
+        var budget = new Money(franc, 712m);
 
-        [Fact]
-        public void OperatorDivision009()
-        {
-            var Switzerland = new RegionInfo("CH");
-            var Franc = new CurrencyInfo(Switzerland);
+        ushort part = 10;
 
-            var Budget = new Money(Franc, 176m);
+        var fund = budget / part;
 
-            var part = 88m;
+        _ = fund.Amount.Should().Be(71.2m);
+    }
 
-            var Fund = Budget / part;
+    [Fact]
+    public void OperatorDivision005()
+    {
+        var switzerland = new RegionInfo("CH");
+        var franc = new CurrencyInfo(switzerland);
 
-            Assert.Equal(2m, Fund.Amount);
-        }
+        var budget = new Money(franc, 1260m);
 
-        [Fact]
-        public void OperatorDivision010()
-        {
-            var Switzerland = new RegionInfo("CH");
-            var Franc = new CurrencyInfo(Switzerland);
+        var part = 42;
 
-            var Budget = new Money(Franc, 882m);
+        var fund = budget / part;
 
-            var part = 42m;
+        _ = fund.Amount.Should().Be(30.0m);
+    }
 
-            var Fund = Budget / part;
+    [Fact]
+    public void OperatorDivision006()
+    {
+        var switzerland = new RegionInfo("CH");
+        var franc = new CurrencyInfo(switzerland);
 
-            Assert.Equal(21m, Fund.Amount);
-        }
+        var budget = new Money(franc, 252m);
 
-        [Fact]
-        public void OperatorDivision011()
-        {
-            var Switzerland = new RegionInfo("CH");
-            var Franc = new CurrencyInfo(Switzerland);
+        uint part = 6;
 
-            var Budget = new Money(Franc, 744m);
+        var fund = budget / part;
 
-            var part = 62m;
+        _ = fund.Amount.Should().Be(42m);
+    }
 
-            var Fund = Budget / part;
+    [Fact]
+    public void OperatorDivision007()
+    {
+        var switzerland = new RegionInfo("CH");
+        var franc = new CurrencyInfo(switzerland);
 
-            Assert.Equal(12m, Fund.Amount);
-        }
+        var budget = new Money(franc, 48m);
 
-        [Fact]
-        public void OperatorModulus001()
-        {
-            var Denmark = new RegionInfo("DK");
-            var Krone = new CurrencyInfo(Denmark);
+        long part = 12;
 
-            var Budget = new Money(Krone, 30m);
+        var fund = budget / part;
 
-            sbyte whole = 12;
+        _ = fund.Amount.Should().Be(4m);
+    }
 
-            var Truncated = Budget % whole;
+    [Fact]
+    public void OperatorDivision008()
+    {
+        var switzerland = new RegionInfo("CH");
+        var franc = new CurrencyInfo(switzerland);
 
-            Assert.Equal(6m, Truncated.Amount);
-            Assert.True(Truncated.Amount < whole);
-        }
+        var budget = new Money(franc, 43.2m);
 
-        [Fact]
-        public void OperatorModulus002()
-        {
-            var Denmark = new RegionInfo("DK");
-            var Krone = new CurrencyInfo(Denmark);
+        ulong part = 36;
 
-            var Budget = new Money(Krone, 62m);
+        var fund = budget / part;
 
-            byte whole = 10;
+        _ = fund.Amount.Should().Be(1.2m);
+    }
 
-            var Truncated = Budget % whole;
+    [Fact]
+    public void OperatorDivision009()
+    {
+        var switzerland = new RegionInfo("CH");
+        var franc = new CurrencyInfo(switzerland);
 
-            Assert.Equal(2m, Truncated.Amount);
-            Assert.True(Truncated.Amount < whole);
-        }
+        var budget = new Money(franc, 176m);
 
-        [Fact]
-        public void OperatorModulus003()
-        {
-            var Denmark = new RegionInfo("DK");
-            var Krone = new CurrencyInfo(Denmark);
+        var part = 88m;
 
-            var Budget = new Money(Krone, 62m);
+        var fund = budget / part;
 
-            short whole = 9;
+        _ = fund.Amount.Should().Be(2m);
+    }
 
-            var Truncated = Budget % whole;
+    [Fact]
+    public void OperatorDivision010()
+    {
+        var switzerland = new RegionInfo("CH");
+        var franc = new CurrencyInfo(switzerland);
 
-            Assert.Equal(8m, Truncated.Amount);
-            Assert.True(Truncated.Amount < whole);
-        }
+        var budget = new Money(franc, 882m);
 
-        [Fact]
-        public void OperatorModulus004()
-        {
-            var Denmark = new RegionInfo("DK");
-            var Krone = new CurrencyInfo(Denmark);
+        var part = 42m;
 
-            var Budget = new Money(Krone, 135m);
+        var fund = budget / part;
 
-            ushort whole = 25;
+        _ = fund.Amount.Should().Be(21m);
+    }
 
-            var Truncated = Budget % whole;
+    [Fact]
+    public void OperatorDivision011()
+    {
+        var switzerland = new RegionInfo("CH");
+        var franc = new CurrencyInfo(switzerland);
 
-            Assert.Equal(10m, Truncated.Amount);
-            Assert.True(Truncated.Amount < whole);
-        }
+        var budget = new Money(franc, 744m);
 
-        [Fact]
-        public void OperatorModulus005()
-        {
-            var Denmark = new RegionInfo("DK");
-            var Krone = new CurrencyInfo(Denmark);
+        var part = 62m;
 
-            var Budget = new Money(Krone, 98m);
+        var fund = budget / part;
 
-            var whole = 264;
+        _ = fund.Amount.Should().Be(12m);
+    }
 
-            var Truncated = Budget % whole;
+    [Fact]
+    public void OperatorModulus001()
+    {
+        var denmark = new RegionInfo("DK");
+        var krone = new CurrencyInfo(denmark);
 
-            Assert.Equal(98m, Truncated.Amount);
-            Assert.True(Truncated.Amount < whole);
-        }
+        var budget = new Money(krone, 30m);
 
-        [Fact]
-        public void OperatorModulus006()
-        {
-            var Denmark = new RegionInfo("DK");
-            var Krone = new CurrencyInfo(Denmark);
+        sbyte whole = 12;
 
-            var Budget = new Money(Krone, 42.2m);
+        var truncated = budget % whole;
 
-            uint whole = 26;
+        _ = truncated.Amount.Should().Be(6m);
+        _ = (truncated.Amount < whole).Should().BeTrue();
+    }
 
-            var Truncated = Budget % whole;
+    [Fact]
+    public void OperatorModulus002()
+    {
+        var denmark = new RegionInfo("DK");
+        var krone = new CurrencyInfo(denmark);
 
-            Assert.Equal(16.2m, Truncated.Amount);
-            Assert.True(Truncated.Amount < whole);
-        }
+        var budget = new Money(krone, 62m);
 
-        [Fact]
-        public void OperatorModulus007()
-        {
-            var Denmark = new RegionInfo("DK");
-            var Krone = new CurrencyInfo(Denmark);
+        byte whole = 10;
 
-            var Budget = new Money(Krone, 6568.8m);
+        var truncated = budget % whole;
 
-            long whole = 464;
+        _ = truncated.Amount.Should().Be(2m);
+        _ = (truncated.Amount < whole).Should().BeTrue();
+    }
 
-            var Truncated = Budget % whole;
+    [Fact]
+    public void OperatorModulus003()
+    {
+        var denmark = new RegionInfo("DK");
+        var krone = new CurrencyInfo(denmark);
 
-            Assert.Equal(72.8m, Truncated.Amount);
-            Assert.True(Truncated.Amount < whole);
-        }
+        var budget = new Money(krone, 62m);
 
-        [Fact]
-        public void OperatorModulus008()
-        {
-            var Denmark = new RegionInfo("DK");
-            var Krone = new CurrencyInfo(Denmark);
+        short whole = 9;
 
-            var Budget = new Money(Krone, 89.9m);
+        var truncated = budget % whole;
 
-            ulong whole = 64;
+        _ = truncated.Amount.Should().Be(8m);
+        _ = (truncated.Amount < whole).Should().BeTrue();
+    }
 
-            var Truncated = Budget % whole;
+    [Fact]
+    public void OperatorModulus004()
+    {
+        var denmark = new RegionInfo("DK");
+        var krone = new CurrencyInfo(denmark);
 
-            Assert.Equal(25.9m, Truncated.Amount);
-            Assert.True(Truncated.Amount < whole);
-        }
+        var budget = new Money(krone, 135m);
 
-        [Fact]
-        public void OperatorModulus009()
-        {
-            var Denmark = new RegionInfo("DK");
-            var Krone = new CurrencyInfo(Denmark);
+        ushort whole = 25;
 
-            var Budget = new Money(Krone, 2500m);
+        var truncated = budget % whole;
 
-            var whole = 64.7m;
+        _ = truncated.Amount.Should().Be(10m);
+        _ = (truncated.Amount < whole).Should().BeTrue();
+    }
 
-            var Truncated = Budget % whole;
+    [Fact]
+    public void OperatorModulus005()
+    {
+        var denmark = new RegionInfo("DK");
+        var krone = new CurrencyInfo(denmark);
 
-            Assert.Equal(41.4m, Truncated.Amount);
-            Assert.True(Truncated.Amount < whole);
-        }
+        var budget = new Money(krone, 98m);
 
-        [Fact]
-        public void OperatorModulus010()
-        {
-            var Denmark = new RegionInfo("DK");
-            var Krone = new CurrencyInfo(Denmark);
+        var whole = 264;
 
-            var Budget = new Money(Krone, 4526m);
+        var truncated = budget % whole;
 
-            var whole = 24.4m;
+        _ = truncated.Amount.Should().Be(98m);
+        _ = (truncated.Amount < whole).Should().BeTrue();
+    }
 
-            var Truncated = Budget % whole;
+    [Fact]
+    public void OperatorModulus006()
+    {
+        var denmark = new RegionInfo("DK");
+        var krone = new CurrencyInfo(denmark);
 
-            Assert.Equal(12m, Truncated.Amount);
-            Assert.True(Truncated.Amount < whole);
-        }
+        var budget = new Money(krone, 42.2m);
 
-        [Fact]
-        public void OperatorMultiply001()
-        {
-            var Britain = new RegionInfo("GB");
-            var Pound = new CurrencyInfo(Britain);
+        uint whole = 26;
 
-            var Payment = new Money(Pound, 12.5m);
+        var truncated = budget % whole;
 
-            sbyte m = 23;
+        _ = truncated.Amount.Should().Be(16.2m);
+        _ = (truncated.Amount < whole).Should().BeTrue();
+    }
 
-            var Wallet = Payment * m;
+    [Fact]
+    public void OperatorModulus007()
+    {
+        var denmark = new RegionInfo("DK");
+        var krone = new CurrencyInfo(denmark);
 
-            Assert.Equal(287.5m, Wallet.Amount);
-        }
+        var budget = new Money(krone, 6568.8m);
 
-        [Fact]
-        public void OperatorMultiply002()
-        {
-            var Britain = new RegionInfo("GB");
-            var Pound = new CurrencyInfo(Britain);
+        long whole = 464;
 
-            var Payment = new Money(Pound, 22.5m);
+        var truncated = budget % whole;
 
-            byte m = 24;
+        _ = truncated.Amount.Should().Be(72.8m);
+        _ = (truncated.Amount < whole).Should().BeTrue();
+    }
 
-            var Wallet = Payment * m;
+    [Fact]
+    public void OperatorModulus008()
+    {
+        var denmark = new RegionInfo("DK");
+        var krone = new CurrencyInfo(denmark);
 
-            Assert.Equal(540m, Wallet.Amount);
-        }
+        var budget = new Money(krone, 89.9m);
 
-        [Fact]
-        public void OperatorMultiply003()
-        {
-            var Britain = new RegionInfo("GB");
-            var Pound = new CurrencyInfo(Britain);
+        ulong whole = 64;
 
-            var Payment = new Money(Pound, 26m);
+        var truncated = budget % whole;
 
-            short m = 240;
+        _ = truncated.Amount.Should().Be(25.9m);
+        _ = (truncated.Amount < whole).Should().BeTrue();
+    }
 
-            var Wallet = Payment * m;
+    [Fact]
+    public void OperatorModulus009()
+    {
+        var denmark = new RegionInfo("DK");
+        var krone = new CurrencyInfo(denmark);
 
-            Assert.Equal(6240m, Wallet.Amount);
-        }
+        var budget = new Money(krone, 2500m);
 
-        [Fact]
-        public void OperatorMultiply004()
-        {
-            var Britain = new RegionInfo("GB");
-            var Pound = new CurrencyInfo(Britain);
+        var whole = 64.7m;
 
-            var Payment = new Money(Pound, 250m);
+        var truncated = budget % whole;
 
-            ushort m = 667;
+        _ = truncated.Amount.Should().Be(41.4m);
+        _ = (truncated.Amount < whole).Should().BeTrue();
+    }
 
-            var Wallet = Payment * m;
+    [Fact]
+    public void OperatorModulus010()
+    {
+        var denmark = new RegionInfo("DK");
+        var krone = new CurrencyInfo(denmark);
 
-            Assert.Equal(166750m, Wallet.Amount);
-        }
+        var budget = new Money(krone, 4526m);
 
-        [Fact]
-        public void OperatorMultiply005()
-        {
-            var Britain = new RegionInfo("GB");
-            var Pound = new CurrencyInfo(Britain);
+        var whole = 24.4m;
 
-            var Payment = new Money(Pound, 24.4m);
+        var truncated = budget % whole;
 
-            uint m = 598;
+        _ = truncated.Amount.Should().Be(12m);
+        _ = (truncated.Amount < whole).Should().BeTrue();
+    }
 
-            var Wallet = Payment * m;
+    [Fact]
+    public void OperatorMultiply001()
+    {
+        var britain = new RegionInfo("GB");
+        var pound = new CurrencyInfo(britain);
 
-            Assert.Equal(14591.2m, Wallet.Amount);
-        }
+        var payment = new Money(pound, 12.5m);
 
-        [Fact]
-        public void OperatorMultiply006()
-        {
-            var Britain = new RegionInfo("GB");
-            var Pound = new CurrencyInfo(Britain);
+        sbyte m = 23;
 
-            var Payment = new Money(Pound, 4.44m);
+        var wallet = payment * m;
 
-            long m = 662;
+        _ = wallet.Amount.Should().Be(287.5m);
+    }
 
-            var Wallet = Payment * m;
+    [Fact]
+    public void OperatorMultiply002()
+    {
+        var britain = new RegionInfo("GB");
+        var pound = new CurrencyInfo(britain);
 
-            Assert.Equal(2939.28m, Wallet.Amount);
-        }
+        var payment = new Money(pound, 22.5m);
 
-        [Fact]
-        public void OperatorMultiply007()
-        {
-            var Britain = new RegionInfo("GB");
-            var Pound = new CurrencyInfo(Britain);
+        byte m = 24;
 
-            var Payment = new Money(Pound, 88.2m);
+        var wallet = payment * m;
 
-            ulong m = 42;
+        _ = wallet.Amount.Should().Be(540m);
+    }
 
-            var Wallet = Payment * m;
+    [Fact]
+    public void OperatorMultiply003()
+    {
+        var britain = new RegionInfo("GB");
+        var pound = new CurrencyInfo(britain);
 
-            Assert.Equal(3704.4m, Wallet.Amount);
-        }
+        var payment = new Money(pound, 26m);
 
-        [Fact]
-        public void OperatorMultiply008()
-        {
-            var Britain = new RegionInfo("GB");
-            var Pound = new CurrencyInfo(Britain);
+        short m = 240;
 
-            var Payment = new Money(Pound, 242m);
+        var wallet = payment * m;
 
-            var m = 6.2m;
+        _ = wallet.Amount.Should().Be(6240m);
+    }
 
-            var Wallet = Payment * m;
+    [Fact]
+    public void OperatorMultiply004()
+    {
+        var britain = new RegionInfo("GB");
+        var pound = new CurrencyInfo(britain);
 
-            Assert.Equal(1500.4m, Wallet.Amount);
-        }
+        var payment = new Money(pound, 250m);
 
-        [Fact]
-        public void OperatorMultiply009()
-        {
-            var Britain = new RegionInfo("GB");
-            var Pound = new CurrencyInfo(Britain);
+        ushort m = 667;
 
-            var Payment = new Money(Pound, 56m);
+        var wallet = payment * m;
 
-            var m = 8.4m;
+        _ = wallet.Amount.Should().Be(166750m);
+    }
 
-            var Wallet = Payment * m;
+    [Fact]
+    public void OperatorMultiply005()
+    {
+        var britain = new RegionInfo("GB");
+        var pound = new CurrencyInfo(britain);
 
-            Assert.Equal(470.4m, Wallet.Amount);
-        }
+        var payment = new Money(pound, 24.4m);
 
-        [Fact]
-        public void OperatorMultiply010()
-        {
-            var Britain = new RegionInfo("GB");
-            var Pound = new CurrencyInfo(Britain);
+        uint m = 598;
 
-            var Payment = new Money(Pound, 69m);
+        var wallet = payment * m;
 
-            var m = 1.44m;
+        _ = wallet.Amount.Should().Be(14591.2m);
+    }
 
-            var Wallet = Payment * m;
+    [Fact]
+    public void OperatorMultiply006()
+    {
+        var britain = new RegionInfo("GB");
+        var pound = new CurrencyInfo(britain);
 
-            Assert.Equal(99.36m, Wallet.Amount);
-        }
+        var payment = new Money(pound, 4.44m);
 
-        [Theory]
-        [InlineData("US", "16.6", "en-US", "$16.60")]
-        [InlineData("US", "24.4", "en-GB", "$24.40")]
-        [InlineData("US", "62.68", "de-DE", "62,68 $")]
-        [InlineData("US", "12.36", "ga-IE", "$12.36")]
-        [InlineData("US", "5.6", "nl-NL", "$ 5,60")]
-        [InlineData("US", "36.6", "hy-AM", "36,60 $")]
-        [InlineData("US", "36.6", "uk-UA", "36,60 $")]
-        [InlineData("DE", "58.7", "en-US", "€58.70")]
-        [InlineData("DE", "12.4", "en-GB", "€12.40")]
-        [InlineData("DE", "14.24", "ga-IE", "€14.24")]
-        [InlineData("DE", "16.6", "nl-NL", "€ 16,60")]
-        [InlineData("DE", "14.5", "hy-AM", "14,50 €")]
-        [InlineData("DE", "14.5", "uk-UA", "14,50 €")]
-        [InlineData("DE", "16.5", "de-DE", "16,50 €")]
-        [InlineData("AM", "2500.24", "de-DE", "2.500,24 ֏")]
-        public void ToStringInDifferentCultures(string countryCode, string amount, string culture, string expected)
-        {
-            var stringValue = string.Empty;
+        long m = 662;
 
-            var thread = new Thread(() =>
-            {
-                var country = new RegionInfo(countryCode);
-                var currency = new CurrencyInfo(country);
+        var wallet = payment * m;
 
-                var price = new Money(currency, decimal.Parse(amount, CultureInfo.InvariantCulture));
+        _ = wallet.Amount.Should().Be(2939.28m);
+    }
 
-                var ci = new CultureInfo(culture);
-                Thread.CurrentThread.CurrentCulture = ci;
-                stringValue = price.ToString();
-            });
+    [Fact]
+    public void OperatorMultiply007()
+    {
+        var britain = new RegionInfo("GB");
+        var pound = new CurrencyInfo(britain);
 
-            thread.Start();
-            thread.Join();
+        var payment = new Money(pound, 88.2m);
 
-            Assert.Equal(expected, stringValue);
-        }
+        ulong m = 42;
 
-        [Theory]
-        [InlineData("GB", "56.42", "en-US", "S", "£56.42")]
-        [InlineData("GB", "14.6", "en-GB", "S2", "£14.60")]
-        [InlineData("GB", "25.96", "de-DE", "S5", "25,96000 £")]
-        [InlineData("GB", "12.21", "ga-IE", "S1", "£12.2")]
-        [InlineData("GB", "16.36", "nl-NL", "S1", "£ 16,4")]
-        [InlineData("GB", "66.326", "hy-AM", "S1", "66,3 £")]
-        [InlineData("GB", "162.2", "el-GR", "", "162,20 £")]
-        [InlineData("GB", "142.26", "it-IT", "", "142,26 £")]
-        [InlineData("GB", "66.32", "sv-SE", null, "66,32 £")]
-        [InlineData("AM", "2500", "en-US", "I", "AMD2,500.00")]
-        [InlineData("AM", "2500.2", "en-GB", "I3", "AMD2,500.200")]
-        public void ToStringWithFormat(string countryCode, string amount, string culture, string format, string expected)
+        var wallet = payment * m;
+
+        _ = wallet.Amount.Should().Be(3704.4m);
+    }
+
+    [Fact]
+    public void OperatorMultiply008()
+    {
+        var britain = new RegionInfo("GB");
+        var pound = new CurrencyInfo(britain);
+
+        var payment = new Money(pound, 242m);
+
+        var m = 6.2m;
+
+        var wallet = payment * m;
+
+        _ = wallet.Amount.Should().Be(1500.4m);
+    }
+
+    [Fact]
+    public void OperatorMultiply009()
+    {
+        var britain = new RegionInfo("GB");
+        var pound = new CurrencyInfo(britain);
+
+        var payment = new Money(pound, 56m);
+
+        var m = 8.4m;
+
+        var wallet = payment * m;
+
+        _ = wallet.Amount.Should().Be(470.4m);
+    }
+
+    [Fact]
+    public void OperatorMultiply010()
+    {
+        var britain = new RegionInfo("GB");
+        var pound = new CurrencyInfo(britain);
+
+        var payment = new Money(pound, 69m);
+
+        var m = 1.44m;
+
+        var wallet = payment * m;
+
+        _ = wallet.Amount.Should().Be(99.36m);
+    }
+
+    [Fact]
+    public void ToString022()
+    {
+        var unitedKingdom = new RegionInfo("GB");
+        var pound = new CurrencyInfo(unitedKingdom);
+
+        var price = new Money(pound, 66.32m);
+
+        _ = new Func<object>(() =>
+                    price.ToString("K", new CultureInfo("pl-PL"))).Should().ThrowExactly<FormatException>();
+    }
+
+    [Theory]
+    [InlineData("US", "16.6", "en-US", "$16.60")]
+    [InlineData("US", "24.4", "en-GB", "$24.40")]
+    [InlineData("US", "62.68", "de-DE", "62,68 $")]
+    [InlineData("US", "12.36", "ga-IE", "$12.36")]
+    [InlineData("US", "5.6", "nl-NL", "$ 5,60")]
+    [InlineData("US", "36.6", "hy-AM", "36,60 $")]
+    [InlineData("US", "36.6", "uk-UA", "36,60 $")]
+    [InlineData("DE", "58.7", "en-US", "€58.70")]
+    [InlineData("DE", "12.4", "en-GB", "€12.40")]
+    [InlineData("DE", "14.24", "ga-IE", "€14.24")]
+    [InlineData("DE", "16.6", "nl-NL", "€ 16,60")]
+    [InlineData("DE", "14.5", "hy-AM", "14,50 €")]
+    [InlineData("DE", "14.5", "uk-UA", "14,50 €")]
+    [InlineData("DE", "16.5", "de-DE", "16,50 €")]
+    [InlineData("AM", "2500.24", "de-DE", "2.500,24 ֏")]
+    public void ToStringInDifferentCultures(string countryCode, string amount, string culture, string expected)
+    {
+        var stringValue = string.Empty;
+
+        var thread = new Thread(() =>
         {
             var country = new RegionInfo(countryCode);
             var currency = new CurrencyInfo(country);
 
             var price = new Money(currency, decimal.Parse(amount, CultureInfo.InvariantCulture));
 
-            var ci = new CultureInfo(culture);
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(culture);
+            stringValue = price.ToString();
+        });
 
-            Assert.Equal(expected, price.ToString(format, ci));
-        }
+        thread.Start();
+        thread.Join();
 
-        [Fact]
-        public void ToString022()
-        {
-            var UnitedKingdom = new RegionInfo("GB");
-            var Pound = new CurrencyInfo(UnitedKingdom);
+        _ = stringValue.Should().Be(expected);
+    }
 
-            var Price = new Money(Pound, 66.32m);
+    [Theory]
+    [InlineData("GB", "56.42", "en-US", "S", "£56.42")]
+    [InlineData("GB", "14.6", "en-GB", "S2", "£14.60")]
+    [InlineData("GB", "25.96", "de-DE", "S5", "25,96000 £")]
+    [InlineData("GB", "12.21", "ga-IE", "S1", "£12.2")]
+    [InlineData("GB", "16.36", "nl-NL", "S1", "£ 16,4")]
+    [InlineData("GB", "66.326", "hy-AM", "S1", "66,3 £")]
+    [InlineData("GB", "162.2", "el-GR", "", "162,20 £")]
+    [InlineData("GB", "142.26", "it-IT", "", "142,26 £")]
+    [InlineData("GB", "66.32", "sv-SE", null, "66,32 £")]
+    [InlineData("AM", "2500", "en-US", "I", "AMD2,500.00")]
+    [InlineData("AM", "2500.2", "en-GB", "I3", "AMD2,500.200")]
+    public void ToStringWithFormat(string countryCode, string amount, string culture, string format, string expected)
+    {
+        var country = new RegionInfo(countryCode);
+        var currency = new CurrencyInfo(country);
 
-            var CI = new CultureInfo("pl-PL");
+        var price = new Money(currency, decimal.Parse(amount, CultureInfo.InvariantCulture));
 
-            _ = Assert.Throws<FormatException>(
-                   () =>
-                        Price.ToString("K", CI));
-        }
+        var ci = new CultureInfo(culture);
 
-        [Fact]
-        public void UnaryNegation001()
-        {
-            var USA = new RegionInfo("US");
-            var Dollar = new CurrencyInfo(USA);
+        _ = price.ToString(format, ci).Should().Be(expected);
+    }
 
-            var M1 = new Money(Dollar, 235.6m);
-            var M2 = -M1;
+    [Fact]
+    public void UnaryNegation001()
+    {
+        var thetheUSA = new RegionInfo("US");
+        var dollar = new CurrencyInfo(thetheUSA);
 
-            Assert.Equal(M1.Currency, M2.Currency);
-            Assert.Equal(-235.6m, M2.Amount);
-        }
+        var m1 = new Money(dollar, 235.6m);
+        var m2 = -m1;
 
-        [Fact]
-        public void UnaryPlus001()
-        {
-            var USA = new RegionInfo("US");
-            var Dollar = new CurrencyInfo(USA);
+        _ = m2.Currency.Should().Be(m1.Currency);
+        _ = m2.Amount.Should().Be(-235.6m);
+    }
 
-            var M1 = new Money(Dollar, 235.6m);
-            var M2 = +M1;
+    [Fact]
+    public void UnaryPlus001()
+    {
+        var theUSA = new RegionInfo("US");
+        var dollar = new CurrencyInfo(theUSA);
 
-            Assert.Equal(M1.Currency, M2.Currency);
-            Assert.Equal(235.6m, M2.Amount);
-        }
+        var m1 = new Money(dollar, 235.6m);
+        var m2 = +m1;
+
+        _ = m2.Currency.Should().Be(m1.Currency);
+        _ = m2.Amount.Should().Be(235.6m);
     }
 }

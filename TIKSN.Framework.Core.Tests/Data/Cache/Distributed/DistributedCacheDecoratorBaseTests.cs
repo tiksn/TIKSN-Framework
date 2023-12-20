@@ -11,13 +11,15 @@ using MessagePack.Resolvers;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using TIKSN.Data;
+using TIKSN.Data.Cache.Distributed;
 using TIKSN.DependencyInjection;
 using TIKSN.Serialization;
 using TIKSN.Serialization.MessagePack;
 using Xunit;
 using static LanguageExt.Prelude;
 
-namespace TIKSN.Data.Cache.Distributed.Tests;
+namespace TIKSN.Tests.Data.Cache.Distributed;
 
 public class DistributedCacheDecoratorBaseTests
 {

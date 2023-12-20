@@ -2,32 +2,30 @@ using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using TIKSN.IntegrationTests;
 using Xunit;
 
-namespace TIKSN.Data.Mongo.IntegrationTests
+namespace TIKSN.IntegrationTests.Data.Mongo;
+
+[Collection("ServiceProviderCollection")]
+public class MongoRepositoryTests
 {
-    [Collection("ServiceProviderCollection")]
-    public class MongoRepositoryTests
+    private readonly ServiceProviderFixture serviceProviderFixture;
+
+    public MongoRepositoryTests(ServiceProviderFixture serviceProviderFixture) =>
+        this.serviceProviderFixture = serviceProviderFixture ?? throw new ArgumentNullException(nameof(serviceProviderFixture));
+
+    [Fact]
+    public async Task TestCreationAndRetrievalAsync()
     {
-        private readonly ServiceProviderFixture _serviceProviderFixture;
+        var testRepository = this.serviceProviderFixture.GetServiceProvider().GetRequiredService<ITestMongoRepository>();
 
-        public MongoRepositoryTests(ServiceProviderFixture serviceProviderFixture) =>
-            this._serviceProviderFixture = serviceProviderFixture;
+        var testEntityId = Guid.NewGuid();
+        var testEntity = new TestMongoEntity { ID = testEntityId, Value = Guid.NewGuid() };
 
-        [Fact]
-        public async Task TestCreationAndRetrievalAsync()
-        {
-            var testRepository = this._serviceProviderFixture.GetServiceProvider().GetRequiredService<ITestMongoRepository>();
+        await testRepository.AddAsync(testEntity, default).ConfigureAwait(true);
 
-            var testEntityId = Guid.NewGuid();
-            var testEntity = new TestMongoEntity { ID = testEntityId, Value = Guid.NewGuid() };
+        var retrievedEntity = await testRepository.GetAsync(testEntityId, default).ConfigureAwait(true);
 
-            await testRepository.AddAsync(testEntity, default).ConfigureAwait(true);
-
-            var retrievedEntity = await testRepository.GetAsync(testEntityId, default).ConfigureAwait(true);
-
-            _ = retrievedEntity.Value.Should().Be(testEntity.Value);
-        }
+        _ = retrievedEntity.Value.Should().Be(testEntity.Value);
     }
 }
