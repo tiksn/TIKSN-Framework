@@ -14,15 +14,21 @@ public class FixedRateCurrencyConverter : ICurrencyConverter
         }
         else
         {
-            throw new ArgumentException("Rate cannot be negative or zero.", "Rate");
+            throw new ArgumentException("Rate cannot be negative or zero.", nameof(rate));
         }
     }
 
     public CurrencyPair CurrencyPair { get; }
 
-    public Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn,
+    public Task<Money> ConvertCurrencyAsync(
+        Money baseMoney,
+        CurrencyInfo counterCurrency,
+        DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(baseMoney);
+        ArgumentNullException.ThrowIfNull(counterCurrency);
+
         var requiredPair = new CurrencyPair(baseMoney.Currency, counterCurrency);
 
         if (this.CurrencyPair == requiredPair)
@@ -30,10 +36,11 @@ public class FixedRateCurrencyConverter : ICurrencyConverter
             return Task.FromResult(new Money(this.CurrencyPair.CounterCurrency, baseMoney.Amount * this.rate));
         }
 
-        throw new ArgumentException("Unsupported currency pair.");
+        throw new ArgumentException("Unsupported currency pair.", nameof(counterCurrency));
     }
 
-    public Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+    public Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+        DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
         IEnumerable<CurrencyPair> singleItemList = new List<CurrencyPair> { this.CurrencyPair };
@@ -41,14 +48,18 @@ public class FixedRateCurrencyConverter : ICurrencyConverter
         return Task.FromResult(singleItemList);
     }
 
-    public Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+    public Task<decimal> GetExchangeRateAsync(
+        CurrencyPair pair,
+        DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(pair);
+
         if (this.CurrencyPair == pair)
         {
             return Task.FromResult(this.rate);
         }
 
-        throw new ArgumentException("Unsupported currency pair.");
+        throw new ArgumentException("Unsupported currency pair.", nameof(pair));
     }
 }
