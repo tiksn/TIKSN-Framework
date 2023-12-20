@@ -5,7 +5,7 @@ using Microsoft.FSharp.Core;
 
 namespace TIKSN.Conversion;
 
-public static class FSharp
+public static class FSharpExtensions
 {
     public static Fin<T> ToFin<T>(this FSharpResult<T, Error> result)
         => result.IsOk
