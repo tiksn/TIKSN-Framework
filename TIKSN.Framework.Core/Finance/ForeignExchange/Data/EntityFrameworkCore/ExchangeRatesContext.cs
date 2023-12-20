@@ -13,6 +13,8 @@ public class ExchangeRatesContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        ArgumentNullException.ThrowIfNull(modelBuilder);
+
         _ = modelBuilder.Entity<ExchangeRateDataEntity>(entity =>
           {
               _ = entity.ToTable("ExchangeRates");
