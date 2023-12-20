@@ -25,13 +25,13 @@ public class CosmosTableRepositoryAdapter<T> : IRepository<T> where T : ITableEn
     };
 
     public Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken) =>
-        BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, this.AddAsync);
+        BatchOperationHelper.BatchOperationAsync(entities, this.AddAsync, cancellationToken);
 
     public Task RemoveAsync(T entity, CancellationToken cancellationToken) =>
         this._azureTableStorageRepository.DeleteAsync(entity, cancellationToken);
 
     public Task RemoveRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken) =>
-        BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, this.RemoveAsync);
+        BatchOperationHelper.BatchOperationAsync(entities, this.RemoveAsync, cancellationToken);
 
     public Task UpdateAsync(T entity, CancellationToken cancellationToken) => this._options.Value.UpdateOption switch
     {
@@ -42,7 +42,7 @@ $"Update option '{this._options.Value.AddOption}' is not supported."),
     };
 
     public Task UpdateRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken) =>
-        BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, this.UpdateAsync);
+        BatchOperationHelper.BatchOperationAsync(entities, this.UpdateAsync, cancellationToken);
 }
 
 public class AzureTableStorageRepositoryAdapter<TBusinessEntity, TDataEntity>
@@ -65,7 +65,7 @@ public class AzureTableStorageRepositoryAdapter<TBusinessEntity, TDataEntity>
     }
 
     public Task AddRangeAsync(IEnumerable<TBusinessEntity> entities, CancellationToken cancellationToken) =>
-        BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, this.AddAsync);
+        BatchOperationHelper.BatchOperationAsync(entities, this.AddAsync, cancellationToken);
 
     public Task RemoveAsync(TBusinessEntity entity, CancellationToken cancellationToken)
     {
@@ -75,7 +75,7 @@ public class AzureTableStorageRepositoryAdapter<TBusinessEntity, TDataEntity>
     }
 
     public Task RemoveRangeAsync(IEnumerable<TBusinessEntity> entities, CancellationToken cancellationToken) =>
-        BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, this.RemoveAsync);
+        BatchOperationHelper.BatchOperationAsync(entities, this.RemoveAsync, cancellationToken);
 
     public Task UpdateAsync(TBusinessEntity entity, CancellationToken cancellationToken)
     {
@@ -85,5 +85,5 @@ public class AzureTableStorageRepositoryAdapter<TBusinessEntity, TDataEntity>
     }
 
     public Task UpdateRangeAsync(IEnumerable<TBusinessEntity> entities, CancellationToken cancellationToken) =>
-        BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, this.UpdateAsync);
+        BatchOperationHelper.BatchOperationAsync(entities, this.UpdateAsync, cancellationToken);
 }
