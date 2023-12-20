@@ -9,6 +9,7 @@ public class PowerShellLoggerProvider : ILoggerProvider
     private readonly ICurrentCommandProvider currentCommandProvider;
     private readonly ConcurrentDictionary<string, PowerShellLogger> loggers = new(StringComparer.Ordinal);
     private readonly IOptions<PowerShellLoggerOptions> options;
+    private bool disposedValue;
 
     public PowerShellLoggerProvider(
         ICurrentCommandProvider currentCommandProvider,
@@ -24,8 +25,23 @@ public class PowerShellLoggerProvider : ILoggerProvider
 
     public void Dispose()
     {
+        this.Dispose(disposing: true);
+        GC.SuppressFinalize(this);
     }
 
-    private PowerShellLogger CreateLoggerImplementation(string name) =>
-        new(this.currentCommandProvider, this.options, name);
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!this.disposedValue)
+        {
+            if (disposing)
+            {
+                this.loggers.Clear();
+            }
+
+            this.disposedValue = true;
+        }
+    }
+
+    private PowerShellLogger CreateLoggerImplementation(string name)
+        => new(this.currentCommandProvider, this.options, name);
 }
