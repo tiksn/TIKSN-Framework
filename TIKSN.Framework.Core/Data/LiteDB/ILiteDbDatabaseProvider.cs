@@ -10,13 +10,13 @@ public interface ILiteDbDatabaseProvider
     /// <summary>
     ///     Creates LiteDB database
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Database instance</returns>
     LiteDatabase GetDatabase();
 
     /// <summary>
     ///     Creates LiteDB database with mapper
     /// </summary>
     /// <param name="mapper">Mapper</param>
-    /// <returns></returns>
+    /// <returns>Database instance</returns>
     LiteDatabase GetDatabase(BsonMapper mapper);
 }
