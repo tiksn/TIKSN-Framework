@@ -4,15 +4,8 @@ public sealed class Page : IEquatable<Page>
 {
     public Page(int number, int size)
     {
-        if (number <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(number));
-        }
-
-        if (size <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(size));
-        }
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(number);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(size);
 
         this.Number = number;
         this.Size = size;

@@ -4,9 +4,17 @@ namespace TIKSN.Finance;
 
 public class AverageCurrencyConversionCompositionStrategy : ICurrencyConversionCompositionStrategy
 {
-    public async Task<Money> ConvertCurrencyAsync(Money baseMoney, IEnumerable<ICurrencyConverter> converters,
-        CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
+    public async Task<Money> ConvertCurrencyAsync(
+        Money baseMoney,
+        IEnumerable<ICurrencyConverter> converters,
+        CurrencyInfo counterCurrency,
+        DateTimeOffset asOn,
+        CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(baseMoney);
+        ArgumentNullException.ThrowIfNull(converters);
+        ArgumentNullException.ThrowIfNull(counterCurrency);
+
         var filteredConverters = await CurrencyHelper.FilterConvertersAsync(converters, baseMoney.Currency,
             counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
 
@@ -19,7 +27,7 @@ public class AverageCurrencyConversionCompositionStrategy : ICurrencyConversionC
 
             if (convertedMoney.Currency != counterCurrency)
             {
-                throw new Exception("Converted into wrong currency.");
+                throw new InvalidOperationException("Converted into wrong currency.");
             }
 
             amounts.Add(convertedMoney.Amount);
@@ -30,9 +38,15 @@ public class AverageCurrencyConversionCompositionStrategy : ICurrencyConversionC
         return new Money(counterCurrency, amount);
     }
 
-    public async Task<decimal> GetExchangeRateAsync(IEnumerable<ICurrencyConverter> converters, CurrencyPair pair,
-        DateTimeOffset asOn, CancellationToken cancellationToken)
+    public async Task<decimal> GetExchangeRateAsync(
+        IEnumerable<ICurrencyConverter> converters,
+        CurrencyPair pair,
+        DateTimeOffset asOn,
+        CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(converters);
+        ArgumentNullException.ThrowIfNull(pair);
+
         var filteredConverters = await CurrencyHelper.FilterConvertersAsync(converters, pair, asOn, cancellationToken).ConfigureAwait(false);
 
         var rates = new List<decimal>();

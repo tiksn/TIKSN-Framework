@@ -5,20 +5,20 @@ public enum Milestone
     /// <summary>
     /// Alpha - Unstable
     /// </summary>
-    Alpha = 1,
+    Alpha = 0,
 
     /// <summary>
     /// Beta - Unstable
     /// </summary>
-    Beta = 2,
+    Beta = 1,
 
     /// <summary>
     /// Release Candidate - Unstable
     /// </summary>
-    ReleaseCandidate = 3,
+    ReleaseCandidate = 2,
 
     /// <summary>
     /// Release - Stable
     /// </summary>
-    Release = 4,
+    Release = 3,
 }

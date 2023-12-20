@@ -1,7 +1,7 @@
 namespace TIKSN.Shell;
 
 [AttributeUsage(AttributeTargets.Class)]
-public sealed class ShellCommandAttribute : ShellAttributeBase
+public sealed class ShellCommandAttribute : ShellAttributeBaseAttribute
 {
     public ShellCommandAttribute(int nameKey) : base(nameKey)
     {

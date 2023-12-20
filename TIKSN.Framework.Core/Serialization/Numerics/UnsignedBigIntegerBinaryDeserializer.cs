@@ -10,10 +10,13 @@ public class UnsignedBigIntegerBinaryDeserializer : ICustomDeserializer<byte[], 
     /// <summary>
     ///     Deserializes byte array to unsigned <see cref="BigInteger" />
     /// </summary>
-    /// <param name="serial"></param>
-    /// <returns></returns>
+    /// <param name="serial">Bytes to be deserialized into model</param>
+    /// <returns>Deserialized model</returns>
+    /// <exception cref="ArgumentNullException"></exception>
     public BigInteger Deserialize(byte[] serial)
     {
+        ArgumentNullException.ThrowIfNull(serial);
+
         var last = serial[^1];
 
         if (last < 0b_1000_0000)

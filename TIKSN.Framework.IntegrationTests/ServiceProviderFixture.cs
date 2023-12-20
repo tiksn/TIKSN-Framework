@@ -7,9 +7,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Localization;
 using MongoDB.Bson;
 using TIKSN.Data.Mongo;
-using TIKSN.IntegrationTests.Data.Mongo;
 using TIKSN.DependencyInjection;
 using TIKSN.Finance.ForeignExchange;
+using TIKSN.IntegrationTests.Data.Mongo;
 using TIKSN.IntegrationTests.Finance.ForeignExchange.ExchangeRateService;
 
 namespace TIKSN.IntegrationTests;

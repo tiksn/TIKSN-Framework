@@ -10,7 +10,7 @@ public abstract class CompositeCurrencyConverter : ICompositeCurrencyConverter
     }
 
     protected ICurrencyConversionCompositionStrategy CompositionStrategy { get; }
-    protected List<ICurrencyConverter> Converters { get; }
+    protected IList<ICurrencyConverter> Converters { get; }
 
     public void Add(ICurrencyConverter converter) => this.Converters.Add(converter);
 

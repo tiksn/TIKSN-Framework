@@ -10,7 +10,7 @@ public interface ICustomSerializer<out TSerial, in TModel>
     /// <summary>
     ///     Serialize <typeparamref name="TModel" /> to <typeparamref name="TSerial" /> type
     /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
+    /// <param name="obj">Model to serialized</param>
+    /// <returns>Serialized result</returns>
     TSerial Serialize(TModel obj);
 }
