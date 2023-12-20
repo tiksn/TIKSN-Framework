@@ -4,8 +4,8 @@ public static class BatchOperationHelper
 {
     public static Task BatchOperationAsync<T>(
         IEnumerable<T> entities,
-        CancellationToken cancellationToken,
-        Func<T, CancellationToken, Task> singleOperation)
+        Func<T, CancellationToken, Task> singleOperation,
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(entities);
 
@@ -18,8 +18,8 @@ public static class BatchOperationHelper
 
     public static Task<TResult[]> BatchOperationAsync<T, TResult>(
         IEnumerable<T> entities,
-        CancellationToken cancellationToken,
-        Func<T, CancellationToken, Task<TResult>> singleOperation)
+        Func<T, CancellationToken, Task<TResult>> singleOperation,
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(entities);
 
