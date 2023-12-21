@@ -2,5 +2,5 @@ namespace TIKSN.Progress;
 
 public interface IOperationProgressFactory
 {
-    DisposableProgress<OperationProgressReport> Create(string activity, string statusDescription);
+    IDisposableProgress<OperationProgressReport> Create(string activity, string statusDescription);
 }
