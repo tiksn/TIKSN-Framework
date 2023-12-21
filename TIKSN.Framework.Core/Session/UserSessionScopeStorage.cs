@@ -16,7 +16,7 @@ public class UserSessionScopeStorage<TIdentity> : IUserSessionScopeStorage<TIden
     }
 
     public IServiceProvider GetOrAddServiceProvider(TIdentity id) =>
-        this.scopes.GetOrAdd(id, _ => this.serviceProvider.CreateAsyncScope()).ServiceProvider;
+        this.scopes.GetOrAdd(id, (_, p) => p.CreateAsyncScope(), this.serviceProvider).ServiceProvider;
 
     public async ValueTask<bool> TryRemoveServiceProviderAsync(TIdentity id)
     {
