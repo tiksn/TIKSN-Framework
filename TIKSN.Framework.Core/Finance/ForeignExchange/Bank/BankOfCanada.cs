@@ -1,5 +1,7 @@
 using System.Diagnostics;
 using System.Globalization;
+using DynamicData;
+using LanguageExt;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TIKSN.Globalization;
@@ -13,7 +15,7 @@ public class BankOfCanada : IBankOfCanada
     private static readonly Uri RestURL = new("https://www.bankofcanada.ca/valet/observations/group/FX_RATES_DAILY/json");
     private readonly ICurrencyFactory currencyFactory;
     private readonly HttpClient httpClient;
-    private readonly Dictionary<DateTime, Dictionary<CurrencyInfo, decimal>> rates;
+    private readonly Dictionary<DateOnly, Dictionary<CurrencyInfo, decimal>> rates;
     private readonly TimeProvider timeProvider;
     private DateTimeOffset lastFetchDate;
 
@@ -95,22 +97,21 @@ public class BankOfCanada : IBankOfCanada
     {
         var result = new List<ExchangeRate>();
 
-        var ratesList = new List<Tuple<CurrencyInfo, DateTime, decimal>>();
+        var ratesList = new List<Tuple<CurrencyInfo, DateOnly, decimal>>();
 
         var rawData = await this.FetchRawDataAsync(RestURL).ConfigureAwait(false);
 
-        var asOnDate = GetRatesDate(asOn);
+        var asOnDate = GetRateDate(asOn);
         foreach (var rawItem in rawData)
         {
             var currency = this.currencyFactory.Create(rawItem.Item1);
 
-            if (asOnDate == rawItem.Item2.Date)
+            if (asOnDate == rawItem.Item2)
             {
-                result.Add(new ExchangeRate(new CurrencyPair(currency, CanadianDollar), rawItem.Item2,
-                    rawItem.Item3));
+                result.Add(new ExchangeRate(new CurrencyPair(currency, CanadianDollar), GetRateDateTimeOffset(rawItem.Item2), rawItem.Item3));
             }
 
-            ratesList.Add(new Tuple<CurrencyInfo, DateTime, decimal>(currency, rawItem.Item2, rawItem.Item3));
+            ratesList.Add(new Tuple<CurrencyInfo, DateOnly, decimal>(currency, rawItem.Item2, rawItem.Item3));
         }
 
         lock (this.rates)
@@ -131,21 +132,13 @@ public class BankOfCanada : IBankOfCanada
     private static DateTimeOffset ConvertToBankTimeZone(DateTimeOffset date) =>
         TimeZoneInfo.ConvertTime(date, BankTimeZone);
 
-    private static DateTime GetRatesDate(DateTimeOffset asOn)
+    private static DateOnly GetRateDate(DateTimeOffset asOn)
+        => DateOnly.FromDateTime(ConvertToBankTimeZone(asOn).Date);
+
+    private static DateTimeOffset GetRateDateTimeOffset(DateOnly asOnDate)
     {
-        var date = ConvertToBankTimeZone(asOn).Date;
-
-        if (date.DayOfWeek == DayOfWeek.Saturday)
-        {
-            return date.AddDays(-1);
-        }
-
-        if (date.DayOfWeek == DayOfWeek.Sunday)
-        {
-            return date.AddDays(-2);
-        }
-
-        return date;
+        var dateTime = asOnDate.ToDateTime(TimeOnly.MinValue);
+        return new DateTimeOffset(dateTime, BankTimeZone.GetUtcOffset(dateTime));
     }
 
     private async Task FetchOnDemandAsync(CancellationToken cancellationToken)
@@ -156,20 +149,20 @@ public class BankOfCanada : IBankOfCanada
         }
     }
 
-    private async Task<List<Tuple<string, DateTime, decimal>>> FetchRawDataAsync(Uri restUrl)
+    private async Task<List<Tuple<string, DateOnly, decimal>>> FetchRawDataAsync(Uri restUrl)
     {
         var responseStream = await this.httpClient.GetStreamAsync(restUrl).ConfigureAwait(false);
 
         using var streamReader = new StreamReader(responseStream);
         var jsonDoc = (JObject)JsonConvert.DeserializeObject(await streamReader.ReadToEndAsync().ConfigureAwait(false));
 
-        var result = new List<Tuple<string, DateTime, decimal>>();
+        var result = new List<Tuple<string, DateOnly, decimal>>();
 
         foreach (var observation in jsonDoc.Children()
             .Single(item => string.Equals(item.Path, "observations", StringComparison.OrdinalIgnoreCase))
             .Children().Single().Children())
         {
-            var asOn = observation.Value<DateTime>("d");
+            var asOn = DateOnly.ParseExact(observation.Value<string>("d"), "yyyy-MM-dd", CultureInfo.InvariantCulture);
             foreach (var observationProperty in from JProperty observationProperty in observation.Children()
                                                 where observationProperty.Name.StartsWith("FX", StringComparison.OrdinalIgnoreCase)
                                                 select observationProperty)
@@ -183,7 +176,7 @@ public class BankOfCanada : IBankOfCanada
                 {
                     var rate = (decimal)valueObject.Value;
 
-                    result.Add(new Tuple<string, DateTime, decimal>(targetCurrencyCode, asOn, rate));
+                    result.Add(new Tuple<string, DateOnly, decimal>(targetCurrencyCode, asOn, rate));
                 }
             }
         }
@@ -193,30 +186,29 @@ public class BankOfCanada : IBankOfCanada
 
     private Dictionary<CurrencyInfo, decimal> GetRatesByDate(DateTimeOffset asOn)
     {
-        _ = ConvertToBankTimeZone(this.timeProvider.GetUtcNow());
-        var date = GetRatesDate(asOn);
+        var date = GetRateDate(asOn);
 
         if (this.rates.TryGetValue(date, out var valueAtDate))
         {
             return valueAtDate;
         }
 
-        if (date.DayOfWeek == DayOfWeek.Saturday && this.rates.TryGetValue(date.AddDays(-1).Date, out var valueAtYesterday))
+        if (date.DayOfWeek == DayOfWeek.Saturday && this.rates.TryGetValue(date.AddDays(-1), out var valueAtYesterday))
         {
             return valueAtYesterday;
         }
 
-        if (date.DayOfWeek == DayOfWeek.Sunday && this.rates.TryGetValue(date.AddDays(-2).Date, out var valueAtTwoDaysAgo))
+        if (date.DayOfWeek == DayOfWeek.Sunday && this.rates.TryGetValue(date.AddDays(-2), out var valueAtTwoDaysAgo))
         {
             return valueAtTwoDaysAgo;
         }
 
-        if (date.DayOfWeek == DayOfWeek.Monday && this.rates.TryGetValue(date.AddDays(-3).Date, out var valueAtThreeDaysAgo))
+        if (date.DayOfWeek == DayOfWeek.Monday && this.rates.TryGetValue(date.AddDays(-3), out var valueAtThreeDaysAgo))
         {
             return valueAtThreeDaysAgo;
         }
 
-        if (this.rates.TryGetValue(date.AddDays(-1).Date, out var otherwiseValueAtYesterday))
+        if (this.rates.TryGetValue(date.AddDays(-1), out var otherwiseValueAtYesterday))
         {
             return otherwiseValueAtYesterday;
         }
@@ -233,12 +225,10 @@ public class BankOfCanada : IBankOfCanada
                 return true;
             }
         }
-        else if (pair.CounterCurrency == CanadianDollar)
+        else if (pair.CounterCurrency == CanadianDollar &&
+            this.GetRatesByDate(asOn).Any(r => r.Key == pair.BaseCurrency))
         {
-            if (this.GetRatesByDate(asOn).Any(r => r.Key == pair.BaseCurrency))
-            {
-                return false;
-            }
+            return false;
         }
 
         throw new ArgumentException("Currency pair not supported.", nameof(pair));
