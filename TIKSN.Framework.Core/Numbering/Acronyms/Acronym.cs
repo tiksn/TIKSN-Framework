@@ -8,7 +8,7 @@ using static LanguageExt.Prelude;
 namespace TIKSN.Numbering.Acronyms;
 
 public abstract class Acronym<TSelf> : ISerial<TSelf>
-    where TSelf : Acronym<TSelf>, IAcronymLength<TSelf>
+    where TSelf : Acronym<TSelf>, IAcronymLength
 {
     private readonly string value;
 
