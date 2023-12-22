@@ -1,6 +1,6 @@
 namespace TIKSN.Numbering.Acronyms;
 
-public sealed class TLA : Acronym<TLA>, IAcronymLength<TLA>
+public sealed class TLA : Acronym<TLA>, IAcronymLength
 {
     protected TLA(string value) : base(value)
     {
