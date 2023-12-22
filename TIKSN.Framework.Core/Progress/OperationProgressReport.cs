@@ -18,9 +18,5 @@ public class OperationProgressReport : ProgressReport
 
     public string CurrentOperation { get; set; }
 
-    //public string Activity { get; set; }
-    //public int ActivityId { get; }
-    //public int ParentActivityId { get; set; }
-    //public ProgressRecordType RecordType { get; set; }
     public string StatusDescription { get; set; }
 }

@@ -2,11 +2,24 @@ namespace TIKSN.Data.CosmosTable;
 
 public class CosmosTableRepositoryAdapterOptions
 {
-    public enum AddOptions { Add, AddOrMerge, AddOrReplace }
+    public CosmosTableRepositoryAdapterOptions()
+    {
+        this.AddOption = AddOptions.Add;
+        this.UpdateOption = UpdateOptions.Merge;
+    }
 
-    public enum UpdateOptions { Merge, Replace }
+    public enum AddOptions
+    {
+        Add = 0,
+        AddOrMerge = 1,
+        AddOrReplace = 2,
+    }
 
-    public CosmosTableRepositoryAdapterOptions() => this.AddOption = AddOptions.Add;
+    public enum UpdateOptions
+    {
+        Merge = 0,
+        Replace = 1,
+    }
 
     public AddOptions AddOption { get; set; }
 

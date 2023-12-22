@@ -11,6 +11,6 @@ public interface ISerializer<out TSerial> where TSerial : class
     /// </summary>
     /// <typeparam name="T">Type to be serialized</typeparam>
     /// <param name="obj">Object to be serialized</param>
-    /// <returns></returns>
+    /// <returns>Serialized result</returns>
     TSerial Serialize<T>(T obj);
 }

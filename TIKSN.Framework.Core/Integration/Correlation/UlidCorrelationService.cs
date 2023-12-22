@@ -1,3 +1,4 @@
+using System.Globalization;
 using LanguageExt;
 using static LanguageExt.Prelude;
 
@@ -11,19 +12,19 @@ public class UlidCorrelationService : ICorrelationService
     /// <summary>
     ///     Creates <see cref="CorrelationId" /> from string representation.
     /// </summary>
-    /// <param name="stringRepresentation"></param>
-    /// <returns></returns>
+    /// <param name="stringRepresentation">String Representation</param>
+    /// <returns>Created <see cref="CorrelationId"/></returns>
     public CorrelationId Create(string stringRepresentation)
     {
-        var ulid = Ulid.Parse(stringRepresentation);
+        var ulid = Ulid.Parse(stringRepresentation, CultureInfo.InvariantCulture);
         return new CorrelationId(ulid.ToString(), Seq(ulid.ToByteArray()));
     }
 
     /// <summary>
     ///     Creates <see cref="CorrelationId" /> from binary representation.
     /// </summary>
-    /// <param name="binaryRepresentation"></param>
-    /// <returns></returns>
+    /// <param name="binaryRepresentation">Binary Representation</param>
+    /// <returns>Created <see cref="CorrelationId"/></returns>
     public CorrelationId Create(Seq<byte> binaryRepresentation)
     {
         var ulid = new Ulid(binaryRepresentation.ToArray());
@@ -33,7 +34,7 @@ public class UlidCorrelationService : ICorrelationService
     /// <summary>
     ///     Generates new <see cref="CorrelationId" />
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Generated <see cref="CorrelationId"/></returns>
     public CorrelationId Generate()
     {
         var ulid = Ulid.NewUlid();

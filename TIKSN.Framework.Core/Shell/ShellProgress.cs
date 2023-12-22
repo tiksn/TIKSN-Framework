@@ -3,10 +3,11 @@ using TIKSN.Progress;
 
 namespace TIKSN.Shell;
 
-public class ShellProgress : DisposableProgress<OperationProgressReport>
+public class ShellProgress : Progress<OperationProgressReport>, IDisposableProgress<OperationProgressReport>
 {
     private readonly int accuracy;
     private readonly ProgressBar progressBar;
+    private bool disposedValue;
 
     public ShellProgress(string message, int accuracy)
     {
@@ -15,7 +16,24 @@ public class ShellProgress : DisposableProgress<OperationProgressReport>
         this.progressBar = new ProgressBar(this.EstimateTicks(100d), message, options);
     }
 
-    public override void Dispose() => this.progressBar.Dispose();
+    public void Dispose()
+    {
+        this.Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!this.disposedValue)
+        {
+            if (disposing)
+            {
+                this.progressBar.Dispose();
+            }
+
+            this.disposedValue = true;
+        }
+    }
 
     protected override void OnReport(OperationProgressReport value)
     {

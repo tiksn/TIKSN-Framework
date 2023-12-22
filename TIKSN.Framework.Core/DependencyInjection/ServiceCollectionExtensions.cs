@@ -11,6 +11,7 @@ using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Finance.ForeignExchange.Cumulative;
 using TIKSN.Globalization;
 using TIKSN.Identity;
+using TIKSN.Network;
 using TIKSN.Serialization;
 using TIKSN.Serialization.Bond;
 using TIKSN.Serialization.MessagePack;
@@ -40,6 +41,7 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<Random>();
         services.TryAddSingleton(MessagePackSerializerOptions.Standard);
         services.TryAddSingleton<IKnownFolders, KnownFolders>();
+        services.TryAddSingleton<INetworkConnectivityService, NetworkConnectivityService>();
 
         services.TryAddSingleton<CompactBinaryBondDeserializer>();
         services.TryAddSingleton<CompactBinaryBondSerializer>();

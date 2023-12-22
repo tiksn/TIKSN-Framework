@@ -9,8 +9,6 @@ public abstract class AdUnitFactoryBase : IAdUnitFactory
     {
         this.adUnitSelector = adUnitSelector;
         this.adUnitBundles = new Dictionary<string, AdUnitBundle>(StringComparer.Ordinal);
-
-        this.Register();
     }
 
     public AdUnit Create(string key)
@@ -19,6 +17,4 @@ public abstract class AdUnitFactoryBase : IAdUnitFactory
 
         return this.adUnitSelector.SelectAdUnit(adUnitBundle);
     }
-
-    protected abstract void Register();
 }

@@ -4,14 +4,14 @@ using TIKSN.Progress;
 
 namespace TIKSN.PowerShell;
 
-public class PowerShellProgress : DisposableProgress<OperationProgressReport>
+public class PowerShellProgress : Progress<OperationProgressReport>, IDisposableProgress<OperationProgressReport>
 {
     private static readonly object ActivityIdLocker = new();
     private static int nextActivityId;
-
     private readonly ICurrentCommandProvider currentCommandProvider;
     private readonly ProgressRecord progressRecord;
     private readonly Stopwatch stopwatch;
+    private bool disposedValue;
 
     public PowerShellProgress(ICurrentCommandProvider currentCommandProvider, string activity,
         string statusDescription)
@@ -34,15 +34,31 @@ public class PowerShellProgress : DisposableProgress<OperationProgressReport>
         return childProgress;
     }
 
-    public override void Dispose()
+    public void Dispose()
     {
-        this.stopwatch.Stop();
-        this.progressRecord.RecordType = ProgressRecordType.Completed;
-        this.currentCommandProvider.GetCurrentCommand().WriteProgress(this.progressRecord);
+        this.Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!this.disposedValue)
+        {
+            if (disposing)
+            {
+                this.stopwatch.Stop();
+                this.progressRecord.RecordType = ProgressRecordType.Completed;
+                this.currentCommandProvider.GetCurrentCommand().WriteProgress(this.progressRecord);
+            }
+
+            this.disposedValue = true;
+        }
     }
 
     protected override void OnReport(OperationProgressReport value)
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         this.progressRecord.RecordType = ProgressRecordType.Processing;
         this.progressRecord.PercentComplete = (int)value.PercentComplete;
 

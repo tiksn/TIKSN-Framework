@@ -11,6 +11,6 @@ public interface IDeserializer<in TSerial> where TSerial : class
     /// </summary>
     /// <typeparam name="T">Type to be deserialized to</typeparam>
     /// <param name="serial">Object to be deserialized</param>
-    /// <returns></returns>
+    /// <returns>Deserialized model</returns>
     T Deserialize<T>(TSerial serial);
 }

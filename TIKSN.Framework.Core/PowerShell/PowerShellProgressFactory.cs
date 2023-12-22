@@ -10,6 +10,6 @@ public class PowerShellProgressFactory : IOperationProgressFactory
         this.currentCommandProvider = currentCommandProvider ??
                                        throw new ArgumentNullException(nameof(currentCommandProvider));
 
-    public DisposableProgress<OperationProgressReport> Create(string activity, string statusDescription) =>
+    public IDisposableProgress<OperationProgressReport> Create(string activity, string statusDescription) =>
         new PowerShellProgress(this.currentCommandProvider, activity, statusDescription);
 }

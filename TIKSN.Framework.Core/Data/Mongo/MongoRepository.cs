@@ -170,7 +170,7 @@ public class MongoRepository<TDocument, TIdentity> : IMongoRepository<TDocument,
     }
 
     public Task UpdateRangeAsync(IEnumerable<TDocument> entities, CancellationToken cancellationToken) =>
-        BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, this.UpdateAsync);
+        BatchOperationHelper.BatchOperationAsync(entities, this.UpdateAsync, cancellationToken);
 
     protected static FilterDefinition<TDocument> GetIdentitiesFilter(IEnumerable<TIdentity> ids) =>
         Builders<TDocument>.Filter.In(item => item.ID, ids);
