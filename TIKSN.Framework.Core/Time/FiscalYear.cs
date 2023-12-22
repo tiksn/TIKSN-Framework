@@ -1,9 +1,11 @@
 using System.Globalization;
+using System.Runtime.InteropServices;
 using NodaTime;
 using NodaTime.Calendars;
 
 namespace TIKSN.Time;
 
+[StructLayout(LayoutKind.Auto)]
 public readonly struct FiscalYear : IYear<FiscalYear>
 {
     private readonly int absoluteStartYear;
