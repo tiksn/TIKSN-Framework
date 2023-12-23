@@ -2,7 +2,7 @@ namespace TIKSN.Data;
 
 public interface IFile : IFileInfo
 {
-    byte[] Content { get; }
+    IReadOnlyList<byte> Content { get; }
 }
 
 public interface IFile<TIdentity> : IFile, IFileInfo<TIdentity> where TIdentity : IEquatable<TIdentity>
