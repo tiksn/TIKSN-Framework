@@ -16,22 +16,22 @@ public class KnownFolders : IKnownFolders
         this.mainAssembly = knownFoldersConfiguration.MainAssembly;
         this.versionConsideration = knownFoldersConfiguration.VersionConsideration;
 
-        this.LocalAppData = this.GetFromSpecialFolder(Environment.SpecialFolder.LocalApplicationData);
-        this.RoamingAppData = this.GetFromSpecialFolder(Environment.SpecialFolder.ApplicationData);
+        this.LocalApplicationData = this.GetFromSpecialFolder(Environment.SpecialFolder.LocalApplicationData);
+        this.RoamingApplicationData = this.GetFromSpecialFolder(Environment.SpecialFolder.ApplicationData);
     }
 
-    public IFileProvider LocalAppData { get; }
+    public IFileProvider LocalApplicationData { get; }
 
-    public IFileProvider RoamingAppData { get; }
+    public IFileProvider RoamingApplicationData { get; }
 
-    private static IFileProvider GetFromFolderPath(string folderPath)
+    private static PhysicalFileProvider GetFromFolderPath(string folderPath)
     {
         _ = Directory.CreateDirectory(folderPath);
 
         return new PhysicalFileProvider(folderPath);
     }
 
-    private IFileProvider GetFromSpecialFolder(Environment.SpecialFolder specialFolder)
+    private PhysicalFileProvider GetFromSpecialFolder(Environment.SpecialFolder specialFolder)
     {
         var folderPath = Environment.GetFolderPath(specialFolder);
 
@@ -62,7 +62,7 @@ public class KnownFolders : IKnownFolders
                 break;
 
             default:
-                throw new ArgumentOutOfRangeException(nameof(this.versionConsideration));
+                throw new InvalidOperationException($"Unknown Version Consideration: {nameof(this.versionConsideration)}");
         }
 
         return GetFromFolderPath(folderPath);
