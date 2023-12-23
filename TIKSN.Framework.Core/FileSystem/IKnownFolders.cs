@@ -4,6 +4,6 @@ namespace TIKSN.FileSystem;
 
 public interface IKnownFolders
 {
-    IFileProvider LocalAppData { get; }
-    IFileProvider RoamingAppData { get; }
+    IFileProvider LocalApplicationData { get; }
+    IFileProvider RoamingApplicationData { get; }
 }
