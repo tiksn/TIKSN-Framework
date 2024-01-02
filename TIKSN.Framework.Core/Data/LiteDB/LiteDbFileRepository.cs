@@ -32,7 +32,9 @@ public class LiteDbFileRepository<TIdentity, TMetadata> : IFileRepository<TIdent
         TIdentity id,
         CancellationToken cancellationToken)
     {
-        using var stream = new RecyclableMemoryStream(this.recyclableMemoryStreamManager);
+#pragma warning disable RCS1261 // Resource can be disposed asynchronously
+        using var stream = this.recyclableMemoryStreamManager.GetStream();
+#pragma warning restore RCS1261 // Resource can be disposed asynchronously
         var fileInfo = this.liteStorage.Download(id, stream);
 
         var file = new File<TIdentity>(fileInfo.Id, fileInfo.Filename, stream.ToArray());
@@ -50,30 +52,40 @@ public class LiteDbFileRepository<TIdentity, TMetadata> : IFileRepository<TIdent
         return Task.FromResult<IFileInfo<TIdentity, TMetadata>>(info);
     }
 
-    public async Task<IFile<TIdentity, TMetadata>> DownloadWithMetadataAsync(
+    public Task<IFile<TIdentity, TMetadata>> DownloadWithMetadataAsync(
         TIdentity id,
         CancellationToken cancellationToken)
     {
-        await using var stream = new RecyclableMemoryStream(this.recyclableMemoryStreamManager);
+#pragma warning disable RCS1261 // Resource can be disposed asynchronously
+        using var stream = this.recyclableMemoryStreamManager.GetStream();
+#pragma warning restore RCS1261 // Resource can be disposed asynchronously
         var fileInfo = this.liteStorage.Download(id, stream);
 
-        return new File<TIdentity, TMetadata>(fileInfo.Id, fileInfo.Filename,
-            BsonMapper.Global.ToObject<TMetadata>(fileInfo.Metadata), stream.ToArray());
+        return Task.FromResult<IFile<TIdentity, TMetadata>>(
+            new File<TIdentity, TMetadata>(
+                fileInfo.Id,
+                fileInfo.Filename,
+                BsonMapper.Global.ToObject<TMetadata>(fileInfo.Metadata),
+                stream.ToArray()));
     }
 
     public Task<bool> ExistsByIdAsync(TIdentity id, CancellationToken cancellationToken) =>
         Task.FromResult(this.liteStorage.Exists(id));
 
-    public async Task UploadAsync(
+    public Task UploadAsync(
         TIdentity id,
         string path,
         byte[] content,
         TMetadata metadata,
         CancellationToken cancellationToken)
     {
-        await using var stream = new MemoryStream(content);
+#pragma warning disable RCS1261 // Resource can be disposed asynchronously
+        using var stream = new MemoryStream(content);
+#pragma warning restore RCS1261 // Resource can be disposed asynchronously
         _ = this.liteStorage.Upload(id, path, stream);
         _ = this.liteStorage.SetMetadata(id, BsonMapper.Global.ToDocument(metadata));
+
+        return Task.CompletedTask;
     }
 
     public Task UploadByIdAsync(
@@ -82,8 +94,11 @@ public class LiteDbFileRepository<TIdentity, TMetadata> : IFileRepository<TIdent
         byte[] content,
         CancellationToken cancellationToken)
     {
+#pragma warning disable RCS1261 // Resource can be disposed asynchronously
         using var stream = new MemoryStream(content);
+#pragma warning restore RCS1261 // Resource can be disposed asynchronously
         _ = this.liteStorage.Upload(id, path, stream);
+
         return Task.CompletedTask;
     }
 }
