@@ -1,5 +1,3 @@
 namespace TIKSN.Finance.ForeignExchange.Bank;
 
-public interface IFederalReserveSystem : ICurrencyConverter, IExchangeRatesProvider
-{
-}
+public interface IFederalReserveSystem : ICurrencyConverter, IExchangeRatesProvider;
