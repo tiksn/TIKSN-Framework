@@ -1,23 +1,14 @@
 using Microsoft.Extensions.Logging;
-using NLog;
 using NLog.Config;
 using NLog.Extensions.Logging;
-using NLog.Layouts;
 using NLog.Targets;
-using TIKSN.Configuration;
 using LogLevel = NLog.LogLevel;
 
 namespace TIKSN.Analytics.Logging.NLog;
 
 public abstract class NLogLoggingSetupBase : ILoggingSetup
 {
-    private readonly IPartialConfiguration<RemoteNLogViewerOptions> remoteNLogViewerOptions;
-
-    protected NLogLoggingSetupBase(IPartialConfiguration<RemoteNLogViewerOptions> remoteNLogViewerOptions)
-    {
-        this.LoggingConfiguration = new LoggingConfiguration();
-        this.remoteNLogViewerOptions = remoteNLogViewerOptions;
-    }
+    protected NLogLoggingSetupBase() => this.LoggingConfiguration = new LoggingConfiguration();
 
     protected LoggingConfiguration LoggingConfiguration { get; }
 
@@ -25,31 +16,7 @@ public abstract class NLogLoggingSetupBase : ILoggingSetup
     {
         this.SetupNLog();
 
-        var options = this.remoteNLogViewerOptions.GetConfiguration();
-
-        if (options.Url != null)
-        {
-            var nLogViewerTarget = new NLogViewerTarget("RemoteNLogViewer")
-            {
-                IncludeNLogData = options.IncludeNLogData,
-                IncludeCallSite = options.IncludeCallSite,
-                IncludeSourceInfo = options.IncludeSourceInfo,
-                IncludeMdc = options.IncludeMdc,
-                IncludeMdlc = options.IncludeMdlc,
-                IncludeNdc = options.IncludeNdc,
-                Address = Layout.FromString(options.Url.AbsoluteUri),
-            };
-
-            if (!string.IsNullOrWhiteSpace(options.AppInfo))
-            {
-                nLogViewerTarget.AppInfo = options.AppInfo;
-            }
-
-            this.AddForAllLevels(nLogViewerTarget);
-        }
-
-        _ = loggingBuilder.AddNLog();
-        LogManager.Configuration = this.LoggingConfiguration;
+        _ = loggingBuilder.AddNLog(this.LoggingConfiguration);
     }
 
     protected void AddForAllLevels(Target target)

@@ -1,7 +1,7 @@
 namespace TIKSN.Web.Rest;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class AcceptLanguageAttribute : Attribute
+public sealed class AcceptLanguageAttribute : Attribute
 {
     public AcceptLanguageAttribute() => this.Quality = null;
 

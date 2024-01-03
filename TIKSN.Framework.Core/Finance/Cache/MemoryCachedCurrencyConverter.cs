@@ -84,7 +84,9 @@ public class MemoryCachedCurrencyConverter : MemoryCacheDecoratorBase<MemoryCach
     {
         if (this.options.Value.CacheInterval.Ticks == 0L)
         {
-            this.logger.LogWarning("CacheInterval is 0, which makes caching redundant.");
+            this.logger.LogWarning(
+                469189242,
+                "CacheInterval is 0, which makes caching redundant.");
 
             return 0L;
         }

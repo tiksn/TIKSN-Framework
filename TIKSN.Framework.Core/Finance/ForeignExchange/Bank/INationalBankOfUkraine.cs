@@ -4,6 +4,4 @@ namespace TIKSN.Finance.ForeignExchange.Bank;
 ///     Exchange rate converter of National Bank of Ukraine
 /// </summary>
 /// <seealso cref="ICurrencyConverter" />
-public interface INationalBankOfUkraine : ICurrencyConverter, IExchangeRatesProvider
-{
-}
+public interface INationalBankOfUkraine : ICurrencyConverter, IExchangeRatesProvider;

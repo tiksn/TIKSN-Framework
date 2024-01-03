@@ -14,7 +14,7 @@ public class PowerShellTraceTelemeter : ITraceTelemeter
         {
             case TelemetrySeverityLevel.Critical:
             case TelemetrySeverityLevel.Error:
-                this.cmdlet.WriteError(new ErrorRecord(new Exception(message), errorId: null, ErrorCategory.InvalidOperation,
+                this.cmdlet.WriteError(new ErrorRecord(new InvalidOperationException(message), errorId: null, ErrorCategory.InvalidOperation,
 targetObject: null));
                 break;
 
@@ -34,7 +34,7 @@ targetObject: null));
                 throw new NotSupportedException();
         }
 
-        return Task.FromResult<object>(null);
+        return Task.CompletedTask;
     }
 
     public Task TrackTraceAsync(string message) => this.TrackTraceAsync(message, TelemetrySeverityLevel.Verbose);

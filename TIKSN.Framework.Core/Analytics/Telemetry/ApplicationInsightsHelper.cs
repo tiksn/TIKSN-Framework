@@ -23,34 +23,34 @@ internal static class ApplicationInsightsHelper
         return null;
     }
 
-    [Obsolete]
-    internal static void TrackEvent(EventTelemetry telemetry)
+    internal static void TrackEvent(TelemetryClient client, EventTelemetry telemetry)
     {
-        var client = new TelemetryClient();
+        ArgumentNullException.ThrowIfNull(client);
+        ArgumentNullException.ThrowIfNull(telemetry);
 
         client.TrackEvent(telemetry);
     }
 
-    [Obsolete]
-    internal static void TrackException(ExceptionTelemetry telemetry)
+    internal static void TrackException(TelemetryClient client, ExceptionTelemetry telemetry)
     {
-        var client = new TelemetryClient();
+        ArgumentNullException.ThrowIfNull(client);
+        ArgumentNullException.ThrowIfNull(telemetry);
 
         client.TrackException(telemetry);
     }
 
-    [Obsolete]
-    internal static void TrackMetric(MetricTelemetry telemetry)
+    internal static void TrackMetric(TelemetryClient client, MetricTelemetry telemetry)
     {
-        var client = new TelemetryClient();
+        ArgumentNullException.ThrowIfNull(client);
+        ArgumentNullException.ThrowIfNull(telemetry);
 
         client.TrackMetric(telemetry);
     }
 
-    [Obsolete]
-    internal static void TrackTrace(TraceTelemetry telemetry)
+    internal static void TrackTrace(TelemetryClient client, TraceTelemetry telemetry)
     {
-        var client = new TelemetryClient();
+        ArgumentNullException.ThrowIfNull(client);
+        ArgumentNullException.ThrowIfNull(telemetry);
 
         client.TrackTrace(telemetry);
     }

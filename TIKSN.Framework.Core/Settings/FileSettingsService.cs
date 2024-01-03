@@ -21,62 +21,62 @@ public class FileSettingsService : ISettingsService
 
     public T GetLocalSetting<T>(string name, T defaultValue) =>
         this.Apply(
-            this.knownFolders.LocalAppData,
+            this.knownFolders.LocalApplicationData,
             name,
             defaultValue,
             GetterProcessor);
 
     public Option<T> GetLocalSetting<T>(string name) =>
         this.Apply(
-            this.knownFolders.LocalAppData,
+            this.knownFolders.LocalApplicationData,
             name,
             Option<T>.None,
             FinderProcessor);
 
     public T GetRoamingSetting<T>(string name, T defaultValue) =>
         this.Apply(
-            this.knownFolders.RoamingAppData,
+            this.knownFolders.RoamingApplicationData,
             name,
             defaultValue,
             GetterProcessor);
 
     public Option<T> GetRoamingSetting<T>(string name) =>
         this.Apply(
-            this.knownFolders.RoamingAppData,
+            this.knownFolders.RoamingApplicationData,
             name,
             Option<T>.None,
             FinderProcessor);
 
     public IReadOnlyCollection<string> ListLocalSetting() =>
-        this.ListNames(this.knownFolders.LocalAppData);
+        this.ListNames(this.knownFolders.LocalApplicationData);
 
     public IReadOnlyCollection<string> ListRoamingSetting() =>
-        this.ListNames(this.knownFolders.RoamingAppData);
+        this.ListNames(this.knownFolders.RoamingApplicationData);
 
     public void RemoveLocalSetting(string name) =>
         this.Apply(
-            this.knownFolders.LocalAppData,
+            this.knownFolders.LocalApplicationData,
             name,
             string.Empty,
             RemovalProcessor);
 
     public void RemoveRoamingSetting(string name) =>
         this.Apply(
-            this.knownFolders.RoamingAppData,
+            this.knownFolders.RoamingApplicationData,
             name,
             string.Empty,
             RemovalProcessor);
 
     public void SetLocalSetting<T>(string name, T value) =>
         this.Apply(
-            this.knownFolders.LocalAppData,
+            this.knownFolders.LocalApplicationData,
             name,
             value,
             SetterProcessor);
 
     public void SetRoamingSetting<T>(string name, T value) =>
         this.Apply(
-            this.knownFolders.RoamingAppData,
+            this.knownFolders.RoamingApplicationData,
             name,
             value,
             SetterProcessor);
