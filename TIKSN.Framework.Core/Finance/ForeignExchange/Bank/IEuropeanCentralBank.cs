@@ -1,5 +1,3 @@
 namespace TIKSN.Finance.ForeignExchange.Bank;
 
-public interface IEuropeanCentralBank : ICurrencyConverter, IExchangeRatesProvider
-{
-}
+public interface IEuropeanCentralBank : ICurrencyConverter, IExchangeRatesProvider;
