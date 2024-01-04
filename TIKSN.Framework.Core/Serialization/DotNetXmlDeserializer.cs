@@ -1,4 +1,4 @@
-using System.Text;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace TIKSN.Serialization;
@@ -12,8 +12,8 @@ public class DotNetXmlDeserializer : DeserializerBase<string>
             return default;
         }
 
-        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(serial));
+        using var xmlReader = XmlReader.Create(new StringReader(serial));
         var serializer = new XmlSerializer(typeof(T));
-        return (T)serializer.Deserialize(stream);
+        return (T)serializer.Deserialize(xmlReader);
     }
 }
