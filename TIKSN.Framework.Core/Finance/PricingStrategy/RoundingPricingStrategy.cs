@@ -22,6 +22,11 @@ public class RoundingPricingStrategy : IPricingStrategy
 
     public decimal EstimateMarketPrice(decimal basePrice)
     {
+        if (basePrice < decimal.Zero)
+        {
+            return this.EstimateMarketPrice(basePrice * decimal.MinusOne) * decimal.MinusOne;
+        }
+
         var degree = (int)Math.Log10((double)basePrice);
         var norm = (decimal)Math.Pow(10.0, degree);
 
