@@ -393,7 +393,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(-1);
         _ = v.Release.Revision.Should().Be(-1);
         _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PrereleaseNumber.Should().Be(-1);
+        _ = v.PreReleaseNumber.Should().Be(-1);
         _ = v.Stability.Should().Be(Stability.Stable);
         _ = v.ReleaseDate.HasValue.Should().BeFalse();
     }
@@ -408,7 +408,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(5);
         _ = v.Release.Revision.Should().Be(-1);
         _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PrereleaseNumber.Should().Be(-1);
+        _ = v.PreReleaseNumber.Should().Be(-1);
         _ = v.Stability.Should().Be(Stability.Stable);
         _ = v.ReleaseDate.HasValue.Should().BeFalse();
     }
@@ -423,7 +423,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(5);
         _ = v.Release.Revision.Should().Be(7);
         _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PrereleaseNumber.Should().Be(-1);
+        _ = v.PreReleaseNumber.Should().Be(-1);
         _ = v.Stability.Should().Be(Stability.Stable);
         _ = v.ReleaseDate.HasValue.Should().BeFalse();
     }
@@ -438,7 +438,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(5);
         _ = v.Release.Revision.Should().Be(7);
         _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PrereleaseNumber.Should().Be(-1);
+        _ = v.PreReleaseNumber.Should().Be(-1);
         _ = v.Stability.Should().Be(Stability.Stable);
         _ = v.ReleaseDate.HasValue.Should().BeFalse();
     }
@@ -453,7 +453,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(5);
         _ = v.Release.Revision.Should().Be(7);
         _ = v.Milestone.Should().Be(Milestone.Beta);
-        _ = v.PrereleaseNumber.Should().Be(-1);
+        _ = v.PreReleaseNumber.Should().Be(-1);
         _ = v.Stability.Should().Be(Stability.Unstable);
         _ = v.ReleaseDate.HasValue.Should().BeFalse();
     }
@@ -468,7 +468,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(5);
         _ = v.Release.Revision.Should().Be(7);
         _ = v.Milestone.Should().Be(Milestone.Beta);
-        _ = v.PrereleaseNumber.Should().Be(-1);
+        _ = v.PreReleaseNumber.Should().Be(-1);
         _ = v.Stability.Should().Be(Stability.Unstable);
         _ = v.ReleaseDate.HasValue.Should().BeFalse();
     }
@@ -483,7 +483,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(5);
         _ = v.Release.Revision.Should().Be(-1);
         _ = v.Milestone.Should().Be(Milestone.Beta);
-        _ = v.PrereleaseNumber.Should().Be(-1);
+        _ = v.PreReleaseNumber.Should().Be(-1);
         _ = v.Stability.Should().Be(Stability.Unstable);
         _ = v.ReleaseDate.HasValue.Should().BeFalse();
     }
@@ -498,7 +498,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(-1);
         _ = v.Release.Revision.Should().Be(-1);
         _ = v.Milestone.Should().Be(Milestone.Beta);
-        _ = v.PrereleaseNumber.Should().Be(-1);
+        _ = v.PreReleaseNumber.Should().Be(-1);
         _ = v.Stability.Should().Be(Stability.Unstable);
         _ = v.ReleaseDate.HasValue.Should().BeFalse();
     }
@@ -513,7 +513,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(-1);
         _ = v.Release.Revision.Should().Be(-1);
         _ = v.Milestone.Should().Be(Milestone.Beta);
-        _ = v.PrereleaseNumber.Should().Be(1);
+        _ = v.PreReleaseNumber.Should().Be(1);
         _ = v.Stability.Should().Be(Stability.Unstable);
         _ = v.ReleaseDate.HasValue.Should().BeFalse();
     }
@@ -528,7 +528,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(5);
         _ = v.Release.Revision.Should().Be(-1);
         _ = v.Milestone.Should().Be(Milestone.Beta);
-        _ = v.PrereleaseNumber.Should().Be(1);
+        _ = v.PreReleaseNumber.Should().Be(1);
         _ = v.Stability.Should().Be(Stability.Unstable);
         _ = v.ReleaseDate.HasValue.Should().BeFalse();
     }
@@ -543,7 +543,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(5);
         _ = v.Release.Revision.Should().Be(7);
         _ = v.Milestone.Should().Be(Milestone.Beta);
-        _ = v.PrereleaseNumber.Should().Be(1);
+        _ = v.PreReleaseNumber.Should().Be(1);
         _ = v.Stability.Should().Be(Stability.Unstable);
         _ = v.ReleaseDate.HasValue.Should().BeFalse();
     }
@@ -558,7 +558,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(5);
         _ = v.Release.Revision.Should().Be(7);
         _ = v.Milestone.Should().Be(Milestone.Beta);
-        _ = v.PrereleaseNumber.Should().Be(1);
+        _ = v.PreReleaseNumber.Should().Be(1);
         _ = v.Stability.Should().Be(Stability.Unstable);
         _ = v.ReleaseDate.HasValue.Should().BeFalse();
     }
@@ -573,7 +573,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(5);
         _ = v.Release.Revision.Should().Be(7);
         _ = v.Milestone.Should().Be(Milestone.Beta);
-        _ = v.PrereleaseNumber.Should().Be(1);
+        _ = v.PreReleaseNumber.Should().Be(1);
         _ = v.Stability.Should().Be(Stability.Unstable);
         _ = v.ReleaseDate.HasValue.Should().BeFalse();
     }
@@ -588,7 +588,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(5);
         _ = v.Release.Revision.Should().Be(7);
         _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PrereleaseNumber.Should().Be(-1);
+        _ = v.PreReleaseNumber.Should().Be(-1);
         _ = v.Stability.Should().Be(Stability.Stable);
         _ = v.ReleaseDate.HasValue.Should().BeTrue();
         _ = v.ReleaseDate.Value.Year.Should().Be(1985);
@@ -604,7 +604,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(5);
         _ = v.Release.Revision.Should().Be(7);
         _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PrereleaseNumber.Should().Be(-1);
+        _ = v.PreReleaseNumber.Should().Be(-1);
         _ = v.Stability.Should().Be(Stability.Stable);
         _ = v.ReleaseDate.HasValue.Should().BeTrue();
         _ = v.ReleaseDate.Value.Year.Should().Be(1985);
@@ -620,7 +620,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(5);
         _ = v.Release.Revision.Should().Be(-1);
         _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PrereleaseNumber.Should().Be(-1);
+        _ = v.PreReleaseNumber.Should().Be(-1);
         _ = v.Stability.Should().Be(Stability.Stable);
         _ = v.ReleaseDate.HasValue.Should().BeTrue();
         _ = v.ReleaseDate.Value.Year.Should().Be(1985);
@@ -636,7 +636,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(-1);
         _ = v.Release.Revision.Should().Be(-1);
         _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PrereleaseNumber.Should().Be(-1);
+        _ = v.PreReleaseNumber.Should().Be(-1);
         _ = v.Stability.Should().Be(Stability.Stable);
         _ = v.ReleaseDate.HasValue.Should().BeTrue();
         _ = v.ReleaseDate.Value.Year.Should().Be(1985);
@@ -652,7 +652,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(-1);
         _ = v.Release.Revision.Should().Be(-1);
         _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PrereleaseNumber.Should().Be(-1);
+        _ = v.PreReleaseNumber.Should().Be(-1);
         _ = v.Stability.Should().Be(Stability.Stable);
         _ = v.ReleaseDate.HasValue.Should().BeTrue();
         _ = v.ReleaseDate.Value.Year.Should().Be(1985);
@@ -668,7 +668,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(5);
         _ = v.Release.Revision.Should().Be(-1);
         _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PrereleaseNumber.Should().Be(-1);
+        _ = v.PreReleaseNumber.Should().Be(-1);
         _ = v.Stability.Should().Be(Stability.Stable);
         _ = v.ReleaseDate.HasValue.Should().BeTrue();
         _ = v.ReleaseDate.Value.Year.Should().Be(1985);
@@ -684,7 +684,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(5);
         _ = v.Release.Revision.Should().Be(7);
         _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PrereleaseNumber.Should().Be(-1);
+        _ = v.PreReleaseNumber.Should().Be(-1);
         _ = v.Stability.Should().Be(Stability.Stable);
         _ = v.ReleaseDate.HasValue.Should().BeTrue();
         _ = v.ReleaseDate.Value.Year.Should().Be(1985);
@@ -700,7 +700,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(5);
         _ = v.Release.Revision.Should().Be(7);
         _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PrereleaseNumber.Should().Be(-1);
+        _ = v.PreReleaseNumber.Should().Be(-1);
         _ = v.Stability.Should().Be(Stability.Stable);
         _ = v.ReleaseDate.HasValue.Should().BeTrue();
         _ = v.ReleaseDate.Value.Year.Should().Be(1985);
@@ -746,7 +746,7 @@ public class VersionTests
         _ = v.Release.Build.Should().Be(5);
         _ = v.Release.Revision.Should().Be(-1);
         _ = v.Milestone.Should().Be(Milestone.ReleaseCandidate);
-        _ = v.PrereleaseNumber.Should().Be(1);
+        _ = v.PreReleaseNumber.Should().Be(1);
         _ = v.Stability.Should().Be(Stability.Unstable);
         _ = v.ReleaseDate.HasValue.Should().BeTrue();
         _ = v.ReleaseDate.Value.Year.Should().Be(1985);
