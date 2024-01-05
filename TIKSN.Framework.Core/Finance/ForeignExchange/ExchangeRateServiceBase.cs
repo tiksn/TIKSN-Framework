@@ -147,9 +147,7 @@ public abstract class ExchangeRateServiceBase : IExchangeRateService
             {
                 forex = new ForeignExchangeEntity(
                     provider.Key,
-                    provider.Value.Country.Name,
-                    provider.Value.LongNameKey,
-                    provider.Value.ShortNameKey);
+                    provider.Value.Country.Name);
 
                 await this.foreignExchangeRepository.AddAsync(forex, cancellationToken).ConfigureAwait(false);
             }
