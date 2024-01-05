@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using TIKSN.Data;
 using TIKSN.Finance.ForeignExchange;
@@ -11,6 +13,8 @@ namespace TIKSN.IntegrationTests.Finance.ForeignExchange.ExchangeRateService;
 
 public sealed class TestExchangeRateService : ExchangeRateServiceBase
 {
+    private readonly IDatabaseInitializer databaseInitializer;
+
     public TestExchangeRateService(
         IBankOfCanada bankOfCanada,
         IBankOfEngland bankOfEngland,
@@ -26,7 +30,8 @@ public sealed class TestExchangeRateService : ExchangeRateServiceBase
         IRegionFactory regionFactory,
         IExchangeRateRepository exchangeRateRepository,
         IForeignExchangeRepository foreignExchangeRepository,
-        IUnitOfWorkFactory unitOfWorkFactory)
+        IUnitOfWorkFactory unitOfWorkFactory,
+        IDatabaseInitializer databaseInitializer)
         : base(logger, regionFactory, exchangeRateRepository, foreignExchangeRepository, unitOfWorkFactory)
     {
         this.AddBatchProvider(
@@ -108,5 +113,13 @@ public sealed class TestExchangeRateService : ExchangeRateServiceBase
             LocalizationKeys.Key748923176,
             "CH",
             TimeSpan.FromHours(24));
+
+        this.databaseInitializer = databaseInitializer ?? throw new ArgumentNullException(nameof(databaseInitializer));
+    }
+
+    public override async Task InitializeAsync(CancellationToken cancellationToken)
+    {
+        await this.databaseInitializer.InitializeAsync(cancellationToken).ConfigureAwait(false);
+        await base.InitializeAsync(cancellationToken).ConfigureAwait(false);
     }
 }

@@ -44,8 +44,6 @@ public class DataEntityMapper
         {
             ID = source.ID,
             CountryCode = source.CountryCode,
-            LongNameKey = source.LongNameKey,
-            ShortNameKey = source.ShortNameKey,
         };
     }
 
@@ -55,8 +53,6 @@ public class DataEntityMapper
 
         return new ForeignExchangeEntity(
             source.ID,
-            source.CountryCode,
-            source.LongNameKey,
-            source.ShortNameKey);
+            source.CountryCode);
     }
 }

@@ -22,6 +22,7 @@ public class ExchangeRateServiceBaseTests
 
     [Theory]
     [InlineData("LiteDB")]
+    [InlineData("SQLite")]
     [InlineData("MongoDB")]
     public async Task Given_10USD_When_ExchangedForEuro_Then_ResultShouldBeEuro(string database)
     {
@@ -48,6 +49,7 @@ public class ExchangeRateServiceBaseTests
 
     [Theory]
     [InlineData("LiteDB")]
+    [InlineData("SQLite")]
     [InlineData("MongoDB")]
     public async Task Given_1000Dram_When_ExchangedForDanishKrone_Then_ResultShouldBeDoubleConverted(string database)
     {

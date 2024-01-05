@@ -9,7 +9,4 @@ public class ForeignExchangeDataEntity : IEntity<Guid>
 
     [BsonId]
     public Guid ID { get; set; }
-
-    public int LongNameKey { get; set; }
-    public int ShortNameKey { get; set; }
 }

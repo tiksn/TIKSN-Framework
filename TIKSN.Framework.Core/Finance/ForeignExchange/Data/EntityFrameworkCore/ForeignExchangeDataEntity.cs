@@ -11,7 +11,4 @@ public class ForeignExchangeDataEntity : IEntity<Guid>
     public virtual ICollection<ExchangeRateDataEntity> ExchangeRates { get; set; }
 
     public Guid ID { get; set; }
-
-    public int LongNameKey { get; set; }
-    public int ShortNameKey { get; set; }
 }
