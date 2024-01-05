@@ -135,7 +135,7 @@ public abstract class ExchangeRateServiceBase : IExchangeRateService
         return rate;
     }
 
-    public async Task InitializeAsync(CancellationToken cancellationToken)
+    public virtual async Task InitializeAsync(CancellationToken cancellationToken)
     {
         await using var uow = await this.unitOfWorkFactory.CreateAsync(cancellationToken).ConfigureAwait(false);
         foreach (var provider in this.providers)
