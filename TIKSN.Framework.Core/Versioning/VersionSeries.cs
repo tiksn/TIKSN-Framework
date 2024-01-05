@@ -68,16 +68,16 @@ public sealed class VersionSeries : IEquatable<VersionSeries>
         int releaseMajor,
         int releaseMinor,
         Milestone milestone,
-        int prereleaseNumber) =>
-        this.series = Right(new Version(releaseMajor, releaseMinor, milestone, prereleaseNumber));
+        int preReleaseNumber) =>
+        this.series = Right(new Version(releaseMajor, releaseMinor, milestone, preReleaseNumber));
 
     public VersionSeries(
         int releaseMajor,
         int releaseMinor,
         int releaseBuild,
         Milestone milestone,
-        int prereleaseNumber) =>
-        this.series = Right(new Version(releaseMajor, releaseMinor, releaseBuild, milestone, prereleaseNumber));
+        int preReleaseNumber) =>
+        this.series = Right(new Version(releaseMajor, releaseMinor, releaseBuild, milestone, preReleaseNumber));
 
     public VersionSeries(
         int releaseMajor,
@@ -85,15 +85,53 @@ public sealed class VersionSeries : IEquatable<VersionSeries>
         int releaseBuild,
         int releaseRevision,
         Milestone milestone,
-        int prereleaseNumber) =>
+        int preReleaseNumber) =>
         this.series = Right(new Version(releaseMajor, releaseMinor, releaseBuild, releaseRevision, milestone,
-            prereleaseNumber));
+            preReleaseNumber));
 
     public VersionSeries(
         System.Version release,
         Milestone milestone,
-        int prereleaseNumber) =>
-        this.series = Right(new Version(release, milestone, prereleaseNumber));
+        int preReleaseNumber) =>
+        this.series = Right(new Version(release, milestone, preReleaseNumber));
+
+    public static bool operator !=(VersionSeries versionSeries1, VersionSeries versionSeries2)
+        => versionSeries1?.Equals(versionSeries2) != true;
+
+    public static bool operator ==(VersionSeries versionSeries1, VersionSeries versionSeries2)
+        => versionSeries1?.Equals(versionSeries2) == true;
+
+    public static VersionSeries Parse(string input)
+    {
+        ArgumentNullException.ThrowIfNull(input);
+
+        if (TryParse(input, out var result))
+        {
+            return result;
+        }
+
+        throw new InvalidFormatException("Unable to parse string to VersionSeries");
+    }
+
+    public static bool TryParse(string input, out VersionSeries result)
+    {
+        ArgumentNullException.ThrowIfNull(input);
+
+        if (int.TryParse(input, CultureInfo.InvariantCulture, out var releaseMajor))
+        {
+            result = new VersionSeries(releaseMajor);
+            return true;
+        }
+
+        if (NuGetVersion.TryParse(input, out var nugetVersion))
+        {
+            result = new VersionSeries((Version)nugetVersion);
+            return true;
+        }
+
+        result = null;
+        return false;
+    }
 
     public bool Equals(VersionSeries other)
     {
@@ -105,9 +143,9 @@ public sealed class VersionSeries : IEquatable<VersionSeries>
         return this.series.Match(
             thisVersion => other.series.Match(
                 thisVersion.Equals,
-                otherReleaseMajor => false),
+                _ => false),
             thisReleaseVersion => other.series.Match(
-                otherVersion => false,
+                _ => false,
                 thisReleaseVersion.Equals));
     }
 
@@ -131,53 +169,30 @@ public sealed class VersionSeries : IEquatable<VersionSeries>
         return false;
     }
 
-    public static bool operator !=(VersionSeries versionSeries1, VersionSeries versionSeries2)
-        => versionSeries1?.Equals(versionSeries2) != true;
-
-    public static bool operator ==(VersionSeries versionSeries1, VersionSeries versionSeries2)
-        => versionSeries1?.Equals(versionSeries2) == true;
-
     public override int GetHashCode() => this.series.GetHashCode();
-
-    public override string ToString()
-        => this.series.Match(s => s.ToString(), m => m.ToString(CultureInfo.InvariantCulture));
-
-    public static VersionSeries Parse(string input)
-    {
-        ArgumentNullException.ThrowIfNull(input);
-
-        if (TryParse(input, out var result))
-        {
-            return result;
-        }
-
-        throw new InvalidFormatException("Unable to parse string to VersionSeries");
-    }
-
-    public static bool TryParse(string input, out VersionSeries result)
-    {
-        ArgumentNullException.ThrowIfNull(input);
-
-        if (int.TryParse(input, out var releaseMajor))
-        {
-            result = new VersionSeries(releaseMajor);
-            return true;
-        }
-
-        if (NuGetVersion.TryParse(input, out var nugetVersion))
-        {
-            result = new VersionSeries((Version)nugetVersion);
-            return true;
-        }
-
-        result = null;
-        return false;
-    }
 
     public Option<Version> Matches(Version version) =>
         this.series.Match(
             seriesVersion => MatchesVersion(seriesVersion, version),
             releaseMajor => MatchesReleaseMajor(releaseMajor, version));
+
+    public Option<IReadOnlyList<Version>> Matches(IReadOnlyCollection<Version> versions)
+    {
+        var result = versions
+            .Select(this.Matches)
+            .SelectMany(x => x)
+            .ToArray();
+
+        if (result.Length == 0)
+        {
+            return None;
+        }
+
+        return result;
+    }
+
+    public override string ToString()
+                => this.series.Match(s => s.ToString(), m => m.ToString(CultureInfo.InvariantCulture));
 
     private static Option<Version> MatchesReleaseMajor(int releaseMajor, Version version)
         => releaseMajor.Equals(version.Release.Major) ? version : Option<Version>.None;
@@ -217,27 +232,12 @@ public sealed class VersionSeries : IEquatable<VersionSeries>
                 return None;
             }
 
-            if (seriesVersion.PrereleaseNumber != -1 && seriesVersion.PrereleaseNumber != version.PrereleaseNumber)
+            if (seriesVersion.PreReleaseNumber != -1 && seriesVersion.PreReleaseNumber != version.PreReleaseNumber)
             {
                 return None;
             }
         }
 
         return version;
-    }
-
-    public Option<IReadOnlyList<Version>> Matches(IReadOnlyCollection<Version> versions)
-    {
-        var result = versions
-            .Select(this.Matches)
-            .SelectMany(x => x)
-            .ToArray();
-
-        if (result.Length == 0)
-        {
-            return None;
-        }
-
-        return result;
     }
 }

@@ -7,7 +7,8 @@ public class SimpleXmlBondDeserializer : DeserializerBase<string>
 {
     protected override T DeserializeInternal<T>(string serial)
     {
-        var reader = new SimpleXmlReader(XmlReader.Create(new StringReader(serial)));
+        using var xmlReader = XmlReader.Create(new StringReader(serial));
+        var reader = new SimpleXmlReader(xmlReader);
 
         return global::Bond.Deserialize<T>.From(reader);
     }

@@ -14,6 +14,7 @@ public class RoundingPricingStrategyTests
 
         var prices = new Dictionary<decimal, decimal>
         {
+            { -1m, -1m },
             { 1m, 1m },
             { 2m, 2m },
             { 46m, 50m },
