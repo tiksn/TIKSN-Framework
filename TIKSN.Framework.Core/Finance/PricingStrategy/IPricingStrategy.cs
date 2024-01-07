@@ -1,8 +1,6 @@
-namespace TIKSN.Finance;
+namespace TIKSN.Finance.PricingStrategy;
 
 public interface IPricingStrategy
 {
-    decimal EstimateMarketPrice(decimal basePrice);
-
     Money EstimateMarketPrice(Money basePrice);
 }

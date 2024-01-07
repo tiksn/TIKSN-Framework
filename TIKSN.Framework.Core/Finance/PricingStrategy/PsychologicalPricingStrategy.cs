@@ -6,16 +6,16 @@ public class PsychologicalPricingStrategy : IPricingStrategy
     {
         ArgumentNullException.ThrowIfNull(basePrice);
 
-        var estimatedPrice = this.EstimateMarketPrice(basePrice.Amount);
+        var estimatedPrice = EstimateMarketPrice(basePrice.Amount);
 
         return new Money(basePrice.Currency, estimatedPrice);
     }
 
-    public decimal EstimateMarketPrice(decimal basePrice)
+    private static decimal EstimateMarketPrice(decimal basePrice)
     {
         if (basePrice < decimal.Zero)
         {
-            return this.EstimateMarketPrice(basePrice * decimal.MinusOne) * decimal.MinusOne;
+            return EstimateMarketPrice(basePrice * decimal.MinusOne) * decimal.MinusOne;
         }
 
         if (basePrice < decimal.One)

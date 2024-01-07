@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
+using TIKSN.Finance;
 using TIKSN.Finance.PricingStrategy;
 using Xunit;
 
@@ -47,16 +48,20 @@ public class PsychologicalPricingStrategyTests
     [InlineData(418130, 419999)]
     public void BalkTests(double originalPrice, double expectedEstimatedPrice)
     {
+        var currency = new CurrencyInfo("USD");
         var strategy = new PsychologicalPricingStrategy();
 
-        var actualEstimatedPrice = strategy.EstimateMarketPrice((decimal)originalPrice);
+        var actualEstimatedPrice = strategy.EstimateMarketPrice(new Money(currency, (decimal)originalPrice));
 
-        _ = actualEstimatedPrice.Should().Be((decimal)expectedEstimatedPrice);
+        _ = actualEstimatedPrice.Currency.Should().Be(currency);
+        _ = actualEstimatedPrice.Amount.Should().Be((decimal)expectedEstimatedPrice);
     }
 
     [Fact]
     public void EstimatedPriceIsPrimarilyBeneficial()
     {
+        var currency = new CurrencyInfo("USD");
+
         var ratios = new List<decimal>();
 
         var strategy = new PsychologicalPricingStrategy();
@@ -66,57 +71,57 @@ public class PsychologicalPricingStrategyTests
         for (var i = 0; i < 100; i++)
         {
             var initialPrice = (decimal)random.NextDouble();
-            var estimatedPrice = strategy.EstimateMarketPrice(initialPrice);
+            var estimatedPrice = strategy.EstimateMarketPrice(new Money(currency, initialPrice));
 
-            AddRatio(ratios, initialPrice, estimatedPrice);
+            AddRatio(ratios, initialPrice, estimatedPrice.Amount);
         }
 
         for (var i = 0; i < 100; i++)
         {
             var initialPrice = (decimal)random.NextDouble() * 10m;
-            var estimatedPrice = strategy.EstimateMarketPrice(initialPrice);
+            var estimatedPrice = strategy.EstimateMarketPrice(new Money(currency, initialPrice));
 
-            AddRatio(ratios, initialPrice, estimatedPrice);
+            AddRatio(ratios, initialPrice, estimatedPrice.Amount);
         }
 
         for (var i = 0; i < 100; i++)
         {
             var initialPrice = (decimal)(random.NextDouble() * 100);
-            var estimatedPrice = strategy.EstimateMarketPrice(initialPrice);
+            var estimatedPrice = strategy.EstimateMarketPrice(new Money(currency, initialPrice));
 
-            AddRatio(ratios, initialPrice, estimatedPrice);
+            AddRatio(ratios, initialPrice, estimatedPrice.Amount);
         }
 
         for (var i = 0; i < 100; i++)
         {
             var initialPrice = random.Next(0, 10);
-            var estimatedPrice = strategy.EstimateMarketPrice(initialPrice);
+            var estimatedPrice = strategy.EstimateMarketPrice(new Money(currency, initialPrice));
 
-            AddRatio(ratios, initialPrice, estimatedPrice);
+            AddRatio(ratios, initialPrice, estimatedPrice.Amount);
         }
 
         for (var i = 0; i < 100; i++)
         {
             var initialPrice = random.Next(10, 100);
-            var estimatedPrice = strategy.EstimateMarketPrice(initialPrice);
+            var estimatedPrice = strategy.EstimateMarketPrice(new Money(currency, initialPrice));
 
-            AddRatio(ratios, initialPrice, estimatedPrice);
+            AddRatio(ratios, initialPrice, estimatedPrice.Amount);
         }
 
         for (var i = 0; i < 100; i++)
         {
             var initialPrice = random.Next(100, 10000);
-            var estimatedPrice = strategy.EstimateMarketPrice(initialPrice);
+            var estimatedPrice = strategy.EstimateMarketPrice(new Money(currency, initialPrice));
 
-            AddRatio(ratios, initialPrice, estimatedPrice);
+            AddRatio(ratios, initialPrice, estimatedPrice.Amount);
         }
 
         for (var i = 0; i < 100; i++)
         {
             var initialPrice = random.Next();
-            var estimatedPrice = strategy.EstimateMarketPrice(initialPrice);
+            var estimatedPrice = strategy.EstimateMarketPrice(new Money(currency, initialPrice));
 
-            AddRatio(ratios, initialPrice, estimatedPrice);
+            AddRatio(ratios, initialPrice, estimatedPrice.Amount);
         }
 
         var averageRatio = ratios.Average();
