@@ -20,7 +20,7 @@ public class RoundingPricingStrategy : IPricingStrategy
         return new Money(basePrice.Currency, estimatedPrice);
     }
 
-    public decimal EstimateMarketPrice(decimal basePrice)
+    private decimal EstimateMarketPrice(decimal basePrice)
     {
         if (basePrice < decimal.Zero)
         {
