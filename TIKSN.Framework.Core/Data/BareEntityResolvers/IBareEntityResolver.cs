@@ -6,9 +6,7 @@ public interface IBareEntityResolver<TEntity, TBareEntity, in TIdentity>
   : IBareEntityResolver<TBareEntity, TIdentity>
   where TEntity : IEntity<TIdentity>
   where TBareEntity : IEntity<TIdentity>
-  where TIdentity : IEquatable<TIdentity>
-{
-}
+  where TIdentity : IEquatable<TIdentity>;
 
 public interface IBareEntityResolver<TBareEntity, in TIdentity>
   where TBareEntity : IEntity<TIdentity>
