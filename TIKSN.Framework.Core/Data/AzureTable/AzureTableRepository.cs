@@ -57,11 +57,11 @@ public class AzureTableRepository<T> :
         return this.tableClient.UpsertEntityAsync(entity, TableUpdateMode.Replace, cancellationToken);
     }
 
-    public Task DeleteAsync(T entity, CancellationToken cancellationToken)
+    public Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(entity);
+        ArgumentNullException.ThrowIfNull(entities);
 
-        return this.tableClient.DeleteEntityAsync(entity.PartitionKey, entity.RowKey, entity.ETag, cancellationToken);
+        return BatchOperationHelper.BatchOperationAsync(entities, this.AddAsync, cancellationToken);
     }
 
     public Task InitializeAsync(CancellationToken cancellationToken)
@@ -72,6 +72,20 @@ public class AzureTableRepository<T> :
         ArgumentNullException.ThrowIfNull(entity);
 
         return this.tableClient.UpdateEntityAsync(entity, entity.ETag, TableUpdateMode.Merge, cancellationToken);
+    }
+
+    public Task RemoveAsync(T entity, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+
+        return this.tableClient.DeleteEntityAsync(entity.PartitionKey, entity.RowKey, entity.ETag, cancellationToken);
+    }
+
+    public Task RemoveRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(entities);
+
+        return BatchOperationHelper.BatchOperationAsync(entities, this.RemoveAsync, cancellationToken);
     }
 
     public Task ReplaceAsync(T entity, CancellationToken cancellationToken)
@@ -93,5 +107,19 @@ public class AzureTableRepository<T> :
     {
         var result = this.tableClient.QueryAsync(filter, maxPerPage: null, select: null, cancellationToken);
         return await result.ToArrayAsync(cancellationToken).ConfigureAwait(false);
+    }
+
+    public Task UpdateAsync(T entity, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+
+        return this.MergeAsync(entity, cancellationToken);
+    }
+
+    public Task UpdateRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(entities);
+
+        return BatchOperationHelper.BatchOperationAsync(entities, this.UpdateAsync, cancellationToken);
     }
 }
