@@ -3,15 +3,16 @@ using TIKSN.Mapping;
 
 namespace TIKSN.Data.AzureTable;
 
-public class AzureTableRepositoryAdapter<TBusinessEntity, TDataEntity>
-    : IRepository<TBusinessEntity>
-    where TDataEntity : class, ITableEntity where TBusinessEntity : class
+public class AzureTableRepositoryAdapter<TDomainEntity, TDataEntity>
+    : IRepository<TDomainEntity>
+    where TDomainEntity : class
+    where TDataEntity : class, ITableEntity
 {
-    private readonly IMapper<TBusinessEntity, TDataEntity> mapper;
+    private readonly IMapper<TDomainEntity, TDataEntity> mapper;
 
     public AzureTableRepositoryAdapter(
         IAzureTableRepository<TDataEntity> dataRepository,
-        IMapper<TBusinessEntity, TDataEntity> mapper)
+        IMapper<TDomainEntity, TDataEntity> mapper)
     {
         this.DataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
         this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -19,42 +20,42 @@ public class AzureTableRepositoryAdapter<TBusinessEntity, TDataEntity>
 
     protected IAzureTableRepository<TDataEntity> DataRepository { get; }
 
-    public Task AddAsync(TBusinessEntity entity, CancellationToken cancellationToken)
+    public Task AddAsync(TDomainEntity entity, CancellationToken cancellationToken)
     {
         var dataEntity = this.mapper.Map(entity);
 
         return this.DataRepository.AddAsync(dataEntity, cancellationToken);
     }
 
-    public Task AddRangeAsync(IEnumerable<TBusinessEntity> entities, CancellationToken cancellationToken)
+    public Task AddRangeAsync(IEnumerable<TDomainEntity> entities, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(entities);
 
         return BatchOperationHelper.BatchOperationAsync(entities, this.AddAsync, cancellationToken);
     }
 
-    public Task RemoveAsync(TBusinessEntity entity, CancellationToken cancellationToken)
+    public Task RemoveAsync(TDomainEntity entity, CancellationToken cancellationToken)
     {
         var dataEntity = this.mapper.Map(entity);
 
         return this.DataRepository.RemoveAsync(dataEntity, cancellationToken);
     }
 
-    public Task RemoveRangeAsync(IEnumerable<TBusinessEntity> entities, CancellationToken cancellationToken)
+    public Task RemoveRangeAsync(IEnumerable<TDomainEntity> entities, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(entities);
 
         return BatchOperationHelper.BatchOperationAsync(entities, this.RemoveAsync, cancellationToken);
     }
 
-    public Task UpdateAsync(TBusinessEntity entity, CancellationToken cancellationToken)
+    public Task UpdateAsync(TDomainEntity entity, CancellationToken cancellationToken)
     {
         var dataEntity = this.mapper.Map(entity);
 
         return this.DataRepository.UpdateAsync(dataEntity, cancellationToken);
     }
 
-    public Task UpdateRangeAsync(IEnumerable<TBusinessEntity> entities, CancellationToken cancellationToken)
+    public Task UpdateRangeAsync(IEnumerable<TDomainEntity> entities, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(entities);
 
