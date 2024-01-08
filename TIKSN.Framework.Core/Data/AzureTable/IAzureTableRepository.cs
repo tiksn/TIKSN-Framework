@@ -1,16 +1,12 @@
-using Microsoft.Azure.Cosmos.Table;
+using Azure.Data.Tables;
 
-namespace TIKSN.Data.CosmosTable;
+namespace TIKSN.Data.AzureTable;
 
-public interface ICosmosTableRepository<T> where T : ITableEntity
+public interface IAzureTableRepository<in T> : IRepository<T> where T : ITableEntity
 {
-    Task AddAsync(T entity, CancellationToken cancellationToken);
-
     Task AddOrMergeAsync(T entity, CancellationToken cancellationToken);
 
     Task AddOrReplaceAsync(T entity, CancellationToken cancellationToken);
-
-    Task DeleteAsync(T entity, CancellationToken cancellationToken);
 
     Task MergeAsync(T entity, CancellationToken cancellationToken);
 
