@@ -11,5 +11,5 @@ public class RegionalCurrencyRedirectionOptions
             {"419", "en-US"},
         };
 
-    public Dictionary<string, string> RegionalCurrencyRedirections { get; set; }
+    public IDictionary<string, string> RegionalCurrencyRedirections { get; }
 }

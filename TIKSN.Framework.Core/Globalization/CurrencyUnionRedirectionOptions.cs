@@ -13,5 +13,5 @@ public class CurrencyUnionRedirectionOptions
             {"SHP", "en-GB"},
         };
 
-    public Dictionary<string, string> CurrencyUnionRedirections { get; set; }
+    public IDictionary<string, string> CurrencyUnionRedirections { get; }
 }
