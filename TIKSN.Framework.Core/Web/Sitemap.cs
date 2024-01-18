@@ -33,7 +33,9 @@ public class Sitemap
             if (p.ChangeFrequency.HasValue)
             {
                 xWriter.WriteStartElement("changefreq");
+#pragma warning disable CA1308 // Normalize strings to uppercase
                 xWriter.WriteValue(p.ChangeFrequency.Value.ToString().ToLower(CultureInfo.InvariantCulture));
+#pragma warning restore CA1308 // Normalize strings to uppercase
                 xWriter.WriteEndElement();
             }
 
