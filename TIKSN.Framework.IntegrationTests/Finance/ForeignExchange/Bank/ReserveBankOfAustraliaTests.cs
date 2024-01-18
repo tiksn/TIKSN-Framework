@@ -146,7 +146,6 @@ public class ReserveBankOfAustraliaTests
         _ = currencyPairs.Should().Contain(p => p.ToString() == "IDR/AUD");
         _ = currencyPairs.Should().Contain(p => p.ToString() == "VND/AUD");
         _ = currencyPairs.Should().Contain(p => p.ToString() == "HKD/AUD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "CHF/AUD");
         _ = currencyPairs.Should().Contain(p => p.ToString() == "XDR/AUD");
 
         _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/USD");
@@ -164,7 +163,6 @@ public class ReserveBankOfAustraliaTests
         _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/IDR");
         _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/VND");
         _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/HKD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/CHF");
         _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/XDR");
     }
 

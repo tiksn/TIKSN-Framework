@@ -174,7 +174,7 @@ public class RestRepository<TEntity, TIdentity> :
 
     private async Task<HttpClient> GetHttpClientAsync()
     {
-        var httpClient = this.httpClientFactory.CreateClient(this.options.Value.ApiKey);
+        var httpClient = this.httpClientFactory.CreateClient(this.options.Value.EndpointKey);
 
         httpClient.DefaultRequestHeaders.Accept.Add(
             new MediaTypeWithQualityHeaderValue(this.options.Value.MediaType));
@@ -229,7 +229,7 @@ public class RestRepository<TEntity, TIdentity> :
         }
 
         var authenticationToken =
-            await this.restAuthenticationTokenProvider.GetAuthenticationTokenAsync(this.options.Value.ApiKey).ConfigureAwait(false);
+            await this.restAuthenticationTokenProvider.GetAuthenticationTokenAsync(this.options.Value.EndpointKey).ConfigureAwait(false);
 
         httpClient.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue(authenticationSchema, authenticationToken);

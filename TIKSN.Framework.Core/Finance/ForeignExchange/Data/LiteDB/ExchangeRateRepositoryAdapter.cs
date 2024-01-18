@@ -10,11 +10,13 @@ public class ExchangeRateRepositoryAdapter
     public ExchangeRateRepositoryAdapter(
         IExchangeRateDataRepository dataRepository,
         IMapper<ExchangeRateEntity, ExchangeRateDataEntity> domainEntityToDataEntityMapper,
-        IMapper<ExchangeRateDataEntity, ExchangeRateEntity> dataEntityToDomainEntityMapper) : base(
+        IMapper<ExchangeRateDataEntity, ExchangeRateEntity> dataEntityToDomainEntityMapper,
+        IMapper<Guid, Guid> domainIdentityToDataIdentityMapper,
+        IMapper<Guid, Guid> dataIdentityToDomainIdentityMapper) : base(
             domainEntityToDataEntityMapper,
             dataEntityToDomainEntityMapper,
-            IdentityMapper<Guid>.Instance,
-            IdentityMapper<Guid>.Instance,
+            domainIdentityToDataIdentityMapper,
+            dataIdentityToDomainIdentityMapper,
             dataRepository) => this.DataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
 
     protected IExchangeRateDataRepository DataRepository { get; }
