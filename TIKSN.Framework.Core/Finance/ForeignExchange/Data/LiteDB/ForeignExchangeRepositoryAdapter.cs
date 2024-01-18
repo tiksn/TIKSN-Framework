@@ -10,11 +10,13 @@ public class ForeignExchangeRepositoryAdapter
     public ForeignExchangeRepositoryAdapter(
         IForeignExchangeDataRepository dataRepository,
         IMapper<ForeignExchangeEntity, ForeignExchangeDataEntity> domainEntityToDataEntityMapper,
-        IMapper<ForeignExchangeDataEntity, ForeignExchangeEntity> dataEntityToDomainEntityMapper) : base(
+        IMapper<ForeignExchangeDataEntity, ForeignExchangeEntity> dataEntityToDomainEntityMapper,
+        IMapper<Guid, Guid> domainIdentityToDataIdentityMapper,
+        IMapper<Guid, Guid> dataIdentityToDomainIdentityMapper) : base(
             domainEntityToDataEntityMapper,
             dataEntityToDomainEntityMapper,
-            IdentityMapper<Guid>.Instance,
-            IdentityMapper<Guid>.Instance,
+            domainIdentityToDataIdentityMapper,
+            dataIdentityToDomainIdentityMapper,
             dataRepository) => this.DataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
 
     protected IForeignExchangeDataRepository DataRepository { get; }
