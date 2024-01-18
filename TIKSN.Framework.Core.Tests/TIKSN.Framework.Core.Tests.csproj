@@ -11,7 +11,7 @@
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.12.0" />
     <PackageReference Include="Bond.CSharp" Version="10.0.0" />
-    <PackageReference Include="Meziantou.FluentAssertionsAnalyzers" Version="1.0.19">
+    <PackageReference Include="Meziantou.FluentAssertionsAnalyzers" Version="1.0.20">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
