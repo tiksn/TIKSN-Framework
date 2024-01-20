@@ -41,7 +41,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
-builder.Services.AddFrameworkPlatform();
+builder.Services.AddFrameworkCore();
 
 // Optional: Bulk register mappers or it can be done one by one
 builder.Services.Scan(scan => scan
