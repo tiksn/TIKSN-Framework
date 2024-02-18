@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text;
 using System.Xml.Linq;
 using TIKSN.Globalization;
 
@@ -6,8 +7,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank;
 
 public class FederalReserveSystem : IFederalReserveSystem
 {
-    private const string DataUrlFormat =
-        "https://www.federalreserve.gov/datadownload/Output.aspx?rel=H10&series=60f32914ab61dfab590e0e470153e3ae&lastObs=7&from={0}&to={1}&filetype=sdmx&label=include&layout=seriescolumn";
+    private static readonly CompositeFormat DataUrlFormat =
+        CompositeFormat.Parse("https://www.federalreserve.gov/datadownload/Output.aspx?rel=H10&series=60f32914ab61dfab590e0e470153e3ae&lastObs=7&from={0}&to={1}&filetype=sdmx&label=include&layout=seriescolumn");
 
     private static readonly CultureInfo EnglishUnitedStates = new("en-US");
     private static readonly CurrencyInfo UnitedStatesDollar = new(new RegionInfo("en-US"));
@@ -78,20 +79,19 @@ public class FederalReserveSystem : IFederalReserveSystem
                 return rate;
             }
         }
-        else if (pair.CounterCurrency == UnitedStatesDollar)
+        else if (pair.CounterCurrency == UnitedStatesDollar && rates.TryGetValue(pair.BaseCurrency, out var counterRate))
         {
-            if (rates.TryGetValue(pair.BaseCurrency, out var counterRate))
-            {
-                return decimal.One / counterRate;
-            }
+            return decimal.One / counterRate;
         }
 
         throw new ArgumentException($"Currency pair '{pair}' not supported.", nameof(pair));
     }
 
+#pragma warning disable MA0051 // Method is too long
     public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
+#pragma warning restore MA0051 // Method is too long
     {
         var dataUrl = new Uri(string.Format(EnglishUnitedStates, DataUrlFormat,
             this.timeProvider.GetUtcNow().AddDays(-10d).ToString("MM/dd/yyyy", EnglishUnitedStates),
