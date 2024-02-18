@@ -139,7 +139,9 @@ public class BankOfEngland : IBankOfEngland
         codes.Add((pair, serieCode));
     }
 
+#pragma warning disable MA0051 // Method is too long
     private static (Dictionary<CurrencyPair, string>, Dictionary<string, CurrencyPair>) CreateSeriesCodesMaps()
+#pragma warning restore MA0051 // Method is too long
     {
         List<(CurrencyPair pair, string serieCode)> codes = [];
 

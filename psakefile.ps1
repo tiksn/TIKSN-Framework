@@ -189,7 +189,7 @@ Task Format -depends Restore, FormatWhitespace, FormatStyle, FormatAnalyzers {
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $solution }
 }
 
-Task FormatAnalyzers -depends Restore, FormatAnalyzersLanguageLocalization, FormatAnalyzersRegionLocalization, FormatAnalyzersNetCore, FormatAnalyzersAndroid, FormatAnalyzersUWP, FormatAnalyzersSolution {
+Task FormatAnalyzers -depends Restore, FormatAnalyzersLanguageLocalization, FormatAnalyzersRegionLocalization, FormatAnalyzersNetCore, FormatAnalyzersMaui, FormatAnalyzersSolution {
 }
 
 Task FormatAnalyzersSolution -depends Restore {
@@ -198,13 +198,13 @@ Task FormatAnalyzersSolution -depends Restore {
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $solution }
 }
 
-Task FormatAnalyzersLanguageLocalization -depends Restore -precondition { $false } {
+Task FormatAnalyzersLanguageLocalization -depends Restore {
     $project = Resolve-Path -Path 'TIKSN.LanguageLocalization/TIKSN.LanguageLocalization.csproj'
 
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
 }
 
-Task FormatAnalyzersRegionLocalization -depends Restore -precondition { $false } {
+Task FormatAnalyzersRegionLocalization -depends Restore {
     $project = Resolve-Path -Path 'TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj'
 
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
@@ -216,19 +216,13 @@ Task FormatAnalyzersNetCore -depends Restore {
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
 }
 
-Task FormatAnalyzersAndroid -depends Restore -precondition { $false } {
-    $project = Resolve-Path -Path 'TIKSN.Framework.Android/TIKSN.Framework.Android.csproj'
+Task FormatAnalyzersMaui -depends Restore {
+    $project = Resolve-Path -Path 'TIKSN.Framework.Maui/TIKSN.Framework.Maui.csproj'
 
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
 }
 
-Task FormatAnalyzersUWP -depends Restore -precondition { $false } {
-    $project = Resolve-Path -Path 'TIKSN.Framework.UWP/TIKSN.Framework.UWP.csproj'
-
-    Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
-}
-
-Task FormatStyle -depends Restore, FormatStyleLanguageLocalization, FormatStyleRegionLocalization, FormatStyleNetCore, FormatStyleAndroid, FormatStyleUWP, FormatStyleSolution {
+Task FormatStyle -depends Restore, FormatStyleLanguageLocalization, FormatStyleRegionLocalization, FormatStyleNetCore, FormatStyleMaui, FormatStyleSolution {
 }
 
 Task FormatStyleSolution -depends Restore {
@@ -237,13 +231,13 @@ Task FormatStyleSolution -depends Restore {
     Exec { dotnet format style --severity info --verbosity diagnostic $solution }
 }
 
-Task FormatStyleLanguageLocalization -depends Restore -precondition { $false } {
+Task FormatStyleLanguageLocalization -depends Restore {
     $project = Resolve-Path -Path 'TIKSN.LanguageLocalization/TIKSN.LanguageLocalization.csproj'
 
     Exec { dotnet format style --severity info --verbosity diagnostic $project }
 }
 
-Task FormatStyleRegionLocalization -depends Restore -precondition { $false } {
+Task FormatStyleRegionLocalization -depends Restore {
     $project = Resolve-Path -Path 'TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj'
 
     Exec { dotnet format style --severity info --verbosity diagnostic $project }
@@ -255,14 +249,8 @@ Task FormatStyleNetCore -depends Restore {
     Exec { dotnet format style --severity info --verbosity diagnostic $project }
 }
 
-Task FormatStyleAndroid -depends Restore -precondition { $false } {
-    $project = Resolve-Path -Path 'TIKSN.Framework.Android/TIKSN.Framework.Android.csproj'
-
-    Exec { dotnet format style --severity info --verbosity diagnostic $project }
-}
-
-Task FormatStyleUWP -depends Restore -precondition { $false } {
-    $project = Resolve-Path -Path 'TIKSN.Framework.UWP/TIKSN.Framework.UWP.csproj'
+Task FormatStyleMaui -depends Restore {
+    $project = Resolve-Path -Path 'TIKSN.Framework.Maui/TIKSN.Framework.Maui.csproj'
 
     Exec { dotnet format style --severity info --verbosity diagnostic $project }
 }
