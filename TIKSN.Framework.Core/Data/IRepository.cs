@@ -1,6 +1,6 @@
 namespace TIKSN.Data;
 
-public interface IRepository<T>
+public interface IRepository<in T>
 {
     Task AddAsync(T entity, CancellationToken cancellationToken);
 

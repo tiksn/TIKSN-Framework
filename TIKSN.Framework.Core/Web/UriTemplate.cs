@@ -27,7 +27,7 @@ public class UriTemplate
             else
             {
                 var queryToAppend = $"{parameterName}={escapedParameterValue}";
-                if (resourceLocation.EndsWith("?", StringComparison.Ordinal))
+                if (resourceLocation.EndsWith('?'))
                 {
                     resourceLocation += queryToAppend;
                 }
@@ -47,5 +47,5 @@ public class UriTemplate
 
     public void Fill(string name, string value) => this.values.Add(name, value);
 
-    public void Unfill(string name) => this.values.Remove(name);
+    public void UnFill(string name) => this.values.Remove(name);
 }

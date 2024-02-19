@@ -8,11 +8,12 @@ public class CompositeTraceTelemeter : ITraceTelemeter
     private readonly IPartialConfiguration<CommonTelemetryOptions> commonConfiguration;
     private readonly IEnumerable<ITraceTelemeter> traceTelemeters;
 
-    public CompositeTraceTelemeter(IPartialConfiguration<CommonTelemetryOptions> commonConfiguration,
+    public CompositeTraceTelemeter(
+        IPartialConfiguration<CommonTelemetryOptions> commonConfiguration,
         IEnumerable<ITraceTelemeter> traceTelemeters)
     {
-        this.commonConfiguration = commonConfiguration;
-        this.traceTelemeters = traceTelemeters;
+        this.commonConfiguration = commonConfiguration ?? throw new ArgumentNullException(nameof(commonConfiguration));
+        this.traceTelemeters = traceTelemeters ?? throw new ArgumentNullException(nameof(traceTelemeters));
     }
 
     public async Task TrackTraceAsync(string message)
@@ -21,6 +22,7 @@ public class CompositeTraceTelemeter : ITraceTelemeter
         {
             foreach (var traceTelemeter in this.traceTelemeters)
             {
+#pragma warning disable CA1031 // Do not catch general exception types
                 try
                 {
                     await traceTelemeter.TrackTraceAsync(message).ConfigureAwait(false);
@@ -29,6 +31,7 @@ public class CompositeTraceTelemeter : ITraceTelemeter
                 {
                     Debug.WriteLine(ex);
                 }
+#pragma warning restore CA1031 // Do not catch general exception types
             }
         }
     }
@@ -39,6 +42,7 @@ public class CompositeTraceTelemeter : ITraceTelemeter
         {
             foreach (var traceTelemeter in this.traceTelemeters)
             {
+#pragma warning disable CA1031 // Do not catch general exception types
                 try
                 {
                     await traceTelemeter.TrackTraceAsync(message, severityLevel).ConfigureAwait(false);
@@ -47,6 +51,7 @@ public class CompositeTraceTelemeter : ITraceTelemeter
                 {
                     Debug.WriteLine(ex);
                 }
+#pragma warning restore CA1031 // Do not catch general exception types
             }
         }
     }

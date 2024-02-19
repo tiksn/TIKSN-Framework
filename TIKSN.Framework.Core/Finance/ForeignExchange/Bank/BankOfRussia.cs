@@ -7,8 +7,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank;
 
 public class BankOfRussia : IBankOfRussia
 {
-    private const string AddressFormat =
-        "https://www.cbr.ru/scripts/XML_daily.asp?date_req={0:00}.{1:00}.{2}";
+    private static readonly CompositeFormat AddressFormat =
+        CompositeFormat.Parse("https://www.cbr.ru/scripts/XML_daily.asp?date_req={0:00}.{1:00}.{2}");
 
     private static readonly CurrencyInfo RussianRuble = new(new RegionInfo("ru-RU"));
     private static readonly CultureInfo RussianRussia = new("ru-RU");
@@ -89,7 +89,9 @@ public class BankOfRussia : IBankOfRussia
 
         var responseStream = await this.httpClient.GetStreamAsync(address, cancellationToken).ConfigureAwait(false);
 
+#pragma warning disable SYSLIB0001 // Type or member is obsolete
         using var stream​Reader = new Stream​Reader(responseStream, Encoding.UTF7);
+#pragma warning restore SYSLIB0001 // Type or member is obsolete
 
         var xdoc = XDocument.Load(stream​Reader);
 
@@ -121,9 +123,9 @@ public class BankOfRussia : IBankOfRussia
                 var value = decimal.Parse(valueElement.Value, RussianRussia);
                 var nominal = decimal.Parse(nominalElement.Value, RussianRussia);
 
-                result.Add(new ExchangeRate(new CurrencyPair(currency, RussianRuble), thatDay,
+                result.Add(new ExchangeRate(new CurrencyPair(currency, RussianRuble), asOn,
                     value / nominal));
-                result.Add(new ExchangeRate(new CurrencyPair(RussianRuble, currency), thatDay,
+                result.Add(new ExchangeRate(new CurrencyPair(RussianRuble, currency), asOn,
                     nominal / value));
 
                 var rate = value / nominal;
@@ -131,7 +133,7 @@ public class BankOfRussia : IBankOfRussia
                 this.rates.Add(currency, rate);
             }
 
-            this.published = asOn.Date;
+            this.published = asOn;
         }
 
         return result;
@@ -168,14 +170,11 @@ public class BankOfRussia : IBankOfRussia
                 return decimal.One / counterRate;
             }
         }
-        else if (counterCurrency == RussianRuble)
+        else if (counterCurrency == RussianRuble && this.rates.TryGetValue(baseCurrency, out var rate))
         {
-            if (this.rates.TryGetValue(baseCurrency, out var rate))
-            {
-                return rate;
-            }
+            return rate;
         }
 
-        throw new ArgumentException("Currency pair not supported.");
+        throw new InvalidOperationException("Currency pair not supported.");
     }
 }

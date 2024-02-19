@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Xml;
 
 namespace TIKSN.Web;
@@ -25,7 +26,7 @@ public class SitemapIndex
             if (sitemap.Value.HasValue)
             {
                 xWriter.WriteStartElement("lastmod");
-                xWriter.WriteValue(sitemap.Value.Value.ToString("yyyy-MM-dd"));
+                xWriter.WriteValue(sitemap.Value.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
                 xWriter.WriteEndElement();
             }
 

@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Management.Automation;
 
 namespace TIKSN.Analytics.Telemetry;
@@ -10,8 +11,8 @@ public class PowerShellMetricTelemeter : IMetricTelemeter
 
     public Task TrackMetricAsync(string metricName, decimal metricValue)
     {
-        this.cmdlet.WriteVerbose($"METRIC: {metricName} - {metricValue}");
+        this.cmdlet.WriteVerbose($"METRIC: {metricName} - {metricValue.ToString(CultureInfo.InvariantCulture)}");
 
-        return Task.FromResult<object>(null);
+        return Task.CompletedTask;
     }
 }

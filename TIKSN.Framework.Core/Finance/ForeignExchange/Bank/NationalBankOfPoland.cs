@@ -90,7 +90,7 @@ public class NationalBankOfPoland : INationalBankOfPoland
         CancellationToken cancellationToken)
         => await this.GetRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
 
-    private IReadOnlyList<ValueTuple<DateTimeOffset, Rate>> CreateDatesAndRates(
+    private static IReadOnlyList<ValueTuple<DateTimeOffset, Rate>> CreateDatesAndRates(
         RateTable source)
     {
         ArgumentNullException.ThrowIfNull(source);
@@ -139,7 +139,7 @@ public class NationalBankOfPoland : INationalBankOfPoland
         var rateTables = await JsonSerializer.DeserializeAsync<RateTable[]>(stream, cancellationToken: cancellationToken).ConfigureAwait(false);
 
         return rateTables
-            .SelectMany(this.CreateDatesAndRates)
+            .SelectMany(CreateDatesAndRates)
             .Select(this.CreateExchangeRate)
             .ToArray();
     }
@@ -156,7 +156,10 @@ public class NationalBankOfPoland : INationalBankOfPoland
             .ToArray();
     }
 
+#pragma warning disable CA1812 // Avoid uninstantiated internal classes
+
     private sealed class Rate
+#pragma warning restore CA1812 // Avoid uninstantiated internal classes
     {
         [JsonPropertyName("code")]
         public string Code { get; set; }
@@ -165,7 +168,10 @@ public class NationalBankOfPoland : INationalBankOfPoland
         public decimal Mid { get; set; }
     }
 
+#pragma warning disable CA1812 // Avoid uninstantiated internal classes
+
     private sealed class RateTable
+#pragma warning restore CA1812 // Avoid uninstantiated internal classes
     {
         [JsonPropertyName("effectiveDate")]
         public DateOnly EffectiveDate { get; set; }

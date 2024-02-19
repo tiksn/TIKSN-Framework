@@ -8,9 +8,9 @@ using NodaTime;
 using ReactiveUI;
 using TIKSN.FileSystem;
 using TIKSN.Finance.ForeignExchange.Bank;
-using TIKSN.Finance.ForeignExchange.Cumulative;
 using TIKSN.Globalization;
 using TIKSN.Identity;
+using TIKSN.Network;
 using TIKSN.Serialization;
 using TIKSN.Serialization.Bond;
 using TIKSN.Serialization.MessagePack;
@@ -23,7 +23,9 @@ namespace TIKSN.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
+#pragma warning disable MA0051 // Method is too long
     public static IServiceCollection AddFrameworkCore(this IServiceCollection services)
+#pragma warning restore MA0051 // Method is too long
     {
         _ = services.AddLocalization();
         _ = services.AddMemoryCache();
@@ -40,6 +42,7 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<Random>();
         services.TryAddSingleton(MessagePackSerializerOptions.Standard);
         services.TryAddSingleton<IKnownFolders, KnownFolders>();
+        services.TryAddSingleton<INetworkConnectivityService, NetworkConnectivityService>();
 
         services.TryAddSingleton<CompactBinaryBondDeserializer>();
         services.TryAddSingleton<CompactBinaryBondSerializer>();
@@ -80,7 +83,6 @@ public static class ServiceCollectionExtensions
         _ = services.AddHttpClient<INationalBankOfUkraine, NationalBankOfUkraine>();
         _ = services.AddHttpClient<IReserveBankOfAustralia, ReserveBankOfAustralia>();
         _ = services.AddHttpClient<ISwissNationalBank, SwissNationalBank>();
-        _ = services.AddHttpClient<ICurrencylayerDotCom, CurrencylayerDotCom>();
 
         return services;
     }

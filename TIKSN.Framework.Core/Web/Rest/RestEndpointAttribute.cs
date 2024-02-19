@@ -1,7 +1,7 @@
 namespace TIKSN.Web.Rest;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class RestEndpointAttribute : Attribute
+public sealed class RestEndpointAttribute : Attribute
 {
     public RestEndpointAttribute(string apiKey, RestVerb verb, string resourceTemplate,
         RestAuthenticationType authentication = RestAuthenticationType.None, string mediaType = "application/json")

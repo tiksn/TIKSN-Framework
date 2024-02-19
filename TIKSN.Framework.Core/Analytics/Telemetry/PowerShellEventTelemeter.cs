@@ -12,13 +12,13 @@ public class PowerShellEventTelemeter : IEventTelemeter
     {
         this.cmdlet.WriteVerbose($"EVENT: {name}");
 
-        return Task.FromResult<object>(null);
+        return Task.CompletedTask;
     }
 
     public Task TrackEventAsync(string name, IReadOnlyDictionary<string, string> properties)
     {
         this.cmdlet.WriteVerbose(
-            $"EVENT: {name} with {string.Join(", ", properties.Select(item => string.Format("{0} is {1}", item.Key, item.Value)))}");
+            $"EVENT: {name} with {string.Join(", ", properties.Select(item => $"{item.Key} is {item.Value}"))}");
 
         return Task.FromResult<object>(null);
     }

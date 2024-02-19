@@ -7,9 +7,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Localization;
 using MongoDB.Bson;
 using TIKSN.Data.Mongo;
-using TIKSN.IntegrationTests.Data.Mongo;
 using TIKSN.DependencyInjection;
 using TIKSN.Finance.ForeignExchange;
+using TIKSN.IntegrationTests.Data.Mongo;
 using TIKSN.IntegrationTests.Finance.ForeignExchange.ExchangeRateService;
 
 namespace TIKSN.IntegrationTests;
@@ -25,17 +25,18 @@ public class ServiceProviderFixture : IDisposable
 
         this.hosts = [];
 
-        this.CreateHost(string.Empty, builder => { });
-        this.CreateHost("LiteDB", builder => builder.RegisterModule<LiteDbExchangeRateServiceTestModule>());
-        this.CreateHost("MongoDB", builder => builder.RegisterModule<MongoDbExchangeRateServiceTestModule>());
+        this.CreateHost(string.Empty, (context, builder) => { });
+        this.CreateHost("LiteDB", (context, builder) => builder.RegisterModule<LiteDbExchangeRateServiceTestModule>());
+        this.CreateHost("MongoDB", (context, builder) => builder.RegisterModule<MongoDbExchangeRateServiceTestModule>());
+        this.CreateHost("SQLite", (context, builder) => builder.RegisterModule(new SQLiteExchangeRateServiceTestModule(context.Configuration)));
     }
 
-    public void CreateHost(string key, Action<ContainerBuilder> configureContainer)
+    public void CreateHost(string key, Action<HostBuilderContext, ContainerBuilder> configureContainer)
     {
         var host = Host.CreateDefaultBuilder()
             .ConfigureServices(services => _ = services.AddFrameworkCore())
             .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-            .ConfigureContainer<ContainerBuilder>(builder =>
+            .ConfigureContainer<ContainerBuilder>((context, builder) =>
             {
                 _ = builder.RegisterModule<CoreModule>();
                 _ = builder.RegisterType<TextLocalizer>().As<IStringLocalizer>().SingleInstance();
@@ -44,7 +45,7 @@ public class ServiceProviderFixture : IDisposable
                 _ = builder.RegisterType<TestMongoClientProvider>().As<IMongoClientProvider>().SingleInstance();
                 _ = builder.RegisterType<TestExchangeRateService>().As<IExchangeRateService>().InstancePerLifetimeScope();
 
-                configureContainer(builder);
+                configureContainer(context, builder);
             })
             .ConfigureHostConfiguration(builder =>
             {
@@ -64,7 +65,11 @@ public class ServiceProviderFixture : IDisposable
             {
                 "ConnectionStrings:LiteDB",
                 "Filename=TIKSN-Framework-IntegrationTests.db;Upgrade=true;Connection=Shared"
-            }
+            },
+            {
+                "ConnectionStrings:SQLite",
+                "Data Source=TIKSN-Framework-IntegrationTests.sqlite;"
+            },
         };
     }
 

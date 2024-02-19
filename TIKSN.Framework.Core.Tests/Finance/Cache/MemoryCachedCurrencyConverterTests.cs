@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
@@ -34,7 +35,7 @@ public class MemoryCachedCurrencyConverterTests
             _ = builder.AddDebug();
             var loggger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
-                .WriteTo.TestOutput(testOutputHelper)
+                .WriteTo.TestOutput(testOutputHelper, formatProvider: CultureInfo.InvariantCulture)
                 .CreateLogger();
             _ = builder.AddSerilog(loggger);
         });
@@ -54,7 +55,7 @@ public class MemoryCachedCurrencyConverterTests
         var moment1 = new DateTimeOffset(2015, 12, 1, 0, 0, 0, TimeSpan.FromHours(2));
 
         var originalConverter = Substitute.For<ICurrencyConverter>();
-        var expectedPairs = new List<CurrencyPair> { new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("EUR")) };
+        var expectedPairs = new List<CurrencyPair> { new(new CurrencyInfo("USD"), new CurrencyInfo("EUR")) };
 
         _ = originalConverter.GetCurrencyPairsAsync(moment1, default).Returns(expectedPairs);
 

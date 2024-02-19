@@ -11,11 +11,11 @@ public abstract class NetworkConnectivityServiceBase : INetworkConnectivityServi
     protected NetworkConnectivityServiceBase() => this.manualChecks = new Subject<InternetConnectivityState>();
 
     public IObservable<InternetConnectivityState> InternetConnectivityChanged =>
-        this.InternetConnectivityStateInternal
+        this.InternalInternetConnectivityState
             .Merge(this.manualChecks)
             .DistinctUntilChanged();
 
-    protected IObservable<InternetConnectivityState> InternetConnectivityStateInternal { get; set; }
+    protected IObservable<InternetConnectivityState> InternalInternetConnectivityState { get; set; }
 
     public void Dispose()
     {
@@ -23,7 +23,7 @@ public abstract class NetworkConnectivityServiceBase : INetworkConnectivityServi
         GC.SuppressFinalize(this);
     }
 
-    public InternetConnectivityState GetInternetConnectivityState() => this.GetInternetConnectivityState(true);
+    public InternetConnectivityState GetInternetConnectivityState() => this.GetInternetConnectivityState(broadcast: true);
 
     protected virtual void Dispose(bool disposing)
     {
@@ -38,11 +38,11 @@ public abstract class NetworkConnectivityServiceBase : INetworkConnectivityServi
         }
     }
 
-    protected abstract InternetConnectivityState GetInternetConnectivityStateInternal();
+    protected abstract InternetConnectivityState GetStateInternal();
 
     private InternetConnectivityState GetInternetConnectivityState(bool broadcast)
     {
-        var result = this.GetInternetConnectivityStateInternal();
+        var result = this.GetStateInternal();
 
         if (broadcast)
         {

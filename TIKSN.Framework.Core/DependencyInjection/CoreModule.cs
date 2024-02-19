@@ -1,6 +1,7 @@
 using Autofac;
 using TIKSN.Data.Mongo;
 using TIKSN.Licensing;
+using TIKSN.Mapping;
 using TIKSN.Serialization;
 using TIKSN.Web.Rest;
 
@@ -16,6 +17,11 @@ public class CoreModule : Module
         _ = builder.RegisterType<JsonSerializer>().AsSelf().SingleInstance();
         _ = builder.RegisterType<RestRequester>().As<IRestRequester>();
         _ = builder.RegisterType<SerializationRestFactory>().As<ISerializerRestFactory>().As<IDeserializerRestFactory>()
+            .SingleInstance();
+
+        _ = builder.RegisterGeneric(typeof(IdentityMapper<>))
+            .As(typeof(IMapper<,>))
+            .As(typeof(IAsyncMapper<,>))
             .SingleInstance();
 
         _ = builder.RegisterType<MongoClientSessionContext>()

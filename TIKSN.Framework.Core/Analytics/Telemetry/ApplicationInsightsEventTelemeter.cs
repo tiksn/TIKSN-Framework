@@ -1,29 +1,36 @@
 using System.Diagnostics;
+using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 
 namespace TIKSN.Analytics.Telemetry;
 
 public class ApplicationInsightsEventTelemeter : IEventTelemeter
 {
-    [Obsolete]
+    private readonly TelemetryClient client;
+
+    public ApplicationInsightsEventTelemeter(TelemetryClient client)
+        => this.client = client ?? throw new ArgumentNullException(nameof(client));
+
     public Task TrackEventAsync(string name)
     {
+#pragma warning disable CA1031 // Do not catch general exception types
         try
         {
             var telemetry = new EventTelemetry(name);
-            ApplicationInsightsHelper.TrackEvent(telemetry);
+            ApplicationInsightsHelper.TrackEvent(this.client, telemetry);
         }
         catch (Exception ex)
         {
             Debug.WriteLine(ex);
         }
+#pragma warning restore CA1031 // Do not catch general exception types
 
-        return Task.FromResult<object>(null);
+        return Task.CompletedTask;
     }
 
-    [Obsolete]
     public Task TrackEventAsync(string name, IReadOnlyDictionary<string, string> properties)
     {
+#pragma warning disable CA1031 // Do not catch general exception types
         try
         {
             var telemetry = new EventTelemetry(name);
@@ -35,12 +42,13 @@ public class ApplicationInsightsEventTelemeter : IEventTelemeter
                 }
             }
 
-            ApplicationInsightsHelper.TrackEvent(telemetry);
+            ApplicationInsightsHelper.TrackEvent(this.client, telemetry);
         }
         catch (Exception ex)
         {
             Debug.WriteLine(ex);
         }
+#pragma warning restore CA1031 // Do not catch general exception types
 
         return Task.CompletedTask;
     }

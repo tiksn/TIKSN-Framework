@@ -3,14 +3,14 @@ using TIKSN.Localization;
 
 namespace TIKSN.Shell;
 
-public abstract class ShellAttributeBase : Attribute
+public abstract class ShellAttributeBaseAttribute : Attribute
 {
     private readonly int? integerNameKey;
     private readonly string stringNameKey;
 
-    protected ShellAttributeBase(int nameKey) => this.integerNameKey = nameKey;
+    protected ShellAttributeBaseAttribute(int nameKey) => this.integerNameKey = nameKey;
 
-    protected ShellAttributeBase(string nameKey) => this.stringNameKey = nameKey;
+    protected ShellAttributeBaseAttribute(string nameKey) => this.stringNameKey = nameKey;
 
     public string GetName(IStringLocalizer stringLocalizer)
     {

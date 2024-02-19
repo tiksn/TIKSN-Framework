@@ -46,7 +46,7 @@ public class QueryRepositoryMemoryCacheDecorator<TEntity, TIdentity>
 
     public async Task<IEnumerable<TEntity>>
         ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken) =>
-        await BatchOperationHelper.BatchOperationAsync(ids, cancellationToken, this.GetAsync).ConfigureAwait(false);
+        await BatchOperationHelper.BatchOperationAsync(ids, this.GetAsync, cancellationToken).ConfigureAwait(false);
 
     public Task<PageResult<TEntity>> PageAsync(
         PageQuery pageQuery,

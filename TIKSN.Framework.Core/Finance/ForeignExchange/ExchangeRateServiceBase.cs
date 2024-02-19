@@ -135,7 +135,7 @@ public abstract class ExchangeRateServiceBase : IExchangeRateService
         return rate;
     }
 
-    public async Task InitializeAsync(CancellationToken cancellationToken)
+    public virtual async Task InitializeAsync(CancellationToken cancellationToken)
     {
         await using var uow = await this.unitOfWorkFactory.CreateAsync(cancellationToken).ConfigureAwait(false);
         foreach (var provider in this.providers)
@@ -147,9 +147,7 @@ public abstract class ExchangeRateServiceBase : IExchangeRateService
             {
                 forex = new ForeignExchangeEntity(
                     provider.Key,
-                    provider.Value.Country.Name,
-                    provider.Value.LongNameKey,
-                    provider.Value.ShortNameKey);
+                    provider.Value.Country.Name);
 
                 await this.foreignExchangeRepository.AddAsync(forex, cancellationToken).ConfigureAwait(false);
             }

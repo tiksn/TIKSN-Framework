@@ -4,12 +4,12 @@ using NuGet.Versioning;
 
 namespace TIKSN.Versioning;
 
-public sealed class Version : IComparable<Version>, IEquatable<Version>
+public sealed class Version : IComparable<Version>, IEquatable<Version>, IComparable
 {
     private const Milestone DefaultMilestone = Milestone.Release;
-    private const int DefaultPrereleaseNumber = -1;
+    private const int DefaultPreReleaseNumber = -1;
 
-    private int prereleaseNumber;
+    private int preReleaseNumber;
 
     public Version(
         int releaseMajor,
@@ -17,7 +17,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
     {
         this.Release = new System.Version(releaseMajor, releaseMinor);
         this.Milestone = DefaultMilestone;
-        this.PrereleaseNumber = DefaultPrereleaseNumber;
+        this.PreReleaseNumber = DefaultPreReleaseNumber;
         this.ReleaseDate = null;
     }
 
@@ -28,7 +28,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
     {
         this.Release = new System.Version(releaseMajor, releaseMinor);
         this.Milestone = DefaultMilestone;
-        this.PrereleaseNumber = DefaultPrereleaseNumber;
+        this.PreReleaseNumber = DefaultPreReleaseNumber;
         this.ReleaseDate = releaseDate;
     }
 
@@ -39,7 +39,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
     {
         this.Release = new System.Version(releaseMajor, releaseMinor, releaseBuild);
         this.Milestone = DefaultMilestone;
-        this.PrereleaseNumber = DefaultPrereleaseNumber;
+        this.PreReleaseNumber = DefaultPreReleaseNumber;
         this.ReleaseDate = null;
     }
 
@@ -51,7 +51,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
     {
         this.Release = new System.Version(releaseMajor, releaseMinor, releaseBuild);
         this.Milestone = DefaultMilestone;
-        this.PrereleaseNumber = DefaultPrereleaseNumber;
+        this.PreReleaseNumber = DefaultPreReleaseNumber;
         this.ReleaseDate = releaseDate;
     }
 
@@ -63,7 +63,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
     {
         this.Release = new System.Version(releaseMajor, releaseMinor, releaseBuild, releaseRevision);
         this.Milestone = DefaultMilestone;
-        this.PrereleaseNumber = DefaultPrereleaseNumber;
+        this.PreReleaseNumber = DefaultPreReleaseNumber;
         this.ReleaseDate = null;
     }
 
@@ -76,7 +76,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
     {
         this.Release = new System.Version(releaseMajor, releaseMinor, releaseBuild, releaseRevision);
         this.Milestone = DefaultMilestone;
-        this.PrereleaseNumber = DefaultPrereleaseNumber;
+        this.PreReleaseNumber = DefaultPreReleaseNumber;
         this.ReleaseDate = releaseDate;
     }
 
@@ -84,7 +84,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
     {
         this.Release = release;
         this.Milestone = DefaultMilestone;
-        this.PrereleaseNumber = DefaultPrereleaseNumber;
+        this.PreReleaseNumber = DefaultPreReleaseNumber;
         this.ReleaseDate = null;
     }
 
@@ -94,7 +94,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
     {
         this.Release = release;
         this.Milestone = DefaultMilestone;
-        this.PrereleaseNumber = DefaultPrereleaseNumber;
+        this.PreReleaseNumber = DefaultPreReleaseNumber;
         this.ReleaseDate = releaseDate;
     }
 
@@ -105,7 +105,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
     {
         this.Release = new System.Version(releaseMajor, releaseMinor);
         this.Milestone = milestone;
-        this.PrereleaseNumber = DefaultPrereleaseNumber;
+        this.PreReleaseNumber = DefaultPreReleaseNumber;
         this.ReleaseDate = null;
 
         this.ValidateMilestoneAndPrerelease();
@@ -119,7 +119,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
     {
         this.Release = new System.Version(releaseMajor, releaseMinor);
         this.Milestone = milestone;
-        this.PrereleaseNumber = DefaultPrereleaseNumber;
+        this.PreReleaseNumber = DefaultPreReleaseNumber;
         this.ReleaseDate = releaseDate;
 
         this.ValidateMilestoneAndPrerelease();
@@ -133,7 +133,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
     {
         this.Release = new System.Version(releaseMajor, releaseMinor, releaseBuild);
         this.Milestone = milestone;
-        this.PrereleaseNumber = DefaultPrereleaseNumber;
+        this.PreReleaseNumber = DefaultPreReleaseNumber;
         this.ReleaseDate = null;
 
         this.ValidateMilestoneAndPrerelease();
@@ -148,7 +148,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
     {
         this.Release = new System.Version(releaseMajor, releaseMinor, releaseBuild);
         this.Milestone = milestone;
-        this.PrereleaseNumber = DefaultPrereleaseNumber;
+        this.PreReleaseNumber = DefaultPreReleaseNumber;
         this.ReleaseDate = releaseDate;
 
         this.ValidateMilestoneAndPrerelease();
@@ -163,7 +163,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
     {
         this.Release = new System.Version(releaseMajor, releaseMinor, releaseBuild, releaseRevision);
         this.Milestone = milestone;
-        this.PrereleaseNumber = DefaultPrereleaseNumber;
+        this.PreReleaseNumber = DefaultPreReleaseNumber;
         this.ReleaseDate = null;
 
         this.ValidateMilestoneAndPrerelease();
@@ -179,7 +179,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
     {
         this.Release = new System.Version(releaseMajor, releaseMinor, releaseBuild, releaseRevision);
         this.Milestone = milestone;
-        this.PrereleaseNumber = DefaultPrereleaseNumber;
+        this.PreReleaseNumber = DefaultPreReleaseNumber;
         this.ReleaseDate = releaseDate;
 
         this.ValidateMilestoneAndPrerelease();
@@ -191,7 +191,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
     {
         this.Release = release;
         this.Milestone = milestone;
-        this.PrereleaseNumber = DefaultPrereleaseNumber;
+        this.PreReleaseNumber = DefaultPreReleaseNumber;
         this.ReleaseDate = null;
 
         this.ValidateMilestoneAndPrerelease();
@@ -204,7 +204,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
     {
         this.Release = release;
         this.Milestone = milestone;
-        this.PrereleaseNumber = DefaultPrereleaseNumber;
+        this.PreReleaseNumber = DefaultPreReleaseNumber;
         this.ReleaseDate = releaseDate;
 
         this.ValidateMilestoneAndPrerelease();
@@ -214,11 +214,11 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
         int releaseMajor,
         int releaseMinor,
         Milestone milestone,
-        int prereleaseNumber)
+        int preReleaseNumber)
     {
         this.Release = new System.Version(releaseMajor, releaseMinor);
         this.Milestone = milestone;
-        this.PrereleaseNumber = prereleaseNumber;
+        this.PreReleaseNumber = preReleaseNumber;
         this.ReleaseDate = null;
 
         this.ValidateMilestoneAndPrerelease();
@@ -228,12 +228,12 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
         int releaseMajor,
         int releaseMinor,
         Milestone milestone,
-        int prereleaseNumber,
+        int preReleaseNumber,
         DateTimeOffset releaseDate)
     {
         this.Release = new System.Version(releaseMajor, releaseMinor);
         this.Milestone = milestone;
-        this.PrereleaseNumber = prereleaseNumber;
+        this.PreReleaseNumber = preReleaseNumber;
         this.ReleaseDate = releaseDate;
 
         this.ValidateMilestoneAndPrerelease();
@@ -244,11 +244,11 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
         int releaseMinor,
         int releaseBuild,
         Milestone milestone,
-        int prereleaseNumber)
+        int preReleaseNumber)
     {
         this.Release = new System.Version(releaseMajor, releaseMinor, releaseBuild);
         this.Milestone = milestone;
-        this.PrereleaseNumber = prereleaseNumber;
+        this.PreReleaseNumber = preReleaseNumber;
         this.ReleaseDate = null;
 
         this.ValidateMilestoneAndPrerelease();
@@ -259,12 +259,12 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
         int releaseMinor,
         int releaseBuild,
         Milestone milestone,
-        int prereleaseNumber,
+        int preReleaseNumber,
         DateTimeOffset releaseDate)
     {
         this.Release = new System.Version(releaseMajor, releaseMinor, releaseBuild);
         this.Milestone = milestone;
-        this.PrereleaseNumber = prereleaseNumber;
+        this.PreReleaseNumber = preReleaseNumber;
         this.ReleaseDate = releaseDate;
 
         this.ValidateMilestoneAndPrerelease();
@@ -276,11 +276,11 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
         int releaseBuild,
         int releaseRevision,
         Milestone milestone,
-        int prereleaseNumber)
+        int preReleaseNumber)
     {
         this.Release = new System.Version(releaseMajor, releaseMinor, releaseBuild, releaseRevision);
         this.Milestone = milestone;
-        this.PrereleaseNumber = prereleaseNumber;
+        this.PreReleaseNumber = preReleaseNumber;
         this.ReleaseDate = null;
 
         this.ValidateMilestoneAndPrerelease();
@@ -292,12 +292,12 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
         int releaseBuild,
         int releaseRevision,
         Milestone milestone,
-        int prereleaseNumber,
+        int preReleaseNumber,
         DateTimeOffset releaseDate)
     {
         this.Release = new System.Version(releaseMajor, releaseMinor, releaseBuild, releaseRevision);
         this.Milestone = milestone;
-        this.PrereleaseNumber = prereleaseNumber;
+        this.PreReleaseNumber = preReleaseNumber;
         this.ReleaseDate = releaseDate;
 
         this.ValidateMilestoneAndPrerelease();
@@ -306,11 +306,11 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
     public Version(
         System.Version release,
         Milestone milestone,
-        int prereleaseNumber)
+        int preReleaseNumber)
     {
         this.Release = release;
         this.Milestone = milestone;
-        this.PrereleaseNumber = prereleaseNumber;
+        this.PreReleaseNumber = preReleaseNumber;
         this.ReleaseDate = null;
 
         this.ValidateMilestoneAndPrerelease();
@@ -319,12 +319,12 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
     public Version(
         System.Version release,
         Milestone milestone,
-        int prereleaseNumber,
+        int preReleaseNumber,
         DateTimeOffset releaseDate)
     {
         this.Release = release;
         this.Milestone = milestone;
-        this.PrereleaseNumber = prereleaseNumber;
+        this.PreReleaseNumber = preReleaseNumber;
         this.ReleaseDate = releaseDate;
 
         this.ValidateMilestoneAndPrerelease();
@@ -332,17 +332,14 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
 
     public Milestone Milestone { get; }
 
-    public int PrereleaseNumber
+    public int PreReleaseNumber
     {
-        get => this.prereleaseNumber;
+        get => this.preReleaseNumber;
         private set
         {
-            if (value < -1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(this.PrereleaseNumber));
-            }
+            ArgumentOutOfRangeException.ThrowIfLessThan(value, -1);
 
-            this.prereleaseNumber = value;
+            this.preReleaseNumber = value;
         }
     }
 
@@ -363,11 +360,181 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
         }
     }
 
+    public static explicit operator NuGetVersion(Version version)
+        => ToNuGetVersion(version);
+
+    public static explicit operator SemanticVersion(Version version)
+        => ToSemanticVersion(version);
+
+    public static explicit operator Version(NuGetVersion nuGetVersion)
+        => FromNuGetVersion(nuGetVersion);
+
+    public static explicit operator Version(SemanticVersion semanticVersion)
+        => FromSemanticVersion(semanticVersion);
+
+    public static Version FromNuGetVersion(NuGetVersion nuGetVersion)
+    {
+        ArgumentNullException.ThrowIfNull(nuGetVersion);
+
+        var (milestone, prereleaseNumber) =
+            GetMilestoneAndPrereleaseNumber(nuGetVersion.IsPrerelease, nuGetVersion.ReleaseLabels.ToArray());
+
+        var releaseNumbersCount =
+            nuGetVersion.OriginalVersion
+                .Remove(nuGetVersion.OriginalVersion.Length - nuGetVersion.Release.Length)
+                .Split('.')
+                .Length;
+
+        System.Version release;
+        if (releaseNumbersCount == 2)
+        {
+            release = new System.Version(
+                        nuGetVersion.Major,
+                        nuGetVersion.Minor);
+        }
+        else if (releaseNumbersCount == 3)
+        {
+            release = new System.Version(
+                        nuGetVersion.Major,
+                        nuGetVersion.Minor,
+                        nuGetVersion.Patch);
+        }
+        else
+        {
+            release = new System.Version(
+                        nuGetVersion.Major,
+                        nuGetVersion.Minor,
+                        nuGetVersion.Patch,
+                        nuGetVersion.Revision);
+        }
+
+        if (nuGetVersion.HasMetadata)
+        {
+            return new Version(release, milestone, prereleaseNumber,
+                GetReleaseDate(nuGetVersion.Metadata));
+        }
+
+        return new Version(release, milestone, prereleaseNumber);
+    }
+
+    public static Version FromSemanticVersion(SemanticVersion semanticVersion)
+    {
+        ArgumentNullException.ThrowIfNull(semanticVersion);
+
+        var (milestone, prereleaseNumber) = GetMilestoneAndPrereleaseNumber(semanticVersion.IsPrerelease,
+            semanticVersion.ReleaseLabels.ToArray());
+
+        if (semanticVersion.HasMetadata)
+        {
+            return new Version(semanticVersion.Major, semanticVersion.Minor, semanticVersion.Patch, milestone,
+                prereleaseNumber, GetReleaseDate(semanticVersion.Metadata));
+        }
+
+        return new Version(semanticVersion.Major, semanticVersion.Minor, semanticVersion.Patch, milestone,
+            prereleaseNumber);
+    }
+
+    public static bool operator !=(Version v1, Version v2)
+    {
+        ArgumentNullException.ThrowIfNull(v1);
+        ArgumentNullException.ThrowIfNull(v2);
+
+        return v1.CompareTo(v2) != 0;
+    }
+
+    public static bool operator <(Version v1, Version v2)
+    {
+        ArgumentNullException.ThrowIfNull(v1);
+        ArgumentNullException.ThrowIfNull(v2);
+
+        return v1.CompareTo(v2) < 0;
+    }
+
+    public static bool operator <=(Version v1, Version v2)
+    {
+        ArgumentNullException.ThrowIfNull(v1);
+        ArgumentNullException.ThrowIfNull(v2);
+
+        return v1.CompareTo(v2) <= 0;
+    }
+
+    public static bool operator ==(Version v1, Version v2)
+    {
+        ArgumentNullException.ThrowIfNull(v1);
+        ArgumentNullException.ThrowIfNull(v2);
+
+        return v1.CompareTo(v2) == 0;
+    }
+
+    public static bool operator >(Version v1, Version v2)
+    {
+        ArgumentNullException.ThrowIfNull(v1);
+        ArgumentNullException.ThrowIfNull(v2);
+
+        return v1.CompareTo(v2) > 0;
+    }
+
+    public static bool operator >=(Version v1, Version v2)
+    {
+        ArgumentNullException.ThrowIfNull(v1);
+        ArgumentNullException.ThrowIfNull(v2);
+
+        return v1.CompareTo(v2) >= 0;
+    }
+
+    public static NuGetVersion ToNuGetVersion(Version version)
+    {
+        ArgumentNullException.ThrowIfNull(version);
+
+        var releaseLabels = GetReleaseLabels(version);
+        var metadata = GetMetadata(version);
+
+        if (version.Release.Revision >= 0)
+        {
+            return new NuGetVersion(version.Release.Major, version.Release.Minor, version.Release.Build,
+                version.Release.Revision, releaseLabels, metadata);
+        }
+
+        if (version.Release.Build >= 0)
+        {
+            return new NuGetVersion(version.Release.Major, version.Release.Minor, version.Release.Build,
+                releaseLabels, metadata);
+        }
+
+        return new NuGetVersion(version.Release.Major, version.Release.Minor, 0, releaseLabels, metadata);
+    }
+
+    public static SemanticVersion ToSemanticVersion(Version version)
+    {
+        ArgumentNullException.ThrowIfNull(version);
+
+        var releaseLabels = GetReleaseLabels(version);
+        var metadata = GetMetadata(version);
+
+        if (version.Release.Revision != -1)
+        {
+            throw new FormatException("There is no revision in semantic version.");
+        }
+
+        if (version.Release.Build >= 0)
+        {
+            return new SemanticVersion(version.Release.Major, version.Release.Minor, version.Release.Build,
+                releaseLabels, metadata);
+        }
+
+        return new SemanticVersion(version.Release.Major, version.Release.Minor, 0, releaseLabels, metadata);
+    }
+
     public int CompareTo(Version other)
     {
         if (ReferenceEquals(this, other))
         {
             return 0;
+        }
+
+        if (other is null)
+        {
+            return 1;
         }
 
         var releaseComparison = this.Release.CompareTo(other.Release);
@@ -388,22 +555,37 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
 
             Debug.Assert(this.Milestone == other.Milestone);
 
-            if (this.PrereleaseNumber > other.PrereleaseNumber)
+            if (this.PreReleaseNumber > other.PreReleaseNumber)
             {
                 return 1;
             }
 
-            if (this.PrereleaseNumber < other.PrereleaseNumber)
+            if (this.PreReleaseNumber < other.PreReleaseNumber)
             {
                 return -1;
             }
 
-            Debug.Assert(this.PrereleaseNumber == other.PrereleaseNumber);
+            Debug.Assert(this.PreReleaseNumber == other.PreReleaseNumber);
 
             return 0;
         }
 
         return releaseComparison;
+    }
+
+    public int CompareTo(object obj)
+    {
+        if (obj == null)
+        {
+            return 1;
+        }
+
+        if (obj is Version x)
+        {
+            return this.CompareTo(x);
+        }
+
+        throw new ArgumentException("Unable to compare to another type of object", nameof(obj));
     }
 
     public bool Equals(Version other)
@@ -415,105 +597,6 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
 
         return this.CompareTo(other) == 0;
     }
-
-    public static explicit operator NuGetVersion(Version version)
-    {
-        var releaseLabels = GetReleaseLabels(version);
-        var metadata = GetMetadata(version);
-
-        if (version.Release.Revision >= 0)
-        {
-            return new NuGetVersion(version.Release.Major, version.Release.Minor, version.Release.Build,
-                version.Release.Revision, releaseLabels, metadata);
-        }
-
-        if (version.Release.Build >= 0)
-        {
-            return new NuGetVersion(version.Release.Major, version.Release.Minor, version.Release.Build,
-                releaseLabels, metadata);
-        }
-
-        return new NuGetVersion(version.Release.Major, version.Release.Minor, 0, releaseLabels, metadata);
-    }
-
-    public static explicit operator SemanticVersion(Version version)
-    {
-        var releaseLabels = GetReleaseLabels(version);
-        var metadata = GetMetadata(version);
-
-        if (version.Release.Revision != -1)
-        {
-            throw new FormatException("There is no revision in semantic version.");
-        }
-
-        if (version.Release.Build >= 0)
-        {
-            return new SemanticVersion(version.Release.Major, version.Release.Minor, version.Release.Build,
-                releaseLabels, metadata);
-        }
-
-        return new SemanticVersion(version.Release.Major, version.Release.Minor, 0, releaseLabels, metadata);
-    }
-
-    public static explicit operator Version(NuGetVersion nuGetVersion)
-    {
-        var (milestone, prereleaseNumber) =
-            GetMilestoneAndPrereleaseNumber(nuGetVersion.IsPrerelease, nuGetVersion.ReleaseLabels.ToArray());
-
-        var releaseNumbersCount =
-            nuGetVersion.OriginalVersion
-                .Remove(nuGetVersion.OriginalVersion.Length - nuGetVersion.Release.Length)
-                .Split('.')
-                .Length;
-
-        var release = releaseNumbersCount == 2 ? new System.Version(
-                nuGetVersion.Major,
-                nuGetVersion.Minor) :
-            releaseNumbersCount == 3 ? new System.Version(
-                nuGetVersion.Major,
-                nuGetVersion.Minor,
-                nuGetVersion.Patch) :
-            new System.Version(
-                nuGetVersion.Major,
-                nuGetVersion.Minor,
-                nuGetVersion.Patch,
-                nuGetVersion.Revision);
-
-        if (nuGetVersion.HasMetadata)
-        {
-            return new Version(release, milestone, prereleaseNumber,
-                GetreleaseDate(nuGetVersion.Metadata));
-        }
-
-        return new Version(release, milestone, prereleaseNumber);
-    }
-
-    public static explicit operator Version(SemanticVersion semanticVersion)
-    {
-        var (milestone, prereleaseNumber) = GetMilestoneAndPrereleaseNumber(semanticVersion.IsPrerelease,
-            semanticVersion.ReleaseLabels.ToArray());
-
-        if (semanticVersion.HasMetadata)
-        {
-            return new Version(semanticVersion.Major, semanticVersion.Minor, semanticVersion.Patch, milestone,
-                prereleaseNumber, GetreleaseDate(semanticVersion.Metadata));
-        }
-
-        return new Version(semanticVersion.Major, semanticVersion.Minor, semanticVersion.Patch, milestone,
-            prereleaseNumber);
-    }
-
-    public static bool operator !=(Version v1, Version v2) => v1.CompareTo(v2) != 0;
-
-    public static bool operator <(Version v1, Version v2) => v1.CompareTo(v2) < 0;
-
-    public static bool operator <=(Version v1, Version v2) => v1.CompareTo(v2) <= 0;
-
-    public static bool operator ==(Version v1, Version v2) => v1.CompareTo(v2) == 0;
-
-    public static bool operator >(Version v1, Version v2) => v1.CompareTo(v2) > 0;
-
-    public static bool operator >=(Version v1, Version v2) => v1.CompareTo(v2) >= 0;
 
     public override bool Equals(object obj)
     {
@@ -536,24 +619,14 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
         {
             return this.Release.CompareTo(systemVersion) == 0 &&
                    this.Milestone == DefaultMilestone &&
-                   this.prereleaseNumber == DefaultPrereleaseNumber;
+                   this.preReleaseNumber == DefaultPreReleaseNumber;
         }
 
         return false;
     }
 
     public override int GetHashCode()
-    {
-        unchecked
-        {
-            var hash = 17;
-            hash = (hash * 23) + this.Release.GetHashCode();
-            hash = (hash * 23) + this.Milestone.GetHashCode();
-            hash = (hash * 23) + this.prereleaseNumber.GetHashCode();
-            hash = (hash * 23) + (this.ReleaseDate?.GetHashCode() ?? 0);
-            return hash;
-        }
-    }
+        => HashCode.Combine(this.Release, this.Milestone, this.PreReleaseNumber, this.ReleaseDate);
 
     public string ToLongReleaseString() => this.Release.ToString();
 
@@ -579,12 +652,12 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
 
     public override string ToString()
     {
-        if (this.PrereleaseNumber == DefaultPrereleaseNumber && this.Milestone == DefaultMilestone)
+        if (this.PreReleaseNumber == DefaultPreReleaseNumber && this.Milestone == DefaultMilestone)
         {
             return this.ToShortReleaseString();
         }
 
-        return $"{this.ToShortReleaseString()}-{string.Join(".", GetReleaseLabels(this))}";
+        return $"{this.ToShortReleaseString()}-{string.Join('.', GetReleaseLabels(this))}";
     }
 
     private static string GetMetadata(Version version) => version.ReleaseDate?.ToString("s");
@@ -594,7 +667,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
     {
         if (!isPrerelease || releaseLabels.Length == 0)
         {
-            return (Milestone.Release, DefaultPrereleaseNumber);
+            return (Milestone.Release, DefaultPreReleaseNumber);
         }
 
         if (releaseLabels.Length > 2)
@@ -604,26 +677,26 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
 
         var prereleaseNumber = releaseLabels.Length == 2
             ? int.Parse(releaseLabels[1], CultureInfo.InvariantCulture)
-            : DefaultPrereleaseNumber;
+            : DefaultPreReleaseNumber;
 
-        var milestoneTag = releaseLabels.ElementAt(0);
+        var milestoneTag = releaseLabels[0];
 
-        return milestoneTag.ToLowerInvariant() switch
+        return milestoneTag.ToUpperInvariant() switch
         {
-            "alpha" => (Milestone.Alpha, prereleaseNumber),
-            "beta" => (Milestone.Beta, prereleaseNumber),
-            "rc" => (Milestone.ReleaseCandidate, prereleaseNumber),
+            "ALPHA" => (Milestone.Alpha, prereleaseNumber),
+            "BETA" => (Milestone.Beta, prereleaseNumber),
+            "RC" => (Milestone.ReleaseCandidate, prereleaseNumber),
             _ => throw new FormatException($"Unknown milestone tag '{milestoneTag}'.")
         };
     }
 
-    private static DateTimeOffset GetreleaseDate(string metadata) => DateTimeOffset.Parse(metadata);
+    private static DateTimeOffset GetReleaseDate(string metadata) => DateTimeOffset.Parse(metadata, CultureInfo.InvariantCulture);
 
-    private static IEnumerable<string> GetReleaseLabels(Version version)
+    private static string[] GetReleaseLabels(Version version)
     {
         if (version.Stability == Stability.Stable)
         {
-            return Array.Empty<string>();
+            return [];
         }
 
         var milestoneTag = version.Milestone switch
@@ -634,17 +707,17 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>
             Milestone.Release => null,
             _ => throw new NotSupportedException("Unsupported milestone name.")
         };
-        if (version.prereleaseNumber == DefaultPrereleaseNumber)
+        if (version.preReleaseNumber == DefaultPreReleaseNumber)
         {
-            return new[] { milestoneTag };
+            return [milestoneTag];
         }
 
-        return new[] { milestoneTag, version.prereleaseNumber.ToString() };
+        return [milestoneTag, version.preReleaseNumber.ToString(CultureInfo.InvariantCulture)];
     }
 
     private void ValidateMilestoneAndPrerelease()
     {
-        if (this.Stability == Stability.Stable && this.PrereleaseNumber != DefaultPrereleaseNumber)
+        if (this.Stability == Stability.Stable && this.PreReleaseNumber != DefaultPreReleaseNumber)
         {
             throw new FormatException("Stable version cannot have pre-release number.");
         }

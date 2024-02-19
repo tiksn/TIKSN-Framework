@@ -1,8 +1,16 @@
 namespace TIKSN.Numbering.Acronyms;
 
-public sealed class LFLA : Acronym<LFLA>, IAcronymLength<LFLA>
+#pragma warning disable S101 // Types should be named in PascalCase
+#pragma warning disable MA0095 // A class that implements IEquatable<T> should override Equals(object)
+
+public sealed class LFLA : Acronym<LFLA>, IAcronymLength
+#pragma warning restore MA0095 // A class that implements IEquatable<T> should override Equals(object)
+#pragma warning restore S101 // Types should be named in PascalCase
 {
-    protected LFLA(string value) : base(value)
+#pragma warning disable IDE0051 // Remove unused private members
+
+    private LFLA(string value) : base(value)
+#pragma warning restore IDE0051 // Remove unused private members
     {
     }
 

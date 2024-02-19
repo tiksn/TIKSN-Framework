@@ -2,9 +2,8 @@ namespace TIKSN.Globalization;
 
 public class CurrencyUnionRedirectionOptions
 {
-    public CurrencyUnionRedirectionOptions() =>
-        this.CurrencyUnionRedirections = new Dictionary<string, string>
-(StringComparer.Ordinal)
+    public CurrencyUnionRedirectionOptions()
+        => this.CurrencyUnionRedirections = new Dictionary<string, string>(StringComparer.Ordinal)
         {
             {"GGP", "en-GB" /*"en-GG"*/},
             {"JEP", "en-GB" /*"en-JE"*/},
@@ -14,5 +13,5 @@ public class CurrencyUnionRedirectionOptions
             {"SHP", "en-GB"},
         };
 
-    public Dictionary<string, string> CurrencyUnionRedirections { get; set; }
+    public IDictionary<string, string> CurrencyUnionRedirections { get; }
 }

@@ -10,14 +10,14 @@ public interface ICorrelationService
     /// <summary>
     ///     Creates <see cref="CorrelationId" /> from string representation.
     /// </summary>
-    /// <param name="stringRepresentation"></param>
+    /// <param name="stringRepresentation">String Representation</param>
     /// <returns>Created <see cref="CorrelationId"/></returns>
     CorrelationId Create(string stringRepresentation);
 
     /// <summary>
     ///     Creates <see cref="CorrelationId" /> from binary representation.
     /// </summary>
-    /// <param name="binaryRepresentation"></param>
+    /// <param name="binaryRepresentation">Binary Representation</param>
     /// <returns>Created <see cref="CorrelationId"/></returns>
     CorrelationId Create(Seq<byte> binaryRepresentation);
 

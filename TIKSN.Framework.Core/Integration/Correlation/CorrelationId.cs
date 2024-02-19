@@ -25,31 +25,37 @@ public readonly struct CorrelationId : IEquatable<CorrelationId>
     /// <summary>
     ///     Implicitly convert <see cref="CorrelationId" /> to byte array.
     /// </summary>
-    /// <param name="correlationId"></param>
-    public static implicit operator Seq<byte>(CorrelationId correlationId) => correlationId.binaryRepresentation;
+    /// <param name="correlationId">Correlation Id</param>
+#pragma warning disable CA2225 // Operator overloads have named alternates
+
+    public static implicit operator Seq<byte>(CorrelationId correlationId)
+#pragma warning restore CA2225 // Operator overloads have named alternates
+        => correlationId.binaryRepresentation;
 
     /// <summary>
     ///     Implicitly convert <see cref="CorrelationId" /> to string.
     /// </summary>
-    /// <param name="correlationId"></param>
+    /// <param name="correlationId">Correlation Id</param>
     public static implicit operator string(CorrelationId correlationId) => correlationId.stringRepresentation;
+
+    public static bool operator !=(CorrelationId left, CorrelationId right) => !(left == right);
+
+    public static bool operator ==(CorrelationId left, CorrelationId right) => left.Equals(right);
 
     /// <summary>
     ///     Indicates whether this instance and a <paramref name="other" /> are equal by their binary representation.
     /// </summary>
-    /// <param name="other"></param>
-    /// <returns></returns>
+    /// <param name="other">Other Correlation Id</param>
     public bool Equals(CorrelationId other) =>
         this.binaryRepresentation.SequenceEqual(other.binaryRepresentation);
 
     /// <summary>
     ///     Indicates whether this instance and a specified object are equal.
     /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
+    /// <param name="obj">Other Correlation Id</param>
     public override bool Equals(object obj)
     {
-        if (obj is null or not CorrelationId)
+        if (obj is not CorrelationId)
         {
             return false;
         }
@@ -80,16 +86,11 @@ public readonly struct CorrelationId : IEquatable<CorrelationId>
     /// <summary>
     ///     Returns binary representation.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Binary Representation</returns>
     public Seq<byte> ToBinary() => this.binaryRepresentation;
 
     /// <summary>
     ///     Returns string representation.
     /// </summary>
-    /// <returns></returns>
     public override string ToString() => this.stringRepresentation;
-
-    public static bool operator ==(CorrelationId left, CorrelationId right) => left.Equals(right);
-
-    public static bool operator !=(CorrelationId left, CorrelationId right) => !(left == right);
 }

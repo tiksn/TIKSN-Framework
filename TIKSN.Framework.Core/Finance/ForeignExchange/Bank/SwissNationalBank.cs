@@ -178,14 +178,17 @@ public class SwissNationalBank : ISwissNationalBank
                 return decimal.One / counterRate;
             }
         }
-        else if (counterCurrency == SwissFranc)
+        else if (counterCurrency == SwissFranc &&
+            filtered.TryGetValue(baseCurrency, out var rate))
         {
-            if (filtered.TryGetValue(baseCurrency, out var rate))
-            {
-                return rate;
-            }
+            return rate;
         }
 
-        throw new ArgumentException("Currency pair not supported.");
+        throw new ArgumentException(
+            "Currency pair not supported.",
+            nameof(baseCurrency),
+            new ArgumentException(
+                "Currency pair not supported.",
+                nameof(counterCurrency)));
     }
 }

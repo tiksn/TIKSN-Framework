@@ -7,26 +7,24 @@ public class CachedCurrencyConverter : ICurrencyConverter
     private readonly ICurrencyConverter originalConverter;
     private readonly TimeProvider timeProvider;
 
-    public CachedCurrencyConverter(ICurrencyConverter originalConverter, TimeProvider timeProvider,
-        TimeSpan ratesCacheInterval, TimeSpan currencyPairsCacheInterval, int? ratesCacheCapacity = null,
+    public CachedCurrencyConverter(
+        ICurrencyConverter originalConverter,
+        TimeProvider timeProvider,
+        TimeSpan ratesCacheInterval,
+        TimeSpan currencyPairsCacheInterval,
+        int? ratesCacheCapacity = null,
         int? currencyPairsCacheCapacity = null)
     {
-        if (ratesCacheCapacity.HasValue)
+        if (ratesCacheCapacity < 0)
         {
-            if (ratesCacheCapacity.Value < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(ratesCacheCapacity),
-                    "Rates cache capacity can not be negative.");
-            }
+            throw new ArgumentOutOfRangeException(nameof(ratesCacheCapacity),
+                "Rates cache capacity can not be negative.");
         }
 
-        if (currencyPairsCacheCapacity.HasValue)
+        if (currencyPairsCacheCapacity < 0)
         {
-            if (currencyPairsCacheCapacity.Value < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(currencyPairsCacheCapacity),
-                    "Currency pairs cache capacity can not be negative.");
-            }
+            throw new ArgumentOutOfRangeException(nameof(currencyPairsCacheCapacity),
+                "Currency pairs cache capacity can not be negative.");
         }
 
         if (ratesCacheInterval < TimeSpan.Zero)
@@ -191,12 +189,9 @@ public class CachedCurrencyConverter : ICurrencyConverter
                 return true;
             }
         }
-        else
+        else if (cachedAsOn - actualAsOn < interval)
         {
-            if (cachedAsOn - actualAsOn < interval)
-            {
-                return true;
-            }
+            return true;
         }
 
         return false;
@@ -212,7 +207,7 @@ public class CachedCurrencyConverter : ICurrencyConverter
         return cachedItem;
     }
 
-    private class CachedCurrencyPairs : CachedData
+    private sealed class CachedCurrencyPairs : CachedData
     {
         public CachedCurrencyPairs(IEnumerable<CurrencyPair> currencyPairs, DateTimeOffset asOn,
             TimeProvider timeProvider)
@@ -235,7 +230,7 @@ public class CachedCurrencyConverter : ICurrencyConverter
         public void Update(TimeProvider timeProvider) => this.LastAccess = timeProvider.GetUtcNow();
     }
 
-    private class CachedRate : CachedData
+    private sealed class CachedRate : CachedData
     {
         public CachedRate(CurrencyPair pair, decimal exchangeRate, DateTimeOffset asOn, TimeProvider timeProvider)
         {

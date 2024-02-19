@@ -18,7 +18,7 @@ public class RavenRepository<TEntity, TIdentity> : IRepository<TEntity>, IQueryR
         this.session.StoreAsync(entity, entity.ID.ToString(), cancellationToken);
 
     public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken) =>
-        BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, this.AddAsync);
+        BatchOperationHelper.BatchOperationAsync(entities, this.AddAsync, cancellationToken);
 
     public Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken) =>
         this.session.Advanced.ExistsAsync(id.ToString(), cancellationToken);
@@ -52,7 +52,7 @@ public class RavenRepository<TEntity, TIdentity> : IRepository<TEntity>, IQueryR
     }
 
     public Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken) =>
-        BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, this.RemoveAsync);
+        BatchOperationHelper.BatchOperationAsync(entities, this.RemoveAsync, cancellationToken);
 
     public IAsyncEnumerable<TEntity> StreamAllAsync(CancellationToken cancellationToken) =>
         this.session.Query<TEntity>()
@@ -62,7 +62,7 @@ public class RavenRepository<TEntity, TIdentity> : IRepository<TEntity>, IQueryR
         this.session.StoreAsync(entity, entity.ID.ToString(), cancellationToken);
 
     public Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken) =>
-        BatchOperationHelper.BatchOperationAsync(entities, cancellationToken, this.UpdateAsync);
+        BatchOperationHelper.BatchOperationAsync(entities, this.UpdateAsync, cancellationToken);
 
     protected static Task<PageResult<TEntity>> PageAsync(
         IRavenQueryable<TEntity> query,

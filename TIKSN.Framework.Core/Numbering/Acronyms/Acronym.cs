@@ -7,8 +7,12 @@ using static LanguageExt.Prelude;
 
 namespace TIKSN.Numbering.Acronyms;
 
+#pragma warning disable CA1000 // Do not declare static members on generic types
+#pragma warning disable MA0018 // Do not declare static members on generic types (deprecated; use CA1000 instead)
+#pragma warning disable S4035 // Classes implementing "IEquatable<T>" should be sealed
 public abstract class Acronym<TSelf> : ISerial<TSelf>
-    where TSelf : Acronym<TSelf>, IAcronymLength<TSelf>
+#pragma warning restore S4035 // Classes implementing "IEquatable<T>" should be sealed
+    where TSelf : Acronym<TSelf>, IAcronymLength
 {
     private readonly string value;
 
@@ -82,7 +86,7 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
             return true;
         }
 
-        return this.value == other.value;
+        return string.Equals(this.value, other.value, StringComparison.OrdinalIgnoreCase);
     }
 
     public override bool Equals(object obj)
@@ -101,13 +105,13 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
     }
 
     public override int GetHashCode()
-        => this.value != null ? this.value.GetHashCode() : 0;
+        => (this.value?.GetHashCode(StringComparison.Ordinal)) ?? 0;
 
     public override string ToString()
         => this.value;
 
     public string ToString(string format, IFormatProvider formatProvider)
-        => this.value.ToString(formatProvider);
+        => this.value;
 
     public bool TryFormat(
         Span<char> destination,
@@ -115,16 +119,22 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
         ReadOnlySpan<char> format,
         IFormatProvider provider)
     {
-        var result = this.value.ToString(provider);
+        var result = this.value;
         charsWritten = Math.Min(result.Length, destination.Length);
         result.CopyTo(destination[..charsWritten]);
         return charsWritten == result.Length;
     }
 
+#pragma warning disable S3011 // Reflection should not be used to increase accessibility of classes, methods, or fields
+
     private static TSelf Create(string s, CultureInfo culture)
         => (TSelf)Activator.CreateInstance(typeof(TSelf),
             BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
-            null,
-            new object[] { s },
+            binder: null,
+            [s],
             culture);
+
+#pragma warning restore S3011 // Reflection should not be used to increase accessibility of classes, methods, or fields
 }
+#pragma warning restore MA0018 // Do not declare static members on generic types (deprecated; use CA1000 instead)
+#pragma warning restore CA1000 // Do not declare static members on generic types

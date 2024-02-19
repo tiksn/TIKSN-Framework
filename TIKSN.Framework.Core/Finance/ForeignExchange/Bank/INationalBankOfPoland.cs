@@ -4,6 +4,4 @@ namespace TIKSN.Finance.ForeignExchange.Bank;
 ///     Exchange rate converter of National Bank of Poland
 /// </summary>
 /// <seealso cref="ICurrencyConverter" />
-public interface INationalBankOfPoland : ICurrencyConverter, IExchangeRatesProvider
-{
-}
+public interface INationalBankOfPoland : ICurrencyConverter, IExchangeRatesProvider;

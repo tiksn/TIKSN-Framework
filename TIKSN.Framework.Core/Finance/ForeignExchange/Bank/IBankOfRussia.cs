@@ -1,5 +1,3 @@
 namespace TIKSN.Finance.ForeignExchange.Bank;
 
-public interface IBankOfRussia : ICurrencyConverter, IExchangeRatesProvider
-{
-}
+public interface IBankOfRussia : ICurrencyConverter, IExchangeRatesProvider;

@@ -11,12 +11,7 @@ public class SilentUserConfirmation : IUserConfirmation
             return true;
         }
 
-        if (noToAll)
-        {
-            return false;
-        }
-
-        return true;
+        return !noToAll;
     }
 
     public bool ShouldProcess(string target) => true;

@@ -66,7 +66,7 @@ public class ConsoleService : IConsoleService
 
     public int UserPrompt(string message, params string[] options)
     {
-        if (!options.Any())
+        if (options is null || options.Length == 0)
         {
             throw new ArgumentException("User prompt must contain at least one options",
                 nameof(options)); //TODO: localize

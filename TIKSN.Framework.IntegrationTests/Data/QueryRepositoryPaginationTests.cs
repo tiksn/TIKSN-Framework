@@ -24,6 +24,7 @@ public class QueryRepositoryPaginationTests
 
     [Theory]
     [InlineData("LiteDB")]
+    [InlineData("SQLite")]
     [InlineData("MongoDB")]
     public async Task GivenExchangeRates_WhenFirstPageRequested_ThenResultShouldMatch(string database)
     {

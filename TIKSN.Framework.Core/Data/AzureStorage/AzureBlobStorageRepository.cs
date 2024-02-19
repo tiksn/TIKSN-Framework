@@ -1,74 +1,66 @@
-using Microsoft.Azure.Storage;
-using Microsoft.Azure.Storage.Blob;
+using Azure.Storage.Blobs;
 using Microsoft.Extensions.Configuration;
 
 namespace TIKSN.Data.AzureStorage;
 
-public class AzureBlobStorageRepository : AzureStorageBase, IAzureBlobStorageRepository,
-    IAzureBlobStorageRepositoryInitializer
+public class AzureBlobStorageRepository
+    : IAzureBlobStorageRepository
+    , IAzureBlobStorageRepositoryInitializer
 {
-    private readonly BlobContainerPublicAccessType accessType;
+    private readonly BlobContainerClient blobContainerClient;
     private readonly string containerName;
-    private readonly OperationContext operationContext;
-    private readonly BlobRequestOptions options;
 
     public AzureBlobStorageRepository(
         string containerName,
         IConfigurationRoot configuration,
-        string connectionStringKey,
-        BlobContainerPublicAccessType accessType,
-        BlobRequestOptions options,
-        OperationContext operationContext) : base(configuration, connectionStringKey)
+        string connectionStringKey)
     {
+        if (string.IsNullOrWhiteSpace(containerName))
+        {
+            throw new ArgumentException($"'{nameof(containerName)}' cannot be null or empty or whitespace.", nameof(containerName));
+        }
+
+        ArgumentNullException.ThrowIfNull(configuration);
+
+        this.blobContainerClient = new BlobContainerClient(configuration.GetConnectionString(connectionStringKey), this.containerName);
+
         this.containerName = containerName;
-        this.accessType = accessType;
-        this.options = options;
-        this.operationContext = operationContext;
     }
 
     public Task DeleteAsync(string path, CancellationToken cancellationToken)
     {
-        var blob = this.GetCloudBlobContainer().GetBlobReference(path);
+        var blob = this.blobContainerClient.GetBlobClient(path);
 
-        return blob.DeleteAsync(DeleteSnapshotsOption.IncludeSnapshots, AccessCondition.GenerateEmptyCondition(),
-            this.options, this.operationContext, cancellationToken);
+        return blob.DeleteAsync(cancellationToken: cancellationToken);
     }
 
     public async Task<IFile> DownloadAsync(string path, CancellationToken cancellationToken)
     {
-        var blob = this.GetCloudBlobContainer().GetBlobReference(path);
+        var blob = this.blobContainerClient.GetBlobClient(path);
 
-        using var stream = new MemoryStream();
-        await blob.DownloadToStreamAsync(stream, AccessCondition.GenerateEmptyCondition(), this.options,
-            this.operationContext, cancellationToken).ConfigureAwait(false);
+        var contentResult = await blob.DownloadContentAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 
-        return new File(blob.Name, stream.ToArray());
+        return new File(blob.Name, contentResult.Value.Content.ToArray());
     }
 
-    public Task<bool> ExistsAsync(string path, CancellationToken cancellationToken)
+    public async Task<bool> ExistsAsync(string path, CancellationToken cancellationToken)
     {
-        var blob = this.GetCloudBlobContainer().GetBlobReference(path);
+        var blob = this.blobContainerClient.GetBlobClient(path);
 
-        return blob.ExistsAsync(this.options, this.operationContext, cancellationToken);
+        var result = await blob.ExistsAsync(cancellationToken).ConfigureAwait(false);
+
+        return result.Value;
     }
+
+    public Task InitializeAsync(CancellationToken cancellationToken)
+        => this.blobContainerClient.CreateIfNotExistsAsync(cancellationToken: cancellationToken);
 
     public Task UploadAsync(string path, byte[] content, CancellationToken cancellationToken)
     {
-        var blob = this.GetCloudBlobContainer().GetBlockBlobReference(path);
+        var blob = this.blobContainerClient.GetBlobClient(path);
 
-        return blob.UploadFromByteArrayAsync(content, 0, content.Length, AccessCondition.GenerateEmptyCondition(),
-            this.options, this.operationContext, cancellationToken);
-    }
+        var contentStream = new MemoryStream(content);
 
-    public Task InitializeAsync(CancellationToken cancellationToken) => this.GetCloudBlobContainer()
-        .CreateIfNotExistsAsync(this.accessType, this.options, this.operationContext, cancellationToken);
-
-    protected CloudBlobContainer GetCloudBlobContainer()
-    {
-        var storageAccount = this.GetCloudStorageAccount();
-
-        var blobClient = storageAccount.CreateCloudBlobClient();
-
-        return blobClient.GetContainerReference(this.containerName);
+        return blob.UploadAsync(contentStream, cancellationToken);
     }
 }

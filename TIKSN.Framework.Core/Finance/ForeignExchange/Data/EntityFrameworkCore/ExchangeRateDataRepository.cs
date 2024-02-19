@@ -3,8 +3,9 @@ using TIKSN.Data.EntityFrameworkCore;
 
 namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore;
 
-public class ExchangeRateDataRepository : EntityQueryRepository<ExchangeRatesContext, ExchangeRateDataEntity, Guid>,
-    IExchangeRateDataRepository
+public class ExchangeRateDataRepository
+    : EntityQueryRepository<ExchangeRatesContext, ExchangeRateDataEntity, Guid>
+    , IExchangeRateDataRepository
 {
     public ExchangeRateDataRepository(ExchangeRatesContext dbContext) : base(dbContext)
     {
@@ -16,8 +17,8 @@ public class ExchangeRateDataRepository : EntityQueryRepository<ExchangeRatesCon
         string counterCurrencyCode,
         DateTime dateFrom,
         DateTime dateTo,
-        CancellationToken cancellationToken) =>
-        await this.Entities
+        CancellationToken cancellationToken)
+        => await this.Entities
             .Where(item =>
                 item.BaseCurrencyCode == baseCurrencyCode &&
                 item.CounterCurrencyCode == counterCurrencyCode &&
@@ -25,4 +26,18 @@ public class ExchangeRateDataRepository : EntityQueryRepository<ExchangeRatesCon
                 item.AsOn >= dateFrom && item.AsOn <= dateTo)
             .Include(item => item.ForeignExchange)
             .ToArrayAsync(cancellationToken).ConfigureAwait(false);
+
+    public async Task<IReadOnlyList<ExchangeRateDataEntity>> SearchAsync(
+        string baseCurrencyCode,
+        string counterCurrencyCode,
+        DateTime dateFrom,
+        DateTime dateTo,
+        CancellationToken cancellationToken)
+        => await this.Entities
+        .Where(item =>
+            item.BaseCurrencyCode == baseCurrencyCode &&
+            item.CounterCurrencyCode == counterCurrencyCode &&
+            item.AsOn >= dateFrom && item.AsOn <= dateTo)
+        .Include(item => item.ForeignExchange)
+        .ToArrayAsync(cancellationToken).ConfigureAwait(false);
 }

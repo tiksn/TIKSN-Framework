@@ -39,7 +39,7 @@ public class NationalBankOfUkraine : INationalBankOfUkraine
     /// <param name="baseMoney">The base money.</param>
     /// <param name="counterCurrency">The counter currency.</param>
     /// <param name="asOn">As on.</param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="cancellationToken">Cancellation Token</param>
     /// <returns>Converted Amount</returns>
     /// <exception cref="ArgumentNullException"></exception>
     public async Task<Money> ConvertCurrencyAsync(
@@ -60,7 +60,7 @@ public class NationalBankOfUkraine : INationalBankOfUkraine
     ///     Gets the currency pairs asynchronous.
     /// </summary>
     /// <param name="asOn">As on.</param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="cancellationToken">Cancellation Token</param>
     /// <returns>Supported Currency Pairs</returns>
     public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
         DateTimeOffset asOn,
@@ -76,7 +76,7 @@ public class NationalBankOfUkraine : INationalBankOfUkraine
     /// </summary>
     /// <param name="pair">The pair.</param>
     /// <param name="asOn">As on.</param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="cancellationToken">Cancellation Token</param>
     /// <returns>Exchange Rate</returns>
     /// <exception cref="ArgumentNullException"></exception>
     public Task<decimal> GetExchangeRateAsync(

@@ -7,11 +7,11 @@ public interface IExchangeRateService
     /// <summary>
     /// Converts Currency pairs
     /// </summary>
-    /// <param name="baseMoney"></param>
-    /// <param name="counterCurrency"></param>
-    /// <param name="asOn"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <param name="baseMoney">Initial Money</param>
+    /// <param name="counterCurrency">Convert to Currency</param>
+    /// <param name="asOn">Date and Time for which exchange rate will be requested</param>
+    /// <param name="cancellationToken">Cancellation Token</param>
+    /// <returns>Converted Money</returns>
     Task<Option<Money>> ConvertCurrencyAsync(
         Money baseMoney,
         CurrencyInfo counterCurrency,
@@ -21,12 +21,12 @@ public interface IExchangeRateService
     /// <summary>
     /// Converts Currency pairs allowing Double Conversion via Intermediary Currency
     /// </summary>
-    /// <param name="baseMoney"></param>
-    /// <param name="counterCurrency"></param>
-    /// <param name="asOn"></param>
-    /// <param name="intermediaryCurrency"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <param name="baseMoney">Initial Money</param>
+    /// <param name="counterCurrency">Convert to Currency</param>
+    /// <param name="asOn">Date and Time for which exchange rate will be requested</param>
+    /// <param name="intermediaryCurrency">Convert via Intermediary Currency</param>
+    /// <param name="cancellationToken">Cancellation Token</param>
+    /// <returns>Converted Money</returns>
     Task<Option<Money>> ConvertCurrencyAsync(
         Money baseMoney,
         CurrencyInfo counterCurrency,
@@ -37,10 +37,10 @@ public interface IExchangeRateService
     /// <summary>
     /// Gets Exchange Rate
     /// </summary>
-    /// <param name="pair"></param>
-    /// <param name="asOn"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <param name="pair">Conversion Currency Pairs</param>
+    /// <param name="asOn">Date and Time for which exchange rate will be requested</param>
+    /// <param name="cancellationToken">Cancellation Token</param>
+    /// <returns>Exchange Rate</returns>
     Task<Option<decimal>> GetExchangeRateAsync(
         CurrencyPair pair,
         DateTimeOffset asOn,
@@ -49,11 +49,11 @@ public interface IExchangeRateService
     /// <summary>
     /// Gets Exchange Rate allowing Double Conversion via Intermediary Currency
     /// </summary>
-    /// <param name="pair"></param>
-    /// <param name="asOn"></param>
-    /// <param name="intermediaryCurrency"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <param name="pair">Conversion Currency Pairs</param>
+    /// <param name="asOn">Date and Time for which exchange rates will be requested</param>
+    /// <param name="intermediaryCurrency">Convert via Intermediary Currency</param>
+    /// <param name="cancellationToken">Cancellation Token</param>
+    /// <returns>Exchange Rate</returns>
     Task<Option<decimal>> GetExchangeRateAsync(
         CurrencyPair pair,
         DateTimeOffset asOn,

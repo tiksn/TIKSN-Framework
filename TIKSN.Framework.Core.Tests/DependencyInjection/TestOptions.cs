@@ -1,9 +1,8 @@
 using System;
 
-namespace TIKSN.DependencyInjection.Tests
+namespace TIKSN.Tests.DependencyInjection;
+
+public class TestOptions
 {
-    public class TestOptions
-    {
-        public Uri Address { get; set; }
-    }
+    public Uri Address { get; set; }
 }

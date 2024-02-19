@@ -15,5 +15,6 @@ public class MongoDbExchangeRateServiceTestModule : Module
         _ = builder.RegisterType<ExchangeRateRepositoryAdapter>().As<IExchangeRateRepository>().InstancePerLifetimeScope();
         _ = builder.RegisterType<ForeignExchangeRepositoryAdapter>().As<IForeignExchangeRepository>().InstancePerLifetimeScope();
         _ = builder.RegisterType<MongoUnitOfWorkFactory>().As<IUnitOfWorkFactory>().InstancePerLifetimeScope();
+        _ = builder.RegisterType<NullDatabaseInitializer>().As<IDatabaseInitializer>().InstancePerLifetimeScope();
     }
 }

@@ -2,9 +2,8 @@ namespace TIKSN.Globalization;
 
 public class RegionalCurrencyRedirectionOptions
 {
-    public RegionalCurrencyRedirectionOptions() =>
-        this.RegionalCurrencyRedirections = new Dictionary<string, string>
-(StringComparer.Ordinal)
+    public RegionalCurrencyRedirectionOptions()
+        => this.RegionalCurrencyRedirections = new Dictionary<string, string>(StringComparer.Ordinal)
         {
             {"001", "en-US"},
             {"150", "en-BE"},
@@ -12,5 +11,5 @@ public class RegionalCurrencyRedirectionOptions
             {"419", "en-US"},
         };
 
-    public Dictionary<string, string> RegionalCurrencyRedirections { get; set; }
+    public IDictionary<string, string> RegionalCurrencyRedirections { get; }
 }

@@ -10,23 +10,12 @@ public class Base62CorrelationService : ICorrelationService
 {
     private const string Alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private const int Radix = 62;
-    private static readonly IReadOnlyDictionary<char, int> CodeMap;
+    private static readonly IReadOnlyDictionary<char, int> CodeMap = CreateCodeMap();
 
     private readonly IOptions<Base62CorrelationServiceOptions> base62CorrelationServiceOptions;
     private readonly ICustomDeserializer<byte[], BigInteger> bigIntegerBinaryDeserializer;
     private readonly ICustomSerializer<byte[], BigInteger> bigIntegerBinarySerializer;
     private readonly Random random;
-
-    static Base62CorrelationService()
-    {
-        var codeMap = new Dictionary<char, int>();
-
-        Alphabet
-            .ToCharArray()
-            .ForEach(codeMap.Add);
-
-        CodeMap = codeMap;
-    }
 
     public Base62CorrelationService(
         Random random,
@@ -46,6 +35,11 @@ public class Base62CorrelationService : ICorrelationService
 
     public CorrelationId Create(string stringRepresentation)
     {
+        if (string.IsNullOrWhiteSpace(stringRepresentation))
+        {
+            throw new ArgumentException($"'{nameof(stringRepresentation)}' cannot be null or whitespace.", nameof(stringRepresentation));
+        }
+
         var number = BigInteger.Zero;
 
         foreach (var c in stringRepresentation)
@@ -82,8 +76,21 @@ public class Base62CorrelationService : ICorrelationService
     public CorrelationId Generate()
     {
         var byteArrayRepresentation = new byte[this.base62CorrelationServiceOptions.Value.ByteLength];
+#pragma warning disable CA5394 // Do not use insecure randomness
         this.random.NextBytes(byteArrayRepresentation);
+#pragma warning restore CA5394 // Do not use insecure randomness
         var binaryRepresentation = Seq(byteArrayRepresentation);
         return this.Create(binaryRepresentation);
+    }
+
+    private static Dictionary<char, int> CreateCodeMap()
+    {
+        var codeMap = new Dictionary<char, int>();
+
+        Alphabet
+            .ToCharArray()
+            .ForEach(codeMap.Add);
+
+        return codeMap;
     }
 }

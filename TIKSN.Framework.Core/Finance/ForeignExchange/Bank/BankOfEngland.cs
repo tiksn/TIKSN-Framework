@@ -1,112 +1,18 @@
 using System.Globalization;
+using System.Text;
 using System.Xml.Linq;
 
 namespace TIKSN.Finance.ForeignExchange.Bank;
 
 public class BankOfEngland : IBankOfEngland
 {
-    private const string UrlFormat =
-        "https://www.bankofengland.co.uk/boeapps/iadb/fromshowcolumns.asp?CodeVer=new&xml.x=yes&Datefrom={0}&Dateto={1}&SeriesCodes={2}";
+    private static readonly (Dictionary<CurrencyPair, string>, Dictionary<string, CurrencyPair>) SeriesCodesMaps = CreateSeriesCodesMaps();
 
-    private static readonly Dictionary<string, CurrencyPair> Pairs;
-    private static readonly Dictionary<CurrencyPair, string> SeriesCodes;
+    private static readonly CompositeFormat UrlFormat =
+            CompositeFormat.Parse("https://www.bankofengland.co.uk/boeapps/iadb/fromshowcolumns.asp?CodeVer=new&xml.x=yes&Datefrom={0}&Dateto={1}&SeriesCodes={2}");
+
     private readonly HttpClient httpClient;
     private readonly TimeProvider timeProvider;
-
-    static BankOfEngland()
-    {
-        SeriesCodes = [];
-        Pairs = new Dictionary<string, CurrencyPair>(StringComparer.Ordinal);
-
-        AddSeriesCode("en-AU", "en-US", "XUDLADD");
-        AddSeriesCode("en-AU", "en-GB", "XUDLADS");
-
-        AddSeriesCode("en-CA", "en-GB", "XUDLCDS");
-
-        AddSeriesCode("zh-CN", "en-US", "XUDLBK73");
-
-        AddSeriesCode("cs-CZ", "en-US", "XUDLBK27");
-        AddSeriesCode("cs-CZ", "en-GB", "XUDLBK25");
-
-        AddSeriesCode("da-DK", "en-US", "XUDLDKD");
-        AddSeriesCode("da-DK", "en-GB", "XUDLDKS");
-
-        AddSeriesCode("de-DE", "en-US", "XUDLERD");
-        AddSeriesCode("de-DE", "en-GB", "XUDLERS");
-
-        AddSeriesCode("zh-HK", "en-US", "XUDLHDD");
-        AddSeriesCode("zh-HK", "en-GB", "XUDLHDS");
-
-        AddSeriesCode("hu-HU", "en-US", "XUDLBK35");
-        AddSeriesCode("hu-HU", "en-GB", "XUDLBK33");
-
-        AddSeriesCode("hi-IN", "en-GB", "XUDLBK97");
-        AddSeriesCode("hi-IN", "en-US", "XUDLBK64");
-
-        AddSeriesCode("he-IL", "en-GB", "XUDLBK78");
-        AddSeriesCode("he-IL", "en-US", "XUDLBK65");
-
-        AddSeriesCode("ja-JP", "en-US", "XUDLJYD");
-        AddSeriesCode("ja-JP", "en-GB", "XUDLJYS");
-
-        //AddSeriesCode("LV", "en-US", "XUDLBK43");
-        //AddSeriesCode("LV", "de-DE", "XUDLBK42");
-        //AddSeriesCode("LV", "en-GB", "XUDLBK39");
-
-        //AddSeriesCode("lt-LT", "en-US", "XUDLBK38");
-        //AddSeriesCode("lt-LT", "de-DE", "XUDLBK37");
-        //AddSeriesCode("lt-LT", "en-GB", "XUDLBK36");
-
-        AddSeriesCode("ms-MY", "en-GB", "XUDLBK83");
-        AddSeriesCode("ms-MY", "en-US", "XUDLBK66");
-
-        AddSeriesCode("en-NZ", "en-US", "XUDLNDD");
-        AddSeriesCode("en-NZ", "en-GB", "XUDLNDS");
-
-        AddSeriesCode("nn-NO", "en-US", "XUDLNKD");
-        AddSeriesCode("nn-NO", "en-GB", "XUDLNKS");
-
-        AddSeriesCode("pl-PL", "en-US", "XUDLBK49");
-        AddSeriesCode("pl-PL", "en-GB", "XUDLBK47");
-
-        // AddSeriesCode("ru-RU", "en-GB", "XUDLBK85");
-        // AddSeriesCode("ru-RU", "en-US", "XUDLBK69");
-
-        AddSeriesCode("ar-SA", "en-US", "XUDLSRD");
-        AddSeriesCode("ar-SA", "en-GB", "XUDLSRS");
-
-        AddSeriesCode("zh-SG", "en-US", "XUDLSGD");
-        AddSeriesCode("zh-SG", "en-GB", "XUDLSGS");
-
-        AddSeriesCode("af-ZA", "en-US", "XUDLZRD");
-        AddSeriesCode("af-ZA", "en-GB", "XUDLZRS");
-
-        AddSeriesCode("ko-KR", "en-GB", "XUDLBK93");
-        AddSeriesCode("ko-KR", "en-US", "XUDLBK74");
-
-        AddSeriesCode("en-GB", "en-US", "XUDLGBD");
-
-        AddSeriesCode("se-SE", "en-US", "XUDLSKD");
-        AddSeriesCode("se-SE", "en-GB", "XUDLSKS");
-
-        AddSeriesCode("de-CH", "en-US", "XUDLSFD");
-        AddSeriesCode("de-CH", "en-GB", "XUDLSFS");
-
-        AddSeriesCode("zh-TW", "en-US", "XUDLTWD");
-        AddSeriesCode("zh-TW", "en-GB", "XUDLTWS");
-
-        AddSeriesCode("th-TH", "en-GB", "XUDLBK87");
-        AddSeriesCode("th-TH", "en-US", "XUDLBK72");
-
-        AddSeriesCode("tr-TR", "en-GB", "XUDLBK95");
-        AddSeriesCode("tr-TR", "en-US", "XUDLBK75");
-
-        AddSeriesCode("en-US", "en-GB", "XUDLUSS");
-
-        //AddSeriesCode("pt-BR", "en-US", "XUDLB8KL");
-
-        AddSeriesCode("zh-CN", "en-GB", "XUDLBK89");
-    }
 
     public BankOfEngland(
         HttpClient httpClient,
@@ -115,6 +21,9 @@ public class BankOfEngland : IBankOfEngland
         this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
+
+    private static Dictionary<string, CurrencyPair> Pairs => SeriesCodesMaps.Item2;
+    private static Dictionary<CurrencyPair, string> SeriesCodes => SeriesCodesMaps.Item1;
 
     public async Task<Money> ConvertCurrencyAsync(
         Money baseMoney,
@@ -191,15 +100,14 @@ public class BankOfEngland : IBankOfEngland
         }
         catch (KeyNotFoundException)
         {
-            throw new ArgumentException($"Currency pair {pair} not supported.");
+            throw new ArgumentException($"Currency pair {pair} not supported.", nameof(baseCurrency));
         }
 
         var exchangeRates = await this.GetSeriesCodeExchangeRateAsync(seriesCode, asOn, cancellationToken).ConfigureAwait(false);
 
         return exchangeRates
             .Where(x => x.Pair == pair)
-            .MinByWithTies(x => x.AsOn - asOn)
-            .First();
+            .MinByWithTies(x => x.AsOn - asOn)[0];
     }
 
     public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
@@ -214,7 +122,11 @@ public class BankOfEngland : IBankOfEngland
         return rates;
     }
 
-    private static void AddSeriesCode(string baseCountryCode, string counterCountryCode, string serieCode)
+    private static void AddSeriesCode(
+        List<(CurrencyPair pair, string serieCode)> codes,
+        string baseCountryCode,
+        string counterCountryCode,
+        string serieCode)
     {
         var baseCountry = new RegionInfo(baseCountryCode);
         var counterCountry = new RegionInfo(counterCountryCode);
@@ -224,8 +136,94 @@ public class BankOfEngland : IBankOfEngland
 
         var pair = new CurrencyPair(baseCurrency, counterCurrency);
 
-        SeriesCodes.Add(pair, serieCode);
-        Pairs.Add(serieCode, pair);
+        codes.Add((pair, serieCode));
+    }
+
+#pragma warning disable MA0051 // Method is too long
+    private static (Dictionary<CurrencyPair, string>, Dictionary<string, CurrencyPair>) CreateSeriesCodesMaps()
+#pragma warning restore MA0051 // Method is too long
+    {
+        List<(CurrencyPair pair, string serieCode)> codes = [];
+
+        AddSeriesCode(codes, "en-AU", "en-US", "XUDLADD");
+        AddSeriesCode(codes, "en-AU", "en-GB", "XUDLADS");
+
+        AddSeriesCode(codes, "en-CA", "en-GB", "XUDLCDS");
+
+        AddSeriesCode(codes, "zh-CN", "en-US", "XUDLBK73");
+
+        AddSeriesCode(codes, "cs-CZ", "en-US", "XUDLBK27");
+        AddSeriesCode(codes, "cs-CZ", "en-GB", "XUDLBK25");
+
+        AddSeriesCode(codes, "da-DK", "en-US", "XUDLDKD");
+        AddSeriesCode(codes, "da-DK", "en-GB", "XUDLDKS");
+
+        AddSeriesCode(codes, "de-DE", "en-US", "XUDLERD");
+        AddSeriesCode(codes, "de-DE", "en-GB", "XUDLERS");
+
+        AddSeriesCode(codes, "zh-HK", "en-US", "XUDLHDD");
+        AddSeriesCode(codes, "zh-HK", "en-GB", "XUDLHDS");
+
+        AddSeriesCode(codes, "hu-HU", "en-US", "XUDLBK35");
+        AddSeriesCode(codes, "hu-HU", "en-GB", "XUDLBK33");
+
+        AddSeriesCode(codes, "hi-IN", "en-GB", "XUDLBK97");
+        AddSeriesCode(codes, "hi-IN", "en-US", "XUDLBK64");
+
+        AddSeriesCode(codes, "he-IL", "en-GB", "XUDLBK78");
+        AddSeriesCode(codes, "he-IL", "en-US", "XUDLBK65");
+
+        AddSeriesCode(codes, "ja-JP", "en-US", "XUDLJYD");
+        AddSeriesCode(codes, "ja-JP", "en-GB", "XUDLJYS");
+
+        AddSeriesCode(codes, "ms-MY", "en-GB", "XUDLBK83");
+        AddSeriesCode(codes, "ms-MY", "en-US", "XUDLBK66");
+
+        AddSeriesCode(codes, "en-NZ", "en-US", "XUDLNDD");
+        AddSeriesCode(codes, "en-NZ", "en-GB", "XUDLNDS");
+
+        AddSeriesCode(codes, "nn-NO", "en-US", "XUDLNKD");
+        AddSeriesCode(codes, "nn-NO", "en-GB", "XUDLNKS");
+
+        AddSeriesCode(codes, "pl-PL", "en-US", "XUDLBK49");
+        AddSeriesCode(codes, "pl-PL", "en-GB", "XUDLBK47");
+
+        AddSeriesCode(codes, "ar-SA", "en-US", "XUDLSRD");
+        AddSeriesCode(codes, "ar-SA", "en-GB", "XUDLSRS");
+
+        AddSeriesCode(codes, "zh-SG", "en-US", "XUDLSGD");
+        AddSeriesCode(codes, "zh-SG", "en-GB", "XUDLSGS");
+
+        AddSeriesCode(codes, "af-ZA", "en-US", "XUDLZRD");
+        AddSeriesCode(codes, "af-ZA", "en-GB", "XUDLZRS");
+
+        AddSeriesCode(codes, "ko-KR", "en-GB", "XUDLBK93");
+        AddSeriesCode(codes, "ko-KR", "en-US", "XUDLBK74");
+
+        AddSeriesCode(codes, "en-GB", "en-US", "XUDLGBD");
+
+        AddSeriesCode(codes, "se-SE", "en-US", "XUDLSKD");
+        AddSeriesCode(codes, "se-SE", "en-GB", "XUDLSKS");
+
+        AddSeriesCode(codes, "de-CH", "en-US", "XUDLSFD");
+        AddSeriesCode(codes, "de-CH", "en-GB", "XUDLSFS");
+
+        AddSeriesCode(codes, "zh-TW", "en-US", "XUDLTWD");
+        AddSeriesCode(codes, "zh-TW", "en-GB", "XUDLTWS");
+
+        AddSeriesCode(codes, "th-TH", "en-GB", "XUDLBK87");
+        AddSeriesCode(codes, "th-TH", "en-US", "XUDLBK72");
+
+        AddSeriesCode(codes, "tr-TR", "en-GB", "XUDLBK95");
+        AddSeriesCode(codes, "tr-TR", "en-US", "XUDLBK75");
+
+        AddSeriesCode(codes, "en-US", "en-GB", "XUDLUSS");
+
+        AddSeriesCode(codes, "zh-CN", "en-GB", "XUDLBK89");
+
+        return ValueTuple.Create(
+            codes.ToDictionary(k => k.pair, v => v.serieCode),
+            codes.ToDictionary(k => k.serieCode, v => v.pair, StringComparer.Ordinal));
     }
 
     private static string ToInternalDataFormat(DateTimeOffset dt) =>

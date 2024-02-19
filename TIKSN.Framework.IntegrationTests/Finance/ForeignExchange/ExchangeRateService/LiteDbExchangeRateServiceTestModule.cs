@@ -16,5 +16,6 @@ public class LiteDbExchangeRateServiceTestModule : Module
         _ = builder.RegisterType<ForeignExchangeRepositoryAdapter>().As<IForeignExchangeRepository>().InstancePerLifetimeScope();
         _ = builder.RegisterType<TestLiteDbDatabaseProvider>().As<ILiteDbDatabaseProvider>().SingleInstance();
         _ = builder.RegisterType<NullUnitOfWorkFactory>().As<IUnitOfWorkFactory>().InstancePerLifetimeScope();
+        _ = builder.RegisterType<NullDatabaseInitializer>().As<IDatabaseInitializer>().InstancePerLifetimeScope();
     }
 }
