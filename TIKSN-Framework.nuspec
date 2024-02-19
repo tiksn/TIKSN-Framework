@@ -21,7 +21,7 @@
       Localization, Serialization, Rest Requester, Rest Repository, Dependency Injection,
       Composition Root Setup base classes.</description>
     <copyright>Copyright © 2023, TIKSN Lab</copyright>
-    <releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/milestone/20</releaseNotes>
+    <releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/milestone/21</releaseNotes>
     <language />
     <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry,
       Configuration, Azure Storage, MongoDB, NoDB, Rest, Localization, Dependency Injection, MAUI</tags>
