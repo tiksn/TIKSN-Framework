@@ -1,8 +1,8 @@
 namespace TIKSN.Data;
 
-public interface IUnitOfWork : IDisposable, IAsyncDisposable
+public interface IUnitOfWork : IAsyncDisposable
 {
-    public IServiceProvider Services { get; }
+    IServiceProvider Services { get; }
 
     Task CompleteAsync(CancellationToken cancellationToken);
 
