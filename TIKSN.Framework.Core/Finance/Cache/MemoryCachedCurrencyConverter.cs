@@ -5,7 +5,7 @@ using TIKSN.Data.Cache.Memory;
 
 namespace TIKSN.Finance.Cache;
 
-public class MemoryCachedCurrencyConverter : MemoryCacheDecoratorBase<MemoryCachedCurrencyConverterEntry>,
+public partial class MemoryCachedCurrencyConverter : MemoryCacheDecoratorBase<MemoryCachedCurrencyConverterEntry>,
     ICurrencyConverter
 {
     private static readonly Type MemoryCachedCurrencyConverterEntryType =
@@ -80,13 +80,18 @@ public class MemoryCachedCurrencyConverter : MemoryCacheDecoratorBase<MemoryCach
         return cacheEntry.ExchangeRate;
     }
 
+    [LoggerMessage(
+        EventId = 469189242,
+        Level = LogLevel.Warning,
+        Message = "CacheInterval is 0, which makes caching redundant.")]
+    private static partial void CacheIntervalIsZero(
+        ILogger logger);
+
     private long GetCacheIntervalKey(DateTimeOffset asOn)
     {
         if (this.options.Value.CacheInterval.Ticks == 0L)
         {
-            this.logger.LogWarning(
-                469189242,
-                "CacheInterval is 0, which makes caching redundant.");
+            CacheIntervalIsZero(this.logger);
 
             return 0L;
         }
