@@ -28,9 +28,12 @@ public class RestRequester : IRestRequester
                                                     nameof(restAuthenticationTokenProvider));
     }
 
+#pragma warning disable MA0051 // Method is too long
+
     public async Task<TResult> RequestAsync<TResult, TRequest>(
         TRequest request,
         CancellationToken cancellationToken)
+#pragma warning restore MA0051 // Method is too long
     {
         var requestType = request.GetType().GetTypeInfo();
 
@@ -119,6 +122,28 @@ public class RestRequester : IRestRequester
         this.serializerRestFactory.Create(requestContentMediaType).Serialize(requestContent), Encoding.UTF8,
         requestContentMediaType);
 
+    private async Task<HttpResponseMessage> MakePostRequestAsync(
+        HttpClient httpClient,
+        Uri requestUrl,
+        object requestContent,
+        string requestContentMediaType,
+        CancellationToken cancellationToken)
+    {
+        using var content = this.GetContent(requestContent, requestContentMediaType);
+        return await httpClient.PostAsync(requestUrl, content, cancellationToken).ConfigureAwait(false);
+    }
+
+    private async Task<HttpResponseMessage> MakePutRequestAsync(
+        HttpClient httpClient,
+        Uri requestUrl,
+        object requestContent,
+        string requestContentMediaType,
+        CancellationToken cancellationToken)
+    {
+        using var content = this.GetContent(requestContent, requestContentMediaType);
+        return await httpClient.PutAsync(requestUrl, content, cancellationToken).ConfigureAwait(false);
+    }
+
     private async Task<TResult> MakeRequestAsync<TResult>(
         HttpClient httpClient,
         RestVerb verb,
@@ -128,18 +153,19 @@ public class RestRequester : IRestRequester
         string responseContentMediaType,
         CancellationToken cancellationToken)
     {
-        var response = verb switch
+        using var response = verb switch
         {
             RestVerb.Get => await httpClient.GetAsync(requestUrl, cancellationToken).ConfigureAwait(false),
             RestVerb.Delete => await httpClient.DeleteAsync(requestUrl, cancellationToken).ConfigureAwait(false),
-            RestVerb.Put => await httpClient.PutAsync(requestUrl, this.GetContent(requestContent, requestContentMediaType), cancellationToken).ConfigureAwait(false),
-            RestVerb.Post => await httpClient.PostAsync(requestUrl, this.GetContent(requestContent, requestContentMediaType), cancellationToken).ConfigureAwait(false),
+            RestVerb.Put => await this.MakePutRequestAsync(httpClient, requestUrl, requestContent, requestContentMediaType, cancellationToken).ConfigureAwait(false),
+            RestVerb.Post => await this.MakePostRequestAsync(httpClient, requestUrl, requestContent, requestContentMediaType, cancellationToken).ConfigureAwait(false),
             _ => throw new NotSupportedException($"Request method '{verb}' is not supported."),
         };
         return await this.ParseResponseAsync<TResult>(response, responseContentMediaType).ConfigureAwait(false);
     }
 
-    private async Task<TResult> ParseResponseAsync<TResult>(HttpResponseMessage response,
+    private async Task<TResult> ParseResponseAsync<TResult>(
+        HttpResponseMessage response,
         string responseContentMediaType)
     {
         var result = default(TResult);

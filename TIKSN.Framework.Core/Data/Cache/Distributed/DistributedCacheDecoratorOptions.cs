@@ -7,6 +7,8 @@ public class DistributedCacheDecoratorOptions
     public TimeSpan? SlidingExpiration { get; set; }
 }
 
-public class DistributedCacheDecoratorOptions<T> : DistributedCacheDecoratorOptions
-{
-}
+#pragma warning disable S2094 // Classes should not be empty
+#pragma warning disable S2326 // Unused type parameters should be removed
+public class DistributedCacheDecoratorOptions<T> : DistributedCacheDecoratorOptions;
+#pragma warning restore S2326 // Unused type parameters should be removed
+#pragma warning restore S2094 // Classes should not be empty

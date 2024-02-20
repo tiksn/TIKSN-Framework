@@ -6,7 +6,7 @@ using TIKSN.Data;
 
 namespace TIKSN.Web.Rest;
 
-public class RestRepository<TEntity, TIdentity> :
+public partial class RestRepository<TEntity, TIdentity> :
     IRestRepository<TEntity, TIdentity>, IRestBulkRepository<TEntity, TIdentity>,
     IRepository<TEntity>
     where TEntity : IEntity<TIdentity>
@@ -73,7 +73,7 @@ public class RestRepository<TEntity, TIdentity> :
     {
         ArgumentNullException.ThrowIfNull(entities);
 
-        this.logger.LogWarning(1975130298, "TIKSN.Web.Rest.RestRepository.RemoveRangeAsync method is not advised to use");
+        DoNotUseRemoveRange(this.logger);
 
         foreach (var entity in entities)
         {
@@ -152,6 +152,12 @@ public class RestRepository<TEntity, TIdentity> :
 
         return await this.ObjectifyResponseAsync<TEntity>(response, defaultIfNotFound: true).ConfigureAwait(false);
     }
+
+    [LoggerMessage(
+        EventId = 1975130298,
+        Level = LogLevel.Warning,
+        Message = "TIKSN.Web.Rest.RestRepository.RemoveRangeAsync method is not advised to use")]
+    private static partial void DoNotUseRemoveRange(ILogger logger);
 
     private async Task AddObjectAsync(object requestContent, CancellationToken cancellationToken)
     {

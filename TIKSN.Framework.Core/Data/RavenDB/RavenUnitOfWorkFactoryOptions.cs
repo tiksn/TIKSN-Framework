@@ -1,9 +1,8 @@
 namespace TIKSN.Data.RavenDB;
 
-public class RavenUnitOfWorkFactoryOptions<TUnitOfWork>
-    where TUnitOfWork : IUnitOfWork
+public class RavenUnitOfWorkFactoryOptions
 {
-    public string[] Urls { get; set; }
+    public IReadOnlyList<string> Urls { get; set; }
 
     public string Database { get; set; }
 }

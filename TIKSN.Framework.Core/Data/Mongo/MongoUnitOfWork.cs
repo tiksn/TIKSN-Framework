@@ -8,7 +8,9 @@ public class MongoUnitOfWork : UnitOfWorkBase
     private readonly IClientSessionHandle clientSessionHandle;
     private readonly AsyncServiceScope serviceScope;
 
-    public MongoUnitOfWork(IClientSessionHandle clientSessionHandle, AsyncServiceScope serviceScope)
+    public MongoUnitOfWork(
+        IClientSessionHandle clientSessionHandle,
+        AsyncServiceScope serviceScope)
     {
         this.clientSessionHandle =
             clientSessionHandle ?? throw new ArgumentNullException(nameof(clientSessionHandle));
@@ -27,6 +29,9 @@ public class MongoUnitOfWork : UnitOfWorkBase
     {
         await base.DisposeAsync().ConfigureAwait(false);
         await this.serviceScope.DisposeAsync().ConfigureAwait(false);
+#pragma warning disable S3971 // "GC.SuppressFinalize" should not be called
+        GC.SuppressFinalize(this);
+#pragma warning restore S3971 // "GC.SuppressFinalize" should not be called
     }
 
     protected override bool IsDirty() => this.clientSessionHandle.WrappedCoreSession.IsDirty;
