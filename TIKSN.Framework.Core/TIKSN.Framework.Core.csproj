@@ -84,7 +84,7 @@
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.1" />
     <PackageReference Include="ReactiveUI" Version="19.5.41" />
     <PackageReference Include="RavenDB.Client" Version="6.0.100" />
-    <PackageReference Include="Roslynator.Analyzers" Version="4.10.0">
+    <PackageReference Include="Roslynator.Analyzers" Version="4.11.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
