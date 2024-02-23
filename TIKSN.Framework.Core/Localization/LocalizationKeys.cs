@@ -5,7 +5,6 @@ namespace TIKSN.Localization;
 /// </summary>
 public static class LocalizationKeys
 {
-
     /// <summary>
     /// Key: 129408349
     /// Original Value: TIKSN Development
@@ -182,7 +181,7 @@ public static class LocalizationKeys
 
     /// <summary>
     /// Key: 444677337
-    /// Original Value: : 
+    /// Original Value: :
     /// </summary>
     public static int Key444677337 => 444677337;
 
@@ -1314,4 +1313,3 @@ public static class LocalizationKeys
     /// </summary>
     public static int Key559506575 => 559506575;
 }
-
