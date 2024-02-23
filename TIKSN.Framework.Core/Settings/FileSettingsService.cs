@@ -7,6 +7,8 @@ using static LanguageExt.Prelude;
 
 namespace TIKSN.Settings;
 
+#pragma warning disable MA0051 // Method is too long
+
 public class FileSettingsService : ISettingsService
 {
     private readonly IPartialConfiguration<FileSettingsServiceOptions> configuration;
@@ -308,10 +310,12 @@ public class FileSettingsService : ISettingsService
         return db;
     }
 
-    private IReadOnlyCollection<string> ListNames(IFileProvider fileProvider)
+    private string[] ListNames(IFileProvider fileProvider)
     {
         using var db = this.GetDatabase(fileProvider, out var settingsCollection, out var bsonDocument);
         return bsonDocument.Keys.Where(n => !string.Equals(n, "_id", StringComparison.OrdinalIgnoreCase))
             .ToArray();
     }
 }
+
+#pragma warning restore MA0051 // Method is too long
