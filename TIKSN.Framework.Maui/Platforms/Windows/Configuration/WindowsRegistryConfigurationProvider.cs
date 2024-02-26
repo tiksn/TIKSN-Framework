@@ -2,7 +2,7 @@ using System.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Win32;
 
-namespace TIKSN.Configuration;
+namespace TIKSN.Platforms.Windows.Configuration;
 
 public class WindowsRegistryConfigurationProvider : ConfigurationProvider
 {
