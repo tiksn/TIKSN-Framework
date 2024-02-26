@@ -1,6 +1,6 @@
 using Microsoft.Win32;
 
-namespace TIKSN.Configuration;
+namespace TIKSN.Platforms.Windows.Configuration;
 
 public static class RegistryConfigurationManager
 {
