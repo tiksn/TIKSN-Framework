@@ -127,7 +127,7 @@ public class ShellCommandEngine : IShellCommandEngine
                     new(
                     NormalizeCommandName(
                         this.stringLocalizer.GetRequiredString(LocalizationKeys.Key427524976)),
-                    Enumerable.Empty<string>())
+                    Enumerable.Empty<string>()),
                 };
 
                 foreach (var commandItem in this.commands)
@@ -137,7 +137,7 @@ public class ShellCommandEngine : IShellCommandEngine
                         commandItem.Item4.Select(item => item.Item1.GetName(this.stringLocalizer))));
                 }
 
-                helpItems = [.. helpItems.OrderBy(i => i.CommandName)];
+                helpItems = [.. helpItems.OrderBy(i => i.CommandName, StringComparer.Ordinal)];
 
                 this.consoleService.WriteObjects(helpItems);
             }
@@ -156,9 +156,6 @@ public class ShellCommandEngine : IShellCommandEngine
 
                     case 1:
                         await this.RunCommandAsync(command, matches.Single()).ConfigureAwait(false);
-                        break;
-
-                    default:
                         break;
                 }
             }
@@ -184,23 +181,23 @@ public class ShellCommandEngine : IShellCommandEngine
         {
             var additionalSeparators = new[] { "-", "_" };
 
-            var normalizedParts = command.Split(null)
+            var normalizedParts = command.Split(separator: null)
                 .SelectMany(whitespaceSeparatedPart =>
                     whitespaceSeparatedPart.Split(additionalSeparators, StringSplitOptions.RemoveEmptyEntries));
 
-            return string.Join(" ", normalizedParts);
+            return string.Join(' ', normalizedParts);
         }
 
         return command;
     }
 
-    private void AppendException(StringBuilder messageBuilder, Exception exception)
+    private static void AppendException(StringBuilder messageBuilder, Exception exception)
     {
         AppendExceptionMessage(messageBuilder, exception);
 
         if (exception.InnerException != null)
         {
-            this.AppendException(messageBuilder, exception.InnerException);
+            AppendException(messageBuilder, exception.InnerException);
         }
     }
 
@@ -209,7 +206,7 @@ public class ShellCommandEngine : IShellCommandEngine
         var messageBuilder = new StringBuilder();
         AppendExceptionMessage(messageBuilder, exception);
 
-        this.AppendException(messageBuilder, exception);
+        AppendException(messageBuilder, exception);
 
         var builtMessage = messageBuilder.ToString();
 
