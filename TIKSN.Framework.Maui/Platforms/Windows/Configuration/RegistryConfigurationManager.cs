@@ -1,6 +1,6 @@
 using Microsoft.Win32;
 
-namespace TIKSN.Configuration;
+namespace TIKSN.Platforms.Windows.Configuration;
 
 public static class RegistryConfigurationManager
 {
@@ -36,7 +36,7 @@ public static class RegistryConfigurationManager
 
         if (result == null)
         {
-            throw new Exception("Value not found");
+            throw new InvalidOperationException("Value not found");
         }
 
         return result;

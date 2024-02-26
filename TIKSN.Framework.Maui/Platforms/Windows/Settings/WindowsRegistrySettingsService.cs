@@ -1,10 +1,9 @@
 using LanguageExt;
 using Microsoft.Extensions.Options;
 using Microsoft.Win32;
+using TIKSN.Settings;
 
-#pragma warning disable CA1416 // Validate platform compatibility
-
-namespace TIKSN.Settings;
+namespace TIKSN.Platforms.Windows.Settings;
 
 public class WindowsRegistrySettingsService : ISettingsService
 {
@@ -153,5 +152,3 @@ public class WindowsRegistrySettingsService : ISettingsService
         }
     }
 }
-
-#pragma warning restore CA1416 // Validate platform compatibility

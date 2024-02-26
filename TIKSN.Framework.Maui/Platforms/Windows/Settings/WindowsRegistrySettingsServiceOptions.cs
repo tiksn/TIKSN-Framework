@@ -1,6 +1,6 @@
 using Microsoft.Win32;
 
-namespace TIKSN.Settings;
+namespace TIKSN.Platforms.Windows.Settings;
 
 public class WindowsRegistrySettingsServiceOptions
 {
