@@ -13,8 +13,10 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
     private readonly IExchangeRateRepository exchangeRateRepository;
     private readonly IForeignExchangeRepository foreignExchangeRepository;
 
-    private readonly Dictionary<Guid, (Either<IExchangeRateProvider, IExchangeRatesProvider> RateProvider,
-        int LongNameKey, int ShortNameKey, RegionInfo Country, TimeSpan InvalidationInterval)> providers;
+    private readonly Dictionary<Guid,
+        (Either<IExchangeRateProvider, IExchangeRatesProvider> RateProvider,
+        string LongNameKey, string ShortNameKey,
+        RegionInfo Country, TimeSpan InvalidationInterval)> providers;
 
     private readonly IUnitOfWorkFactory unitOfWorkFactory;
 
@@ -156,12 +158,14 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
         }
     }
 
-    protected void AddBatchProvider(Guid providerID, IExchangeRatesProvider provider, int longNameKey,
-        int shortNameKey, string country, TimeSpan invalidationInterval) => this.providers.Add(providerID,
+    protected void AddBatchProvider(Guid providerID, IExchangeRatesProvider provider,
+        string longNameKey, string shortNameKey,
+        string country, TimeSpan invalidationInterval) => this.providers.Add(providerID,
         (Right(provider), longNameKey, shortNameKey, this.RegionFactory.Create(country), invalidationInterval));
 
-    protected void AddIndividualProvider(Guid providerID, IExchangeRateProvider provider, int longNameKey,
-        int shortNameKey, string country, TimeSpan invalidationInterval) => this.providers.Add(providerID,
+    protected void AddIndividualProvider(Guid providerID, IExchangeRateProvider provider,
+        string longNameKey, string shortNameKey,
+        string country, TimeSpan invalidationInterval) => this.providers.Add(providerID,
         (Left(provider), longNameKey, shortNameKey, this.RegionFactory.Create(country), invalidationInterval));
 
     private static (DateTime dateFrom, DateTime dateTo) EstimateDateRange(
