@@ -123,11 +123,11 @@ public class ShellCommandEngine : IShellCommandEngine
                     new(
                     NormalizeCommandName(
                         this.stringLocalizer.GetRequiredString(LocalizationKeys.Key785393579)),
-                    Enumerable.Empty<string>()),
+                    []),
                     new(
                     NormalizeCommandName(
                         this.stringLocalizer.GetRequiredString(LocalizationKeys.Key427524976)),
-                    Enumerable.Empty<string>()),
+                    []),
                 };
 
                 foreach (var commandItem in this.commands)
@@ -143,11 +143,13 @@ public class ShellCommandEngine : IShellCommandEngine
             }
             else
             {
-                var matches = this.commands.Where(item => string.Equals(command,
-                    NormalizeCommandName(item.Item2.GetName(this.stringLocalizer)),
-                    StringComparison.OrdinalIgnoreCase));
+                var matches = this.commands
+                    .Where(item => string.Equals(command,
+                        NormalizeCommandName(item.Item2.GetName(this.stringLocalizer)),
+                        StringComparison.OrdinalIgnoreCase))
+                    .ToArray();
 
-                switch (matches.Count())
+                switch (matches.Length)
                 {
                     case 0:
                         this.consoleService.WriteError(
