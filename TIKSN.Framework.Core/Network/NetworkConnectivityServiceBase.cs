@@ -38,11 +38,11 @@ public abstract class NetworkConnectivityServiceBase : INetworkConnectivityServi
         }
     }
 
-    protected abstract InternetConnectivityState GetStateInternal();
+    protected abstract InternetConnectivityState FetchState();
 
     private InternetConnectivityState GetInternetConnectivityState(bool broadcast)
     {
-        var result = this.GetStateInternal();
+        var result = this.FetchState();
 
         if (broadcast)
         {
