@@ -5,7 +5,7 @@ public class ShellCommandHelpItem
     public ShellCommandHelpItem(string commandName, IEnumerable<string> parameters)
     {
         this.CommandName = commandName;
-        this.Parameters = string.Join(", ", parameters); //TODO: localize
+        this.Parameters = string.Join(", ", parameters);
     }
 
     public string CommandName { get; }
