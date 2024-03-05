@@ -8,11 +8,11 @@ public class NetworkConnectivityService : NetworkConnectivityServiceBase
     public NetworkConnectivityService() =>
         this.InternalInternetConnectivityState =
             Observable.FromEvent<NetworkAvailabilityChangedEventHandler, InternetConnectivityState>(
-                _ => (s, e) => this.GetStateInternal(),
+                _ => (s, e) => this.FetchState(),
                 h => NetworkChange.NetworkAvailabilityChanged += h,
                 h => NetworkChange.NetworkAvailabilityChanged -= h);
 
-    protected override InternetConnectivityState GetStateInternal()
+    protected override InternetConnectivityState FetchState()
     {
         var isNetworkAvailable = NetworkInterface.GetIsNetworkAvailable();
         var allNetworkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
