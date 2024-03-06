@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Reflection;
 using System.Security;
 using System.Text;
@@ -8,7 +9,7 @@ using TIKSN.Localization;
 
 namespace TIKSN.Shell;
 
-public class ShellCommandEngine : IShellCommandEngine
+public partial class ShellCommandEngine : IShellCommandEngine
 {
     private readonly List<Tuple<Type, ShellCommandAttribute, ConstructorInfo,
         IEnumerable<Tuple<ShellCommandParameterAttribute, PropertyInfo>>>> commands;
@@ -61,7 +62,7 @@ public class ShellCommandEngine : IShellCommandEngine
                 this.stringLocalizer.GetRequiredString(LocalizationKeys.Key491461331, type.FullName,
                     typeof(ShellCommandAttribute).FullName), nameof(type));
 
-        this.logger.LogDebug(804856258, "Checking command name localization for '{TypeFullName}' command.", type.FullName);
+        LogCheckingCommandNameLocalization(this.logger, type.FullName);
         _ = commandAttribute.GetName(this.stringLocalizer);
 
         var constructors = type.GetConstructors();
@@ -78,9 +79,7 @@ public class ShellCommandEngine : IShellCommandEngine
             var commandParameterAttribute = propertyInfo.GetCustomAttribute<ShellCommandParameterAttribute>();
             if (commandParameterAttribute != null)
             {
-                this.logger.LogDebug(804856258,
-                    "Checking string localization for '{TypeFullName}' command's '{PropertyName}' parameter.",
-                    type.FullName, propertyInfo.Name);
+                LogCheckingParameterNameLocalization(this.logger, type.FullName, propertyInfo.Name);
                 _ = commandParameterAttribute.GetName(this.stringLocalizer);
 
                 properties.Add(
@@ -95,7 +94,9 @@ public class ShellCommandEngine : IShellCommandEngine
                 type, commandAttribute, constructors.Single(), properties));
     }
 
+#pragma warning disable MA0051 // Method is too long
     public async Task RunAsync()
+#pragma warning restore MA0051 // Method is too long
     {
         while (true)
         {
@@ -159,38 +160,14 @@ public class ShellCommandEngine : IShellCommandEngine
                     case 1:
                         await this.RunCommandAsync(command, matches.Single()).ConfigureAwait(false);
                         break;
+
+                    default:
+                        this.consoleService.WriteError(
+                            this.stringLocalizer.GetRequiredString(LocalizationKeys.Key650068875));
+                        break;
                 }
             }
         }
-    }
-
-    private static void AppendExceptionMessage(StringBuilder messageBuilder, Exception exception)
-    {
-        _ = messageBuilder.Append(exception.Message);
-        if (exception.Message.EndsWith(".", StringComparison.OrdinalIgnoreCase))
-        {
-            _ = messageBuilder.Append(' ');
-        }
-        else
-        {
-            _ = messageBuilder.Append(". ");
-        }
-    }
-
-    private static string NormalizeCommandName(string command)
-    {
-        if (command != null)
-        {
-            var additionalSeparators = new[] { "-", "_" };
-
-            var normalizedParts = command.Split(separator: null)
-                .SelectMany(whitespaceSeparatedPart =>
-                    whitespaceSeparatedPart.Split(additionalSeparators, StringSplitOptions.RemoveEmptyEntries));
-
-            return string.Join(' ', normalizedParts);
-        }
-
-        return command;
     }
 
     private static void AppendException(StringBuilder messageBuilder, Exception exception)
@@ -203,7 +180,66 @@ public class ShellCommandEngine : IShellCommandEngine
         }
     }
 
-    private void PrintError(EventId eventId, Exception exception)
+    private static void AppendExceptionMessage(StringBuilder messageBuilder, Exception exception)
+    {
+        _ = messageBuilder.Append(exception.Message);
+        if (exception.Message.EndsWith('.'))
+        {
+            _ = messageBuilder.Append(' ');
+        }
+        else
+        {
+            _ = messageBuilder.Append(". ");
+        }
+    }
+
+    [LoggerMessage(
+        EventId = 5832719,
+        Level = LogLevel.Debug,
+        Message = "Checking command name localization for '{TypeFullName}' command")]
+    private static partial void LogCheckingCommandNameLocalization(ILogger logger, string typeFullName);
+
+    [LoggerMessage(
+        EventId = 5833551,
+        Level = LogLevel.Debug,
+        Message = "Checking Parameter Name localization for '{TypeFullName}' command's '{PropertyName}' parameter")]
+    private static partial void LogCheckingParameterNameLocalization(ILogger logger, string typeFullName, string propertyName);
+
+    [LoggerMessage(
+        EventId = 5832597,
+        Level = LogLevel.Debug,
+        Message = "Failed to add type '{TypeFullName}' as command")]
+    private static partial void LogFailedToAddType(ILogger logger, Exception ex, string typeFullName);
+
+    [LoggerMessage(
+        EventId = 5834863,
+        Level = LogLevel.Error,
+        Message = "Log Generic Exception '{ErrorMessage}'")]
+    private static partial void LogGenericException(ILogger logger, Exception ex, string errorMessage);
+
+    [LoggerMessage(
+        EventId = 5833260,
+        Level = LogLevel.Trace,
+        Message = "Parameter '{ParameterLocalizedName}' has value '{ParameterValue}'")]
+    private static partial void LogParameterNameAndValue(ILogger logger, string parameterLocalizedName, object parameterValue);
+
+    private static string NormalizeCommandName(string command)
+    {
+        if (command != null)
+        {
+            var additionalSeparators = new[] { "-", "_" };
+
+            var normalizedParts = command.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                .SelectMany(whitespaceSeparatedPart =>
+                    whitespaceSeparatedPart.Split(additionalSeparators, StringSplitOptions.RemoveEmptyEntries));
+
+            return string.Join(' ', normalizedParts);
+        }
+
+        return command;
+    }
+
+    private void PrintError(Exception exception)
     {
         var messageBuilder = new StringBuilder();
         AppendExceptionMessage(messageBuilder, exception);
@@ -213,7 +249,7 @@ public class ShellCommandEngine : IShellCommandEngine
         var builtMessage = messageBuilder.ToString();
 
         this.consoleService.WriteError(builtMessage);
-        this.logger.LogError(eventId, exception, builtMessage);
+        LogGenericException(this.logger, exception, builtMessage);
     }
 
     private object ReadCommandParameter(Tuple<ShellCommandParameterAttribute, PropertyInfo> property)
@@ -251,70 +287,76 @@ public class ShellCommandEngine : IShellCommandEngine
             typeToConvert = Nullable.GetUnderlyingType(typeToConvert);
         }
 
-        return Convert.ChangeType(stringParameter, typeToConvert);
+        return Convert.ChangeType(stringParameter, typeToConvert, CultureInfo.CurrentCulture);
     }
 
     private async Task RunCommandAsync(string commandName,
         Tuple<Type, ShellCommandAttribute, ConstructorInfo,
             IEnumerable<Tuple<ShellCommandParameterAttribute, PropertyInfo>>> commandInfo)
     {
-        using var commandScope = this.serviceProvider.CreateScope();
-        try
+        var commandScope = this.serviceProvider.CreateAsyncScope();
+        await using (commandScope.ConfigureAwait(false))
         {
-            var commandContextStore =
-                commandScope.ServiceProvider.GetRequiredService<IShellCommandContext>() as
-                    IShellCommandContextStore;
-
-            commandContextStore.SetCommandName(commandName);
-
-            var args = new List<object>();
-
-            foreach (var parameterInfo in commandInfo.Item3.GetParameters())
-            {
-                args.Add(commandScope.ServiceProvider.GetRequiredService(parameterInfo.ParameterType));
-            }
-
-            var obj = Activator.CreateInstance(commandInfo.Item1, [.. args]);
-
-            foreach (var property in commandInfo.Item4)
-            {
-                var parameter = this.ReadCommandParameter(property);
-
-                if (parameter != null)
-                {
-                    property.Item2.SetValue(obj, parameter);
-                }
-
-                this.logger.LogTrace(
-                    $"Parameter '{property.Item1.GetName(this.stringLocalizer)}' has value '{property.Item2.GetValue(obj)}'");
-            }
-
-            var command = obj as IShellCommand;
-
+#pragma warning disable CA1031 // Do not catch general exception types
             try
             {
-                using (var cancellationTokenSource = new CancellationTokenSource())
-                using (this.consoleService.RegisterCancellation(cancellationTokenSource))
+                var commandContextStore =
+                    commandScope.ServiceProvider.GetRequiredService<IShellCommandContext>() as
+                        IShellCommandContextStore;
+
+                commandContextStore.SetCommandName(commandName);
+
+                var args = new List<object>();
+
+                foreach (var parameterInfo in commandInfo.Item3.GetParameters())
                 {
-                    await command.ExecuteAsync(cancellationTokenSource.Token).ConfigureAwait(false);
+                    args.Add(commandScope.ServiceProvider.GetRequiredService(parameterInfo.ParameterType));
+                }
+
+                var obj = Activator.CreateInstance(commandInfo.Item1, args);
+
+                foreach (var property in commandInfo.Item4)
+                {
+                    var parameter = this.ReadCommandParameter(property);
+
+                    if (parameter != null)
+                    {
+                        property.Item2.SetValue(obj, parameter);
+                    }
+
+                    LogParameterNameAndValue(this.logger, property.Item1.GetName(this.stringLocalizer), property.Item2.GetValue(obj));
+                }
+
+                var command = obj as IShellCommand;
+
+                try
+                {
+                    using (var cancellationTokenSource = new CancellationTokenSource())
+                    using (this.consoleService.RegisterCancellation(cancellationTokenSource))
+                    {
+                        await command.ExecuteAsync(cancellationTokenSource.Token).ConfigureAwait(false);
+                    }
+                }
+                catch (ShellCommandSuspendedException ex)
+                {
+                    this.PrintError(ex);
+                }
+                catch (Exception ex)
+                {
+                    this.PrintError(ex);
                 }
             }
-#pragma warning disable CC0004 // Catch block cannot be empty
-            catch (ShellCommandSuspendedException) { }
-#pragma warning restore CC0004 // Catch block cannot be empty
             catch (Exception ex)
             {
-                this.PrintError(1815744366, ex);
+                this.PrintError(ex);
             }
-        }
-        catch (Exception ex)
-        {
-            this.PrintError(1999436483, ex);
+#pragma warning restore CA1031 // Do not catch general exception types
         }
     }
 
     private bool TryAddType(Type type)
     {
+#pragma warning disable CA1031 // Do not catch general exception types
         try
         {
             this.AddType(type);
@@ -323,8 +365,9 @@ public class ShellCommandEngine : IShellCommandEngine
         }
         catch (Exception ex)
         {
-            this.logger.LogError(1955486110, ex, "Failed to add type {TypeFullName} as command.", type.FullName);
+            LogFailedToAddType(this.logger, ex, type.FullName);
             return false;
         }
+#pragma warning restore CA1031 // Do not catch general exception types
     }
 }
