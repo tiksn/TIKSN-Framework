@@ -37,13 +37,11 @@ public class ConsoleService : IConsoleService
                 if (pwd.Length > 0)
                 {
                     pwd.RemoveAt(pwd.Length - 1);
-                    Console.Write("\b \b");
                 }
             }
             else
             {
                 pwd.AppendChar(i.KeyChar);
-                Console.Write("*");
             }
         }
 
@@ -69,7 +67,7 @@ public class ConsoleService : IConsoleService
         if (options is null || options.Length == 0)
         {
             throw new ArgumentException("User prompt must contain at least one options",
-                nameof(options)); //TODO: localize
+                nameof(options));
         }
 
         while (true)

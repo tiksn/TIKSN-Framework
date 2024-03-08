@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -156,6 +156,9 @@
   </data>
   <data name="592470584" xml:space="preserve">
     <value>Yes</value>
+  </data>
+  <data name="650068875" xml:space="preserve">
+    <value>Duplicate Command is found</value>
   </data>
   <data name="671767216" xml:space="preserve">
     <value>Command</value>
