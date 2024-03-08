@@ -8,20 +8,13 @@ public abstract class UnitOfWorkBase : IUnitOfWork
 
     public abstract Task DiscardAsync(CancellationToken cancellationToken);
 
-    public virtual void Dispose()
-    {
-        if (this.IsDirty())
-        {
-            throw new InvalidOperationException("Unit of work disposed without completion.");
-        }
-    }
-
     public virtual async ValueTask DisposeAsync()
     {
         if (this.IsDirty())
         {
             await this.DiscardAsync(default).ConfigureAwait(false);
         }
+        GC.SuppressFinalize(this);
     }
 
     protected abstract bool IsDirty();

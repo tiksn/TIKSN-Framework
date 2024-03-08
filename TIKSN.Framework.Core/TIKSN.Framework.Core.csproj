@@ -44,12 +44,12 @@
     <PackageReference Include="Bond.CSharp" Version="10.0.0" />
     <PackageReference Include="ConsoleTables" Version="2.6.1" />
     <PackageReference Include="FluentValidation" Version="11.9.0" />
-    <PackageReference Include="IdGen" Version="3.0.3" />
+    <PackageReference Include="IdGen" Version="3.0.5" />
     <PackageReference Include="LanguageExt.Core" Version="4.4.8" />
     <PackageReference Include="LanguageExt.FSharp" Version="4.4.8" />
     <PackageReference Include="LanguageExt.Parsec" Version="4.4.8" />
-    <PackageReference Include="LiteDB" Version="5.0.17" />
-    <PackageReference Include="Meziantou.Analyzer" Version="2.0.141">
+    <PackageReference Include="LiteDB" Version="5.0.19" />
+    <PackageReference Include="Meziantou.Analyzer" Version="2.0.145">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -74,9 +74,8 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
     <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.9.28" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.2" />
-    <PackageReference Include="MongoDB.Driver" Version="2.23.1" />
-    <PackageReference Include="MongoDB.Driver.GridFS" Version="2.23.1" />
+    <PackageReference Include="MongoDB.Driver" Version="2.24.0" />
+    <PackageReference Include="MongoDB.Driver.GridFS" Version="2.24.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Nito.AsyncEx.Context" Version="5.1.2" />
     <PackageReference Include="NLog.Extensions.Logging" Version="5.3.8" />
@@ -84,7 +83,7 @@
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.1" />
     <PackageReference Include="ReactiveUI" Version="19.5.41" />
     <PackageReference Include="RavenDB.Client" Version="6.0.100" />
-    <PackageReference Include="Roslynator.Analyzers" Version="4.10.0">
+    <PackageReference Include="Roslynator.Analyzers" Version="4.11.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

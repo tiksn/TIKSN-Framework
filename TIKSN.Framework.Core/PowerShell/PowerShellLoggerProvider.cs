@@ -35,7 +35,9 @@ public class PowerShellLoggerProvider : ILoggerProvider
         {
             if (disposing)
             {
+                var loggerList = this.loggers.Select(x => x.Value).ToList();
                 this.loggers.Clear();
+                loggerList.ForEach(x => x.Dispose());
             }
 
             this.disposedValue = true;

@@ -7,6 +7,8 @@ using static LanguageExt.Prelude;
 
 namespace TIKSN.Settings;
 
+#pragma warning disable MA0051 // Method is too long
+
 public class FileSettingsService : ISettingsService
 {
     private readonly IPartialConfiguration<FileSettingsServiceOptions> configuration;
@@ -100,8 +102,8 @@ public class FileSettingsService : ISettingsService
             {
                 if (bsonValue.Type != bsonType)
                 {
-                    throw new ArgumentException(
-                        $"Expected type was '{bsonType}' whitch is not matching with actual type '{bsonValue.Type}'.");
+                    throw new InvalidOperationException(
+                        $"Expected type was '{bsonType}' which is not matching with actual type '{bsonValue.Type}'.");
                 }
             }
 
@@ -143,18 +145,18 @@ public class FileSettingsService : ISettingsService
                     CheckType(BsonType.String);
                     return (T)(object)bsonValue.AsString;
 
-                case TypeCode.DBNull:
-                    break;
-
-                case TypeCode.Empty:
                 case TypeCode.Object:
-                default:
                     if (type == typeof(Guid))
                     {
                         CheckType(BsonType.Guid);
                         return (T)(object)bsonValue.AsGuid;
                     }
+                    throw new NotSupportedException("Object Type is not supported.");
+                case TypeCode.Empty:
+                case TypeCode.DBNull:
                     throw new NotSupportedException("Type is not supported.");
+                default:
+                    throw new NotSupportedException("Unknown Type is not supported.");
             }
         }
 
@@ -252,21 +254,28 @@ public class FileSettingsService : ISettingsService
                 document[name] = new BsonValue((decimal)valueObject);
                 break;
 
-            case TypeCode.DBNull:
             case TypeCode.Object:
+                SetValue(document, name, type, valueObject);
+                break;
+            case TypeCode.DBNull:
+                throw new NotSupportedException("Type is not supported.");
             default:
-                if (type == typeof(Guid))
-                {
-                    document[name] = new BsonValue((Guid)valueObject);
-                    break;
-                }
-                else
-                {
-                    throw new NotSupportedException("Type is not supported.");
-                }
+                throw new NotSupportedException("Unknown Type is not supported.");
         }
 
         return value;
+    }
+
+    private static void SetValue(BsonDocument document, string name, Type type, object valueObject)
+    {
+        if (type == typeof(Guid))
+        {
+            document[name] = new BsonValue((Guid)valueObject);
+        }
+        else
+        {
+            throw new NotSupportedException("Type is not supported.");
+        }
     }
 
     private T Apply<T>(
@@ -308,10 +317,12 @@ public class FileSettingsService : ISettingsService
         return db;
     }
 
-    private IReadOnlyCollection<string> ListNames(IFileProvider fileProvider)
+    private string[] ListNames(IFileProvider fileProvider)
     {
         using var db = this.GetDatabase(fileProvider, out var settingsCollection, out var bsonDocument);
         return bsonDocument.Keys.Where(n => !string.Equals(n, "_id", StringComparison.OrdinalIgnoreCase))
             .ToArray();
     }
 }
+
+#pragma warning restore MA0051 // Method is too long

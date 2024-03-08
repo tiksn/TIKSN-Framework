@@ -5,6 +5,7 @@
 <#@ output extension=".cs" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Xml.Linq" #>
+<#@ import namespace="System.Security" #>
 <#
     var resourceFiles = new[]
     {
@@ -33,10 +34,9 @@ foreach (var dataElement in dataElements)
 
     /// <summary>
     /// Key: <#= dataElement.Attribute("name").Value #>
-    /// Original Value: <#= dataElement.Element("value").Value #>
+    /// Original Value: <#= SecurityElement.Escape(dataElement.Element("value").Value).Trim() #>
     /// </summary>
-    public static int Key<#= dataElement.Attribute("name").Value #> => <#= dataElement.Attribute("name").Value #>;
+    public static string Key<#= dataElement.Attribute("name").Value #> => "<#= dataElement.Attribute("name").Value #>";
 <#
 }
 #>}
-

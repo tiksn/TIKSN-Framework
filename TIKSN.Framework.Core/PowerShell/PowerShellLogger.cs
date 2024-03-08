@@ -13,9 +13,12 @@ public class PowerShellLogger : ILogger, IDisposable
     private readonly IOptions<PowerShellLoggerOptions> options;
     private readonly PowerShellLoggerScopeDisposable scopeDisposable;
     private readonly ConcurrentStack<object> scopes;
+    private bool disposedValue;
 
-    public PowerShellLogger(ICurrentCommandProvider currentCommandProvider,
-        IOptions<PowerShellLoggerOptions> options, string name)
+    public PowerShellLogger(
+        ICurrentCommandProvider currentCommandProvider,
+        IOptions<PowerShellLoggerOptions> options,
+        string name)
     {
         this.options = options;
         this.scopes = new ConcurrentStack<object>();
@@ -30,9 +33,19 @@ public class PowerShellLogger : ILogger, IDisposable
         return this.scopeDisposable;
     }
 
+    public void Dispose()
+    {
+        this.Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
+
     public bool IsEnabled(LogLevel logLevel) => this.options.Value.MinLevel >= logLevel;
 
-    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
+    public void Log<TState>(
+        LogLevel logLevel,
+        EventId eventId,
+        TState state,
+        Exception exception,
         Func<TState, Exception, string> formatter)
     {
         if (!this.IsEnabled(logLevel))
@@ -50,6 +63,19 @@ public class PowerShellLogger : ILogger, IDisposable
         }
     }
 
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!this.disposedValue)
+        {
+            if (disposing)
+            {
+                this.scopeDisposable.Dispose();
+            }
+
+            this.disposedValue = true;
+        }
+    }
+
     private static string GetLogLevelString(LogLevel logLevel) => logLevel switch
     {
         LogLevel.Trace or LogLevel.Critical => logLevel.ToString(),
@@ -58,7 +84,14 @@ public class PowerShellLogger : ILogger, IDisposable
         _ => throw new ArgumentOutOfRangeException(nameof(logLevel)),
     };
 
-    private void WriteMessage(LogLevel logLevel, EventId eventId, string message, Exception exception)
+#pragma warning disable MA0051 // Method is too long
+
+    private void WriteMessage(
+        LogLevel logLevel,
+        EventId eventId,
+        string message,
+        Exception exception)
+#pragma warning restore MA0051 // Method is too long
     {
         var logBuilder = new StringBuilder();
 
@@ -115,15 +148,15 @@ public class PowerShellLogger : ILogger, IDisposable
             case LogLevel.Error:
             case LogLevel.Critical:
                 this.currentCommandProvider.GetCurrentCommand().WriteError(
-                    new ErrorRecord(new Exception(logBuilder.ToString(), exception), eventId.ToString(),
+                    new ErrorRecord(new InvalidOperationException(logBuilder.ToString(), exception), eventId.ToString(),
                         ErrorCategory.InvalidOperation, targetObject: null));
                 break;
+
             case LogLevel.None:
                 break;
+
             default:
                 throw new ArgumentOutOfRangeException(nameof(logLevel));
         }
     }
-
-    public void Dispose() => throw new NotImplementedException();
 }

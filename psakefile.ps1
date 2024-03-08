@@ -122,7 +122,10 @@ Task Test -depends Build {
     Exec { dotnet test '.\TIKSN.Framework.IntegrationTests\TIKSN.Framework.IntegrationTests.csproj' }
 }
 
-Task Build -depends BuildLanguageLocalization, BuildRegionLocalization, BuildNetCore, BuildMaui {
+Task Build -depends Format, BuildLanguageLocalization, BuildRegionLocalization, BuildNetCore, BuildMaui {
+    $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+
+    Exec { dotnet build $solution }
 }
 
 Task BuildLanguageLocalization -depends EstimateVersions {
@@ -185,8 +188,6 @@ Task DownloadCurrencyCodes -depends Clean {
 }
 
 Task Format -depends Restore, FormatWhitespace, FormatStyle, FormatAnalyzers {
-    $solution = Resolve-Path -Path 'TIKSN Framework.sln'
-    Exec { dotnet format analyzers --severity info --verbosity diagnostic $solution }
 }
 
 Task FormatAnalyzers -depends Restore, FormatAnalyzersLanguageLocalization, FormatAnalyzersRegionLocalization, FormatAnalyzersNetCore, FormatAnalyzersMaui, FormatAnalyzersSolution {
@@ -195,7 +196,7 @@ Task FormatAnalyzers -depends Restore, FormatAnalyzersLanguageLocalization, Form
 Task FormatAnalyzersSolution -depends Restore {
     $solution = Resolve-Path -Path 'TIKSN Framework.sln'
 
-    Exec { dotnet format analyzers --severity info --verbosity diagnostic $solution }
+    # Exec { dotnet format analyzers --severity info --verbosity diagnostic $solution }
 }
 
 Task FormatAnalyzersLanguageLocalization -depends Restore {
@@ -228,7 +229,7 @@ Task FormatStyle -depends Restore, FormatStyleLanguageLocalization, FormatStyleR
 Task FormatStyleSolution -depends Restore {
     $solution = Resolve-Path -Path 'TIKSN Framework.sln'
 
-    Exec { dotnet format style --severity info --verbosity diagnostic $solution }
+    # Exec { dotnet format style --severity info --verbosity diagnostic $solution }
 }
 
 Task FormatStyleLanguageLocalization -depends Restore {
@@ -262,6 +263,7 @@ Task FormatWhitespace -depends Restore {
 
 Task Restore -depends Clean {
     $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+    Exec { dotnet tool restore }
     Exec { dotnet restore $solution }
 }
 

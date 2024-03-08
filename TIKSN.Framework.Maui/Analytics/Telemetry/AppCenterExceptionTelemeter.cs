@@ -11,20 +11,20 @@ public class AppCenterExceptionTelemeter : IExceptionTelemeter
         switch (severityLevel)
         {
             case TelemetrySeverityLevel.Verbose:
-                AppCenterLog.Verbose(AppCenterLog.LogTag, exception.Message, exception);
+                AppCenterLog.Verbose(AppCenterLog.LogTag, exception?.Message, exception);
                 break;
 
             case TelemetrySeverityLevel.Information:
-                AppCenterLog.Info(AppCenterLog.LogTag, exception.Message, exception);
+                AppCenterLog.Info(AppCenterLog.LogTag, exception?.Message, exception);
                 break;
 
             case TelemetrySeverityLevel.Warning:
-                AppCenterLog.Warn(AppCenterLog.LogTag, exception.Message, exception);
+                AppCenterLog.Warn(AppCenterLog.LogTag, exception?.Message, exception);
                 break;
 
             case TelemetrySeverityLevel.Error:
             case TelemetrySeverityLevel.Critical:
-                AppCenterLog.Error(AppCenterLog.LogTag, exception.Message, exception);
+                AppCenterLog.Error(AppCenterLog.LogTag, exception?.Message, exception);
                 break;
 
             default:

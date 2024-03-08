@@ -3,10 +3,6 @@ namespace TIKSN.Shell;
 [AttributeUsage(AttributeTargets.Property)]
 public sealed class ShellCommandParameterAttribute : ShellAttributeBaseAttribute
 {
-    public ShellCommandParameterAttribute(int nameKey) : base(nameKey)
-    {
-    }
-
     public ShellCommandParameterAttribute(string nameKey) : base(nameKey)
     {
     }

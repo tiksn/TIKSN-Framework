@@ -45,7 +45,6 @@ public class DataEntityMapper
         {
             ID = source.ID,
             CountryCode = source.CountryCode,
-            ExchangeRates = null,
         };
     }
 
