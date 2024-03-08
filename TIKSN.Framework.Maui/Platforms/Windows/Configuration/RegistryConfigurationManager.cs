@@ -7,20 +7,16 @@ public static class RegistryConfigurationManager
     public static T ReadObject<T>(string rootKey)
     {
         var configuration = Activator.CreateInstance<T>();
-        var keys = new List<string>
-        {
-            rootKey,
-        };
 
-        Initialize(configuration, keys);
+        Initialize(configuration, rootKey);
 
         return configuration;
     }
 
-    private static object GetValueFromRegistry(IEnumerable<string> keys, string valueName)
+    private static object GetValueFromRegistry(string key, string valueName)
     {
-        var globalValue = GetValueFromRegistry(RegistryHive.LocalMachine, keys, valueName);
-        var localValue = GetValueFromRegistry(RegistryHive.CurrentUser, keys, valueName);
+        var globalValue = GetValueFromRegistry(RegistryHive.LocalMachine, key, valueName);
+        var localValue = GetValueFromRegistry(RegistryHive.CurrentUser, key, valueName);
 
         object result = null;
 
@@ -42,31 +38,21 @@ public static class RegistryConfigurationManager
         return result;
     }
 
-    private static object GetValueFromRegistry(RegistryHive hKey, IEnumerable<string> keys, string valueName)
+    private static object GetValueFromRegistry(RegistryHive hive, string key, string valueName)
     {
-        var regKey = RegistryKey.OpenBaseKey(hKey, RegistryView.Default);
+        using var regKey = RegistryKey.OpenBaseKey(hive, RegistryView.Default);
+        using var regSubKey = regKey.OpenSubKey(key);
 
-        foreach (var key in keys)
-        {
-            regKey = regKey.OpenSubKey(key);
-
-            if (regKey == null)
-            {
-                return null;
-            }
-        }
-
-        return regKey.GetValue(valueName);
+        return regSubKey.GetValue(valueName);
     }
 
-    private static void Initialize(object obj, IEnumerable<string> keys)
+    private static void Initialize(object obj, string key)
     {
         foreach (var propertyInfo in obj.GetType().GetProperties())
         {
             if (propertyInfo.PropertyType.IsPrimitive || propertyInfo.PropertyType == typeof(string))
             {
-                propertyInfo.SetValue(obj,
-                    GetValueFromRegistry(keys, propertyInfo.Name));
+                propertyInfo.SetValue(obj, GetValueFromRegistry(key, propertyInfo.Name));
             }
         }
     }
