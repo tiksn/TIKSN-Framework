@@ -122,7 +122,10 @@ Task Test -depends Build {
     Exec { dotnet test '.\TIKSN.Framework.IntegrationTests\TIKSN.Framework.IntegrationTests.csproj' }
 }
 
-Task Build -depends BuildLanguageLocalization, BuildRegionLocalization, BuildNetCore, BuildMaui {
+Task Build -depends Format, BuildLanguageLocalization, BuildRegionLocalization, BuildNetCore, BuildMaui {
+    $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+
+    Exec { dotnet build $solution }
 }
 
 Task BuildLanguageLocalization -depends EstimateVersions {
