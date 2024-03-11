@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Security;
 using System.Text;
+using LanguageExt;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
@@ -12,7 +13,7 @@ namespace TIKSN.Shell;
 public partial class ShellCommandEngine : IShellCommandEngine
 {
     private readonly List<Tuple<Type, ShellCommandAttribute, ConstructorInfo,
-        IEnumerable<Tuple<ShellCommandParameterAttribute, PropertyInfo>>>> commands;
+        Seq<Tuple<ShellCommandParameterAttribute, PropertyInfo>>>> commands;
 
     private readonly IConsoleService consoleService;
     private readonly ILogger<ShellCommandEngine> logger;
@@ -90,8 +91,8 @@ public partial class ShellCommandEngine : IShellCommandEngine
 
         this.commands.Add(
             new Tuple<Type, ShellCommandAttribute, ConstructorInfo,
-                IEnumerable<Tuple<ShellCommandParameterAttribute, PropertyInfo>>>(
-                type, commandAttribute, constructors.Single(), properties));
+                Seq<Tuple<ShellCommandParameterAttribute, PropertyInfo>>>(
+                type, commandAttribute, constructors.Single(), properties.OrderBy(x => x.Item1.Position).ToSeq()));
     }
 
 #pragma warning disable MA0051 // Method is too long
@@ -292,7 +293,7 @@ public partial class ShellCommandEngine : IShellCommandEngine
 
     private async Task RunCommandAsync(string commandName,
         Tuple<Type, ShellCommandAttribute, ConstructorInfo,
-            IEnumerable<Tuple<ShellCommandParameterAttribute, PropertyInfo>>> commandInfo)
+            Seq<Tuple<ShellCommandParameterAttribute, PropertyInfo>>> commandInfo)
     {
         var commandScope = this.serviceProvider.CreateAsyncScope();
         await using (commandScope.ConfigureAwait(false))
