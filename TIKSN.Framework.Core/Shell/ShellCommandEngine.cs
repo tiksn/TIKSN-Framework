@@ -314,7 +314,9 @@ public partial class ShellCommandEngine : IShellCommandEngine
                     args.Add(commandScope.ServiceProvider.GetRequiredService(parameterInfo.ParameterType));
                 }
 
-                var obj = Activator.CreateInstance(commandInfo.Item1, args);
+#pragma warning disable IDE0305 // Simplify collection initialization
+                var obj = Activator.CreateInstance(commandInfo.Item1, args.ToArray());
+#pragma warning restore IDE0305 // Simplify collection initialization
 
                 foreach (var property in commandInfo.Item4)
                 {
