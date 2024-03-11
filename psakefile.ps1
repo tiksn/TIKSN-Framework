@@ -187,6 +187,12 @@ Task DownloadCurrencyCodes -depends Clean {
     Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-three.xml' -OutFile 'TIKSN.Framework.Core/Finance/Resources/TableA3.xml'
 }
 
+Task DevSkim -depends Restore {
+    $sarifFile = Join-Path -Path $script:trashFolder -ChildPath 'DevSkim.sarif'
+    Exec { dotnet tool run devskim analyze --source-code . --output-file $sarifFile }
+    Exec { dotnet tool run devskim fix --source-code . --sarif-result $sarifFile --all }
+}
+
 Task Format -depends Restore, FormatWhitespace, FormatStyle, FormatAnalyzers {
 }
 

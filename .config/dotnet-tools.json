@@ -13,6 +13,12 @@
       "commands": [
         "dotnet-example"
       ]
+    },
+    "microsoft.cst.devskim.cli": {
+      "version": "1.0.32",
+      "commands": [
+        "devskim"
+      ]
     }
   }
 }
