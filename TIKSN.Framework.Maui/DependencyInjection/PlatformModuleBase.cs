@@ -6,5 +6,6 @@ public abstract class PlatformModuleBase : Module
 {
     protected override void Load(ContainerBuilder builder)
     {
+        // Method intentionally left empty.
     }
 }
