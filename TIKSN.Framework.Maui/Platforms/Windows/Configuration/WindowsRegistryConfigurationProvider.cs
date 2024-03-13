@@ -2,7 +2,7 @@ using System.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Win32;
 
-namespace TIKSN.Platforms.Windows.Configuration;
+namespace TIKSN.Configuration;
 
 public class WindowsRegistryConfigurationProvider : ConfigurationProvider
 {
@@ -32,8 +32,9 @@ public class WindowsRegistryConfigurationProvider : ConfigurationProvider
                 this.PopulateRootKey(machineKey);
             }
         }
-        catch (SecurityException)
+        catch (SecurityException ex)
         {
+            throw new UnauthorizedAccessException("Failed to access registry hive", ex);
         }
 
         try
@@ -44,8 +45,9 @@ public class WindowsRegistryConfigurationProvider : ConfigurationProvider
                 this.PopulateRootKey(userKey);
             }
         }
-        catch (SecurityException)
+        catch (SecurityException ex)
         {
+            throw new UnauthorizedAccessException("Failed to access registry hive", ex);
         }
     }
 
