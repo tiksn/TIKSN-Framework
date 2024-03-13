@@ -45,7 +45,7 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
     <PackageReference Include="ReactiveUI.Maui" Version="19.5.41" />
     <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.6" />
   </ItemGroup>
