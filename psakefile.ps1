@@ -269,6 +269,7 @@ Task FormatWhitespace -depends Restore {
 
 Task Restore -depends Clean {
     $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+    Exec { dotnet workload restore }
     Exec { dotnet tool restore }
     Exec { dotnet restore $solution }
 }
