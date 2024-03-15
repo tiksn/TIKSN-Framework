@@ -1,9 +1,8 @@
 using LanguageExt;
 using Microsoft.Extensions.Options;
 using Microsoft.Win32;
-using TIKSN.Settings;
 
-namespace TIKSN.Platforms.Windows.Settings;
+namespace TIKSN.Settings;
 
 public class WindowsRegistrySettingsService : ISettingsService
 {
