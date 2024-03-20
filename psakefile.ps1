@@ -43,7 +43,7 @@ Task Pack -depends Build, Test {
                     if ($packageGroup.Contains($packageId)) {
                         $existingVersion = $packageGroup[$packageId]
                         if ($existingVersion -ne $packageVersion) {
-                            throw "There was a package mismatch. ($existingVersion, $packageVersion)"
+                            throw "There was a package ($packageId) mismatch. ($existingVersion, $packageVersion)"
                         }
                     }
                     else {
