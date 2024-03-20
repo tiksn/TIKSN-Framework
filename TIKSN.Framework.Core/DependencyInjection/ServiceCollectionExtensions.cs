@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
 using NodaTime;
 using ReactiveUI;
+using TIKSN.Concurrency;
 using TIKSN.FileSystem;
 using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Globalization;
@@ -64,10 +65,9 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<SimpleXmlBondDeserializer>();
         services.TryAddSingleton<SimpleXmlBondSerializer>();
         services.TryAddSingleton<IIdentityGenerator<long>, IdGenIdentityGenerator>();
-
         services.TryAddScoped<IShellCommandContext, ShellCommandContext>();
-
-        _ = services.AddSingleton(MessageBus.Current);
+        services.TryAddSingleton(MessageBus.Current);
+        services.TryAddSingleton<ISchedulers>(new Schedulers(RxApp.MainThreadScheduler, RxApp.TaskpoolScheduler));
 
         services.TryAddSingleton<IConsoleService, ConsoleService>();
         services.TryAddSingleton<IKnownFolders, KnownFolders>();
