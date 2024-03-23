@@ -1,49 +1,38 @@
 using System.Reactive.Disposables;
+using System.Reflection;
 using System.Security;
-using ConsoleTables;
 using Microsoft.Extensions.Localization;
+using Spectre.Console;
 using TIKSN.Localization;
 
 namespace TIKSN.Shell;
 
 public class ConsoleService : IConsoleService
 {
+    private readonly IAnsiConsole ansiConsole;
     private readonly IStringLocalizer stringLocalizer;
 
-    public ConsoleService(IStringLocalizer stringLocalizer) => this.stringLocalizer = stringLocalizer;
+    public ConsoleService(IStringLocalizer stringLocalizer, IAnsiConsole ansiConsole)
+    {
+        this.stringLocalizer = stringLocalizer ?? throw new ArgumentNullException(nameof(stringLocalizer));
+        this.ansiConsole = ansiConsole ?? throw new ArgumentNullException(nameof(ansiConsole));
+    }
 
     public string ReadLine(string promptMessage, ConsoleColor promptForegroundColor)
     {
-        this.WritePromptMessage(promptMessage, promptForegroundColor);
-        return Console.ReadLine();
+        var textPrompt = this.WriteTextPrompt(promptMessage, promptForegroundColor);
+        return this.ansiConsole.Prompt(textPrompt);
     }
 
     public SecureString ReadPasswordLine(string promptMessage, ConsoleColor promptForegroundColor)
     {
-        this.WritePromptMessage(promptMessage, promptForegroundColor);
+        var textPrompt =
+            this.WriteTextPrompt(promptMessage, promptForegroundColor)
+            .Secret(mask: null);
 
+        var secret = this.ansiConsole.Prompt(textPrompt);
         var pwd = new SecureString();
-        while (true)
-        {
-            var i = Console.ReadKey(intercept: true);
-            if (i.Key == ConsoleKey.Enter)
-            {
-                Console.WriteLine();
-                break;
-            }
-
-            if (i.Key == ConsoleKey.Backspace)
-            {
-                if (pwd.Length > 0)
-                {
-                    pwd.RemoveAt(pwd.Length - 1);
-                }
-            }
-            else
-            {
-                pwd.AppendChar(i.KeyChar);
-            }
-        }
+        secret.ForEach(pwd.AppendChar);
 
         return pwd;
     }
@@ -72,7 +61,7 @@ public class ConsoleService : IConsoleService
 
         while (true)
         {
-            ConsoleWrite(
+            this.ConsoleWrite(
                 $"{message} [{string.Join('/', options)}]{this.stringLocalizer.GetRequiredString(LocalizationKeys.Key444677337)}");
 
             var answer = Console.ReadLine();
@@ -87,43 +76,70 @@ public class ConsoleService : IConsoleService
         }
     }
 
-    public void WriteError(string errorMessage) => ConsoleWriteLine(errorMessage, ConsoleColor.Red);
+    public void WriteError(string errorMessage) => this.ConsoleWriteLine(errorMessage, ConsoleColor.Red);
 
     public void WriteObject<T>(T value)
     {
         var tableValues = new List<T> { value };
-        WriteObjects(tableValues, enableCount: false);
+        this.WriteObjects(tableValues, title: null);
     }
 
-    public void WriteObjects<T>(IEnumerable<T> values) => WriteObjects(values, enableCount: true);
-
-    private static void ConsoleWrite(string message) => Console.Write(message);
-
-    private static void ConsoleWrite(string message, ConsoleColor foreground)
+    public void WriteObjects<T>(IEnumerable<T> values)
     {
-        var backupForeground = Console.ForegroundColor;
-        Console.ForegroundColor = foreground;
-        Console.Write(message);
-        Console.ForegroundColor = backupForeground;
+        ArgumentNullException.ThrowIfNull(values);
+
+        this.WriteObjects(values, title: null);
     }
 
-    private static void ConsoleWriteLine(string message, ConsoleColor foreground)
+    private void ConsoleWrite(string message) => this.ansiConsole.Write(message);
+
+    private void ConsoleWrite(string message, ConsoleColor foreground)
+        => this.ansiConsole.Write(new Text(message.EscapeMarkup(), new Style(foreground)));
+
+    private void ConsoleWriteLine(string message, ConsoleColor foreground)
     {
-        ConsoleWrite(message, foreground);
-        Console.WriteLine();
+        this.ConsoleWrite(message, foreground);
+        this.ansiConsole.WriteLine();
     }
 
-    private static void WriteObjects<T>(IEnumerable<T> tableValues, bool enableCount)
+    private void WriteObjects<T>(IEnumerable<T> items, string title)
     {
-        var consoleTable = ConsoleTable.From(tableValues);
-        consoleTable.Options.EnableCount = enableCount;
-        consoleTable.Write();
-        Console.WriteLine();
+        var itemType = typeof(T);
+        var itemProperties = itemType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty);
+
+        var table = new Table();
+        if (!string.IsNullOrWhiteSpace(title))
+        {
+            table.Title = new TableTitle(title);
+        }
+
+        foreach (var elementProperty in itemProperties)
+        {
+            _ = table.AddColumn(new TableColumn(elementProperty.Name));
+        }
+
+        foreach (var item in items)
+        {
+            var row = itemProperties
+                .Select(p => p.GetValue(item))
+                .Select(x => new Text(x.ToString()))
+                .ToArray();
+
+            _ = table.AddRow(row);
+        }
+
+        this.ansiConsole.Write(table);
+        this.ansiConsole.WriteLine();
     }
 
-    private void WritePromptMessage(string promptMessage, ConsoleColor promptForegroundColor)
+    private TextPrompt<string> WriteTextPrompt(string promptMessage, ConsoleColor promptForegroundColor)
     {
-        ConsoleWrite(promptMessage, promptForegroundColor);
-        ConsoleWrite(this.stringLocalizer.GetRequiredString(LocalizationKeys.Key444677337), promptForegroundColor);
+        var promptIndicator = this.stringLocalizer.GetRequiredString(LocalizationKeys.Key444677337);
+
+        this.ansiConsole.Write(new Text(promptMessage, new Style(promptForegroundColor)));
+        this.ansiConsole.Write(new Text(promptIndicator, new Style(promptForegroundColor)));
+
+        return new TextPrompt<string>(string.Empty)
+            .AllowEmpty();
     }
 }
