@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
 using NodaTime;
 using ReactiveUI;
+using Spectre.Console;
 using TIKSN.Concurrency;
 using TIKSN.FileSystem;
 using TIKSN.Finance.ForeignExchange.Bank;
@@ -67,6 +68,7 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<IIdentityGenerator<long>, IdGenIdentityGenerator>();
         services.TryAddScoped<IShellCommandContext, ShellCommandContext>();
         services.TryAddSingleton(MessageBus.Current);
+        services.TryAddSingleton(AnsiConsole.Console);
         services.TryAddSingleton<ISchedulers>(new Schedulers(RxApp.MainThreadScheduler, RxApp.TaskpoolScheduler));
 
         services.TryAddSingleton<IConsoleService, ConsoleService>();
