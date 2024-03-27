@@ -186,6 +186,15 @@ Task EstimateVersions -depends Restore {
         }
     }
 
+    $gitTags = git tag
+    $gitTagVersions = $gitTags | ForEach-Object { [System.Management.Automation.SemanticVersion]::Parse($_) }
+    $gitTagVersions = $gitTagVersions | Sort-Object -Descending
+    $latestTagVersion = $gitTagVersions | Select-Object -First 1
+
+    if ($Script:NextVersion -lt $latestTagVersion) {
+        throw "Next Release version '$Script:NextVersion' should be greater than equal to latest tag version '$latestTagVersion'"
+    }
+
     Write-Output "Next version estimated to be $Script:NextVersion"
 }
 
