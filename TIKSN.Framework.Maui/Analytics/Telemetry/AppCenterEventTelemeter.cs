@@ -22,7 +22,7 @@ public class AppCenterEventTelemeter : IEventTelemeter
         }
         else
         {
-            AppCenterAnalytics.TrackEvent(name, properties.ToDictionary());
+            AppCenterAnalytics.TrackEvent(name, properties.ToDictionary(StringComparer.Ordinal));
         }
 
         return Task.CompletedTask;

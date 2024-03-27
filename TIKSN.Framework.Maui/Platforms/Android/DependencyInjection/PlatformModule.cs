@@ -1,7 +1,3 @@
-using TIKSN.DependencyInjection;
+namespace TIKSN.DependencyInjection;
 
-namespace TIKSN.Platforms.Android.DependencyInjection;
-
-public class PlatformModule : PlatformModuleBase
-{
-}
+public class PlatformModule : PlatformModuleBase;

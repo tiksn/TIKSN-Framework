@@ -2,21 +2,40 @@ version: 2
 updates:
   - package-ecosystem: nuget
     directory: "/"
+    labels:
+      - "dependencies"
+      - "maintenance"
     schedule:
-      interval: daily
-      time: "03:00"
+      interval: "daily"
+    milestone: 22
     open-pull-requests-limit: 10
     reviewers:
-      - tiksn
+      - "tiksn"
     assignees:
-      - tiksn
+      - "tiksn"
   - package-ecosystem: nuget
     directory: "/examples"
+    labels:
+      - "dependencies"
+      - "maintenance"
     schedule:
-      interval: daily
-      time: "03:00"
+      interval: "daily"
+    milestone: 22
     open-pull-requests-limit: 10
     reviewers:
-      - tiksn
+      - "tiksn"
     assignees:
-      - tiksn
+      - "tiksn"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    labels:
+      - "dependencies"
+      - "maintenance"
+    open-pull-requests-limit: 10
+    schedule:
+      interval: "daily"
+    milestone: 22
+    reviewers:
+      - "tiksn"
+    assignees:
+      - "tiksn"

@@ -43,7 +43,7 @@ Task Pack -depends Build, Test {
                     if ($packageGroup.Contains($packageId)) {
                         $existingVersion = $packageGroup[$packageId]
                         if ($existingVersion -ne $packageVersion) {
-                            throw "There was a package mismatch. ($existingVersion, $packageVersion)"
+                            throw "There was a package ($packageId) mismatch. ($existingVersion, $packageVersion)"
                         }
                     }
                     else {
@@ -187,6 +187,12 @@ Task DownloadCurrencyCodes -depends Clean {
     Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-three.xml' -OutFile 'TIKSN.Framework.Core/Finance/Resources/TableA3.xml'
 }
 
+Task DevSkim -depends Restore {
+    $sarifFile = Join-Path -Path $script:trashFolder -ChildPath 'DevSkim.sarif'
+    Exec { dotnet tool run devskim analyze --source-code . --output-file $sarifFile }
+    Exec { dotnet tool run devskim fix --source-code . --sarif-result $sarifFile --all }
+}
+
 Task Format -depends Restore, FormatWhitespace, FormatStyle, FormatAnalyzers {
 }
 
@@ -263,6 +269,7 @@ Task FormatWhitespace -depends Restore {
 
 Task Restore -depends Clean {
     $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+    Exec { dotnet workload restore }
     Exec { dotnet tool restore }
     Exec { dotnet restore $solution }
 }

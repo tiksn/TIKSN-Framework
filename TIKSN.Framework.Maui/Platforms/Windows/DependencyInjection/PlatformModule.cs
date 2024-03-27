@@ -1,9 +1,7 @@
 using Autofac;
-using TIKSN.DependencyInjection;
-using TIKSN.Platforms.Windows.Security.Antimalware;
 using TIKSN.Security.Antimalware;
 
-namespace TIKSN.Platforms.Windows.DependencyInjection;
+namespace TIKSN.DependencyInjection;
 
 public class PlatformModule : PlatformModuleBase
 {
