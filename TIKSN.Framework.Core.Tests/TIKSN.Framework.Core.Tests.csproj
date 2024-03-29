@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
     <LangVersion>latest</LangVersion>
     <Company>TIKSN Development</Company>
     <Product>TIKSN Framework Tests</Product>
