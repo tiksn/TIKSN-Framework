@@ -16,6 +16,112 @@ param(
 
 Set-StrictMode -Version Latest
 
+# Synopsis: Pack NuGet package
+Task Pack Build, Test, {
+    $temporaryNuspec = Join-Path -Path $script:trashFolder -ChildPath '.\TIKSN-Framework.nuspec'
+    Copy-Item -Path '.\TIKSN-Framework.nuspec' -Destination $temporaryNuspec
+
+    $packages = @{
+        Core        = New-Object System.Collections.Specialized.OrderedDictionary
+        Android     = New-Object System.Collections.Specialized.OrderedDictionary
+        IOS         = New-Object System.Collections.Specialized.OrderedDictionary
+        MacCatalyst = New-Object System.Collections.Specialized.OrderedDictionary
+        Windows     = New-Object System.Collections.Specialized.OrderedDictionary
+    }
+
+    $projectMap = @(
+        @{PackageGroups = @($packages.Core, $packages.Android, $packages.IOS, $packages.MacCatalyst, $packages.Windows); ProjectFile = '.\TIKSN.Framework.Core\TIKSN.Framework.Core.csproj' }
+        @{PackageGroups = @($packages.Android); ProjectFile = '.\TIKSN.Framework.Maui\TIKSN.Framework.Maui.csproj' }
+        @{PackageGroups = @($packages.IOS); ProjectFile = '.\TIKSN.Framework.Maui\TIKSN.Framework.Maui.csproj' }
+        @{PackageGroups = @($packages.MacCatalyst); ProjectFile = '.\TIKSN.Framework.Maui\TIKSN.Framework.Maui.csproj' }
+        @{PackageGroups = @($packages.Windows); ProjectFile = '.\TIKSN.Framework.Maui\TIKSN.Framework.Maui.csproj' }
+    )
+
+    foreach ($projectMapEntry in $projectMap) {
+        $project = [xml](Get-Content -Path $projectMapEntry.ProjectFile -Raw)
+
+        foreach ($packageReference in $project.SelectNodes('//PackageReference')) {
+            $packageId = $packageReference.Include
+            $packageVersion = $packageReference.Version
+
+            if ($null -ne $packageVersion) {
+                foreach ($packageGroup in $projectMapEntry.PackageGroups) {
+                    if ($packageGroup.Contains($packageId)) {
+                        $existingVersion = $packageGroup[$packageId]
+                        if ($existingVersion -ne $packageVersion) {
+                            throw "There was a package ($packageId) mismatch. ($existingVersion, $packageVersion)"
+                        }
+                    }
+                    else {
+                        $packageGroup[$packageId] = $packageVersion
+                    }
+
+                }
+            }
+        }
+    }
+
+    $dependencyGroups = @(
+        @{Packages = $packages.Core; TargetFramework = 'net8.0' },
+        @{Packages = $packages.Android; TargetFramework = 'net8.0-android21.0' }
+        @{Packages = $packages.IOS; TargetFramework = 'net8.0-ios14.2' }
+        @{Packages = $packages.MacCatalyst; TargetFramework = 'net8.0-maccatalyst14.0' }
+        @{Packages = $packages.Windows; TargetFramework = 'net8.0-windows10.0.19041.0' }
+    )
+
+    $nuspec = [xml](Get-Content -Path $temporaryNuspec -Raw)
+
+    foreach ($dependencyGroup in $dependencyGroups) {
+        $group = $nuspec.CreateElement('group', $nuspec.DocumentElement.NamespaceURI)
+        $group.SetAttribute('targetFramework', $dependencyGroup.TargetFramework)
+
+        foreach ($key in $dependencyGroup.Packages.Keys) {
+            $dependency = $nuspec.CreateElement('dependency', $nuspec.DocumentElement.NamespaceURI)
+            $dependency.SetAttribute('id', $key)
+            $dependency.SetAttribute('version', $dependencyGroup.Packages[$key])
+            $dependency.SetAttribute('exclude', 'Build,Analyzers')
+            $group.AppendChild($dependency) | Out-Null
+        }
+
+        $nuspec.package.metadata.dependencies.AppendChild($group) | Out-Null
+    }
+
+    $multilingualResourcesFolders = Get-ChildItem -Path 'MultilingualResources' -Recurse -Directory
+    foreach ($multilingualResourcesFolder in $multilingualResourcesFolders) {
+
+        $projectName = $multilingualResourcesFolder.Parent.Name
+        $projectComment = $nuspec.CreateComment($projectName)
+        $nuspec.package.files.AppendChild($projectComment) | Out-Null
+
+        foreach ($dependencyGroup in $dependencyGroups) {
+
+            foreach ($mainFileExtension in ('dll', 'xml', 'pdb')) {
+                $file = $nuspec.CreateElement('file', $nuspec.DocumentElement.NamespaceURI)
+                $file.SetAttribute('src', "any\$projectName.$mainFileExtension")
+                $file.SetAttribute('target', "lib\$($dependencyGroup.TargetFramework)")
+                $nuspec.package.files.AppendChild($file) | Out-Null
+            }
+
+            $multilingualResourcesFiles = Get-ChildItem -Path $multilingualResourcesFolder
+            foreach ($multilingualResourcesFile in $multilingualResourcesFiles) {
+                $nameParts = $multilingualResourcesFile.Name -split '\.'
+                $code = $nameParts[-2]
+
+                $file = $nuspec.CreateElement('file', $nuspec.DocumentElement.NamespaceURI)
+                $file.SetAttribute('src', "any\$code\$projectName.resources.dll")
+                $file.SetAttribute('target', "lib\$($dependencyGroup.TargetFramework)\$code")
+                $nuspec.package.files.AppendChild($file) | Out-Null
+            }
+        }
+    }
+
+    $nuspec.Save($temporaryNuspec)
+
+    Copy-Item -Path 'icon.png' -Destination $script:buildArtifactsFolder
+    Copy-Item -Path 'README.md' -Destination $script:buildArtifactsFolder
+    Exec { nuget pack $temporaryNuspec -Version $Script:NextVersion -BasePath $script:buildArtifactsFolder -OutputDirectory $script:trashFolder -OutputFileNamesWithoutVersion -Verbosity detailed }
+}
+
 # Synopsis: Test
 Task Test Build, {
     Exec { dotnet test '.\TIKSN.Framework.Core.Tests\TIKSN.Framework.Core.Tests.csproj' }
