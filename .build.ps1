@@ -16,6 +16,13 @@ param(
 
 Set-StrictMode -Version Latest
 
+# Synopsis: Test
+Task Test Build, {
+    Exec { dotnet test '.\TIKSN.Framework.Core.Tests\TIKSN.Framework.Core.Tests.csproj' }
+
+    Exec { dotnet test '.\TIKSN.Framework.IntegrationTests\TIKSN.Framework.IntegrationTests.csproj' }
+}
+
 # Synopsis: Build
 Task Build Format, BuildLanguageLocalization, BuildRegionLocalization, BuildCore, BuildMaui, {
     Exec { dotnet build $script:solution }
