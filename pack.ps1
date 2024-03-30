@@ -5,4 +5,4 @@ param (
     $Version
 )
 
-Invoke-psake -buildFile .\psakefile.ps1 -taskList Pack -parameters @{Version = $Version }
+Invoke-Build -Task Pack -Version $Version
