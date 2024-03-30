@@ -16,6 +16,28 @@ param(
 
 Set-StrictMode -Version Latest
 
+# Synopsis: Publish NuGet package
+Task Publish Pack, ValidateVersion, {
+    $packageName = Join-Path -Path $script:trashFolder -ChildPath 'TIKSN-Framework.nupkg'
+
+    Import-Module -Name Microsoft.PowerShell.SecretManagement
+    $apiKey = Get-Secret -Name 'TIKSN-Framework-ApiKey' -AsPlainText
+
+    Exec { nuget push $packageName -ApiKey $apiKey -Source https://api.nuget.org/v3/index.json }
+}
+
+# Synopsis: Validate Next Version
+Task ValidateVersion EstimateVersion, {
+    $gitTags = git tag
+    $gitTagVersions = $gitTags | ForEach-Object { [System.Management.Automation.SemanticVersion]::Parse($_) }
+    $gitTagVersions = $gitTagVersions | Sort-Object -Descending
+    $latestTagVersion = $gitTagVersions | Select-Object -First 1
+
+    if ($Script:NextVersion -le $latestTagVersion) {
+        throw "Next Release version '$Script:NextVersion' should be greater than latest tag version '$latestTagVersion'"
+    }
+}
+
 # Synopsis: Pack NuGet package
 Task Pack Build, Test, {
     $temporaryNuspec = Join-Path -Path $script:trashFolder -ChildPath '.\TIKSN-Framework.nuspec'
@@ -170,7 +192,7 @@ Task BuildMaui EstimateVersion, {
 # Synopsis: Estimate Next Version
 Task EstimateVersion Restore, {
     if ($Version) {
-        $Script:NextVersion = $Version
+        $Script:NextVersion = [System.Management.Automation.SemanticVersion]$Version
     }
     else {
         $foundPackages = Find-Package -Name $PackageId -AllVersions -AllowPrereleaseVersions -ProviderName NuGet -Source nuget.org
