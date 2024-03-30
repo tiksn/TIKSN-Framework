@@ -16,6 +16,86 @@ param(
 
 Set-StrictMode -Version Latest
 
+# Synopsis: Format
+Task Format Restore, FormatWhitespace, FormatStyle, FormatAnalyzers
+
+# Synopsis: Format Analyzers
+Task FormatAnalyzers Restore, FormatAnalyzersLanguageLocalization, FormatAnalyzersRegionLocalization, FormatAnalyzersCore, FormatAnalyzersMaui, FormatAnalyzersSolution
+
+# Synopsis: Format Analyzers Solution
+Task FormatAnalyzersSolution Restore, {
+    # Exec { dotnet format analyzers --severity info --verbosity diagnostic $script:solution }
+}
+
+# Synopsis: Format Analyzers Language Localization
+Task FormatAnalyzersLanguageLocalization Restore, {
+    $project = Resolve-Path -Path 'TIKSN.LanguageLocalization/TIKSN.LanguageLocalization.csproj'
+
+    Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
+}
+
+# Synopsis: Format Analyzers Region Localization
+Task FormatAnalyzersRegionLocalization Restore, {
+    $project = Resolve-Path -Path 'TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj'
+
+    Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
+}
+
+# Synopsis: Format Analyzers Core
+Task FormatAnalyzersCore Restore, {
+    $project = Resolve-Path -Path 'TIKSN.Framework.Core/TIKSN.Framework.Core.csproj'
+
+    Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
+}
+
+# Synopsis: Format Analyzers MAUI
+Task FormatAnalyzersMaui Restore, {
+    $project = Resolve-Path -Path 'TIKSN.Framework.Maui/TIKSN.Framework.Maui.csproj'
+
+    Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
+}
+
+# Synopsis: Format Style
+Task FormatStyle Restore, FormatStyleLanguageLocalization, FormatStyleRegionLocalization, FormatStyleCore, FormatStyleMaui, FormatStyleSolution
+
+# Synopsis: Format Style Solution
+Task FormatStyleSolution Restore, {
+    # Exec { dotnet format style --severity info --verbosity diagnostic $script:solution }
+}
+
+# Synopsis: Format Style Language Localization
+Task FormatStyleLanguageLocalization Restore, {
+    $project = Resolve-Path -Path 'TIKSN.LanguageLocalization/TIKSN.LanguageLocalization.csproj'
+
+    Exec { dotnet format style --severity info --verbosity diagnostic $project }
+}
+
+# Synopsis: Format Style Region Localization
+Task FormatStyleRegionLocalization Restore, {
+    $project = Resolve-Path -Path 'TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj'
+
+    Exec { dotnet format style --severity info --verbosity diagnostic $project }
+}
+
+# Synopsis: Format Style Core
+Task FormatStyleCore Restore, {
+    $project = Resolve-Path -Path 'TIKSN.Framework.Core/TIKSN.Framework.Core.csproj'
+
+    Exec { dotnet format style --severity info --verbosity diagnostic $project }
+}
+
+# Synopsis: Format Style MAUI
+Task FormatStyleMaui Restore, {
+    $project = Resolve-Path -Path 'TIKSN.Framework.Maui/TIKSN.Framework.Maui.csproj'
+
+    Exec { dotnet format style --severity info --verbosity diagnostic $project }
+}
+
+# Synopsis: Format Whitespace
+Task FormatWhitespace Restore, {
+    Exec { dotnet format whitespace --verbosity diagnostic $script:solution }
+}
+
 # Synopsis: Download Currency Codes
 Task DownloadCurrencyCodes Clean, {
     Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml' -OutFile 'TIKSN.Framework.Core/Finance/Resources/TableA1.xml'
