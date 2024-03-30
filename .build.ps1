@@ -16,6 +16,78 @@ param(
 
 Set-StrictMode -Version Latest
 
+# Synopsis: Build
+Task Build Format, BuildLanguageLocalization, BuildRegionLocalization, BuildCore, BuildMaui, {
+    Exec { dotnet build $script:solution }
+}
+
+# Synopsis: Build Language Localization
+Task BuildLanguageLocalization EstimateVersion, {
+    $project = Resolve-Path -Path 'TIKSN.LanguageLocalization/TIKSN.LanguageLocalization.csproj'
+
+    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+}
+
+# Synopsis: Build Region Localization
+Task BuildRegionLocalization EstimateVersion, {
+    $project = Resolve-Path -Path 'TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj'
+
+    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+}
+
+# Synopsis: Build Core
+Task BuildCore EstimateVersion, {
+    $project = Resolve-Path -Path 'TIKSN.Framework.Core/TIKSN.Framework.Core.csproj'
+
+    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+}
+
+# Synopsis: Build MAUI
+Task BuildMaui EstimateVersion, {
+    $project = Resolve-Path -Path 'TIKSN.Framework.Maui/TIKSN.Framework.Maui.csproj'
+
+    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+
+    Exec { dotnet build $project --framework net8.0-ios /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyIosBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net8.0-maccatalyst /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyMaccatalystBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net8.0-android /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyAndroidBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net8.0-windows10.0.19041.0 /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyWindowsBuildArtifactsFolder }
+}
+
+# Synopsis: Estimate Next Version
+Task EstimateVersion Restore, {
+    if ($Version) {
+        $Script:NextVersion = $Version
+    }
+    else {
+        $foundPackages = Find-Package -Name $PackageId -AllVersions -AllowPrereleaseVersions -ProviderName NuGet -Source nuget.org
+
+        $foundPackages = $foundPackages | Where-Object { $_.Name -eq $PackageId }
+
+        $value = [System.Management.Automation.SemanticVersion]::New(0)
+        $foundPackageVersions = $foundPackages | Select-Object -ExpandProperty Version
+        $foundPackageVersions = $foundPackageVersions | Where-Object { [System.Management.Automation.SemanticVersion]::TryParse($_, [ref][System.Management.Automation.SemanticVersion]$value) }
+        $foundPackageVersions = $foundPackageVersions | ForEach-Object { [System.Management.Automation.SemanticVersion]$_ }
+        $foundPackageVersions = $foundPackageVersions | Sort-Object -Descending
+        $latestPackageVersion = $foundPackageVersions | Select-Object -First 1
+
+        $currentCommit = git rev-parse HEAD
+
+        if ($null -eq $latestPackageVersion.PreReleaseLabel) {
+            $nextPreReleaseLabel = 'alpha.1'
+
+            $Script:NextVersion = [System.Management.Automation.SemanticVersion]::New($latestPackageVersion.Major, $latestPackageVersion.Minor, $latestPackageVersion.Patch + 1, $nextPreReleaseLabel, $currentCommit)
+        }
+        else {
+            $nextPreReleaseLabel = $latestPackageVersion.PreReleaseLabel.Split('.')[0] + '.' + (([int]$latestPackageVersion.PreReleaseLabel.Split('.')[1]) + 1)
+
+            $Script:NextVersion = [System.Management.Automation.SemanticVersion]::New($latestPackageVersion.Major, $latestPackageVersion.Minor, $latestPackageVersion.Patch, $nextPreReleaseLabel, $currentCommit)
+        }
+    }
+
+    Write-Output "Next version estimated to be $Script:NextVersion"
+}
+
 # Synopsis: Format
 Task Format Restore, FormatWhitespace, FormatStyle, FormatAnalyzers
 
