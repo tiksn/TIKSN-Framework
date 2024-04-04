@@ -1,3 +1,4 @@
+using Raven.Client;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Linq;
 
@@ -9,28 +10,41 @@ public class RavenRepository<TEntity, TIdentity> : IRavenRepository<TEntity, TId
 {
     private readonly IRavenSessionProvider sessionProvider;
 
-    public RavenRepository(IRavenSessionProvider sessionProvider)
-        => this.sessionProvider = sessionProvider ?? throw new ArgumentNullException(nameof(sessionProvider));
+    public RavenRepository(IRavenSessionProvider sessionProvider, string collectionName)
+    {
+        if (string.IsNullOrWhiteSpace(collectionName))
+        {
+            throw new ArgumentException($"'{nameof(collectionName)}' cannot be null or whitespace.", nameof(collectionName));
+        }
 
-    public Task AddAsync(TEntity entity, CancellationToken cancellationToken) =>
-        this.sessionProvider.Session.StoreAsync(entity, entity.ID.ToString(), cancellationToken);
+        this.sessionProvider = sessionProvider ?? throw new ArgumentNullException(nameof(sessionProvider));
+        this.CollectionName = collectionName;
+    }
+
+    public string CollectionName { get; }
+
+    public async Task AddAsync(TEntity entity, CancellationToken cancellationToken)
+    {
+        await this.sessionProvider.Session.StoreAsync(entity, this.CreateDocumentId(entity.ID), cancellationToken).ConfigureAwait(false);
+        this.sessionProvider.Session.Advanced.GetMetadataFor(entity)[Constants.Documents.Metadata.Collection] = this.CollectionName;
+    }
 
     public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken) =>
         BatchOperationHelper.BatchOperationAsync(entities, this.AddAsync, cancellationToken);
 
     public Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken) =>
-        this.sessionProvider.Session.Advanced.ExistsAsync(id.ToString(), cancellationToken);
+        this.sessionProvider.Session.Advanced.ExistsAsync(this.CreateDocumentId(id), cancellationToken);
 
     public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
         => await this.GetOrDefaultAsync(id, cancellationToken).ConfigureAwait(false)
             ?? throw new EntityNotFoundException($"Entity with ID '{id}' is not found.");
 
     public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken) =>
-        this.sessionProvider.Session.LoadAsync<TEntity>(id.ToString(), cancellationToken);
+        this.sessionProvider.Session.LoadAsync<TEntity>(this.CreateDocumentId(id), cancellationToken);
 
     public async Task<IEnumerable<TEntity>> ListAsync(IEnumerable<TIdentity> ids,
         CancellationToken cancellationToken) =>
-        await this.sessionProvider.Session.Query<TEntity>()
+        await this.sessionProvider.Session.Query<TEntity>(collectionName: this.CollectionName)
             .Where(entity => ids.Contains(entity.ID))
             .ToListAsync(cancellationToken).ConfigureAwait(false);
 
@@ -38,13 +52,13 @@ public class RavenRepository<TEntity, TIdentity> : IRavenRepository<TEntity, TId
         PageQuery pageQuery,
         CancellationToken cancellationToken)
         => PageAsync(
-            this.sessionProvider.Session.Query<TEntity>(),
+            this.sessionProvider.Session.Query<TEntity>(collectionName: this.CollectionName),
             pageQuery,
             cancellationToken);
 
     public Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)
     {
-        this.sessionProvider.Session.Delete(entity.ID.ToString());
+        this.sessionProvider.Session.Delete(this.CreateDocumentId(entity.ID));
 
         return Task.CompletedTask;
     }
@@ -53,11 +67,11 @@ public class RavenRepository<TEntity, TIdentity> : IRavenRepository<TEntity, TId
         BatchOperationHelper.BatchOperationAsync(entities, this.RemoveAsync, cancellationToken);
 
     public IAsyncEnumerable<TEntity> StreamAllAsync(CancellationToken cancellationToken) =>
-        this.sessionProvider.Session.Query<TEntity>()
+        this.sessionProvider.Session.Query<TEntity>(collectionName: this.CollectionName)
             .ToAsyncEnumerable();
 
     public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken) =>
-        this.sessionProvider.Session.StoreAsync(entity, entity.ID.ToString(), cancellationToken);
+        this.sessionProvider.Session.StoreAsync(entity, this.CreateDocumentId(entity.ID), cancellationToken);
 
     public Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken) =>
         BatchOperationHelper.BatchOperationAsync(entities, this.UpdateAsync, cancellationToken);
@@ -72,4 +86,6 @@ public class RavenRepository<TEntity, TIdentity> : IRavenRepository<TEntity, TId
             static (q, ct) => q.ToListAsync(ct),
             static (q, ct) => q.LongCountAsync(ct),
             cancellationToken);
+
+    protected string CreateDocumentId(TIdentity id) => $"{this.CollectionName}/{id}";
 }
