@@ -1,38 +1,36 @@
 using Raven.Client.Documents;
 using Raven.Client.Documents.Linq;
-using Raven.Client.Documents.Session;
 
 namespace TIKSN.Data.RavenDB;
 
-public class RavenRepository<TEntity, TIdentity> : IRepository<TEntity>, IQueryRepository<TEntity, TIdentity>,
-    IStreamRepository<TEntity>
+public class RavenRepository<TEntity, TIdentity> : IRavenRepository<TEntity, TIdentity>
     where TEntity : IEntity<TIdentity>
     where TIdentity : IEquatable<TIdentity>
 {
-    private readonly IAsyncDocumentSession session;
+    private readonly IRavenSessionProvider sessionProvider;
 
-    public RavenRepository(IAsyncDocumentSession session) =>
-        this.session = session ?? throw new ArgumentNullException(nameof(session));
+    public RavenRepository(IRavenSessionProvider sessionProvider)
+        => this.sessionProvider = sessionProvider ?? throw new ArgumentNullException(nameof(sessionProvider));
 
     public Task AddAsync(TEntity entity, CancellationToken cancellationToken) =>
-        this.session.StoreAsync(entity, entity.ID.ToString(), cancellationToken);
+        this.sessionProvider.Session.StoreAsync(entity, entity.ID.ToString(), cancellationToken);
 
     public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken) =>
         BatchOperationHelper.BatchOperationAsync(entities, this.AddAsync, cancellationToken);
 
     public Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken) =>
-        this.session.Advanced.ExistsAsync(id.ToString(), cancellationToken);
+        this.sessionProvider.Session.Advanced.ExistsAsync(id.ToString(), cancellationToken);
 
     public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
         => await this.GetOrDefaultAsync(id, cancellationToken).ConfigureAwait(false)
             ?? throw new EntityNotFoundException($"Entity with ID '{id}' is not found.");
 
     public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken) =>
-        this.session.LoadAsync<TEntity>(id.ToString(), cancellationToken);
+        this.sessionProvider.Session.LoadAsync<TEntity>(id.ToString(), cancellationToken);
 
     public async Task<IEnumerable<TEntity>> ListAsync(IEnumerable<TIdentity> ids,
         CancellationToken cancellationToken) =>
-        await this.session.Query<TEntity>()
+        await this.sessionProvider.Session.Query<TEntity>()
             .Where(entity => ids.Contains(entity.ID))
             .ToListAsync(cancellationToken).ConfigureAwait(false);
 
@@ -40,13 +38,13 @@ public class RavenRepository<TEntity, TIdentity> : IRepository<TEntity>, IQueryR
         PageQuery pageQuery,
         CancellationToken cancellationToken)
         => PageAsync(
-            this.session.Query<TEntity>(),
+            this.sessionProvider.Session.Query<TEntity>(),
             pageQuery,
             cancellationToken);
 
     public Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)
     {
-        this.session.Delete(entity.ID.ToString());
+        this.sessionProvider.Session.Delete(entity.ID.ToString());
 
         return Task.CompletedTask;
     }
@@ -55,11 +53,11 @@ public class RavenRepository<TEntity, TIdentity> : IRepository<TEntity>, IQueryR
         BatchOperationHelper.BatchOperationAsync(entities, this.RemoveAsync, cancellationToken);
 
     public IAsyncEnumerable<TEntity> StreamAllAsync(CancellationToken cancellationToken) =>
-        this.session.Query<TEntity>()
+        this.sessionProvider.Session.Query<TEntity>()
             .ToAsyncEnumerable();
 
     public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken) =>
-        this.session.StoreAsync(entity, entity.ID.ToString(), cancellationToken);
+        this.sessionProvider.Session.StoreAsync(entity, entity.ID.ToString(), cancellationToken);
 
     public Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken) =>
         BatchOperationHelper.BatchOperationAsync(entities, this.UpdateAsync, cancellationToken);
