@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Localization;
 using MongoDB.Bson;
 using TIKSN.Data.Mongo;
+using TIKSN.Data.RavenDB;
 using TIKSN.DependencyInjection;
 using TIKSN.Finance.ForeignExchange;
 using TIKSN.IntegrationTests.Data.Mongo;
@@ -29,12 +31,21 @@ public class ServiceProviderFixture : IDisposable
         this.CreateHost("LiteDB", (context, builder) => builder.RegisterModule<LiteDbExchangeRateServiceTestModule>());
         this.CreateHost("MongoDB", (context, builder) => builder.RegisterModule<MongoDbExchangeRateServiceTestModule>());
         this.CreateHost("SQLite", (context, builder) => builder.RegisterModule(new SQLiteExchangeRateServiceTestModule(context.Configuration)));
+        this.CreateHost("RavenDB", (context, builder) => builder.RegisterModule<RavenDbExchangeRateServiceTestModule>());
     }
 
     public void CreateHost(string key, Action<HostBuilderContext, ContainerBuilder> configureContainer)
     {
         var host = Host.CreateDefaultBuilder()
-            .ConfigureServices(services => _ = services.AddFrameworkCore())
+            .ConfigureServices(services =>
+            {
+                _ = services.AddFrameworkCore();
+                _ = services.Configure<RavenUnitOfWorkFactoryOptions>(options =>
+                {
+                    options.Urls = ["http://localhost:8080"];
+                    options.Database = "TIKSN-Framework-IntegrationTests";
+                });
+            })
             .UseServiceProviderFactory(new AutofacServiceProviderFactory())
             .ConfigureContainer<ContainerBuilder>((context, builder) =>
             {
