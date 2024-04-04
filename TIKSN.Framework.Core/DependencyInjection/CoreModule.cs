@@ -62,5 +62,10 @@ public class CoreModule : Module
             .RegisterType<Finance.ForeignExchange.Data.Mongo.DataEntityMapper>()
             .AsImplementedInterfaces()
             .SingleInstance();
+
+        _ = builder
+            .RegisterType<Finance.ForeignExchange.Data.RavenDB.DataEntityMapper>()
+            .AsImplementedInterfaces()
+            .SingleInstance();
     }
 }
