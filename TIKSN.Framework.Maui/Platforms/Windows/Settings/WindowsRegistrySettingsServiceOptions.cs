@@ -8,5 +8,5 @@ public class WindowsRegistrySettingsServiceOptions
 
     public RegistryView RegistryView { get; set; }
 
-    public string SubKey { get; set; }
+    public string SubKey { get; set; } = string.Empty;
 }
