@@ -1,6 +1,6 @@
 namespace TIKSN.Configuration.ValidationStrategy;
 
-public interface IConfigurationValidationStrategy<T>
+public interface IConfigurationValidationStrategy<in T>
 {
     void Validate(T instance);
 }

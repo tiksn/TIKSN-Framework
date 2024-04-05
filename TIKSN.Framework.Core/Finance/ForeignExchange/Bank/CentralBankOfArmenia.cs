@@ -55,10 +55,10 @@ public class CentralBankOfArmenia : ICentralBankOfArmenia
 
         var rates = new List<CurrencyPair>();
 
-        foreach (var rate in this.oneWayRates)
+        foreach (var rateCurrency in this.oneWayRates.Select(x => x.Key))
         {
-            rates.Add(new CurrencyPair(rate.Key, AMD));
-            rates.Add(new CurrencyPair(AMD, rate.Key));
+            rates.Add(new CurrencyPair(rateCurrency, AMD));
+            rates.Add(new CurrencyPair(AMD, rateCurrency));
         }
 
         return rates;
