@@ -4,6 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 namespace TIKSN.Licensing;
 
 #pragma warning disable S101 // Types should be named in PascalCase
+
 public class RSACertificateSignatureService : ICertificateSignatureService
 #pragma warning restore S101 // Types should be named in PascalCase
 {
@@ -11,7 +12,10 @@ public class RSACertificateSignatureService : ICertificateSignatureService
         byte[] data,
         X509Certificate2 privateCertificate)
     {
-        using var privateKey = privateCertificate.GetRSAPrivateKey();
+        using var privateKey =
+            privateCertificate.GetRSAPrivateKey()
+            ?? throw new InvalidOperationException("Public Certificate is missing");
+
         return privateKey.SignData(
             data, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
     }
@@ -21,7 +25,10 @@ public class RSACertificateSignatureService : ICertificateSignatureService
         byte[] signature,
         X509Certificate2 publicCertificate)
     {
-        using var publicKey = publicCertificate.GetRSAPublicKey();
+        using var publicKey =
+            publicCertificate.GetRSAPublicKey()
+            ?? throw new InvalidOperationException("Public Certificate is missing");
+
         return publicKey.VerifyData(data, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
     }
 }

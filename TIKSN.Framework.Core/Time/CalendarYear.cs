@@ -74,7 +74,7 @@ public readonly struct CalendarYear : IYear<CalendarYear>
     public int CompareTo(CalendarYear other)
         => this.absoluteYear.CompareTo(other.absoluteYear);
 
-    public int CompareTo(object obj)
+    public int CompareTo(object? obj)
     {
         if (obj is CalendarYear other)
         {
@@ -88,7 +88,7 @@ public readonly struct CalendarYear : IYear<CalendarYear>
 
     #region Equality
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
         => obj is CalendarYear other && this.Equals(other);
 
     public bool Equals(CalendarYear other)
@@ -104,14 +104,14 @@ public readonly struct CalendarYear : IYear<CalendarYear>
     public override string ToString()
         => this.ToString(string.Empty, CultureInfo.InvariantCulture);
 
-    public string ToString(string format, IFormatProvider formatProvider)
+    public string ToString(string? format, IFormatProvider? formatProvider)
         => this.absoluteYear.ToString(formatProvider);
 
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,
         ReadOnlySpan<char> format,
-        IFormatProvider provider)
+        IFormatProvider? provider)
     {
         var result = this.ToString(new string(format), provider);
         charsWritten = Math.Min(result.Length, destination.Length);

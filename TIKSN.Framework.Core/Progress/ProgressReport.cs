@@ -24,16 +24,3 @@ public class ProgressReport
 
     public static ProgressReport CreateProgressReportWithPercentage(double percentComplete) => new(percentComplete);
 }
-
-//public class ProgressStatus<T> : ProgressStatus
-//{
-//	public ProgressStatus(T status, double percentage) : base(percentage)
-//	{
-//		Status = status;
-//	}
-
-// public ProgressStatus(T status, int completed, int overall) : base(completed, overall) {
-// Status = status; }
-
-//	public T Status { get; private set; }
-//}
