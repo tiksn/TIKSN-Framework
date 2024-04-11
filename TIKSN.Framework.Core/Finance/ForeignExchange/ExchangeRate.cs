@@ -20,7 +20,7 @@ public class ExchangeRate : IEquatable<ExchangeRate>
 
     public decimal Rate { get; }
 
-    public bool Equals(ExchangeRate other)
+    public bool Equals(ExchangeRate? other)
     {
         if (other == null)
         {
@@ -32,10 +32,10 @@ public class ExchangeRate : IEquatable<ExchangeRate>
                && this.Rate == other.Rate;
     }
 
-    public override bool Equals(object obj) => this.Equals(obj as ExchangeRate);
-
-    public ExchangeRate Reverse() => new(this.Pair.Reverse(), this.AsOn, decimal.One / this.Rate);
+    public override bool Equals(object? obj) => this.Equals(obj as ExchangeRate);
 
     public override int GetHashCode() =>
         this.AsOn.GetHashCode() ^ this.Pair.GetHashCode() ^ this.Rate.GetHashCode();
+
+    public ExchangeRate Reverse() => new(this.Pair.Reverse(), this.AsOn, decimal.One / this.Rate);
 }
