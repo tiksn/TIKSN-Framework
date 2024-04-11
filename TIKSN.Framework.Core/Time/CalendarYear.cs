@@ -123,29 +123,17 @@ public readonly struct CalendarYear : IYear<CalendarYear>
 
     #region Next and Previous
 
-    public CalendarYear GetNext(int numberOfYears)
+    public CalendarYear GetNext(int numberOfYears = 1)
         => new(this.absoluteYear + numberOfYears);
 
     IYear IYear.GetNext(int numberOfYears)
         => this.GetNext(numberOfYears);
 
-    public CalendarYear GetNext()
-        => this.GetNext(1);
-
-    IYear IYear.GetNext()
-        => this.GetNext(1);
-
-    public CalendarYear GetPrevious(int numberOfYears)
+    public CalendarYear GetPrevious(int numberOfYears = 1)
         => new(this.absoluteYear - numberOfYears);
 
     IYear IYear.GetPrevious(int numberOfYears)
         => this.GetPrevious(numberOfYears);
-
-    public CalendarYear GetPrevious()
-        => this.GetPrevious(1);
-
-    IYear IYear.GetPrevious()
-        => this.GetPrevious(1);
 
     #endregion Next and Previous
 
