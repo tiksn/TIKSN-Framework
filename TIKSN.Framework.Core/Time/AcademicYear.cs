@@ -156,29 +156,17 @@ public readonly struct AcademicYear : IYear<AcademicYear>
 
     #region Next and Previous
 
-    public AcademicYear GetNext(int numberOfYears)
+    public AcademicYear GetNext(int numberOfYears = 1)
         => new(this.absoluteStartYear + numberOfYears);
 
     IYear IYear.GetNext(int numberOfYears)
         => this.GetNext(numberOfYears);
 
-    public AcademicYear GetNext()
-        => this.GetNext(1);
-
-    IYear IYear.GetNext()
-        => this.GetNext(1);
-
-    public AcademicYear GetPrevious(int numberOfYears)
+    public AcademicYear GetPrevious(int numberOfYears = 1)
         => new(this.absoluteStartYear - numberOfYears);
 
     IYear IYear.GetPrevious(int numberOfYears)
         => this.GetPrevious(numberOfYears);
-
-    public AcademicYear GetPrevious()
-        => this.GetPrevious(1);
-
-    IYear IYear.GetPrevious()
-        => this.GetPrevious(1);
 
     #endregion Next and Previous
 
