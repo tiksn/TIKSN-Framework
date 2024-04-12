@@ -16,7 +16,7 @@ public class PageQuery : IEquatable<PageQuery>
 
     public static bool operator ==(PageQuery left, PageQuery right) => Equals(left, right);
 
-    public bool Equals(PageQuery other)
+    public bool Equals(PageQuery? other)
     {
         if (other is null)
         {
@@ -31,7 +31,7 @@ public class PageQuery : IEquatable<PageQuery>
         return this.EstimateTotalItems == other.EstimateTotalItems && Equals(this.Page, other.Page);
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
         => ReferenceEquals(this, obj) || (obj is PageQuery other && this.Equals(other));
 
     public override int GetHashCode() => HashCode.Combine(this.EstimateTotalItems, this.Page);
