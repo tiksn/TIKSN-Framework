@@ -160,17 +160,29 @@ public readonly struct FiscalYear : IYear<FiscalYear>
 
     #region Next and Previous
 
-    public FiscalYear GetNext(int numberOfYears = 1)
+    public FiscalYear GetNext(int numberOfYears)
         => new(this.absoluteStartYear + numberOfYears, this.startDate);
+
+    public FiscalYear GetNext()
+        => this.GetNext(1);
 
     IYear IYear.GetNext(int numberOfYears)
         => this.GetNext(numberOfYears);
 
-    public FiscalYear GetPrevious(int numberOfYears = 1)
+    public FiscalYear GetPrevious(int numberOfYears)
         => new(this.absoluteStartYear - numberOfYears, this.startDate);
+
+    public FiscalYear GetPrevious()
+        => this.GetPrevious(1);
+
+    IYear IYear.GetNext()
+        => this.GetNext(1);
 
     IYear IYear.GetPrevious(int numberOfYears)
         => this.GetPrevious(numberOfYears);
+
+    IYear IYear.GetPrevious()
+        => this.GetPrevious(1);
 
     #endregion Next and Previous
 
