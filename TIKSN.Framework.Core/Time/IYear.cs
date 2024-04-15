@@ -12,9 +12,13 @@ public interface IYear<TSelf>
 {
     #region Next and Previous
 
-    new TSelf GetNext(int numberOfYears = 1);
+    new TSelf GetNext();
 
-    new TSelf GetPrevious(int numberOfYears = 1);
+    new TSelf GetNext(int numberOfYears);
+
+    new TSelf GetPrevious();
+
+    new TSelf GetPrevious(int numberOfYears);
 
     #endregion Next and Previous
 }
@@ -39,9 +43,13 @@ public interface IYear
 
     #region Next and Previous
 
-    IYear GetNext(int numberOfYears = 1);
+    IYear GetNext();
 
-    IYear GetPrevious(int numberOfYears = 1);
+    IYear GetNext(int numberOfYears);
+
+    IYear GetPrevious();
+
+    IYear GetPrevious(int numberOfYears);
 
     #endregion Next and Previous
 
