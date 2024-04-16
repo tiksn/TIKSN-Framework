@@ -47,8 +47,8 @@ public abstract class RepositoryAdapter<TDomainEntity, TDomainIdentity, TDataEnt
     public async Task<TDomainEntity> GetAsync(TDomainIdentity id, CancellationToken cancellationToken)
         => this.Map(await this.QueryRepository.GetAsync(this.Map(id), cancellationToken).ConfigureAwait(false));
 
-    public async Task<TDomainEntity> GetOrDefaultAsync(TDomainIdentity id, CancellationToken cancellationToken)
-        => this.Map(await this.QueryRepository.GetOrDefaultAsync(this.Map(id), cancellationToken).ConfigureAwait(false));
+    public async Task<TDomainEntity?> GetOrDefaultAsync(TDomainIdentity id, CancellationToken cancellationToken)
+        => this.MapOrDefault(await this.QueryRepository.GetOrDefaultAsync(this.Map(id), cancellationToken).ConfigureAwait(false));
 
     public async Task<IEnumerable<TDomainEntity>> ListAsync(IEnumerable<TDomainIdentity> ids, CancellationToken cancellationToken)
         => this.Map(await this.QueryRepository.ListAsync(this.Map(ids), cancellationToken).ConfigureAwait(false));
@@ -75,14 +75,7 @@ public abstract class RepositoryAdapter<TDomainEntity, TDomainIdentity, TDataEnt
         => this.Repository.UpdateRangeAsync(this.Map(entities), cancellationToken);
 
     protected TDomainEntity Map(TDataEntity entity)
-    {
-        if (entity is null)
-        {
-            return default;
-        }
-
-        return this.DataEntityToDomainEntityMapper.Map(entity);
-    }
+        => this.DataEntityToDomainEntityMapper.Map(entity);
 
     protected IReadOnlyList<TDomainEntity> Map(IEnumerable<TDataEntity> entities)
         => entities.Select(this.DataEntityToDomainEntityMapper.Map).ToArray();
@@ -94,14 +87,7 @@ public abstract class RepositoryAdapter<TDomainEntity, TDomainIdentity, TDataEnt
         => this.DataIdentityToDomainIdentityMapper.Map(identity);
 
     protected TDataEntity Map(TDomainEntity entity)
-    {
-        if (entity is null)
-        {
-            return default;
-        }
-
-        return this.DomainEntityToDataEntityMapper.Map(entity);
-    }
+        => this.DomainEntityToDataEntityMapper.Map(entity);
 
     protected IReadOnlyList<TDataEntity> Map(IEnumerable<TDomainEntity> entities)
         => entities.Select(this.DomainEntityToDataEntityMapper.Map).ToArray();
@@ -120,5 +106,25 @@ public abstract class RepositoryAdapter<TDomainEntity, TDomainIdentity, TDataEnt
         var entities = await retriever().ConfigureAwait(false);
 
         return this.Map(entities);
+    }
+
+    protected TDataEntity? MapOrDefault(TDomainEntity? entity)
+    {
+        if (entity is null)
+        {
+            return default;
+        }
+
+        return this.DomainEntityToDataEntityMapper.Map(entity);
+    }
+
+    protected TDomainEntity? MapOrDefault(TDataEntity? entity)
+    {
+        if (entity is null)
+        {
+            return default;
+        }
+
+        return this.DataEntityToDomainEntityMapper.Map(entity);
     }
 }
