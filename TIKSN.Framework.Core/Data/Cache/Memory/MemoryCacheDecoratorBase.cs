@@ -88,15 +88,15 @@ public abstract class MemoryCacheDecoratorBase<T> : CacheDecoratorBase<T>
         return Optional(result);
     }
 
-    protected TResult GetFromMemoryCache<TResult>(
-            object cacheKey,
-        Func<TResult> getFromSource) =>
+    protected TResult? GetFromMemoryCache<TResult>(
+        object cacheKey,
+        Func<TResult?> getFromSource) =>
         this.MemoryCache.GetOrCreate(cacheKey, x => this.CreateMemoryCacheItem(x, getFromSource));
 
-    protected Task<TResult> GetFromMemoryCacheAsync<TResult>(
+    protected Task<TResult?> GetFromMemoryCacheAsync<TResult>(
         object cacheKey,
-        Func<Task<TResult>> getFromSource) =>
-        this.MemoryCache.GetOrCreateAsync(cacheKey, x => this.CreateMemoryCacheItemAsync(x, getFromSource));
+        Func<Task<TResult?>> getFromSource)
+        => this.MemoryCache.GetOrCreateAsync(cacheKey, x => this.CreateMemoryCacheItemAsync(x, getFromSource));
 
     protected void SpecifyOptions(ICacheEntry cacheEntry)
     {

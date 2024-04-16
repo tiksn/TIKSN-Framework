@@ -80,12 +80,15 @@ public class MongoRepository<TDocument, TIdentity> : IMongoRepository<TDocument,
         return this.MongoClientSessionProvider.GetClientSessionHandle().Match(SomeAsync, NoneAsync);
     }
 
-    public Task<TDocument> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
+    public Task<TDocument?> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
     {
-        Task<TDocument> NoneAsync() => this.Collection.Find(GetIdentityFilter(id)).SingleOrDefaultAsync(cancellationToken);
+        async Task<TDocument?> NoneAsync()
+            => await this.Collection.Find(GetIdentityFilter(id))
+                .SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false);
 
-        Task<TDocument> SomeAsync(IClientSessionHandle clientSessionHandle) => this.Collection.Find(clientSessionHandle, GetIdentityFilter(id))
-                .SingleOrDefaultAsync(cancellationToken);
+        async Task<TDocument?> SomeAsync(IClientSessionHandle clientSessionHandle)
+            => await this.Collection.Find(clientSessionHandle, GetIdentityFilter(id))
+                .SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false);
 
         return this.MongoClientSessionProvider.GetClientSessionHandle().Match(SomeAsync, NoneAsync);
     }
@@ -127,7 +130,7 @@ public class MongoRepository<TDocument, TIdentity> : IMongoRepository<TDocument,
 
         if (filters.Length == 0)
         {
-            return Task.FromResult<object>(null);
+            return Task.CompletedTask;
         }
 
         var filter = Builders<TDocument>.Filter.Or(filters);

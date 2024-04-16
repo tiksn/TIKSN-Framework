@@ -8,7 +8,7 @@ public interface IQueryRepository<TEntity, TIdentity>
 
     Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken);
 
-    Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken);
+    Task<TEntity?> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken);
 
     Task<IEnumerable<TEntity>> ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken);
 
