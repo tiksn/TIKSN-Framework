@@ -39,8 +39,8 @@ public class RavenRepository<TEntity, TIdentity> : IRavenRepository<TEntity, TId
         => await this.GetOrDefaultAsync(id, cancellationToken).ConfigureAwait(false)
             ?? throw new EntityNotFoundException($"Entity with ID '{id}' is not found.");
 
-    public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken) =>
-        this.SessionProvider.Session.LoadAsync<TEntity>(this.CreateDocumentId(id), cancellationToken);
+    public Task<TEntity?> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
+        => this.SessionProvider.Session.LoadAsync<TEntity?>(this.CreateDocumentId(id), cancellationToken);
 
     public async Task<IEnumerable<TEntity>> ListAsync(IEnumerable<TIdentity> ids,
         CancellationToken cancellationToken) =>
