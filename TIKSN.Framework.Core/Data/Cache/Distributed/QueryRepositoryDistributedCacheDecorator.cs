@@ -1,3 +1,4 @@
+using LanguageExt;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using TIKSN.Serialization;
@@ -28,20 +29,22 @@ public class QueryRepositoryDistributedCacheDecorator<TEntity, TIdentity>
         return entity is not null;
     }
 
-    public Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
+    public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
     {
         var cacheKey = Tuple.Create(EntityType, CacheKeyKind.Entity, id).ToString();
 
-        return this.GetFromDistributedCacheAsync(cacheKey, () => this.QueryRepository.GetAsync(id, cancellationToken),
-            cancellationToken)
+        return (await this.GetFromDistributedCacheAsync(cacheKey,
+            async () => await this.QueryRepository.GetAsync(id, cancellationToken).ConfigureAwait(false),
+            cancellationToken).ConfigureAwait(false))
             ?? throw new EntityNotFoundException("Result retrieved from cache or from original source is null.");
     }
 
-    public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
+    public Task<TEntity?> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
     {
         var cacheKey = Tuple.Create(EntityType, CacheKeyKind.Entity, id).ToString();
 
-        return this.GetFromDistributedCacheAsync(cacheKey, () => this.QueryRepository.GetAsync(id, cancellationToken),
+        return this.GetFromDistributedCacheAsync(cacheKey,
+            async () => await this.QueryRepository.GetAsync(id, cancellationToken).ConfigureAwait(false),
             cancellationToken);
     }
 
@@ -49,7 +52,7 @@ public class QueryRepositoryDistributedCacheDecorator<TEntity, TIdentity>
         ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken) =>
         await BatchOperationHelper.BatchOperationAsync(ids, this.GetAsync, cancellationToken).ConfigureAwait(false);
 
-    public Task<PageResult<TEntity>> PageAsync(
+    public async Task<PageResult<TEntity>> PageAsync(
         PageQuery pageQuery,
         CancellationToken cancellationToken)
     {
@@ -62,9 +65,14 @@ public class QueryRepositoryDistributedCacheDecorator<TEntity, TIdentity>
             pageQuery.Page.Size,
             pageQuery.EstimateTotalItems).ToString();
 
-        return this.GetFromDistributedCacheAsync(
+        var result = await this.GetFromDistributedCacheAsync(
             cacheKey,
-            () => this.QueryRepository.PageAsync(pageQuery, cancellationToken),
-            cancellationToken);
+            async () => await this.QueryRepository.PageAsync(pageQuery, cancellationToken).ConfigureAwait(false),
+            cancellationToken).ConfigureAwait(false);
+
+        return result ?? new PageResult<TEntity>(
+            pageQuery.Page,
+            [],
+            Option<long>.None);
     }
 }
