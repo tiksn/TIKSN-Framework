@@ -1,3 +1,4 @@
+using LanguageExt;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 
@@ -32,30 +33,40 @@ public class QueryRepositoryMemoryCacheDecorator<TEntity, TIdentity>
     {
         var cacheKey = Tuple.Create(EntityType, CacheKeyKind.Entity, id);
 
-        return await this.GetFromMemoryCacheAsync(cacheKey,
-            () => this.QueryRepository.GetAsync(id, cancellationToken)).ConfigureAwait(false)
+        return await this.GetFromMemoryCacheAsync(
+            cacheKey,
+            async () => await this.QueryRepository.GetAsync(id, cancellationToken).ConfigureAwait(false)).ConfigureAwait(false)
             ?? throw new EntityNotFoundException("Result retrieved from cache or from original source is null.");
     }
 
-    public Task<TEntity> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
+    public Task<TEntity?> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
     {
         var cacheKey = Tuple.Create(EntityType, CacheKeyKind.Entity, id);
 
-        return this.GetFromMemoryCacheAsync(cacheKey, () => this.QueryRepository.GetAsync(id, cancellationToken));
+        return this.GetFromMemoryCacheAsync(
+            cacheKey,
+            () => this.QueryRepository.GetOrDefaultAsync(id, cancellationToken));
     }
 
     public async Task<IEnumerable<TEntity>>
         ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken) =>
         await BatchOperationHelper.BatchOperationAsync(ids, this.GetAsync, cancellationToken).ConfigureAwait(false);
 
-    public Task<PageResult<TEntity>> PageAsync(
+    public async Task<PageResult<TEntity>> PageAsync(
         PageQuery pageQuery,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(pageQuery);
+
         var cacheKey = Tuple.Create(EntityType, CacheKeyKind.Query, pageQuery);
 
-        return this.GetFromMemoryCacheAsync(cacheKey,
-            () => this.QueryRepository.PageAsync(pageQuery, cancellationToken));
+        var result = await this.GetFromMemoryCacheAsync(cacheKey,
+            async () => await this.QueryRepository.PageAsync(pageQuery, cancellationToken).ConfigureAwait(false)).ConfigureAwait(false);
+
+        return result ?? new PageResult<TEntity>(
+            pageQuery.Page,
+            [],
+            Option<long>.None);
     }
 
     protected Task<IEnumerable<TEntity>> CreateMemoryCacheQueryAsync(
@@ -78,7 +89,12 @@ public class QueryRepositoryMemoryCacheDecorator<TEntity, TIdentity>
         return this.QueryFromMemoryCacheAsync(cacheKey, queryFromSource);
     }
 
-    protected Task<IEnumerable<TEntity>> QueryFromMemoryCacheAsync(object cacheKey,
-        Func<Task<IEnumerable<TEntity>>> queryFromSource) =>
-        this.MemoryCache.GetOrCreateAsync(cacheKey, x => this.CreateMemoryCacheQueryAsync(x, queryFromSource));
+    protected async Task<IEnumerable<TEntity>> QueryFromMemoryCacheAsync(
+        object cacheKey,
+        Func<Task<IEnumerable<TEntity>>> queryFromSource)
+    {
+        var result = await this.MemoryCache.GetOrCreateAsync(cacheKey, x => this.CreateMemoryCacheQueryAsync(x, queryFromSource)).ConfigureAwait(false);
+
+        return result ?? [];
+    }
 }
