@@ -91,7 +91,7 @@ public class BankOfCanada : IBankOfCanada
         return this.GetRatesByDate(asOn)[pair.BaseCurrency];
     }
 
-    public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
+    public async Task<IReadOnlyCollection<ExchangeRate>> GetExchangeRatesAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
