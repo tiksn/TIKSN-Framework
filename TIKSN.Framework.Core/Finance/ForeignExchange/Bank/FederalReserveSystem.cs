@@ -42,7 +42,7 @@ public class FederalReserveSystem : IFederalReserveSystem
         return new Money(counterCurrency, rate * baseMoney.Amount);
     }
 
-    public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+    public async Task<IReadOnlyCollection<CurrencyPair>> GetCurrencyPairsAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
@@ -88,6 +88,7 @@ public class FederalReserveSystem : IFederalReserveSystem
     }
 
 #pragma warning disable MA0051 // Method is too long
+
     public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
