@@ -110,7 +110,7 @@ public class BankOfEngland : IBankOfEngland
             .MinByWithTies(x => x.AsOn - asOn)[0];
     }
 
-    public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
     {
         List<ExchangeRate> rates = [];
         foreach (var seriesCode in SeriesCodes)
