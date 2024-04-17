@@ -8,7 +8,7 @@ public interface ICurrencyConverter
         DateTimeOffset asOn,
         CancellationToken cancellationToken);
 
-    Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+    Task<IReadOnlyCollection<CurrencyPair>> GetCurrencyPairsAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken);
 
