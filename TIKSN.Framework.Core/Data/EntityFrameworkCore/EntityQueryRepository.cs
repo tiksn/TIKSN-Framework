@@ -24,7 +24,7 @@ public class EntityQueryRepository<TContext, TEntity, TIdentity> : EntityReposit
     public Task<TEntity?> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken) =>
         this.Entities.SingleOrDefaultAsync(entity => entity.ID.Equals(id), cancellationToken);
 
-    public async Task<IEnumerable<TEntity>> ListAsync(
+    public async Task<IReadOnlyList<TEntity>> ListAsync(
         IEnumerable<TIdentity> ids,
         CancellationToken cancellationToken)
     {
