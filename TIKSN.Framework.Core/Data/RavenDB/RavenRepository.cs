@@ -42,9 +42,10 @@ public class RavenRepository<TEntity, TIdentity> : IRavenRepository<TEntity, TId
     public Task<TEntity?> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
         => this.SessionProvider.Session.LoadAsync<TEntity?>(this.CreateDocumentId(id), cancellationToken);
 
-    public async Task<IEnumerable<TEntity>> ListAsync(IEnumerable<TIdentity> ids,
-        CancellationToken cancellationToken) =>
-        await this.SessionProvider.Session.Query<TEntity>(collectionName: this.CollectionName)
+    public async Task<IReadOnlyList<TEntity>> ListAsync(
+        IEnumerable<TIdentity> ids,
+        CancellationToken cancellationToken)
+        => await this.SessionProvider.Session.Query<TEntity>(collectionName: this.CollectionName)
             .Where(entity => ids.Contains(entity.ID))
             .ToListAsync(cancellationToken).ConfigureAwait(false);
 
