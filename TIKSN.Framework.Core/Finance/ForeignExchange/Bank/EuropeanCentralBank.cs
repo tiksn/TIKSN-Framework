@@ -40,7 +40,7 @@ public class EuropeanCentralBank : IEuropeanCentralBank
         return new Money(counterCurrency, baseMoney.Amount * rate);
     }
 
-    public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+    public async Task<IReadOnlyCollection<CurrencyPair>> GetCurrencyPairsAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
