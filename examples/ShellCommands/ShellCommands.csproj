@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-    <PackageReference Include="TIKSN-Framework" Version="5.0.1-alpha.11" />
+    <PackageReference Include="TIKSN-Framework" Version="5.0.1-alpha.12" />
   </ItemGroup>
 
   <ItemGroup>
