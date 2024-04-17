@@ -10,7 +10,7 @@ public interface IQueryRepository<TEntity, TIdentity>
 
     Task<TEntity?> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken);
 
-    Task<IEnumerable<TEntity>> ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken);
+    Task<IReadOnlyList<TEntity>> ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken);
 
     Task<PageResult<TEntity>> PageAsync(PageQuery pageQuery, CancellationToken cancellationToken);
 }
