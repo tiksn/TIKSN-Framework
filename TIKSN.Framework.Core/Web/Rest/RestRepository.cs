@@ -111,7 +111,7 @@ public partial class RestRepository<TEntity, TIdentity> :
         _ = response.EnsureSuccessStatusCode();
     }
 
-    protected async Task<IEnumerable<TEntity>> SearchAsync(
+    protected async Task<IReadOnlyCollection<TEntity>> SearchAsync(
         IEnumerable<KeyValuePair<string, string>> parameters,
         CancellationToken cancellationToken)
     {
@@ -129,7 +129,7 @@ public partial class RestRepository<TEntity, TIdentity> :
 
         var response = await httpClient.GetAsync(requestUrl, cancellationToken).ConfigureAwait(false);
 
-        return await this.ObjectifyResponseAsync<IEnumerable<TEntity>>(response, defaultIfNotFound: false).ConfigureAwait(false);
+        return await this.ObjectifyResponseAsync<IReadOnlyCollection<TEntity>>(response, defaultIfNotFound: false).ConfigureAwait(false);
     }
 
     protected async Task<TEntity> SingleOrDefaultAsync(
