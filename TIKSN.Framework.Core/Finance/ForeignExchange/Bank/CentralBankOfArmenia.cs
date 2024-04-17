@@ -47,7 +47,7 @@ public class CentralBankOfArmenia : ICentralBankOfArmenia
         return new Money(counterCurrency, baseMoney.Amount * rate);
     }
 
-    public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+    public async Task<IReadOnlyCollection<CurrencyPair>> GetCurrencyPairsAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
@@ -88,7 +88,7 @@ public class CentralBankOfArmenia : ICentralBankOfArmenia
         throw new ArgumentException("Currency pair was not found.", nameof(pair));
     }
 
-    public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
+    public async Task<IReadOnlyCollection<ExchangeRate>> GetExchangeRatesAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {

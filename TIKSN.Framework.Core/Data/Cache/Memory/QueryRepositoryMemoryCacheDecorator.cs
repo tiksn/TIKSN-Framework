@@ -48,9 +48,10 @@ public class QueryRepositoryMemoryCacheDecorator<TEntity, TIdentity>
             () => this.QueryRepository.GetOrDefaultAsync(id, cancellationToken));
     }
 
-    public async Task<IEnumerable<TEntity>>
-        ListAsync(IEnumerable<TIdentity> ids, CancellationToken cancellationToken) =>
-        await BatchOperationHelper.BatchOperationAsync(ids, this.GetAsync, cancellationToken).ConfigureAwait(false);
+    public async Task<IReadOnlyList<TEntity>> ListAsync(
+        IEnumerable<TIdentity> ids,
+        CancellationToken cancellationToken)
+        => await BatchOperationHelper.BatchOperationAsync(ids, this.GetAsync, cancellationToken).ConfigureAwait(false);
 
     public async Task<PageResult<TEntity>> PageAsync(
         PageQuery pageQuery,
@@ -69,9 +70,9 @@ public class QueryRepositoryMemoryCacheDecorator<TEntity, TIdentity>
             Option<long>.None);
     }
 
-    protected Task<IEnumerable<TEntity>> CreateMemoryCacheQueryAsync(
+    protected Task<IReadOnlyCollection<TEntity>> CreateMemoryCacheQueryAsync(
         ICacheEntry cacheEntry,
-        Func<Task<IEnumerable<TEntity>>> queryFromSource)
+        Func<Task<IReadOnlyCollection<TEntity>>> queryFromSource)
     {
         ArgumentNullException.ThrowIfNull(cacheEntry);
         ArgumentNullException.ThrowIfNull(queryFromSource);
@@ -81,17 +82,17 @@ public class QueryRepositoryMemoryCacheDecorator<TEntity, TIdentity>
         return queryFromSource();
     }
 
-    protected Task<IEnumerable<TEntity>> QueryFromMemoryCacheAsync(
-        Func<Task<IEnumerable<TEntity>>> queryFromSource)
+    protected Task<IReadOnlyCollection<TEntity>> QueryFromMemoryCacheAsync(
+        Func<Task<IReadOnlyCollection<TEntity>>> queryFromSource)
     {
         var cacheKey = Tuple.Create(EntityType, CacheKeyKind.Query);
 
         return this.QueryFromMemoryCacheAsync(cacheKey, queryFromSource);
     }
 
-    protected async Task<IEnumerable<TEntity>> QueryFromMemoryCacheAsync(
+    protected async Task<IReadOnlyCollection<TEntity>> QueryFromMemoryCacheAsync(
         object cacheKey,
-        Func<Task<IEnumerable<TEntity>>> queryFromSource)
+        Func<Task<IReadOnlyCollection<TEntity>>> queryFromSource)
     {
         var result = await this.MemoryCache.GetOrCreateAsync(cacheKey, x => this.CreateMemoryCacheQueryAsync(x, queryFromSource)).ConfigureAwait(false);
 

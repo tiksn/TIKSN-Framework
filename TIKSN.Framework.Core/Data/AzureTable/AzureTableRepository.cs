@@ -101,7 +101,7 @@ public class AzureTableRepository<T> :
         return response.Value;
     }
 
-    public async Task<IEnumerable<T>> SearchAsync(
+    public async Task<IReadOnlyCollection<T>> SearchAsync(
         Expression<Func<T, bool>> filter,
         CancellationToken cancellationToken)
     {

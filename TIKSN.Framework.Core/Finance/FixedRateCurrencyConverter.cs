@@ -39,11 +39,11 @@ public class FixedRateCurrencyConverter : ICurrencyConverter
         throw new ArgumentException("Unsupported currency pair.", nameof(counterCurrency));
     }
 
-    public Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+    public Task<IReadOnlyCollection<CurrencyPair>> GetCurrencyPairsAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
-        IEnumerable<CurrencyPair> singleItemList = new List<CurrencyPair> { this.CurrencyPair };
+        IReadOnlyCollection<CurrencyPair> singleItemList = [this.CurrencyPair];
 
         return Task.FromResult(singleItemList);
     }

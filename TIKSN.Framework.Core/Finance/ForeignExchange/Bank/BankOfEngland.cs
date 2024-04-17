@@ -40,7 +40,7 @@ public class BankOfEngland : IBankOfEngland
         return new Money(counterCurrency, baseMoney.Amount * rate);
     }
 
-    public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+    public async Task<IReadOnlyCollection<CurrencyPair>> GetCurrencyPairsAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
@@ -110,7 +110,7 @@ public class BankOfEngland : IBankOfEngland
             .MinByWithTies(x => x.AsOn - asOn)[0];
     }
 
-    public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
     {
         List<ExchangeRate> rates = [];
         foreach (var seriesCode in SeriesCodes)
@@ -140,6 +140,7 @@ public class BankOfEngland : IBankOfEngland
     }
 
 #pragma warning disable MA0051 // Method is too long
+
     private static (Dictionary<CurrencyPair, string>, Dictionary<string, CurrencyPair>) CreateSeriesCodesMaps()
 #pragma warning restore MA0051 // Method is too long
     {

@@ -41,7 +41,7 @@ public class SwissNationalBank : ISwissNationalBank
         return new Money(counterCurrency, baseMoney.Amount * rate);
     }
 
-    public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+    public async Task<IReadOnlyCollection<CurrencyPair>> GetCurrencyPairsAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
@@ -70,7 +70,7 @@ public class SwissNationalBank : ISwissNationalBank
         return this.GetRate(pair.BaseCurrency, pair.CounterCurrency, asOn);
     }
 
-    public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
+    public async Task<IReadOnlyCollection<ExchangeRate>> GetExchangeRatesAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {

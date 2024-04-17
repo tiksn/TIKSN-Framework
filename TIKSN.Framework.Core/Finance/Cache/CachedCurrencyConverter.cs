@@ -103,7 +103,7 @@ public class CachedCurrencyConverter : ICurrencyConverter
         return actualMoney;
     }
 
-    public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+    public async Task<IReadOnlyCollection<CurrencyPair>> GetCurrencyPairsAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
@@ -209,7 +209,8 @@ public class CachedCurrencyConverter : ICurrencyConverter
 
     private sealed class CachedCurrencyPairs : CachedData
     {
-        public CachedCurrencyPairs(IEnumerable<CurrencyPair> currencyPairs, DateTimeOffset asOn,
+        public CachedCurrencyPairs(
+            IReadOnlyCollection<CurrencyPair> currencyPairs, DateTimeOffset asOn,
             TimeProvider timeProvider)
         {
             this.CurrencyPairs = currencyPairs;
@@ -218,7 +219,7 @@ public class CachedCurrencyConverter : ICurrencyConverter
             this.Update(timeProvider);
         }
 
-        public IEnumerable<CurrencyPair> CurrencyPairs { get; }
+        public IReadOnlyCollection<CurrencyPair> CurrencyPairs { get; }
     }
 
     private abstract class CachedData

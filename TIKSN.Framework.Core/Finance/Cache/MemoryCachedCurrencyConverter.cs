@@ -50,7 +50,7 @@ public partial class MemoryCachedCurrencyConverter : MemoryCacheDecoratorBase<Me
         return new Money(counterCurrency, baseMoney.Amount * cacheEntry.ExchangeRate);
     }
 
-    public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+    public async Task<IReadOnlyCollection<CurrencyPair>> GetCurrencyPairsAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {

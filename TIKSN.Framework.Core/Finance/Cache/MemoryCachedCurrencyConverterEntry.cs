@@ -4,7 +4,7 @@ public sealed class MemoryCachedCurrencyConverterEntry
 {
     private MemoryCachedCurrencyConverterEntry(
         MemoryCachedCurrencyConverterEntryKind kind,
-        IEnumerable<CurrencyPair> currencyPairs,
+        IReadOnlyCollection<CurrencyPair> currencyPairs,
         decimal exchangeRate)
     {
         this.Kind = kind;
@@ -12,18 +12,18 @@ public sealed class MemoryCachedCurrencyConverterEntry
         this.ExchangeRate = exchangeRate;
     }
 
-    public IEnumerable<CurrencyPair> CurrencyPairs { get; }
+    public IReadOnlyCollection<CurrencyPair> CurrencyPairs { get; }
 
     public decimal ExchangeRate { get; }
 
     public MemoryCachedCurrencyConverterEntryKind Kind { get; }
 
     public static MemoryCachedCurrencyConverterEntry
-        CreateForCurrencyPairs(IEnumerable<CurrencyPair> currencyPairs) =>
+        CreateForCurrencyPairs(IReadOnlyCollection<CurrencyPair> currencyPairs) =>
         new(MemoryCachedCurrencyConverterEntryKind.CurrencyPairs,
             currencyPairs, decimal.Zero);
 
-    public static MemoryCachedCurrencyConverterEntry CreateForExchangeRate(decimal exchangeRate) =>
-        new(MemoryCachedCurrencyConverterEntryKind.CurrencyPairs,
-currencyPairs: null, exchangeRate);
+    public static MemoryCachedCurrencyConverterEntry CreateForExchangeRate(
+        decimal exchangeRate) =>
+        new(MemoryCachedCurrencyConverterEntryKind.CurrencyPairs, currencyPairs: [], exchangeRate);
 }
