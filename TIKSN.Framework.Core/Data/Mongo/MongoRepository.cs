@@ -93,12 +93,13 @@ public class MongoRepository<TDocument, TIdentity> : IMongoRepository<TDocument,
         return this.MongoClientSessionProvider.GetClientSessionHandle().Match(SomeAsync, NoneAsync);
     }
 
-    public async Task<IEnumerable<TDocument>> ListAsync(IEnumerable<TIdentity> ids,
+    public async Task<IReadOnlyList<TDocument>> ListAsync(
+        IEnumerable<TIdentity> ids,
         CancellationToken cancellationToken)
     {
-        async Task<IEnumerable<TDocument>> NoneAsync() => await this.Collection.Find(GetIdentitiesFilter(ids)).ToListAsync(cancellationToken).ConfigureAwait(false);
+        async Task<IReadOnlyList<TDocument>> NoneAsync() => await this.Collection.Find(GetIdentitiesFilter(ids)).ToListAsync(cancellationToken).ConfigureAwait(false);
 
-        async Task<IEnumerable<TDocument>> SomeAsync(IClientSessionHandle clientSessionHandle) => await this.Collection.Find(clientSessionHandle, GetIdentitiesFilter(ids))
+        async Task<IReadOnlyList<TDocument>> SomeAsync(IClientSessionHandle clientSessionHandle) => await this.Collection.Find(clientSessionHandle, GetIdentitiesFilter(ids))
                 .ToListAsync(cancellationToken).ConfigureAwait(false);
 
         return await this.MongoClientSessionProvider.GetClientSessionHandle().Match(SomeAsync, NoneAsync).ConfigureAwait(false);
