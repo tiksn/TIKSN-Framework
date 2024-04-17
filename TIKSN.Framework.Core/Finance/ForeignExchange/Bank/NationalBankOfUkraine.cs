@@ -62,7 +62,7 @@ public class NationalBankOfUkraine : INationalBankOfUkraine
     /// <param name="asOn">As on.</param>
     /// <param name="cancellationToken">Cancellation Token</param>
     /// <returns>Supported Currency Pairs</returns>
-    public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+    public async Task<IReadOnlyCollection<CurrencyPair>> GetCurrencyPairsAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
