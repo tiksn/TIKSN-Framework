@@ -86,7 +86,7 @@ public class NationalBankOfPoland : INationalBankOfPoland
         return exchangeRate.Rate;
     }
 
-    public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
+    public async Task<IReadOnlyCollection<ExchangeRate>> GetExchangeRatesAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
         => await this.GetRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
