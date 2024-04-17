@@ -12,7 +12,7 @@ public class CompositeCrossCurrencyConverter : CompositeCurrencyConverter
         await this.CompositionStrategy.ConvertCurrencyAsync(baseMoney, this.Converters, counterCurrency, asOn,
             cancellationToken).ConfigureAwait(false);
 
-    public override async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
+    public override async Task<IReadOnlyCollection<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
         var pairs = new HashSet<CurrencyPair>();
