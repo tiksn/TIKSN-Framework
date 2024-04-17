@@ -50,7 +50,7 @@ public abstract class RepositoryAdapter<TDomainEntity, TDomainIdentity, TDataEnt
     public async Task<TDomainEntity?> GetOrDefaultAsync(TDomainIdentity id, CancellationToken cancellationToken)
         => this.MapOrDefault(await this.QueryRepository.GetOrDefaultAsync(this.Map(id), cancellationToken).ConfigureAwait(false));
 
-    public async Task<IEnumerable<TDomainEntity>> ListAsync(IEnumerable<TDomainIdentity> ids, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<TDomainEntity>> ListAsync(IEnumerable<TDomainIdentity> ids, CancellationToken cancellationToken)
         => this.Map(await this.QueryRepository.ListAsync(this.Map(ids), cancellationToken).ConfigureAwait(false));
 
     public async Task<PageResult<TDomainEntity>> PageAsync(PageQuery pageQuery, CancellationToken cancellationToken)
