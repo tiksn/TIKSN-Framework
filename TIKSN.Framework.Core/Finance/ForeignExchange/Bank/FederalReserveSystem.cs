@@ -89,7 +89,7 @@ public class FederalReserveSystem : IFederalReserveSystem
 
 #pragma warning disable MA0051 // Method is too long
 
-    public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
+    public async Task<IReadOnlyCollection<ExchangeRate>> GetExchangeRatesAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
 #pragma warning restore MA0051 // Method is too long
