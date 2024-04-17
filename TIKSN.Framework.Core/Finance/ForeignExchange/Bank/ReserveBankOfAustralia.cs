@@ -89,7 +89,7 @@ public class ReserveBankOfAustralia : IReserveBankOfAustralia
         throw new ArgumentException("Currency pair not supported.", nameof(pair));
     }
 
-    public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
+    public async Task<IReadOnlyCollection<ExchangeRate>> GetExchangeRatesAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
