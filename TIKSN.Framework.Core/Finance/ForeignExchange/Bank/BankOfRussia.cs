@@ -75,7 +75,7 @@ public class BankOfRussia : IBankOfRussia
         return this.GetRate(pair.BaseCurrency, pair.CounterCurrency);
     }
 
-    public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
+    public async Task<IReadOnlyCollection<ExchangeRate>> GetExchangeRatesAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
