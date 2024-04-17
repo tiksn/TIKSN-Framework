@@ -58,7 +58,7 @@ public class NationalBankOfPoland : INationalBankOfPoland
         return new Money(counterCurrency, exchangeRate.Rate * baseMoney.Amount);
     }
 
-    public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+    public async Task<IReadOnlyCollection<CurrencyPair>> GetCurrencyPairsAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
@@ -66,7 +66,8 @@ public class NationalBankOfPoland : INationalBankOfPoland
 
         return exchangeRates
             .Select(x => x.Pair)
-            .Distinct();
+            .Distinct()
+            .ToList();
     }
 
     public async Task<decimal> GetExchangeRateAsync(
@@ -144,7 +145,7 @@ public class NationalBankOfPoland : INationalBankOfPoland
             .ToArray();
     }
 
-    private async Task<IReadOnlyList<ExchangeRate>> GetRatesAsync(
+    private async Task<IReadOnlyCollection<ExchangeRate>> GetRatesAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
