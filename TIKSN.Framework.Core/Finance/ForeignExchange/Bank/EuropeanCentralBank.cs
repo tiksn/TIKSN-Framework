@@ -85,7 +85,7 @@ public class EuropeanCentralBank : IEuropeanCentralBank
         throw new ArgumentException($"Currency pair '{pair}' is not found.", nameof(pair));
     }
 
-    public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
+    public async Task<IReadOnlyCollection<ExchangeRate>> GetExchangeRatesAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
