@@ -46,7 +46,7 @@ public class ReserveBankOfAustralia : IReserveBankOfAustralia
         return new Money(counterCurrency, rate * baseMoney.Amount);
     }
 
-    public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+    public async Task<IReadOnlyCollection<CurrencyPair>> GetCurrencyPairsAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
