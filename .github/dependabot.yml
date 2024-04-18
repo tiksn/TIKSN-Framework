@@ -7,7 +7,7 @@ updates:
       - "maintenance"
     schedule:
       interval: "daily"
-    milestone: 23
+    milestone: 24
     open-pull-requests-limit: 10
     reviewers:
       - "tiksn"
@@ -20,7 +20,7 @@ updates:
       - "maintenance"
     schedule:
       interval: "daily"
-    milestone: 23
+    milestone: 24
     open-pull-requests-limit: 10
     reviewers:
       - "tiksn"
@@ -34,7 +34,7 @@ updates:
     open-pull-requests-limit: 10
     schedule:
       interval: "daily"
-    milestone: 23
+    milestone: 24
     reviewers:
       - "tiksn"
     assignees:
