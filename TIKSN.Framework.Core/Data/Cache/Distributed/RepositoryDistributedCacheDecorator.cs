@@ -50,7 +50,7 @@ public class RepositoryDistributedCacheDecorator<TEntity, TIdentity>
 
     public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
     {
-        await this.Repository.RemoveAsync(entity, cancellationToken).ConfigureAwait(false);
+        await this.Repository.UpdateAsync(entity, cancellationToken).ConfigureAwait(false);
 
         await this.InvalidateCacheItemAsync(entity, cancellationToken).ConfigureAwait(false);
     }

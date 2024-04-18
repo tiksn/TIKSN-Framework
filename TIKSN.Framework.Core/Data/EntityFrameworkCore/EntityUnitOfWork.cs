@@ -29,5 +29,5 @@ public class EntityUnitOfWork : UnitOfWorkBase
         return Task.CompletedTask;
     }
 
-    protected override bool IsDirty() => this.dbContexts.Any(dbContext => dbContext.ChangeTracker.HasChanges());
+    protected override bool IsDirty() => Array.Exists(this.dbContexts, dbContext => dbContext.ChangeTracker.HasChanges());
 }

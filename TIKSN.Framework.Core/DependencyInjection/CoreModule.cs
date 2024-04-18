@@ -1,5 +1,6 @@
 using Autofac;
 using TIKSN.Data.Mongo;
+using TIKSN.Data.RavenDB;
 using TIKSN.Licensing;
 using TIKSN.Mapping;
 using TIKSN.Serialization;
@@ -29,6 +30,12 @@ public class CoreModule : Module
             .As<IMongoClientSessionProvider>()
             .InstancePerLifetimeScope();
 
+        _ = builder
+            .RegisterType<RavenSessionContext>()
+            .As<IRavenSessionStore>()
+            .As<IRavenSessionProvider>()
+            .InstancePerLifetimeScope();
+
         _ = builder.RegisterGeneric(typeof(LicenseFactory<,>))
             .As(typeof(ILicenseFactory<,>))
             .SingleInstance();
@@ -53,6 +60,11 @@ public class CoreModule : Module
 
         _ = builder
             .RegisterType<Finance.ForeignExchange.Data.Mongo.DataEntityMapper>()
+            .AsImplementedInterfaces()
+            .SingleInstance();
+
+        _ = builder
+            .RegisterType<Finance.ForeignExchange.Data.RavenDB.DataEntityMapper>()
             .AsImplementedInterfaces()
             .SingleInstance();
     }

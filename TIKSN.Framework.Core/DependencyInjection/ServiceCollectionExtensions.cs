@@ -69,7 +69,7 @@ public static class ServiceCollectionExtensions
         services.TryAddScoped<IShellCommandContext, ShellCommandContext>();
         services.TryAddSingleton(MessageBus.Current);
         services.TryAddSingleton(AnsiConsole.Console);
-        services.TryAddSingleton<ISchedulers>(new Schedulers(RxApp.MainThreadScheduler, RxApp.TaskpoolScheduler));
+        services.TryAddSingleton<ISchedulers>(_ => new Schedulers(RxApp.MainThreadScheduler, RxApp.TaskpoolScheduler));
 
         services.TryAddSingleton<IConsoleService, ConsoleService>();
         services.TryAddSingleton<IKnownFolders, KnownFolders>();

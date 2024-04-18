@@ -62,7 +62,7 @@ public class NationalBankOfUkraine : INationalBankOfUkraine
     /// <param name="asOn">As on.</param>
     /// <param name="cancellationToken">Cancellation Token</param>
     /// <returns>Supported Currency Pairs</returns>
-    public async Task<IEnumerable<CurrencyPair>> GetCurrencyPairsAsync(
+    public async Task<IReadOnlyCollection<CurrencyPair>> GetCurrencyPairsAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
@@ -89,7 +89,7 @@ public class NationalBankOfUkraine : INationalBankOfUkraine
         return this.GetExchangeRateAsync(pair.BaseCurrency, pair.CounterCurrency, asOn, cancellationToken);
     }
 
-    public async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(
+    public async Task<IReadOnlyCollection<ExchangeRate>> GetExchangeRatesAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {

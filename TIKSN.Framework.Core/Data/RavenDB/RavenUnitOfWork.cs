@@ -14,7 +14,10 @@ public class RavenUnitOfWork : UnitOfWorkBase
     {
         ArgumentNullException.ThrowIfNull(store);
 
-        this.Session = store.OpenAsyncSession();
+        var sessionStore = serviceScope.ServiceProvider.GetRequiredService<IRavenSessionStore>();
+        var session = store.OpenAsyncSession();
+        sessionStore.SetSession(session);
+        this.Session = session;
         this.serviceScope = serviceScope;
     }
 
@@ -29,11 +32,12 @@ public class RavenUnitOfWork : UnitOfWorkBase
         this.Session.Advanced.Clear();
     }
 
-    public override Task DiscardAsync(CancellationToken cancellationToken)
+    public override async Task DiscardAsync(CancellationToken cancellationToken)
     {
         this.Session.Advanced.Clear();
 
-        return Task.CompletedTask;
+        this.Session.Dispose();
+        await this.serviceScope.DisposeAsync().ConfigureAwait(false);
     }
 
     protected override bool IsDirty() => this.Session.Advanced.HasChanges;

@@ -7,5 +7,5 @@ public interface IAzureTableQueryRepository<T> where T : ITableEntity
 {
     Task<T> RetrieveAsync(string partitionKey, string rowKey, CancellationToken cancellationToken);
 
-    Task<IEnumerable<T>> SearchAsync(Expression<Func<T, bool>> filter, CancellationToken cancellationToken);
+    Task<IReadOnlyCollection<T>> SearchAsync(Expression<Func<T, bool>> filter, CancellationToken cancellationToken);
 }

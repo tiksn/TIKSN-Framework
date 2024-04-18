@@ -28,11 +28,9 @@ public sealed class TestExchangeRateService : ExchangeRateServiceBase
         ISwissNationalBank swissNationalBank,
         ILogger<TestExchangeRateService> logger,
         IRegionFactory regionFactory,
-        IExchangeRateRepository exchangeRateRepository,
-        IForeignExchangeRepository foreignExchangeRepository,
         IUnitOfWorkFactory unitOfWorkFactory,
         IDatabaseInitializer databaseInitializer)
-        : base(logger, regionFactory, exchangeRateRepository, foreignExchangeRepository, unitOfWorkFactory)
+        : base(logger, regionFactory, unitOfWorkFactory)
     {
         this.AddBatchProvider(
             Guid.Parse("e3cabe08-7451-445b-aeec-d41824f11317"),

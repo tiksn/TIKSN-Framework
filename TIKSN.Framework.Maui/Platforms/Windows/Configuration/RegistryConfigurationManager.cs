@@ -8,7 +8,10 @@ public static class RegistryConfigurationManager
     {
         var configuration = Activator.CreateInstance<T>();
 
-        Initialize(configuration, rootKey);
+        if (configuration is not null)
+        {
+            Initialize(configuration, rootKey);
+        }
 
         return configuration;
     }
@@ -18,7 +21,7 @@ public static class RegistryConfigurationManager
         var globalValue = GetValueFromRegistry(RegistryHive.LocalMachine, key, valueName);
         var localValue = GetValueFromRegistry(RegistryHive.CurrentUser, key, valueName);
 
-        object result = null;
+        object? result = null;
 
         if (globalValue != null)
         {
@@ -38,12 +41,19 @@ public static class RegistryConfigurationManager
         return result;
     }
 
-    private static object GetValueFromRegistry(RegistryHive hive, string key, string valueName)
+    private static object? GetValueFromRegistry(RegistryHive hive, string key, string valueName)
     {
         using var regKey = RegistryKey.OpenBaseKey(hive, RegistryView.Default);
-        using var regSubKey = regKey.OpenSubKey(key);
+        if (regKey is not null)
+        {
+            using var regSubKey = regKey.OpenSubKey(key);
+            if (regSubKey is not null)
+            {
+                return regSubKey.GetValue(valueName);
+            }
+        }
 
-        return regSubKey.GetValue(valueName);
+        return null;
     }
 
     private static void Initialize(object obj, string key)

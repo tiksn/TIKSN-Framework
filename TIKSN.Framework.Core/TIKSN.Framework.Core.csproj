@@ -2,13 +2,14 @@
   <PropertyGroup>
     <AssemblyTitle>TIKSN.Framework.Core</AssemblyTitle>
     <TargetFramework>net8.0</TargetFramework>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <RootNamespace>TIKSN</RootNamespace>
     <DocumentationFile>bin\$(Configuration)\net8.0\TIKSN.Framework.Core.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <LangVersion>latest</LangVersion>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Authors>TIKSN Development</Authors>
+    <RootNamespace>TIKSN</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
     <WarningLevel>9999</WarningLevel>
@@ -26,7 +27,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
     <PackageReference Include="NodaTime" Version="3.1.11" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="9.23.0.88079">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="9.23.2.88755">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -58,7 +59,7 @@
     <PackageReference Include="LanguageExt.FSharp" Version="4.4.8" />
     <PackageReference Include="LanguageExt.Parsec" Version="4.4.8" />
     <PackageReference Include="LiteDB" Version="5.0.19" />
-    <PackageReference Include="Meziantou.Analyzer" Version="2.0.146">
+    <PackageReference Include="Meziantou.Analyzer" Version="2.0.147">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -67,24 +68,24 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="8.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="8.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.4" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.3" />
-    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="8.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="8.0.4" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
     <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.9.28" />
-    <PackageReference Include="MongoDB.Driver" Version="2.24.0" />
-    <PackageReference Include="MongoDB.Driver.GridFS" Version="2.24.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.25.0" />
+    <PackageReference Include="MongoDB.Driver.GridFS" Version="2.25.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Nito.AsyncEx.Context" Version="5.1.2" />
     <PackageReference Include="NLog.Extensions.Logging" Version="5.3.8" />
@@ -92,7 +93,7 @@
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.1" />
     <PackageReference Include="ReactiveUI" Version="19.6.1" />
     <PackageReference Include="RavenDB.Client" Version="6.0.101" />
-    <PackageReference Include="Roslynator.Analyzers" Version="4.12.0">
+    <PackageReference Include="Roslynator.Analyzers" Version="4.12.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

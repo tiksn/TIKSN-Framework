@@ -64,9 +64,9 @@ public abstract class DistributedCacheDecoratorBase<T> : CacheDecoratorBase<T>
         return Optional(this.Deserializer.Deserialize<TResult>(cachedBytes));
     }
 
-    protected async Task<TResult> GetFromDistributedCacheAsync<TResult>(
+    protected async Task<TResult?> GetFromDistributedCacheAsync<TResult>(
         string cacheKey,
-        Func<Task<TResult>> getFromSource,
+        Func<Task<TResult?>> getFromSource,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(cacheKey);
@@ -79,12 +79,19 @@ public abstract class DistributedCacheDecoratorBase<T> : CacheDecoratorBase<T>
         {
             var result = await getFromSource().ConfigureAwait(false);
 
-            await this.SetToDistributedCacheAsync(cacheKey, result, cancellationToken).ConfigureAwait(false);
+            if (result is not null)
+            {
+                await this.SetToDistributedCacheAsync(cacheKey, result, cancellationToken).ConfigureAwait(false);
 
-            return result;
+                return result;
+            }
+        }
+        else
+        {
+            return this.Deserializer.Deserialize<TResult>(cachedBytes);
         }
 
-        return this.Deserializer.Deserialize<TResult>(cachedBytes);
+        return default;
     }
 
     protected Task SetToDistributedCacheAsync<TValue>(

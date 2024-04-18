@@ -107,7 +107,7 @@ public readonly struct AcademicYear : IYear<AcademicYear>
     public int CompareTo(AcademicYear other)
         => StartDate.InYear(this.absoluteStartYear).CompareTo(StartDate.InYear(other.absoluteStartYear));
 
-    public int CompareTo(object obj)
+    public int CompareTo(object? obj)
     {
         if (obj is AcademicYear other)
         {
@@ -121,7 +121,7 @@ public readonly struct AcademicYear : IYear<AcademicYear>
 
     #region Equality
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
         => obj is AcademicYear other && this.Equals(other);
 
     public bool Equals(AcademicYear other)
@@ -137,14 +137,14 @@ public readonly struct AcademicYear : IYear<AcademicYear>
     public override string ToString()
         => this.ToString(string.Empty, CultureInfo.InvariantCulture);
 
-    public string ToString(string format, IFormatProvider formatProvider)
+    public string ToString(string? format, IFormatProvider? formatProvider)
         => $"{this.absoluteStartYear.ToString(formatProvider)}/{(this.absoluteStartYear + 1).ToString(formatProvider)}";
 
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,
         ReadOnlySpan<char> format,
-        IFormatProvider provider)
+        IFormatProvider? provider)
     {
         var result = this.ToString(new string(format), provider);
         charsWritten = Math.Min(result.Length, destination.Length);
@@ -159,11 +159,11 @@ public readonly struct AcademicYear : IYear<AcademicYear>
     public AcademicYear GetNext(int numberOfYears)
         => new(this.absoluteStartYear + numberOfYears);
 
-    IYear IYear.GetNext(int numberOfYears)
-        => this.GetNext(numberOfYears);
-
     public AcademicYear GetNext()
         => this.GetNext(1);
+
+    IYear IYear.GetNext(int numberOfYears)
+        => this.GetNext(numberOfYears);
 
     IYear IYear.GetNext()
         => this.GetNext(1);
@@ -171,11 +171,11 @@ public readonly struct AcademicYear : IYear<AcademicYear>
     public AcademicYear GetPrevious(int numberOfYears)
         => new(this.absoluteStartYear - numberOfYears);
 
-    IYear IYear.GetPrevious(int numberOfYears)
-        => this.GetPrevious(numberOfYears);
-
     public AcademicYear GetPrevious()
         => this.GetPrevious(1);
+
+    IYear IYear.GetPrevious(int numberOfYears)
+        => this.GetPrevious(numberOfYears);
 
     IYear IYear.GetPrevious()
         => this.GetPrevious(1);

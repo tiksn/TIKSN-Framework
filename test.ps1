@@ -2,4 +2,4 @@
 param (
 )
 
-Invoke-psake -buildFile .\psakefile.ps1 -taskList Test -parameters @{Version = '0.1.0' }
+Invoke-Build -Task Test -Version '0.1.0'
