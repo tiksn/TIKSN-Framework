@@ -2,7 +2,10 @@
 param (
     [Parameter()]
     [string]
-    $Version
+    $Version,
+    [Parameter()]
+    [string]
+    $Instance
 )
 
-Invoke-Build -Task Publish -Version $Version
+.\trigger.ps1 -Task Publish -Instance $Instance -Version $Version
