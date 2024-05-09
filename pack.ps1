@@ -2,7 +2,10 @@
 param (
     [Parameter()]
     [string]
-    $Version
+    $Version,
+    [Parameter()]
+    [string]
+    $Instance
 )
 
-Invoke-Build -Task Pack -Version $Version
+.\trigger.ps1 -Task Pack -Instance $Instance -Version $Version

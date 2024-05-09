@@ -2,10 +2,10 @@
 param (
     [Parameter()]
     [string]
-    $Version,
+    $Version = '0.1.0',
     [Parameter()]
     [string]
     $Instance
 )
 
-.\trigger.ps1 -Task Publish -Instance $Instance -Version $Version
+.\trigger.ps1 -Task Restore -Instance $Instance -Version $Version

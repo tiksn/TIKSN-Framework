@@ -1,5 +1,11 @@
 [CmdletBinding()]
 param (
+    [Parameter()]
+    [string]
+    $Version = '0.1.0',
+    [Parameter()]
+    [string]
+    $Instance
 )
 
-Invoke-Build -Task Test -Version '0.1.0'
+.\trigger.ps1 -Task Test -Instance $Instance -Version $Version

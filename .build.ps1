@@ -11,14 +11,20 @@ param(
     # Build Version
     [Parameter()]
     [string]
-    $Version
+    $Version,
+    # Build Instance
+    [Parameter()]
+    [string]
+    $Instance
 )
 
 Set-StrictMode -Version Latest
 
 # Synopsis: Publish NuGet package
 Task Publish Pack, ValidateVersion, {
-    $packageName = Join-Path -Path $script:trashFolder -ChildPath 'TIKSN-Framework.nupkg'
+    $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
+    $trashFolder = $state.TrashFolder
+    $packageName = Join-Path -Path $trashFolder -ChildPath 'TIKSN-Framework.nupkg'
 
     Import-Module -Name Microsoft.PowerShell.SecretManagement
     $apiKey = Get-Secret -Name 'TIKSN-Framework-ApiKey' -AsPlainText
@@ -28,19 +34,24 @@ Task Publish Pack, ValidateVersion, {
 
 # Synopsis: Validate Next Version
 Task ValidateVersion EstimateVersion, {
+    $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
+
     $gitTags = git tag
     $gitTagVersions = $gitTags | ForEach-Object { [System.Management.Automation.SemanticVersion]::Parse($_) }
     $gitTagVersions = $gitTagVersions | Sort-Object -Descending
     $latestTagVersion = $gitTagVersions | Select-Object -First 1
 
-    if ($Script:NextVersion -le $latestTagVersion) {
-        throw "Next Release version '$Script:NextVersion' should be greater than latest tag version '$latestTagVersion'"
+    if ($state.NextVersion -le $latestTagVersion) {
+        throw "Next Release version '$($state.NextVersion)' should be greater than latest tag version '$latestTagVersion'"
     }
 }
 
 # Synopsis: Pack NuGet package
 Task Pack Build, Test, {
-    $temporaryNuspec = Join-Path -Path $script:trashFolder -ChildPath '.\TIKSN-Framework.nuspec'
+    $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
+    $trashFolder = $state.TrashFolder
+    $buildArtifactsFolder = $state.BuildArtifactsFolder
+    $temporaryNuspec = Join-Path -Path $trashFolder -ChildPath '.\TIKSN-Framework.nuspec'
     Copy-Item -Path '.\TIKSN-Framework.nuspec' -Destination $temporaryNuspec
 
     $packages = @{
@@ -63,19 +74,19 @@ Task Pack Build, Test, {
         $project = [xml](Get-Content -Path $projectMapEntry.ProjectFile -Raw)
 
         foreach ($packageReference in $project.SelectNodes('//PackageReference')) {
-            $packageId = $packageReference.Include
+            $state.PackageId = $packageReference.Include
             $packageVersion = $packageReference.Version
 
             if ($null -ne $packageVersion) {
                 foreach ($packageGroup in $projectMapEntry.PackageGroups) {
-                    if ($packageGroup.Contains($packageId)) {
-                        $existingVersion = $packageGroup[$packageId]
+                    if ($packageGroup.Contains($state.PackageId)) {
+                        $existingVersion = $packageGroup[$state.PackageId]
                         if ($existingVersion -ne $packageVersion) {
-                            throw "There was a package ($packageId) mismatch. ($existingVersion, $packageVersion)"
+                            throw "There was a package ($state.PackageId) mismatch. ($existingVersion, $packageVersion)"
                         }
                     }
                     else {
-                        $packageGroup[$packageId] = $packageVersion
+                        $packageGroup[$state.PackageId] = $packageVersion
                     }
 
                 }
@@ -139,9 +150,9 @@ Task Pack Build, Test, {
 
     $nuspec.Save($temporaryNuspec)
 
-    Copy-Item -Path 'icon.png' -Destination $script:buildArtifactsFolder
-    Copy-Item -Path 'README.md' -Destination $script:buildArtifactsFolder
-    Exec { nuget pack $temporaryNuspec -Version $Script:NextVersion -BasePath $script:buildArtifactsFolder -OutputDirectory $script:trashFolder -OutputFileNamesWithoutVersion -Verbosity detailed }
+    Copy-Item -Path 'icon.png' -Destination $buildArtifactsFolder
+    Copy-Item -Path 'README.md' -Destination $buildArtifactsFolder
+    Exec { nuget pack $temporaryNuspec -Version $state.NextVersion -BasePath $buildArtifactsFolder -OutputDirectory $trashFolder -OutputFileNamesWithoutVersion -Verbosity detailed }
 }
 
 # Synopsis: Test
@@ -153,51 +164,69 @@ Task Test Build, {
 
 # Synopsis: Build
 Task Build Format, BuildLanguageLocalization, BuildRegionLocalization, BuildCore, BuildMaui, {
-    Exec { dotnet build $script:solution }
+    $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+    Exec { dotnet build $solution }
 }
 
 # Synopsis: Build Language Localization
 Task BuildLanguageLocalization EstimateVersion, {
+    $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
+    $anyBuildArtifactsFolder = $state.AnyBuildArtifactsFolder
     $project = Resolve-Path -Path 'TIKSN.LanguageLocalization/TIKSN.LanguageLocalization.csproj'
+    $nextVersion = $state.NextVersion
 
-    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder }
 }
 
 # Synopsis: Build Region Localization
 Task BuildRegionLocalization EstimateVersion, {
+    $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
+    $anyBuildArtifactsFolder = $state.AnyBuildArtifactsFolder
     $project = Resolve-Path -Path 'TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj'
+    $nextVersion = $state.NextVersion
 
-    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder }
 }
 
 # Synopsis: Build Core
 Task BuildCore EstimateVersion, {
+    $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
+    $anyBuildArtifactsFolder = $state.AnyBuildArtifactsFolder
     $project = Resolve-Path -Path 'TIKSN.Framework.Core/TIKSN.Framework.Core.csproj'
+    $nextVersion = $state.NextVersion
 
-    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder }
 }
 
 # Synopsis: Build MAUI
 Task BuildMaui EstimateVersion, {
+    $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
+    $anyBuildArtifactsFolder = $state.AnyBuildArtifactsFolder
+    $anyIosBuildArtifactsFolder = $state.AnyIosBuildArtifactsFolder
+    $anyMaccatalystBuildArtifactsFolder = $state.AnyMaccatalystBuildArtifactsFolder
+    $anyAndroidBuildArtifactsFolder = $state.AnyAndroidBuildArtifactsFolder
+    $anyWindowsBuildArtifactsFolder = $state.AnyWindowsBuildArtifactsFolder
     $project = Resolve-Path -Path 'TIKSN.Framework.Maui/TIKSN.Framework.Maui.csproj'
+    $nextVersion = $state.NextVersion
 
-    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyBuildArtifactsFolder }
+    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder }
 
-    Exec { dotnet build $project --framework net8.0-ios /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyIosBuildArtifactsFolder }
-    Exec { dotnet build $project --framework net8.0-maccatalyst /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyMaccatalystBuildArtifactsFolder }
-    Exec { dotnet build $project --framework net8.0-android /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyAndroidBuildArtifactsFolder }
-    Exec { dotnet build $project --framework net8.0-windows10.0.19041.0 /v:m /p:Configuration=Release /p:version=$Script:NextVersion /p:OutDir=$script:anyWindowsBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net8.0-ios /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyIosBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net8.0-maccatalyst /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyMaccatalystBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net8.0-android /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyAndroidBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net8.0-windows10.0.19041.0 /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyWindowsBuildArtifactsFolder }
 }
 
 # Synopsis: Estimate Next Version
 Task EstimateVersion Restore, {
+    $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
     if ($Version) {
-        $Script:NextVersion = [System.Management.Automation.SemanticVersion]$Version
+        $state.NextVersion = [System.Management.Automation.SemanticVersion]$Version
     }
     else {
-        $foundPackages = Find-Package -Name $PackageId -AllVersions -AllowPrereleaseVersions -ProviderName NuGet -Source nuget.org
+        $foundPackages = Find-Package -Name $state.PackageId -AllVersions -AllowPrereleaseVersions -ProviderName NuGet -Source nuget.org
 
-        $foundPackages = $foundPackages | Where-Object { $_.Name -eq $PackageId }
+        $foundPackages = $foundPackages | Where-Object { $_.Name -eq $state.PackageId }
 
         $value = [System.Management.Automation.SemanticVersion]::New(0)
         $foundPackageVersions = $foundPackages | Select-Object -ExpandProperty Version
@@ -211,16 +240,19 @@ Task EstimateVersion Restore, {
         if ($null -eq $latestPackageVersion.PreReleaseLabel) {
             $nextPreReleaseLabel = 'alpha.1'
 
-            $Script:NextVersion = [System.Management.Automation.SemanticVersion]::New($latestPackageVersion.Major, $latestPackageVersion.Minor, $latestPackageVersion.Patch + 1, $nextPreReleaseLabel, $currentCommit)
+            $state.NextVersion = [System.Management.Automation.SemanticVersion]::New($latestPackageVersion.Major, $latestPackageVersion.Minor, $latestPackageVersion.Patch + 1, $nextPreReleaseLabel, $currentCommit)
         }
         else {
             $nextPreReleaseLabel = $latestPackageVersion.PreReleaseLabel.Split('.')[0] + '.' + (([int]$latestPackageVersion.PreReleaseLabel.Split('.')[1]) + 1)
 
-            $Script:NextVersion = [System.Management.Automation.SemanticVersion]::New($latestPackageVersion.Major, $latestPackageVersion.Minor, $latestPackageVersion.Patch, $nextPreReleaseLabel, $currentCommit)
+            $state.NextVersion = [System.Management.Automation.SemanticVersion]::New($latestPackageVersion.Major, $latestPackageVersion.Minor, $latestPackageVersion.Patch, $nextPreReleaseLabel, $currentCommit)
         }
     }
 
-    Write-Output "Next version estimated to be $Script:NextVersion"
+    $state.NextVersion
+    $state | Export-Clixml -Path ".\.trash\$Instance\state.clixml"
+    Write-Output "Next version estimated to be $($state.NextVersion)"
+    Write-Output $state
 }
 
 # Synopsis: Format
@@ -231,7 +263,8 @@ Task FormatAnalyzers Restore, FormatAnalyzersLanguageLocalization, FormatAnalyze
 
 # Synopsis: Format Analyzers Solution
 Task FormatAnalyzersSolution Restore, {
-    # Exec { dotnet format analyzers --severity info --verbosity diagnostic $script:solution }
+    # $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+    # Exec { dotnet format analyzers --severity info --verbosity diagnostic $solution }
 }
 
 # Synopsis: Format Analyzers Language Localization
@@ -267,7 +300,8 @@ Task FormatStyle Restore, FormatStyleLanguageLocalization, FormatStyleRegionLoca
 
 # Synopsis: Format Style Solution
 Task FormatStyleSolution Restore, {
-    # Exec { dotnet format style --severity info --verbosity diagnostic $script:solution }
+    # $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+    # Exec { dotnet format style --severity info --verbosity diagnostic $solution }
 }
 
 # Synopsis: Format Style Language Localization
@@ -300,7 +334,8 @@ Task FormatStyleMaui Restore, {
 
 # Synopsis: Format Whitespace
 Task FormatWhitespace Restore, {
-    Exec { dotnet format whitespace --verbosity diagnostic $script:solution }
+    $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+    Exec { dotnet format whitespace --verbosity diagnostic $solution }
 }
 
 # Synopsis: Download Currency Codes
@@ -311,7 +346,9 @@ Task DownloadCurrencyCodes Clean, {
 
 # Synopsis: Scan with DevSkim for security issues
 Task DevSkim Restore, {
-    $sarifFile = Join-Path -Path $script:trashFolder -ChildPath 'DevSkim.sarif'
+    $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
+    $trashFolder = $state.TrashFolder
+    $sarifFile = Join-Path -Path $trashFolder -ChildPath 'DevSkim.sarif'
     Exec { dotnet tool run devskim analyze --source-code . --output-file $sarifFile }
     Exec { dotnet tool run devskim fix --source-code . --sarif-result $sarifFile --all }
 }
@@ -331,7 +368,8 @@ Task RestoreTools Clean, {
 
 # Synopsis: Restore packages
 Task RestorePackages Clean, {
-    Exec { dotnet restore $script:solution }
+    $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+    Exec { dotnet restore $solution }
 }
 
 # Synopsis: Clean previous build leftovers
@@ -345,39 +383,41 @@ Task Clean Init, {
 
 # Synopsis: Initialize folders and variables
 Task Init {
-    $date = Get-Date -Format 'yyyyMMddHHmmss'
     $trashFolder = Join-Path -Path . -ChildPath '.trash'
-    $script:trashFolder = Join-Path -Path $trashFolder -ChildPath $date
-    New-Item -Path $script:trashFolder -ItemType Directory | Out-Null
-    $script:trashFolder = Resolve-Path -Path $script:trashFolder
+    $trashFolder = Join-Path -Path $trashFolder -ChildPath $Instance
+    New-Item -Path $trashFolder -ItemType Directory | Out-Null
+    $trashFolder = Resolve-Path -Path $trashFolder
 
-    $script:buildArtifactsFolder = Join-Path -Path $script:trashFolder -ChildPath 'artifacts'
-    New-Item -Path $script:buildArtifactsFolder -ItemType Directory | Out-Null
+    $buildArtifactsFolder = Join-Path -Path $trashFolder -ChildPath 'artifacts'
+    New-Item -Path $buildArtifactsFolder -ItemType Directory | Out-Null
 
-    $script:anyBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'any'
-    New-Item -Path $script:anyBuildArtifactsFolder -ItemType Directory | Out-Null
+    $anyBuildArtifactsFolder = Join-Path -Path $buildArtifactsFolder -ChildPath 'any'
+    New-Item -Path $anyBuildArtifactsFolder -ItemType Directory | Out-Null
 
-    $script:anyIosBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'any-ios'
-    New-Item -Path $script:anyIosBuildArtifactsFolder -ItemType Directory | Out-Null
+    $anyIosBuildArtifactsFolder = Join-Path -Path $buildArtifactsFolder -ChildPath 'any-ios'
+    New-Item -Path $anyIosBuildArtifactsFolder -ItemType Directory | Out-Null
 
-    $script:anyMaccatalystBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'any-maccatalyst'
-    New-Item -Path $script:anyMaccatalystBuildArtifactsFolder -ItemType Directory | Out-Null
+    $anyMaccatalystBuildArtifactsFolder = Join-Path -Path $buildArtifactsFolder -ChildPath 'any-maccatalyst'
+    New-Item -Path $anyMaccatalystBuildArtifactsFolder -ItemType Directory | Out-Null
 
-    $script:anyAndroidBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'any-android'
-    New-Item -Path $script:anyAndroidBuildArtifactsFolder -ItemType Directory | Out-Null
+    $anyAndroidBuildArtifactsFolder = Join-Path -Path $buildArtifactsFolder -ChildPath 'any-android'
+    New-Item -Path $anyAndroidBuildArtifactsFolder -ItemType Directory | Out-Null
 
-    $script:anyWindowsBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'any-windows'
-    New-Item -Path $script:anyWindowsBuildArtifactsFolder -ItemType Directory | Out-Null
+    $anyWindowsBuildArtifactsFolder = Join-Path -Path $buildArtifactsFolder -ChildPath 'any-windows'
+    New-Item -Path $anyWindowsBuildArtifactsFolder -ItemType Directory | Out-Null
 
-    $script:armBuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'arm'
-    New-Item -Path $script:armBuildArtifactsFolder -ItemType Directory | Out-Null
+    $state = [PSCustomObject]@{
+        PackageId                          = 'TIKSN-Framework'
+        NextVersion                        = $null
+        TrashFolder                        = $trashFolder
+        BuildArtifactsFolder               = $buildArtifactsFolder
+        AnyBuildArtifactsFolder            = $anyBuildArtifactsFolder
+        AnyIosBuildArtifactsFolder         = $anyIosBuildArtifactsFolder
+        AnyMaccatalystBuildArtifactsFolder = $anyMaccatalystBuildArtifactsFolder
+        AnyAndroidBuildArtifactsFolder     = $anyAndroidBuildArtifactsFolder
+        AnyWindowsBuildArtifactsFolder     = $anyWindowsBuildArtifactsFolder
+    }
 
-    $script:x64BuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'x64'
-    New-Item -Path $script:x64BuildArtifactsFolder -ItemType Directory | Out-Null
-
-    $script:x86BuildArtifactsFolder = Join-Path -Path $script:buildArtifactsFolder -ChildPath 'x86'
-    New-Item -Path $script:x86BuildArtifactsFolder -ItemType Directory | Out-Null
-
-    $script:solution = Resolve-Path -Path 'TIKSN Framework.sln'
-    $script:PackageId = 'TIKSN-Framework'
+    $state | Export-Clixml -Path ".\.trash\$Instance\state.clixml"
+    Write-Output $state
 }
