@@ -26,8 +26,13 @@ Task Publish Pack, ValidateVersion, {
     $trashFolder = $state.TrashFolder
     $packageName = Join-Path -Path $trashFolder -ChildPath 'TIKSN-Framework.nupkg'
 
-    Import-Module -Name Microsoft.PowerShell.SecretManagement
-    $apiKey = Get-Secret -Name 'TIKSN-Framework-ApiKey' -AsPlainText
+    if ($null -eq $env:NUGET_API_KEY) {
+        Import-Module -Name Microsoft.PowerShell.SecretManagement
+        $apiKey = Get-Secret -Name 'TIKSN-Framework-ApiKey' -AsPlainText
+    }
+    else {
+        $apiKey = $env:NUGET_API_KEY
+    }
 
     Exec { nuget push $packageName -ApiKey $apiKey -Source https://api.nuget.org/v3/index.json }
 }
@@ -35,14 +40,15 @@ Task Publish Pack, ValidateVersion, {
 # Synopsis: Validate Next Version
 Task ValidateVersion EstimateVersion, {
     $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
+    $nextVersion = [System.Management.Automation.SemanticVersion]::Parse($state.NextVersion.ToString())
 
     $gitTags = git tag
     $gitTagVersions = $gitTags | ForEach-Object { [System.Management.Automation.SemanticVersion]::Parse($_) }
     $gitTagVersions = $gitTagVersions | Sort-Object -Descending
     $latestTagVersion = $gitTagVersions | Select-Object -First 1
 
-    if ($state.NextVersion -le $latestTagVersion) {
-        throw "Next Release version '$($state.NextVersion)' should be greater than latest tag version '$latestTagVersion'"
+    if ($nextVersion -le $latestTagVersion) {
+        throw "Next Release version '$nextVersion' should be greater than latest tag version '$latestTagVersion'"
     }
 }
 
