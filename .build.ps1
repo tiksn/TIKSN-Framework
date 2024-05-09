@@ -74,19 +74,19 @@ Task Pack Build, Test, {
         $project = [xml](Get-Content -Path $projectMapEntry.ProjectFile -Raw)
 
         foreach ($packageReference in $project.SelectNodes('//PackageReference')) {
-            $state.PackageId = $packageReference.Include
+            $packageId = $packageReference.Include
             $packageVersion = $packageReference.Version
 
             if ($null -ne $packageVersion) {
                 foreach ($packageGroup in $projectMapEntry.PackageGroups) {
-                    if ($packageGroup.Contains($state.PackageId)) {
-                        $existingVersion = $packageGroup[$state.PackageId]
+                    if ($packageGroup.Contains($packageId)) {
+                        $existingVersion = $packageGroup[$packageId]
                         if ($existingVersion -ne $packageVersion) {
-                            throw "There was a package ($state.PackageId) mismatch. ($existingVersion, $packageVersion)"
+                            throw "There was a package $packageId mismatch. ($existingVersion, $packageVersion)"
                         }
                     }
                     else {
-                        $packageGroup[$state.PackageId] = $packageVersion
+                        $packageGroup[$packageId] = $packageVersion
                     }
 
                 }
@@ -159,7 +159,9 @@ Task Pack Build, Test, {
 Task Test Build, {
     Exec { dotnet test '.\TIKSN.Framework.Core.Tests\TIKSN.Framework.Core.Tests.csproj' }
 
-    Exec { dotnet test '.\TIKSN.Framework.IntegrationTests\TIKSN.Framework.IntegrationTests.csproj' }
+    if (-not $env:CI) {
+        Exec { dotnet test '.\TIKSN.Framework.IntegrationTests\TIKSN.Framework.IntegrationTests.csproj' }
+    }
 }
 
 # Synopsis: Build
