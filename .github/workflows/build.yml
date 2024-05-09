@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-      - master
-      - develop
   pull_request:
   release:
     types:
@@ -40,6 +38,9 @@ jobs:
       - name: "Format"
         shell: pwsh
         run: .\format.ps1 -Instance ${{github.run_id}}
+      - name: "Version"
+        shell: pwsh
+        run: .\version.ps1 -Instance ${{github.run_id}}
       - name: "Build"
         shell: pwsh
         run: .\build.ps1 -Instance ${{github.run_id}}

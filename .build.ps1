@@ -226,28 +226,34 @@ Task EstimateVersion Restore, {
         $state.NextVersion = [System.Management.Automation.SemanticVersion]$Version
     }
     else {
-        $foundPackages = Find-Package -Name $state.PackageId -AllVersions -AllowPrereleaseVersions -ProviderName NuGet -Source nuget.org
-
-        $foundPackages = $foundPackages | Where-Object { $_.Name -eq $state.PackageId }
-
-        $value = [System.Management.Automation.SemanticVersion]::New(0)
-        $foundPackageVersions = $foundPackages | Select-Object -ExpandProperty Version
-        $foundPackageVersions = $foundPackageVersions | Where-Object { [System.Management.Automation.SemanticVersion]::TryParse($_, [ref][System.Management.Automation.SemanticVersion]$value) }
-        $foundPackageVersions = $foundPackageVersions | ForEach-Object { [System.Management.Automation.SemanticVersion]$_ }
-        $foundPackageVersions = $foundPackageVersions | Sort-Object -Descending
-        $latestPackageVersion = $foundPackageVersions | Select-Object -First 1
-
         $currentCommit = git rev-parse HEAD
+        [System.Management.Automation.SemanticVersion]$headTagVersion = git tag --points-at HEAD
 
-        if ($null -eq $latestPackageVersion.PreReleaseLabel) {
-            $nextPreReleaseLabel = 'alpha.1'
+        if ($null -eq $headTagVersion) {
+            $foundPackages = Find-Package -Name $state.PackageId -AllVersions -AllowPrereleaseVersions -ProviderName NuGet -Source nuget.org
 
-            $state.NextVersion = [System.Management.Automation.SemanticVersion]::New($latestPackageVersion.Major, $latestPackageVersion.Minor, $latestPackageVersion.Patch + 1, $nextPreReleaseLabel, $currentCommit)
+            $foundPackages = $foundPackages | Where-Object { $_.Name -eq $state.PackageId }
+
+            $value = [System.Management.Automation.SemanticVersion]::New(0)
+            $foundPackageVersions = $foundPackages | Select-Object -ExpandProperty Version
+            $foundPackageVersions = $foundPackageVersions | Where-Object { [System.Management.Automation.SemanticVersion]::TryParse($_, [ref][System.Management.Automation.SemanticVersion]$value) }
+            $foundPackageVersions = $foundPackageVersions | ForEach-Object { [System.Management.Automation.SemanticVersion]$_ }
+            $foundPackageVersions = $foundPackageVersions | Sort-Object -Descending
+            $latestPackageVersion = $foundPackageVersions | Select-Object -First 1
+
+            if ($null -eq $latestPackageVersion.PreReleaseLabel) {
+                $nextPreReleaseLabel = 'alpha.1'
+
+                $state.NextVersion = [System.Management.Automation.SemanticVersion]::New($latestPackageVersion.Major, $latestPackageVersion.Minor, $latestPackageVersion.Patch + 1, $nextPreReleaseLabel, $currentCommit)
+            }
+            else {
+                $nextPreReleaseLabel = $latestPackageVersion.PreReleaseLabel.Split('.')[0] + '.' + (([int]$latestPackageVersion.PreReleaseLabel.Split('.')[1]) + 1)
+
+                $state.NextVersion = [System.Management.Automation.SemanticVersion]::New($latestPackageVersion.Major, $latestPackageVersion.Minor, $latestPackageVersion.Patch, $nextPreReleaseLabel, $currentCommit)
+            }
         }
         else {
-            $nextPreReleaseLabel = $latestPackageVersion.PreReleaseLabel.Split('.')[0] + '.' + (([int]$latestPackageVersion.PreReleaseLabel.Split('.')[1]) + 1)
-
-            $state.NextVersion = [System.Management.Automation.SemanticVersion]::New($latestPackageVersion.Major, $latestPackageVersion.Minor, $latestPackageVersion.Patch, $nextPreReleaseLabel, $currentCommit)
+            $state.NextVersion = [System.Management.Automation.SemanticVersion]::New($headTagVersion.Major, $headTagVersion.Minor, $headTagVersion.Patch, $headTagVersion.PreReleaseLabel, $currentCommit)
         }
     }
 

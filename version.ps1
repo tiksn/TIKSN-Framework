@@ -8,4 +8,4 @@ param (
     $Instance
 )
 
-.\trigger.ps1 -Task Format -Instance $Instance -Version $Version
+.\trigger.ps1 -Task EstimateVersion -Instance $Instance -Version $Version
