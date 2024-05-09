@@ -2,7 +2,7 @@
 param (
     [Parameter()]
     [string]
-    $Version = '0.1.0',
+    $Version,
     [Parameter()]
     [string]
     $Instance
