@@ -1,4 +1,4 @@
-name: Build
+name: CICD
 
 on:
   push:
@@ -16,8 +16,9 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
 jobs:
-  build:
-    name: Build
+
+  ci:
+    name: CI
     runs-on: windows-latest
     steps:
       - name: "Checkout"
@@ -55,3 +56,31 @@ jobs:
         with:
           name: .trash
           path: "./.trash"
+
+  cd:
+    name: CD
+    needs: ci
+    if: github.event_name == 'release'
+    environment:
+      name: "NuGet"
+      url: https://www.nuget.org/packages/TIKSN-Framework/
+    runs-on: windows-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+          fetch-depth: 0
+      - name: "Download Artefact"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: ".trash"
+          path: "./.trash"
+      - name: "Install InvokeBuild Module"
+        shell: pwsh
+        run: Install-Module -Name InvokeBuild -Force
+      - name: "Publish"
+        env:
+          NUGET_API_KEY: ${{secrets.NUGET_API_KEY}}
+        shell: pwsh
+        run: .\publish.ps1 -Instance ${{github.run_id}}
