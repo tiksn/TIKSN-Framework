@@ -102,11 +102,11 @@ public abstract class MemoryCacheDecoratorBase<T> : CacheDecoratorBase<T>
     {
         ArgumentNullException.ThrowIfNull(cacheEntry);
 
-        cacheEntry.AbsoluteExpiration = this.SpecificOptions.Value.AbsoluteExpiration ??
-                                        this.GenericOptions.Value.AbsoluteExpiration;
-        cacheEntry.AbsoluteExpirationRelativeToNow = this.SpecificOptions.Value.AbsoluteExpirationRelativeToNow ??
-                                                     this.GenericOptions.Value.AbsoluteExpirationRelativeToNow;
-        cacheEntry.SlidingExpiration = this.SpecificOptions.Value.SlidingExpiration ??
-                                       this.GenericOptions.Value.SlidingExpiration;
+        cacheEntry.AbsoluteExpiration = this.SpecificOptions.Value.AbsoluteExpiration
+            ?? this.GenericOptions.Value.AbsoluteExpiration;
+        cacheEntry.AbsoluteExpirationRelativeToNow = this.SpecificOptions.Value.AbsoluteExpirationRelativeToNow
+            ?? this.GenericOptions.Value.AbsoluteExpirationRelativeToNow;
+        cacheEntry.SlidingExpiration = this.SpecificOptions.Value.SlidingExpiration
+            ?? this.GenericOptions.Value.SlidingExpiration;
     }
 }
