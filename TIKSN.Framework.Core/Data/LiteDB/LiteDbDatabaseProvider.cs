@@ -11,12 +11,12 @@ public class LiteDbDatabaseProvider : ILiteDbDatabaseProvider
 {
     private readonly IConfiguration configuration;
     private readonly string connectionStringKey;
-    private readonly IFileProvider fileProvider;
+    private readonly IFileProvider? fileProvider;
 
     public LiteDbDatabaseProvider(
         IConfiguration configuration,
         string connectionStringKey,
-        IFileProvider fileProvider = null)
+        IFileProvider? fileProvider = null)
     {
         this.configuration = configuration;
         this.connectionStringKey = connectionStringKey;
@@ -28,7 +28,7 @@ public class LiteDbDatabaseProvider : ILiteDbDatabaseProvider
     /// </summary>
     /// <param name="mapper">Mapper</param>
     /// <returns>Database instance</returns>
-    public LiteDatabase GetDatabase(BsonMapper mapper)
+    public LiteDatabase GetDatabase(BsonMapper? mapper)
     {
         var connectionString =
             new ConnectionString(this.configuration.GetConnectionString(this.connectionStringKey));
@@ -38,7 +38,7 @@ public class LiteDbDatabaseProvider : ILiteDbDatabaseProvider
             connectionString.Filename = this.fileProvider.GetFileInfo(connectionString.Filename).PhysicalPath;
         }
 
-        return new LiteDatabase(connectionString);
+        return new LiteDatabase(connectionString, mapper);
     }
 
     /// <summary>
