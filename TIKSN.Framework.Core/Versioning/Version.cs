@@ -525,7 +525,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
         return new SemanticVersion(version.Release.Major, version.Release.Minor, 0, releaseLabels, metadata);
     }
 
-    public int CompareTo(Version other)
+    public int CompareTo(Version? other)
     {
         if (ReferenceEquals(this, other))
         {
@@ -573,7 +573,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
         return releaseComparison;
     }
 
-    public int CompareTo(object obj)
+    public int CompareTo(object? obj)
     {
         if (obj == null)
         {
@@ -588,7 +588,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
         throw new ArgumentException("Unable to compare to another type of object", nameof(obj));
     }
 
-    public bool Equals(Version other)
+    public bool Equals(Version? other)
     {
         if (other is null)
         {
@@ -598,7 +598,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
         return this.CompareTo(other) == 0;
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (ReferenceEquals(this, obj))
         {
