@@ -53,7 +53,7 @@ public readonly struct CorrelationId : IEquatable<CorrelationId>
     ///     Indicates whether this instance and a specified object are equal.
     /// </summary>
     /// <param name="obj">Other Correlation Id</param>
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (obj is not CorrelationId)
         {
