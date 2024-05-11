@@ -19,7 +19,7 @@ public sealed class Page : IEquatable<Page>
 
     public static bool operator ==(Page left, Page right) => Equals(left, right);
 
-    public bool Equals(Page other)
+    public bool Equals(Page? other)
     {
         if (other is null)
         {
@@ -34,7 +34,7 @@ public sealed class Page : IEquatable<Page>
         return this.Number == other.Number && this.Size == other.Size;
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
         => ReferenceEquals(this, obj) || (obj is Page other && this.Equals(other));
 
     public override int GetHashCode() => HashCode.Combine(this.Number, this.Size);
