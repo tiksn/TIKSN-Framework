@@ -51,8 +51,8 @@ builder.Services.Scan(scan => scan
 
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
-  containerBuilder.RegisterModule<CoreModule>();
-  // Optional: Register project modules
+    containerBuilder.RegisterModule<CoreModule>();
+    // Optional: Register project modules
 });
 
 var app = builder.Build();
