@@ -23,7 +23,7 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
 
     public static bool operator ==(Acronym<TSelf> left, Acronym<TSelf> right) => Equals(left, right);
 
-    public static TSelf Parse(string s, IFormatProvider provider)
+    public static TSelf Parse(string s, IFormatProvider? provider)
     {
         if (TryParse(s, provider, out var result))
         {
@@ -33,10 +33,10 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
         throw new FormatException("Input string was not in a correct format.");
     }
 
-    public static TSelf Parse(ReadOnlySpan<char> s, IFormatProvider provider)
+    public static TSelf Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
         => Parse(s.ToString(), provider);
 
-    public static Option<TSelf> Parse(string s, bool asciiOnly, IFormatProvider provider)
+    public static Option<TSelf> Parse(string s, bool asciiOnly, IFormatProvider? provider)
     {
         if (string.IsNullOrEmpty(s))
         {
@@ -58,23 +58,32 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
 
         var result = parse(parser, s);
 
-        return result.ToOption().Select(x => Create(x, culture));
+        return result
+            .ToOption()
+            .Map(x => Create(x, culture))
+            .Match(s => Optional(s), Option<TSelf>.None);
     }
 
-    public static Option<TSelf> Parse(ReadOnlySpan<char> s, bool asciiOnly, IFormatProvider provider)
+    public static Option<TSelf> Parse(ReadOnlySpan<char> s, bool asciiOnly, IFormatProvider? provider)
         => Parse(s.ToString(), asciiOnly, provider);
 
-    public static bool TryParse(string s, IFormatProvider provider, out TSelf result)
+    public static bool TryParse(string? s, IFormatProvider? provider, out TSelf result)
     {
+        if (s is null)
+        {
+            result = default!;
+            return false;
+        }
+
         var acronym = Parse(s, asciiOnly: false, provider);
-        result = acronym.MatchUnsafe(x => x, () => default);
+        result = acronym.MatchUnsafe(x => x, () => default)!;
         return acronym.IsSome;
     }
 
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out TSelf result)
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out TSelf result)
         => TryParse(s.ToString(), provider, out result);
 
-    public bool Equals(TSelf other)
+    public bool Equals(TSelf? other)
     {
         if (other is null)
         {
@@ -89,7 +98,7 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
         return string.Equals(this.value, other.value, StringComparison.OrdinalIgnoreCase);
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (obj is null)
         {
@@ -110,14 +119,14 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
     public override string ToString()
         => this.value;
 
-    public string ToString(string format, IFormatProvider formatProvider)
+    public string ToString(string? format, IFormatProvider? formatProvider)
         => this.value;
 
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,
         ReadOnlySpan<char> format,
-        IFormatProvider provider)
+        IFormatProvider? provider)
     {
         var result = this.value;
         charsWritten = Math.Min(result.Length, destination.Length);
@@ -127,8 +136,8 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
 
 #pragma warning disable S3011 // Reflection should not be used to increase accessibility of classes, methods, or fields
 
-    private static TSelf Create(string s, CultureInfo culture)
-        => (TSelf)Activator.CreateInstance(typeof(TSelf),
+    private static TSelf? Create(string s, CultureInfo culture)
+        => (TSelf?)Activator.CreateInstance(typeof(TSelf),
             BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
             binder: null,
             [s],
