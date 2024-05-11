@@ -2,13 +2,11 @@ namespace TIKSN.Web;
 
 public sealed class SitemapPage : IEquatable<SitemapPage>
 {
-    private Uri address;
-
     private double? priority;
 
     public SitemapPage(Uri address, DateTime? lastModified, Frequency? changeFrequency, double? priority)
     {
-        this.Address = address;
+        this.Address = address ?? throw new ArgumentNullException(nameof(address));
         this.LastModified = lastModified;
         this.ChangeFrequency = changeFrequency;
         this.Priority = priority;
@@ -25,16 +23,7 @@ public sealed class SitemapPage : IEquatable<SitemapPage>
         Never = 6,
     }
 
-    public Uri Address
-    {
-        get => this.address;
-        private set
-        {
-            ArgumentNullException.ThrowIfNull(value);
-
-            this.address = value;
-        }
-    }
+    public Uri Address { get; }
 
     public Frequency? ChangeFrequency { get; }
 
@@ -56,11 +45,11 @@ public sealed class SitemapPage : IEquatable<SitemapPage>
         }
     }
 
-    public static bool operator !=(SitemapPage page1, SitemapPage page2) => !Equals(page1, page2);
+    public static bool operator !=(SitemapPage? page1, SitemapPage? page2) => !Equals(page1, page2);
 
-    public static bool operator ==(SitemapPage page1, SitemapPage page2) => Equals(page1, page2);
+    public static bool operator ==(SitemapPage? page1, SitemapPage? page2) => Equals(page1, page2);
 
-    public bool Equals(SitemapPage other)
+    public bool Equals(SitemapPage? other)
     {
         if (other is null)
         {
@@ -75,7 +64,7 @@ public sealed class SitemapPage : IEquatable<SitemapPage>
         return this.Address == other.Address;
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (obj is null)
         {
@@ -97,7 +86,7 @@ public sealed class SitemapPage : IEquatable<SitemapPage>
 
     public override int GetHashCode() => this.Address.GetHashCode();
 
-    private static bool Equals(SitemapPage page1, SitemapPage page2)
+    private static bool Equals(SitemapPage? page1, SitemapPage? page2)
     {
         if (page1 is null)
         {
