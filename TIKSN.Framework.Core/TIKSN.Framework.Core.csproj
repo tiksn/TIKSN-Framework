@@ -53,7 +53,7 @@
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Bond.CSharp" Version="10.0.0" />
-    <PackageReference Include="FluentValidation" Version="11.9.0" />
+    <PackageReference Include="FluentValidation" Version="11.9.1" />
     <PackageReference Include="IdGen" Version="3.0.5" />
     <PackageReference Include="LanguageExt.Core" Version="4.4.8" />
     <PackageReference Include="LanguageExt.FSharp" Version="4.4.8" />
