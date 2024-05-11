@@ -21,7 +21,7 @@ public sealed class CurrencyPair : IEquatable<CurrencyPair>
 
     public static bool operator ==(CurrencyPair pair1, CurrencyPair pair2) => Equals(pair1, pair2);
 
-    public bool Equals(CurrencyPair other)
+    public bool Equals(CurrencyPair? other)
     {
         if (other is null)
         {
@@ -36,7 +36,7 @@ public sealed class CurrencyPair : IEquatable<CurrencyPair>
         return this.BaseCurrency == other.BaseCurrency && this.CounterCurrency == other.CounterCurrency;
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (obj is null)
         {
