@@ -8,7 +8,7 @@ public abstract class MongoClientProviderBase : IMongoClientProvider
     private readonly IConfiguration configuration;
     private readonly string connectionStringKey;
     private readonly object locker;
-    private MongoClient mongoClient;
+    private MongoClient? mongoClient;
 
     protected MongoClientProviderBase(
         IConfiguration configuration,
