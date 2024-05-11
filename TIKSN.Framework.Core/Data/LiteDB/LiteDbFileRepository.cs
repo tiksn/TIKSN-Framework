@@ -15,9 +15,8 @@ public class LiteDbFileRepository<TIdentity, TMetadata> : IFileRepository<TIdent
     {
         ArgumentNullException.ThrowIfNull(databaseProvider);
 
-        this.recyclableMemoryStreamManager = recyclableMemoryStreamManager ??
-                                              throw new ArgumentNullException(
-                                                  nameof(recyclableMemoryStreamManager));
+        this.recyclableMemoryStreamManager = recyclableMemoryStreamManager
+            ?? throw new ArgumentNullException(nameof(recyclableMemoryStreamManager));
         this.liteStorage = databaseProvider.GetDatabase().GetStorage<TIdentity>();
     }
 
