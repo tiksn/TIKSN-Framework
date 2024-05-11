@@ -9,5 +9,5 @@ public abstract class DatabaseConfigurationBase
     protected DatabaseConfigurationBase(IConfigurationRoot configurationRoot) =>
         this.configurationRoot = configurationRoot;
 
-    protected string GetConnectionString(string name) => this.configurationRoot.GetConnectionString(name);
+    protected string? GetConnectionString(string name) => this.configurationRoot.GetConnectionString(name);
 }
