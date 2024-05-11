@@ -41,7 +41,8 @@ public class CurrencyFactory : MemoryCacheDecoratorBase<CurrencyInfo>, ICurrency
 
         var cacheKey = Tuple.Create(EntityType, isoCurrencySymbol.ToUpperInvariant());
 
-        return this.GetFromMemoryCache(cacheKey, () => new CurrencyInfo(isoCurrencySymbol));
+        return this.GetFromMemoryCache(cacheKey, () => new CurrencyInfo(isoCurrencySymbol))
+            ?? throw new InvalidOperationException("Failed to create CurrencyInfo.");
     }
 
     public CurrencyInfo Create(RegionInfo region)
@@ -59,6 +60,7 @@ public class CurrencyFactory : MemoryCacheDecoratorBase<CurrencyInfo>, ICurrency
 
         var cacheKey = Tuple.Create(EntityType, region.ISOCurrencySymbol);
 
-        return this.GetFromMemoryCache(cacheKey, () => new CurrencyInfo(region));
+        return this.GetFromMemoryCache(cacheKey, () => new CurrencyInfo(region))
+            ?? throw new InvalidOperationException("Failed to create CurrencyInfo.");
     }
 }
