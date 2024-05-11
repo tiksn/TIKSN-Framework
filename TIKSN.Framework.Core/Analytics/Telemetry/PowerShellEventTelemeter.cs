@@ -20,6 +20,6 @@ public class PowerShellEventTelemeter : IEventTelemeter
         this.cmdlet.WriteVerbose(
             $"EVENT: {name} with {string.Join(", ", properties.Select(item => $"{item.Key} is {item.Value}"))}");
 
-        return Task.FromResult<object>(null);
+        return Task.CompletedTask;
     }
 }

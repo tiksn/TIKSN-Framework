@@ -41,12 +41,16 @@ public partial class RestRepository<TEntity, TIdentity> :
     public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken) =>
         this.AddObjectAsync(entities, cancellationToken);
 
-    public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
+    public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken) =>
+        await this.GetOrDefaultAsync(id, cancellationToken).ConfigureAwait(false)
+            ?? throw new EntityNotFoundException();
+
+    public async Task<TEntity?> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
     {
         var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
-        var uriTemplate = new UriTemplate(this.options.Value.ResourceTemplate);
+        var uriTemplate = new UriTemplate(this.options.Value.ResourceTemplate ?? string.Empty);
 
-        uriTemplate.Fill("ID", id.ToString());
+        FillId(uriTemplate, id);
 
         var requestUrl = uriTemplate.Compose();
 
@@ -58,9 +62,9 @@ public partial class RestRepository<TEntity, TIdentity> :
     public async Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)
     {
         var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
-        var uriTemplate = new UriTemplate(this.options.Value.ResourceTemplate);
+        var uriTemplate = new UriTemplate(this.options.Value.ResourceTemplate ?? string.Empty);
 
-        uriTemplate.Fill("ID", entity.ID.ToString());
+        FillId(uriTemplate, entity.ID);
 
         var requestUrl = uriTemplate.Compose();
 
@@ -84,9 +88,9 @@ public partial class RestRepository<TEntity, TIdentity> :
     public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
     {
         var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
-        var uriTemplate = new UriTemplate(this.options.Value.ResourceTemplate);
+        var uriTemplate = new UriTemplate(this.options.Value.ResourceTemplate ?? string.Empty);
 
-        uriTemplate.Fill("ID", entity.ID.ToString());
+        FillId(uriTemplate, entity.ID);
 
         var requestUrl = uriTemplate.Compose();
 
@@ -99,7 +103,7 @@ public partial class RestRepository<TEntity, TIdentity> :
     public async Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
     {
         var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
-        var uriTemplate = new UriTemplate(this.options.Value.ResourceTemplate);
+        var uriTemplate = new UriTemplate(this.options.Value.ResourceTemplate ?? string.Empty);
 
         uriTemplate.Fill("ID", string.Empty);
 
@@ -118,7 +122,7 @@ public partial class RestRepository<TEntity, TIdentity> :
         ArgumentNullException.ThrowIfNull(parameters);
 
         var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
-        var uriTemplate = new UriTemplate(this.options.Value.ResourceTemplate);
+        var uriTemplate = new UriTemplate(this.options.Value.ResourceTemplate ?? string.Empty);
 
         foreach (var parameter in parameters)
         {
@@ -129,7 +133,8 @@ public partial class RestRepository<TEntity, TIdentity> :
 
         var response = await httpClient.GetAsync(requestUrl, cancellationToken).ConfigureAwait(false);
 
-        return await this.ObjectifyResponseAsync<IReadOnlyCollection<TEntity>>(response, defaultIfNotFound: false).ConfigureAwait(false);
+        return await this.ObjectifyResponseAsync<IReadOnlyCollection<TEntity>>(response, defaultIfNotFound: false)
+            .ConfigureAwait(false) ?? [];
     }
 
     protected async Task<TEntity> SingleOrDefaultAsync(
@@ -139,7 +144,7 @@ public partial class RestRepository<TEntity, TIdentity> :
         ArgumentNullException.ThrowIfNull(parameters);
 
         var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
-        var uriTemplate = new UriTemplate(this.options.Value.ResourceTemplate);
+        var uriTemplate = new UriTemplate(this.options.Value.ResourceTemplate ?? string.Empty);
 
         foreach (var parameter in parameters)
         {
@@ -150,7 +155,8 @@ public partial class RestRepository<TEntity, TIdentity> :
 
         var response = await httpClient.GetAsync(requestUrl, cancellationToken).ConfigureAwait(false);
 
-        return await this.ObjectifyResponseAsync<TEntity>(response, defaultIfNotFound: true).ConfigureAwait(false);
+        return await this.ObjectifyResponseAsync<TEntity>(response, defaultIfNotFound: true).ConfigureAwait(false)
+            ?? throw new EntityNotFoundException();
     }
 
     [LoggerMessage(
@@ -159,10 +165,20 @@ public partial class RestRepository<TEntity, TIdentity> :
         Message = "TIKSN.Web.Rest.RestRepository.RemoveRangeAsync method is not advised to use")]
     private static partial void DoNotUseRemoveRange(ILogger logger);
 
+    private static void FillId(UriTemplate uriTemplate, TIdentity? id)
+    {
+        ArgumentNullException.ThrowIfNull(uriTemplate);
+
+        var idValue = id?.ToString()
+            ?? throw new InvalidOperationException("ID's string representation can't be NULL.");
+
+        uriTemplate.Fill("ID", idValue);
+    }
+
     private async Task AddObjectAsync(object requestContent, CancellationToken cancellationToken)
     {
         var httpClient = await this.GetHttpClientAsync().ConfigureAwait(false);
-        var uriTemplate = new UriTemplate(this.options.Value.ResourceTemplate);
+        var uriTemplate = new UriTemplate(this.options.Value.ResourceTemplate ?? string.Empty);
 
         uriTemplate.Fill("ID", string.Empty);
 
@@ -180,7 +196,7 @@ public partial class RestRepository<TEntity, TIdentity> :
 
     private async Task<HttpClient> GetHttpClientAsync()
     {
-        var httpClient = this.httpClientFactory.CreateClient(this.options.Value.EndpointKey);
+        var httpClient = this.httpClientFactory.CreateClient(this.options.Value.EndpointKey ?? string.Empty);
 
         httpClient.DefaultRequestHeaders.Accept.Add(
             new MediaTypeWithQualityHeaderValue(this.options.Value.MediaType));
@@ -199,7 +215,7 @@ public partial class RestRepository<TEntity, TIdentity> :
         return httpClient;
     }
 
-    private async Task<TResult> ObjectifyResponseAsync<TResult>(HttpResponseMessage response, bool defaultIfNotFound)
+    private async Task<TResult?> ObjectifyResponseAsync<TResult>(HttpResponseMessage response, bool defaultIfNotFound)
     {
         if (defaultIfNotFound && response.StatusCode == HttpStatusCode.NotFound)
         {
@@ -235,7 +251,7 @@ public partial class RestRepository<TEntity, TIdentity> :
         }
 
         var authenticationToken =
-            await this.restAuthenticationTokenProvider.GetAuthenticationTokenAsync(this.options.Value.EndpointKey).ConfigureAwait(false);
+            await this.restAuthenticationTokenProvider.GetAuthenticationTokenAsync(this.options.Value.EndpointKey ?? string.Empty).ConfigureAwait(false);
 
         httpClient.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue(authenticationSchema, authenticationToken);

@@ -17,6 +17,7 @@ public class CultureFactory : MemoryCacheDecoratorBase<CultureInfo>, ICultureFac
     {
         var cacheKey = Tuple.Create(EntityType, name);
 
-        return this.GetFromMemoryCache(cacheKey, () => new CultureInfo(name));
+        return this.GetFromMemoryCache(cacheKey, () => new CultureInfo(name))
+            ?? throw new InvalidOperationException("Failed to create CultureInfo.");
     }
 }

@@ -113,9 +113,13 @@ public sealed class VersionSeries : IEquatable<VersionSeries>
         throw new InvalidFormatException("Unable to parse string to VersionSeries");
     }
 
-    public static bool TryParse(string input, out VersionSeries result)
+    public static bool TryParse(string? input, out VersionSeries result)
     {
-        ArgumentNullException.ThrowIfNull(input);
+        if (input is null)
+        {
+            result = null!;
+            return false;
+        }
 
         if (int.TryParse(input, CultureInfo.InvariantCulture, out var releaseMajor))
         {
@@ -129,11 +133,11 @@ public sealed class VersionSeries : IEquatable<VersionSeries>
             return true;
         }
 
-        result = null;
+        result = null!;
         return false;
     }
 
-    public bool Equals(VersionSeries other)
+    public bool Equals(VersionSeries? other)
     {
         if (other is null)
         {
@@ -149,7 +153,7 @@ public sealed class VersionSeries : IEquatable<VersionSeries>
                 thisReleaseVersion.Equals));
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (ReferenceEquals(this, obj))
         {

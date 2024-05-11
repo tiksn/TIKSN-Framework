@@ -37,8 +37,8 @@ public class KnownFolders : IKnownFolders
 
         var fileVersionInfo = FileVersionInfo.GetVersionInfo(this.mainAssembly.Location);
 
-        folderPath = Path.Combine(folderPath, fileVersionInfo.CompanyName);
-        folderPath = Path.Combine(folderPath, fileVersionInfo.ProductName);
+        folderPath = Path.Combine(folderPath, fileVersionInfo.CompanyName ?? throw new InvalidOperationException("Company Name can't be NULL."));
+        folderPath = Path.Combine(folderPath, fileVersionInfo.ProductName ?? throw new InvalidOperationException("Product Name can't be NULL."));
 
         switch (this.versionConsideration)
         {
@@ -46,19 +46,19 @@ public class KnownFolders : IKnownFolders
                 break;
 
             case KnownFolderVersionConsideration.Major:
-                folderPath = Path.Combine(folderPath, this.mainAssembly.GetName().Version.ToString(1));
+                folderPath = Path.Combine(folderPath, this.GetVersion().ToString(1));
                 break;
 
             case KnownFolderVersionConsideration.MajorMinor:
-                folderPath = Path.Combine(folderPath, this.mainAssembly.GetName().Version.ToString(2));
+                folderPath = Path.Combine(folderPath, this.GetVersion().ToString(2));
                 break;
 
             case KnownFolderVersionConsideration.MajorMinorBuild:
-                folderPath = Path.Combine(folderPath, this.mainAssembly.GetName().Version.ToString(3));
+                folderPath = Path.Combine(folderPath, this.GetVersion().ToString(3));
                 break;
 
             case KnownFolderVersionConsideration.MajorMinorBuildRevision:
-                folderPath = Path.Combine(folderPath, this.mainAssembly.GetName().Version.ToString(4));
+                folderPath = Path.Combine(folderPath, this.GetVersion().ToString(4));
                 break;
 
             default:
@@ -67,4 +67,8 @@ public class KnownFolders : IKnownFolders
 
         return GetFromFolderPath(folderPath);
     }
+
+    private Version GetVersion() =>
+        this.mainAssembly.GetName().Version
+            ?? throw new InvalidOperationException("Application Version cannot be NULL.");
 }

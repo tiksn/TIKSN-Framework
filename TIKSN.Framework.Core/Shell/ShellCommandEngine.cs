@@ -55,22 +55,30 @@ public partial class ShellCommandEngine : IShellCommandEngine
         if (!type.GetInterfaces().Contains(typeof(IShellCommand)))
         {
             throw new ArgumentException(
-                this.stringLocalizer.GetRequiredString(LocalizationKeys.Key588506767, type.FullName,
-                    typeof(IShellCommand).FullName), nameof(type));
+                this.stringLocalizer.GetRequiredString(
+                    LocalizationKeys.Key588506767,
+                    type.FullName ?? string.Empty,
+                    typeof(IShellCommand).FullName ?? string.Empty), nameof(type));
         }
 
         var commandAttribute = type.GetTypeInfo().GetCustomAttribute<ShellCommandAttribute>() ?? throw new ArgumentException(
-                this.stringLocalizer.GetRequiredString(LocalizationKeys.Key491461331, type.FullName,
-                    typeof(ShellCommandAttribute).FullName), nameof(type));
+                this.stringLocalizer.GetRequiredString(
+                    LocalizationKeys.Key491461331,
+                    type.FullName ?? string.Empty,
+                    typeof(ShellCommandAttribute).FullName ?? string.Empty), nameof(type));
 
-        LogCheckingCommandNameLocalization(this.logger, type.FullName);
+        LogCheckingCommandNameLocalization(
+            this.logger,
+            type.FullName ?? string.Empty);
         _ = commandAttribute.GetName(this.stringLocalizer);
 
         var constructors = type.GetConstructors();
         if (constructors.Length != 1)
         {
             throw new ArgumentException(
-                this.stringLocalizer.GetRequiredString(LocalizationKeys.Key225262334, type.FullName),
+                this.stringLocalizer.GetRequiredString(
+                    LocalizationKeys.Key225262334,
+                    type.FullName ?? string.Empty),
                 nameof(type));
         }
 
@@ -80,7 +88,10 @@ public partial class ShellCommandEngine : IShellCommandEngine
             var commandParameterAttribute = propertyInfo.GetCustomAttribute<ShellCommandParameterAttribute>();
             if (commandParameterAttribute != null)
             {
-                LogCheckingParameterNameLocalization(this.logger, type.FullName, propertyInfo.Name);
+                LogCheckingParameterNameLocalization(
+                    this.logger,
+                    type.FullName ?? string.Empty,
+                    propertyInfo.Name);
                 _ = commandParameterAttribute.GetName(this.stringLocalizer);
 
                 properties.Add(
@@ -96,6 +107,7 @@ public partial class ShellCommandEngine : IShellCommandEngine
     }
 
 #pragma warning disable MA0051 // Method is too long
+
     public async Task RunAsync()
 #pragma warning restore MA0051 // Method is too long
     {
@@ -222,11 +234,11 @@ public partial class ShellCommandEngine : IShellCommandEngine
         EventId = 5833260,
         Level = LogLevel.Trace,
         Message = "Parameter '{ParameterLocalizedName}' has value '{ParameterValue}'")]
-    private static partial void LogParameterNameAndValue(ILogger logger, string parameterLocalizedName, object parameterValue);
+    private static partial void LogParameterNameAndValue(ILogger logger, string parameterLocalizedName, object? parameterValue);
 
     private static string NormalizeCommandName(string command)
     {
-        if (command != null)
+        if (command is not null)
         {
             var additionalSeparators = new[] { "-", "_" };
 
@@ -237,7 +249,7 @@ public partial class ShellCommandEngine : IShellCommandEngine
             return string.Join(' ', normalizedParts);
         }
 
-        return command;
+        return string.Empty;
     }
 
     private void PrintError(Exception exception)
@@ -253,7 +265,8 @@ public partial class ShellCommandEngine : IShellCommandEngine
         LogGenericException(this.logger, exception, builtMessage);
     }
 
-    private object ReadCommandParameter(Tuple<ShellCommandParameterAttribute, PropertyInfo> property)
+    private object? ReadCommandParameter(
+        Tuple<ShellCommandParameterAttribute, PropertyInfo> property)
     {
         if (property.Item2.PropertyType == typeof(SecureString))
         {
@@ -285,7 +298,12 @@ public partial class ShellCommandEngine : IShellCommandEngine
 
         if (typeToConvert.IsGenericType && typeToConvert.GetGenericTypeDefinition() == typeof(Nullable<>))
         {
-            typeToConvert = Nullable.GetUnderlyingType(typeToConvert);
+            var underlyingType = Nullable.GetUnderlyingType(typeToConvert);
+
+            if (underlyingType is not null)
+            {
+                typeToConvert = underlyingType;
+            }
         }
 
         return Convert.ChangeType(stringParameter, typeToConvert, CultureInfo.CurrentCulture);
@@ -301,9 +319,9 @@ public partial class ShellCommandEngine : IShellCommandEngine
 #pragma warning disable CA1031 // Do not catch general exception types
             try
             {
-                var commandContextStore =
-                    commandScope.ServiceProvider.GetRequiredService<IShellCommandContext>() as
-                        IShellCommandContextStore;
+                var commandContextStore = (IShellCommandContextStore)
+                    commandScope.ServiceProvider
+                    .GetRequiredService<IShellCommandContext>();
 
                 commandContextStore.SetCommandName(commandName);
 
@@ -332,21 +350,24 @@ public partial class ShellCommandEngine : IShellCommandEngine
 
                 var command = obj as IShellCommand;
 
-                try
+                if (command is not null)
                 {
-                    using (var cancellationTokenSource = new CancellationTokenSource())
-                    using (this.consoleService.RegisterCancellation(cancellationTokenSource))
+                    try
                     {
-                        await command.ExecuteAsync(cancellationTokenSource.Token).ConfigureAwait(false);
+                        using (var cancellationTokenSource = new CancellationTokenSource())
+                        using (this.consoleService.RegisterCancellation(cancellationTokenSource))
+                        {
+                            await command.ExecuteAsync(cancellationTokenSource.Token).ConfigureAwait(false);
+                        }
                     }
-                }
-                catch (ShellCommandSuspendedException ex)
-                {
-                    this.PrintError(ex);
-                }
-                catch (Exception ex)
-                {
-                    this.PrintError(ex);
+                    catch (ShellCommandSuspendedException ex)
+                    {
+                        this.PrintError(ex);
+                    }
+                    catch (Exception ex)
+                    {
+                        this.PrintError(ex);
+                    }
                 }
             }
             catch (Exception ex)
@@ -368,7 +389,7 @@ public partial class ShellCommandEngine : IShellCommandEngine
         }
         catch (Exception ex)
         {
-            LogFailedToAddType(this.logger, ex, type.FullName);
+            LogFailedToAddType(this.logger, ex, type.FullName ?? string.Empty);
             return false;
         }
 #pragma warning restore CA1031 // Do not catch general exception types

@@ -11,6 +11,6 @@ public static class RegionLocalizationParameters
     /// Gets Default Culture Name
     /// </summary>
     /// <returns>Default Culture Name</returns>
-    public static string GetDefaultCultureName() =>
+    public static string? GetDefaultCultureName() =>
         typeof(RegionLocalizationParameters).GetTypeInfo().Assembly.GetName().CultureName;
 }

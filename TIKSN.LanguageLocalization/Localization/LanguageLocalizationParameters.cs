@@ -11,6 +11,6 @@ public static class LanguageLocalizationParameters
     /// Gets Default Culture Name
     /// </summary>
     /// <returns>Default Culture Name</returns>
-    public static string GetDefaultCultureName() =>
+    public static string? GetDefaultCultureName() =>
         typeof(LanguageLocalizationParameters).GetTypeInfo().Assembly.GetName().CultureName;
 }

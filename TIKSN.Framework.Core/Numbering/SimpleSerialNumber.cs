@@ -27,7 +27,7 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
 
     public static bool operator ==(SimpleSerialNumber<TSerial, TNumber> left, SimpleSerialNumber<TSerial, TNumber> right) => Equals(left, right);
 
-    public static SimpleSerialNumber<TSerial, TNumber> Parse(string s, IFormatProvider provider)
+    public static SimpleSerialNumber<TSerial, TNumber> Parse(string s, IFormatProvider? provider)
     {
         if (TryParse(s, provider, out var result))
         {
@@ -37,10 +37,10 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
         throw new FormatException("Input string was not in a correct format.");
     }
 
-    public static SimpleSerialNumber<TSerial, TNumber> Parse(ReadOnlySpan<char> s, IFormatProvider provider)
+    public static SimpleSerialNumber<TSerial, TNumber> Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
         => Parse(s.ToString(), provider);
 
-    public static Option<SimpleSerialNumber<TSerial, TNumber>> Parse(string s, bool asciiOnly, IFormatProvider provider)
+    public static Option<SimpleSerialNumber<TSerial, TNumber>> Parse(string s, bool asciiOnly, IFormatProvider? provider)
     {
         if (string.IsNullOrEmpty(s))
         {
@@ -87,20 +87,26 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
         return result.ToOption();
     }
 
-    public static Option<SimpleSerialNumber<TSerial, TNumber>> Parse(ReadOnlySpan<char> s, bool asciiOnly, IFormatProvider provider)
+    public static Option<SimpleSerialNumber<TSerial, TNumber>> Parse(ReadOnlySpan<char> s, bool asciiOnly, IFormatProvider? provider)
         => Parse(s.ToString(), asciiOnly, provider);
 
-    public static bool TryParse(string s, IFormatProvider provider, out SimpleSerialNumber<TSerial, TNumber> result)
+    public static bool TryParse(string? s, IFormatProvider? provider, out SimpleSerialNumber<TSerial, TNumber> result)
     {
+        if (s is null)
+        {
+            result = default!;
+            return false;
+        }
+
         var serialNumber = Parse(s, asciiOnly: false, provider);
-        result = serialNumber.MatchUnsafe(x => x, () => default);
+        result = serialNumber.MatchUnsafe(x => x, () => default)!;
         return serialNumber.IsSome;
     }
 
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out SimpleSerialNumber<TSerial, TNumber> result)
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out SimpleSerialNumber<TSerial, TNumber> result)
         => TryParse(s.ToString(), provider, out result);
 
-    public bool Equals(SimpleSerialNumber<TSerial, TNumber> other)
+    public bool Equals(SimpleSerialNumber<TSerial, TNumber>? other)
     {
         if (other is null)
         {
@@ -115,7 +121,7 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
         return EqualityComparer<TSerial>.Default.Equals(this.Serial, other.Serial) && EqualityComparer<TNumber>.Default.Equals(this.Number, other.Number);
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
         => ReferenceEquals(this, obj) || (obj is SimpleSerialNumber<TSerial, TNumber> other && this.Equals(other));
 
     public override int GetHashCode() => HashCode.Combine(this.Serial, this.Number);
@@ -144,14 +150,14 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
     public override string ToString()
         => this.ToString(format: null, CultureInfo.InvariantCulture);
 
-    public string ToString(string format, IFormatProvider formatProvider)
+    public string ToString(string? format, IFormatProvider? formatProvider)
         => $"{this.Serial.ToString(format: null, formatProvider)}-{this.Number.ToString(format: null, formatProvider)}";
 
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,
         ReadOnlySpan<char> format,
-        IFormatProvider provider)
+        IFormatProvider? provider)
     {
         var result = this.ToString(format: null, provider);
         charsWritten = Math.Min(result.Length, destination.Length);

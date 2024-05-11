@@ -27,7 +27,7 @@ public class PowerShellLogger : ILogger, IDisposable
         this.currentCommandProvider = currentCommandProvider;
     }
 
-    public IDisposable BeginScope<TState>(TState state)
+    public IDisposable BeginScope<TState>(TState state) where TState : notnull
     {
         this.scopes.Push(state);
         return this.scopeDisposable;
@@ -45,8 +45,8 @@ public class PowerShellLogger : ILogger, IDisposable
         LogLevel logLevel,
         EventId eventId,
         TState state,
-        Exception exception,
-        Func<TState, Exception, string> formatter)
+        Exception? exception,
+        Func<TState, Exception?, string> formatter)
     {
         if (!this.IsEnabled(logLevel))
         {
@@ -90,7 +90,7 @@ public class PowerShellLogger : ILogger, IDisposable
         LogLevel logLevel,
         EventId eventId,
         string message,
-        Exception exception)
+        Exception? exception)
 #pragma warning restore MA0051 // Method is too long
     {
         var logBuilder = new StringBuilder();

@@ -11,11 +11,13 @@ public abstract class NetworkConnectivityServiceBase : INetworkConnectivityServi
     protected NetworkConnectivityServiceBase() => this.manualChecks = new Subject<InternetConnectivityState>();
 
     public IObservable<InternetConnectivityState> InternetConnectivityChanged =>
-        this.InternalInternetConnectivityState
-            .Merge(this.manualChecks)
+        (this.InternalInternetConnectivityState is null
+        ? this.manualChecks
+        : this.InternalInternetConnectivityState
+            .Merge(this.manualChecks))
             .DistinctUntilChanged();
 
-    protected IObservable<InternetConnectivityState> InternalInternetConnectivityState { get; set; }
+    protected IObservable<InternetConnectivityState>? InternalInternetConnectivityState { get; set; }
 
     public void Dispose()
     {

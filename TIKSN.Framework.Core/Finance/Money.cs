@@ -106,7 +106,7 @@ public sealed class Money : IEquatable<Money>, IComparable<Money>, IFormattable,
         return new(left.Currency, left.Amount / right);
     }
 
-    public static bool Equals(Money first, Money second)
+    public static bool Equals(Money? first, Money? second)
     {
         if ((first is null) && (second is null))
         {
@@ -364,9 +364,9 @@ public sealed class Money : IEquatable<Money>, IComparable<Money>, IFormattable,
         return new(left.Currency, left.Amount - right.Amount);
     }
 
-    public int CompareTo(Money other)
+    public int CompareTo(Money? other)
     {
-        if (other == null)
+        if (other is null)
         {
             return 1;
         }
@@ -381,7 +381,7 @@ public sealed class Money : IEquatable<Money>, IComparable<Money>, IFormattable,
         return this.Amount.CompareTo(other.Amount);
     }
 
-    public int CompareTo(object obj)
+    public int CompareTo(object? obj)
     {
         if (obj == null)
         {
@@ -396,9 +396,9 @@ public sealed class Money : IEquatable<Money>, IComparable<Money>, IFormattable,
         throw new ArgumentException("", nameof(obj));
     }
 
-    public bool Equals(Money other) => Equals(this, other);
+    public bool Equals(Money? other) => Equals(this, other);
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (ReferenceEquals(this, obj))
         {
@@ -417,7 +417,7 @@ public sealed class Money : IEquatable<Money>, IComparable<Money>, IFormattable,
 
     public override int GetHashCode() => HashCode.Combine(this.Currency, this.Amount);
 
-    public string ToString(string format, IFormatProvider formatProvider)
+    public string ToString(string? format, IFormatProvider? formatProvider)
     {
         var nfi = (NumberFormatInfo)NumberFormatInfo.GetInstance(formatProvider).Clone();
 

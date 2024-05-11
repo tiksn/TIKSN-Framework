@@ -9,6 +9,8 @@ public interface IRestRepository<TEntity, TIdentity> where TEntity : IEntity<TId
 
     Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken);
 
+    Task<TEntity?> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken);
+
     Task RemoveAsync(TEntity entity, CancellationToken cancellationToken);
 
     Task UpdateAsync(TEntity entity, CancellationToken cancellationToken);

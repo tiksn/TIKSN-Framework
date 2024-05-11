@@ -13,7 +13,7 @@ public class RestRepositoryOptions<T>
         this.AcceptLanguages = new Dictionary<double, string>();
     }
 
-    public string EndpointKey { get; set; }
+    public string? EndpointKey { get; set; }
 
     public string MediaType { get; set; }
 
@@ -21,7 +21,7 @@ public class RestRepositoryOptions<T>
 
     public IDictionary<double, string> AcceptLanguages { get; }
 
-    public string ResourceTemplate { get; set; }
+    public string? ResourceTemplate { get; set; }
 
     public Encoding Encoding { get; set; }
 }

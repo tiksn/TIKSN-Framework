@@ -20,7 +20,7 @@ public class CuidCorrelationService : ICorrelationService
     private readonly Random random;
     private readonly TimeProvider timeProvider;
     private int counter;
-    private string hostname;
+    private string? hostname;
 
     public CuidCorrelationService(TimeProvider timeProvider, Random random)
     {

@@ -30,11 +30,13 @@ public class RestRequester : IRestRequester
 
 #pragma warning disable MA0051 // Method is too long
 
-    public async Task<TResult> RequestAsync<TResult, TRequest>(
+    public async Task<TResult?> RequestAsync<TResult, TRequest>(
         TRequest request,
         CancellationToken cancellationToken)
 #pragma warning restore MA0051 // Method is too long
     {
+        ArgumentNullException.ThrowIfNull(request);
+
         var requestType = request.GetType().GetTypeInfo();
 
         var restEndpointAttribute = requestType.GetCustomAttribute<RestEndpointAttribute>() ?? throw new NotSupportedException("Requested Type has to have RestEndpointAttribute.");
@@ -48,8 +50,8 @@ public class RestRequester : IRestRequester
             new MediaTypeWithQualityHeaderValue(restEndpointAttribute.MediaType));
 
         var hasContent = false;
-        object requestContent = null;
-        string requestContentMediaType = null;
+        object? requestContent = null;
+        string? requestContentMediaType = null;
 
         foreach (var property in requestType.DeclaredProperties)
         {
@@ -58,10 +60,13 @@ public class RestRequester : IRestRequester
 
             if (acceptLanguageAttribute != null)
             {
-                var propertyValue = (CultureInfo)property.GetValue(request);
-                httpClient.DefaultRequestHeaders.AcceptLanguage.Add(acceptLanguageAttribute.Quality.HasValue
-                    ? new StringWithQualityHeaderValue(propertyValue.Name, acceptLanguageAttribute.Quality.Value)
-                    : new StringWithQualityHeaderValue(propertyValue.Name));
+                var propertyValue = (CultureInfo?)property.GetValue(request);
+                if (propertyValue is not null)
+                {
+                    httpClient.DefaultRequestHeaders.AcceptLanguage.Add(acceptLanguageAttribute.Quality.HasValue
+                        ? new StringWithQualityHeaderValue(propertyValue.Name, acceptLanguageAttribute.Quality.Value)
+                        : new StringWithQualityHeaderValue(propertyValue.Name));
+                }
             }
 
             if (restContentAttribute != null)
@@ -83,7 +88,7 @@ public class RestRequester : IRestRequester
 
                 if (propertyValue != null)
                 {
-                    string propertyStringValue;
+                    string? propertyStringValue;
 
                     if (property.PropertyType == typeof(DateTimeOffset))
                     {
@@ -94,7 +99,7 @@ public class RestRequester : IRestRequester
                         propertyStringValue = propertyValue.ToString();
                     }
 
-                    parameter = propertyStringValue;
+                    parameter = propertyStringValue ?? string.Empty;
                 }
 
                 resourceLocation = ReplaceParameterValueInLocation(resourceLocation, property.Name, parameter);
@@ -112,23 +117,34 @@ public class RestRequester : IRestRequester
         string parameterName,
         string parameterValue)
     {
-        _ = parameterValue ?? string.Empty;
+        parameterValue ??= string.Empty;
         var escapedParameterValue = Uri.EscapeDataString(parameterValue);
 
         return resourceLocation.Replace($"{{{parameterName}}}", escapedParameterValue, StringComparison.Ordinal);
     }
 
-    private StringContent GetContent(object requestContent, string requestContentMediaType) => new(
-        this.serializerRestFactory.Create(requestContentMediaType).Serialize(requestContent), Encoding.UTF8,
-        requestContentMediaType);
+    private StringContent? GetContent(object? requestContent, string? requestContentMediaType)
+    {
+        if (requestContent is not null && requestContentMediaType is not null)
+        {
+            return new(
+            this.serializerRestFactory.Create(requestContentMediaType).Serialize(requestContent), Encoding.UTF8,
+            requestContentMediaType);
+        }
+
+        return null;
+    }
 
     private async Task<HttpResponseMessage> MakePostRequestAsync(
         HttpClient httpClient,
         Uri requestUrl,
-        object requestContent,
-        string requestContentMediaType,
+        object? requestContent,
+        string? requestContentMediaType,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(httpClient);
+        ArgumentNullException.ThrowIfNull(requestUrl);
+
         using var content = this.GetContent(requestContent, requestContentMediaType);
         return await httpClient.PostAsync(requestUrl, content, cancellationToken).ConfigureAwait(false);
     }
@@ -136,20 +152,23 @@ public class RestRequester : IRestRequester
     private async Task<HttpResponseMessage> MakePutRequestAsync(
         HttpClient httpClient,
         Uri requestUrl,
-        object requestContent,
-        string requestContentMediaType,
+        object? requestContent,
+        string? requestContentMediaType,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(httpClient);
+        ArgumentNullException.ThrowIfNull(requestUrl);
+
         using var content = this.GetContent(requestContent, requestContentMediaType);
         return await httpClient.PutAsync(requestUrl, content, cancellationToken).ConfigureAwait(false);
     }
 
-    private async Task<TResult> MakeRequestAsync<TResult>(
+    private async Task<TResult?> MakeRequestAsync<TResult>(
         HttpClient httpClient,
         RestVerb verb,
         Uri requestUrl,
-        object requestContent,
-        string requestContentMediaType,
+        object? requestContent,
+        string? requestContentMediaType,
         string responseContentMediaType,
         CancellationToken cancellationToken)
     {
@@ -164,7 +183,7 @@ public class RestRequester : IRestRequester
         return await this.ParseResponseAsync<TResult>(response, responseContentMediaType).ConfigureAwait(false);
     }
 
-    private async Task<TResult> ParseResponseAsync<TResult>(
+    private async Task<TResult?> ParseResponseAsync<TResult>(
         HttpResponseMessage response,
         string responseContentMediaType)
     {
@@ -172,7 +191,7 @@ public class RestRequester : IRestRequester
 
         var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-        if (content != null)
+        if (content is not null)
         {
             result = this.deserializerRestFactory.Create(responseContentMediaType).Deserialize<TResult>(content);
         }

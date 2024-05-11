@@ -29,7 +29,7 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
 
     public static bool operator ==(CurrencyInfo first, CurrencyInfo second) => Equals(first, second);
 
-    public bool Equals(CurrencyInfo other)
+    public bool Equals(CurrencyInfo? other)
     {
         if (other is null)
         {
@@ -39,7 +39,7 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
         return string.CompareOrdinal(this.ISOCurrencySymbol, other.ISOCurrencySymbol) == 0;
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (ReferenceEquals(this, obj))
         {
@@ -83,7 +83,7 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
         return first.Equals(second);
     }
 
-    private void InitializeCurrency(string isoSymbol, string symbol)
+    private void InitializeCurrency(string isoSymbol, string? symbol)
     {
         if (!this.TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA1.xml", isoSymbol, symbol, lookingForCurrent: true,
             "CcyTbl", "CcyNtry") && !this.TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA3.xml", isoSymbol, symbol, lookingForCurrent: false,
@@ -93,7 +93,7 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
         }
     }
 
-    private bool TryExtractCurrencyInformation(string tableResource, string isoSymbol, string symbol,
+    private bool TryExtractCurrencyInformation(string tableResource, string isoSymbol, string? symbol,
         bool lookingForCurrent, string tableElementName, string entityElementName)
     {
         using var stream = this.GetType().GetTypeInfo().Assembly.GetManifestResourceStream(tableResource);
