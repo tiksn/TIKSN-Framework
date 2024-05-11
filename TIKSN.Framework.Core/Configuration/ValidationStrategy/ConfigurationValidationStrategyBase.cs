@@ -16,5 +16,5 @@ public abstract class ConfigurationValidationStrategyBase<T> : IConfigurationVal
         validator?.ValidateConfiguration(instance);
     }
 
-    protected abstract IPartialConfigurationValidator<T> GetConfigurationValidator();
+    protected abstract IPartialConfigurationValidator<T>? GetConfigurationValidator();
 }
