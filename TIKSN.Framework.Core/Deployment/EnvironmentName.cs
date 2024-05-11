@@ -63,7 +63,7 @@ public sealed class EnvironmentName : ISpanFormattable, IEquatable<EnvironmentNa
     public override string ToString()
         => this.ToString(string.Empty, formatProvider: null);
 
-    public string ToString(string format, IFormatProvider formatProvider)
+    public string ToString(string? format, IFormatProvider? formatProvider)
     {
         var culture = formatProvider as CultureInfo ?? CultureInfo.InvariantCulture;
 
@@ -72,7 +72,7 @@ public sealed class EnvironmentName : ISpanFormattable, IEquatable<EnvironmentNa
         return string.Join(SeparatorCharacters[0], properCaseSegments);
 
         static Seq<string> GetProperCaseSegments(
-            Seq<string> segments, string format, CultureInfo culture) => format switch
+            Seq<string> segments, string? format, CultureInfo culture) => format switch
             {
                 "U" or "u" => segments.Map(culture.TextInfo.ToUpper),
                 "L" or "l" => segments.Map(culture.TextInfo.ToLower),
@@ -85,7 +85,7 @@ public sealed class EnvironmentName : ISpanFormattable, IEquatable<EnvironmentNa
         Span<char> destination,
         out int charsWritten,
         ReadOnlySpan<char> format,
-        IFormatProvider provider)
+        IFormatProvider? provider)
     {
         var result = this.ToString(new string(format), provider);
         charsWritten = Math.Min(result.Length, destination.Length);
@@ -97,7 +97,7 @@ public sealed class EnvironmentName : ISpanFormattable, IEquatable<EnvironmentNa
 
     #region Equality
 
-    public bool Equals(EnvironmentName other)
+    public bool Equals(EnvironmentName? other)
     {
         if (other is null)
         {
@@ -115,7 +115,7 @@ public sealed class EnvironmentName : ISpanFormattable, IEquatable<EnvironmentNa
             StringComparer.InvariantCultureIgnoreCase);
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
         => ReferenceEquals(this, obj) || (obj is EnvironmentName other && this.Equals(other));
 
     public override int GetHashCode() => this.segments.GetHashCode();
