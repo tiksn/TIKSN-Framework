@@ -10,11 +10,11 @@ public abstract class EntityUnitOfWorkFactoryBase : IUnitOfWorkFactory
     protected EntityUnitOfWorkFactoryBase(IServiceProvider serviceProvider) =>
         this.serviceProvider = serviceProvider;
 
-    public async Task<IUnitOfWork> CreateAsync(CancellationToken cancellationToken)
+    public Task<IUnitOfWork> CreateAsync(CancellationToken cancellationToken)
     {
         var dbContexts = this.GetContexts();
 
-        return new EntityUnitOfWork(dbContexts, this.serviceProvider);
+        return Task.FromResult<IUnitOfWork>(new EntityUnitOfWork(dbContexts, this.serviceProvider));
     }
 
     protected TContext GetContext<TContext>() where TContext : DbContext =>
