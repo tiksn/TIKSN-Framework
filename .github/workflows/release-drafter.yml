@@ -12,6 +12,8 @@ on:
       - synchronize
   workflow_dispatch:
 
+permissions: read-all
+
 jobs:
   update_release_draft:
     permissions:
