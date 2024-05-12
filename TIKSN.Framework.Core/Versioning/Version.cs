@@ -618,8 +618,8 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
         if (obj is System.Version systemVersion)
         {
             return this.Release.CompareTo(systemVersion) == 0 &&
-                   this.Milestone == DefaultMilestone &&
-                   this.preReleaseNumber == DefaultPreReleaseNumber;
+                this.Milestone == DefaultMilestone &&
+                this.preReleaseNumber == DefaultPreReleaseNumber;
         }
 
         return false;
