@@ -362,6 +362,22 @@ Task FormatWhitespace Restore, {
 Task DownloadCurrencyCodes Clean, {
     Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml' -OutFile 'TIKSN.Framework.Core/Finance/Resources/TableA1.xml'
     Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-three.xml' -OutFile 'TIKSN.Framework.Core/Finance/Resources/TableA3.xml'
+
+    @(
+        'TIKSN.Framework.Core/Finance/Resources/TableA1.xml',
+        'TIKSN.Framework.Core/Finance/Resources/TableA3.xml'
+    ) | ForEach-Object {
+        $content = Get-Content -Path $_ -Raw
+        $xml = [xml]$content
+        $stringWriter = New-Object System.IO.StringWriter
+        $xmlWriter = New-Object System.Xml.XmlTextWriter $stringWriter
+        $xmlWriter.Formatting = 'Indented'
+        $xmlWriter.Indentation = 4
+        $xml.WriteContentTo($xmlWriter)
+        $xmlWriter.Flush()
+        $stringWriter.Flush()
+        Set-Content -Path $_ -Value ($stringWriter.ToString())
+    }
 }
 
 # Synopsis: Scan with DevSkim for security issues
