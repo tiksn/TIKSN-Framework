@@ -8,8 +8,8 @@ public class MapperIdentityGenerator<TSource, TDestination> : IIdentityGenerator
     private readonly IMapper<TSource, TDestination> mapper;
 
     public MapperIdentityGenerator(
-      IMapper<TSource, TDestination> mapper,
-      IIdentityGenerator<TSource> identityGenerator)
+        IMapper<TSource, TDestination> mapper,
+        IIdentityGenerator<TSource> identityGenerator)
     {
         this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         this.identityGenerator = identityGenerator ?? throw new ArgumentNullException(nameof(identityGenerator));
