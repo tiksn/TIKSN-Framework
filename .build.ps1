@@ -47,15 +47,15 @@ Task Publish Pack, ValidateVersion, {
 # Synopsis: Validate Next Version
 Task ValidateVersion EstimateVersion, {
     $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
-    $nextVersion = [System.Management.Automation.SemanticVersion]::Parse($state.NextVersion.ToString())
+    $nextVersion = [System.Management.Automation.SemanticVersion]::New($state.NextVersion.Major, $state.NextVersion.Minor, $state.NextVersion.Patch, $state.NextVersion.PreReleaseLabel)
 
     $gitTags = git tag
     $gitTagVersions = $gitTags | ForEach-Object { [System.Management.Automation.SemanticVersion]::Parse($_) }
     $gitTagVersions = $gitTagVersions | Sort-Object -Descending
     $latestTagVersion = $gitTagVersions | Select-Object -First 1
 
-    if ($nextVersion -le $latestTagVersion) {
-        throw "Next Release version '$nextVersion' should be greater than latest tag version '$latestTagVersion'"
+    if ($nextVersion -lt $latestTagVersion) {
+        throw "Next Release version '$nextVersion' should be greater than or equal to latest tag version '$latestTagVersion'"
     }
 }
 
