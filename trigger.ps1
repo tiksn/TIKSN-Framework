@@ -1,4 +1,5 @@
 [CmdletBinding()]
+[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingCmdletAliases', '', Justification = 'It will not work without the aliases.')]
 param (
     [Parameter()]
     [string]
