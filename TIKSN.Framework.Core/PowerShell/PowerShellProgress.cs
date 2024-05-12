@@ -20,8 +20,8 @@ public class PowerShellProgress : Progress<OperationProgressReport>, IDisposable
 
         this.stopwatch = Stopwatch.StartNew();
         this.progressRecord.RecordType = ProgressRecordType.Processing;
-        this.currentCommandProvider = currentCommandProvider ??
-                                       throw new ArgumentNullException(nameof(currentCommandProvider));
+        this.currentCommandProvider = currentCommandProvider
+            ?? throw new ArgumentNullException(nameof(currentCommandProvider));
         this.currentCommandProvider.GetCurrentCommand().WriteProgress(this.progressRecord);
     }
 

@@ -60,7 +60,7 @@ public class CompositeWeightedProgress<T> : Progress<T> where T : ProgressReport
         var currentWeightedProgress = overallWeight == 0
             ? 0d
             : this.progresses.Sum(item => item.Weight * ((item.Status?.PercentComplete) ?? 0d)) /
-              overallWeight;
+                overallWeight;
 
         Debug.Assert(currentWeightedProgress >= 0d);
         Debug.Assert(currentWeightedProgress <= 100d);

@@ -19,6 +19,6 @@ public class UserBareEntityResolver<TEntity, TEntityIdentity, TUserIdentity>
         var entity = await this.queryRepository.GetAsync(id, cancellationToken).ConfigureAwait(false);
 
         return new UserEntity<TEntityIdentity, TUserIdentity>(
-          entity.ID, entity.UserID);
+            entity.ID, entity.UserID);
     }
 }

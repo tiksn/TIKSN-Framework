@@ -276,7 +276,7 @@ Task EstimateVersion Restore, {
 }
 
 # Synopsis: Format
-Task Format Restore, FormatWhitespace, FormatStyle, FormatAnalyzers
+Task Format Restore, FormatXmlFiles, FormatWhitespace, FormatStyle, FormatAnalyzers
 
 # Synopsis: Format Analyzers
 Task FormatAnalyzers Restore, FormatAnalyzersLanguageLocalization, FormatAnalyzersRegionLocalization, FormatAnalyzersCore, FormatAnalyzersMaui, FormatAnalyzersSolution
@@ -356,6 +356,23 @@ Task FormatStyleMaui Restore, {
 Task FormatWhitespace Restore, {
     $solution = Resolve-Path -Path 'TIKSN Framework.sln'
     Exec { dotnet format whitespace --verbosity diagnostic $solution }
+}
+
+# Synopsis: Format XML Files
+Task FormatXmlFiles Clean, {
+    Get-ChildItem -Include *.xml, *.resx, *.xlf -Recurse
+    | ForEach-Object {
+        $content = Get-Content -Path $_ -Raw
+        $xml = [xml]$content
+        $stringWriter = New-Object System.IO.StringWriter
+        $xmlWriter = New-Object System.Xml.XmlTextWriter $stringWriter
+        $xmlWriter.Formatting = 'Indented'
+        $xmlWriter.Indentation = 4
+        $xml.WriteContentTo($xmlWriter)
+        $xmlWriter.Flush()
+        $stringWriter.Flush()
+        Set-Content -Path $_ -Value ($stringWriter.ToString())
+    }
 }
 
 # Synopsis: Download Currency Codes

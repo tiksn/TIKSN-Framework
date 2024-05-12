@@ -1,540 +1,540 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <data name="931254976" xml:space="preserve">
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="931254976" xml:space="preserve">
     <value>Реклама</value>
   </data>
-  <data name="365281568" xml:space="preserve">
+    <data name="365281568" xml:space="preserve">
     <value>Об этом приложении</value>
   </data>
-  <data name="445651597" xml:space="preserve">
+    <data name="445651597" xml:space="preserve">
     <value>Темная</value>
   </data>
-  <data name="599209173" xml:space="preserve">
+    <data name="599209173" xml:space="preserve">
     <value>Параметры</value>
   </data>
-  <data name="706106182" xml:space="preserve">
+    <data name="706106182" xml:space="preserve">
     <value>Конфиденциальность и условия использования</value>
   </data>
-  <data name="846795929" xml:space="preserve">
+    <data name="846795929" xml:space="preserve">
     <value>Светлая</value>
   </data>
-  <data name="971869905" xml:space="preserve">
+    <data name="971869905" xml:space="preserve">
     <value>Тема</value>
   </data>
-  <data name="179741382" xml:space="preserve">
+    <data name="179741382" xml:space="preserve">
     <value>Язык</value>
   </data>
-  <data name="239441347" xml:space="preserve">
+    <data name="239441347" xml:space="preserve">
     <value>Доступно на {0} языках</value>
   </data>
-  <data name="102475419" xml:space="preserve">
+    <data name="102475419" xml:space="preserve">
     <value>{0} языки</value>
   </data>
-  <data name="269773285" xml:space="preserve">
+    <data name="269773285" xml:space="preserve">
     <value>Поддержание {0} за месяц</value>
   </data>
-  <data name="870549797" xml:space="preserve">
+    <data name="870549797" xml:space="preserve">
     <value>Более {0} страниц</value>
   </data>
-  <data name="121714030" xml:space="preserve">
+    <data name="121714030" xml:space="preserve">
     <value>Версия {0}</value>
   </data>
-  <data name="523855489" xml:space="preserve">
+    <data name="523855489" xml:space="preserve">
     <value>Искусствожизни</value>
   </data>
-  <data name="359138423" xml:space="preserve">
+    <data name="359138423" xml:space="preserve">
     <value>Контакты</value>
   </data>
-  <data name="311561578" xml:space="preserve">
+    <data name="311561578" xml:space="preserve">
     <value>Рабочий стол и сервер</value>
   </data>
-  <data name="795089363" xml:space="preserve">
+    <data name="795089363" xml:space="preserve">
     <value>Разработка классического приложения</value>
   </data>
-  <data name="148689082" xml:space="preserve">
+    <data name="148689082" xml:space="preserve">
     <value>Эл. Почта:</value>
   </data>
-  <data name="854735407" xml:space="preserve">
+    <data name="854735407" xml:space="preserve">
     <value>Имя:</value>
   </data>
-  <data name="349904862" xml:space="preserve">
+    <data name="349904862" xml:space="preserve">
     <value>Фамилия:</value>
   </data>
-  <data name="408289614" xml:space="preserve">
+    <data name="408289614" xml:space="preserve">
     <value>Сообщение:</value>
   </data>
-  <data name="649290117" xml:space="preserve">
+    <data name="649290117" xml:space="preserve">
     <value>Мобильный и планшет</value>
   </data>
-  <data name="762797472" xml:space="preserve">
+    <data name="762797472" xml:space="preserve">
     <value>Продукты</value>
   </data>
-  <data name="733244108" xml:space="preserve">
+    <data name="733244108" xml:space="preserve">
     <value>Поисковая оптимизация</value>
   </data>
-  <data name="520543650" xml:space="preserve">
+    <data name="520543650" xml:space="preserve">
     <value>Разработка сервис-ориентированного приложения</value>
   </data>
-  <data name="330429385" xml:space="preserve">
+    <data name="330429385" xml:space="preserve">
     <value>Сервисы</value>
   </data>
-  <data name="774579166" xml:space="preserve">
+    <data name="774579166" xml:space="preserve">
     <value>Новейшие и Наилучшие Технологии </value>
   </data>
-  <data name="635603959" xml:space="preserve">
+    <data name="635603959" xml:space="preserve">
     <value>СТОЗ</value>
   </data>
-  <data name="989199644" xml:space="preserve">
+    <data name="989199644" xml:space="preserve">
     <value>TIKSN</value>
   </data>
-  <data name="623577100" xml:space="preserve">
+    <data name="623577100" xml:space="preserve">
     <value>TIKSN Framework</value>
   </data>
-  <data name="950501550" xml:space="preserve">
+    <data name="950501550" xml:space="preserve">
     <value>Веб</value>
   </data>
-  <data name="902123282" xml:space="preserve">
+    <data name="902123282" xml:space="preserve">
     <value>Веб ИПП разработка</value>
   </data>
-  <data name="899831985" xml:space="preserve">
+    <data name="899831985" xml:space="preserve">
     <value>Разработка веб приложений</value>
   </data>
-  <data name="706410578" xml:space="preserve">
+    <data name="706410578" xml:space="preserve">
     <value>Разработка веб сайта</value>
   </data>
-  <data name="626508219" xml:space="preserve">
+    <data name="626508219" xml:space="preserve">
     <value>Разработка приложений Windows Phone</value>
   </data>
-  <data name="237037289" xml:space="preserve">
+    <data name="237037289" xml:space="preserve">
     <value>Разработка службы Windows</value>
   </data>
-  <data name="997898627" xml:space="preserve">
+    <data name="997898627" xml:space="preserve">
     <value>Разработка Windows Store приложения</value>
   </data>
-  <data name="577995861" xml:space="preserve">
+    <data name="577995861" xml:space="preserve">
     <value>Все права защищены</value>
   </data>
-  <data name="660079096" xml:space="preserve">
+    <data name="660079096" xml:space="preserve">
     <value>Дополнительно</value>
   </data>
-  <data name="378313905" xml:space="preserve">
+    <data name="378313905" xml:space="preserve">
     <value>Армянский</value>
   </data>
-  <data name="383838876" xml:space="preserve">
+    <data name="383838876" xml:space="preserve">
     <value>Доступен на одном языке.</value>
   </data>
-  <data name="627036953" xml:space="preserve">
+    <data name="627036953" xml:space="preserve">
     <value>Связь</value>
   </data>
-  <data name="655862457" xml:space="preserve">
+    <data name="655862457" xml:space="preserve">
     <value>Классическое приложение</value>
   </data>
-  <data name="914899034" xml:space="preserve">
+    <data name="914899034" xml:space="preserve">
     <value>Английский</value>
   </data>
-  <data name="268545567" xml:space="preserve">
+    <data name="268545567" xml:space="preserve">
     <value>Программное обеспечение и услуги</value>
   </data>
-  <data name="507606425" xml:space="preserve">
+    <data name="507606425" xml:space="preserve">
     <value>Первый выпуск</value>
   </data>
-  <data name="156307418" xml:space="preserve">
+    <data name="156307418" xml:space="preserve">
     <value>Неправильный электронный адрес</value>
   </data>
-  <data name="874180444" xml:space="preserve">
+    <data name="874180444" xml:space="preserve">
     <value>Последний выпуск</value>
   </data>
-  <data name="573149082" xml:space="preserve">
+    <data name="573149082" xml:space="preserve">
     <value>Поддерживается</value>
   </data>
-  <data name="324264316" xml:space="preserve">
+    <data name="324264316" xml:space="preserve">
     <value>Нет</value>
   </data>
-  <data name="288886816" xml:space="preserve">
+    <data name="288886816" xml:space="preserve">
     <value>Обязательный</value>
   </data>
-  <data name="271231827" xml:space="preserve">
+    <data name="271231827" xml:space="preserve">
     <value>Русский</value>
   </data>
-  <data name="245098873" xml:space="preserve">
+    <data name="245098873" xml:space="preserve">
     <value>Область</value>
   </data>
-  <data name="992400356" xml:space="preserve">
+    <data name="992400356" xml:space="preserve">
     <value>Посмотри еще</value>
   </data>
-  <data name="475539585" xml:space="preserve">
+    <data name="475539585" xml:space="preserve">
     <value>Отправить</value>
   </data>
-  <data name="198239125" xml:space="preserve">
+    <data name="198239125" xml:space="preserve">
     <value>Сервис-ориентированное приложение</value>
   </data>
-  <data name="851949420" xml:space="preserve">
+    <data name="851949420" xml:space="preserve">
     <value>ПО библиотека</value>
   </data>
-  <data name="538968287" xml:space="preserve">
+    <data name="538968287" xml:space="preserve">
     <value>Посетить</value>
   </data>
-  <data name="737791768" xml:space="preserve">
+    <data name="737791768" xml:space="preserve">
     <value>Веб ИПП</value>
   </data>
-  <data name="976146344" xml:space="preserve">
+    <data name="976146344" xml:space="preserve">
     <value>Веб приложение</value>
   </data>
-  <data name="986035763" xml:space="preserve">
+    <data name="986035763" xml:space="preserve">
     <value>Веб сайт</value>
   </data>
-  <data name="627226462" xml:space="preserve">
+    <data name="627226462" xml:space="preserve">
     <value>Windows Phone приложение</value>
   </data>
-  <data name="578512547" xml:space="preserve">
+    <data name="578512547" xml:space="preserve">
     <value>Windows служба</value>
   </data>
-  <data name="543312789" xml:space="preserve">
+    <data name="543312789" xml:space="preserve">
     <value>Windows Store приложение</value>
   </data>
-  <data name="182422283" xml:space="preserve">
+    <data name="182422283" xml:space="preserve">
     <value>Да</value>
   </data>
-  <data name="754876063" xml:space="preserve">
+    <data name="754876063" xml:space="preserve">
     <value>Ваш Электронный Адрес</value>
   </data>
-  <data name="603429657" xml:space="preserve">
+    <data name="603429657" xml:space="preserve">
     <value>Ваше имя</value>
   </data>
-  <data name="785283399" xml:space="preserve">
+    <data name="785283399" xml:space="preserve">
     <value>Ваша фамилия</value>
   </data>
-  <data name="897347270" xml:space="preserve">
+    <data name="897347270" xml:space="preserve">
     <value>Расширенный</value>
   </data>
-  <data name="222101134" xml:space="preserve">
+    <data name="222101134" xml:space="preserve">
     <value>Этот план удобнее для среднего бизнеса.</value>
   </data>
-  <data name="313662951" xml:space="preserve">
+    <data name="313662951" xml:space="preserve">
     <value>Основной</value>
   </data>
-  <data name="317093501" xml:space="preserve">
+    <data name="317093501" xml:space="preserve">
     <value>Этот план удобнее для начинающего и малого бизнеса.</value>
   </data>
-  <data name="488609985" xml:space="preserve">
+    <data name="488609985" xml:space="preserve">
     <value>Основной ИП дизайн</value>
   </data>
-  <data name="576421501" xml:space="preserve">
+    <data name="576421501" xml:space="preserve">
     <value>Простой ИП дизайн</value>
   </data>
-  <data name="966065986" xml:space="preserve">
+    <data name="966065986" xml:space="preserve">
     <value>Клиентские приложения</value>
   </data>
-  <data name="781252660" xml:space="preserve">
+    <data name="781252660" xml:space="preserve">
     <value>Консультация</value>
   </data>
-  <data name="993427659" xml:space="preserve">
+    <data name="993427659" xml:space="preserve">
     <value>Индивидуальный заказ</value>
   </data>
-  <data name="847898437" xml:space="preserve">
+    <data name="847898437" xml:space="preserve">
     <value>Данные</value>
   </data>
-  <data name="564698540" xml:space="preserve">
+    <data name="564698540" xml:space="preserve">
     <value>Развертывание</value>
   </data>
-  <data name="112937225" xml:space="preserve">
+    <data name="112937225" xml:space="preserve">
     <value>Установка электронной почты для домена</value>
   </data>
-  <data name="274121967" xml:space="preserve">
+    <data name="274121967" xml:space="preserve">
     <value>Экономичный</value>
   </data>
-  <data name="900398722" xml:space="preserve">
+    <data name="900398722" xml:space="preserve">
     <value>Этот план удобнее для персональных веб сайтов.</value>
   </data>
-  <data name="162454876" xml:space="preserve">
+    <data name="162454876" xml:space="preserve">
     <value>Расширяемая локализация</value>
   </data>
-  <data name="764935327" xml:space="preserve">
+    <data name="764935327" xml:space="preserve">
     <value>Средний бизнес</value>
   </data>
-  <data name="434690284" xml:space="preserve">
+    <data name="434690284" xml:space="preserve">
     <value>Современный ИП дизайн</value>
   </data>
-  <data name="779269722" xml:space="preserve">
+    <data name="779269722" xml:space="preserve">
     <value>1 язык (не локализированный)</value>
   </data>
-  <data name="757024408" xml:space="preserve">
+    <data name="757024408" xml:space="preserve">
     <value>Заказать</value>
   </data>
-  <data name="907431629" xml:space="preserve">
+    <data name="907431629" xml:space="preserve">
     <value>Персональный</value>
   </data>
-  <data name="330870993" xml:space="preserve">
+    <data name="330870993" xml:space="preserve">
     <value>Малый бизнес</value>
   </data>
-  <data name="528269093" xml:space="preserve">
+    <data name="528269093" xml:space="preserve">
     <value>Технологии</value>
   </data>
-  <data name="385087868" xml:space="preserve">
+    <data name="385087868" xml:space="preserve">
     <value>Заказ разработки классического приложения</value>
   </data>
-  <data name="558930340" xml:space="preserve">
+    <data name="558930340" xml:space="preserve">
     <value>Поддерживание</value>
   </data>
-  <data name="840204093" xml:space="preserve">
+    <data name="840204093" xml:space="preserve">
     <value>Ежемесячно</value>
   </data>
-  <data name="683932751" xml:space="preserve">
+    <data name="683932751" xml:space="preserve">
     <value>Однократно</value>
   </data>
-  <data name="392278142" xml:space="preserve">
+    <data name="392278142" xml:space="preserve">
     <value>Заказ поисковой оптимизации</value>
   </data>
-  <data name="756612413" xml:space="preserve">
+    <data name="756612413" xml:space="preserve">
     <value>Сервис</value>
   </data>
-  <data name="148524406" xml:space="preserve">
+    <data name="148524406" xml:space="preserve">
     <value>Заказ разработки сервис-ориентированного приложения</value>
   </data>
-  <data name="212549668" xml:space="preserve">
+    <data name="212549668" xml:space="preserve">
     <value>Заказ веб ИПП разработки</value>
   </data>
-  <data name="832476750" xml:space="preserve">
+    <data name="832476750" xml:space="preserve">
     <value>Заказ разработки веб приложения</value>
   </data>
-  <data name="513669504" xml:space="preserve">
+    <data name="513669504" xml:space="preserve">
     <value>Заказ разработки веб сайта</value>
   </data>
-  <data name="904176767" xml:space="preserve">
+    <data name="904176767" xml:space="preserve">
     <value>Заказ разработки приложений Windows Phone</value>
   </data>
-  <data name="371024018" xml:space="preserve">
+    <data name="371024018" xml:space="preserve">
     <value>Заказ разработки службы Windows</value>
   </data>
-  <data name="976833174" xml:space="preserve">
+    <data name="976833174" xml:space="preserve">
     <value>Заказ разработки Windows Store приложения</value>
   </data>
-  <data name="451047948" xml:space="preserve">
+    <data name="451047948" xml:space="preserve">
     <value>Закрытый код</value>
   </data>
-  <data name="110601364" xml:space="preserve">
+    <data name="110601364" xml:space="preserve">
     <value>Актуальное</value>
   </data>
-  <data name="971793314" xml:space="preserve">
+    <data name="971793314" xml:space="preserve">
     <value>Устаревший</value>
   </data>
-  <data name="782621841" xml:space="preserve">
+    <data name="782621841" xml:space="preserve">
     <value>Прекращенный</value>
   </data>
-  <data name="668677371" xml:space="preserve">
+    <data name="668677371" xml:space="preserve">
     <value>Лицензия</value>
   </data>
-  <data name="126334370" xml:space="preserve">
+    <data name="126334370" xml:space="preserve">
     <value>Открытый код</value>
   </data>
-  <data name="694286924" xml:space="preserve">
+    <data name="694286924" xml:space="preserve">
     <value>Частное програмное обеспечение</value>
   </data>
-  <data name="204811466" xml:space="preserve">
+    <data name="204811466" xml:space="preserve">
     <value>Исходный код</value>
   </data>
-  <data name="104050983" xml:space="preserve">
+    <data name="104050983" xml:space="preserve">
     <value>Состояние</value>
   </data>
-  <data name="974269746" xml:space="preserve">
+    <data name="974269746" xml:space="preserve">
     <value>Консьерж</value>
   </data>
-  <data name="724854542" xml:space="preserve">
+    <data name="724854542" xml:space="preserve">
     <value>Возраст</value>
   </data>
-  <data name="802024377" xml:space="preserve">
+    <data name="802024377" xml:space="preserve">
     <value>Алгоритмы</value>
   </data>
-  <data name="185637040" xml:space="preserve">
+    <data name="185637040" xml:space="preserve">
     <value>Американский университет Армении</value>
   </data>
-  <data name="564771585" xml:space="preserve">
+    <data name="564771585" xml:space="preserve">
     <value>Добро пожаловать на мой сайт.</value>
   </data>
-  <data name="813577219" xml:space="preserve">
+    <data name="813577219" xml:space="preserve">
     <value>Бакалавр информатики и прикладной математики, компьютерных наук</value>
   </data>
-  <data name="208622504" xml:space="preserve">
+    <data name="208622504" xml:space="preserve">
     <value>Образование</value>
   </data>
-  <data name="403152561" xml:space="preserve">
+    <data name="403152561" xml:space="preserve">
     <value>Эл. Почта</value>
   </data>
-  <data name="997851654" xml:space="preserve">
+    <data name="997851654" xml:space="preserve">
     <value>Тигран Торосян</value>
   </data>
-  <data name="695998028" xml:space="preserve">
+    <data name="695998028" xml:space="preserve">
     <value>Тигран ТИКСН Торосян</value>
   </data>
-  <data name="554412405" xml:space="preserve">
+    <data name="554412405" xml:space="preserve">
     <value>Привет, мир!</value>
   </data>
-  <data name="469078176" xml:space="preserve">
+    <data name="469078176" xml:space="preserve">
     <value>Итальянский</value>
   </data>
-  <data name="837013265" xml:space="preserve">
+    <data name="837013265" xml:space="preserve">
     <value>Языки</value>
   </data>
-  <data name="754732611" xml:space="preserve">
+    <data name="754732611" xml:space="preserve">
     <value>Магистр компьютерных информационных наук, компьютерных наук</value>
   </data>
-  <data name="476889407" xml:space="preserve">
+    <data name="476889407" xml:space="preserve">
     <value>Инженер программного обеспечения</value>
   </data>
-  <data name="804677234" xml:space="preserve">
+    <data name="804677234" xml:space="preserve">
     <value>Занятие</value>
   </data>
-  <data name="284143358" xml:space="preserve">
+    <data name="284143358" xml:space="preserve">
     <value>Навыки</value>
   </data>
-  <data name="309453572" xml:space="preserve">
+    <data name="309453572" xml:space="preserve">
     <value>ТИКСН Блог</value>
   </data>
-  <data name="732728254" xml:space="preserve">
+    <data name="732728254" xml:space="preserve">
     <value>Твиттер</value>
   </data>
-  <data name="880877990" xml:space="preserve">
+    <data name="880877990" xml:space="preserve">
     <value>Ереванский государственный университет</value>
   </data>
-  <data name="115421686" xml:space="preserve">
+    <data name="115421686" xml:space="preserve">
     <value>Я</value>
   </data>
-  <data name="151029036" xml:space="preserve">
+    <data name="151029036" xml:space="preserve">
     <value>Свяжитесь со мной</value>
   </data>
-  <data name="208760457" xml:space="preserve">
+    <data name="208760457" xml:space="preserve">
     <value>Разработка Office приложения</value>
   </data>
-  <data name="903097948" xml:space="preserve">
+    <data name="903097948" xml:space="preserve">
     <value>Разработка PowerShell модуля</value>
   </data>
-  <data name="923565547" xml:space="preserve">
+    <data name="923565547" xml:space="preserve">
     <value>Разработка SharePoint приложения</value>
   </data>
-  <data name="711406928" xml:space="preserve">
+    <data name="711406928" xml:space="preserve">
     <value>Заказ разработки PowerShell модуля</value>
   </data>
-  <data name="754333962" xml:space="preserve">
+    <data name="754333962" xml:space="preserve">
     <value>Результаты не найдены.</value>
   </data>
-  <data name="462896969" xml:space="preserve">
+    <data name="462896969" xml:space="preserve">
     <value>На платформе Bing®</value>
   </data>
-  <data name="996647881" xml:space="preserve">
+    <data name="996647881" xml:space="preserve">
     <value>На платформе Microsoft® Translator</value>
   </data>
-  <data name="188347036" xml:space="preserve">
+    <data name="188347036" xml:space="preserve">
     <value>Поиск</value>
   </data>
-  <data name="881097258" xml:space="preserve">
+    <data name="881097258" xml:space="preserve">
     <value>Поиск ...</value>
   </data>
-  <data name="636584069" xml:space="preserve">
+    <data name="636584069" xml:space="preserve">
     <value>Результаты поиска</value>
   </data>
-  <data name="423457627" xml:space="preserve">
+    <data name="423457627" xml:space="preserve">
     <value>Рекомендации правописания</value>
   </data>
-  <data name="381036885" xml:space="preserve">
+    <data name="381036885" xml:space="preserve">
     <value>Синонимы</value>
   </data>
-  <data name="584660593" xml:space="preserve">
+    <data name="584660593" xml:space="preserve">
     <value>Переводы</value>
   </data>
-  <data name="215349550" xml:space="preserve">
+    <data name="215349550" xml:space="preserve">
     <value>Используемые технологии</value>
   </data>
-  <data name="881908374" xml:space="preserve">
+    <data name="881908374" xml:space="preserve">
     <value>Разработка бизнес-приложений ориентированных на данные</value>
   </data>
-  <data name="306641101" xml:space="preserve">
+    <data name="306641101" xml:space="preserve">
     <value>Заказ разработки бизнес-приложений ориентированных на данные</value>
   </data>
-  <data name="291840828" xml:space="preserve">
+    <data name="291840828" xml:space="preserve">
     <value>Ошибка произошла, когда система пытается отправить письмо.</value>
   </data>
-  <data name="334947186" xml:space="preserve">
+    <data name="334947186" xml:space="preserve">
     <value>Украинский</value>
   </data>
-  <data name="103927163" xml:space="preserve">
+    <data name="103927163" xml:space="preserve">
     <value>Программное обеспечение с открытым исходным кодом</value>
   </data>
-  <data name="529324189" xml:space="preserve">
+    <data name="529324189" xml:space="preserve">
     <value>The Weather of Westeros</value>
   </data>
-  <data name="515817850" xml:space="preserve">
+    <data name="515817850" xml:space="preserve">
     <value>Visual Studio LightSwitch</value>
   </data>
-  <data name="308178739" xml:space="preserve">
+    <data name="308178739" xml:space="preserve">
     <value>Разработка приложений Windows CE / Mobule</value>
   </data>
-  <data name="816611612" xml:space="preserve">
+    <data name="816611612" xml:space="preserve">
     <value>BleepMe</value>
   </data>
-  <data name="607754997" xml:space="preserve">
+    <data name="607754997" xml:space="preserve">
     <value>Denomination Calculator</value>
   </data>
-  <data name="614034682" xml:space="preserve">
+    <data name="614034682" xml:space="preserve">
     <value>Grocery Checklist</value>
   </data>
-  <data name="355868753" xml:space="preserve">
+    <data name="355868753" xml:space="preserve">
     <value>Для Windows 10</value>
   </data>
-  <data name="594903907" xml:space="preserve">
+    <data name="594903907" xml:space="preserve">
     <value>Для Windows 8.1 и более ранних версий</value>
   </data>
-  <data name="977944607" xml:space="preserve">
+    <data name="977944607" xml:space="preserve">
     <value>Подробности</value>
   </data>
-  <data name="484534012" xml:space="preserve">
+    <data name="484534012" xml:space="preserve">
     <value>Пользовательский поиск</value>
   </data>
-  <data name="763272923" xml:space="preserve">
+    <data name="763272923" xml:space="preserve">
     <value>Старший инженер-программист</value>
   </data>
-  <data name="171400643" xml:space="preserve">
+    <data name="171400643" xml:space="preserve">
     <value>Центра́льный банк Армении</value>
   </data>
-  <data name="224205610" xml:space="preserve">
+    <data name="224205610" xml:space="preserve">
     <value>Европейский центральный банк</value>
   </data>
-  <data name="344909065" xml:space="preserve">
+    <data name="344909065" xml:space="preserve">
     <value>Национальный банк Украины</value>
   </data>
-  <data name="466192205" xml:space="preserve">
+    <data name="466192205" xml:space="preserve">
     <value>Банк России</value>
   </data>
-  <data name="645369586" xml:space="preserve">
+    <data name="645369586" xml:space="preserve">
     <value>Резервный банк Австралии</value>
   </data>
-  <data name="724813953" xml:space="preserve">
+    <data name="724813953" xml:space="preserve">
     <value>Федеральная резервная система</value>
   </data>
-  <data name="734344590" xml:space="preserve">
+    <data name="734344590" xml:space="preserve">
     <value>Банк Канады</value>
   </data>
-  <data name="744582913" xml:space="preserve">
+    <data name="744582913" xml:space="preserve">
     <value>Центральный банк Республики Армения</value>
   </data>
-  <data name="748923176" xml:space="preserve">
+    <data name="748923176" xml:space="preserve">
     <value>Национальный банк Швейцарии</value>
   </data>
-  <data name="758955736" xml:space="preserve">
+    <data name="758955736" xml:space="preserve">
     <value>Банк Англии</value>
   </data>
-  <data name="937230874" xml:space="preserve">
+    <data name="937230874" xml:space="preserve">
     <value>Центральный банк Российской Федерации</value>
   </data>
 </root>

@@ -24,13 +24,12 @@ public class Base62CorrelationService : ICorrelationService
         ICustomDeserializer<byte[], BigInteger> bigIntegerBinaryDeserializer)
     {
         this.random = random ?? throw new ArgumentNullException(nameof(random));
-        this.base62CorrelationServiceOptions = base62CorrelationServiceOptions ??
-                                                throw new ArgumentNullException(
-                                                    nameof(base62CorrelationServiceOptions));
-        this.bigIntegerBinarySerializer = bigIntegerBinarySerializer ??
-                                           throw new ArgumentNullException(nameof(bigIntegerBinarySerializer));
-        this.bigIntegerBinaryDeserializer = bigIntegerBinaryDeserializer ??
-                                             throw new ArgumentNullException(nameof(bigIntegerBinaryDeserializer));
+        this.base62CorrelationServiceOptions = base62CorrelationServiceOptions
+            ?? throw new ArgumentNullException(nameof(base62CorrelationServiceOptions));
+        this.bigIntegerBinarySerializer = bigIntegerBinarySerializer
+            ?? throw new ArgumentNullException(nameof(bigIntegerBinarySerializer));
+        this.bigIntegerBinaryDeserializer = bigIntegerBinaryDeserializer
+            ?? throw new ArgumentNullException(nameof(bigIntegerBinaryDeserializer));
     }
 
     public CorrelationId Create(string stringRepresentation)

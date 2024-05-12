@@ -16,8 +16,8 @@ public class PowerShellLoggerProvider : ILoggerProvider
         IOptions<PowerShellLoggerOptions> options)
     {
         this.options = options;
-        this.currentCommandProvider = currentCommandProvider ??
-                                       throw new ArgumentNullException(nameof(currentCommandProvider));
+        this.currentCommandProvider = currentCommandProvider
+            ?? throw new ArgumentNullException(nameof(currentCommandProvider));
     }
 
     public ILogger CreateLogger(string categoryName) =>
