@@ -128,8 +128,9 @@ public class CuidCorrelationService : ICorrelationService
 
         var pid = Environment.ProcessId % DuetteUpperBoundary;
         var theHostname = this.GetHostname();
-        var hostnameHash = theHostname.Split().Aggregate(theHostname.Length + 36, (prev, c) => prev + c[0]) %
-                           DuetteUpperBoundary;
+        var hostnameHash = theHostname.Split()
+            .Aggregate(theHostname.Length + 36, (prev, c) => prev + c[0])
+            % DuetteUpperBoundary;
 #pragma warning disable CA5394 // Do not use insecure randomness
         var randomNumber1 = this.random.Next() % QuartetteUpperBoundary;
         var randomNumber2 = this.random.Next() % QuartetteUpperBoundary;

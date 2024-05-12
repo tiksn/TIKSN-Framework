@@ -5,7 +5,8 @@ using static LanguageExt.Prelude;
 
 namespace TIKSN.Data.Mongo;
 
-public class MongoRepository<TDocument, TIdentity> : IMongoRepository<TDocument, TIdentity>
+public class MongoRepository<TDocument, TIdentity> :
+    IMongoRepository<TDocument, TIdentity>
     where TDocument : IEntity<TIdentity> where TIdentity : IEquatable<TIdentity>
 {
     protected MongoRepository(
@@ -19,8 +20,8 @@ public class MongoRepository<TDocument, TIdentity> : IMongoRepository<TDocument,
             throw new ArgumentException($"'{nameof(collectionName)}' cannot be null or empty.", nameof(collectionName));
         }
 
-        this.MongoClientSessionProvider = mongoClientSessionProvider ??
-                                          throw new ArgumentNullException(nameof(mongoClientSessionProvider));
+        this.MongoClientSessionProvider = mongoClientSessionProvider
+            ?? throw new ArgumentNullException(nameof(mongoClientSessionProvider));
         var database = mongoDatabaseProvider.GetDatabase();
         this.Collection = database.GetCollection<TDocument>(collectionName);
     }

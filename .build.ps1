@@ -1,10 +1,16 @@
 <#
 .Synopsis
-	Build script
+    Build script
 
 .Description
-	TASKS AND REQUIREMENTS
-	Initialize and Clean repository
+    TASKS AND REQUIREMENTS
+    Initialize and Clean repository
+    Restore packages, workflows, tools
+    Format code
+    Build projects and the solution
+    Run Tests
+    Pack
+    Publish
 #>
 
 param(

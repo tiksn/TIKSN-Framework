@@ -28,8 +28,8 @@ public class ExchangeRate : IEquatable<ExchangeRate>
         }
 
         return this.AsOn == other.AsOn
-               && this.Pair == other.Pair
-               && this.Rate == other.Rate;
+            && this.Pair == other.Pair
+            && this.Rate == other.Rate;
     }
 
     public override bool Equals(object? obj) => this.Equals(obj as ExchangeRate);

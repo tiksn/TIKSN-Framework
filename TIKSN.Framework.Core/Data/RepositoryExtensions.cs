@@ -9,8 +9,8 @@ public static class RepositoryExtensions
         this IQueryRepository<TEntity, TIdentity> queryRepository,
         TIdentity id,
         CancellationToken cancellationToken)
-          where TEntity : IEntity<TIdentity>
-          where TIdentity : IEquatable<TIdentity>
+        where TEntity : IEntity<TIdentity>
+        where TIdentity : IEquatable<TIdentity>
     {
         ArgumentNullException.ThrowIfNull(queryRepository);
 
