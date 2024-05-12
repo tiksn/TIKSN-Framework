@@ -36,7 +36,7 @@ indent_size = 2
 # XML Configuration Files
 [*.{xml,config,props,targets,nuspec,resx,ruleset,vsixmanifest,vsct,xlf}]
 indent_size = 2
-insert_final_newline = true
+insert_final_newline = false
 
 # JSON Files
 [*.{json,json5,webmanifest}]
@@ -65,6 +65,15 @@ end_of_line = lf
 # Makefiles
 [Makefile]
 indent_style = tab
+
+# Binary Data Files
+[*.{dat,db}]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+indent_style = unset
+indent_size = unset
 
 ##########################################
 # Default .NET Code Style Severities
