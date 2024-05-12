@@ -20,6 +20,6 @@ public class TenantUserBareEntityResolver<TEntity, TEntityIdentity, TTenantIdent
         var entity = await this.queryRepository.GetAsync(id, cancellationToken).ConfigureAwait(false);
 
         return new TenantUserEntity<TEntityIdentity, TTenantIdentity, TUserIdentity>(
-          entity.ID, entity.TenantID, entity.UserID);
+            entity.ID, entity.TenantID, entity.UserID);
     }
 }
