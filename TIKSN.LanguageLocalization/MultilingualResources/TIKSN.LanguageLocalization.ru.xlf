@@ -1,724 +1,724 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-    <file datatype="xml" source-language="en" target-language="ru" original="TIKSN.LANGUAGELOCALIZATION/STRINGS.RESX" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
-        <header>
-            <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6810.0" tool-company="Microsoft" />
-        </header>
-        <body>
-            <group id="TIKSN.LANGUAGELOCALIZATION/STRINGS.RESX" datatype="resx">
-                <trans-unit id="931254976" translate="yes" xml:space="preserve">
+  <file datatype="xml" source-language="en" target-language="ru" original="TIKSN.LANGUAGELOCALIZATION/STRINGS.RESX" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6810.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="TIKSN.LANGUAGELOCALIZATION/STRINGS.RESX" datatype="resx">
+        <trans-unit id="931254976" translate="yes" xml:space="preserve">
           <source>Advertisement</source>
           <target state="translated" state-qualifier="tm-suggestion">Реклама</target>
         </trans-unit>
-                <trans-unit id="365281568" translate="yes" xml:space="preserve">
+        <trans-unit id="365281568" translate="yes" xml:space="preserve">
           <source>About this application</source>
           <target state="translated" state-qualifier="tm-suggestion">Об этом приложении</target>
         </trans-unit>
-                <trans-unit id="445651597" translate="yes" xml:space="preserve">
+        <trans-unit id="445651597" translate="yes" xml:space="preserve">
           <source>Dark</source>
           <target state="translated" state-qualifier="tm-suggestion">Темная</target>
         </trans-unit>
-                <trans-unit id="599209173" translate="yes" xml:space="preserve">
+        <trans-unit id="599209173" translate="yes" xml:space="preserve">
           <source>Settings</source>
           <target state="translated">Параметры</target>
         </trans-unit>
-                <trans-unit id="706106182" translate="yes" xml:space="preserve">
+        <trans-unit id="706106182" translate="yes" xml:space="preserve">
           <source>Privacy Terms</source>
           <target state="translated" state-qualifier="tm-suggestion">Конфиденциальность и условия использования</target>
         </trans-unit>
-                <trans-unit id="846795929" translate="yes" xml:space="preserve">
+        <trans-unit id="846795929" translate="yes" xml:space="preserve">
           <source>Light</source>
           <target state="translated" state-qualifier="tm-suggestion">Светлая</target>
         </trans-unit>
-                <trans-unit id="971869905" translate="yes" xml:space="preserve">
+        <trans-unit id="971869905" translate="yes" xml:space="preserve">
           <source>Theme</source>
           <target state="translated" state-qualifier="tm-suggestion">Тема</target>
         </trans-unit>
-                <trans-unit id="179741382" translate="yes" xml:space="preserve">
+        <trans-unit id="179741382" translate="yes" xml:space="preserve">
           <source>Language</source>
           <target state="translated">Язык</target>
         </trans-unit>
-                <trans-unit id="239441347" translate="yes" xml:space="preserve">
+        <trans-unit id="239441347" translate="yes" xml:space="preserve">
           <source>Available in {0} languages</source>
           <target state="translated">Доступно на {0} языках</target>
         </trans-unit>
-                <trans-unit id="102475419" translate="yes" xml:space="preserve">
+        <trans-unit id="102475419" translate="yes" xml:space="preserve">
           <source>{0} languages</source>
           <target state="translated">{0} языки</target>
         </trans-unit>
-                <trans-unit id="269773285" translate="yes" xml:space="preserve">
+        <trans-unit id="269773285" translate="yes" xml:space="preserve">
           <source>Maintenance {0} per month</source>
           <target state="translated">Поддержание {0} за месяц</target>
         </trans-unit>
-                <trans-unit id="870549797" translate="yes" xml:space="preserve">
+        <trans-unit id="870549797" translate="yes" xml:space="preserve">
           <source>Up to {0} pages</source>
           <target state="translated">Более {0} страниц</target>
         </trans-unit>
-                <trans-unit id="121714030" translate="yes" xml:space="preserve">
+        <trans-unit id="121714030" translate="yes" xml:space="preserve">
           <source>Version {0}</source>
           <target state="translated">Версия {0}</target>
         </trans-unit>
-                <trans-unit id="523855489" translate="yes" xml:space="preserve">
+        <trans-unit id="523855489" translate="yes" xml:space="preserve">
           <source>Art of Living</source>
           <target state="translated">Искусствожизни</target>
         </trans-unit>
-                <trans-unit id="359138423" translate="yes" xml:space="preserve">
+        <trans-unit id="359138423" translate="yes" xml:space="preserve">
           <source>Contacts</source>
           <target state="translated">Контакты</target>
         </trans-unit>
-                <trans-unit id="311561578" translate="yes" xml:space="preserve">
+        <trans-unit id="311561578" translate="yes" xml:space="preserve">
           <source>Desktop %%amp; Server</source>
           <target state="translated">Рабочий стол и сервер</target>
         </trans-unit>
-                <trans-unit id="795089363" translate="yes" xml:space="preserve">
+        <trans-unit id="795089363" translate="yes" xml:space="preserve">
           <source>Desktop Application development</source>
           <target state="translated">Разработка классического приложения</target>
         </trans-unit>
-                <trans-unit id="148689082" translate="yes" xml:space="preserve">
+        <trans-unit id="148689082" translate="yes" xml:space="preserve">
           <source>E-Mail:</source>
           <target state="translated">Эл. Почта:</target>
         </trans-unit>
-                <trans-unit id="854735407" translate="yes" xml:space="preserve">
+        <trans-unit id="854735407" translate="yes" xml:space="preserve">
           <source>First name:</source>
           <target state="translated">Имя:</target>
         </trans-unit>
-                <trans-unit id="349904862" translate="yes" xml:space="preserve">
+        <trans-unit id="349904862" translate="yes" xml:space="preserve">
           <source>Last name:</source>
           <target state="translated">Фамилия:</target>
         </trans-unit>
-                <trans-unit id="408289614" translate="yes" xml:space="preserve">
+        <trans-unit id="408289614" translate="yes" xml:space="preserve">
           <source>Message:</source>
           <target state="translated">Сообщение:</target>
         </trans-unit>
-                <trans-unit id="649290117" translate="yes" xml:space="preserve">
+        <trans-unit id="649290117" translate="yes" xml:space="preserve">
           <source>Mobile %%amp; Tablet</source>
           <target state="translated">Мобильный и планшет</target>
         </trans-unit>
-                <trans-unit id="762797472" translate="yes" xml:space="preserve">
+        <trans-unit id="762797472" translate="yes" xml:space="preserve">
           <source>Products</source>
           <target state="translated">Продукты</target>
         </trans-unit>
-                <trans-unit id="733244108" translate="yes" xml:space="preserve">
+        <trans-unit id="733244108" translate="yes" xml:space="preserve">
           <source>Search Engine Optimization</source>
           <target state="translated">Поисковая оптимизация</target>
         </trans-unit>
-                <trans-unit id="520543650" translate="yes" xml:space="preserve">
+        <trans-unit id="520543650" translate="yes" xml:space="preserve">
           <source>Service-Oriented Application development</source>
           <target state="translated">Разработка сервис-ориентированного приложения</target>
         </trans-unit>
-                <trans-unit id="330429385" translate="yes" xml:space="preserve">
+        <trans-unit id="330429385" translate="yes" xml:space="preserve">
           <source>Services</source>
           <target state="translated">Сервисы</target>
         </trans-unit>
-                <trans-unit id="774579166" translate="yes" xml:space="preserve">
+        <trans-unit id="774579166" translate="yes" xml:space="preserve">
           <source>Latest and Greatest Technologies</source>
           <target state="translated">Новейшие и Наилучшие Технологии </target>
         </trans-unit>
-                <trans-unit id="635603959" translate="yes" xml:space="preserve">
+        <trans-unit id="635603959" translate="yes" xml:space="preserve">
           <source>STOZE</source>
           <target state="translated">СТОЗ</target>
         </trans-unit>
-                <trans-unit id="989199644" translate="yes" xml:space="preserve">
+        <trans-unit id="989199644" translate="yes" xml:space="preserve">
           <source>TIKSN</source>
           <target state="translated">TIKSN</target>
         </trans-unit>
-                <trans-unit id="623577100" translate="yes" xml:space="preserve">
+        <trans-unit id="623577100" translate="yes" xml:space="preserve">
           <source>TIKSN Framework</source>
           <target state="translated">TIKSN Framework</target>
         </trans-unit>
-                <trans-unit id="950501550" translate="yes" xml:space="preserve">
+        <trans-unit id="950501550" translate="yes" xml:space="preserve">
           <source>Web</source>
           <target state="translated">Веб</target>
         </trans-unit>
-                <trans-unit id="902123282" translate="yes" xml:space="preserve">
+        <trans-unit id="902123282" translate="yes" xml:space="preserve">
           <source>Web API development</source>
           <target state="translated">Веб ИПП разработка</target>
         </trans-unit>
-                <trans-unit id="899831985" translate="yes" xml:space="preserve">
+        <trans-unit id="899831985" translate="yes" xml:space="preserve">
           <source>Web Application development</source>
           <target state="translated">Разработка веб приложений</target>
         </trans-unit>
-                <trans-unit id="706410578" translate="yes" xml:space="preserve">
+        <trans-unit id="706410578" translate="yes" xml:space="preserve">
           <source>Website development</source>
           <target state="translated">Разработка веб сайта</target>
         </trans-unit>
-                <trans-unit id="626508219" translate="yes" xml:space="preserve">
+        <trans-unit id="626508219" translate="yes" xml:space="preserve">
           <source>Windows Phone App development</source>
           <target state="translated">Разработка приложений Windows Phone</target>
         </trans-unit>
-                <trans-unit id="237037289" translate="yes" xml:space="preserve">
+        <trans-unit id="237037289" translate="yes" xml:space="preserve">
           <source>Windows Service development</source>
           <target state="translated">Разработка службы Windows</target>
         </trans-unit>
-                <trans-unit id="997898627" translate="yes" xml:space="preserve">
+        <trans-unit id="997898627" translate="yes" xml:space="preserve">
           <source>Windows Store App development</source>
           <target state="translated">Разработка Windows Store приложения</target>
         </trans-unit>
-                <trans-unit id="577995861" translate="yes" xml:space="preserve">
+        <trans-unit id="577995861" translate="yes" xml:space="preserve">
           <source>All rights reserved.</source>
           <target state="translated">Все права защищены</target>
         </trans-unit>
-                <trans-unit id="660079096" translate="yes" xml:space="preserve">
+        <trans-unit id="660079096" translate="yes" xml:space="preserve">
           <source>More</source>
           <target state="translated">Дополнительно</target>
         </trans-unit>
-                <trans-unit id="378313905" translate="yes" xml:space="preserve">
+        <trans-unit id="378313905" translate="yes" xml:space="preserve">
           <source>Armenian</source>
           <target state="translated">Армянский</target>
         </trans-unit>
-                <trans-unit id="383838876" translate="yes" xml:space="preserve">
+        <trans-unit id="383838876" translate="yes" xml:space="preserve">
           <source>Available in one language</source>
           <target state="translated">Доступен на одном языке.</target>
         </trans-unit>
-                <trans-unit id="627036953" translate="yes" xml:space="preserve">
+        <trans-unit id="627036953" translate="yes" xml:space="preserve">
           <source>Contact</source>
           <target state="translated">Связь</target>
         </trans-unit>
-                <trans-unit id="655862457" translate="yes" xml:space="preserve">
+        <trans-unit id="655862457" translate="yes" xml:space="preserve">
           <source>Desktop Application</source>
           <target state="translated">Классическое приложение</target>
         </trans-unit>
-                <trans-unit id="914899034" translate="yes" xml:space="preserve">
+        <trans-unit id="914899034" translate="yes" xml:space="preserve">
           <source>English</source>
           <target state="translated">Английский</target>
         </trans-unit>
-                <trans-unit id="268545567" translate="yes" xml:space="preserve">
+        <trans-unit id="268545567" translate="yes" xml:space="preserve">
           <source>Software and Services</source>
           <target state="translated">Программное обеспечение и услуги</target>
         </trans-unit>
-                <trans-unit id="507606425" translate="yes" xml:space="preserve">
+        <trans-unit id="507606425" translate="yes" xml:space="preserve">
           <source>Initial release</source>
           <target state="translated">Первый выпуск</target>
         </trans-unit>
-                <trans-unit id="156307418" translate="yes" xml:space="preserve">
+        <trans-unit id="156307418" translate="yes" xml:space="preserve">
           <source>Not a valid e-mail address</source>
           <target state="translated">Неправильный электронный адрес</target>
         </trans-unit>
-                <trans-unit id="874180444" translate="yes" xml:space="preserve">
+        <trans-unit id="874180444" translate="yes" xml:space="preserve">
           <source>Latest release</source>
           <target state="translated">Последний выпуск</target>
         </trans-unit>
-                <trans-unit id="573149082" translate="yes" xml:space="preserve">
+        <trans-unit id="573149082" translate="yes" xml:space="preserve">
           <source>Maintained</source>
           <target state="translated">Поддерживается</target>
         </trans-unit>
-                <trans-unit id="324264316" translate="yes" xml:space="preserve">
+        <trans-unit id="324264316" translate="yes" xml:space="preserve">
           <source>No</source>
           <target state="translated">Нет</target>
         </trans-unit>
-                <trans-unit id="288886816" translate="yes" xml:space="preserve">
+        <trans-unit id="288886816" translate="yes" xml:space="preserve">
           <source>Required</source>
           <target state="translated">Обязательный</target>
         </trans-unit>
-                <trans-unit id="271231827" translate="yes" xml:space="preserve">
+        <trans-unit id="271231827" translate="yes" xml:space="preserve">
           <source>Russian</source>
           <target state="translated">Русский</target>
         </trans-unit>
-                <trans-unit id="245098873" translate="yes" xml:space="preserve">
+        <trans-unit id="245098873" translate="yes" xml:space="preserve">
           <source>Scope</source>
           <target state="translated">Область</target>
         </trans-unit>
-                <trans-unit id="992400356" translate="yes" xml:space="preserve">
+        <trans-unit id="992400356" translate="yes" xml:space="preserve">
           <source>See also</source>
           <target state="translated">Посмотри еще</target>
         </trans-unit>
-                <trans-unit id="475539585" translate="yes" xml:space="preserve">
+        <trans-unit id="475539585" translate="yes" xml:space="preserve">
           <source>Send</source>
           <target state="translated">Отправить</target>
         </trans-unit>
-                <trans-unit id="198239125" translate="yes" xml:space="preserve">
+        <trans-unit id="198239125" translate="yes" xml:space="preserve">
           <source>Service-Oriented Application</source>
           <target state="translated">Сервис-ориентированное приложение</target>
         </trans-unit>
-                <trans-unit id="851949420" translate="yes" xml:space="preserve">
+        <trans-unit id="851949420" translate="yes" xml:space="preserve">
           <source>Software Library</source>
           <target state="translated">ПО библиотека</target>
         </trans-unit>
-                <trans-unit id="538968287" translate="yes" xml:space="preserve">
+        <trans-unit id="538968287" translate="yes" xml:space="preserve">
           <source>Visit</source>
           <target state="translated">Посетить</target>
         </trans-unit>
-                <trans-unit id="737791768" translate="yes" xml:space="preserve">
+        <trans-unit id="737791768" translate="yes" xml:space="preserve">
           <source>Web API</source>
           <target state="translated">Веб ИПП</target>
         </trans-unit>
-                <trans-unit id="976146344" translate="yes" xml:space="preserve">
+        <trans-unit id="976146344" translate="yes" xml:space="preserve">
           <source>Web Application</source>
           <target state="translated">Веб приложение</target>
         </trans-unit>
-                <trans-unit id="986035763" translate="yes" xml:space="preserve">
+        <trans-unit id="986035763" translate="yes" xml:space="preserve">
           <source>Website</source>
           <target state="translated">Веб сайт</target>
         </trans-unit>
-                <trans-unit id="627226462" translate="yes" xml:space="preserve">
+        <trans-unit id="627226462" translate="yes" xml:space="preserve">
           <source>Windows Phone App</source>
           <target state="translated">Windows Phone приложение</target>
         </trans-unit>
-                <trans-unit id="578512547" translate="yes" xml:space="preserve">
+        <trans-unit id="578512547" translate="yes" xml:space="preserve">
           <source>Windows Service</source>
           <target state="translated">Windows служба</target>
         </trans-unit>
-                <trans-unit id="543312789" translate="yes" xml:space="preserve">
+        <trans-unit id="543312789" translate="yes" xml:space="preserve">
           <source>Windows Store App</source>
           <target state="translated">Windows Store приложение</target>
         </trans-unit>
-                <trans-unit id="182422283" translate="yes" xml:space="preserve">
+        <trans-unit id="182422283" translate="yes" xml:space="preserve">
           <source>Yes</source>
           <target state="translated">Да</target>
         </trans-unit>
-                <trans-unit id="754876063" translate="yes" xml:space="preserve">
+        <trans-unit id="754876063" translate="yes" xml:space="preserve">
           <source>Your email address</source>
           <target state="translated">Ваш Электронный Адрес</target>
         </trans-unit>
-                <trans-unit id="603429657" translate="yes" xml:space="preserve">
+        <trans-unit id="603429657" translate="yes" xml:space="preserve">
           <source>Your first name</source>
           <target state="translated">Ваше имя</target>
         </trans-unit>
-                <trans-unit id="785283399" translate="yes" xml:space="preserve">
+        <trans-unit id="785283399" translate="yes" xml:space="preserve">
           <source>Your last name</source>
           <target state="translated">Ваша фамилия</target>
         </trans-unit>
-                <trans-unit id="897347270" translate="yes" xml:space="preserve">
+        <trans-unit id="897347270" translate="yes" xml:space="preserve">
           <source>Advanced</source>
           <target state="translated">Расширенный</target>
         </trans-unit>
-                <trans-unit id="222101134" translate="yes" xml:space="preserve">
+        <trans-unit id="222101134" translate="yes" xml:space="preserve">
           <source>This plan is suitable for medium businesses․</source>
           <target state="translated">Этот план удобнее для среднего бизнеса.</target>
         </trans-unit>
-                <trans-unit id="313662951" translate="yes" xml:space="preserve">
+        <trans-unit id="313662951" translate="yes" xml:space="preserve">
           <source>Basic</source>
           <target state="translated">Основной</target>
         </trans-unit>
-                <trans-unit id="317093501" translate="yes" xml:space="preserve">
+        <trans-unit id="317093501" translate="yes" xml:space="preserve">
           <source>This plan is suitable for start-ups and small businesses.</source>
           <target state="translated">Этот план удобнее для начинающего и малого бизнеса.</target>
         </trans-unit>
-                <trans-unit id="488609985" translate="yes" xml:space="preserve">
+        <trans-unit id="488609985" translate="yes" xml:space="preserve">
           <source>Basic UI Design</source>
           <target state="translated">Основной ИП дизайн</target>
         </trans-unit>
-                <trans-unit id="576421501" translate="yes" xml:space="preserve">
+        <trans-unit id="576421501" translate="yes" xml:space="preserve">
           <source>Clean UI Design</source>
           <target state="translated">Простой ИП дизайн</target>
         </trans-unit>
-                <trans-unit id="966065986" translate="yes" xml:space="preserve">
+        <trans-unit id="966065986" translate="yes" xml:space="preserve">
           <source>Client Applications</source>
           <target state="translated">Клиентские приложения</target>
         </trans-unit>
-                <trans-unit id="781252660" translate="yes" xml:space="preserve">
+        <trans-unit id="781252660" translate="yes" xml:space="preserve">
           <source>Consultancy</source>
           <target state="translated">Консультация</target>
         </trans-unit>
-                <trans-unit id="993427659" translate="yes" xml:space="preserve">
+        <trans-unit id="993427659" translate="yes" xml:space="preserve">
           <source>Custom Order</source>
           <target state="translated">Индивидуальный заказ</target>
         </trans-unit>
-                <trans-unit id="847898437" translate="yes" xml:space="preserve">
+        <trans-unit id="847898437" translate="yes" xml:space="preserve">
           <source>Data</source>
           <target state="translated">Данные</target>
         </trans-unit>
-                <trans-unit id="564698540" translate="yes" xml:space="preserve">
+        <trans-unit id="564698540" translate="yes" xml:space="preserve">
           <source>Deployment</source>
           <target state="translated">Развертывание</target>
         </trans-unit>
-                <trans-unit id="112937225" translate="yes" xml:space="preserve">
+        <trans-unit id="112937225" translate="yes" xml:space="preserve">
           <source>Domain Email setup</source>
           <target state="translated">Установка электронной почты для домена</target>
         </trans-unit>
-                <trans-unit id="274121967" translate="yes" xml:space="preserve">
+        <trans-unit id="274121967" translate="yes" xml:space="preserve">
           <source>Economy</source>
           <target state="translated">Экономичный</target>
         </trans-unit>
-                <trans-unit id="900398722" translate="yes" xml:space="preserve">
+        <trans-unit id="900398722" translate="yes" xml:space="preserve">
           <source>This plan is suitable for personal websites.</source>
           <target state="translated">Этот план удобнее для персональных веб сайтов.</target>
         </trans-unit>
-                <trans-unit id="162454876" translate="yes" xml:space="preserve">
+        <trans-unit id="162454876" translate="yes" xml:space="preserve">
           <source>Extensible Localization</source>
           <target state="translated">Расширяемая локализация</target>
         </trans-unit>
-                <trans-unit id="764935327" translate="yes" xml:space="preserve">
+        <trans-unit id="764935327" translate="yes" xml:space="preserve">
           <source>Medium business</source>
           <target state="translated">Средний бизнес</target>
         </trans-unit>
-                <trans-unit id="434690284" translate="yes" xml:space="preserve">
+        <trans-unit id="434690284" translate="yes" xml:space="preserve">
           <source>Modern UI Design</source>
           <target state="translated">Современный ИП дизайн</target>
         </trans-unit>
-                <trans-unit id="779269722" translate="yes" xml:space="preserve">
+        <trans-unit id="779269722" translate="yes" xml:space="preserve">
           <source>1 language (non-localizable)</source>
           <target state="translated">1 язык (не локализированный)</target>
         </trans-unit>
-                <trans-unit id="757024408" translate="yes" xml:space="preserve">
+        <trans-unit id="757024408" translate="yes" xml:space="preserve">
           <source>Order</source>
           <target state="translated">Заказать</target>
         </trans-unit>
-                <trans-unit id="907431629" translate="yes" xml:space="preserve">
+        <trans-unit id="907431629" translate="yes" xml:space="preserve">
           <source>Personal</source>
           <target state="translated">Персональный</target>
         </trans-unit>
-                <trans-unit id="330870993" translate="yes" xml:space="preserve">
+        <trans-unit id="330870993" translate="yes" xml:space="preserve">
           <source>Small business</source>
           <target state="translated">Малый бизнес</target>
         </trans-unit>
-                <trans-unit id="528269093" translate="yes" xml:space="preserve">
+        <trans-unit id="528269093" translate="yes" xml:space="preserve">
           <source>Technologies</source>
           <target state="translated">Технологии</target>
         </trans-unit>
-                <trans-unit id="385087868" translate="yes" xml:space="preserve">
+        <trans-unit id="385087868" translate="yes" xml:space="preserve">
           <source>Desktop Application development order</source>
           <target state="translated">Заказ разработки классического приложения</target>
         </trans-unit>
-                <trans-unit id="558930340" translate="yes" xml:space="preserve">
+        <trans-unit id="558930340" translate="yes" xml:space="preserve">
           <source>Maintenance</source>
           <target state="translated">Поддерживание</target>
         </trans-unit>
-                <trans-unit id="840204093" translate="yes" xml:space="preserve">
+        <trans-unit id="840204093" translate="yes" xml:space="preserve">
           <source>Monthly</source>
           <target state="translated">Ежемесячно</target>
         </trans-unit>
-                <trans-unit id="683932751" translate="yes" xml:space="preserve">
+        <trans-unit id="683932751" translate="yes" xml:space="preserve">
           <source>Once</source>
           <target state="translated">Однократно</target>
         </trans-unit>
-                <trans-unit id="392278142" translate="yes" xml:space="preserve">
+        <trans-unit id="392278142" translate="yes" xml:space="preserve">
           <source>Search Engine Optimization order</source>
           <target state="translated">Заказ поисковой оптимизации</target>
         </trans-unit>
-                <trans-unit id="756612413" translate="yes" xml:space="preserve">
+        <trans-unit id="756612413" translate="yes" xml:space="preserve">
           <source>Service</source>
           <target state="translated">Сервис</target>
         </trans-unit>
-                <trans-unit id="148524406" translate="yes" xml:space="preserve">
+        <trans-unit id="148524406" translate="yes" xml:space="preserve">
           <source>Service-Oriented Application development order</source>
           <target state="translated">Заказ разработки сервис-ориентированного приложения</target>
         </trans-unit>
-                <trans-unit id="212549668" translate="yes" xml:space="preserve">
+        <trans-unit id="212549668" translate="yes" xml:space="preserve">
           <source>Web API development order</source>
           <target state="translated">Заказ веб ИПП разработки</target>
         </trans-unit>
-                <trans-unit id="832476750" translate="yes" xml:space="preserve">
+        <trans-unit id="832476750" translate="yes" xml:space="preserve">
           <source>Web Application development order</source>
           <target state="translated">Заказ разработки веб приложения</target>
         </trans-unit>
-                <trans-unit id="513669504" translate="yes" xml:space="preserve">
+        <trans-unit id="513669504" translate="yes" xml:space="preserve">
           <source>Website development order</source>
           <target state="translated">Заказ разработки веб сайта</target>
         </trans-unit>
-                <trans-unit id="904176767" translate="yes" xml:space="preserve">
+        <trans-unit id="904176767" translate="yes" xml:space="preserve">
           <source>Windows Phone App development order</source>
           <target state="translated">Заказ разработки приложений Windows Phone</target>
         </trans-unit>
-                <trans-unit id="371024018" translate="yes" xml:space="preserve">
+        <trans-unit id="371024018" translate="yes" xml:space="preserve">
           <source>Windows Service development order</source>
           <target state="translated">Заказ разработки службы Windows</target>
         </trans-unit>
-                <trans-unit id="976833174" translate="yes" xml:space="preserve">
+        <trans-unit id="976833174" translate="yes" xml:space="preserve">
           <source>Windows Store App development order</source>
           <target state="translated">Заказ разработки Windows Store приложения</target>
         </trans-unit>
-                <trans-unit id="451047948" translate="yes" xml:space="preserve">
+        <trans-unit id="451047948" translate="yes" xml:space="preserve">
           <source>Closed source</source>
           <target state="translated">Закрытый код</target>
         </trans-unit>
-                <trans-unit id="110601364" translate="yes" xml:space="preserve">
+        <trans-unit id="110601364" translate="yes" xml:space="preserve">
           <source>Current</source>
           <target state="translated">Актуальное</target>
         </trans-unit>
-                <trans-unit id="971793314" translate="yes" xml:space="preserve">
+        <trans-unit id="971793314" translate="yes" xml:space="preserve">
           <source>Deprecated</source>
           <target state="translated">Устаревший</target>
         </trans-unit>
-                <trans-unit id="782621841" translate="yes" xml:space="preserve">
+        <trans-unit id="782621841" translate="yes" xml:space="preserve">
           <source>Discontinued</source>
           <target state="translated">Прекращенный</target>
         </trans-unit>
-                <trans-unit id="668677371" translate="yes" xml:space="preserve">
+        <trans-unit id="668677371" translate="yes" xml:space="preserve">
           <source>License</source>
           <target state="translated">Лицензия</target>
         </trans-unit>
-                <trans-unit id="126334370" translate="yes" xml:space="preserve">
+        <trans-unit id="126334370" translate="yes" xml:space="preserve">
           <source>Open source</source>
           <target state="translated">Открытый код</target>
         </trans-unit>
-                <trans-unit id="694286924" translate="yes" xml:space="preserve">
+        <trans-unit id="694286924" translate="yes" xml:space="preserve">
           <source>Proprietary software</source>
           <target state="translated">Частное програмное обеспечение</target>
         </trans-unit>
-                <trans-unit id="204811466" translate="yes" xml:space="preserve">
+        <trans-unit id="204811466" translate="yes" xml:space="preserve">
           <source>Source model</source>
           <target state="translated">Исходный код</target>
         </trans-unit>
-                <trans-unit id="104050983" translate="yes" xml:space="preserve">
+        <trans-unit id="104050983" translate="yes" xml:space="preserve">
           <source>Working state</source>
           <target state="translated">Состояние</target>
         </trans-unit>
-                <trans-unit id="974269746" translate="yes" xml:space="preserve">
+        <trans-unit id="974269746" translate="yes" xml:space="preserve">
           <source>Concierge</source>
           <target state="translated">Консьерж</target>
         </trans-unit>
-                <trans-unit id="724854542" translate="yes" xml:space="preserve">
+        <trans-unit id="724854542" translate="yes" xml:space="preserve">
           <source>Age</source>
           <target state="translated">Возраст</target>
         </trans-unit>
-                <trans-unit id="802024377" translate="yes" xml:space="preserve">
+        <trans-unit id="802024377" translate="yes" xml:space="preserve">
           <source>Algorithms</source>
           <target state="translated">Алгоритмы</target>
         </trans-unit>
-                <trans-unit id="185637040" translate="yes" xml:space="preserve">
+        <trans-unit id="185637040" translate="yes" xml:space="preserve">
           <source>American University of Armenia</source>
           <target state="translated">Американский университет Армении</target>
         </trans-unit>
-                <trans-unit id="564771585" translate="yes" xml:space="preserve">
+        <trans-unit id="564771585" translate="yes" xml:space="preserve">
           <source>Welcome to my website.</source>
           <target state="translated">Добро пожаловать на мой сайт.</target>
         </trans-unit>
-                <trans-unit id="813577219" translate="yes" xml:space="preserve">
+        <trans-unit id="813577219" translate="yes" xml:space="preserve">
           <source>Bachelor of Informatics and Applied Mathematics, Computer Science</source>
           <target state="translated">Бакалавр информатики и прикладной математики, компьютерных наук</target>
         </trans-unit>
-                <trans-unit id="208622504" translate="yes" xml:space="preserve">
+        <trans-unit id="208622504" translate="yes" xml:space="preserve">
           <source>Education</source>
           <target state="translated">Образование</target>
         </trans-unit>
-                <trans-unit id="403152561" translate="yes" xml:space="preserve">
+        <trans-unit id="403152561" translate="yes" xml:space="preserve">
           <source>E-Mail</source>
           <target state="translated">Эл. Почта</target>
         </trans-unit>
-                <trans-unit id="997851654" translate="yes" xml:space="preserve">
+        <trans-unit id="997851654" translate="yes" xml:space="preserve">
           <source>Tigran Torosyan</source>
           <target state="translated">Тигран Торосян</target>
         </trans-unit>
-                <trans-unit id="695998028" translate="yes" xml:space="preserve">
+        <trans-unit id="695998028" translate="yes" xml:space="preserve">
           <source>Tigran TIKSN Torosyan</source>
           <target state="translated">Тигран ТИКСН Торосян</target>
         </trans-unit>
-                <trans-unit id="554412405" translate="yes" xml:space="preserve">
+        <trans-unit id="554412405" translate="yes" xml:space="preserve">
           <source>Hello, world!</source>
           <target state="translated">Привет, мир!</target>
         </trans-unit>
-                <trans-unit id="469078176" translate="yes" xml:space="preserve">
+        <trans-unit id="469078176" translate="yes" xml:space="preserve">
           <source>Italian</source>
           <target state="translated">Итальянский</target>
         </trans-unit>
-                <trans-unit id="837013265" translate="yes" xml:space="preserve">
+        <trans-unit id="837013265" translate="yes" xml:space="preserve">
           <source>Languages</source>
           <target state="translated">Языки</target>
         </trans-unit>
-                <trans-unit id="754732611" translate="yes" xml:space="preserve">
+        <trans-unit id="754732611" translate="yes" xml:space="preserve">
           <source>Master of Computer Information Science, Computer Science</source>
           <target state="translated">Магистр компьютерных информационных наук, компьютерных наук</target>
         </trans-unit>
-                <trans-unit id="476889407" translate="yes" xml:space="preserve">
+        <trans-unit id="476889407" translate="yes" xml:space="preserve">
           <source>Software Engineer</source>
           <target state="translated">Инженер программного обеспечения</target>
         </trans-unit>
-                <trans-unit id="804677234" translate="yes" xml:space="preserve">
+        <trans-unit id="804677234" translate="yes" xml:space="preserve">
           <source>Occupation</source>
           <target state="translated">Занятие</target>
         </trans-unit>
-                <trans-unit id="284143358" translate="yes" xml:space="preserve">
+        <trans-unit id="284143358" translate="yes" xml:space="preserve">
           <source>Skills</source>
           <target state="translated">Навыки</target>
         </trans-unit>
-                <trans-unit id="309453572" translate="yes" xml:space="preserve">
+        <trans-unit id="309453572" translate="yes" xml:space="preserve">
           <source>TIKSN Blog</source>
           <target state="translated">ТИКСН Блог</target>
         </trans-unit>
-                <trans-unit id="732728254" translate="yes" xml:space="preserve">
+        <trans-unit id="732728254" translate="yes" xml:space="preserve">
           <source>Twitter</source>
           <target state="translated">Твиттер</target>
         </trans-unit>
-                <trans-unit id="880877990" translate="yes" xml:space="preserve">
+        <trans-unit id="880877990" translate="yes" xml:space="preserve">
           <source>Yerevan State University</source>
           <target state="translated">Ереванский государственный университет</target>
         </trans-unit>
-                <trans-unit id="115421686" translate="yes" xml:space="preserve">
+        <trans-unit id="115421686" translate="yes" xml:space="preserve">
           <source>Me</source>
           <target state="translated">Я</target>
         </trans-unit>
-                <trans-unit id="151029036" translate="yes" xml:space="preserve">
+        <trans-unit id="151029036" translate="yes" xml:space="preserve">
           <source>Contact Me</source>
           <target state="translated">Свяжитесь со мной</target>
         </trans-unit>
-                <trans-unit id="208760457" translate="yes" xml:space="preserve">
+        <trans-unit id="208760457" translate="yes" xml:space="preserve">
           <source>Office app development</source>
           <target state="translated">Разработка Office приложения</target>
         </trans-unit>
-                <trans-unit id="903097948" translate="yes" xml:space="preserve">
+        <trans-unit id="903097948" translate="yes" xml:space="preserve">
           <source>PowerShell module development</source>
           <target state="translated">Разработка PowerShell модуля</target>
         </trans-unit>
-                <trans-unit id="923565547" translate="yes" xml:space="preserve">
+        <trans-unit id="923565547" translate="yes" xml:space="preserve">
           <source>SharePoint app development</source>
           <target state="translated">Разработка SharePoint приложения</target>
         </trans-unit>
-                <trans-unit id="711406928" translate="yes" xml:space="preserve">
+        <trans-unit id="711406928" translate="yes" xml:space="preserve">
           <source>PowerShell module development order</source>
           <target state="translated">Заказ разработки PowerShell модуля</target>
         </trans-unit>
-                <trans-unit id="754333962" translate="yes" xml:space="preserve">
+        <trans-unit id="754333962" translate="yes" xml:space="preserve">
           <source>No results found.</source>
           <target state="translated">Результаты не найдены.</target>
         </trans-unit>
-                <trans-unit id="462896969" translate="yes" xml:space="preserve">
+        <trans-unit id="462896969" translate="yes" xml:space="preserve">
           <source>Powered by Bing®</source>
           <target state="translated">На платформе Bing®</target>
         </trans-unit>
-                <trans-unit id="996647881" translate="yes" xml:space="preserve">
+        <trans-unit id="996647881" translate="yes" xml:space="preserve">
           <source>Powered by Microsoft® Translator</source>
           <target state="translated">На платформе Microsoft® Translator</target>
         </trans-unit>
-                <trans-unit id="188347036" translate="yes" xml:space="preserve">
+        <trans-unit id="188347036" translate="yes" xml:space="preserve">
           <source>Search</source>
           <target state="translated">Поиск</target>
         </trans-unit>
-                <trans-unit id="881097258" translate="yes" xml:space="preserve">
+        <trans-unit id="881097258" translate="yes" xml:space="preserve">
           <source>Search ...</source>
           <target state="translated">Поиск ...</target>
         </trans-unit>
-                <trans-unit id="636584069" translate="yes" xml:space="preserve">
+        <trans-unit id="636584069" translate="yes" xml:space="preserve">
           <source>Search results</source>
           <target state="translated">Результаты поиска</target>
         </trans-unit>
-                <trans-unit id="423457627" translate="yes" xml:space="preserve">
+        <trans-unit id="423457627" translate="yes" xml:space="preserve">
           <source>Spelling suggestions</source>
           <target state="translated">Рекомендации правописания</target>
         </trans-unit>
-                <trans-unit id="381036885" translate="yes" xml:space="preserve">
+        <trans-unit id="381036885" translate="yes" xml:space="preserve">
           <source>Synonyms</source>
           <target state="translated">Синонимы</target>
         </trans-unit>
-                <trans-unit id="584660593" translate="yes" xml:space="preserve">
+        <trans-unit id="584660593" translate="yes" xml:space="preserve">
           <source>Translations</source>
           <target state="translated">Переводы</target>
         </trans-unit>
-                <trans-unit id="215349550" translate="yes" xml:space="preserve">
+        <trans-unit id="215349550" translate="yes" xml:space="preserve">
           <source>Technologies used</source>
           <target state="translated">Используемые технологии</target>
         </trans-unit>
-                <trans-unit id="881908374" translate="yes" xml:space="preserve">
+        <trans-unit id="881908374" translate="yes" xml:space="preserve">
           <source>Data-Centric Business Application development</source>
           <target state="translated">Разработка бизнес-приложений ориентированных на данные</target>
         </trans-unit>
-                <trans-unit id="306641101" translate="yes" xml:space="preserve">
+        <trans-unit id="306641101" translate="yes" xml:space="preserve">
           <source>Data-Centric Business Application development order</source>
           <target state="translated">Заказ разработки бизнес-приложений ориентированных на данные</target>
         </trans-unit>
-                <trans-unit id="291840828" translate="yes" xml:space="preserve">
+        <trans-unit id="291840828" translate="yes" xml:space="preserve">
           <source>Error occurred while system were trying to send an email.</source>
           <target state="translated">Ошибка произошла, когда система пытается отправить письмо.</target>
         </trans-unit>
-                <trans-unit id="334947186" translate="yes" xml:space="preserve">
+        <trans-unit id="334947186" translate="yes" xml:space="preserve">
           <source>Ukrainian</source>
           <target state="translated">Украинский</target>
         </trans-unit>
-                <trans-unit id="103927163" translate="yes" xml:space="preserve">
+        <trans-unit id="103927163" translate="yes" xml:space="preserve">
           <source>Open-source software</source>
           <target state="translated">Программное обеспечение с открытым исходным кодом</target>
         </trans-unit>
-                <trans-unit id="529324189" translate="yes" xml:space="preserve">
+        <trans-unit id="529324189" translate="yes" xml:space="preserve">
           <source>The Weather of Westeros</source>
           <target state="translated">The Weather of Westeros</target>
         </trans-unit>
-                <trans-unit id="515817850" translate="yes" xml:space="preserve">
+        <trans-unit id="515817850" translate="yes" xml:space="preserve">
           <source>Visual Studio LightSwitch</source>
           <target state="translated">Visual Studio LightSwitch</target>
         </trans-unit>
-                <trans-unit id="308178739" translate="yes" xml:space="preserve">
+        <trans-unit id="308178739" translate="yes" xml:space="preserve">
           <source>Windows CE/Mobule application development</source>
           <target state="translated">Разработка приложений Windows CE / Mobule</target>
         </trans-unit>
-                <trans-unit id="816611612" translate="yes" xml:space="preserve">
+        <trans-unit id="816611612" translate="yes" xml:space="preserve">
           <source>BleepMe</source>
           <target state="translated">BleepMe</target>
         </trans-unit>
-                <trans-unit id="607754997" translate="yes" xml:space="preserve">
+        <trans-unit id="607754997" translate="yes" xml:space="preserve">
           <source>Denomination Calculator</source>
           <target state="translated">Denomination Calculator</target>
         </trans-unit>
-                <trans-unit id="614034682" translate="yes" xml:space="preserve">
+        <trans-unit id="614034682" translate="yes" xml:space="preserve">
           <source>Grocery Checklist</source>
           <target state="translated">Grocery Checklist</target>
         </trans-unit>
-                <trans-unit id="355868753" translate="yes" xml:space="preserve">
+        <trans-unit id="355868753" translate="yes" xml:space="preserve">
           <source>For Windows 10</source>
           <target state="translated">Для Windows 10</target>
         </trans-unit>
-                <trans-unit id="594903907" translate="yes" xml:space="preserve">
+        <trans-unit id="594903907" translate="yes" xml:space="preserve">
           <source>For Windows 8.1 and earlier</source>
           <target state="translated">Для Windows 8.1 и более ранних версий</target>
         </trans-unit>
-                <trans-unit id="977944607" translate="yes" xml:space="preserve">
+        <trans-unit id="977944607" translate="yes" xml:space="preserve">
           <source>Details</source>
           <target state="translated">Подробности</target>
         </trans-unit>
-                <trans-unit id="484534012" translate="yes" xml:space="preserve">
+        <trans-unit id="484534012" translate="yes" xml:space="preserve">
           <source>Custom Search</source>
           <target state="translated">Пользовательский поиск</target>
         </trans-unit>
-                <trans-unit id="763272923" translate="yes" xml:space="preserve">
+        <trans-unit id="763272923" translate="yes" xml:space="preserve">
           <source>Senior Software Engineer</source>
           <target state="translated">Старший инженер-программист</target>
         </trans-unit>
-                <trans-unit id="171400643" translate="yes" xml:space="preserve">
+        <trans-unit id="171400643" translate="yes" xml:space="preserve">
           <source>Central Bank of Armenia</source>
           <target state="translated">Центра́льный банк Армении</target>
         </trans-unit>
-                <trans-unit id="224205610" translate="yes" xml:space="preserve">
+        <trans-unit id="224205610" translate="yes" xml:space="preserve">
           <source>European Central Bank</source>
           <target state="translated">Европейский центральный банк</target>
         </trans-unit>
-                <trans-unit id="344909065" translate="yes" xml:space="preserve">
+        <trans-unit id="344909065" translate="yes" xml:space="preserve">
           <source>National Bank of Ukraine</source>
           <target state="translated">Национальный банк Украины</target>
         </trans-unit>
-                <trans-unit id="466192205" translate="yes" xml:space="preserve">
+        <trans-unit id="466192205" translate="yes" xml:space="preserve">
           <source>Central Bank of Russia</source>
           <target state="translated">Банк России</target>
         </trans-unit>
-                <trans-unit id="645369586" translate="yes" xml:space="preserve">
+        <trans-unit id="645369586" translate="yes" xml:space="preserve">
           <source>Reserve Bank of Australia</source>
           <target state="translated">Резервный банк Австралии</target>
         </trans-unit>
-                <trans-unit id="724813953" translate="yes" xml:space="preserve">
+        <trans-unit id="724813953" translate="yes" xml:space="preserve">
           <source>Federal Reserve System</source>
           <target state="translated">Федеральная резервная система</target>
         </trans-unit>
-                <trans-unit id="734344590" translate="yes" xml:space="preserve">
+        <trans-unit id="734344590" translate="yes" xml:space="preserve">
           <source>Bank of Canada</source>
           <target state="translated">Банк Канады</target>
         </trans-unit>
-                <trans-unit id="744582913" translate="yes" xml:space="preserve">
+        <trans-unit id="744582913" translate="yes" xml:space="preserve">
           <source>The Central Bank of the Republic of Armenia</source>
           <target state="translated">Центральный банк Республики Армения</target>
         </trans-unit>
-                <trans-unit id="748923176" translate="yes" xml:space="preserve">
+        <trans-unit id="748923176" translate="yes" xml:space="preserve">
           <source>Swiss National Bank</source>
           <target state="translated">Национальный банк Швейцарии</target>
         </trans-unit>
-                <trans-unit id="758955736" translate="yes" xml:space="preserve">
+        <trans-unit id="758955736" translate="yes" xml:space="preserve">
           <source>Bank of England</source>
           <target state="translated">Банк Англии</target>
         </trans-unit>
-                <trans-unit id="937230874" translate="yes" xml:space="preserve">
+        <trans-unit id="937230874" translate="yes" xml:space="preserve">
           <source>The Central Bank of the Russian Federation</source>
           <target state="translated">Центральный банк Российской Федерации</target>
         </trans-unit>
-                <trans-unit id="999430243" translate="yes" xml:space="preserve">
+        <trans-unit id="999430243" translate="yes" xml:space="preserve">
           <source>currencylayer.com</source>
           <target state="new">currencylayer.com</target>
         </trans-unit>
-                <trans-unit id="729270460" translate="yes" xml:space="preserve">
+        <trans-unit id="729270460" translate="yes" xml:space="preserve">
           <source>The Federal Reserve, the central bank of the United States</source>
           <target state="new">The Federal Reserve, the central bank of the United States</target>
         </trans-unit>
-                <trans-unit id="553783564" translate="yes" xml:space="preserve">
+        <trans-unit id="553783564" translate="yes" xml:space="preserve">
           <source>National Bank of Poland</source>
           <target state="new">National Bank of Poland</target>
         </trans-unit>
-            </group>
-        </body>
-    </file>
+      </group>
+    </body>
+  </file>
 </xliff>

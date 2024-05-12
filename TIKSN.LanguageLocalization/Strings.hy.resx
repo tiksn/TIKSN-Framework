@@ -1,540 +1,540 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-    <resheader name="resmimetype">
-        <value>text/microsoft-resx</value>
-    </resheader>
-    <resheader name="version">
-        <value>2.0</value>
-    </resheader>
-    <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    </resheader>
-    <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    </resheader>
-    <data name="931254976" xml:space="preserve">
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="931254976" xml:space="preserve">
     <value>Գովազդ</value>
   </data>
-    <data name="365281568" xml:space="preserve">
+  <data name="365281568" xml:space="preserve">
     <value>Այս ծրագրի մասին</value>
   </data>
-    <data name="445651597" xml:space="preserve">
+  <data name="445651597" xml:space="preserve">
     <value>Մուգ</value>
   </data>
-    <data name="599209173" xml:space="preserve">
+  <data name="599209173" xml:space="preserve">
     <value>Կարգավորումներ</value>
   </data>
-    <data name="706106182" xml:space="preserve">
+  <data name="706106182" xml:space="preserve">
     <value>Գաղտնիություն և պայմաններ</value>
   </data>
-    <data name="846795929" xml:space="preserve">
+  <data name="846795929" xml:space="preserve">
     <value>Բաց</value>
   </data>
-    <data name="971869905" xml:space="preserve">
+  <data name="971869905" xml:space="preserve">
     <value>Ոճ</value>
   </data>
-    <data name="179741382" xml:space="preserve">
+  <data name="179741382" xml:space="preserve">
     <value>Լեզու</value>
   </data>
-    <data name="239441347" xml:space="preserve">
+  <data name="239441347" xml:space="preserve">
     <value>Հասանելի է {0} լեզուներով</value>
   </data>
-    <data name="102475419" xml:space="preserve">
+  <data name="102475419" xml:space="preserve">
     <value>{0} լեզուներ</value>
   </data>
-    <data name="269773285" xml:space="preserve">
+  <data name="269773285" xml:space="preserve">
     <value>Օժանդակությունը {0} ամսական</value>
   </data>
-    <data name="870549797" xml:space="preserve">
+  <data name="870549797" xml:space="preserve">
     <value>Մինչև {0} էջ</value>
   </data>
-    <data name="121714030" xml:space="preserve">
+  <data name="121714030" xml:space="preserve">
     <value>Տարբերակ {0}</value>
   </data>
-    <data name="523855489" xml:space="preserve">
+  <data name="523855489" xml:space="preserve">
     <value>Ապրելու արվեստ</value>
   </data>
-    <data name="359138423" xml:space="preserve">
+  <data name="359138423" xml:space="preserve">
     <value>Կապ</value>
   </data>
-    <data name="311561578" xml:space="preserve">
+  <data name="311561578" xml:space="preserve">
     <value>Աշխատասեղան և Սպասարկիչ</value>
   </data>
-    <data name="795089363" xml:space="preserve">
+  <data name="795089363" xml:space="preserve">
     <value>Աշխատասեղանային գործադրի ծրագրավորում</value>
   </data>
-    <data name="148689082" xml:space="preserve">
+  <data name="148689082" xml:space="preserve">
     <value>Էլ-փոստ՝</value>
   </data>
-    <data name="854735407" xml:space="preserve">
+  <data name="854735407" xml:space="preserve">
     <value>Անուն՝</value>
   </data>
-    <data name="349904862" xml:space="preserve">
+  <data name="349904862" xml:space="preserve">
     <value>Ազգանուն՝</value>
   </data>
-    <data name="408289614" xml:space="preserve">
+  <data name="408289614" xml:space="preserve">
     <value>Ուղերձ՝</value>
   </data>
-    <data name="649290117" xml:space="preserve">
+  <data name="649290117" xml:space="preserve">
     <value>Բջջային և Գրասալիկ</value>
   </data>
-    <data name="762797472" xml:space="preserve">
+  <data name="762797472" xml:space="preserve">
     <value>Արտադրանք</value>
   </data>
-    <data name="733244108" xml:space="preserve">
+  <data name="733244108" xml:space="preserve">
     <value>Որոնիչի լավարկում</value>
   </data>
-    <data name="520543650" xml:space="preserve">
+  <data name="520543650" xml:space="preserve">
     <value>Ծառայությունա-կողմնորոշված գործադրի ծրագրավորում</value>
   </data>
-    <data name="330429385" xml:space="preserve">
+  <data name="330429385" xml:space="preserve">
     <value>Ծառայություններ</value>
   </data>
-    <data name="774579166" xml:space="preserve">
+  <data name="774579166" xml:space="preserve">
     <value>Նորագույն և Լավագույն Տեխնոլոգիաներ</value>
   </data>
-    <data name="635603959" xml:space="preserve">
+  <data name="635603959" xml:space="preserve">
     <value>ՍՏՈԶ</value>
   </data>
-    <data name="989199644" xml:space="preserve">
+  <data name="989199644" xml:space="preserve">
     <value>TIKSN</value>
   </data>
-    <data name="623577100" xml:space="preserve">
+  <data name="623577100" xml:space="preserve">
     <value>TIKSN Framework</value>
   </data>
-    <data name="950501550" xml:space="preserve">
+  <data name="950501550" xml:space="preserve">
     <value>Վեբ</value>
   </data>
-    <data name="902123282" xml:space="preserve">
+  <data name="902123282" xml:space="preserve">
     <value>Վեբ ԳԾՄ ծրագրավորում</value>
   </data>
-    <data name="899831985" xml:space="preserve">
+  <data name="899831985" xml:space="preserve">
     <value>Վեբ գործադրի ծրագրավորում</value>
   </data>
-    <data name="706410578" xml:space="preserve">
+  <data name="706410578" xml:space="preserve">
     <value>Կայքի ծրագրավորում</value>
   </data>
-    <data name="626508219" xml:space="preserve">
+  <data name="626508219" xml:space="preserve">
     <value>Windows Phone գործադրի ծրագրավորում</value>
   </data>
-    <data name="237037289" xml:space="preserve">
+  <data name="237037289" xml:space="preserve">
     <value>Windows Ծառայության ծրագրավորում</value>
   </data>
-    <data name="997898627" xml:space="preserve">
+  <data name="997898627" xml:space="preserve">
     <value>Windows Store գործադրի ծրագրավորում</value>
   </data>
-    <data name="577995861" xml:space="preserve">
+  <data name="577995861" xml:space="preserve">
     <value>Բոլոր իրավունքները պահպանված են։</value>
   </data>
-    <data name="660079096" xml:space="preserve">
+  <data name="660079096" xml:space="preserve">
     <value>Ավելին</value>
   </data>
-    <data name="378313905" xml:space="preserve">
+  <data name="378313905" xml:space="preserve">
     <value>Հայերեն</value>
   </data>
-    <data name="383838876" xml:space="preserve">
+  <data name="383838876" xml:space="preserve">
     <value>Հասանելի է մեկ լեզվով</value>
   </data>
-    <data name="627036953" xml:space="preserve">
+  <data name="627036953" xml:space="preserve">
     <value>Կապնվել</value>
   </data>
-    <data name="655862457" xml:space="preserve">
+  <data name="655862457" xml:space="preserve">
     <value>Աշխատասեղանային գործադիր</value>
   </data>
-    <data name="914899034" xml:space="preserve">
+  <data name="914899034" xml:space="preserve">
     <value>Անգլերեն</value>
   </data>
-    <data name="268545567" xml:space="preserve">
+  <data name="268545567" xml:space="preserve">
     <value>Ծրագրաշարեր և Ծառայություններ</value>
   </data>
-    <data name="507606425" xml:space="preserve">
+  <data name="507606425" xml:space="preserve">
     <value>Սկզբնական թողարկում</value>
   </data>
-    <data name="156307418" xml:space="preserve">
+  <data name="156307418" xml:space="preserve">
     <value>Վավեր էլ-փոստի հասցե չէ</value>
   </data>
-    <data name="874180444" xml:space="preserve">
+  <data name="874180444" xml:space="preserve">
     <value>Վերջին թողարկում</value>
   </data>
-    <data name="573149082" xml:space="preserve">
+  <data name="573149082" xml:space="preserve">
     <value>Օժանդակվում է</value>
   </data>
-    <data name="324264316" xml:space="preserve">
+  <data name="324264316" xml:space="preserve">
     <value>Ոչ</value>
   </data>
-    <data name="288886816" xml:space="preserve">
+  <data name="288886816" xml:space="preserve">
     <value>Պարտադիր է</value>
   </data>
-    <data name="271231827" xml:space="preserve">
+  <data name="271231827" xml:space="preserve">
     <value>Ռուսերեն</value>
   </data>
-    <data name="245098873" xml:space="preserve">
+  <data name="245098873" xml:space="preserve">
     <value>Ասպարեզ</value>
   </data>
-    <data name="992400356" xml:space="preserve">
+  <data name="992400356" xml:space="preserve">
     <value>Նաև տես</value>
   </data>
-    <data name="475539585" xml:space="preserve">
+  <data name="475539585" xml:space="preserve">
     <value>Ուղարկել</value>
   </data>
-    <data name="198239125" xml:space="preserve">
+  <data name="198239125" xml:space="preserve">
     <value>Ծառայությունա-կողմնորոշված գործադիր</value>
   </data>
-    <data name="851949420" xml:space="preserve">
+  <data name="851949420" xml:space="preserve">
     <value>Ծրագրաշարային գրադարան</value>
   </data>
-    <data name="538968287" xml:space="preserve">
+  <data name="538968287" xml:space="preserve">
     <value>Այցելել</value>
   </data>
-    <data name="737791768" xml:space="preserve">
+  <data name="737791768" xml:space="preserve">
     <value>Վեբ ԳԾՄ</value>
   </data>
-    <data name="976146344" xml:space="preserve">
+  <data name="976146344" xml:space="preserve">
     <value>Վեբ գործադիր</value>
   </data>
-    <data name="986035763" xml:space="preserve">
+  <data name="986035763" xml:space="preserve">
     <value>Կայք</value>
   </data>
-    <data name="627226462" xml:space="preserve">
+  <data name="627226462" xml:space="preserve">
     <value>Windows Phone գործադիր</value>
   </data>
-    <data name="578512547" xml:space="preserve">
+  <data name="578512547" xml:space="preserve">
     <value>Windows Ծառայություն</value>
   </data>
-    <data name="543312789" xml:space="preserve">
+  <data name="543312789" xml:space="preserve">
     <value>Windows Store գործադիր</value>
   </data>
-    <data name="182422283" xml:space="preserve">
+  <data name="182422283" xml:space="preserve">
     <value>Այո</value>
   </data>
-    <data name="754876063" xml:space="preserve">
+  <data name="754876063" xml:space="preserve">
     <value>Ձեր էլ-փոստի հասցեն</value>
   </data>
-    <data name="603429657" xml:space="preserve">
+  <data name="603429657" xml:space="preserve">
     <value>Ձեր անունը</value>
   </data>
-    <data name="785283399" xml:space="preserve">
+  <data name="785283399" xml:space="preserve">
     <value>Ձեր ազգանունը</value>
   </data>
-    <data name="897347270" xml:space="preserve">
+  <data name="897347270" xml:space="preserve">
     <value>Ընդլայնված</value>
   </data>
-    <data name="222101134" xml:space="preserve">
+  <data name="222101134" xml:space="preserve">
     <value>Այս վարձաչափը հարմար է միջին բիզնեսի համար։</value>
   </data>
-    <data name="313662951" xml:space="preserve">
+  <data name="313662951" xml:space="preserve">
     <value>Հիմնական</value>
   </data>
-    <data name="317093501" xml:space="preserve">
+  <data name="317093501" xml:space="preserve">
     <value>Այս վարձաչափը հարմար է սկսնակ և փոքր բիզնեսի համար։</value>
   </data>
-    <data name="488609985" xml:space="preserve">
+  <data name="488609985" xml:space="preserve">
     <value>Հիմնական ՕՄ նախագծում</value>
   </data>
-    <data name="576421501" xml:space="preserve">
+  <data name="576421501" xml:space="preserve">
     <value>Պարզ ՕՄ նախագծում</value>
   </data>
-    <data name="966065986" xml:space="preserve">
+  <data name="966065986" xml:space="preserve">
     <value>Սպասառուի գործադիր</value>
   </data>
-    <data name="781252660" xml:space="preserve">
+  <data name="781252660" xml:space="preserve">
     <value>Խորհրդատվություն</value>
   </data>
-    <data name="993427659" xml:space="preserve">
+  <data name="993427659" xml:space="preserve">
     <value>Հարմարեցրած պատվեր</value>
   </data>
-    <data name="847898437" xml:space="preserve">
+  <data name="847898437" xml:space="preserve">
     <value>Տվյալներ</value>
   </data>
-    <data name="564698540" xml:space="preserve">
+  <data name="564698540" xml:space="preserve">
     <value>Տեղակայում</value>
   </data>
-    <data name="112937225" xml:space="preserve">
+  <data name="112937225" xml:space="preserve">
     <value>Տիրույթի էլ-փոստի ստեղծում</value>
   </data>
-    <data name="274121967" xml:space="preserve">
+  <data name="274121967" xml:space="preserve">
     <value>Խնայող</value>
   </data>
-    <data name="900398722" xml:space="preserve">
+  <data name="900398722" xml:space="preserve">
     <value>Այս վարձաչափը հարմար է անձնական վեբ-կայքերի համար։</value>
   </data>
-    <data name="162454876" xml:space="preserve">
+  <data name="162454876" xml:space="preserve">
     <value>Ընդլայելի տեղայնացում</value>
   </data>
-    <data name="764935327" xml:space="preserve">
+  <data name="764935327" xml:space="preserve">
     <value>Միջին բիզնես</value>
   </data>
-    <data name="434690284" xml:space="preserve">
+  <data name="434690284" xml:space="preserve">
     <value>Նորաոճ ՕՄ նախագծում</value>
   </data>
-    <data name="779269722" xml:space="preserve">
+  <data name="779269722" xml:space="preserve">
     <value>1 լեզու (չտեղայնացվող)</value>
   </data>
-    <data name="757024408" xml:space="preserve">
+  <data name="757024408" xml:space="preserve">
     <value>Պատվիրել</value>
   </data>
-    <data name="907431629" xml:space="preserve">
+  <data name="907431629" xml:space="preserve">
     <value>Անձնական</value>
   </data>
-    <data name="330870993" xml:space="preserve">
+  <data name="330870993" xml:space="preserve">
     <value>Փոքր բիզնես</value>
   </data>
-    <data name="528269093" xml:space="preserve">
+  <data name="528269093" xml:space="preserve">
     <value>Տեխնոլոգիաներ</value>
   </data>
-    <data name="385087868" xml:space="preserve">
+  <data name="385087868" xml:space="preserve">
     <value>Աշխատասեղանային գործադրի ծրագրավորման պատվեր</value>
   </data>
-    <data name="558930340" xml:space="preserve">
+  <data name="558930340" xml:space="preserve">
     <value>Օժանդակություն</value>
   </data>
-    <data name="840204093" xml:space="preserve">
+  <data name="840204093" xml:space="preserve">
     <value>Ամսական</value>
   </data>
-    <data name="683932751" xml:space="preserve">
+  <data name="683932751" xml:space="preserve">
     <value>Մեկանգամյա</value>
   </data>
-    <data name="392278142" xml:space="preserve">
+  <data name="392278142" xml:space="preserve">
     <value>Որոնիչի լավարկման պատվեր</value>
   </data>
-    <data name="756612413" xml:space="preserve">
+  <data name="756612413" xml:space="preserve">
     <value>Ծառայություն</value>
   </data>
-    <data name="148524406" xml:space="preserve">
+  <data name="148524406" xml:space="preserve">
     <value>Ծառայությունա-կողմնորոշված գործադրի ծրագրավորման պատվեր</value>
   </data>
-    <data name="212549668" xml:space="preserve">
+  <data name="212549668" xml:space="preserve">
     <value>Վեբ ԳԾՄ ծրագրավորման պատվեր</value>
   </data>
-    <data name="832476750" xml:space="preserve">
+  <data name="832476750" xml:space="preserve">
     <value>Վեբ գործադրի ծրագրավորման պատվեր</value>
   </data>
-    <data name="513669504" xml:space="preserve">
+  <data name="513669504" xml:space="preserve">
     <value>Կայքի ծրագրավորման պատվեր</value>
   </data>
-    <data name="904176767" xml:space="preserve">
+  <data name="904176767" xml:space="preserve">
     <value>Windows Phone գործադրի ծրագրավորման պատվեր</value>
   </data>
-    <data name="371024018" xml:space="preserve">
+  <data name="371024018" xml:space="preserve">
     <value>Windows Ծառայության ծրագրավորման պատվեր</value>
   </data>
-    <data name="976833174" xml:space="preserve">
+  <data name="976833174" xml:space="preserve">
     <value>Windows Store գործադրի ծրագրավորման պատվեր</value>
   </data>
-    <data name="451047948" xml:space="preserve">
+  <data name="451047948" xml:space="preserve">
     <value>Փակ կոդ</value>
   </data>
-    <data name="110601364" xml:space="preserve">
+  <data name="110601364" xml:space="preserve">
     <value>Արդի</value>
   </data>
-    <data name="971793314" xml:space="preserve">
+  <data name="971793314" xml:space="preserve">
     <value>Արժեզրկված</value>
   </data>
-    <data name="782621841" xml:space="preserve">
+  <data name="782621841" xml:space="preserve">
     <value>Դադարեցված</value>
   </data>
-    <data name="668677371" xml:space="preserve">
+  <data name="668677371" xml:space="preserve">
     <value>Արտոնագիր</value>
   </data>
-    <data name="126334370" xml:space="preserve">
+  <data name="126334370" xml:space="preserve">
     <value>Բաց կոդ</value>
   </data>
-    <data name="694286924" xml:space="preserve">
+  <data name="694286924" xml:space="preserve">
     <value>Գույքային ծրագիր</value>
   </data>
-    <data name="204811466" xml:space="preserve">
+  <data name="204811466" xml:space="preserve">
     <value>Ծրագրային կոդի մոդել</value>
   </data>
-    <data name="104050983" xml:space="preserve">
+  <data name="104050983" xml:space="preserve">
     <value>Կարգավիճակ</value>
   </data>
-    <data name="974269746" xml:space="preserve">
+  <data name="974269746" xml:space="preserve">
     <value>Կոնսիերժ</value>
   </data>
-    <data name="724854542" xml:space="preserve">
+  <data name="724854542" xml:space="preserve">
     <value>Տարիքը</value>
   </data>
-    <data name="802024377" xml:space="preserve">
+  <data name="802024377" xml:space="preserve">
     <value>Ալգորիթմներ</value>
   </data>
-    <data name="185637040" xml:space="preserve">
+  <data name="185637040" xml:space="preserve">
     <value>Հայաստանի Ամերիկյան Համալսարան</value>
   </data>
-    <data name="564771585" xml:space="preserve">
+  <data name="564771585" xml:space="preserve">
     <value>Բարի գալուստ իմ կայք։</value>
   </data>
-    <data name="813577219" xml:space="preserve">
+  <data name="813577219" xml:space="preserve">
     <value>Ինֆորմատիկայի եւ կիրառական մաթեմատիկայի բակալավր, համակարգչային գիտության</value>
   </data>
-    <data name="208622504" xml:space="preserve">
+  <data name="208622504" xml:space="preserve">
     <value>Կրթություն</value>
   </data>
-    <data name="403152561" xml:space="preserve">
+  <data name="403152561" xml:space="preserve">
     <value>Էլ-փոստ</value>
   </data>
-    <data name="997851654" xml:space="preserve">
+  <data name="997851654" xml:space="preserve">
     <value>Տիգրան Թորոսյան</value>
   </data>
-    <data name="695998028" xml:space="preserve">
+  <data name="695998028" xml:space="preserve">
     <value>Տիգրան ՏԻԿՍՆ Թորոսյան</value>
   </data>
-    <data name="554412405" xml:space="preserve">
+  <data name="554412405" xml:space="preserve">
     <value>Բարև՛ աշխարհ։</value>
   </data>
-    <data name="469078176" xml:space="preserve">
+  <data name="469078176" xml:space="preserve">
     <value>Իտալերեն</value>
   </data>
-    <data name="837013265" xml:space="preserve">
+  <data name="837013265" xml:space="preserve">
     <value>Լեզուներ</value>
   </data>
-    <data name="754732611" xml:space="preserve">
+  <data name="754732611" xml:space="preserve">
     <value>Համակարգչային տեղեկատվական գիտությունների մագիստրոս, համակարգչային գիտության</value>
   </data>
-    <data name="476889407" xml:space="preserve">
+  <data name="476889407" xml:space="preserve">
     <value>Ծրագրային ապահովման ինժեներ</value>
   </data>
-    <data name="804677234" xml:space="preserve">
+  <data name="804677234" xml:space="preserve">
     <value>Զբաղվածությունը</value>
   </data>
-    <data name="284143358" xml:space="preserve">
+  <data name="284143358" xml:space="preserve">
     <value>Հմտություններ</value>
   </data>
-    <data name="309453572" xml:space="preserve">
+  <data name="309453572" xml:space="preserve">
     <value>ՏԻԿՍՆ Բլոգ</value>
   </data>
-    <data name="732728254" xml:space="preserve">
+  <data name="732728254" xml:space="preserve">
     <value>Թվիթթեր</value>
   </data>
-    <data name="880877990" xml:space="preserve">
+  <data name="880877990" xml:space="preserve">
     <value>Երևանի Պետական Համալսարան</value>
   </data>
-    <data name="115421686" xml:space="preserve">
+  <data name="115421686" xml:space="preserve">
     <value>Ես</value>
   </data>
-    <data name="151029036" xml:space="preserve">
+  <data name="151029036" xml:space="preserve">
     <value>Կապնվեք ինձ հետ</value>
   </data>
-    <data name="208760457" xml:space="preserve">
+  <data name="208760457" xml:space="preserve">
     <value>Office գործադրի ծրագրավորում</value>
   </data>
-    <data name="903097948" xml:space="preserve">
+  <data name="903097948" xml:space="preserve">
     <value>PowerShell մոդուլի ծրագրավորում</value>
   </data>
-    <data name="923565547" xml:space="preserve">
+  <data name="923565547" xml:space="preserve">
     <value>SharePoint գործադրի ծրագրավորում</value>
   </data>
-    <data name="711406928" xml:space="preserve">
+  <data name="711406928" xml:space="preserve">
     <value>PowerShell մոդուլի ծրագրավորման պատվեր</value>
   </data>
-    <data name="754333962" xml:space="preserve">
+  <data name="754333962" xml:space="preserve">
     <value>Արդյունքները չեն հայտնաբերվել։</value>
   </data>
-    <data name="462896969" xml:space="preserve">
+  <data name="462896969" xml:space="preserve">
     <value>Օժանդակվում է Bing®-ի կողմից</value>
   </data>
-    <data name="996647881" xml:space="preserve">
+  <data name="996647881" xml:space="preserve">
     <value>Օժանդակվում է Microsoft® Translator-ի կողմից</value>
   </data>
-    <data name="188347036" xml:space="preserve">
+  <data name="188347036" xml:space="preserve">
     <value>Որոնել</value>
   </data>
-    <data name="881097258" xml:space="preserve">
+  <data name="881097258" xml:space="preserve">
     <value>Որոնում ․․․</value>
   </data>
-    <data name="636584069" xml:space="preserve">
+  <data name="636584069" xml:space="preserve">
     <value>Որոնման արդյունքները</value>
   </data>
-    <data name="423457627" xml:space="preserve">
+  <data name="423457627" xml:space="preserve">
     <value>Ուղղագրության առաջարկներ</value>
   </data>
-    <data name="381036885" xml:space="preserve">
+  <data name="381036885" xml:space="preserve">
     <value>Հոմանիշներ</value>
   </data>
-    <data name="584660593" xml:space="preserve">
+  <data name="584660593" xml:space="preserve">
     <value>Թարգմանություններ</value>
   </data>
-    <data name="215349550" xml:space="preserve">
+  <data name="215349550" xml:space="preserve">
     <value>Օգտագործված տեխնոլոգիաները</value>
   </data>
-    <data name="881908374" xml:space="preserve">
+  <data name="881908374" xml:space="preserve">
     <value>Տվյալակենտրոնացված գործարարական  գործադրի ծրագրավորում</value>
   </data>
-    <data name="306641101" xml:space="preserve">
+  <data name="306641101" xml:space="preserve">
     <value>Տվյալակենտրոնացված գործարարական  գործադրի ծրագրավորման պատվեր</value>
   </data>
-    <data name="291840828" xml:space="preserve">
+  <data name="291840828" xml:space="preserve">
     <value>Սխալը տեղի է ունեցել, երբ համակարգը փորձում է ուղարկել նամակ։</value>
   </data>
-    <data name="334947186" xml:space="preserve">
+  <data name="334947186" xml:space="preserve">
     <value>Ուկրաիներեն</value>
   </data>
-    <data name="103927163" xml:space="preserve">
+  <data name="103927163" xml:space="preserve">
     <value>Բաց կոդով ծրագրաշար</value>
   </data>
-    <data name="529324189" xml:space="preserve">
+  <data name="529324189" xml:space="preserve">
     <value>The Weather of Westeros</value>
   </data>
-    <data name="515817850" xml:space="preserve">
+  <data name="515817850" xml:space="preserve">
     <value>Visual Studio LightSwitch</value>
   </data>
-    <data name="308178739" xml:space="preserve">
+  <data name="308178739" xml:space="preserve">
     <value>Windows CE/Mobule գործադրի ծրագրավորում</value>
   </data>
-    <data name="816611612" xml:space="preserve">
+  <data name="816611612" xml:space="preserve">
     <value>BleepMe</value>
   </data>
-    <data name="607754997" xml:space="preserve">
+  <data name="607754997" xml:space="preserve">
     <value>Denomination Calculator</value>
   </data>
-    <data name="614034682" xml:space="preserve">
+  <data name="614034682" xml:space="preserve">
     <value>Grocery Checklist</value>
   </data>
-    <data name="355868753" xml:space="preserve">
+  <data name="355868753" xml:space="preserve">
     <value>Windows 10-ի համար</value>
   </data>
-    <data name="594903907" xml:space="preserve">
+  <data name="594903907" xml:space="preserve">
     <value>Windows 8.1-ի և ավելի վաղ</value>
   </data>
-    <data name="977944607" xml:space="preserve">
+  <data name="977944607" xml:space="preserve">
     <value>Մանրամասներ</value>
   </data>
-    <data name="484534012" xml:space="preserve">
+  <data name="484534012" xml:space="preserve">
     <value>Հարմարեցրած որոնում</value>
   </data>
-    <data name="763272923" xml:space="preserve">
+  <data name="763272923" xml:space="preserve">
     <value>Ավագ ծրագրավորող</value>
   </data>
-    <data name="171400643" xml:space="preserve">
+  <data name="171400643" xml:space="preserve">
     <value>Հայաստանի Կենտրոնական բանկ</value>
   </data>
-    <data name="224205610" xml:space="preserve">
+  <data name="224205610" xml:space="preserve">
     <value>Եվրոպական կենտրոնական բանկ</value>
   </data>
-    <data name="344909065" xml:space="preserve">
+  <data name="344909065" xml:space="preserve">
     <value>Ուկրաինայի ազգային բանկ</value>
   </data>
-    <data name="466192205" xml:space="preserve">
+  <data name="466192205" xml:space="preserve">
     <value>Ռուսաստանի Կենտրոնական բանկ</value>
   </data>
-    <data name="645369586" xml:space="preserve">
+  <data name="645369586" xml:space="preserve">
     <value>Ավստրալիայի պահուստային բանկ</value>
   </data>
-    <data name="724813953" xml:space="preserve">
+  <data name="724813953" xml:space="preserve">
     <value>Դաշնային պահուստների համակարգ</value>
   </data>
-    <data name="734344590" xml:space="preserve">
+  <data name="734344590" xml:space="preserve">
     <value>Կանադայի բանկ</value>
   </data>
-    <data name="744582913" xml:space="preserve">
+  <data name="744582913" xml:space="preserve">
     <value>Հայաստանի Հանրապետության Կենտրոնական բանկ</value>
   </data>
-    <data name="748923176" xml:space="preserve">
+  <data name="748923176" xml:space="preserve">
     <value>Շվեյցարիայի ազգային բանկ</value>
   </data>
-    <data name="758955736" xml:space="preserve">
+  <data name="758955736" xml:space="preserve">
     <value>Անգլիայի բանկ</value>
   </data>
-    <data name="937230874" xml:space="preserve">
+  <data name="937230874" xml:space="preserve">
     <value>Ռուսաստանի Դաշնության Կենտրոնական Բանկ</value>
   </data>
 </root>
