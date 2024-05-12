@@ -364,14 +364,7 @@ Task FormatXmlFiles Clean, {
     | ForEach-Object {
         $content = Get-Content -Path $_ -Raw
         $xml = [xml]$content
-        $stringWriter = New-Object System.IO.StringWriter
-        $xmlWriter = New-Object System.Xml.XmlTextWriter $stringWriter
-        $xmlWriter.Formatting = 'Indented'
-        $xmlWriter.Indentation = 4
-        $xml.WriteContentTo($xmlWriter)
-        $xmlWriter.Flush()
-        $stringWriter.Flush()
-        Set-Content -Path $_ -Value ($stringWriter.ToString())
+        $xml.Save($_)
     }
 }
 
