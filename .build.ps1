@@ -13,6 +13,7 @@
     Publish
 #>
 
+[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Parameter is used actually.')]
 param(
     # Build Version
     [Parameter()]
@@ -360,11 +361,13 @@ Task FormatWhitespace Restore, {
 
 # Synopsis: Format XML Files
 Task FormatXmlFiles Clean, {
-    Get-ChildItem -Include *.xml, *.resx, *.xlf -Recurse
+    Get-ChildItem -Include *.xml, *.config, *.props, *.targets, *.nuspec, *.resx, *.ruleset, *.vsixmanifest, *.vsct, *.xlf -Recurse -File
+    | Where-Object { -not (git check-ignore $PSItem) }
     | ForEach-Object {
-        $content = Get-Content -Path $_ -Raw
+        Write-Output "Formatting XML File: $PSItem"
+        $content = Get-Content -Path $PSItem -Raw
         $xml = [xml]$content
-        $xml.Save($_)
+        $xml.Save($PSItem)
     }
 }
 
