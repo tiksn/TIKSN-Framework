@@ -276,7 +276,7 @@ Task EstimateVersion Restore, {
 }
 
 # Synopsis: Format
-Task Format Restore, FormatWhitespace, FormatStyle, FormatAnalyzers
+Task Format Restore, FormatXmlFiles, FormatWhitespace, FormatStyle, FormatAnalyzers
 
 # Synopsis: Format Analyzers
 Task FormatAnalyzers Restore, FormatAnalyzersLanguageLocalization, FormatAnalyzersRegionLocalization, FormatAnalyzersCore, FormatAnalyzersMaui, FormatAnalyzersSolution
@@ -358,15 +358,10 @@ Task FormatWhitespace Restore, {
     Exec { dotnet format whitespace --verbosity diagnostic $solution }
 }
 
-# Synopsis: Download Currency Codes
-Task DownloadCurrencyCodes Clean, {
-    Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml' -OutFile 'TIKSN.Framework.Core/Finance/Resources/TableA1.xml'
-    Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-three.xml' -OutFile 'TIKSN.Framework.Core/Finance/Resources/TableA3.xml'
-
-    @(
-        'TIKSN.Framework.Core/Finance/Resources/TableA1.xml',
-        'TIKSN.Framework.Core/Finance/Resources/TableA3.xml'
-    ) | ForEach-Object {
+# Synopsis: Format XML Files
+Task FormatXmlFiles Clean, {
+    Get-ChildItem -Include *.xml, *.resx, *.xlf -Recurse
+    | ForEach-Object {
         $content = Get-Content -Path $_ -Raw
         $xml = [xml]$content
         $stringWriter = New-Object System.IO.StringWriter
@@ -378,6 +373,12 @@ Task DownloadCurrencyCodes Clean, {
         $stringWriter.Flush()
         Set-Content -Path $_ -Value ($stringWriter.ToString())
     }
+}
+
+# Synopsis: Download Currency Codes
+Task DownloadCurrencyCodes Clean, {
+    Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml' -OutFile 'TIKSN.Framework.Core/Finance/Resources/TableA1.xml'
+    Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-three.xml' -OutFile 'TIKSN.Framework.Core/Finance/Resources/TableA3.xml'
 }
 
 # Synopsis: Scan with DevSkim for security issues
