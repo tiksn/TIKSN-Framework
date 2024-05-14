@@ -197,7 +197,7 @@ public class CachedCurrencyConverter : ICurrencyConverter
         return false;
     }
 
-    private T GetFromCache<T>(IEnumerable<T> cache, TimeSpan interval, DateTimeOffset asOn) where T : CachedData
+    private T? GetFromCache<T>(IEnumerable<T> cache, TimeSpan interval, DateTimeOffset asOn) where T : CachedData
     {
         var cachedItem = cache.Where(item => IsActual(item.AsOn, asOn, interval))
             .OrderBy(item => Absolute(item.AsOn - asOn)).FirstOrDefault();

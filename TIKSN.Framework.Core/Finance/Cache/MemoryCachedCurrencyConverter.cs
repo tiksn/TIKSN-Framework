@@ -45,7 +45,8 @@ public partial class MemoryCachedCurrencyConverter : MemoryCacheDecoratorBase<Me
             baseMoney.Currency, counterCurrency);
 
         var cacheEntry = await this.GetFromMemoryCacheAsync(cacheKey,
-            () => this.OriginalConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken)).ConfigureAwait(false)
+            async () => await this.OriginalConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken)
+                .ConfigureAwait(false)).ConfigureAwait(false)
             ?? throw new InvalidOperationException("Failed to create MemoryCachedCurrencyConverterEntry.");
 
         return new Money(counterCurrency, baseMoney.Amount * cacheEntry.ExchangeRate);
@@ -59,7 +60,8 @@ public partial class MemoryCachedCurrencyConverter : MemoryCacheDecoratorBase<Me
             MemoryCachedCurrencyConverterEntryKind.CurrencyPairs, this.instanceID, this.GetCacheIntervalKey(asOn));
 
         var cacheEntry = await this.GetFromMemoryCacheAsync(cacheKey,
-            () => this.GetOriginalCurrencyPairsAsync(asOn, cancellationToken)).ConfigureAwait(false)
+            async () => await this.GetOriginalCurrencyPairsAsync(asOn, cancellationToken)
+                .ConfigureAwait(false)).ConfigureAwait(false)
             ?? throw new InvalidOperationException("Failed to create MemoryCachedCurrencyConverterEntry.");
 
         return cacheEntry.CurrencyPairs;
@@ -77,7 +79,8 @@ public partial class MemoryCachedCurrencyConverter : MemoryCacheDecoratorBase<Me
             pair.BaseCurrency, pair.CounterCurrency);
 
         var cacheEntry = await this.GetFromMemoryCacheAsync(cacheKey,
-            () => this.GetOriginalExchangeRateAsync(pair, asOn, cancellationToken)).ConfigureAwait(false)
+            async () => await this.GetOriginalExchangeRateAsync(pair, asOn, cancellationToken)
+                .ConfigureAwait(false)).ConfigureAwait(false)
             ?? throw new InvalidOperationException("Failed to create MemoryCachedCurrencyConverterEntry.");
 
         return cacheEntry.ExchangeRate;

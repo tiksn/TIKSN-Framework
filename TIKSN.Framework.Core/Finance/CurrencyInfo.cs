@@ -85,22 +85,32 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
 
     private void InitializeCurrency(string isoSymbol, string? symbol)
     {
-        if (!this.TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA1.xml", isoSymbol, symbol, lookingForCurrent: true,
-            "CcyTbl", "CcyNtry") && !this.TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA3.xml", isoSymbol, symbol, lookingForCurrent: false,
-                "HstrcCcyTbl", "HstrcCcyNtry"))
+        if (!this.TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA1.xml", isoSymbol, symbol, lookingForCurrent: true, "CcyTbl", "CcyNtry")
+            && !this.TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA3.xml", isoSymbol, symbol, lookingForCurrent: false, "HstrcCcyTbl", "HstrcCcyNtry"))
         {
             throw new CurrencyNotFoundException($"ISO symbol '{isoSymbol}' was not found in resources.");
         }
     }
 
-    private bool TryExtractCurrencyInformation(string tableResource, string isoSymbol, string? symbol,
-        bool lookingForCurrent, string tableElementName, string entityElementName)
+    private bool TryExtractCurrencyInformation(
+        string tableResource,
+        string isoSymbol, string? symbol,
+        bool lookingForCurrent,
+        string tableElementName,
+        string entityElementName)
     {
         using var stream = this.GetType().GetTypeInfo().Assembly.GetManifestResourceStream(tableResource);
+        if (stream is null)
+        {
+            return false;
+        }
+
         var tableXDoc = XDocument.Load(stream);
 
-        foreach (var ccyNtryElement in tableXDoc.Element("ISO_4217").Element(tableElementName)
-            .Elements(entityElementName))
+        foreach (var ccyNtryElement in tableXDoc
+            ?.Element("ISO_4217")
+            ?.Element(tableElementName)
+            ?.Elements(entityElementName) ?? [])
         {
             var ccyElement = ccyNtryElement.Element("Ccy");
 
@@ -113,7 +123,7 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
                 this.ISOCurrencyNumber = ccyNbrElement is null ? null : int.Parse(ccyNbrElement.Value, CultureInfo.InvariantCulture);
 
                 var ccyNmElement = ccyNtryElement.Element("CcyNm");
-                var isFundAttributeValue = ccyNmElement.Attribute("IsFund")?.Value;
+                var isFundAttributeValue = ccyNmElement?.Attribute("IsFund")?.Value;
 
                 if (isFundAttributeValue != null)
                 {

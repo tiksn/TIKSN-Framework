@@ -380,10 +380,10 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
             GetMilestoneAndPrereleaseNumber(nuGetVersion.IsPrerelease, nuGetVersion.ReleaseLabels.ToArray());
 
         var releaseNumbersCount =
-            nuGetVersion.OriginalVersion
+            (nuGetVersion.OriginalVersion?
                 .Remove(nuGetVersion.OriginalVersion.Length - nuGetVersion.Release.Length)
                 .Split('.')
-                .Length;
+                .Length) ?? 0;
 
         System.Version release;
         if (releaseNumbersCount == 2)
@@ -660,7 +660,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
         return $"{this.ToShortReleaseString()}-{string.Join('.', GetReleaseLabels(this))}";
     }
 
-    private static string GetMetadata(Version version) => version.ReleaseDate?.ToString("s");
+    private static string GetMetadata(Version version) => version.ReleaseDate?.ToString("s") ?? string.Empty;
 
     private static (Milestone milestone, int prereleaseNumber) GetMilestoneAndPrereleaseNumber(bool isPrerelease,
         string[] releaseLabels)
@@ -707,6 +707,12 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
             Milestone.Release => null,
             _ => throw new NotSupportedException("Unsupported milestone name.")
         };
+
+        if (milestoneTag is null)
+        {
+            return [];
+        }
+
         if (version.preReleaseNumber == DefaultPreReleaseNumber)
         {
             return [milestoneTag];
@@ -725,7 +731,10 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
         var values = Enum.GetValues(typeof(Milestone));
         for (var i = 0; i < values.Length; i++)
         {
-            var value = (Milestone)values.GetValue(i);
+            var objectValue = values.GetValue(i)
+                ?? throw new InvalidOperationException("Enum value cannot be NULL.");
+
+            var value = (Milestone)objectValue;
             if (value == this.Milestone)
             {
                 return;
