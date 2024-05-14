@@ -9,7 +9,7 @@ public class ShellCommandContext : IShellCommandContext, IShellCommandContextSto
     private readonly IConsoleService consoleService;
     private readonly IStringLocalizer stringLocalizer;
 
-    private string commandName;
+    private string? commandName;
     private bool noToAll;
     private bool yesToAll;
 
@@ -89,7 +89,15 @@ public class ShellCommandContext : IShellCommandContext, IShellCommandContextSto
             string.Format(CultureInfo.InvariantCulture, this.stringLocalizer.GetRequiredString(LocalizationKeys.Key284914810), action, target),
             ref this.yesToAll, ref this.noToAll);
 
-    public bool ShouldProcess(string target) => this.ShouldProcess(target, this.commandName);
+    public bool ShouldProcess(string target)
+    {
+        if (this.commandName is null)
+        {
+            throw new InvalidOperationException("Command Name cannot be NULL.");
+        }
+
+        return this.ShouldProcess(target, this.commandName);
+    }
 
     public bool ShouldProcess(string verboseDescription, string verboseWarning, string caption) =>
         this.ShouldContinue(verboseWarning, caption, ref this.yesToAll, ref this.noToAll);
