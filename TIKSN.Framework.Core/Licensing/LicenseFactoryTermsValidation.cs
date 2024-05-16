@@ -71,20 +71,14 @@ internal static class LicenseFactoryTermsValidation
 
     internal static Validation<Error, string> ConvertFromUri(Uri address)
     {
-        var errors = new List<Error>();
-
         if (string.IsNullOrWhiteSpace(address?.AbsoluteUri))
         {
-            errors.Add(Error.New(594495435, "URL is missing"));
-        }
-        else if (!ValidUriSchemes.Contains(address.Scheme))
-        {
-            errors.Add(Error.New(829727941, "Invalid URL scheme"));
+            return Error.New(594495435, "URL is missing");
         }
 
-        if (errors.Count != 0)
+        if (!ValidUriSchemes.Contains(address.Scheme))
         {
-            return errors.ToSeq();
+            return Error.New(829727941, "Invalid URL scheme");
         }
 
         return address.AbsoluteUri;
@@ -92,25 +86,16 @@ internal static class LicenseFactoryTermsValidation
 
     internal static Validation<Error, Uri> ConvertToUri(string address)
     {
-        var errors = new List<Error>();
-
         if (string.IsNullOrWhiteSpace(address))
         {
-            errors.Add(Error.New(1063052190, "URL is missing"));
-
-            return errors.ToSeq();
+            return Error.New(1063052190, "URL is missing");
         }
 
         var result = new Uri(address);
 
         if (!ValidUriSchemes.Contains(result.Scheme))
         {
-            errors.Add(Error.New(122011466, "Invalid URL scheme"));
-        }
-
-        if (errors.Count != 0)
-        {
-            return errors.ToSeq();
+            return Error.New(122011466, "Invalid URL scheme");
         }
 
         return result;
@@ -132,13 +117,9 @@ internal static class LicenseFactoryTermsValidation
 
     internal static Validation<Error, MailAddress> ConvertToMailAddress(string address)
     {
-        var errors = new List<Error>();
-
         if (string.IsNullOrWhiteSpace(address))
         {
-            errors.Add(Error.New(2037180511, "Mail Address is missing"));
-
-            return errors.ToSeq();
+            return Error.New(2037180511, "Mail Address is missing");
         }
 
         return new MailAddress(address);
@@ -275,19 +256,20 @@ internal static class LicenseFactoryTermsValidation
             ? $"{licenseIndividualParty.FirstName} {licenseIndividualParty.LastName}"
             : licenseIndividualParty.FullName;
 
-        var (email, website) = GetBasePartyProperties(licenseIndividualParty, errors);
+        var basePartyProperties = GetBasePartyProperties(licenseIndividualParty);
 
         if (errors.Count != 0)
         {
             return errors.ToSeq();
         }
 
-        return new IndividualParty(
+        return basePartyProperties
+            .Map(x => new IndividualParty(
             licenseIndividualParty.FirstName,
             licenseIndividualParty.LastName,
             fullName,
-            email,
-            website);
+            x.email,
+            x.website));
     }
 
     private static Validation<Error, OrganizationParty> ConvertToOrganization(
@@ -307,33 +289,28 @@ internal static class LicenseFactoryTermsValidation
             errors.Add(Error.New(280436811, "Short Name is missing"));
         }
 
-        var (email, website) = GetBasePartyProperties(licenseOrganizationParty, errors);
+        var basePartyProperties = GetBasePartyProperties(licenseOrganizationParty);
 
         if (errors.Count != 0)
         {
             return errors.ToSeq();
         }
 
-        return new OrganizationParty(
+        return basePartyProperties
+            .Map(x => new OrganizationParty(
             licenseOrganizationParty.LongName,
             licenseOrganizationParty.ShortName,
-            email,
-            website);
+            x.email,
+            x.website));
     }
 
-    private static (MailAddress email, Uri website) GetBasePartyProperties(
-        LicenseParty party,
-        List<Error> errors)
+    private static Validation<Error, (MailAddress email, Uri website)> GetBasePartyProperties(
+        LicenseParty party)
     {
-        MailAddress email = null;
-        Uri website = null;
-        _ = ConvertToMailAddress(party.Email)
-            .Match(succ => email = succ, fail => errors.AddRange(fail));
+        var emailValidation = ConvertToMailAddress(party.Email);
+        var websiteValidation = ConvertToUri(party.Website);
 
-        _ = ConvertToUri(party.Website)
-            .Match(succ => website = succ, fail => errors.AddRange(fail));
-
-        return (email, website);
+        return emailValidation.Bind(e => websiteValidation.Map(w => (e, w)));
     }
 
     private static void SetBasePartyProperties(
