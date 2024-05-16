@@ -1,31 +1,31 @@
 using System.Security.Cryptography.X509Certificates;
-using Autofac.Features.Indexed;
 using LanguageExt;
 using LanguageExt.Common;
+using Microsoft.Extensions.DependencyInjection;
 using TIKSN.Serialization.Bond;
 
 namespace TIKSN.Licensing;
 
 public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<TEntitlements, TEntitlementsData>
 {
-    private readonly IIndex<string, ICertificateSignatureService> certificateSignatureService;
     private readonly CompactBinaryBondDeserializer deserializer;
     private readonly IEntitlementsConverter<TEntitlements, TEntitlementsData> entitlementsConverter;
     private readonly CompactBinaryBondSerializer serializer;
+    private readonly IServiceProvider serviceProvider;
     private readonly TimeProvider timeProvider;
 
     public LicenseFactory(
-        IIndex<string, ICertificateSignatureService> certificateSignatureService,
         CompactBinaryBondSerializer serializer,
         CompactBinaryBondDeserializer deserializer,
         IEntitlementsConverter<TEntitlements, TEntitlementsData> entitlementsConverter,
-        TimeProvider timeProvider)
+        TimeProvider timeProvider,
+        IServiceProvider serviceProvider)
     {
-        this.certificateSignatureService = certificateSignatureService ?? throw new ArgumentNullException(nameof(certificateSignatureService));
         this.serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
         this.deserializer = deserializer ?? throw new ArgumentNullException(nameof(deserializer));
         this.entitlementsConverter = entitlementsConverter ?? throw new ArgumentNullException(nameof(entitlementsConverter));
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+        this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
     }
 
     public Validation<Error, License<TEntitlements>> Create(
@@ -63,7 +63,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
 
         var keyAlgorithm = privateCertificate.GetKeyAlgorithm();
         envelope.SignatureAlgorithm = keyAlgorithm;
-        var signatureService = this.certificateSignatureService[keyAlgorithm];
+        var signatureService = this.serviceProvider.GetRequiredKeyedService<ICertificateSignatureService>(keyAlgorithm);
         var signature = signatureService.Sign(messageData, privateCertificate);
         envelope.Signature = new ArraySegment<byte>(signature);
 
@@ -107,7 +107,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
             errors.Add(Error.New(429095162, "License Signature Algorithm is not matching with Certificate Signature Algorithm"));
         }
 
-        var signatureService = this.certificateSignatureService[keyAlgorithm];
+        var signatureService = this.serviceProvider.GetRequiredKeyedService<ICertificateSignatureService>(keyAlgorithm);
 
         var messageData = this.serializer.Serialize(envelope.Message);
 
