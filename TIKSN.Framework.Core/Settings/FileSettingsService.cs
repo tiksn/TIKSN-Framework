@@ -297,7 +297,7 @@ public class FileSettingsService : ISettingsService
         out ILiteCollection<BsonDocument> settingsCollection,
         out BsonDocument bsonDocument)
     {
-        var fileInfo = fileProvider.GetFileInfo(this.configuration.GetConfiguration().RelativePath);
+        var fileInfo = fileProvider.GetFileInfo(this.configuration.GetConfiguration().RelativePath ?? string.Empty);
 
         var connectionString = new ConnectionString { Filename = fileInfo.PhysicalPath };
 
