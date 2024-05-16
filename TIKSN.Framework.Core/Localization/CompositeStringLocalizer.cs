@@ -4,11 +4,8 @@ namespace TIKSN.Localization;
 
 public class CompositeStringLocalizer : IStringLocalizer
 {
-    public CompositeStringLocalizer(IEnumerable<IStringLocalizer> localizers) => this.Localizers = localizers;
-
-    protected CompositeStringLocalizer()
-    {
-    }
+    public CompositeStringLocalizer(IEnumerable<IStringLocalizer> localizers)
+        => this.Localizers = localizers ?? throw new ArgumentNullException(nameof(localizers));
 
     public virtual IEnumerable<IStringLocalizer> Localizers { get; }
 

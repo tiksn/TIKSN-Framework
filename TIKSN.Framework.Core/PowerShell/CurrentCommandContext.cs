@@ -2,7 +2,7 @@ namespace TIKSN.PowerShell;
 
 public class CurrentCommandContext : ICurrentCommandStore, ICurrentCommandProvider
 {
-    private CommandBase command;
+    private CommandBase? command;
 
     public CommandBase GetCurrentCommand()
     {

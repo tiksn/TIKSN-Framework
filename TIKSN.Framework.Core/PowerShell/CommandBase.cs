@@ -9,11 +9,11 @@ public abstract class CommandBase : PSCmdlet, IDisposable
 {
     private CancellationTokenSource cancellationTokenSource;
     private bool disposedValue;
-    private IServiceScope serviceScope;
+    private IServiceScope? serviceScope;
 
     protected CommandBase() => this.cancellationTokenSource = new CancellationTokenSource();
 
-    protected IServiceProvider Services => this.serviceScope.ServiceProvider;
+    protected IServiceProvider Services => this.serviceScope?.ServiceProvider ?? throw new InvalidOperationException("ServiceProvider is not initialized.");
 
     public void Dispose()
     {
@@ -43,7 +43,7 @@ public abstract class CommandBase : PSCmdlet, IDisposable
             if (disposing)
             {
                 this.cancellationTokenSource.Dispose();
-                this.serviceScope.Dispose();
+                this.serviceScope?.Dispose();
             }
 
             this.disposedValue = true;

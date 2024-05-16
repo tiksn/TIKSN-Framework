@@ -30,8 +30,8 @@ public class DataEntityMapper
 
         return new ExchangeRateEntity(
             source.ID,
-            source.BaseCurrencyCode,
-            source.CounterCurrencyCode,
+            source.BaseCurrencyCode ?? string.Empty,
+            source.CounterCurrencyCode ?? string.Empty,
             source.ForeignExchangeID,
             source.AsOn,
             source.Rate);
@@ -54,6 +54,6 @@ public class DataEntityMapper
 
         return new ForeignExchangeEntity(
             source.ID,
-            source.CountryCode);
+            source.CountryCode ?? string.Empty);
     }
 }

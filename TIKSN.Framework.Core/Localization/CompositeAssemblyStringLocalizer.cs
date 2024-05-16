@@ -11,8 +11,9 @@ public abstract class CompositeAssemblyStringLocalizer : CompositeStringLocalize
     private readonly ILogger<CompositeAssemblyStringLocalizer> logger;
     private readonly IResourceNamesCache resourceNamesCache;
 
-    protected CompositeAssemblyStringLocalizer(IResourceNamesCache resourceNamesCache,
-        ILogger<CompositeAssemblyStringLocalizer> logger)
+    protected CompositeAssemblyStringLocalizer(
+        IResourceNamesCache resourceNamesCache,
+        ILogger<CompositeAssemblyStringLocalizer> logger) : base([])
     {
         this.resourceNamesCache = resourceNamesCache;
         this.localizers = new Lazy<IEnumerable<IStringLocalizer>>(this.CreateLocalizers, isThreadSafe: false);

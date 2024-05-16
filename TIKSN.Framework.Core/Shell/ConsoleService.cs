@@ -39,16 +39,16 @@ public class ConsoleService : IConsoleService
 
     public IDisposable RegisterCancellation(CancellationTokenSource cancellationTokenSource)
     {
-        void consoleCancelEventHandler(object sender, ConsoleCancelEventArgs e)
+        void ConsoleCancelEventHandler(object? sender, ConsoleCancelEventArgs e)
         {
             cancellationTokenSource.Cancel();
 
             e.Cancel = true;
         }
 
-        Console.CancelKeyPress += consoleCancelEventHandler;
+        Console.CancelKeyPress += ConsoleCancelEventHandler;
 
-        return Disposable.Create(() => Console.CancelKeyPress -= consoleCancelEventHandler);
+        return Disposable.Create(() => Console.CancelKeyPress -= ConsoleCancelEventHandler);
     }
 
     public int UserPrompt(string message, params string[] options)
@@ -102,7 +102,7 @@ public class ConsoleService : IConsoleService
         this.ansiConsole.WriteLine();
     }
 
-    private void WriteObjects<T>(IEnumerable<T> items, string title)
+    private void WriteObjects<T>(IEnumerable<T> items, string? title)
     {
         var itemType = typeof(T);
         var itemProperties = itemType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty);
@@ -122,7 +122,7 @@ public class ConsoleService : IConsoleService
         {
             var row = itemProperties
                 .Select(p => p.GetValue(item))
-                .Select(x => new Text(x.ToString()))
+                .Select(x => new Text(x?.ToString() ?? string.Empty))
                 .ToArray();
 
             _ = table.AddRow(row);
