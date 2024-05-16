@@ -76,7 +76,7 @@ public class CompositeWeightedProgress<T> : Progress<T> where T : ProgressReport
             this.Status = default;
         }
 
-        public T Status { get; private set; }
+        public T? Status { get; private set; }
 
         public int Weight { get; }
 
