@@ -12,6 +12,7 @@ using TIKSN.FileSystem;
 using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Globalization;
 using TIKSN.Identity;
+using TIKSN.Licensing;
 using TIKSN.Network;
 using TIKSN.Serialization;
 using TIKSN.Serialization.Bond;
@@ -26,6 +27,7 @@ namespace TIKSN.DependencyInjection;
 public static class ServiceCollectionExtensions
 {
 #pragma warning disable MA0051 // Method is too long
+
     public static IServiceCollection AddFrameworkCore(this IServiceCollection services)
 #pragma warning restore MA0051 // Method is too long
     {
@@ -70,7 +72,8 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton(MessageBus.Current);
         services.TryAddSingleton(AnsiConsole.Console);
         services.TryAddSingleton<ISchedulers>(_ => new Schedulers(RxApp.MainThreadScheduler, RxApp.TaskpoolScheduler));
-
+        services.TryAddKeyedSingleton<ICertificateSignatureService, RSACertificateSignatureService>("1.2.840.113549.1.1.1");
+        services.TryAddKeyedSingleton<ICertificateSignatureService, DSACertificateSignatureService>("1.2.840.10040.4.1");
         services.TryAddSingleton<IConsoleService, ConsoleService>();
         services.TryAddSingleton<IKnownFolders, KnownFolders>();
 
