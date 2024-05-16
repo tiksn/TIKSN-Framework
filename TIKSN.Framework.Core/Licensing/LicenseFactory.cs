@@ -3,6 +3,7 @@ using LanguageExt;
 using LanguageExt.Common;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.Serialization.Bond;
+using static LanguageExt.Prelude;
 
 namespace TIKSN.Licensing;
 
@@ -91,14 +92,8 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
 
         var envelope = this.deserializer.Deserialize<LicenseEnvelope>([.. data]);
 
-        LicenseTerms terms = null;
-        TEntitlements entitlements = default;
-
-        _ = GetTerms(envelope, this.timeProvider)
-            .Match(succ => terms = succ, fail => errors.AddRange(fail));
-
-        _ = this.entitlementsConverter.Convert(this.deserializer.Deserialize<TEntitlementsData>([.. envelope.Message.Entitlements]))
-            .Match(succ => entitlements = succ, fail => errors.AddRange(fail));
+        var licenseTermsValidation = GetTerms(envelope, this.timeProvider);
+        var entitlementsValidation = this.entitlementsConverter.Convert(this.deserializer.Deserialize<TEntitlementsData>([.. envelope.Message.Entitlements]));
 
         var keyAlgorithm = publicCertificate.GetKeyAlgorithm();
 
@@ -121,10 +116,12 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
             return errors.ToSeq();
         }
 
-        return new License<TEntitlements>(
-            terms,
-            entitlements,
-            data);
+        return licenseTermsValidation
+            .Bind(terms => entitlementsValidation.Map(entitlements => (terms, entitlements)))
+            .Map(x => new License<TEntitlements>(
+                x.terms,
+                x.entitlements,
+                data));
     }
 
     private static Validation<Error, LicenseTerms> GetTerms(
@@ -133,57 +130,48 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
     {
         ArgumentNullException.ThrowIfNull(envelope);
 
-        var errors = new List<Error>();
-
         if (envelope.Message.VersionNumber != 1)
         {
-            errors.Add(Error.New(2129266854, "License version is invalid"));
+            return Error.New(2129266854, "License version is invalid");
         }
 
-        var serialNumber = Ulid.Empty;
-        var notBefore = Option<DateTimeOffset>.None;
-        var notAfter = Option<DateTimeOffset>.None;
-        Party licensor = null;
-        Party licensee = null;
+        var serialNumberValidation = LicenseFactoryTermsValidation.ConvertToUlid(envelope.Message.SerialNumber);
+        var notBeforeValidation = LicenseFactoryTermsValidation.ConvertToDate(envelope.Message.NotBefore);
+        var notAfterValidation = LicenseFactoryTermsValidation.ConvertToDate(envelope.Message.NotAfter);
+        var licensorValidation = LicenseFactoryTermsValidation.ConvertToParty(envelope.Message.Licensor);
+        var licenseeValidation = LicenseFactoryTermsValidation.ConvertToParty(envelope.Message.Licensee);
 
-        _ = LicenseFactoryTermsValidation.ConvertToUlid(envelope.Message.SerialNumber)
-            .Match(succ => serialNumber = succ, fail => errors.AddRange(fail));
-        _ = LicenseFactoryTermsValidation.ConvertToDate(envelope.Message.NotBefore)
-            .Match(succ => notBefore = succ, fail => errors.AddRange(fail));
-        _ = LicenseFactoryTermsValidation.ConvertToDate(envelope.Message.NotAfter)
-            .Match(succ => notAfter = succ, fail => errors.AddRange(fail));
-        _ = LicenseFactoryTermsValidation.ConvertToParty(envelope.Message.Licensor)
-            .Match(succ => licensor = succ, fail => errors.AddRange(fail));
-        _ = LicenseFactoryTermsValidation.ConvertToParty(envelope.Message.Licensee)
-            .Match(succ => licensee = succ, fail => errors.AddRange(fail));
-
-        _ = notBefore.IfSome(notBeforeValue =>
+        notBeforeValidation = notBeforeValidation.Bind(notBeforeValue =>
         {
             if (timeProvider.GetUtcNow() < notBeforeValue)
             {
-                errors.Add(Error.New(504364885, "License is not valid yet"));
+                return Error.New(504364885, "License is not valid yet");
             }
+
+            return Success<Error, DateTimeOffset>(notBeforeValue);
         });
 
-        _ = notAfter.IfSome(notAfterValue =>
+        notAfterValidation = notAfterValidation.Bind(notAfterValue =>
         {
             if (notAfterValue < timeProvider.GetUtcNow())
             {
-                errors.Add(Error.New(428925195, "License is not valid anymore"));
+                return Error.New(428925195, "License is not valid anymore");
             }
+
+            return Success<Error, DateTimeOffset>(notAfterValue);
         });
 
-        if (errors.Count != 0)
-        {
-            return errors.ToSeq();
-        }
-
-        return new LicenseTerms(
-            serialNumber,
-            licensor,
-            licensee,
-            notBefore.IfNone(DateTimeOffset.MinValue),
-            notAfter.IfNone(DateTimeOffset.MinValue));
+        return serialNumberValidation
+            .Bind(serialNumber => licensorValidation.Map(licensor => (serialNumber, licensor)))
+            .Bind(x => licenseeValidation.Map(licensee => (x.serialNumber, x.licensor, licensee)))
+            .Bind(x => notBeforeValidation.Map(notBefore => (x.serialNumber, x.licensor, x.licensee, notBefore)))
+            .Bind(x => notAfterValidation.Map(notAfter => (x.serialNumber, x.licensor, x.licensee, x.notBefore, notAfter)))
+            .Map(x => new LicenseTerms(
+                x.serialNumber,
+                x.licensor,
+                x.licensee,
+                x.notBefore,
+                x.notAfter));
     }
 
     private static Validation<Error, LicenseEnvelope> Populate(
