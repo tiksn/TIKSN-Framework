@@ -1,4 +1,5 @@
 using Autofac;
+using TIKSN.Data;
 using TIKSN.Data.Mongo;
 using TIKSN.Data.RavenDB;
 using TIKSN.Licensing;
@@ -35,6 +36,10 @@ public class CoreModule : Module
             .As<IRavenSessionStore>()
             .As<IRavenSessionProvider>()
             .InstancePerLifetimeScope();
+
+        _ = builder.RegisterGeneric(typeof(UnitOfWorkFactory<>))
+            .As(typeof(IUnitOfWorkFactory<>))
+            .SingleInstance();
 
         _ = builder.RegisterGeneric(typeof(LicenseFactory<,>))
             .As(typeof(ILicenseFactory<,>))
