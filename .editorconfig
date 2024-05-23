@@ -23,7 +23,7 @@ trim_trailing_whitespace = true
 # File Extension Settings
 ##########################################
 vsspell_section_id = 76c94d6a244544a4afc9ef87b4e38ae4
-vsspell_ignored_keywords_76c94d6a244544a4afc9ef87b4e38ae4 = Antimalware|App|cmdlet|Cuid|Currencylayer|Deserializer|json|LFLA|Metadata|Mongo|Serializer|Serilog|Sitemap|Sitemaps|TIKSN|TLA|Ulid|Uninitialize|Validator|VLFLA|Bson
+vsspell_ignored_keywords_76c94d6a244544a4afc9ef87b4e38ae4 = Antimalware|App|Bson|cmdlet|Cuid|Currencylayer|Deserialize|Deserialized|Deserializer|json|LFLA|Metadata|Mongo|Serializer|Serilog|Sitemap|Sitemaps|TIKSN|TLA|Ulid|Uninitialize|Validator|VLFLA
 
 # Visual Studio Solution Files
 [*.sln]
