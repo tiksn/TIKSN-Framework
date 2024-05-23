@@ -1,6 +1,8 @@
 using System.Globalization;
 using System.Reflection;
 using System.Xml.Linq;
+using LanguageExt;
+using static LanguageExt.Prelude;
 
 namespace TIKSN.Finance;
 
@@ -10,20 +12,27 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
     {
         ArgumentNullException.ThrowIfNull(regionInfo);
 
-        this.InitializeCurrency(regionInfo.ISOCurrencySymbol, regionInfo.CurrencySymbol);
+        (this.IsCurrent, this.ISOCurrencySymbol, this.CurrencySymbol, this.ISOCurrencyNumber, this.IsFund) =
+            this.InitializeCurrency(regionInfo.ISOCurrencySymbol, regionInfo.CurrencySymbol);
     }
 
-    public CurrencyInfo(string isoCurrencySymbol) => this.InitializeCurrency(isoCurrencySymbol, symbol: null);
+    public CurrencyInfo(string isoCurrencySymbol)
+    {
+        ArgumentNullException.ThrowIfNull(isoCurrencySymbol);
 
-    public string CurrencySymbol { get; private set; }
+        (this.IsCurrent, this.ISOCurrencySymbol, this.CurrencySymbol, this.ISOCurrencyNumber, this.IsFund) =
+            this.InitializeCurrency(isoCurrencySymbol, symbol: null);
+    }
 
-    public bool IsCurrent { get; private set; }
+    public string CurrencySymbol { get; }
 
-    public bool IsFund { get; private set; }
+    public bool IsCurrent { get; }
 
-    public int? ISOCurrencyNumber { get; private set; }
+    public bool IsFund { get; }
 
-    public string ISOCurrencySymbol { get; private set; }
+    public int? ISOCurrencyNumber { get; }
+
+    public string ISOCurrencySymbol { get; }
 
     public static bool operator !=(CurrencyInfo first, CurrencyInfo second) => !Equals(first, second);
 
@@ -83,18 +92,15 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
         return first.Equals(second);
     }
 
-    private void InitializeCurrency(string isoSymbol, string? symbol)
-    {
-        if (!this.TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA1.xml", isoSymbol, symbol, lookingForCurrent: true, "CcyTbl", "CcyNtry")
-            && !this.TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA3.xml", isoSymbol, symbol, lookingForCurrent: false, "HstrcCcyTbl", "HstrcCcyNtry"))
-        {
-            throw new CurrencyNotFoundException($"ISO symbol '{isoSymbol}' was not found in resources.");
-        }
-    }
+    private (bool isCurrent, string isoCurrencySymbol, string currencySymbol, int? isoCurrencyNumber, bool isFund) InitializeCurrency(string isoSymbol, string? symbol)
+        => this.TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA1.xml", isoSymbol, symbol, lookingForCurrent: true, "CcyTbl", "CcyNtry")
+            .Match(s => Some(s), () => this.TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA3.xml", isoSymbol, symbol, lookingForCurrent: false, "HstrcCcyTbl", "HstrcCcyNtry"))
+            .MatchUnsafe(s => s, () => throw new CurrencyNotFoundException($"ISO symbol '{isoSymbol}' was not found in resources."));
 
-    private bool TryExtractCurrencyInformation(
+    private Option<(bool isCurrent, string isoCurrencySymbol, string currencySymbol, int? isoCurrencyNumber, bool isFund)> TryExtractCurrencyInformation(
         string tableResource,
-        string isoSymbol, string? symbol,
+        string isoSymbol,
+        string? symbol,
         bool lookingForCurrent,
         string tableElementName,
         string entityElementName)
@@ -102,7 +108,7 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
         using var stream = this.GetType().GetTypeInfo().Assembly.GetManifestResourceStream(tableResource);
         if (stream is null)
         {
-            return false;
+            return None;
         }
 
         var tableXDoc = XDocument.Load(stream);
@@ -116,11 +122,11 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
 
             if (ccyElement != null && string.Equals(ccyElement.Value, isoSymbol, StringComparison.OrdinalIgnoreCase))
             {
-                this.IsCurrent = lookingForCurrent;
-                this.ISOCurrencySymbol = ccyElement.Value;
-                this.CurrencySymbol = string.IsNullOrEmpty(symbol) ? this.ISOCurrencySymbol : symbol;
+                var isCurrent = lookingForCurrent;
+                var isoCurrencySymbol = ccyElement.Value;
+                var currencySymbol = string.IsNullOrEmpty(symbol) ? isoCurrencySymbol : symbol;
                 var ccyNbrElement = ccyNtryElement.Element("CcyNbr");
-                this.ISOCurrencyNumber = ccyNbrElement is null ? null : int.Parse(ccyNbrElement.Value, CultureInfo.InvariantCulture);
+                int? isoCurrencyNumber = ccyNbrElement is null ? null : int.Parse(ccyNbrElement.Value, CultureInfo.InvariantCulture);
 
                 var ccyNmElement = ccyNtryElement.Element("CcyNm");
                 var isFundAttributeValue = ccyNmElement?.Attribute("IsFund")?.Value;
@@ -134,14 +140,14 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
                     }
                 }
 
-                this.IsFund = !string.IsNullOrWhiteSpace(isFundAttributeValue) &&
+                var isFund = !string.IsNullOrWhiteSpace(isFundAttributeValue) &&
                     (string.Equals(isFundAttributeValue, "WAHR", StringComparison.OrdinalIgnoreCase) ||
                     bool.Parse(isFundAttributeValue));
 
-                return true;
+                return (isCurrent, isoCurrencySymbol, currencySymbol, isoCurrencyNumber, isFund);
             }
         }
 
-        return false;
+        return None;
     }
 }
