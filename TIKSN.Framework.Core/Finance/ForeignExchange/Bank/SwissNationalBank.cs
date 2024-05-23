@@ -82,28 +82,30 @@ public class SwissNationalBank : ISwissNationalBank
 
         lock (this.foreignRates)
         {
-            foreach (var itemElement in xdoc.Element("rss").Element("channel").Elements("item"))
+            foreach (var itemElement in xdoc?.Element("rss")?.Element("channel")?.Elements("item") ?? [])
             {
                 var dateElement = itemElement.Element("{http://purl.org/dc/elements/1.1/}date");
                 var exchangeRateElement = itemElement
-                    .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}statistics")
-                    .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}exchangeRate");
+                    ?.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}statistics")
+                    ?.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}exchangeRate");
                 var valueElement = exchangeRateElement
-                    .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}observation")
-                    .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}value");
+                    ?.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}observation")
+                    ?.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}value");
                 var targetCurrencyElement =
-                    exchangeRateElement.Element(
+                    exchangeRateElement?.Element(
                         "{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}targetCurrency");
 
-                var date = DateTimeOffset.Parse(dateElement.Value, CultureInfo.InvariantCulture);
-                var currencyCode = targetCurrencyElement.Value;
-                var rate = decimal.Parse(valueElement.Value, CultureInfo.InvariantCulture);
+                var date = DateTimeOffset.Parse(dateElement?.Value ?? string.Empty, CultureInfo.InvariantCulture);
+                var currencyCode = targetCurrencyElement?.Value ?? string.Empty;
+                var rate = decimal.Parse(valueElement?.Value ?? string.Empty, CultureInfo.InvariantCulture);
 
                 var currency = this.currencyFactory.Create(currencyCode);
 
                 Debug.Assert(string.Equals(exchangeRateElement
-                    .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}observation")
-                    .Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}unit").Value, "CHF", StringComparison.Ordinal));
+                    ?.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}observation")
+                    ?.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}unit")?.Value,
+                    "CHF",
+                    StringComparison.Ordinal));
 
                 this.foreignRates[currency] = new Tuple<DateTimeOffset, decimal>(date, rate);
                 result.Add(new ExchangeRate(new CurrencyPair(currency, SwissFranc), date, rate));
