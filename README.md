@@ -1,7 +1,7 @@
 # TIKSN Framework
 
 [![Version](https://img.shields.io/nuget/v/TIKSN-Framework.svg)](https://www.nuget.org/packages/TIKSN-Framework)
-[![NuGet Pre Release](https://img.shields.io/nuget/vpre/TIKSN-Framework.svg)](https://www.nuget.org/packages/TIKSN-Framework)
+[![TIKSN Framework NuGet Package Downloads](https://img.shields.io/nuget/dt/TIKSN-Framework)](https://www.nuget.org/packages/TIKSN-Framework)
 [![Developed by TIKSN Lab](https://img.shields.io/badge/Developed%20by-TIKSN%20Lab-orange.svg)](https://tiksn.com/project/tiksn-framework/)
 [![StandWithUkraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
 
