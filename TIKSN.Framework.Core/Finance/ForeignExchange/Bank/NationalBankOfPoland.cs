@@ -98,7 +98,7 @@ public class NationalBankOfPoland : INationalBankOfPoland
 
         var asOnWarsaw = source.EffectiveDate.ToLocalDate().AtStartOfDayInZone(WarsawTimeZone).ToDateTimeOffset();
 
-        return source.Rates.Select(x => (asOnWarsaw, x)).ToArray();
+        return source.Rates?.Select(x => (asOnWarsaw, x)).ToArray() ?? [];
     }
 
     private ExchangeRate CreateExchangeRate(ValueTuple<DateTimeOffset, Rate> entry)
@@ -140,9 +140,9 @@ public class NationalBankOfPoland : INationalBankOfPoland
         var rateTables = await JsonSerializer.DeserializeAsync<RateTable[]>(stream, cancellationToken: cancellationToken).ConfigureAwait(false);
 
         return rateTables
-            .SelectMany(CreateDatesAndRates)
+            ?.SelectMany(CreateDatesAndRates)
             .Select(this.CreateExchangeRate)
-            .ToArray();
+            .ToArray() ?? [];
     }
 
     private async Task<IReadOnlyCollection<ExchangeRate>> GetRatesAsync(
@@ -163,7 +163,7 @@ public class NationalBankOfPoland : INationalBankOfPoland
 #pragma warning restore CA1812 // Avoid uninstantiated internal classes
     {
         [JsonPropertyName("code")]
-        public string Code { get; set; }
+        public string Code { get; set; } = string.Empty;
 
         [JsonPropertyName("mid")]
         public decimal Mid { get; set; }
@@ -178,6 +178,6 @@ public class NationalBankOfPoland : INationalBankOfPoland
         public DateOnly EffectiveDate { get; set; }
 
         [JsonPropertyName("rates")]
-        public List<Rate> Rates { get; set; }
+        public List<Rate> Rates { get; set; } = [];
     }
 }
