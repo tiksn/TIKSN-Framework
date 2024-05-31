@@ -3,17 +3,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TIKSN.Data.EntityFrameworkCore;
 
-public class EntityQueryRepository<TContext, TEntity, TIdentity> : EntityRepository<TContext, TEntity>,
+public abstract class EntityQueryRepository<TContext, TEntity, TIdentity> : EntityRepository<TContext, TEntity>,
     IQueryRepository<TEntity, TIdentity>, IStreamRepository<TEntity>
     where TContext : DbContext
     where TEntity : class, IEntity<TIdentity>, new()
     where TIdentity : IEquatable<TIdentity>
 {
-    public EntityQueryRepository(TContext dbContext) : base(dbContext)
+    protected EntityQueryRepository(TContext dbContext) : base(dbContext)
     {
     }
 
-    protected IQueryable<TEntity> Entities => this.DbContext.Set<TEntity>().AsNoTracking();
+    protected virtual IQueryable<TEntity> Entities => this.DbContext.Set<TEntity>().AsNoTracking();
+
+    protected abstract IOrderedQueryable<TEntity> OrderedEntities { get; }
 
     public Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken) =>
         this.Entities.AnyAsync(a => a.ID.Equals(id), cancellationToken);
@@ -37,7 +39,7 @@ public class EntityQueryRepository<TContext, TEntity, TIdentity> : EntityReposit
         PageQuery pageQuery,
         CancellationToken cancellationToken)
         => PageAsync(
-            this.Entities,
+            this.OrderedEntities,
             pageQuery,
             cancellationToken);
 
@@ -50,7 +52,7 @@ public class EntityQueryRepository<TContext, TEntity, TIdentity> : EntityReposit
     }
 
     protected static Task<PageResult<TEntity>> PageAsync(
-        IQueryable<TEntity> query,
+        IOrderedQueryable<TEntity> query,
         PageQuery pageQuery,
         CancellationToken cancellationToken)
         => PaginationQueryableHelper.PageAsync(
