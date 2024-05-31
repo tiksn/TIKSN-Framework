@@ -34,8 +34,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="5.0.3" />
-    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="5.0.3" />
+    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="5.0.4" />
+    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="5.0.4" />
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -58,9 +58,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
-    <PackageReference Include="ReactiveUI.Maui" Version="19.6.1" />
-    <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.20" />
-    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.20" />
+    <PackageReference Include="ReactiveUI.Maui" Version="20.1.1" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.40" />
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.40" />
   </ItemGroup>
 
 </Project>
