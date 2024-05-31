@@ -11,6 +11,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
 {
     private readonly CompactBinaryBondDeserializer deserializer;
     private readonly IEntitlementsConverter<TEntitlements, TEntitlementsData> entitlementsConverter;
+    private readonly ILicenseDescriptor<TEntitlements> licenseDescriptor;
     private readonly CompactBinaryBondSerializer serializer;
     private readonly IServiceProvider serviceProvider;
     private readonly TimeProvider timeProvider;
@@ -18,12 +19,14 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
     public LicenseFactory(
         CompactBinaryBondSerializer serializer,
         CompactBinaryBondDeserializer deserializer,
+        ILicenseDescriptor<TEntitlements> licenseDescriptor,
         IEntitlementsConverter<TEntitlements, TEntitlementsData> entitlementsConverter,
         TimeProvider timeProvider,
         IServiceProvider serviceProvider)
     {
         this.serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
         this.deserializer = deserializer ?? throw new ArgumentNullException(nameof(deserializer));
+        this.licenseDescriptor = licenseDescriptor ?? throw new ArgumentNullException(nameof(licenseDescriptor));
         this.entitlementsConverter = entitlementsConverter ?? throw new ArgumentNullException(nameof(entitlementsConverter));
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
@@ -41,7 +44,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
         var errors = new List<Error>();
         var envelope = new LicenseEnvelope();
 
-        _ = Populate(envelope, terms)
+        _ = this.Populate(envelope, terms)
             .Match(succ => envelope = succ, fail => errors.AddRange(fail));
 
         _ = this.entitlementsConverter.Convert(entitlements)
@@ -92,7 +95,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
 
         var envelope = this.deserializer.Deserialize<LicenseEnvelope>([.. data]);
 
-        var licenseTermsValidation = GetTerms(envelope, this.timeProvider);
+        var licenseTermsValidation = this.GetTerms(envelope, this.timeProvider);
         var entitlementsValidation = this.entitlementsConverter.Convert(this.deserializer.Deserialize<TEntitlementsData>([.. envelope.Message.Entitlements]));
 
         var keyAlgorithm = publicCertificate.GetKeyAlgorithm();
@@ -124,7 +127,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
                 data));
     }
 
-    private static Validation<Error, LicenseTerms> GetTerms(
+    private Validation<Error, LicenseTerms> GetTerms(
         LicenseEnvelope envelope,
         TimeProvider timeProvider)
     {
@@ -133,6 +136,13 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
         if (envelope.Message.VersionNumber != 1)
         {
             return Error.New(2129266854, "License version is invalid");
+        }
+
+        if (envelope.Message.Discriminator.Count != Guid.Empty.ToByteArray().Length ||
+            envelope.Message.Discriminator.All(x => x == byte.MinValue) ||
+            !envelope.Message.Discriminator.SequenceEqual(this.licenseDescriptor.Discriminator.ToByteArray()))
+        {
+            return Error.New(13127362, "License Descriptor is invalid");
         }
 
         var serialNumberValidation = LicenseFactoryTermsValidation.ConvertToUlid(envelope.Message.SerialNumber);
@@ -174,7 +184,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
                 x.notAfter));
     }
 
-    private static Validation<Error, LicenseEnvelope> Populate(
+    private Validation<Error, LicenseEnvelope> Populate(
         LicenseEnvelope envelope,
         LicenseTerms terms)
     {
@@ -184,6 +194,13 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
         var errors = new List<Error>();
 
         envelope.Message.VersionNumber = 1;
+
+        if (this.licenseDescriptor.Discriminator == Guid.Empty)
+        {
+            errors.Add(Error.New(13127674, "'Discriminator' should not be empty GUID"));
+        }
+
+        envelope.Message.Discriminator = new ArraySegment<byte>(this.licenseDescriptor.Discriminator.ToByteArray());
 
         if (terms.NotAfter < terms.NotBefore)
         {

@@ -125,6 +125,10 @@ public class LicenseTests
         var services = new ServiceCollection();
         _ = services.AddSingleton<IEntitlementsConverter<TestEntitlements, TestLicenseEntitlements>, TestEntitlementsConverter>();
         _ = services.AddFrameworkCore();
+        _ = services.AddSingleton<ILicenseDescriptor<TestEntitlements>>(
+            new LicenseDescriptor<TestEntitlements>(
+                "Test License",
+                Guid.Parse("20559a6a-2ea6-45b2-9dc7-928406bc1719")));
 
         var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(2022, 9, 24, 0, 0, 0, TimeSpan.Zero));
         _ = services.AddSingleton<TimeProvider>(fakeTimeProvider);
@@ -184,6 +188,10 @@ public class LicenseTests
         LicenseTerms terms,
         Validation<Error, License<TestEntitlements>> result)
     {
+        foreach (var resultFail in result.FailToSeq())
+        {
+            this.testOutputHelper.WriteLine($"License Result Fail: {resultFail}");
+        }
         _ = result.IsSuccess.Should().BeTrue();
         _ = result.SuccessToSeq().Single().Terms.Should().NotBeNull();
         _ = result.SuccessToSeq().Single().Terms.SerialNumber.Should().Be(terms.SerialNumber);
