@@ -5,7 +5,7 @@ using static LanguageExt.Prelude;
 
 namespace TIKSN.Data.Mongo;
 
-public class MongoRepository<TDocument, TIdentity> :
+public abstract class MongoRepository<TDocument, TIdentity> :
     IMongoRepository<TDocument, TIdentity>
     where TDocument : IEntity<TIdentity> where TIdentity : IEquatable<TIdentity>
 {
@@ -28,6 +28,7 @@ public class MongoRepository<TDocument, TIdentity> :
 
     protected IMongoCollection<TDocument> Collection { get; }
     protected IMongoClientSessionProvider MongoClientSessionProvider { get; }
+    protected abstract SortDefinition<TDocument> PageSortDefinition { get; }
 
     public Task AddAsync(TDocument entity, CancellationToken cancellationToken)
     {
@@ -193,11 +194,13 @@ public class MongoRepository<TDocument, TIdentity> :
         ArgumentNullException.ThrowIfNull(pageQuery);
 
         Task<List<TDocument>> ItemsNoneAsync() => this.Collection.Find(filter)
+            .Sort(this.PageSortDefinition)
             .Skip(pageQuery.Page.Index * pageQuery.Page.Size)
             .Limit(pageQuery.Page.Size)
             .ToListAsync(cancellationToken);
 
         Task<List<TDocument>> ItemsSomeAsync(IClientSessionHandle clientSessionHandle) => this.Collection.Find(clientSessionHandle, filter)
+            .Sort(this.PageSortDefinition)
             .Skip(pageQuery.Page.Index * pageQuery.Page.Size)
             .Limit(pageQuery.Page.Size)
             .ToListAsync(cancellationToken);
