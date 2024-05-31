@@ -6,7 +6,7 @@ namespace TIKSN.Data;
 public static class PaginationQueryableHelper
 {
     public static async Task<PageResult<TEntity>> PageAsync<TEntity>(
-        IQueryable<TEntity> query,
+        IOrderedQueryable<TEntity> query,
         PageQuery pageQuery,
         Func<IQueryable<TEntity>, CancellationToken, Task<List<TEntity>>> requestListAsync,
         Func<IQueryable<TEntity>, CancellationToken, Task<long>> requestCountAsync,
