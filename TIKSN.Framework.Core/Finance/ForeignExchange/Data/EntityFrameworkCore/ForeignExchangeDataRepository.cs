@@ -8,4 +8,7 @@ public class ForeignExchangeDataRepository : EntityQueryRepository<ExchangeRates
     public ForeignExchangeDataRepository(ExchangeRatesContext dbContext) : base(dbContext)
     {
     }
+
+    protected override IOrderedQueryable<ForeignExchangeDataEntity> OrderedEntities
+        => this.Entities.OrderBy(x => x.ID);
 }

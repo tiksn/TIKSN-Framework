@@ -27,6 +27,7 @@ public class LiteDbRepository<TDocument, TIdentity> : ILiteDbRepository<TDocumen
 
     protected ILiteCollection<TDocument> Collection { get; }
     protected Func<TIdentity, BsonValue> ConvertToBsonValue { get; }
+    protected virtual Query PageQuery => Query.All();
 
     public Task AddAsync(TDocument entity, CancellationToken cancellationToken)
     {
@@ -74,13 +75,13 @@ public class LiteDbRepository<TDocument, TIdentity> : ILiteDbRepository<TDocumen
         ArgumentNullException.ThrowIfNull(pageQuery);
 
         var items = this.Collection.Find(
-            Query.All(),
+            this.PageQuery,
             pageQuery.Page.Index * pageQuery.Page.Size,
             pageQuery.Page.Size)
             .ToArray();
 
         Option<long> totalItems = pageQuery.EstimateTotalItems
-            ? this.Collection.LongCount(Query.All())
+            ? this.Collection.LongCount(this.PageQuery)
             : None;
 
         return Task.FromResult(new PageResult<TDocument>(pageQuery.Page, items, totalItems));
