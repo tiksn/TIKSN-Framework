@@ -105,29 +105,31 @@ public class FederalReserveSystem : IFederalReserveSystem
         var result = new List<ExchangeRate>();
 
         foreach (var seriesElement in xdoc
-            .Element("{http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message}MessageGroup")
-            .Element("{http://www.federalreserve.gov/structure/compact/common}DataSet")
-            .Elements("{http://www.federalreserve.gov/structure/compact/H10_H10}Series"))
+            ?.Element("{http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message}MessageGroup")
+            ?.Element("{http://www.federalreserve.gov/structure/compact/common}DataSet")
+            ?.Elements("{http://www.federalreserve.gov/structure/compact/H10_H10}Series") ?? [])
         {
-            var currencyCode = seriesElement.Attribute("CURRENCY").Value;
-            var fx = seriesElement.Attribute("FX").Value;
+            var currencyCode = seriesElement?.Attribute("CURRENCY")?.Value;
+            var fx = seriesElement?.Attribute("FX")?.Value;
 
-            if (!string.Equals(currencyCode, "NA", StringComparison.Ordinal))
+            if (!string.Equals(currencyCode, "NA", StringComparison.Ordinal)
+                && currencyCode is not null
+                && fx is not null)
             {
                 var rates = new Dictionary<DateTimeOffset, decimal>();
 
-                foreach (var obsElement in seriesElement.Elements(
-                    "{http://www.federalreserve.gov/structure/compact/common}Obs"))
+                foreach (var obsElement in seriesElement?.Elements(
+                    "{http://www.federalreserve.gov/structure/compact/common}Obs") ?? [])
                 {
-                    var obsStatus = obsElement.Attribute("OBS_STATUS").Value;
+                    var obsStatus = obsElement?.Attribute("OBS_STATUS")?.Value;
                     if (!string.Equals(obsStatus, "ND", StringComparison.Ordinal))
                     {
-                        var obsValue = decimal.Parse(obsElement.Attribute("OBS_VALUE").Value, EnglishUnitedStates);
-                        var period = DateTimeOffset.Parse(obsElement.Attribute("TIME_PERIOD").Value, EnglishUnitedStates);
+                        var obsValue = decimal.Parse(obsElement?.Attribute("OBS_VALUE")?.Value ?? string.Empty, EnglishUnitedStates);
+                        var period = DateTimeOffset.Parse(obsElement?.Attribute("TIME_PERIOD")?.Value ?? string.Empty, EnglishUnitedStates);
 
                         decimal obsValueRate;
 
-                        if (string.Equals(seriesElement.Attribute("UNIT").Value, "Currency:_Per_USD",
+                        if (string.Equals(seriesElement?.Attribute("UNIT")?.Value, "Currency:_Per_USD",
                             StringComparison.OrdinalIgnoreCase))
                         {
                             obsValueRate = obsValue;

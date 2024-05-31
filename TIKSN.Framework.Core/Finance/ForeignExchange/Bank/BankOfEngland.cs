@@ -252,9 +252,10 @@ public class BankOfEngland : IBankOfEngland
 
         List<ExchangeRate> rates = [];
 
-        foreach (var item in xdoc.Element("{http://www.gesmes.org/xml/2002-08-01}Envelope")
-            .Element("{https://www.bankofengland.co.uk/website/agg_series}Cube")
-            .Elements("{https://www.bankofengland.co.uk/website/agg_series}Cube"))
+        foreach (var item in xdoc
+            ?.Element("{http://www.gesmes.org/xml/2002-08-01}Envelope")
+            ?.Element("{https://www.bankofengland.co.uk/website/agg_series}Cube")
+            ?.Elements("{https://www.bankofengland.co.uk/website/agg_series}Cube") ?? [])
         {
             var time = item.Attribute("TIME");
             if (time is not null)

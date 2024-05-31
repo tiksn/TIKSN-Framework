@@ -98,16 +98,18 @@ public class NationalBankOfUkraine : INationalBankOfUkraine
         var xdocument = XDocument.Parse(response);
         var result = new HashSet<ExchangeRate>();
 
-        foreach (var currencyElement in xdocument.Element("exchange").Elements("currency"))
+        foreach (var currencyElement in xdocument
+            ?.Element("exchange")
+            ?.Elements("currency") ?? [])
         {
-            var currencyCode = currencyElement.Element("cc").Value;
+            var currencyCode = currencyElement?.Element("cc")?.Value;
 
             if (IgnoreList.Contains(currencyCode, StringComparer.OrdinalIgnoreCase))
             {
                 continue;
             }
 
-            var rate = decimal.Parse(currencyElement.Element("rate").Value, CultureInfo.InvariantCulture);
+            var rate = decimal.Parse(currencyElement?.Element("rate")?.Value ?? string.Empty, CultureInfo.InvariantCulture);
 
             if (!string.IsNullOrEmpty(currencyCode))
             {
@@ -124,8 +126,8 @@ public class NationalBankOfUkraine : INationalBankOfUkraine
     }
 
     private static NotSupportedException CreatePairNotSupportedException(
-        CurrencyInfo baseCurrency,
-        CurrencyInfo counterCurrency)
+        CurrencyInfo? baseCurrency,
+        CurrencyInfo? counterCurrency)
     {
         var ex = new NotSupportedException(
             "Currency pair is not supported by National Bank of Ukraine currency converter for given date.");

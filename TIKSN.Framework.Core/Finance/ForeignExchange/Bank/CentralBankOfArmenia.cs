@@ -102,12 +102,15 @@ public class CentralBankOfArmenia : ICentralBankOfArmenia
 
         lock (this.oneWayRates)
         {
-            foreach (var item in xdoc.Element("rss").Element("channel").Elements("item"))
+            foreach (var item in xdoc
+                ?.Element("rss")
+                ?.Element("channel")
+                ?.Elements("item") ?? [])
             {
                 var title = item.Element("title");
                 var pubDate = item.Element("pubDate");
 
-                var titleParts = title.Value.Split('-');
+                var titleParts = title?.Value.Split('-') ?? [];
 
                 var currencyCode = titleParts[0].Trim().ToUpper(CultureInfo.InvariantCulture);
                 var baseUnit = decimal.Parse(titleParts[1], CultureInfo.InvariantCulture);
@@ -128,7 +131,7 @@ public class CentralBankOfArmenia : ICentralBankOfArmenia
                     currencyCode = "XDR";
                 }
 
-                var publishedAt = DateTimeOffset.Parse(pubDate.Value, CultureInfo.InvariantCulture);
+                var publishedAt = DateTimeOffset.Parse(pubDate?.Value ?? string.Empty, CultureInfo.InvariantCulture);
 
                 if (baseUnit != decimal.Zero && counterUnit != decimal.Zero)
                 {
