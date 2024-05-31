@@ -1,3 +1,4 @@
+using MongoDB.Driver;
 using TIKSN.Data.Mongo;
 
 namespace TIKSN.Finance.ForeignExchange.Data.Mongo;
@@ -12,4 +13,7 @@ public class ForeignExchangeDataRepository : MongoRepository<ForeignExchangeData
             "ForeignExchanges")
     {
     }
+
+    protected override SortDefinition<ForeignExchangeDataEntity> PageSortDefinition
+        => Builders<ForeignExchangeDataEntity>.Sort.Ascending(x => x.ID);
 }
