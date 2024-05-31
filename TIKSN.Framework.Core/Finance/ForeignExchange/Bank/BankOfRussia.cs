@@ -99,7 +99,9 @@ public class BankOfRussia : IBankOfRussia
         {
             this.rates.Clear();
 
-            foreach (var valuteElement in xdoc.Element("ValCurs").Elements("Valute"))
+            foreach (var valuteElement in xdoc
+                ?.Element("ValCurs")
+                ?.Elements("Valute") ?? [])
             {
                 var charCodeElement = valuteElement.Element("CharCode");
 
@@ -120,8 +122,8 @@ public class BankOfRussia : IBankOfRussia
 
                 var currency = this.currencyFactory.Create(charCodeElement.Value);
 
-                var value = decimal.Parse(valueElement.Value, RussianRussia);
-                var nominal = decimal.Parse(nominalElement.Value, RussianRussia);
+                var value = decimal.Parse(valueElement?.Value ?? string.Empty, RussianRussia);
+                var nominal = decimal.Parse(nominalElement?.Value ?? string.Empty, RussianRussia);
 
                 result.Add(new ExchangeRate(new CurrencyPair(currency, RussianRuble), asOn,
                     value / nominal));
