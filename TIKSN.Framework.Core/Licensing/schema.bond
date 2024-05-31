@@ -31,12 +31,13 @@ struct LicenseOrganizationParty : LicenseParty
 struct LicenseMessage
 {
     0: uint8 VersionNumber;
-    1: blob SerialNumber;
-    2: bonded<LicenseParty> Licensor;
-    3: bonded<LicenseParty> Licensee;
-    4: int64 NotBefore;
-    5: int64 NotAfter;
-    6: nullable<blob> Entitlements;
+    1: blob Discriminator;
+    2: blob SerialNumber;
+    3: bonded<LicenseParty> Licensor;
+    4: bonded<LicenseParty> Licensee;
+    5: int64 NotBefore;
+    6: int64 NotAfter;
+    7: nullable<blob> Entitlements;
 }
 
 struct LicenseEnvelope
