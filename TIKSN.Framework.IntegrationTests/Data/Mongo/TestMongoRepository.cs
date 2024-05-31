@@ -1,4 +1,5 @@
 using System;
+using MongoDB.Driver;
 using TIKSN.Data.Mongo;
 
 namespace TIKSN.IntegrationTests.Data.Mongo;
@@ -11,4 +12,7 @@ public class TestMongoRepository : MongoRepository<TestMongoEntity, Guid>, ITest
         "Tests")
     {
     }
+
+    protected override SortDefinition<TestMongoEntity> PageSortDefinition
+        => Builders<TestMongoEntity>.Sort.Ascending(x => x.ID);
 }
