@@ -4,7 +4,7 @@ namespace TIKSN.Data;
 
 public sealed class PageResult<T> : IPageResult<T>
 {
-    public PageResult(Page page, IReadOnlyCollection<T> items, Option<long> totalItems)
+    public PageResult(Page page, IReadOnlyList<T> items, Option<long> totalItems)
     {
         if (totalItems.IsSome && totalItems.Single() < 0)
         {
@@ -17,7 +17,7 @@ public sealed class PageResult<T> : IPageResult<T>
         this.TotalPages = EstimateTotalPages(totalItems, page.Size);
     }
 
-    public IReadOnlyCollection<T> Items { get; }
+    public IReadOnlyList<T> Items { get; }
 
     public Page Page { get; }
 
