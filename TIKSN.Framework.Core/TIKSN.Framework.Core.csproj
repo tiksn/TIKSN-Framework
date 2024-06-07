@@ -20,7 +20,7 @@
   <ItemGroup>
     <PackageReference Include="Azure.Data.Tables" Version="12.8.3" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.20.0" />
-    <PackageReference Include="MessagePack" Version="2.5.140" />
+    <PackageReference Include="MessagePack" Version="2.5.168" />
     <PackageReference Include="MessagePackAnalyzer" Version="2.5.168">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
