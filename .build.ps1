@@ -65,6 +65,14 @@ Task Pack Build, Test, {
     $trashFolder = $state.TrashFolder
     $buildArtifactsFolder = $state.BuildArtifactsFolder
     $temporaryNuspec = Join-Path -Path $trashFolder -ChildPath '.\TIKSN-Framework.nuspec'
+
+    $directoryPackagesFile = '.\Directory.Packages.props'
+    $directoryPackages = [xml](Get-Content -Path $directoryPackagesFile -Raw)
+    $centralPackages = @{}
+    foreach ($packageVersion in $directoryPackages.SelectNodes('//PackageVersion')) {
+        $centralPackages.Add($packageVersion.Include, $packageVersion.Version)
+    }
+
     Copy-Item -Path '.\TIKSN-Framework.nuspec' -Destination $temporaryNuspec
 
     $packages = @{
@@ -88,7 +96,7 @@ Task Pack Build, Test, {
 
         foreach ($packageReference in $project.SelectNodes('//PackageReference')) {
             $packageId = $packageReference.Include
-            $packageVersion = $packageReference.Version
+            $packageVersion = $centralPackages[$packageId]
 
             if ($null -ne $packageVersion) {
                 foreach ($packageGroup in $projectMapEntry.PackageGroups) {
