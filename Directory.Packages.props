@@ -58,7 +58,7 @@
     <PackageVersion Include="NuGet.Versioning" Version="6.10.0" />
     <PackageVersion Include="Polly" Version="8.4.0" />
     <PackageVersion Include="PowerShellStandard.Library" Version="5.1.1" />
-    <PackageVersion Include="RavenDB.Client" Version="6.0.103" />
+    <PackageVersion Include="RavenDB.Client" Version="6.0.104" />
     <PackageVersion Include="ReactiveUI" Version="20.1.1" />
     <PackageVersion Include="ReactiveUI.Maui" Version="20.1.1" />
     <PackageVersion Include="Roslynator.Analyzers" Version="4.12.4" />
