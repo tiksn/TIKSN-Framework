@@ -43,8 +43,8 @@
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="8.6.0" />
     <PackageVersion Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.1" />
-    <PackageVersion Include="Microsoft.Maui.Controls" Version="8.0.40" />
-    <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.40" />
+    <PackageVersion Include="Microsoft.Maui.Controls" Version="8.0.60" />
+    <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.60" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
     <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.10.48" />
