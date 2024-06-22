@@ -12,5 +12,5 @@ public class NullUnitOfWorkFactory : IUnitOfWorkFactory
     public NullUnitOfWorkFactory(IServiceProvider serviceProvider)
         => this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
-    public async Task<IUnitOfWork> CreateAsync(CancellationToken cancellationToken) => new NullUnitOfWork(this.serviceProvider);
+    public Task<IUnitOfWork> CreateAsync(CancellationToken cancellationToken) => Task.FromResult<IUnitOfWork>(new NullUnitOfWork(this.serviceProvider));
 }
