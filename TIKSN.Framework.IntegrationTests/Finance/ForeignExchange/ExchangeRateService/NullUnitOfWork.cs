@@ -18,11 +18,7 @@ public class NullUnitOfWork : IUnitOfWork
 
     public Task DiscardAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
-    public void Dispose()
-    {
-        this.Dispose(disposing: true);
-        GC.SuppressFinalize(this);
-    }
+    public void Dispose() => this.Dispose(disposing: true);
 
     public ValueTask DisposeAsync()
     {

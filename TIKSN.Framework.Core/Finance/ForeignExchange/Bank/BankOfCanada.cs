@@ -1,9 +1,6 @@
 using System.Diagnostics;
 using System.Globalization;
-using DynamicData;
 using LanguageExt;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using TIKSN.Globalization;
 
 namespace TIKSN.Finance.ForeignExchange.Bank;
@@ -154,30 +151,23 @@ public class BankOfCanada : IBankOfCanada
         var responseStream = await this.httpClient.GetStreamAsync(restUrl).ConfigureAwait(false);
 
         using var streamReader = new StreamReader(responseStream);
-        var jsonDoc = (JObject)JsonConvert.DeserializeObject(await streamReader.ReadToEndAsync().ConfigureAwait(false));
+        var root = System.Text.Json.JsonSerializer.Deserialize<System.Text.Json.JsonElement>(await streamReader.ReadToEndAsync().ConfigureAwait(false));
 
         var result = new List<Tuple<string, DateOnly, decimal>>();
 
-        foreach (var observation in jsonDoc.Children()
-            .Single(item => string.Equals(item.Path, "observations", StringComparison.OrdinalIgnoreCase))
-            .Children().Single().Children())
-        {
-            var asOn = DateOnly.ParseExact(observation.Value<string>("d"), "yyyy-MM-dd", CultureInfo.InvariantCulture);
-            foreach (var observationProperty in from JProperty observationProperty in observation.Children()
-                                                where observationProperty.Name.StartsWith("FX", StringComparison.OrdinalIgnoreCase)
-                                                select observationProperty)
-            {
-                Debug.Assert(observationProperty.Name.EndsWith("CAD", StringComparison.Ordinal));
-                var targetCurrencyCode = observationProperty.Name.Substring(2, 3);
-                var valueObject = observationProperty.Value.Children().OfType<JProperty>()
-                                    .FirstOrDefault(item =>
-                                        string.Equals(item.Name, "v", StringComparison.OrdinalIgnoreCase));
-                if (valueObject != null)
-                {
-                    var rate = (decimal)valueObject.Value;
+        var observationsElement = root.GetProperty("observations");
 
-                    result.Add(new Tuple<string, DateOnly, decimal>(targetCurrencyCode, asOn, rate));
-                }
+        foreach (var observation in observationsElement.EnumerateArray())
+        {
+            var d = observation.GetProperty("d");
+            var asOn = DateOnly.ParseExact(d.GetString() ?? string.Empty, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            foreach (var fxElement in observation.EnumerateObject().Where(x => x.Name.StartsWith("FX", StringComparison.OrdinalIgnoreCase)))
+            {
+                Debug.Assert(fxElement.Name.EndsWith("CAD", StringComparison.Ordinal));
+                var targetCurrencyCode = fxElement.Name.Substring(2, 3);
+                var v = fxElement.Value.GetProperty("v");
+                var rate = decimal.Parse(v.GetString() ?? string.Empty, CultureInfo.InvariantCulture);
+                result.Add(new Tuple<string, DateOnly, decimal>(targetCurrencyCode, asOn, rate));
             }
         }
 
