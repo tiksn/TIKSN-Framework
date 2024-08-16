@@ -7,27 +7,27 @@
 
 ## Key features are
 
-* Versioning
-* Finance, Currency
-* Foreign Exchange
-* Money
-* Pricing strategy
-* Telemetry
-* Licensing
-* Composite Weighted Progress
-* Repository and Unity of Wok pattern implementation with Entity Framework Core
-* Network Connectivity Service and Triggering
-* Settings
-* Windows Registry configuration source
-* Azure Storage Repository
-* MongoDB Repository
-* NoDB Repository
-* Lingual and Regional Localization
-* Serialization
-* Rest Requester
-* Rest Repository
-* Dependency Injection
-* Composition Root Setup base classes
+- Versioning
+- Finance, Currency
+- Foreign Exchange
+- Money
+- Pricing strategy
+- Telemetry
+- Licensing
+- Composite Weighted Progress
+- Repository and Unity of Wok pattern implementation with Entity Framework Core
+- Network Connectivity Service and Triggering
+- Settings
+- Windows Registry configuration source
+- Azure Storage Repository
+- MongoDB Repository
+- NoDB Repository
+- Lingual and Regional Localization
+- Serialization
+- Rest Requester
+- Rest Repository
+- Dependency Injection
+- Composition Root Setup base classes
 
 ## Setup for Web Application
 
@@ -63,4 +63,4 @@ await app.RunAsync().ConfigureAwait(false);
 
 ## Acknowledgments
 
-* [JetBrains](https://www.jetbrains.com/?from=TIKSN-Framework) for providing free license.
+- [JetBrains](https://www.jetbrains.com/?from=TIKSN-Framework) for providing free license.
