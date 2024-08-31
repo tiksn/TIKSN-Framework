@@ -53,7 +53,7 @@ jobs:
         shell: pwsh
         run: .\pack.ps1 -Instance ${{github.run_id}}
       - name: "Publish Artefacts"
-        uses: actions/upload-artifact@v4.3.6
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: .trash
           path: "./.trash"
