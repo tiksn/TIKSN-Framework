@@ -329,8 +329,8 @@ Task FormatStyle Restore, FormatStyleLanguageLocalization, FormatStyleRegionLoca
 
 # Synopsis: Format Style Solution
 Task FormatStyleSolution Restore, {
-    # $solution = Resolve-Path -Path 'TIKSN Framework.sln'
-    # Exec { dotnet format style --severity info --verbosity diagnostic $solution }
+    $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+    Exec { dotnet format style --severity info --verbosity diagnostic $solution }
 }
 
 # Synopsis: Format Style Language Localization
