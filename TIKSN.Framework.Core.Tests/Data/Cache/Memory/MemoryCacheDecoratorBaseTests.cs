@@ -81,7 +81,7 @@ public class MemoryCacheDecoratorBaseTests
     }
 
     [Fact]
-    public async Task GivenExistingEntity_WhenRequestedByExternalId_ThenShouldCacheHitAsync()
+    public async Task GivenExistingEntity_WhenRequestedByExternalIdAsync_ThenShouldCacheHit()
     {
         // Arrange
 
@@ -130,7 +130,7 @@ public class MemoryCacheDecoratorBaseTests
     }
 
     [Fact]
-    public async Task GivenExistingEntity_WhenRequestedByExternalIdTwice_ThenShouldCacheHitOnceAsync()
+    public async Task GivenExistingEntity_WhenRequestedByExternalIdTwiceAsync_ThenShouldCacheHitOnce()
     {
         // Arrange
 
@@ -179,7 +179,7 @@ public class MemoryCacheDecoratorBaseTests
     }
 
     [Fact]
-    public async Task GivenExistingEntity_WhenRequestedById_ThenShouldCacheHitAsync()
+    public async Task GivenExistingEntity_WhenRequestedByIdAsync_ThenShouldCacheHit()
     {
         // Arrange
 
@@ -228,7 +228,7 @@ public class MemoryCacheDecoratorBaseTests
     }
 
     [Fact]
-    public async Task GivenExistingEntity_WhenRequestedByIdTwice_ThenShouldCacheHitOnceAsync()
+    public async Task GivenExistingEntity_WhenRequestedByIdTwiceAsync_ThenShouldCacheHitOnce()
     {
         // Arrange
 
@@ -270,7 +270,7 @@ public class MemoryCacheDecoratorBaseTests
     }
 
     [Fact]
-    public async Task GivenMissingEntity_WhenRequestedByExternalId_ThenShouldCacheMissAsync()
+    public async Task GivenMissingEntity_WhenRequestedByExternalIdAsync_ThenShouldCacheMiss()
     {
         // Arrange
 
@@ -298,7 +298,7 @@ public class MemoryCacheDecoratorBaseTests
     }
 
     [Fact]
-    public async Task GivenMissingEntity_WhenRequestedById_ThenShouldCacheMissAsync()
+    public async Task GivenMissingEntity_WhenRequestedByIdAsync_ThenShouldCacheMiss()
     {
         // Arrange
 

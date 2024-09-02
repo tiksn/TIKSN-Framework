@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,7 +33,7 @@ public class ReserveBankOfAustraliaTests
 
         var beforeInPound = new Money(poundSterling, 100m);
 
-        var afterInDollar = await this.bank.ConvertCurrencyAsync(beforeInPound, australianDollar, this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
+        var afterInDollar = await this.bank.ConvertCurrencyAsync(beforeInPound, australianDollar, this.timeProvider.GetUtcNow(), default);
 
         _ = (beforeInPound.Amount < afterInDollar.Amount).Should().BeTrue();
     }
@@ -42,13 +41,13 @@ public class ReserveBankOfAustraliaTests
     [Fact]
     public async Task ConvertCurrency001()
     {
-        var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
+        var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
 
         foreach (var pair in currencyPairs)
         {
             var before = new Money(pair.BaseCurrency, 10m);
 
-            var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
+            var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow(), default);
 
             _ = (after.Amount > decimal.Zero).Should().BeTrue();
             _ = (after.Currency == pair.CounterCurrency).Should().BeTrue();
@@ -58,15 +57,15 @@ public class ReserveBankOfAustraliaTests
     [Fact]
     public async Task ConvertCurrency002()
     {
-        var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
+        var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
 
         foreach (var pair in currencyPairs)
         {
             var before = new Money(pair.BaseCurrency, 10m);
 
-            var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
+            var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default);
 
-            var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
+            var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow(), default);
 
             _ = (after.Amount == before.Amount * rate).Should().BeTrue();
         }
@@ -75,7 +74,7 @@ public class ReserveBankOfAustraliaTests
     [Fact]
     public async Task ConvertCurrency003()
     {
-        var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
+        var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
 
         foreach (var pair in currencyPairs)
         {
@@ -83,14 +82,14 @@ public class ReserveBankOfAustraliaTests
 
             _ = await
                 new Func<Task>(async () =>
-                        await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow().AddMinutes(1d), default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>().ConfigureAwait(true);
+                        await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow().AddMinutes(1d), default)).Should().ThrowExactlyAsync<ArgumentException>();
         }
     }
 
     [Fact]
     public async Task ConvertCurrency004()
     {
-        var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
+        var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
 
         foreach (var pair in currencyPairs)
         {
@@ -98,7 +97,7 @@ public class ReserveBankOfAustraliaTests
 
             _ = await
                 new Func<Task>(async () =>
-                        await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow().AddDays(-20d), default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>().ConfigureAwait(true);
+                        await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow().AddDays(-20d), default)).Should().ThrowExactlyAsync<ArgumentException>();
         }
     }
 
@@ -115,13 +114,13 @@ public class ReserveBankOfAustraliaTests
 
         _ = await
                 new Func<Task>(async () =>
-                        await this.bank.ConvertCurrencyAsync(before, belarusianRuble, this.timeProvider.GetUtcNow(), default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>().ConfigureAwait(true);
+                        await this.bank.ConvertCurrencyAsync(before, belarusianRuble, this.timeProvider.GetUtcNow(), default)).Should().ThrowExactlyAsync<ArgumentException>();
     }
 
     [Fact]
     public async Task Fetch001()
     {
-        var rates = await this.bank.GetExchangeRatesAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
+        var rates = await this.bank.GetExchangeRatesAsync(this.timeProvider.GetUtcNow(), default);
 
         _ = rates.Should().NotBeEmpty();
     }
@@ -129,7 +128,7 @@ public class ReserveBankOfAustraliaTests
     [Fact]
     public async Task GetCurrencyPairs001()
     {
-        var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
+        var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
 
         _ = currencyPairs.Should().Contain(p => p.ToString() == "USD/AUD");
         _ = currencyPairs.Should().Contain(p => p.ToString() == "CNY/AUD");
@@ -169,7 +168,7 @@ public class ReserveBankOfAustraliaTests
     [Fact]
     public async Task GetCurrencyPairs002()
     {
-        var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
+        var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
 
         foreach (var pair in currencyPairs)
         {
@@ -184,56 +183,56 @@ public class ReserveBankOfAustraliaTests
     {
         var pairSet = new HashSet<CurrencyPair>();
 
-        var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
+        var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
 
         foreach (var pair in currencyPairs)
         {
             _ = pairSet.Add(pair);
         }
 
-        _ = (pairSet.Count == currencyPairs.Count()).Should().BeTrue();
+        _ = (pairSet.Count == currencyPairs.Count).Should().BeTrue();
     }
 
     [Fact]
     public async Task GetCurrencyPairs004()
         => _ = await
             new Func<Task>(async () =>
-                    await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow().AddMinutes(10), default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>().ConfigureAwait(true);
+                    await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow().AddMinutes(10), default)).Should().ThrowExactlyAsync<ArgumentException>();
 
     [Fact]
     public async Task GetCurrencyPairs005()
-        => _ = await new Func<Task>(async () => await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow().AddDays(-20), default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>().ConfigureAwait(true);
+        => _ = await new Func<Task>(async () => await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow().AddDays(-20), default)).Should().ThrowExactlyAsync<ArgumentException>();
 
     [Fact]
     public async Task GetExchangeRate001()
     {
-        var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
+        var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
 
         foreach (var pair in currencyPairs)
         {
-            _ = (await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default).ConfigureAwait(true) > decimal.Zero).Should().BeTrue();
+            _ = (await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default) > decimal.Zero).Should().BeTrue();
         }
     }
 
     [Fact]
     public async Task GetExchangeRate002()
     {
-        var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
+        var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
 
         foreach (var pair in currencyPairs)
         {
-            _ = await new Func<Task>(async () => await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddMinutes(1d), default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>().ConfigureAwait(true);
+            _ = await new Func<Task>(async () => await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddMinutes(1d), default)).Should().ThrowExactlyAsync<ArgumentException>();
         }
     }
 
     [Fact]
     public async Task GetExchangeRate003()
     {
-        var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default).ConfigureAwait(true);
+        var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
 
         foreach (var pair in currencyPairs)
         {
-            _ = await new Func<Task>(async () => await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddDays(-20d), default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>().ConfigureAwait(true);
+            _ = await new Func<Task>(async () => await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddDays(-20d), default)).Should().ThrowExactlyAsync<ArgumentException>();
         }
     }
 
@@ -248,6 +247,6 @@ public class ReserveBankOfAustraliaTests
 
         var pair = new CurrencyPair(armenianDram, belarusianRuble);
 
-        _ = await new Func<Task>(async () => await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>().ConfigureAwait(true);
+        _ = await new Func<Task>(async () => await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default)).Should().ThrowExactlyAsync<ArgumentException>();
     }
 }

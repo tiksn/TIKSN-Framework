@@ -127,7 +127,7 @@ public class VersionSeriesTests
         var expectedMatches = matchesList.Split('|', System.StringSplitOptions.RemoveEmptyEntries)
             .Select(x => (Version)NuGetVersion.Parse(x.Trim()))
             .ToArray();
-        var expectedHasMatches = expectedMatches.Any();
+        var expectedHasMatches = expectedMatches.Length != 0;
 
         // Act
         var match = versionSeries.Matches(versions);

@@ -116,7 +116,7 @@ public sealed class TestExchangeRateService : ExchangeRateServiceBase
 
     public override async Task InitializeAsync(CancellationToken cancellationToken)
     {
-        await this.databaseInitializer.InitializeAsync(cancellationToken).ConfigureAwait(false);
-        await base.InitializeAsync(cancellationToken).ConfigureAwait(false);
+        await this.databaseInitializer.InitializeAsync(cancellationToken);
+        await base.InitializeAsync(cancellationToken);
     }
 }

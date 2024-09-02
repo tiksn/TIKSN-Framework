@@ -50,7 +50,7 @@ public class MemoryCachedCurrencyConverterTests
     }
 
     [Fact]
-    public async Task GetCurrencyPairs001Async()
+    public async Task GetCurrencyPairs001()
     {
         var moment1 = new DateTimeOffset(2015, 12, 1, 0, 0, 0, TimeSpan.FromHours(2));
 
@@ -61,13 +61,13 @@ public class MemoryCachedCurrencyConverterTests
 
         var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger, this.memoryCache, this.options, this.genericOptions, this.specificOptions);
 
-        var actualPairs = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default).ConfigureAwait(true);
+        var actualPairs = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default);
 
         _ = actualPairs.Should().BeEquivalentTo(expectedPairs);
     }
 
     [Fact]
-    public async Task GetCurrencyPairs002Async()
+    public async Task GetCurrencyPairs002()
     {
         var moment1 = new DateTimeOffset(2015, 12, 1, 0, 0, 0, TimeSpan.FromHours(2));
 
@@ -78,13 +78,13 @@ public class MemoryCachedCurrencyConverterTests
 
         var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger, this.memoryCache, this.options, this.genericOptions, this.specificOptions);
 
-        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default).ConfigureAwait(true);
+        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default);
 
-        _ = await originalConverter.Received(1).GetCurrencyPairsAsync(moment1, default).ConfigureAwait(true);
+        _ = await originalConverter.Received(1).GetCurrencyPairsAsync(moment1, default);
     }
 
     [Fact]
-    public async Task GetCurrencyPairs003Async()
+    public async Task GetCurrencyPairs003()
     {
         var moment1 = new DateTimeOffset(2015, 12, 1, 0, 0, 0, TimeSpan.FromHours(2));
 
@@ -95,35 +95,14 @@ public class MemoryCachedCurrencyConverterTests
 
         var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger, this.memoryCache, this.options, this.genericOptions, this.specificOptions);
 
-        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default).ConfigureAwait(true);
-        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default).ConfigureAwait(true);
+        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default);
+        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default);
 
-        _ = await originalConverter.Received(1).GetCurrencyPairsAsync(moment1, default).ConfigureAwait(true);
+        _ = await originalConverter.Received(1).GetCurrencyPairsAsync(moment1, default);
     }
 
     [Fact]
-    public async Task GetCurrencyPairs004Async()
-    {
-        var moment1 = new DateTimeOffset(2015, 12, 1, 0, 0, 0, TimeSpan.FromHours(2));
-        var moment2 = new DateTimeOffset(2015, 12, 2, 0, 0, 0, TimeSpan.FromHours(2));
-
-        var originalConverter = Substitute.For<ICurrencyConverter>();
-        var expectedPairs = new List<CurrencyPair> { new(new CurrencyInfo("USD"), new CurrencyInfo("EUR")) };
-
-        _ = originalConverter.GetCurrencyPairsAsync(moment1, default).Returns(expectedPairs);
-        _ = originalConverter.GetCurrencyPairsAsync(moment2, default).Returns(expectedPairs);
-
-        var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger, this.memoryCache, this.options, this.genericOptions, this.specificOptions);
-
-        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default).ConfigureAwait(true);
-        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment2, default).ConfigureAwait(true);
-
-        _ = await originalConverter.Received(1).GetCurrencyPairsAsync(moment1, default).ConfigureAwait(true);
-        _ = await originalConverter.Received(1).GetCurrencyPairsAsync(moment2, default).ConfigureAwait(true);
-    }
-
-    [Fact]
-    public async Task GetCurrencyPairs005Async()
+    public async Task GetCurrencyPairs004()
     {
         var moment1 = new DateTimeOffset(2015, 12, 1, 0, 0, 0, TimeSpan.FromHours(2));
         var moment2 = new DateTimeOffset(2015, 12, 2, 0, 0, 0, TimeSpan.FromHours(2));
@@ -136,16 +115,37 @@ public class MemoryCachedCurrencyConverterTests
 
         var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger, this.memoryCache, this.options, this.genericOptions, this.specificOptions);
 
-        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default).ConfigureAwait(true);
-        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default).ConfigureAwait(true);
-        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment2, default).ConfigureAwait(true);
+        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default);
+        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment2, default);
 
-        _ = await originalConverter.Received(1).GetCurrencyPairsAsync(moment1, default).ConfigureAwait(true);
-        _ = await originalConverter.Received(1).GetCurrencyPairsAsync(moment2, default).ConfigureAwait(true);
+        _ = await originalConverter.Received(1).GetCurrencyPairsAsync(moment1, default);
+        _ = await originalConverter.Received(1).GetCurrencyPairsAsync(moment2, default);
     }
 
     [Fact]
-    public async Task GetCurrencyPairs006Async()
+    public async Task GetCurrencyPairs005()
+    {
+        var moment1 = new DateTimeOffset(2015, 12, 1, 0, 0, 0, TimeSpan.FromHours(2));
+        var moment2 = new DateTimeOffset(2015, 12, 2, 0, 0, 0, TimeSpan.FromHours(2));
+
+        var originalConverter = Substitute.For<ICurrencyConverter>();
+        var expectedPairs = new List<CurrencyPair> { new(new CurrencyInfo("USD"), new CurrencyInfo("EUR")) };
+
+        _ = originalConverter.GetCurrencyPairsAsync(moment1, default).Returns(expectedPairs);
+        _ = originalConverter.GetCurrencyPairsAsync(moment2, default).Returns(expectedPairs);
+
+        var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger, this.memoryCache, this.options, this.genericOptions, this.specificOptions);
+
+        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default);
+        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default);
+        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment2, default);
+
+        _ = await originalConverter.Received(1).GetCurrencyPairsAsync(moment1, default);
+        _ = await originalConverter.Received(1).GetCurrencyPairsAsync(moment2, default);
+    }
+
+    [Fact]
+    public async Task GetCurrencyPairs006()
     {
         var moment1 = new DateTimeOffset(2015, 12, 1, 0, 0, 0, TimeSpan.FromHours(2));
         var moment11 = new DateTimeOffset(2015, 12, 1, 0, 1, 0, TimeSpan.FromHours(2));
@@ -159,17 +159,17 @@ public class MemoryCachedCurrencyConverterTests
 
         var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger, this.memoryCache, this.options, this.genericOptions, this.specificOptions);
 
-        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default).ConfigureAwait(true);
-        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment11, default).ConfigureAwait(true);
-        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment2, default).ConfigureAwait(true);
+        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default);
+        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment11, default);
+        _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment2, default);
 
-        _ = await originalConverter.Received(1).GetCurrencyPairsAsync(moment1, default).ConfigureAwait(true);
-        _ = await originalConverter.Received(0).GetCurrencyPairsAsync(moment11, default).ConfigureAwait(true);
-        _ = await originalConverter.Received(1).GetCurrencyPairsAsync(moment2, default).ConfigureAwait(true);
+        _ = await originalConverter.Received(1).GetCurrencyPairsAsync(moment1, default);
+        _ = await originalConverter.Received(0).GetCurrencyPairsAsync(moment11, default);
+        _ = await originalConverter.Received(1).GetCurrencyPairsAsync(moment2, default);
     }
 
     [Fact]
-    public async Task GetExchangeRate001Async()
+    public async Task GetExchangeRate001()
     {
         var exchangeRate = 10.23m;
         var pair = new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("EUR"));
@@ -185,17 +185,17 @@ public class MemoryCachedCurrencyConverterTests
 
         var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger, this.memoryCache, this.options, this.genericOptions, this.specificOptions);
 
-        _ = await memoryCachedCurrencyConverter.GetExchangeRateAsync(pair, moment1, default).ConfigureAwait(true);
-        _ = await memoryCachedCurrencyConverter.GetExchangeRateAsync(pair, moment11, default).ConfigureAwait(true);
-        _ = await memoryCachedCurrencyConverter.GetExchangeRateAsync(pair, moment2, default).ConfigureAwait(true);
+        _ = await memoryCachedCurrencyConverter.GetExchangeRateAsync(pair, moment1, default);
+        _ = await memoryCachedCurrencyConverter.GetExchangeRateAsync(pair, moment11, default);
+        _ = await memoryCachedCurrencyConverter.GetExchangeRateAsync(pair, moment2, default);
 
-        _ = await originalConverter.Received(1).GetExchangeRateAsync(pair, moment1, default).ConfigureAwait(true);
-        _ = await originalConverter.Received(0).GetExchangeRateAsync(pair, moment11, default).ConfigureAwait(true);
-        _ = await originalConverter.Received(1).GetExchangeRateAsync(pair, moment2, default).ConfigureAwait(true);
+        _ = await originalConverter.Received(1).GetExchangeRateAsync(pair, moment1, default);
+        _ = await originalConverter.Received(0).GetExchangeRateAsync(pair, moment11, default);
+        _ = await originalConverter.Received(1).GetExchangeRateAsync(pair, moment2, default);
     }
 
     [Fact]
-    public async Task GetExchangeRate002Async()
+    public async Task GetExchangeRate002()
     {
         var exchangeRate = 10.23m;
         var pair = new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("EUR"));
@@ -208,7 +208,7 @@ public class MemoryCachedCurrencyConverterTests
 
         var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger, this.memoryCache, this.options, this.genericOptions, this.specificOptions);
 
-        var actualRate = await memoryCachedCurrencyConverter.GetExchangeRateAsync(pair, moment1, default).ConfigureAwait(true);
+        var actualRate = await memoryCachedCurrencyConverter.GetExchangeRateAsync(pair, moment1, default);
 
         _ = actualRate.Should().Be(exchangeRate);
     }
