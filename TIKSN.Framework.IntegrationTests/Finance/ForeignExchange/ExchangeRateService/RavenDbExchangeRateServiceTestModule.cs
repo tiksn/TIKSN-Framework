@@ -1,8 +1,8 @@
 using Autofac;
 using TIKSN.Data;
+using TIKSN.Data.RavenDB;
 using TIKSN.Finance.ForeignExchange.Data;
 using TIKSN.Finance.ForeignExchange.Data.RavenDB;
-using TIKSN.Data.RavenDB;
 
 namespace TIKSN.IntegrationTests.Finance.ForeignExchange.ExchangeRateService;
 

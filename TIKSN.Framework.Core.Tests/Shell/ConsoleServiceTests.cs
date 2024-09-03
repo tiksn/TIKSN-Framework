@@ -22,7 +22,7 @@ public class ConsoleServiceTests
     private readonly ITestOutputHelper testOutputHelper;
 
     public ConsoleServiceTests(ITestOutputHelper testOutputHelper)
-        => this.testOutputHelper = testOutputHelper ?? throw new System.ArgumentNullException(nameof(testOutputHelper));
+        => this.testOutputHelper = testOutputHelper ?? throw new ArgumentNullException(nameof(testOutputHelper));
 
     [Fact]
     public async Task GivenDependencies_WhenHelpCommandAndExitCalled_ThenOutputShouldMatch()

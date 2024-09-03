@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using TIKSN.Data;
 using TIKSN.Finance.ForeignExchange;
 using TIKSN.Finance.ForeignExchange.Bank;
-using TIKSN.Finance.ForeignExchange.Data;
 using TIKSN.Globalization;
 using TIKSN.Localization;
 
