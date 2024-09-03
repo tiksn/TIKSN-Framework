@@ -27,7 +27,7 @@ public class RavenDatabaseInitializer : IDatabaseInitializer
             .Initialize();
 
         _ = store.Operations.ForDatabase(this.options.Value.Database);
-        await EnsureDatabaseExistsAsync(store).ConfigureAwait(false);
+        await EnsureDatabaseExistsAsync(store);
     }
 
     private static async Task EnsureDatabaseExistsAsync(IDocumentStore store)
@@ -39,13 +39,13 @@ public class RavenDatabaseInitializer : IDatabaseInitializer
 
         try
         {
-            _ = await store.Maintenance.ForDatabase(store.Database).SendAsync(new GetStatisticsOperation()).ConfigureAwait(false);
+            _ = await store.Maintenance.ForDatabase(store.Database).SendAsync(new GetStatisticsOperation());
         }
         catch (DatabaseDoesNotExistException)
         {
             try
             {
-                _ = await store.Maintenance.Server.SendAsync(new CreateDatabaseOperation(new DatabaseRecord(store.Database))).ConfigureAwait(false);
+                _ = await store.Maintenance.Server.SendAsync(new CreateDatabaseOperation(new DatabaseRecord(store.Database)));
             }
             catch (ConcurrencyException)
             {

@@ -32,7 +32,7 @@ public class NationalBankOfPolandTests
         // Arrange
 
         // Act
-        var result = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetLocalNow(), default).ConfigureAwait(false);
+        var result = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetLocalNow(), default);
 
         // Assert
         _ = result.Should().NotBeNull();
@@ -53,7 +53,7 @@ public class NationalBankOfPolandTests
         var asOn = this.timeProvider.GetLocalNow().AddMonths(-1);
 
         // Act
-        var result = await this.bank.ConvertCurrencyAsync(the10USD, thePLN, asOn, default).ConfigureAwait(false);
+        var result = await this.bank.ConvertCurrencyAsync(the10USD, thePLN, asOn, default);
 
         // Assert
         _ = result.Should().NotBeNull();
@@ -70,7 +70,7 @@ public class NationalBankOfPolandTests
         var the10USD = new Money(theUSD, 10m);
 
         // Act
-        var result = await this.bank.ConvertCurrencyAsync(the10USD, thePLN, this.timeProvider.GetLocalNow(), default).ConfigureAwait(false);
+        var result = await this.bank.ConvertCurrencyAsync(the10USD, thePLN, this.timeProvider.GetLocalNow(), default);
 
         // Assert
         _ = result.Should().NotBeNull();
@@ -87,7 +87,7 @@ public class NationalBankOfPolandTests
         var the10USD = new Money(theUSD, 10m);
 
         // Act
-        var result = await this.bank.ConvertCurrencyAsync(the10USD, thePLN, this.timeProvider.GetUtcNow(), default).ConfigureAwait(false);
+        var result = await this.bank.ConvertCurrencyAsync(the10USD, thePLN, this.timeProvider.GetUtcNow(), default);
 
         // Assert
         _ = result.Should().NotBeNull();

@@ -292,8 +292,8 @@ Task FormatAnalyzers Restore, FormatAnalyzersLanguageLocalization, FormatAnalyze
 
 # Synopsis: Format Analyzers Solution
 Task FormatAnalyzersSolution Restore, {
-    # $solution = Resolve-Path -Path 'TIKSN Framework.sln'
-    # Exec { dotnet format analyzers --severity info --verbosity diagnostic $solution }
+    $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+    Exec { dotnet format analyzers --severity info --verbosity diagnostic $solution }
 }
 
 # Synopsis: Format Analyzers Language Localization

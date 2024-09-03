@@ -8,6 +8,8 @@ namespace TIKSN.Tests.Data;
 
 public class PageResultTests
 {
+    private static readonly char[] items = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+
     [Theory]
     [InlineData(null, null)]
     [InlineData(0L, 0L)]
@@ -17,7 +19,7 @@ public class PageResultTests
     {
         PageResult<char> pageResult = new(
             new Page(1, 10),
-            new[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' },
+            items,
             Optional(totalItems));
 
         _ = pageResult.TotalPages.Should<Option<long>>().Be(Optional(totalPages));

@@ -15,16 +15,16 @@ public class MongoRepositoryTests
         this.serviceProviderFixture = serviceProviderFixture ?? throw new ArgumentNullException(nameof(serviceProviderFixture));
 
     [Fact]
-    public async Task TestCreationAndRetrievalAsync()
+    public async Task TestCreationAndRetrieval()
     {
         var testRepository = this.serviceProviderFixture.GetServiceProvider().GetRequiredService<ITestMongoRepository>();
 
         var testEntityId = Guid.NewGuid();
         var testEntity = new TestMongoEntity { ID = testEntityId, Value = Guid.NewGuid() };
 
-        await testRepository.AddAsync(testEntity, default).ConfigureAwait(true);
+        await testRepository.AddAsync(testEntity, default);
 
-        var retrievedEntity = await testRepository.GetAsync(testEntityId, default).ConfigureAwait(true);
+        var retrievedEntity = await testRepository.GetAsync(testEntityId, default);
 
         _ = retrievedEntity.Value.Should().Be(testEntity.Value);
     }

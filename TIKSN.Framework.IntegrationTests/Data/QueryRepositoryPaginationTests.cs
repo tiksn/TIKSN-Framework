@@ -40,15 +40,15 @@ public class QueryRepositoryPaginationTests
         var eur = currencyFactory.Create("EUR");
         var usd10 = new Money(usd, 10m);
 
-        await exchangeRateService.InitializeAsync(default).ConfigureAwait(false);
+        await exchangeRateService.InitializeAsync(default);
 
         // Act
 
         _ = await exchangeRateService.ConvertCurrencyAsync(
-            usd10, eur, DateTimeOffset.Now, default).ConfigureAwait(false);
-        var firstPageResult = await exchangeRateRepository.PageAsync(firstPageQuery, default).ConfigureAwait(false);
-        var items = await exchangeRateRepository.StreamAllAsync(default).Take(10).ToListAsync(default).ConfigureAwait(false);
-        var totalItems = await exchangeRateRepository.StreamAllAsync(default).LongCountAsync(default).ConfigureAwait(false);
+            usd10, eur, DateTimeOffset.Now, default);
+        var firstPageResult = await exchangeRateRepository.PageAsync(firstPageQuery, default);
+        var items = await exchangeRateRepository.StreamAllAsync(default).Take(10).ToListAsync(default);
+        var totalItems = await exchangeRateRepository.StreamAllAsync(default).LongCountAsync(default);
 
         // Assert
 
