@@ -41,7 +41,7 @@
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="8.9.0" />
+    <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="8.9.1" />
     <PackageVersion Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.1" />
     <PackageVersion Include="Microsoft.Maui.Controls" Version="8.0.82" />
     <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.82" />
