@@ -153,11 +153,7 @@ public class BankOfRussia : IBankOfRussia
     {
         ValidateDate(asOn, this.timeProvider);
 
-        if (!this.published.HasValue)
-        {
-            _ = await this.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
-        }
-        else if (this.published.Value.Date != asOn.Date)
+        if (!this.published.HasValue || this.published.Value.Date != asOn.Date)
         {
             _ = await this.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
         }
