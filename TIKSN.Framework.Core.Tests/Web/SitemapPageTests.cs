@@ -25,9 +25,13 @@ public class SitemapPageTests
 
         _ = p1.Equals(p1).Should().BeTrue();
         _ = p1.Equals(p2).Should().BeTrue();
+#pragma warning disable CS1718 // Comparison made to same variable
         _ = (p1 == p1).Should().BeTrue();
+#pragma warning restore CS1718 // Comparison made to same variable
         _ = (p1 == p2).Should().BeTrue();
+#pragma warning disable CS1718 // Comparison made to same variable
         _ = (p1 != p1).Should().BeFalse();
+#pragma warning restore CS1718 // Comparison made to same variable
         _ = (p1 != p2).Should().BeFalse();
         _ = (p1.GetHashCode() == p2.GetHashCode()).Should().BeTrue();
     }
@@ -40,9 +44,13 @@ public class SitemapPageTests
 
         _ = p1.Equals(p1).Should().BeTrue();
         _ = p1.Equals(p2).Should().BeTrue();
+#pragma warning disable CS1718 // Comparison made to same variable
         _ = (p1 == p1).Should().BeTrue();
+#pragma warning restore CS1718 // Comparison made to same variable
         _ = (p1 == p2).Should().BeTrue();
+#pragma warning disable CS1718 // Comparison made to same variable
         _ = (p1 != p1).Should().BeFalse();
+#pragma warning restore CS1718 // Comparison made to same variable
         _ = (p1 != p2).Should().BeFalse();
         _ = (p1.GetHashCode() == p2.GetHashCode()).Should().BeTrue();
     }
@@ -55,9 +63,13 @@ public class SitemapPageTests
 
         _ = p1.Equals(p1).Should().BeTrue();
         _ = p1.Equals(p2).Should().BeFalse();
+#pragma warning disable CS1718 // Comparison made to same variable
         _ = (p1 == p1).Should().BeTrue();
+#pragma warning restore CS1718 // Comparison made to same variable
         _ = (p1 == p2).Should().BeFalse();
+#pragma warning disable CS1718 // Comparison made to same variable
         _ = (p1 != p1).Should().BeFalse();
+#pragma warning restore CS1718 // Comparison made to same variable
         _ = (p1 != p2).Should().BeTrue();
         _ = (p1.GetHashCode() != p2.GetHashCode()).Should().BeTrue();
     }
