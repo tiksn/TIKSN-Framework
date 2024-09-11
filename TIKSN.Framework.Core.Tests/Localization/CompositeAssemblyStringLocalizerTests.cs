@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,10 +9,11 @@ using Serilog;
 using TIKSN.DependencyInjection;
 using Xunit;
 using Xunit.Abstractions;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace TIKSN.Tests.Localization;
 
-public class CompositeAssemblyStringLocalizerTests
+public partial class CompositeAssemblyStringLocalizerTests
 {
     private readonly IServiceProvider serviceProvider;
 
@@ -24,7 +26,7 @@ public class CompositeAssemblyStringLocalizerTests
             _ = builder.AddDebug();
             var loggger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
-                .WriteTo.TestOutput(testOutputHelper)
+                .WriteTo.TestOutput(testOutputHelper, formatProvider: CultureInfo.InvariantCulture)
                 .CreateLogger();
             _ = builder.AddSerilog(loggger);
         });
@@ -50,15 +52,18 @@ public class CompositeAssemblyStringLocalizerTests
 
         foreach (var duplicate in duplicates)
         {
-            logger.LogInformation("Localization Key {LocalizationKey}", duplicate.Key);
-
             foreach (var duplicateItem in duplicate)
             {
-                logger.LogInformation("Localization Name {LocalizationName}", duplicateItem.Name);
-                logger.LogInformation("Localization Value {LocalizationValue}", duplicateItem.Value);
-                logger.LogInformation("Localization SearchedLocation {LocalizationSearchedLocation}", duplicateItem.SearchedLocation);
+                LogDuplicateItem(logger, duplicate.Key, duplicateItem.Name, duplicateItem.Value, duplicateItem.SearchedLocation);
             }
         }
         _ = duplicatesCount.Should().Be(0);
     }
+
+    [LoggerMessage(
+        EventId = 21923797,
+        Level = LogLevel.Information,
+        Message = "Duplicate Localization Key `{LocalizationKey}` Name `{LocalizationName}` Value `{LocalizationValue}` SearchedLocation `{LocalizationSearchedLocation}`")]
+    private static partial void LogDuplicateItem(
+        ILogger logger, string localizationKey, string localizationName, string localizationValue, string localizationSearchedLocation);
 }

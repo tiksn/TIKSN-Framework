@@ -117,11 +117,7 @@ public class SwissNationalBank : ISwissNationalBank
 
     private async Task FetchOnDemandAsync(CancellationToken cancellationToken)
     {
-        if (this.foreignRates.Count == 0)
-        {
-            _ = await this.GetExchangeRatesAsync(this.timeProvider.GetUtcNow(), cancellationToken).ConfigureAwait(false);
-        }
-        else if (this.foreignRates.Any(r => r.Value.Item1.Date == this.timeProvider.GetUtcNow().Date))
+        if (this.foreignRates.Count == 0 || this.foreignRates.Any(r => r.Value.Item1.Date == this.timeProvider.GetUtcNow().Date))
         {
             _ = await this.GetExchangeRatesAsync(this.timeProvider.GetUtcNow(), cancellationToken).ConfigureAwait(false);
         }

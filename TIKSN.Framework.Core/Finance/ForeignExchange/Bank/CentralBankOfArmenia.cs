@@ -158,11 +158,7 @@ public class CentralBankOfArmenia : ICentralBankOfArmenia
 
     private async Task FetchOnDemandAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
     {
-        if (!this.publicationDate.HasValue)
-        {
-            _ = await this.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
-        }
-        else if (this.timeProvider.GetUtcNow() - this.lastFetchDate > TimeSpan.FromDays(1d))
+        if (!this.publicationDate.HasValue || (this.timeProvider.GetUtcNow() - this.lastFetchDate > TimeSpan.FromDays(1d)))
         {
             _ = await this.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
         }

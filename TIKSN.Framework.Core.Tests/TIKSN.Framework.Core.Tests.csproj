@@ -22,7 +22,6 @@
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="Nito.AsyncEx.Context" />
     <PackageReference Include="NSubstitute" />
-    <PackageReference Include="PowerShellStandard.Library" />
     <PackageReference Include="ReactiveUI" />
     <PackageReference Include="Serilog.Sinks.XUnit" />
     <PackageReference Include="Spectre.Console.Testing" />

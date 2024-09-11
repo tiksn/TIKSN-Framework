@@ -26,6 +26,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Microsoft.PowerShell.SDK" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
     <PackageReference Include="NodaTime" />
     <PackageReference Include="SonarAnalyzer.CSharp">
@@ -91,7 +92,6 @@
     <PackageReference Include="Nito.AsyncEx.Context" />
     <PackageReference Include="NLog.Extensions.Logging" />
     <PackageReference Include="NuGet.Versioning" />
-    <PackageReference Include="PowerShellStandard.Library" />
     <PackageReference Include="ReactiveUI" />
     <PackageReference Include="RavenDB.Client" />
     <PackageReference Include="Roslynator.Analyzers">

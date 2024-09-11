@@ -1,3 +1,4 @@
+using System.Globalization;
 using Serilog;
 using TIKSN.Analytics.Logging.Serilog;
 using Xunit.Abstractions;
@@ -14,6 +15,6 @@ public class TestSerilogLoggingSetup : SerilogLoggingSetupBase
     {
         base.SetupSerilog();
 
-        _ = this.LoggerConfiguration.WriteTo.TestOutput(this.testOutputHelper);
+        _ = this.LoggerConfiguration.WriteTo.TestOutput(this.testOutputHelper, formatProvider: CultureInfo.InvariantCulture);
     }
 }
