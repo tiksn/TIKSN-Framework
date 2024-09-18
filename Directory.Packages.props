@@ -56,7 +56,7 @@
     <PackageVersion Include="NSubstitute" Version="5.1.0" />
     <PackageVersion Include="NuGet.Versioning" Version="6.11.0" />
     <PackageVersion Include="Polly" Version="8.4.1" />
-    <PackageVersion Include="RavenDB.Client" Version="6.0.105" />
+    <PackageVersion Include="RavenDB.Client" Version="6.2.0" />
     <PackageVersion Include="ReactiveUI" Version="20.1.52" />
     <PackageVersion Include="ReactiveUI.Maui" Version="20.1.1" />
     <PackageVersion Include="Roslynator.Analyzers" Version="4.12.5" />
