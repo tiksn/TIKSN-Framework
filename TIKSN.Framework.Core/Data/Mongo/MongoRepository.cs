@@ -184,6 +184,19 @@ public abstract class MongoRepository<TDocument, TIdentity> :
     protected static FilterDefinition<TDocument> GetIdentityFilter(TIdentity id) =>
         Builders<TDocument>.Filter.Eq(item => item.ID, id);
 
+    protected Task<TDocument> FirstOrDefaultAsync(
+        FilterDefinition<TDocument> filter,
+        CancellationToken cancellationToken)
+    {
+        Task<TDocument> NoneAsync() => this.Collection.Find(filter)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        Task<TDocument> SomeAsync(IClientSessionHandle clientSessionHandle) => this.Collection.Find(clientSessionHandle, filter)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        return this.MongoClientSessionProvider.GetClientSessionHandle().Match(SomeAsync, NoneAsync);
+    }
+
     protected async Task<PageResult<TDocument>> PageAsync(
         FilterDefinition<TDocument> filter,
         PageQuery pageQuery,

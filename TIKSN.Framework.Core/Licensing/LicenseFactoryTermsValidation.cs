@@ -133,7 +133,7 @@ internal static class LicenseFactoryTermsValidation
     {
         IndividualParty individualParty => ConvertFromIndividual(individualParty).Map<IBonded<LicenseParty>>(x => new Bonded<LicenseIndividualParty>(x)),
         OrganizationParty organizationParty => ConvertFromOrganization(organizationParty).Map<IBonded<LicenseParty>>(x => new Bonded<LicenseOrganizationParty>(x)),
-        _ => Error.New(2143629281, "Invalid party type")
+        _ => Error.New(2143629281, "Invalid party type"),
     };
 
     internal static Validation<Error, Party> ConvertToParty(IBonded<LicenseParty> licenseParty)

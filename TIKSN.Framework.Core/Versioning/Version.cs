@@ -686,7 +686,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
             "ALPHA" => (Milestone.Alpha, prereleaseNumber),
             "BETA" => (Milestone.Beta, prereleaseNumber),
             "RC" => (Milestone.ReleaseCandidate, prereleaseNumber),
-            _ => throw new FormatException($"Unknown milestone tag '{milestoneTag}'.")
+            _ => throw new FormatException($"Unknown milestone tag '{milestoneTag}'."),
         };
     }
 
@@ -705,7 +705,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
             Milestone.Beta => "beta",
             Milestone.ReleaseCandidate => "rc",
             Milestone.Release => null,
-            _ => throw new NotSupportedException("Unsupported milestone name.")
+            _ => throw new NotSupportedException("Unsupported milestone name."),
         };
 
         if (milestoneTag is null)
