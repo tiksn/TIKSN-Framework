@@ -35,7 +35,7 @@
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Http" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Localization" Version="8.0.8" />
-    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="8.0.8" />
+    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="8.0.10" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
