@@ -52,6 +52,7 @@ public class ServiceProviderFixture : IDisposable
                 _ = builder.RegisterModule<CoreModule>();
                 _ = builder.RegisterType<TextLocalizer>().As<IStringLocalizer>().SingleInstance();
                 _ = builder.RegisterType<TestMongoRepository>().As<ITestMongoRepository>().InstancePerLifetimeScope();
+                _ = builder.RegisterType<TestMongoFileRepository>().As<ITestMongoFileRepository>().InstancePerLifetimeScope();
                 _ = builder.RegisterType<TestMongoDatabaseProvider>().As<IMongoDatabaseProvider>().SingleInstance();
                 _ = builder.RegisterType<TestMongoClientProvider>().As<IMongoClientProvider>().SingleInstance();
                 _ = builder.RegisterType<TestExchangeRateService>().As<IExchangeRateService>().InstancePerLifetimeScope();
