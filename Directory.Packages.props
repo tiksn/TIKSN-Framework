@@ -42,7 +42,7 @@
     <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="8.10.0" />
     <PackageVersion Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.1" />
     <PackageVersion Include="Microsoft.Maui.Controls" Version="8.0.92" />
-    <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.92" />
+    <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.93" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
     <PackageVersion Include="Microsoft.PowerShell.SDK" Version="7.4.6" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
