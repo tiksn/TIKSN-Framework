@@ -26,7 +26,7 @@ public class GuidCorrelationService : ICorrelationService
     /// <returns>Created <see cref="CorrelationId"/></returns>
     public CorrelationId Create(Seq<byte> binaryRepresentation)
     {
-        var guid = new Guid(binaryRepresentation.ToArray());
+        var guid = new Guid([.. binaryRepresentation]);
         return new CorrelationId(guid.ToString(), Seq(guid.ToByteArray()));
     }
 
