@@ -59,7 +59,7 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
 
         var serialParser =
             from xs in many(letter)
-            let r = new string(xs.ToArray())
+            let r = new string([.. xs])
             let val = TSerial.Parse(r, asciiOnly, provider)
             from res in val.Match(
                 Some: result<TSerial>,
@@ -68,7 +68,7 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
 
         var numberParser =
             from xs in many(digit)
-            let r = new string(xs.ToArray())
+            let r = new string([.. xs])
             let val = parseNumber(r)
             from res in val.Match(
                 Some: result<TNumber>,
