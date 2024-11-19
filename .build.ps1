@@ -116,11 +116,11 @@ Task Pack Build, Test, {
     }
 
     $dependencyGroups = @(
-        @{Packages = $packages.Core; TargetFramework = 'net8.0' },
-        @{Packages = $packages.Android; TargetFramework = 'net8.0-android21.0' }
-        @{Packages = $packages.IOS; TargetFramework = 'net8.0-ios14.2' }
-        @{Packages = $packages.MacCatalyst; TargetFramework = 'net8.0-maccatalyst14.0' }
-        @{Packages = $packages.Windows; TargetFramework = 'net8.0-windows10.0.19041.0' }
+        @{Packages = $packages.Core; TargetFramework = 'net9.0' },
+        @{Packages = $packages.Android; TargetFramework = 'net9.0-android21.0' }
+        @{Packages = $packages.IOS; TargetFramework = 'net9.0-ios14.2' }
+        @{Packages = $packages.MacCatalyst; TargetFramework = 'net9.0-maccatalyst14.0' }
+        @{Packages = $packages.Windows; TargetFramework = 'net9.0-windows10.0.19041.0' }
     )
 
     $nuspec = [xml](Get-Content -Path $temporaryNuspec -Raw)
@@ -234,10 +234,10 @@ Task BuildMaui EstimateVersion, {
 
     Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder }
 
-    Exec { dotnet build $project --framework net8.0-ios /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyIosBuildArtifactsFolder }
-    Exec { dotnet build $project --framework net8.0-maccatalyst /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyMaccatalystBuildArtifactsFolder }
-    Exec { dotnet build $project --framework net8.0-android /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyAndroidBuildArtifactsFolder }
-    Exec { dotnet build $project --framework net8.0-windows10.0.19041.0 /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyWindowsBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net9.0-ios /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyIosBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net9.0-maccatalyst /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyMaccatalystBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net9.0-android /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyAndroidBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net9.0-windows10.0.19041.0 /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyWindowsBuildArtifactsFolder }
 }
 
 # Synopsis: Estimate Next Version
