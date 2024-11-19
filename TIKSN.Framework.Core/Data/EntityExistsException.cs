@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Data;
+namespace TIKSN.Data;
 
 public class EntityExistsException : Exception
 {
