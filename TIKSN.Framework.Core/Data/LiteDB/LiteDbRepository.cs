@@ -61,7 +61,7 @@ public class LiteDbRepository<TDocument, TIdentity> : ILiteDbRepository<TDocumen
             ?? throw new EntityNotFoundException("Result retrieved from database is null.");
 
     public Task<TDocument?> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
-        => Task.FromResult<TDocument?>(this.Collection.FindById(this.ConvertToBsonValue(id)));
+        => Task.FromResult(this.Collection.FindById(this.ConvertToBsonValue(id)));
 
     public Task<IReadOnlyList<TDocument>> ListAsync(
         IEnumerable<TIdentity> ids,

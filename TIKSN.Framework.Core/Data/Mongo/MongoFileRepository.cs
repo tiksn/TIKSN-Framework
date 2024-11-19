@@ -95,8 +95,19 @@ public class MongoFileRepository<TIdentity, TMetadata> : IFileRepository, IFileR
     public async Task<bool> ExistsByIdAsync(TIdentity id, CancellationToken cancellationToken) =>
         await (await this.bucket.FindAsync(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Id, id), cancellationToken: cancellationToken).ConfigureAwait(false)).AnyAsync(cancellationToken).ConfigureAwait(false);
 
-    public Task UploadAsync(string path, byte[] content, CancellationToken cancellationToken) =>
-        this.bucketRaw.UploadFromBytesAsync(path, content, options: null, cancellationToken);
+    public async Task UploadAsync(string path, byte[] content, CancellationToken cancellationToken)
+    {
+        var coursor = await this.bucket.FindAsync(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Filename, path), cancellationToken: cancellationToken).ConfigureAwait(false);
+        var firstFileInfo = await coursor.FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
+        if (firstFileInfo is null)
+        {
+            _ = await this.bucketRaw.UploadFromBytesAsync(path, content, options: null, cancellationToken).ConfigureAwait(false);
+        }
+        else
+        {
+            throw new EntityExistsException();
+        }
+    }
 
     public Task UploadAsync(TIdentity id, string path, byte[] content, TMetadata metadata,
         CancellationToken cancellationToken) =>

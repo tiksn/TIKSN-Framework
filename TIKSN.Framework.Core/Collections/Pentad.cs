@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Collections;
+namespace TIKSN.Collections;
 
 public class Pentad<T> : Tuple<T, T, T, T, T>
 {
