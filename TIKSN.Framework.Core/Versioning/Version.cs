@@ -728,7 +728,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
             throw new FormatException("Stable version cannot have pre-release number.");
         }
 
-        var values = Enum.GetValues(typeof(Milestone));
+        var values = Enum.GetValues<Milestone>();
         for (var i = 0; i < values.Length; i++)
         {
             var objectValue = values.GetValue(i)
