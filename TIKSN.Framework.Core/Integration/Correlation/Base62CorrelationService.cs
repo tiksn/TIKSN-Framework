@@ -68,7 +68,7 @@ public class Base62CorrelationService : ICorrelationService
             chars.Push('0');
         }
 
-        var stringRepresentation = new string(chars.ToArray());
+        var stringRepresentation = new string([.. chars]);
         return new CorrelationId(stringRepresentation, binaryRepresentation);
     }
 
