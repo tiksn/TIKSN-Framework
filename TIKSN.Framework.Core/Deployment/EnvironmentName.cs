@@ -46,7 +46,7 @@ public sealed class EnvironmentName : ISpanFormattable, IEquatable<EnvironmentNa
         return parser
             .Parse(name)
             .ToOption()
-            .Map(x => x.Map(y => culture.TextInfo.ToTitleCase(new string(y.ToArray()))))
+            .Map(x => x.Map(y => culture.TextInfo.ToTitleCase(new string([.. y]))))
             .Map(x => new EnvironmentName(x));
     }
 
