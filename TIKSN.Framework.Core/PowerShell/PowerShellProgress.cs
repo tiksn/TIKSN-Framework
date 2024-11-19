@@ -6,7 +6,7 @@ namespace TIKSN.PowerShell;
 
 public class PowerShellProgress : Progress<OperationProgressReport>, IDisposableProgress<OperationProgressReport>
 {
-    private static readonly object ActivityIdLocker = new();
+    private static readonly Lock ActivityIdLocker = new();
     private static int nextActivityId;
     private readonly ICurrentCommandProvider currentCommandProvider;
     private readonly ProgressRecord progressRecord;
