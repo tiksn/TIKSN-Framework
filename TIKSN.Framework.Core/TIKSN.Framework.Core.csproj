@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyTitle>TIKSN.Framework.Core</AssemblyTitle>
-    <TargetFramework>net8.0</TargetFramework>
-    <DocumentationFile>bin\$(Configuration)\net8.0\TIKSN.Framework.Core.xml</DocumentationFile>
+    <TargetFramework>net9.0</TargetFramework>
+    <DocumentationFile>bin\$(Configuration)\net9.0\TIKSN.Framework.Core.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>

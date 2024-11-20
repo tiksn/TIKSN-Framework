@@ -16,7 +16,7 @@ public class CuidCorrelationService : ICorrelationService
     private const int Radix = 36;
     private const string UppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static readonly IReadOnlyDictionary<char, int> CodeMap = CreateCodeMap();
-    private readonly object locker;
+    private readonly Lock locker;
     private readonly Random random;
     private readonly TimeProvider timeProvider;
     private int counter;
@@ -26,7 +26,7 @@ public class CuidCorrelationService : ICorrelationService
     {
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         this.counter = 0;
-        this.locker = new object();
+        this.locker = new Lock();
         this.random = random ?? throw new ArgumentNullException(nameof(random));
     }
 

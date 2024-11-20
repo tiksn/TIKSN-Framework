@@ -7,14 +7,14 @@ public abstract class MongoClientProviderBase : IMongoClientProvider
 {
     private readonly IConfiguration configuration;
     private readonly string connectionStringKey;
-    private readonly object locker;
+    private readonly Lock locker;
     private MongoClient? mongoClient;
 
     protected MongoClientProviderBase(
         IConfiguration configuration,
         string connectionStringKey)
     {
-        this.locker = new object();
+        this.locker = new Lock();
         this.configuration = configuration;
         this.connectionStringKey = connectionStringKey;
     }
