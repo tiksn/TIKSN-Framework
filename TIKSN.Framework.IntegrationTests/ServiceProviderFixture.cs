@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Localization;
-using MongoDB.Bson;
 using TIKSN.Data.Mongo;
 using TIKSN.Data.RavenDB;
 using TIKSN.DependencyInjection;
@@ -23,8 +22,6 @@ public class ServiceProviderFixture : IDisposable
 
     public ServiceProviderFixture()
     {
-        BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
-
         this.hosts = [];
 
         this.CreateHost(string.Empty, (context, builder) => { });
