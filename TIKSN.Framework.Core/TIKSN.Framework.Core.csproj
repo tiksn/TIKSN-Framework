@@ -87,7 +87,6 @@
     <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" />
     <PackageReference Include="MongoDB.Driver" />
-    <PackageReference Include="MongoDB.Driver.GridFS" />
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="Nito.AsyncEx.Context" />
     <PackageReference Include="NLog.Extensions.Logging" />
