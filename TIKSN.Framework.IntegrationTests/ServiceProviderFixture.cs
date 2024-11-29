@@ -6,6 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Localization;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using TIKSN.Data.Mongo;
 using TIKSN.Data.RavenDB;
 using TIKSN.DependencyInjection;
@@ -62,6 +65,8 @@ public class ServiceProviderFixture : IDisposable
                 _ = builder.AddUserSecrets<ServiceProviderFixture>();
             })
             .Build();
+
+        BsonSerializer.TryRegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
 
         this.hosts.Add(key, host);
 
