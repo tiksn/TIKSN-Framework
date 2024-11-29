@@ -52,8 +52,10 @@ public abstract class CommandBase : PSCmdlet, IDisposable
 
     protected abstract IServiceProvider GetServiceProvider();
 
-    protected override void ProcessRecord() => AsyncContext.Run(async () =>
-        await this.ProcessRecordAsync(this.cancellationTokenSource.Token).ConfigureAwait(false));
+    protected override void ProcessRecord()
+#pragma warning disable VSTHRD002 // Avoid problematic synchronous waits
+        => this.ProcessRecordAsync(this.cancellationTokenSource.Token).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002 // Avoid problematic synchronous waits
 
     protected abstract Task ProcessRecordAsync(CancellationToken cancellationToken);
 
