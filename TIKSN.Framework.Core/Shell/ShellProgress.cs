@@ -1,19 +1,18 @@
-using ShellProgressBar;
+using Spectre.Console;
 using TIKSN.Progress;
 
 namespace TIKSN.Shell;
 
 public class ShellProgress : Progress<OperationProgressReport>, IDisposableProgress<OperationProgressReport>
 {
-    private readonly int accuracy;
-    private readonly ProgressBar progressBar;
+    private readonly ProgressTask progressTask;
     private bool disposedValue;
 
-    public ShellProgress(string message, int accuracy)
+    public ShellProgress(ProgressContext progressContext, string message)
     {
-        this.accuracy = accuracy;
-        var options = new ProgressBarOptions();
-        this.progressBar = new ProgressBar(this.EstimateTicks(100d), message, options);
+        ArgumentNullException.ThrowIfNull(progressContext);
+
+        this.progressTask = progressContext.AddTask(Markup.Escape(message));
     }
 
     public void Dispose()
@@ -28,7 +27,7 @@ public class ShellProgress : Progress<OperationProgressReport>, IDisposableProgr
         {
             if (disposing)
             {
-                this.progressBar.Dispose();
+                this.progressTask.StopTask();
             }
 
             this.disposedValue = true;
@@ -41,15 +40,8 @@ public class ShellProgress : Progress<OperationProgressReport>, IDisposableProgr
 
         base.OnReport(value);
 
-        this.progressBar.Message = $"{value.StatusDescription} {value.CurrentOperation}";
+        this.progressTask.Description = $"{value.StatusDescription} {value.CurrentOperation}";
 
-        var updatedTicks = this.EstimateTicks(value.PercentComplete);
-
-        while (this.progressBar.CurrentTick < updatedTicks)
-        {
-            this.progressBar.Tick();
-        }
+        this.progressTask.Value = value.PercentComplete;
     }
-
-    private int EstimateTicks(double percentage) => (int)(percentage * this.accuracy);
 }

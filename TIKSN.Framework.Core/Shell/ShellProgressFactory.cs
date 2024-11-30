@@ -10,5 +10,5 @@ public class ShellProgressFactory : IOperationProgressFactory
     public ShellProgressFactory(IOptions<ShellProgressFactoryOptions> options) => this.options = options;
 
     public IDisposableProgress<OperationProgressReport> Create(string activity, string statusDescription) =>
-        new ShellProgress($"{activity} {statusDescription}", this.options.Value.Accuracy);
+        new ShellProgress(this.options.Value.ProgressContext, $"{activity} {statusDescription}");
 }

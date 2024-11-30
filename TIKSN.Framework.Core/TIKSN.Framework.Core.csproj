@@ -97,7 +97,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Serilog.Extensions.Logging" />
-    <PackageReference Include="ShellProgressBar" />
     <PackageReference Include="System.Interactive" />
     <PackageReference Include="System.Interactive.Async" />
     <PackageReference Include="System.Reactive" />

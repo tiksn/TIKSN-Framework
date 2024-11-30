@@ -1,8 +1,11 @@
+using Spectre.Console;
+
 namespace TIKSN.Shell;
 
 public class ShellProgressFactoryOptions
 {
-    public ShellProgressFactoryOptions() => this.Accuracy = 1;
+    public ShellProgressFactoryOptions(ProgressContext progressContext)
+        => this.ProgressContext = progressContext ?? throw new ArgumentNullException(nameof(progressContext));
 
-    public int Accuracy { get; set; }
+    public ProgressContext ProgressContext { get; }
 }
