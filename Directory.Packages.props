@@ -56,7 +56,7 @@
     <PackageVersion Include="RavenDB.Client" Version="6.2.1" />
     <PackageVersion Include="ReactiveUI" Version="20.1.63" />
     <PackageVersion Include="ReactiveUI.Maui" Version="20.1.63" />
-    <PackageVersion Include="Roslynator.Analyzers" Version="4.12.9" />
+    <PackageVersion Include="Roslynator.Analyzers" Version="4.12.10" />
     <PackageVersion Include="Serilog.Extensions.Logging" Version="8.0.0" />
     <PackageVersion Include="Serilog.Sinks.XUnit" Version="3.0.19" />
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.3.0.106239" />
