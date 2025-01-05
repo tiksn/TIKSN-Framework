@@ -8,33 +8,6 @@ namespace TIKSN.Tests.Deployment;
 public class EnvironmentNameTests
 {
     [Theory]
-    [InlineData("", "")]
-    [InlineData("Development", "Development")]
-    [InlineData("Test", "Test")]
-    [InlineData("Staging", "Staging")]
-    [InlineData("Production", "Production")]
-    [InlineData("Local-Development", "Local-Development")]
-    [InlineData("Mike-Local-Development", "Mike-Local-Development")]
-    [InlineData("Central-Development", "Central-Development")]
-    [InlineData("Central_Development", "Central-Development")]
-    [InlineData("Development<>", "")]
-    [InlineData("<>Development<>", "")]
-    [InlineData("<>Development", "")]
-    [InlineData("Central_Development<>", "")]
-    public void GivenName_WhenParsed_ThenIfParsableStringMustMatch(string name, string actual)
-    {
-        // Arrange
-
-        // Act
-        var result = EnvironmentName
-            .Parse(name, asciiOnly: true, CultureInfo.InvariantCulture)
-            .Match(s => s.ToString(), string.Empty);
-
-        // Assert
-        _ = result.Should().Be(actual);
-    }
-
-    [Theory]
     [InlineData("Development", "T", "Development")]
     [InlineData("Development", "t", "Development")]
     [InlineData("Development", "u", "DEVELOPMENT")]
@@ -57,12 +30,48 @@ public class EnvironmentNameTests
         // Arrange
 
         // Act
-        var result = EnvironmentName
+        var result1 = EnvironmentName
             .Parse(name, asciiOnly: true, CultureInfo.InvariantCulture)
             .Match(s => s.ToString(format, CultureInfo.InvariantCulture), string.Empty);
 
+        var result2 = EnvironmentName
+            .Parse(name, CultureInfo.InvariantCulture)
+            .ToString(format, CultureInfo.InvariantCulture);
+
         // Assert
-        _ = result.Should().Be(actual);
+        _ = result1.Should().Be(actual);
+        _ = result2.Should().Be(actual);
+    }
+
+    [Theory]
+    [InlineData("", "")]
+    [InlineData("Development", "Development")]
+    [InlineData("Test", "Test")]
+    [InlineData("Staging", "Staging")]
+    [InlineData("Production", "Production")]
+    [InlineData("Local-Development", "Local-Development")]
+    [InlineData("Mike-Local-Development", "Mike-Local-Development")]
+    [InlineData("Central-Development", "Central-Development")]
+    [InlineData("Central_Development", "Central-Development")]
+    [InlineData("Development<>", "")]
+    [InlineData("<>Development<>", "")]
+    [InlineData("<>Development", "")]
+    [InlineData("Central_Development<>", "")]
+    public void GivenName_WhenParsed_ThenIfParsableStringMustMatch(string name, string actual)
+    {
+        // Arrange
+
+        // Act
+        var result1 = EnvironmentName
+            .Parse(name, asciiOnly: true, CultureInfo.InvariantCulture);
+        var result1Formatted = result1
+            .Match(s => s.ToString(), string.Empty);
+        var canParse = EnvironmentName.TryParse(name, CultureInfo.InvariantCulture, out var result2);
+
+        // Assert
+        _ = result1Formatted.Should().Be(actual);
+        _ = canParse.Should().Be(result1.IsSome);
+        _ = result1.IfSome(x => x.Should().Be(result2));
     }
 
     [Theory]
