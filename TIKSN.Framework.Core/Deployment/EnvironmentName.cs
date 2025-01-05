@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using LanguageExt;
 using static LanguageExt.Parsec.Char;
@@ -6,7 +7,7 @@ using static LanguageExt.Prelude;
 
 namespace TIKSN.Deployment;
 
-public sealed class EnvironmentName : ISpanFormattable, IEquatable<EnvironmentName>
+public sealed class EnvironmentName : ISpanFormattable, ISpanParsable<EnvironmentName>, IEquatable<EnvironmentName>
 {
     private static readonly char[] SeparatorCharacters = ['-', '_', '+'];
 
@@ -20,7 +21,7 @@ public sealed class EnvironmentName : ISpanFormattable, IEquatable<EnvironmentNa
     public static Option<EnvironmentName> Parse(
         string name,
         bool asciiOnly,
-        IFormatProvider provider)
+        IFormatProvider? provider)
     {
         if (string.IsNullOrEmpty(name))
         {
@@ -53,8 +54,48 @@ public sealed class EnvironmentName : ISpanFormattable, IEquatable<EnvironmentNa
     public static Option<EnvironmentName> Parse(
         ReadOnlySpan<char> name,
         bool asciiOnly,
-        IFormatProvider provider)
+        IFormatProvider? provider)
         => Parse(name.ToString(), asciiOnly, provider);
+
+    public static EnvironmentName Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    {
+        if (TryParse(s, provider, out var result))
+        {
+            return result;
+        }
+
+        throw new FormatException("Name was not in a correct format.");
+    }
+
+    public static EnvironmentName Parse(string s, IFormatProvider? provider)
+    {
+        if (TryParse(s, provider, out var result))
+        {
+            return result;
+        }
+
+        throw new FormatException("Name was not in a correct format.");
+    }
+
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out EnvironmentName result)
+    {
+        var environmentName = Parse(s, asciiOnly: false, provider);
+        result = environmentName.MatchUnsafe(x => x, () => default);
+        return environmentName.IsSome;
+    }
+
+    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out EnvironmentName result)
+    {
+        if (s is null)
+        {
+            result = default;
+            return false;
+        }
+
+        var environmentName = Parse(s, asciiOnly: false, provider);
+        result = environmentName.MatchUnsafe(x => x, () => default);
+        return environmentName.IsSome;
+    }
 
     #endregion Parsing
 
@@ -97,6 +138,10 @@ public sealed class EnvironmentName : ISpanFormattable, IEquatable<EnvironmentNa
 
     #region Equality
 
+    public static bool operator !=(EnvironmentName left, EnvironmentName right) => !Equals(left, right);
+
+    public static bool operator ==(EnvironmentName left, EnvironmentName right) => Equals(left, right);
+
     public bool Equals(EnvironmentName? other)
     {
         if (other is null)
@@ -119,10 +164,6 @@ public sealed class EnvironmentName : ISpanFormattable, IEquatable<EnvironmentNa
         => ReferenceEquals(this, obj) || (obj is EnvironmentName other && this.Equals(other));
 
     public override int GetHashCode() => this.segments.GetHashCode();
-
-    public static bool operator ==(EnvironmentName left, EnvironmentName right) => Equals(left, right);
-
-    public static bool operator !=(EnvironmentName left, EnvironmentName right) => !Equals(left, right);
 
     #endregion Equality
 
