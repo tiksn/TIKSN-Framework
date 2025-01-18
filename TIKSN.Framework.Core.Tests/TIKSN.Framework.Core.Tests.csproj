@@ -18,6 +18,7 @@
     <PackageReference Include="NSubstitute" />
     <PackageReference Include="ReactiveUI" />
     <PackageReference Include="Serilog.Sinks.XUnit" />
+    <PackageReference Include="Shouldly" />
     <PackageReference Include="Spectre.Console.Testing" />
     <PackageReference Include="System.Reactive" />
     <PackageReference Include="xunit" />
