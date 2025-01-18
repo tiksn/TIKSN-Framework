@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using TIKSN.DependencyInjection;
 using TIKSN.Finance;
 using TIKSN.Finance.ForeignExchange.Bank;
@@ -34,10 +35,10 @@ public class NationalBankOfPolandTests
         var result = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetLocalNow(), default);
 
         // Assert
-        _ = result.Should().NotBeNull();
-        _ = result.Should().NotBeEmpty();
-        _ = result.Should().OnlyHaveUniqueItems();
-        _ = result.Should().OnlyContain(x =>
+        _ = result.ShouldNotBeNull();
+        result.ShouldNotBeEmpty();
+        result.ShouldBeUnique();
+        result.ShouldAllBe(x =>
             x.BaseCurrency.ISOCurrencySymbol == "PLN" ||
             x.CounterCurrency.ISOCurrencySymbol == "PLN");
     }
@@ -55,9 +56,9 @@ public class NationalBankOfPolandTests
         var result = await this.bank.ConvertCurrencyAsync(the10USD, thePLN, asOn, default);
 
         // Assert
-        _ = result.Should().NotBeNull();
-        _ = result.Currency.ISOCurrencySymbol.Should().Be("PLN");
-        _ = result.Amount.Should().BeGreaterThan(10m);
+        _ = result.ShouldNotBeNull();
+        result.Currency.ISOCurrencySymbol.ShouldBe("PLN");
+        result.Amount.ShouldBeGreaterThan(10m);
     }
 
     [Fact]
@@ -72,9 +73,9 @@ public class NationalBankOfPolandTests
         var result = await this.bank.ConvertCurrencyAsync(the10USD, thePLN, this.timeProvider.GetLocalNow(), default);
 
         // Assert
-        _ = result.Should().NotBeNull();
-        _ = result.Currency.ISOCurrencySymbol.Should().Be("PLN");
-        _ = result.Amount.Should().BeGreaterThan(10m);
+        _ = result.ShouldNotBeNull();
+        result.Currency.ISOCurrencySymbol.ShouldBe("PLN");
+        result.Amount.ShouldBeGreaterThan(10m);
     }
 
     [Fact]
@@ -89,8 +90,8 @@ public class NationalBankOfPolandTests
         var result = await this.bank.ConvertCurrencyAsync(the10USD, thePLN, this.timeProvider.GetUtcNow(), default);
 
         // Assert
-        _ = result.Should().NotBeNull();
-        _ = result.Currency.ISOCurrencySymbol.Should().Be("PLN");
-        _ = result.Amount.Should().BeGreaterThan(10m);
+        _ = result.ShouldNotBeNull();
+        result.Currency.ISOCurrencySymbol.ShouldBe("PLN");
+        result.Amount.ShouldBeGreaterThan(10m);
     }
 }

@@ -66,7 +66,7 @@ public class ServiceProviderFixture : IDisposable
             })
             .Build();
 
-        BsonSerializer.TryRegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
+        _ = BsonSerializer.TryRegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
 
         this.hosts.Add(key, host);
 

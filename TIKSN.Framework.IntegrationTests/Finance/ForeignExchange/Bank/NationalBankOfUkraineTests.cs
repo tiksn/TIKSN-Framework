@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using TIKSN.DependencyInjection;
 using TIKSN.Finance;
 using TIKSN.Finance.ForeignExchange.Bank;
@@ -31,8 +32,8 @@ public class NationalBankOfUkraineTests
             var baseMoney = new Money(pair.BaseCurrency, 100);
             var convertedMoney = await this.bank.ConvertCurrencyAsync(baseMoney, pair.CounterCurrency, date, default);
 
-            _ = convertedMoney.Currency.Should().Be(pair.CounterCurrency);
-            _ = (convertedMoney.Amount > decimal.Zero).Should().BeTrue();
+            convertedMoney.Currency.ShouldBe(pair.CounterCurrency);
+            (convertedMoney.Amount > decimal.Zero).ShouldBeTrue();
         }
     }
 
@@ -41,7 +42,7 @@ public class NationalBankOfUkraineTests
     {
         var pairs = await this.bank.GetCurrencyPairsAsync(new DateTimeOffset(2016, 05, 06, 0, 0, 0, TimeSpan.Zero), default);
 
-        _ = (pairs.Count != 0).Should().BeTrue();
+        (pairs.Count != 0).ShouldBeTrue();
     }
 
     [Fact]
@@ -54,7 +55,7 @@ public class NationalBankOfUkraineTests
         {
             var rate = await this.bank.GetExchangeRateAsync(pair, date, default);
 
-            _ = (rate > decimal.Zero).Should().BeTrue();
+            (rate > decimal.Zero).ShouldBeTrue();
         }
     }
 }

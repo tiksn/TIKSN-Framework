@@ -1,4 +1,5 @@
 using System;
+using Shouldly;
 using TIKSN.Finance;
 using Xunit;
 
@@ -13,7 +14,7 @@ public class CurrencyPairTests
         var usDollar1 = new CurrencyInfo(unitedStates);
         var usDollar2 = new CurrencyInfo(unitedStates);
 
-        _ = new Func<object>(() => new CurrencyPair(usDollar1, usDollar2)).Should().ThrowExactly<ArgumentException>();
+        _ = new Func<object>(() => new CurrencyPair(usDollar1, usDollar2)).ShouldThrow<ArgumentException>();
     }
 
     [Fact]
@@ -33,39 +34,39 @@ public class CurrencyPairTests
         var pair4 = new CurrencyPair(usDollar, euro);
         var pair5 = new CurrencyPair(euro, usDollar);
 
-        _ = pair1.Equals(pair1).Should().BeTrue();
-        _ = (pair1.GetHashCode() == pair1.GetHashCode()).Should().BeTrue();
+        pair1.Equals(pair1).ShouldBeTrue();
+        (pair1.GetHashCode() == pair1.GetHashCode()).ShouldBeTrue();
 
 #pragma warning disable CS1718 // Comparison made to same variable
-        _ = (pair1 == pair1).Should().BeTrue();
-        _ = (pair1 != pair1).Should().BeFalse();
+        (pair1 == pair1).ShouldBeTrue();
+        (pair1 != pair1).ShouldBeFalse();
 #pragma warning restore CS1718 // Comparison made to same variable
 
-        _ = pair2.Equals(pair1).Should().BeTrue();
-        _ = pair1.Equals(pair2).Should().BeTrue();
-        _ = (pair1.GetHashCode() == pair2.GetHashCode()).Should().BeTrue();
-        _ = (pair2.GetHashCode() == pair1.GetHashCode()).Should().BeTrue();
-        _ = (pair1 == pair2).Should().BeTrue();
-        _ = (pair2 == pair1).Should().BeTrue();
-        _ = (pair1 != pair2).Should().BeFalse();
-        _ = (pair2 != pair1).Should().BeFalse();
+        pair2.Equals(pair1).ShouldBeTrue();
+        pair1.Equals(pair2).ShouldBeTrue();
+        (pair1.GetHashCode() == pair2.GetHashCode()).ShouldBeTrue();
+        (pair2.GetHashCode() == pair1.GetHashCode()).ShouldBeTrue();
+        (pair1 == pair2).ShouldBeTrue();
+        (pair2 == pair1).ShouldBeTrue();
+        (pair1 != pair2).ShouldBeFalse();
+        (pair2 != pair1).ShouldBeFalse();
 
-        _ = pair1.Equals(pair3).Should().BeFalse();
-        _ = pair3.Equals(pair1).Should().BeFalse();
-        _ = (pair1.GetHashCode() == pair3.GetHashCode()).Should().BeFalse();
-        _ = (pair3.GetHashCode() == pair1.GetHashCode()).Should().BeFalse();
-        _ = (pair1 == pair3).Should().BeFalse();
-        _ = (pair3 == pair1).Should().BeFalse();
-        _ = (pair1 != pair3).Should().BeTrue();
-        _ = (pair3 != pair1).Should().BeTrue();
+        pair1.Equals(pair3).ShouldBeFalse();
+        pair3.Equals(pair1).ShouldBeFalse();
+        (pair1.GetHashCode() == pair3.GetHashCode()).ShouldBeFalse();
+        (pair3.GetHashCode() == pair1.GetHashCode()).ShouldBeFalse();
+        (pair1 == pair3).ShouldBeFalse();
+        (pair3 == pair1).ShouldBeFalse();
+        (pair1 != pair3).ShouldBeTrue();
+        (pair3 != pair1).ShouldBeTrue();
 
-        _ = pair4.Equals(pair5).Should().BeFalse();
-        _ = pair5.Equals(pair4).Should().BeFalse();
-        _ = (pair4.GetHashCode() == pair5.GetHashCode()).Should().BeFalse();
-        _ = (pair5.GetHashCode() == pair4.GetHashCode()).Should().BeFalse();
-        _ = (pair4 == pair5).Should().BeFalse();
-        _ = (pair5 == pair4).Should().BeFalse();
-        _ = (pair4 != pair5).Should().BeTrue();
+        pair4.Equals(pair5).ShouldBeFalse();
+        pair5.Equals(pair4).ShouldBeFalse();
+        (pair4.GetHashCode() == pair5.GetHashCode()).ShouldBeFalse();
+        (pair5.GetHashCode() == pair4.GetHashCode()).ShouldBeFalse();
+        (pair4 == pair5).ShouldBeFalse();
+        (pair5 == pair4).ShouldBeFalse();
+        (pair4 != pair5).ShouldBeTrue();
     }
 
     [Fact]
@@ -83,16 +84,16 @@ public class CurrencyPairTests
         var something = new object();
         object pair4 = new CurrencyPair(poundSterling, usDollar);
 
-        _ = pair1.Equals(pair2).Should().BeTrue();
-        _ = pair1.Equals(pair3).Should().BeTrue();
-        _ = (pair1 == pair2).Should().BeTrue();
-        _ = (pair2 == pair1).Should().BeTrue();
-        _ = (pair1 != pair2).Should().BeFalse();
-        _ = (pair2 != pair1).Should().BeFalse();
+        pair1.Equals(pair2).ShouldBeTrue();
+        pair1.Equals(pair3).ShouldBeTrue();
+        (pair1 == pair2).ShouldBeTrue();
+        (pair2 == pair1).ShouldBeTrue();
+        (pair1 != pair2).ShouldBeFalse();
+        (pair2 != pair1).ShouldBeFalse();
 
-        _ = pair1.Equals(something).Should().BeFalse();
+        pair1.Equals(something).ShouldBeFalse();
 
-        _ = pair1.Equals(pair4).Should().BeTrue();
+        pair1.Equals(pair4).ShouldBeTrue();
     }
 
     [Fact]
@@ -109,14 +110,14 @@ public class CurrencyPairTests
         object pair3 = null;
         CurrencyPair pair4 = null;
 
-        _ = pair1.Equals(pair2).Should().BeFalse();
-        _ = pair1.Equals(pair3).Should().BeFalse();
-        _ = (pair1 == pair2).Should().BeFalse();
-        _ = (pair2 == pair1).Should().BeFalse();
-        _ = (pair2 == pair4).Should().BeTrue();
-        _ = (pair1 != pair2).Should().BeTrue();
-        _ = (pair2 != pair1).Should().BeTrue();
-        _ = (pair2 != pair4).Should().BeFalse();
+        pair1.Equals(pair2).ShouldBeFalse();
+        pair1.Equals(pair3).ShouldBeFalse();
+        (pair1 == pair2).ShouldBeFalse();
+        (pair2 == pair1).ShouldBeFalse();
+        (pair2 == pair4).ShouldBeTrue();
+        (pair1 != pair2).ShouldBeTrue();
+        (pair2 != pair1).ShouldBeTrue();
+        (pair2 != pair4).ShouldBeFalse();
     }
 
     [Fact]
@@ -130,6 +131,6 @@ public class CurrencyPairTests
 
         var pair = new CurrencyPair(poundSterling, usDollar);
 
-        _ = pair.ToString().Should().Be("GBP/USD");
+        pair.ToString().ShouldBe("GBP/USD");
     }
 }

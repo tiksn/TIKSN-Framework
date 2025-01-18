@@ -1,5 +1,6 @@
 using System;
 using System.Numerics;
+using Shouldly;
 using TIKSN.Serialization.Numerics;
 using Xunit;
 
@@ -25,8 +26,8 @@ public class SerializationTests
             var bytes = serializer.Serialize(number);
             var recovered = deserializer.Deserialize(bytes);
             var recoveredBytes = serializer.Serialize(recovered);
-            _ = recovered.Should().Be(number);
-            _ = recoveredBytes.Should().BeEquivalentTo(bytes);
+            recovered.ShouldBe(number);
+            recoveredBytes.ShouldBeEquivalentTo(bytes);
         }
     }
 }

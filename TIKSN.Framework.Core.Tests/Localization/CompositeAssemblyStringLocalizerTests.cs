@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Shouldly;
 using TIKSN.DependencyInjection;
 using Xunit;
 using Xunit.Abstractions;
@@ -56,7 +57,7 @@ public partial class CompositeAssemblyStringLocalizerTests
                 LogDuplicateItem(logger, duplicate.Key, duplicateItem.Name, duplicateItem.Value, duplicateItem.SearchedLocation);
             }
         }
-        _ = duplicatesCount.Should().Be(0);
+        duplicatesCount.ShouldBe(0);
     }
 
     [LoggerMessage(

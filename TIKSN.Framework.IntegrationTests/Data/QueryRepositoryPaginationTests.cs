@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LanguageExt;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using TIKSN.Data;
 using TIKSN.Finance;
 using TIKSN.Finance.ForeignExchange;
@@ -51,12 +51,12 @@ public class QueryRepositoryPaginationTests
 
         // Assert
 
-        _ = firstPageResult.Should().NotBeNull();
-        _ = firstPageResult.Page.Number.Should().Be(1);
-        _ = firstPageResult.Page.Size.Should().Be(10);
-        _ = firstPageResult.Items.Should().NotBeNull();
-        _ = firstPageResult.Items.Should().BeEquivalentTo(items);
-        _ = firstPageResult.TotalItems.Should<Option<long>>().Be(totalItems);
-        _ = firstPageResult.TotalPages.Should<Option<long>>().Be((long)Math.Ceiling(totalItems / 10m));
+        _ = firstPageResult.ShouldNotBeNull();
+        firstPageResult.Page.Number.ShouldBe(1);
+        firstPageResult.Page.Size.ShouldBe(10);
+        _ = firstPageResult.Items.ShouldNotBeNull();
+        firstPageResult.Items.ShouldBeEquivalentTo(items);
+        firstPageResult.TotalItems.ShouldBe(totalItems);
+        firstPageResult.TotalPages.ShouldBe((long)Math.Ceiling(totalItems / 10m));
     }
 }

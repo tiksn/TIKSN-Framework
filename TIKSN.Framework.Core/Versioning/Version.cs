@@ -541,8 +541,6 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
 
         if (releaseComparison == 0)
         {
-            _ = this.Milestone - other.Milestone;
-
             if (this.Milestone > other.Milestone)
             {
                 return 1;

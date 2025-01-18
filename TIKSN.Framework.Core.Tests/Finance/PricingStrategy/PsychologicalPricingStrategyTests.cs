@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Shouldly;
 using TIKSN.Finance;
 using TIKSN.Finance.PricingStrategy;
 using Xunit;
@@ -52,8 +53,8 @@ public class PsychologicalPricingStrategyTests
 
         var actualEstimatedPrice = strategy.EstimateMarketPrice(new Money(currency, (decimal)originalPrice));
 
-        _ = actualEstimatedPrice.Currency.Should().Be(currency);
-        _ = actualEstimatedPrice.Amount.Should().Be((decimal)expectedEstimatedPrice);
+        actualEstimatedPrice.Currency.ShouldBe(currency);
+        actualEstimatedPrice.Amount.ShouldBe((decimal)expectedEstimatedPrice);
     }
 
     [Fact]
@@ -126,8 +127,8 @@ public class PsychologicalPricingStrategyTests
         var averageRatio = ratios.Average();
         var averagePercentage = averageRatio * 100m;
 
-        _ = averagePercentage.Should().BeGreaterThanOrEqualTo(100);
-        _ = averagePercentage.Should().BeLessThanOrEqualTo(102);
+        averagePercentage.ShouldBeGreaterThanOrEqualTo(100);
+        averagePercentage.ShouldBeLessThanOrEqualTo(102);
 
         static void AddRatio(List<decimal> ratios, decimal initialPrice, decimal estimatedPrice)
         {

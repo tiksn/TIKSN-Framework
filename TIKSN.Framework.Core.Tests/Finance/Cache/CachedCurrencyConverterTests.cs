@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Extensions.Time.Testing;
+using Shouldly;
 using TIKSN.Finance;
 using TIKSN.Finance.Cache;
 using Xunit;
@@ -19,13 +20,13 @@ public class CachedCurrencyConverterTests
 
         var cachedConverter = new CachedCurrencyConverter(converter, fakeTimeProvider, interval, interval, capacity, capacity);
 
-        _ = cachedConverter.RatesCacheInterval.Should().Be(interval);
-        _ = cachedConverter.CurrencyPairsCacheInterval.Should().Be(interval);
+        cachedConverter.RatesCacheInterval.ShouldBe(interval);
+        cachedConverter.CurrencyPairsCacheInterval.ShouldBe(interval);
 
-        _ = cachedConverter.RatesCacheCapacity.Should().Be(20);
-        _ = cachedConverter.CurrencyPairsCacheCapacity.Should().Be(20);
-        _ = cachedConverter.RatesCacheSize.Should().Be(0);
-        _ = cachedConverter.CurrencyPairsCacheSize.Should().Be(0);
+        cachedConverter.RatesCacheCapacity.ShouldBe(20);
+        cachedConverter.CurrencyPairsCacheCapacity.ShouldBe(20);
+        cachedConverter.RatesCacheSize.ShouldBe(0);
+        cachedConverter.CurrencyPairsCacheSize.ShouldBe(0);
     }
 
     [Fact]
@@ -38,14 +39,14 @@ public class CachedCurrencyConverterTests
 
         var cachedConverter = new CachedCurrencyConverter(converter, fakeTimeProvider, interval, interval);
 
-        _ = cachedConverter.CurrencyPairsCacheInterval.Should().Be(interval);
-        _ = cachedConverter.RatesCacheInterval.Should().Be(interval);
+        cachedConverter.CurrencyPairsCacheInterval.ShouldBe(interval);
+        cachedConverter.RatesCacheInterval.ShouldBe(interval);
 
-        _ = cachedConverter.CurrencyPairsCacheCapacity.Should().BeNull();
-        _ = cachedConverter.RatesCacheCapacity.Should().BeNull();
+        cachedConverter.CurrencyPairsCacheCapacity.ShouldBeNull();
+        cachedConverter.RatesCacheCapacity.ShouldBeNull();
 
-        _ = cachedConverter.RatesCacheSize.Should().Be(0);
-        _ = cachedConverter.CurrencyPairsCacheSize.Should().Be(0);
+        cachedConverter.RatesCacheSize.ShouldBe(0);
+        cachedConverter.CurrencyPairsCacheSize.ShouldBe(0);
     }
 
     [Fact]
@@ -58,8 +59,8 @@ public class CachedCurrencyConverterTests
 
         var cachedConverter = new CachedCurrencyConverter(converter, fakeTimeProvider, interval, interval);
 
-        _ = cachedConverter.RatesCacheSize.Should().Be(0);
-        _ = cachedConverter.CurrencyPairsCacheSize.Should().Be(0);
+        cachedConverter.RatesCacheSize.ShouldBe(0);
+        cachedConverter.CurrencyPairsCacheSize.ShouldBe(0);
     }
 
     [Fact]
@@ -70,7 +71,7 @@ public class CachedCurrencyConverterTests
         var interval = TimeSpan.FromDays(10);
         var capacity = 20;
 
-        _ = new Func<object>(() => new CachedCurrencyConverter(null, fakeTimeProvider, interval, interval, capacity, capacity)).Should().ThrowExactly<ArgumentNullException>();
+        _ = new Func<object>(() => new CachedCurrencyConverter(null, fakeTimeProvider, interval, interval, capacity, capacity)).ShouldThrow<ArgumentNullException>();
     }
 
     [Fact]
@@ -83,7 +84,7 @@ public class CachedCurrencyConverterTests
         var negativeCapacity = -10;
         var positiveCapacity = 10;
 
-        _ = new Func<object>(() => new CachedCurrencyConverter(converter, fakeTimeProvider, interval, interval, negativeCapacity, positiveCapacity)).Should().ThrowExactly<ArgumentOutOfRangeException>();
+        _ = new Func<object>(() => new CachedCurrencyConverter(converter, fakeTimeProvider, interval, interval, negativeCapacity, positiveCapacity)).ShouldThrow<ArgumentOutOfRangeException>();
     }
 
     [Fact]
@@ -96,7 +97,7 @@ public class CachedCurrencyConverterTests
         var negativeCapacity = -10;
         var positiveCapacity = 10;
 
-        _ = new Func<object>(() => new CachedCurrencyConverter(converter, fakeTimeProvider, interval, interval, positiveCapacity, negativeCapacity)).Should().ThrowExactly<ArgumentOutOfRangeException>();
+        _ = new Func<object>(() => new CachedCurrencyConverter(converter, fakeTimeProvider, interval, interval, positiveCapacity, negativeCapacity)).ShouldThrow<ArgumentOutOfRangeException>();
     }
 
     [Fact]
@@ -108,7 +109,7 @@ public class CachedCurrencyConverterTests
         var negativeInterval = TimeSpan.FromDays(-10);
         var positiveInterval = TimeSpan.FromDays(10);
 
-        _ = new Func<object>(() => new CachedCurrencyConverter(converter, fakeTimeProvider, negativeInterval, positiveInterval)).Should().ThrowExactly<ArgumentOutOfRangeException>();
+        _ = new Func<object>(() => new CachedCurrencyConverter(converter, fakeTimeProvider, negativeInterval, positiveInterval)).ShouldThrow<ArgumentOutOfRangeException>();
     }
 
     [Fact]
@@ -120,6 +121,6 @@ public class CachedCurrencyConverterTests
         var negativeInterval = TimeSpan.FromDays(-10);
         var positiveInterval = TimeSpan.FromDays(10);
 
-        _ = new Func<object>(() => new CachedCurrencyConverter(converter, fakeTimeProvider, positiveInterval, negativeInterval)).Should().ThrowExactly<ArgumentOutOfRangeException>();
+        _ = new Func<object>(() => new CachedCurrencyConverter(converter, fakeTimeProvider, positiveInterval, negativeInterval)).ShouldThrow<ArgumentOutOfRangeException>();
     }
 }

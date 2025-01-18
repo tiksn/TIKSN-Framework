@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Hosting;
 using NSubstitute;
+using Shouldly;
 using TIKSN.Deployment;
 using Xunit;
 
@@ -36,6 +37,6 @@ public class HostEnvironmentExtensionsTests
         var matchesActual = hostEnvironment.MatchesEnvironment(licenseEnvironmentName);
 
         // Assert
-        _ = matchesActual.Should().Be(matchesExpected);
+        matchesActual.ShouldBe(matchesExpected);
     }
 }

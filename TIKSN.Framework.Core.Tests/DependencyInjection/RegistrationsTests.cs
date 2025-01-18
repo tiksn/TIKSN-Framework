@@ -3,6 +3,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Shouldly;
 using TIKSN.DependencyInjection;
 using TIKSN.Globalization;
 using Xunit;
@@ -42,7 +43,7 @@ public class RegistrationsTests : IDisposable
     {
         var service = this.host.Services.GetRequiredService(serviceType);
 
-        _ = service.Should().NotBeNull();
+        _ = service.ShouldNotBeNull();
     }
 
     protected virtual void Dispose(bool disposing)

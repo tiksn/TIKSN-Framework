@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using Serilog;
+using Shouldly;
 using TIKSN.Data.Cache.Memory;
 using TIKSN.DependencyInjection;
 using TIKSN.Finance;
@@ -62,7 +63,7 @@ public class MemoryCachedCurrencyConverterTests
 
         var actualPairs = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default);
 
-        _ = actualPairs.Should().BeEquivalentTo(expectedPairs);
+        actualPairs.ShouldBeEquivalentTo(expectedPairs);
     }
 
     [Fact]
@@ -209,6 +210,6 @@ public class MemoryCachedCurrencyConverterTests
 
         var actualRate = await memoryCachedCurrencyConverter.GetExchangeRateAsync(pair, moment1, default);
 
-        _ = actualRate.Should().Be(exchangeRate);
+        actualRate.ShouldBe(exchangeRate);
     }
 }

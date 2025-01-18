@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using TIKSN.DependencyInjection;
 using TIKSN.Finance;
 using TIKSN.Finance.ForeignExchange.Bank;
@@ -35,8 +36,8 @@ public class BankOfEnglandTests
 
             var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow(), default);
 
-            _ = (after.Amount == rate * before.Amount).Should().BeTrue();
-            _ = (after.Currency == pair.CounterCurrency).Should().BeTrue();
+            (after.Amount == rate * before.Amount).ShouldBeTrue();
+            (after.Currency == pair.CounterCurrency).ShouldBeTrue();
         }
     }
 
@@ -52,8 +53,8 @@ public class BankOfEnglandTests
 
             var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, tenYearsAgo, default);
 
-            _ = (after.Amount == rate * before.Amount).Should().BeTrue();
-            _ = (after.Currency == pair.CounterCurrency).Should().BeTrue();
+            (after.Amount == rate * before.Amount).ShouldBeTrue();
+            (after.Currency == pair.CounterCurrency).ShouldBeTrue();
         }
     }
 
@@ -67,7 +68,7 @@ public class BankOfEnglandTests
 
         var afterInDollar = await this.bank.ConvertCurrencyAsync(beforeInPound, usDollar, this.timeProvider.GetUtcNow(), default);
 
-        _ = (beforeInPound.Amount < afterInDollar.Amount).Should().BeTrue();
+        (beforeInPound.Amount < afterInDollar.Amount).ShouldBeTrue();
     }
 
     [Fact]
@@ -81,7 +82,7 @@ public class BankOfEnglandTests
 
             var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow(), default);
 
-            _ = (after.Amount > decimal.Zero).Should().BeTrue();
+            (after.Amount > decimal.Zero).ShouldBeTrue();
         }
     }
 
@@ -96,7 +97,7 @@ public class BankOfEnglandTests
 
         _ = await
             new Func<Task>(async () =>
-                    await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow().AddMinutes(1d), default)).Should().ThrowExactlyAsync<ArgumentException>();
+                    await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow().AddMinutes(1d), default)).ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -110,7 +111,7 @@ public class BankOfEnglandTests
 
         _ = await
             new Func<Task>(async () =>
-                    await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow(), default)).Should().ThrowExactlyAsync<ArgumentException>();
+                    await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow(), default)).ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -118,78 +119,78 @@ public class BankOfEnglandTests
     {
         var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "AUD/USD");
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "AUD/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "AUD/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "AUD/GBP");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "CAD/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "CAD/GBP");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "CNY/GBP");
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "CNY/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "CNY/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "CNY/USD");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "CZK/USD");
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "CZK/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "CZK/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "CZK/GBP");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "DKK/GBP");
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "DKK/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "DKK/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "DKK/USD");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "EUR/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "EUR/USD");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "HKD/USD");
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "HKD/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "HKD/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "HKD/GBP");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "HUF/USD");
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "HUF/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "HUF/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "HUF/GBP");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "INR/GBP");
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "INR/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "INR/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "INR/USD");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "ILS/GBP");
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "ILS/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "ILS/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "ILS/USD");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "JPY/USD");
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "JPY/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "JPY/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "JPY/GBP");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "MYR/GBP");
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "MYR/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "MYR/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "MYR/USD");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "NZD/USD");
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "NZD/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "NZD/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "NZD/GBP");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "NOK/USD");
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "NOK/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "NOK/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "NOK/GBP");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "PLN/USD");
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "PLN/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "PLN/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "PLN/GBP");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "SAR/USD");
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "SAR/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "SAR/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "SAR/GBP");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "SGD/USD");
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "SGD/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "SGD/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "SGD/GBP");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "ZAR/USD");
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "ZAR/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "ZAR/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "ZAR/GBP");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "KRW/GBP");
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "KRW/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "KRW/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "KRW/USD");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "GBP/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "GBP/USD");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "SEK/USD");
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "SEK/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "SEK/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "SEK/GBP");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "CHF/USD");
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "CHF/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "CHF/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "CHF/GBP");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "TWD/USD");
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "TWD/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "TWD/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "TWD/GBP");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "THB/GBP");
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "THB/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "THB/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "THB/USD");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "TRY/USD");
+        currencyPairs.ShouldContain(c => c.ToString() == "TRY/USD");
 
-        _ = currencyPairs.Should().Contain(c => c.ToString() == "USD/GBP");
+        currencyPairs.ShouldContain(c => c.ToString() == "USD/GBP");
     }
 
     [Fact]
@@ -204,7 +205,7 @@ public class BankOfEnglandTests
             _ = uniquePairs.Add(pair);
         }
 
-        _ = (uniquePairs.Count == currencyPairs.Count).Should().BeTrue();
+        (uniquePairs.Count == currencyPairs.Count).ShouldBeTrue();
     }
 
     [Fact]
@@ -219,7 +220,7 @@ public class BankOfEnglandTests
             _ = uniquePairs.Add(pair);
         }
 
-        _ = (uniquePairs.Count == currencyPairs.Count).Should().BeTrue();
+        (uniquePairs.Count == currencyPairs.Count).ShouldBeTrue();
     }
 
     [Fact]
@@ -227,7 +228,7 @@ public class BankOfEnglandTests
     {
         foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default))
         {
-            _ = (await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default) > decimal.Zero).Should().BeTrue();
+            (await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default) > decimal.Zero).ShouldBeTrue();
         }
     }
 
@@ -238,7 +239,7 @@ public class BankOfEnglandTests
 
         _ = await
                 new Func<Task>(async () =>
-                        await this.bank.GetExchangeRateAsync(currencyPairs.First(), this.timeProvider.GetUtcNow().AddMinutes(1d), default)).Should().ThrowExactlyAsync<ArgumentException>();
+                        await this.bank.GetExchangeRateAsync(currencyPairs.First(), this.timeProvider.GetUtcNow().AddMinutes(1d), default)).ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -250,7 +251,7 @@ public class BankOfEnglandTests
 
         _ = await
                 new Func<Task>(async () =>
-                        await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default)).Should().ThrowExactlyAsync<ArgumentException>();
+                        await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default)).ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -261,6 +262,6 @@ public class BankOfEnglandTests
 
         var deadline = new DateTimeOffset(2024, 02, 01, 0, 0, 0, TimeSpan.Zero);
 
-        _ = deadline.Should().BeAfter(this.timeProvider.GetUtcNow());
+        deadline.ShouldBeGreaterThan(this.timeProvider.GetUtcNow());
     }
 }

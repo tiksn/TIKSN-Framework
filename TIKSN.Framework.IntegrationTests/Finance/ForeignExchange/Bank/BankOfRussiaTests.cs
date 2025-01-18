@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using TIKSN.DependencyInjection;
 using TIKSN.Finance;
 using TIKSN.Finance.ForeignExchange.Bank;
@@ -39,8 +40,8 @@ public class BankOfRussiaTests
             var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default);
             var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow(), default);
 
-            _ = (after.Amount == rate * before.Amount).Should().BeTrue();
-            _ = (after.Currency == pair.CounterCurrency).Should().BeTrue();
+            (after.Amount == rate * before.Amount).ShouldBeTrue();
+            (after.Currency == pair.CounterCurrency).ShouldBeTrue();
         }
     }
 
@@ -55,8 +56,8 @@ public class BankOfRussiaTests
 
             var afterComversion = await this.bank.ConvertCurrencyAsync(beforeConversion, pair.CounterCurrency, moment, default);
 
-            _ = (afterComversion.Amount > 0m).Should().BeTrue();
-            _ = afterComversion.Currency.Should().Be(pair.CounterCurrency);
+            (afterComversion.Amount > 0m).ShouldBeTrue();
+            afterComversion.Currency.ShouldBe(pair.CounterCurrency);
         }
     }
 
@@ -73,7 +74,7 @@ public class BankOfRussiaTests
 
         _ = await
             new Func<Task>(async () =>
-                    await this.bank.ConvertCurrencyAsync(before, rub, DateTimeOffset.Now.AddMinutes(1d), default)).Should().ThrowExactlyAsync<ArgumentException>();
+                    await this.bank.ConvertCurrencyAsync(before, rub, DateTimeOffset.Now.AddMinutes(1d), default)).ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -89,7 +90,7 @@ public class BankOfRussiaTests
 
         _ = await
             new Func<Task>(async () =>
-                    await this.bank.ConvertCurrencyAsync(before, bwp, this.timeProvider.GetUtcNow(), default)).Should().ThrowExactlyAsync<InvalidOperationException>();
+                    await this.bank.ConvertCurrencyAsync(before, bwp, this.timeProvider.GetUtcNow(), default)).ShouldThrowAsync<InvalidOperationException>();
     }
 
     [Fact]
@@ -101,7 +102,7 @@ public class BankOfRussiaTests
         {
             var reversePair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
 
-            _ = currencyPairs.Should().Contain(c => c == reversePair);
+            currencyPairs.ShouldContain(c => c == reversePair);
         }
     }
 
@@ -117,85 +118,85 @@ public class BankOfRussiaTests
             _ = pairSet.Add(pair);
         }
 
-        _ = (pairSet.Count == currencyPairs.Count).Should().BeTrue();
+        (pairSet.Count == currencyPairs.Count).ShouldBeTrue();
     }
 
     [Fact]
     public async Task GetCurrencyPairs003()
-        => _ = await
+        => await
                 new Func<Task>(async () =>
-                        await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow().AddDays(10), default)).Should().ThrowExactlyAsync<ArgumentException>();
+                        await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow().AddDays(10), default)).ShouldThrowAsync<ArgumentException>();
 
     [Fact]
     public async Task GetCurrencyPairs004()
     {
         var pairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
 
-        _ = pairs.Should().Contain(c => c.ToString() == "AUD/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "AZN/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "AMD/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "BYN/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "BGN/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "BRL/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "HUF/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "KRW/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "DKK/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "USD/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "EUR/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "INR/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "KZT/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "CAD/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "KGS/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "CNY/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "MDL/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "RON/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "TMT/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "NOK/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "PLN/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "SGD/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "TJS/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "TRY/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "UZS/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "UAH/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "GBP/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "CZK/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "SEK/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "CHF/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "ZAR/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "JPY/RUB");
+        pairs.ShouldContain(c => c.ToString() == "AUD/RUB");
+        pairs.ShouldContain(c => c.ToString() == "AZN/RUB");
+        pairs.ShouldContain(c => c.ToString() == "AMD/RUB");
+        pairs.ShouldContain(c => c.ToString() == "BYN/RUB");
+        pairs.ShouldContain(c => c.ToString() == "BGN/RUB");
+        pairs.ShouldContain(c => c.ToString() == "BRL/RUB");
+        pairs.ShouldContain(c => c.ToString() == "HUF/RUB");
+        pairs.ShouldContain(c => c.ToString() == "KRW/RUB");
+        pairs.ShouldContain(c => c.ToString() == "DKK/RUB");
+        pairs.ShouldContain(c => c.ToString() == "USD/RUB");
+        pairs.ShouldContain(c => c.ToString() == "EUR/RUB");
+        pairs.ShouldContain(c => c.ToString() == "INR/RUB");
+        pairs.ShouldContain(c => c.ToString() == "KZT/RUB");
+        pairs.ShouldContain(c => c.ToString() == "CAD/RUB");
+        pairs.ShouldContain(c => c.ToString() == "KGS/RUB");
+        pairs.ShouldContain(c => c.ToString() == "CNY/RUB");
+        pairs.ShouldContain(c => c.ToString() == "MDL/RUB");
+        pairs.ShouldContain(c => c.ToString() == "RON/RUB");
+        pairs.ShouldContain(c => c.ToString() == "TMT/RUB");
+        pairs.ShouldContain(c => c.ToString() == "NOK/RUB");
+        pairs.ShouldContain(c => c.ToString() == "PLN/RUB");
+        pairs.ShouldContain(c => c.ToString() == "SGD/RUB");
+        pairs.ShouldContain(c => c.ToString() == "TJS/RUB");
+        pairs.ShouldContain(c => c.ToString() == "TRY/RUB");
+        pairs.ShouldContain(c => c.ToString() == "UZS/RUB");
+        pairs.ShouldContain(c => c.ToString() == "UAH/RUB");
+        pairs.ShouldContain(c => c.ToString() == "GBP/RUB");
+        pairs.ShouldContain(c => c.ToString() == "CZK/RUB");
+        pairs.ShouldContain(c => c.ToString() == "SEK/RUB");
+        pairs.ShouldContain(c => c.ToString() == "CHF/RUB");
+        pairs.ShouldContain(c => c.ToString() == "ZAR/RUB");
+        pairs.ShouldContain(c => c.ToString() == "JPY/RUB");
 
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/AUD");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/AZN");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/AMD");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/BYN");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/BGN");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/BRL");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/HUF");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/KRW");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/DKK");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/USD");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/EUR");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/INR");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/KZT");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/CAD");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/KGS");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/CNY");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/MDL");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/RON");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/TMT");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/NOK");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/PLN");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/SGD");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/TJS");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/TRY");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/UZS");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/UAH");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/GBP");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/CZK");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/SEK");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/CHF");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/ZAR");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/JPY");
+        pairs.ShouldContain(c => c.ToString() == "RUB/AUD");
+        pairs.ShouldContain(c => c.ToString() == "RUB/AZN");
+        pairs.ShouldContain(c => c.ToString() == "RUB/AMD");
+        pairs.ShouldContain(c => c.ToString() == "RUB/BYN");
+        pairs.ShouldContain(c => c.ToString() == "RUB/BGN");
+        pairs.ShouldContain(c => c.ToString() == "RUB/BRL");
+        pairs.ShouldContain(c => c.ToString() == "RUB/HUF");
+        pairs.ShouldContain(c => c.ToString() == "RUB/KRW");
+        pairs.ShouldContain(c => c.ToString() == "RUB/DKK");
+        pairs.ShouldContain(c => c.ToString() == "RUB/USD");
+        pairs.ShouldContain(c => c.ToString() == "RUB/EUR");
+        pairs.ShouldContain(c => c.ToString() == "RUB/INR");
+        pairs.ShouldContain(c => c.ToString() == "RUB/KZT");
+        pairs.ShouldContain(c => c.ToString() == "RUB/CAD");
+        pairs.ShouldContain(c => c.ToString() == "RUB/KGS");
+        pairs.ShouldContain(c => c.ToString() == "RUB/CNY");
+        pairs.ShouldContain(c => c.ToString() == "RUB/MDL");
+        pairs.ShouldContain(c => c.ToString() == "RUB/RON");
+        pairs.ShouldContain(c => c.ToString() == "RUB/TMT");
+        pairs.ShouldContain(c => c.ToString() == "RUB/NOK");
+        pairs.ShouldContain(c => c.ToString() == "RUB/PLN");
+        pairs.ShouldContain(c => c.ToString() == "RUB/SGD");
+        pairs.ShouldContain(c => c.ToString() == "RUB/TJS");
+        pairs.ShouldContain(c => c.ToString() == "RUB/TRY");
+        pairs.ShouldContain(c => c.ToString() == "RUB/UZS");
+        pairs.ShouldContain(c => c.ToString() == "RUB/UAH");
+        pairs.ShouldContain(c => c.ToString() == "RUB/GBP");
+        pairs.ShouldContain(c => c.ToString() == "RUB/CZK");
+        pairs.ShouldContain(c => c.ToString() == "RUB/SEK");
+        pairs.ShouldContain(c => c.ToString() == "RUB/CHF");
+        pairs.ShouldContain(c => c.ToString() == "RUB/ZAR");
+        pairs.ShouldContain(c => c.ToString() == "RUB/JPY");
     }
 
     [Fact]
@@ -203,41 +204,41 @@ public class BankOfRussiaTests
     {
         var pairs = await this.bank.GetCurrencyPairsAsync(new DateTimeOffset(2010, 01, 01, 0, 0, 0, TimeSpan.Zero), default);
 
-        _ = pairs.Should().Contain(c => c.ToString() == "AUD/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "BYR/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "DKK/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "USD/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "EUR/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "ISK/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "KZT/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "CAD/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "CNY/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "NOK/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "SGD/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "TRY/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "UAH/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "GBP/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "SEK/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "CHF/RUB");
-        _ = pairs.Should().Contain(c => c.ToString() == "JPY/RUB");
+        pairs.ShouldContain(c => c.ToString() == "AUD/RUB");
+        pairs.ShouldContain(c => c.ToString() == "BYR/RUB");
+        pairs.ShouldContain(c => c.ToString() == "DKK/RUB");
+        pairs.ShouldContain(c => c.ToString() == "USD/RUB");
+        pairs.ShouldContain(c => c.ToString() == "EUR/RUB");
+        pairs.ShouldContain(c => c.ToString() == "ISK/RUB");
+        pairs.ShouldContain(c => c.ToString() == "KZT/RUB");
+        pairs.ShouldContain(c => c.ToString() == "CAD/RUB");
+        pairs.ShouldContain(c => c.ToString() == "CNY/RUB");
+        pairs.ShouldContain(c => c.ToString() == "NOK/RUB");
+        pairs.ShouldContain(c => c.ToString() == "SGD/RUB");
+        pairs.ShouldContain(c => c.ToString() == "TRY/RUB");
+        pairs.ShouldContain(c => c.ToString() == "UAH/RUB");
+        pairs.ShouldContain(c => c.ToString() == "GBP/RUB");
+        pairs.ShouldContain(c => c.ToString() == "SEK/RUB");
+        pairs.ShouldContain(c => c.ToString() == "CHF/RUB");
+        pairs.ShouldContain(c => c.ToString() == "JPY/RUB");
 
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/AUD");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/BYR");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/DKK");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/USD");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/EUR");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/ISK");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/KZT");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/CAD");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/CNY");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/NOK");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/SGD");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/TRY");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/UAH");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/GBP");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/SEK");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/CHF");
-        _ = pairs.Should().Contain(c => c.ToString() == "RUB/JPY");
+        pairs.ShouldContain(c => c.ToString() == "RUB/AUD");
+        pairs.ShouldContain(c => c.ToString() == "RUB/BYR");
+        pairs.ShouldContain(c => c.ToString() == "RUB/DKK");
+        pairs.ShouldContain(c => c.ToString() == "RUB/USD");
+        pairs.ShouldContain(c => c.ToString() == "RUB/EUR");
+        pairs.ShouldContain(c => c.ToString() == "RUB/ISK");
+        pairs.ShouldContain(c => c.ToString() == "RUB/KZT");
+        pairs.ShouldContain(c => c.ToString() == "RUB/CAD");
+        pairs.ShouldContain(c => c.ToString() == "RUB/CNY");
+        pairs.ShouldContain(c => c.ToString() == "RUB/NOK");
+        pairs.ShouldContain(c => c.ToString() == "RUB/SGD");
+        pairs.ShouldContain(c => c.ToString() == "RUB/TRY");
+        pairs.ShouldContain(c => c.ToString() == "RUB/UAH");
+        pairs.ShouldContain(c => c.ToString() == "RUB/GBP");
+        pairs.ShouldContain(c => c.ToString() == "RUB/SEK");
+        pairs.ShouldContain(c => c.ToString() == "RUB/CHF");
+        pairs.ShouldContain(c => c.ToString() == "RUB/JPY");
     }
 
     [Fact]
@@ -268,15 +269,15 @@ public class BankOfRussiaTests
 
         foreach (var pair in pairs)
         {
-            _ = webPairs.Should().Contain(wp => wp == pair.ToString());
+            webPairs.ShouldContain(wp => wp == pair.ToString());
         }
 
         foreach (var webPair in webPairs)
         {
-            _ = pairs.Should().Contain(p => p.ToString() == webPair);
+            pairs.ShouldContain(p => p.ToString() == webPair);
         }
 
-        _ = (pairs.Count == webPairs.Count).Should().BeTrue();
+        (pairs.Count == webPairs.Count).ShouldBeTrue();
     }
 
     [Fact]
@@ -300,7 +301,7 @@ public class BankOfRussiaTests
         {
             var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default);
 
-            _ = (rate > decimal.Zero).Should().BeTrue();
+            (rate > decimal.Zero).ShouldBeTrue();
         }
     }
 
@@ -317,7 +318,7 @@ public class BankOfRussiaTests
 
         _ = await
                 new Func<Task>(async () =>
-                        await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddMinutes(1d), default)).Should().ThrowExactlyAsync<ArgumentException>();
+                        await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddMinutes(1d), default)).ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -333,7 +334,7 @@ public class BankOfRussiaTests
 
         _ = await
                 new Func<Task>(async () =>
-                        await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default)).Should().ThrowExactlyAsync<InvalidOperationException>();
+                        await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default)).ShouldThrowAsync<InvalidOperationException>();
     }
 
     [Fact]
@@ -345,7 +346,7 @@ public class BankOfRussiaTests
         {
             var rate = await this.bank.GetExchangeRateAsync(pair, moment, default);
 
-            _ = (rate > decimal.Zero).Should().BeTrue();
+            (rate > decimal.Zero).ShouldBeTrue();
         }
     }
 }

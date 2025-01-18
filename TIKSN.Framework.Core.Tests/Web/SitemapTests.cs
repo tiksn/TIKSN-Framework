@@ -1,3 +1,4 @@
+using Shouldly;
 using TIKSN.Web;
 using Xunit;
 
@@ -13,8 +14,8 @@ public class SitemapTests
 
         var map = new Sitemap();
 
-        _ = map.Pages.Add(p1).Should().BeTrue();
-        _ = map.Pages.Add(p2).Should().BeFalse();
+        map.Pages.Add(p1).ShouldBeTrue();
+        map.Pages.Add(p2).ShouldBeFalse();
     }
 
     [Fact]
@@ -24,8 +25,8 @@ public class SitemapTests
 
         var map = new Sitemap();
 
-        _ = map.Pages.Add(p1).Should().BeTrue();
-        _ = map.Pages.Add(p1).Should().BeFalse();
+        map.Pages.Add(p1).ShouldBeTrue();
+        map.Pages.Add(p1).ShouldBeFalse();
     }
 
     [Fact]
@@ -36,8 +37,8 @@ public class SitemapTests
 
         var map = new Sitemap();
 
-        _ = map.Pages.Add(p1).Should().BeTrue();
-        _ = map.Pages.Add(p2).Should().BeFalse();
+        map.Pages.Add(p1).ShouldBeTrue();
+        map.Pages.Add(p2).ShouldBeFalse();
     }
 
     [Fact]
@@ -52,7 +53,7 @@ public class SitemapTests
 
         var xmlOutput = sbuilder.ToString();
 
-        _ = xmlOutput.Should().Be("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
+        xmlOutput.ShouldBe("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
             "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" />");
     }
 
@@ -72,7 +73,7 @@ public class SitemapTests
 
         var xmlOutput = sbuilder.ToString();
 
-        _ = xmlOutput.Should().Be("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
+        xmlOutput.ShouldBe("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
             "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" +
 
             "<url>" +

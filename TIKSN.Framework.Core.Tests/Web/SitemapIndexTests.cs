@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Xml;
+using Shouldly;
 using TIKSN.Web;
 using Xunit;
 
@@ -15,7 +16,7 @@ public class SitemapIndexTests
 
         sIndex.Sitemaps.Add(new Uri("https://microsoft.com/"), new DateOnly(2012, 8, 4));
 
-        _ = sIndex.Sitemaps.Should().ContainSingle();
+        sIndex.Sitemaps.Count.ShouldBe(1);
     }
 
     [Fact]
@@ -31,7 +32,7 @@ public class SitemapIndexTests
 
         var xmlOutput = sBuilder.ToString();
 
-        _ = xmlOutput.Should().Be("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
+        xmlOutput.ShouldBe("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
             "<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" />");
     }
 
@@ -51,7 +52,7 @@ public class SitemapIndexTests
 
         var xmlOutput = sBuilder.ToString();
 
-        _ = xmlOutput.Should().Be("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
+        xmlOutput.ShouldBe("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
             "<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" +
 
             "<sitemap>" +

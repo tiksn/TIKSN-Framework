@@ -9,6 +9,7 @@ using LanguageExt.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Time.Testing;
 using Newtonsoft.Json;
+using Shouldly;
 using TIKSN.DependencyInjection;
 using TIKSN.Licensing;
 using Xunit;
@@ -108,7 +109,7 @@ public class LicenseTests
 
         // Assert
 
-        _ = result.IsFail.Should().BeTrue();
+        result.IsFail.ShouldBeTrue();
     }
 
     private void Arrange(
@@ -191,23 +192,23 @@ public class LicenseTests
         {
             this.testOutputHelper.WriteLine($"License Result Fail: {resultFail}");
         }
-        _ = result.IsSuccess.Should().BeTrue();
-        _ = result.SuccessToSeq().Single().Terms.Should().NotBeNull();
-        _ = result.SuccessToSeq().Single().Terms.SerialNumber.Should().Be(terms.SerialNumber);
-        _ = result.SuccessToSeq().Single().Terms.Licensor.Should().BeOfType<IndividualParty>();
-        _ = result.SuccessToSeq().Single().Terms.Licensor.As<IndividualParty>().FirstName.Should().Be(licensor.FirstName);
-        _ = result.SuccessToSeq().Single().Terms.Licensor.As<IndividualParty>().LastName.Should().Be(licensor.LastName);
-        _ = result.SuccessToSeq().Single().Terms.Licensor.As<IndividualParty>().FullName.Should().Be(licensor.FullName);
-        _ = result.SuccessToSeq().Single().Terms.Licensor.As<IndividualParty>().Email.Address.Should().Be(licensor.Email.Address);
-        _ = result.SuccessToSeq().Single().Terms.Licensor.As<IndividualParty>().Website.Should().Be(licensor.Website);
-        _ = result.SuccessToSeq().Single().Terms.Licensee.Should().BeOfType<OrganizationParty>();
-        _ = result.SuccessToSeq().Single().Terms.Licensee.As<OrganizationParty>().LongName.Should().Be(licensee.LongName);
-        _ = result.SuccessToSeq().Single().Terms.Licensee.As<OrganizationParty>().ShortName.Should().Be(licensee.ShortName);
-        _ = result.SuccessToSeq().Single().Terms.Licensee.As<OrganizationParty>().Email.Address.Should().Be(licensee.Email.Address);
-        _ = result.SuccessToSeq().Single().Terms.Licensee.As<OrganizationParty>().Website.Should().Be(licensee.Website);
-        _ = result.SuccessToSeq().Single().Terms.NotBefore.Should().Be(terms.NotBefore);
-        _ = result.SuccessToSeq().Single().Terms.NotAfter.Should().Be(terms.NotAfter);
-        _ = result.SuccessToSeq().Single().Data.Should().NotBeEmpty();
+        result.IsSuccess.ShouldBeTrue();
+        _ = result.SuccessToSeq().Single().Terms.ShouldNotBeNull();
+        result.SuccessToSeq().Single().Terms.SerialNumber.ShouldBe(terms.SerialNumber);
+        _ = result.SuccessToSeq().Single().Terms.Licensor.ShouldBeOfType<IndividualParty>();
+        ((IndividualParty)result.SuccessToSeq().Single().Terms.Licensor).FirstName.ShouldBe(licensor.FirstName);
+        ((IndividualParty)result.SuccessToSeq().Single().Terms.Licensor).LastName.ShouldBe(licensor.LastName);
+        ((IndividualParty)result.SuccessToSeq().Single().Terms.Licensor).FullName.ShouldBe(licensor.FullName);
+        ((IndividualParty)result.SuccessToSeq().Single().Terms.Licensor).Email.Address.ShouldBe(licensor.Email.Address);
+        ((IndividualParty)result.SuccessToSeq().Single().Terms.Licensor).Website.ShouldBe(licensor.Website);
+        _ = result.SuccessToSeq().Single().Terms.Licensee.ShouldBeOfType<OrganizationParty>();
+        ((OrganizationParty)result.SuccessToSeq().Single().Terms.Licensee).LongName.ShouldBe(licensee.LongName);
+        ((OrganizationParty)result.SuccessToSeq().Single().Terms.Licensee).ShortName.ShouldBe(licensee.ShortName);
+        ((OrganizationParty)result.SuccessToSeq().Single().Terms.Licensee).Email.Address.ShouldBe(licensee.Email.Address);
+        ((OrganizationParty)result.SuccessToSeq().Single().Terms.Licensee).Website.ShouldBe(licensee.Website);
+        result.SuccessToSeq().Single().Terms.NotBefore.ShouldBe(terms.NotBefore);
+        result.SuccessToSeq().Single().Terms.NotAfter.ShouldBe(terms.NotAfter);
+        result.SuccessToSeq().Single().Data.ShouldNotBeEmpty();
         this.testOutputHelper.WriteLine($"License Data Length: {result.SuccessToSeq().Single().Data.Length}");
     }
 }

@@ -1,5 +1,6 @@
 using System.Linq;
 using NuGet.Versioning;
+using Shouldly;
 using TIKSN.Versioning;
 using Xunit;
 
@@ -22,7 +23,7 @@ public class VersionSeriesTests
     {
         var versionSeries = VersionSeries.Parse(series);
 
-        _ = versionSeries.ToString().Should().Be(series);
+        versionSeries.ToString().ShouldBe(series);
     }
 
     [Theory]
@@ -41,7 +42,7 @@ public class VersionSeriesTests
         var versionSeries1 = VersionSeries.Parse(series);
         var versionSeries2 = VersionSeries.Parse(series);
 
-        _ = versionSeries1.Equals(versionSeries2).Should().BeTrue();
+        versionSeries1.Equals(versionSeries2).ShouldBeTrue();
     }
 
     [Theory]
@@ -101,12 +102,12 @@ public class VersionSeriesTests
         var match = versionSeries.Matches(versionToTest);
 
         // Assert
-        _ = match.IsSome.Should().Be(matches);
+        match.IsSome.ShouldBe(matches);
 
         if (match.IsSome)
         {
-            _ = match.Match(v => v, () => new Version(0, 0))
-                .Should().Be(versionToTest);
+            match.Match(v => v, () => new Version(0, 0))
+                .ShouldBe(versionToTest);
         }
     }
 
@@ -132,9 +133,8 @@ public class VersionSeriesTests
         var match = versionSeries.Matches(versions);
 
         // Assert
-        _ = match.IsSome.Should().Be(expectedHasMatches);
-        _ = match.Match(result => result, System.Array.Empty<Version>)
-            .Should()
-            .BeEquivalentTo(expectedMatches);
+        match.IsSome.ShouldBe(expectedHasMatches);
+        match.Match(result => result, System.Array.Empty<Version>)
+            .ShouldBeEquivalentTo(expectedMatches);
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Shouldly;
 using Spectre.Console;
 using Spectre.Console.Testing;
 using TIKSN.DependencyInjection;
@@ -63,6 +64,6 @@ public class ConsoleServiceTests
             "\u001b[38;5;10mCommand\u001b[0m\u001b[38;5;10m:\u001b[0m exit",
             "");
 
-        _ = actualOutputLines.Should().BeEquivalentTo(expectedOutputLines);
+        actualOutputLines.ShouldBeEquivalentTo(expectedOutputLines.ToArray());
     }
 }

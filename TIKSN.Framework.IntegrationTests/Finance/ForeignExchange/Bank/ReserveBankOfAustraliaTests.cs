@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using TIKSN.DependencyInjection;
 using TIKSN.Finance;
 using TIKSN.Finance.ForeignExchange.Bank;
@@ -34,7 +35,7 @@ public class ReserveBankOfAustraliaTests
 
         var afterInDollar = await this.bank.ConvertCurrencyAsync(beforeInPound, australianDollar, this.timeProvider.GetUtcNow(), default);
 
-        _ = (beforeInPound.Amount < afterInDollar.Amount).Should().BeTrue();
+        (beforeInPound.Amount < afterInDollar.Amount).ShouldBeTrue();
     }
 
     [Fact]
@@ -48,8 +49,8 @@ public class ReserveBankOfAustraliaTests
 
             var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow(), default);
 
-            _ = (after.Amount > decimal.Zero).Should().BeTrue();
-            _ = (after.Currency == pair.CounterCurrency).Should().BeTrue();
+            (after.Amount > decimal.Zero).ShouldBeTrue();
+            (after.Currency == pair.CounterCurrency).ShouldBeTrue();
         }
     }
 
@@ -66,7 +67,7 @@ public class ReserveBankOfAustraliaTests
 
             var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow(), default);
 
-            _ = (after.Amount == before.Amount * rate).Should().BeTrue();
+            (after.Amount == before.Amount * rate).ShouldBeTrue();
         }
     }
 
@@ -81,7 +82,7 @@ public class ReserveBankOfAustraliaTests
 
             _ = await
                 new Func<Task>(async () =>
-                        await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow().AddMinutes(1d), default)).Should().ThrowExactlyAsync<ArgumentException>();
+                        await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow().AddMinutes(1d), default)).ShouldThrowAsync<ArgumentException>();
         }
     }
 
@@ -96,7 +97,7 @@ public class ReserveBankOfAustraliaTests
 
             _ = await
                 new Func<Task>(async () =>
-                        await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow().AddDays(-20d), default)).Should().ThrowExactlyAsync<ArgumentException>();
+                        await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow().AddDays(-20d), default)).ShouldThrowAsync<ArgumentException>();
         }
     }
 
@@ -113,7 +114,7 @@ public class ReserveBankOfAustraliaTests
 
         _ = await
                 new Func<Task>(async () =>
-                        await this.bank.ConvertCurrencyAsync(before, belarusianRuble, this.timeProvider.GetUtcNow(), default)).Should().ThrowExactlyAsync<ArgumentException>();
+                        await this.bank.ConvertCurrencyAsync(before, belarusianRuble, this.timeProvider.GetUtcNow(), default)).ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -121,7 +122,7 @@ public class ReserveBankOfAustraliaTests
     {
         var rates = await this.bank.GetExchangeRatesAsync(this.timeProvider.GetUtcNow(), default);
 
-        _ = rates.Should().NotBeEmpty();
+        rates.ShouldNotBeEmpty();
     }
 
     [Fact]
@@ -129,39 +130,39 @@ public class ReserveBankOfAustraliaTests
     {
         var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
 
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "USD/AUD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "CNY/AUD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "JPY/AUD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "EUR/AUD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "KRW/AUD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "GBP/AUD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "SGD/AUD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "INR/AUD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "THB/AUD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "NZD/AUD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "TWD/AUD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "MYR/AUD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "IDR/AUD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "VND/AUD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "HKD/AUD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "XDR/AUD");
+        currencyPairs.ShouldContain(p => p.ToString() == "USD/AUD");
+        currencyPairs.ShouldContain(p => p.ToString() == "CNY/AUD");
+        currencyPairs.ShouldContain(p => p.ToString() == "JPY/AUD");
+        currencyPairs.ShouldContain(p => p.ToString() == "EUR/AUD");
+        currencyPairs.ShouldContain(p => p.ToString() == "KRW/AUD");
+        currencyPairs.ShouldContain(p => p.ToString() == "GBP/AUD");
+        currencyPairs.ShouldContain(p => p.ToString() == "SGD/AUD");
+        currencyPairs.ShouldContain(p => p.ToString() == "INR/AUD");
+        currencyPairs.ShouldContain(p => p.ToString() == "THB/AUD");
+        currencyPairs.ShouldContain(p => p.ToString() == "NZD/AUD");
+        currencyPairs.ShouldContain(p => p.ToString() == "TWD/AUD");
+        currencyPairs.ShouldContain(p => p.ToString() == "MYR/AUD");
+        currencyPairs.ShouldContain(p => p.ToString() == "IDR/AUD");
+        currencyPairs.ShouldContain(p => p.ToString() == "VND/AUD");
+        currencyPairs.ShouldContain(p => p.ToString() == "HKD/AUD");
+        currencyPairs.ShouldContain(p => p.ToString() == "XDR/AUD");
 
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/USD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/CNY");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/JPY");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/EUR");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/KRW");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/GBP");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/SGD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/INR");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/THB");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/NZD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/TWD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/MYR");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/IDR");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/VND");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/HKD");
-        _ = currencyPairs.Should().Contain(p => p.ToString() == "AUD/XDR");
+        currencyPairs.ShouldContain(p => p.ToString() == "AUD/USD");
+        currencyPairs.ShouldContain(p => p.ToString() == "AUD/CNY");
+        currencyPairs.ShouldContain(p => p.ToString() == "AUD/JPY");
+        currencyPairs.ShouldContain(p => p.ToString() == "AUD/EUR");
+        currencyPairs.ShouldContain(p => p.ToString() == "AUD/KRW");
+        currencyPairs.ShouldContain(p => p.ToString() == "AUD/GBP");
+        currencyPairs.ShouldContain(p => p.ToString() == "AUD/SGD");
+        currencyPairs.ShouldContain(p => p.ToString() == "AUD/INR");
+        currencyPairs.ShouldContain(p => p.ToString() == "AUD/THB");
+        currencyPairs.ShouldContain(p => p.ToString() == "AUD/NZD");
+        currencyPairs.ShouldContain(p => p.ToString() == "AUD/TWD");
+        currencyPairs.ShouldContain(p => p.ToString() == "AUD/MYR");
+        currencyPairs.ShouldContain(p => p.ToString() == "AUD/IDR");
+        currencyPairs.ShouldContain(p => p.ToString() == "AUD/VND");
+        currencyPairs.ShouldContain(p => p.ToString() == "AUD/HKD");
+        currencyPairs.ShouldContain(p => p.ToString() == "AUD/XDR");
     }
 
     [Fact]
@@ -173,7 +174,7 @@ public class ReserveBankOfAustraliaTests
         {
             var reversedPair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
 
-            _ = currencyPairs.Should().Contain(p => p == reversedPair);
+            currencyPairs.ShouldContain(p => p == reversedPair);
         }
     }
 
@@ -189,18 +190,18 @@ public class ReserveBankOfAustraliaTests
             _ = pairSet.Add(pair);
         }
 
-        _ = (pairSet.Count == currencyPairs.Count).Should().BeTrue();
+        (pairSet.Count == currencyPairs.Count).ShouldBeTrue();
     }
 
     [Fact]
     public async Task GetCurrencyPairs004()
-        => _ = await
+        => await
             new Func<Task>(async () =>
-                    await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow().AddMinutes(10), default)).Should().ThrowExactlyAsync<ArgumentException>();
+                    await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow().AddMinutes(10), default)).ShouldThrowAsync<ArgumentException>();
 
     [Fact]
     public async Task GetCurrencyPairs005()
-        => _ = await new Func<Task>(async () => await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow().AddDays(-20), default)).Should().ThrowExactlyAsync<ArgumentException>();
+        => await new Func<Task>(async () => await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow().AddDays(-20), default)).ShouldThrowAsync<ArgumentException>();
 
     [Fact]
     public async Task GetExchangeRate001()
@@ -209,7 +210,7 @@ public class ReserveBankOfAustraliaTests
 
         foreach (var pair in currencyPairs)
         {
-            _ = (await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default) > decimal.Zero).Should().BeTrue();
+            (await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default) > decimal.Zero).ShouldBeTrue();
         }
     }
 
@@ -220,7 +221,7 @@ public class ReserveBankOfAustraliaTests
 
         foreach (var pair in currencyPairs)
         {
-            _ = await new Func<Task>(async () => await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddMinutes(1d), default)).Should().ThrowExactlyAsync<ArgumentException>();
+            _ = await new Func<Task>(async () => await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddMinutes(1d), default)).ShouldThrowAsync<ArgumentException>();
         }
     }
 
@@ -231,7 +232,7 @@ public class ReserveBankOfAustraliaTests
 
         foreach (var pair in currencyPairs)
         {
-            _ = await new Func<Task>(async () => await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddDays(-20d), default)).Should().ThrowExactlyAsync<ArgumentException>();
+            _ = await new Func<Task>(async () => await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddDays(-20d), default)).ShouldThrowAsync<ArgumentException>();
         }
     }
 
@@ -246,6 +247,6 @@ public class ReserveBankOfAustraliaTests
 
         var pair = new CurrencyPair(armenianDram, belarusianRuble);
 
-        _ = await new Func<Task>(async () => await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default)).Should().ThrowExactlyAsync<ArgumentException>();
+        _ = await new Func<Task>(async () => await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default)).ShouldThrowAsync<ArgumentException>();
     }
 }

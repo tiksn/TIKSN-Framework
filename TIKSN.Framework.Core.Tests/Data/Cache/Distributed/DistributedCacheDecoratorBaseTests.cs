@@ -10,6 +10,7 @@ using MessagePack.Resolvers;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Shouldly;
 using TIKSN.Data;
 using TIKSN.Data.Cache.Distributed;
 using TIKSN.DependencyInjection;
@@ -76,11 +77,11 @@ public class DistributedCacheDecoratorBaseTests
 
         // Assert
 
-        _ = actual.IsSome.Should().BeTrue();
-        _ = actual.Single().ID.Should().Be(entity.ID);
-        _ = actual.Single().ExternalID.Should().Be(entity.ExternalID);
-        _ = actual.Single().Name.Should().Be(entity.Name);
-        _ = newCount.Should().Be(oldCount + 1);
+        actual.IsSome.ShouldBeTrue();
+        actual.Single().ID.ShouldBe(entity.ID);
+        actual.Single().ExternalID.ShouldBe(entity.ExternalID);
+        actual.Single().Name.ShouldBe(entity.Name);
+        newCount.ShouldBe(oldCount + 1);
     }
 
     [Fact]
@@ -100,17 +101,17 @@ public class DistributedCacheDecoratorBaseTests
 
         // Assert
 
-        _ = actual1.IsSome.Should().BeTrue();
-        _ = actual1.Single().ID.Should().Be(entity.ID);
-        _ = actual1.Single().ExternalID.Should().Be(entity.ExternalID);
-        _ = actual1.Single().Name.Should().Be(entity.Name);
-        _ = newCount1.Should().Be(oldCount + 1);
+        actual1.IsSome.ShouldBeTrue();
+        actual1.Single().ID.ShouldBe(entity.ID);
+        actual1.Single().ExternalID.ShouldBe(entity.ExternalID);
+        actual1.Single().Name.ShouldBe(entity.Name);
+        newCount1.ShouldBe(oldCount + 1);
 
-        _ = actual2.IsSome.Should().BeTrue();
-        _ = actual2.Single().ID.Should().Be(entity.ID);
-        _ = actual2.Single().ExternalID.Should().Be(entity.ExternalID);
-        _ = actual2.Single().Name.Should().Be(entity.Name);
-        _ = newCount2.Should().Be(oldCount + 1);
+        actual2.IsSome.ShouldBeTrue();
+        actual2.Single().ID.ShouldBe(entity.ID);
+        actual2.Single().ExternalID.ShouldBe(entity.ExternalID);
+        actual2.Single().Name.ShouldBe(entity.Name);
+        newCount2.ShouldBe(oldCount + 1);
     }
 
     [Fact]
@@ -129,11 +130,11 @@ public class DistributedCacheDecoratorBaseTests
 
         // Assert
 
-        _ = actual.IsSome.Should().BeTrue();
-        _ = actual.Single().ID.Should().Be(entity.ID);
-        _ = actual.Single().ExternalID.Should().Be(entity.ExternalID);
-        _ = actual.Single().Name.Should().Be(entity.Name);
-        _ = newCount.Should().Be(oldCount + 1);
+        actual.IsSome.ShouldBeTrue();
+        actual.Single().ID.ShouldBe(entity.ID);
+        actual.Single().ExternalID.ShouldBe(entity.ExternalID);
+        actual.Single().Name.ShouldBe(entity.Name);
+        newCount.ShouldBe(oldCount + 1);
     }
 
     [Fact]
@@ -153,17 +154,17 @@ public class DistributedCacheDecoratorBaseTests
 
         // Assert
 
-        _ = actual1.IsSome.Should().BeTrue();
-        _ = actual1.Single().ID.Should().Be(entity.ID);
-        _ = actual1.Single().ExternalID.Should().Be(entity.ExternalID);
-        _ = actual1.Single().Name.Should().Be(entity.Name);
-        _ = newCount1.Should().Be(oldCount + 1);
+        actual1.IsSome.ShouldBeTrue();
+        actual1.Single().ID.ShouldBe(entity.ID);
+        actual1.Single().ExternalID.ShouldBe(entity.ExternalID);
+        actual1.Single().Name.ShouldBe(entity.Name);
+        newCount1.ShouldBe(oldCount + 1);
 
-        _ = actual2.IsSome.Should().BeTrue();
-        _ = actual2.Single().ID.Should().Be(entity.ID);
-        _ = actual2.Single().ExternalID.Should().Be(entity.ExternalID);
-        _ = actual2.Single().Name.Should().Be(entity.Name);
-        _ = newCount2.Should().Be(oldCount + 1);
+        actual2.IsSome.ShouldBeTrue();
+        actual2.Single().ID.ShouldBe(entity.ID);
+        actual2.Single().ExternalID.ShouldBe(entity.ExternalID);
+        actual2.Single().Name.ShouldBe(entity.Name);
+        newCount2.ShouldBe(oldCount + 1);
     }
 
     [Fact]
@@ -177,7 +178,7 @@ public class DistributedCacheDecoratorBaseTests
 
         // Assert
 
-        _ = actual.IsNone.Should().BeTrue();
+        actual.IsNone.ShouldBeTrue();
     }
 
     [Fact]
@@ -191,7 +192,7 @@ public class DistributedCacheDecoratorBaseTests
 
         // Assert
 
-        _ = actual.IsNone.Should().BeTrue();
+        actual.IsNone.ShouldBeTrue();
     }
 
     public record TestEntity(int ID, Guid ExternalID, string Name) : IEntity<int>;

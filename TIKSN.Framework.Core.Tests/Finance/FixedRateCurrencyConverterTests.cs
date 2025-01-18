@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Shouldly;
 using TIKSN.Finance;
 using Xunit;
 
@@ -24,8 +25,8 @@ public class FixedRateCurrencyConverterTests
 
         var final = await converter.ConvertCurrencyAsync(initial, poundSterling, DateTime.Now, default);
 
-        _ = final.Currency.Should().Be(poundSterling);
-        _ = final.Amount.Should().Be(200m);
+        final.Currency.ShouldBe(poundSterling);
+        final.Amount.ShouldBe(200m);
     }
 
     [Fact]
@@ -43,7 +44,7 @@ public class FixedRateCurrencyConverterTests
 
         var converter = new FixedRateCurrencyConverter(new CurrencyPair(usDollar, poundSterling), 2m);
 
-        _ = await new Func<Task>(async () => await converter.ConvertCurrencyAsync(initial, euro, DateTimeOffset.Now, default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>();
+        _ = await new Func<Task>(async () => await converter.ConvertCurrencyAsync(initial, euro, DateTimeOffset.Now, default).ConfigureAwait(true)).ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -63,7 +64,7 @@ public class FixedRateCurrencyConverterTests
 
         var converter = new FixedRateCurrencyConverter(new CurrencyPair(usDollar, poundSterling), 2m);
 
-        _ = await new Func<Task>(async () => await converter.ConvertCurrencyAsync(initial, euro, DateTimeOffset.Now, default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>();
+        _ = await new Func<Task>(async () => await converter.ConvertCurrencyAsync(initial, euro, DateTimeOffset.Now, default).ConfigureAwait(true)).ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -80,15 +81,15 @@ public class FixedRateCurrencyConverterTests
 
         var converter = new FixedRateCurrencyConverter(new CurrencyPair(usDollar, poundSterling), 2m);
 
-        _ = ReferenceEquals(converter.CurrencyPair.BaseCurrency, usDollar).Should().BeTrue();
-        _ = ReferenceEquals(converter.CurrencyPair.CounterCurrency, poundSterling).Should().BeTrue();
+        ReferenceEquals(converter.CurrencyPair.BaseCurrency, usDollar).ShouldBeTrue();
+        ReferenceEquals(converter.CurrencyPair.CounterCurrency, poundSterling).ShouldBeTrue();
         return Task.CompletedTask;
     }
 
     [Fact]
     public Task FixedRateCurrencyConverter001()
     {
-        _ = new Func<object>(() => new FixedRateCurrencyConverter(null, 0.5m)).Should().ThrowExactly<ArgumentNullException>();
+        _ = new Func<object>(() => new FixedRateCurrencyConverter(null, 0.5m)).ShouldThrow<ArgumentNullException>();
         return Task.CompletedTask;
     }
 
@@ -103,7 +104,7 @@ public class FixedRateCurrencyConverterTests
 
         var pair = new CurrencyPair(usDollar, armenianDram);
 
-        _ = new Func<object>(() => new FixedRateCurrencyConverter(pair, -0.5m)).Should().ThrowExactly<ArgumentException>();
+        _ = new Func<object>(() => new FixedRateCurrencyConverter(pair, -0.5m)).ShouldThrow<ArgumentException>();
         return Task.CompletedTask;
     }
 
@@ -120,10 +121,10 @@ public class FixedRateCurrencyConverterTests
 
         var converter = new FixedRateCurrencyConverter(pair, 2m);
 
-        _ = converter.CurrencyPair.BaseCurrency.Should().Be(usDollar);
-        _ = converter.CurrencyPair.CounterCurrency.Should().Be(poundSterling);
+        converter.CurrencyPair.BaseCurrency.ShouldBe(usDollar);
+        converter.CurrencyPair.CounterCurrency.ShouldBe(poundSterling);
 
-        _ = ReferenceEquals(pair, (await converter.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true)).Single()).Should().BeTrue();
+        ReferenceEquals(pair, (await converter.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true)).Single()).ShouldBeTrue();
     }
 
     [Fact]
@@ -137,7 +138,7 @@ public class FixedRateCurrencyConverterTests
 
         var converter = new FixedRateCurrencyConverter(new CurrencyPair(usDollar, poundSterling), 2m);
 
-        _ = (await converter.GetExchangeRateAsync(new CurrencyPair(usDollar, poundSterling), DateTimeOffset.Now, default).ConfigureAwait(true)).Should().Be(2m);
+        (await converter.GetExchangeRateAsync(new CurrencyPair(usDollar, poundSterling), DateTimeOffset.Now, default).ConfigureAwait(true)).ShouldBe(2m);
     }
 
     [Fact]
@@ -151,7 +152,7 @@ public class FixedRateCurrencyConverterTests
 
         var converter = new FixedRateCurrencyConverter(new CurrencyPair(usDollar, poundSterling), 2m);
 
-        _ = await new Func<Task>(async () => await converter.GetExchangeRateAsync(new CurrencyPair(poundSterling, usDollar), DateTimeOffset.Now, default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>();
+        _ = await new Func<Task>(async () => await converter.GetExchangeRateAsync(new CurrencyPair(poundSterling, usDollar), DateTimeOffset.Now, default).ConfigureAwait(true)).ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -167,7 +168,7 @@ public class FixedRateCurrencyConverterTests
 
         var converter = new FixedRateCurrencyConverter(new CurrencyPair(usDollar, poundSterling), 2m);
 
-        _ = await new Func<Task>(async () => await converter.GetExchangeRateAsync(new CurrencyPair(euro, usDollar), DateTimeOffset.Now, default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>();
+        _ = await new Func<Task>(async () => await converter.GetExchangeRateAsync(new CurrencyPair(euro, usDollar), DateTimeOffset.Now, default).ConfigureAwait(true)).ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -183,7 +184,7 @@ public class FixedRateCurrencyConverterTests
 
         var converter = new FixedRateCurrencyConverter(new CurrencyPair(usDollar, poundSterling), 2m);
 
-        _ = await new Func<Task>(async () => await converter.GetExchangeRateAsync(new CurrencyPair(usDollar, euro), DateTimeOffset.Now, default).ConfigureAwait(true)).Should().ThrowExactlyAsync<ArgumentException>();
+        _ = await new Func<Task>(async () => await converter.GetExchangeRateAsync(new CurrencyPair(usDollar, euro), DateTimeOffset.Now, default).ConfigureAwait(true)).ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -205,6 +206,6 @@ public class FixedRateCurrencyConverterTests
         var rateInLastMonth = await converter.GetExchangeRateAsync(pair, lastMonth, default);
         var rateInNextMonth = await converter.GetExchangeRateAsync(pair, nextMonth, default);
 
-        _ = (rateInLastMonth == rateInNextMonth).Should().BeTrue();
+        (rateInLastMonth == rateInNextMonth).ShouldBeTrue();
     }
 }

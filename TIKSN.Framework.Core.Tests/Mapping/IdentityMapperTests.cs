@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Autofac;
 using Autofac.Core.Registration;
+using Shouldly;
 using TIKSN.DependencyInjection;
 using TIKSN.Mapping;
 using Xunit;
@@ -27,7 +28,7 @@ public class IdentityMapperTests
 
         // Assert
 
-        _ = actual.Should().Be(expected);
+        actual.ShouldBe(expected);
     }
 
     [Fact]
@@ -45,6 +46,6 @@ public class IdentityMapperTests
 
         // Assert
 
-        _ = resolveMapper.Should().Throw<ComponentNotRegisteredException>();
+        _ = resolveMapper.ShouldThrow<ComponentNotRegisteredException>();
     }
 }
