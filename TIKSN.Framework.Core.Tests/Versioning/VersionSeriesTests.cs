@@ -1,5 +1,4 @@
 using System.Linq;
-using FluentAssertions;
 using NuGet.Versioning;
 using TIKSN.Versioning;
 using Xunit;

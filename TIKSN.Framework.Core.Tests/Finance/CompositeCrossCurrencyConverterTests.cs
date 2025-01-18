@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using FluentAssertions;
 using TIKSN.Finance;
 using Xunit;
 

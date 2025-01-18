@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using FluentAssertions;
 using TIKSN.Finance;
 using TIKSN.Finance.PricingStrategy;
 using Xunit;

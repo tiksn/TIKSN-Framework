@@ -1,4 +1,3 @@
-using FluentAssertions;
 using Microsoft.Extensions.Hosting;
 using NSubstitute;
 using TIKSN.Deployment;

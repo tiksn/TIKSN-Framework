@@ -1,7 +1,6 @@
 using System;
 using System.Globalization;
 using System.Threading;
-using FluentAssertions;
 using TIKSN.Finance;
 using Xunit;
 

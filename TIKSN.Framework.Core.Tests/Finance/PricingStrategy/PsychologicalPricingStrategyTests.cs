@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using TIKSN.Finance;
 using TIKSN.Finance.PricingStrategy;
 using Xunit;

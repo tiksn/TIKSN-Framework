@@ -1,5 +1,4 @@
 using System;
-using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.DependencyInjection;
 using TIKSN.Integration.Correlation;

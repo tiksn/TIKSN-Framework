@@ -1,7 +1,6 @@
 using System.Management.Automation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Nito.AsyncEx;
 
 namespace TIKSN.PowerShell;
 

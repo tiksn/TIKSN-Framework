@@ -1,4 +1,3 @@
-using FluentAssertions;
 using NuGet.Versioning;
 using TIKSN.Versioning;
 using Xunit;

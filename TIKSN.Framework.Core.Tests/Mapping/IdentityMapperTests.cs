@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using Autofac;
 using Autofac.Core.Registration;
-using FluentAssertions;
 using TIKSN.DependencyInjection;
 using TIKSN.Mapping;
 using Xunit;
