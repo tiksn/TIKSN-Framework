@@ -1,5 +1,5 @@
 using System;
-using FluentAssertions;
+using Shouldly;
 using TIKSN.Web;
 using Xunit;
 
@@ -13,8 +13,8 @@ public class SitemapPageTests
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always, 0.5);
         SitemapPage p2 = null;
 
-        _ = (null == p1).Should().BeFalse();
-        _ = (null == p2).Should().BeTrue();
+        (null == p1).ShouldBeFalse();
+        (null == p2).ShouldBeTrue();
     }
 
     [Fact]
@@ -23,17 +23,17 @@ public class SitemapPageTests
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always, 0.5);
         var p2 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always, 0.5);
 
-        _ = p1.Equals(p1).Should().BeTrue();
-        _ = p1.Equals(p2).Should().BeTrue();
+        p1.Equals(p1).ShouldBeTrue();
+        p1.Equals(p2).ShouldBeTrue();
 #pragma warning disable CS1718 // Comparison made to same variable
-        _ = (p1 == p1).Should().BeTrue();
+        (p1 == p1).ShouldBeTrue();
 #pragma warning restore CS1718 // Comparison made to same variable
-        _ = (p1 == p2).Should().BeTrue();
+        (p1 == p2).ShouldBeTrue();
 #pragma warning disable CS1718 // Comparison made to same variable
-        _ = (p1 != p1).Should().BeFalse();
+        (p1 != p1).ShouldBeFalse();
 #pragma warning restore CS1718 // Comparison made to same variable
-        _ = (p1 != p2).Should().BeFalse();
-        _ = (p1.GetHashCode() == p2.GetHashCode()).Should().BeTrue();
+        (p1 != p2).ShouldBeFalse();
+        (p1.GetHashCode() == p2.GetHashCode()).ShouldBeTrue();
     }
 
     [Fact]
@@ -42,17 +42,17 @@ public class SitemapPageTests
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always, 0.5);
         var p2 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now.AddDays(10d), SitemapPage.Frequency.Monthly, 0.2);
 
-        _ = p1.Equals(p1).Should().BeTrue();
-        _ = p1.Equals(p2).Should().BeTrue();
+        p1.Equals(p1).ShouldBeTrue();
+        p1.Equals(p2).ShouldBeTrue();
 #pragma warning disable CS1718 // Comparison made to same variable
-        _ = (p1 == p1).Should().BeTrue();
+        (p1 == p1).ShouldBeTrue();
 #pragma warning restore CS1718 // Comparison made to same variable
-        _ = (p1 == p2).Should().BeTrue();
+        (p1 == p2).ShouldBeTrue();
 #pragma warning disable CS1718 // Comparison made to same variable
-        _ = (p1 != p1).Should().BeFalse();
+        (p1 != p1).ShouldBeFalse();
 #pragma warning restore CS1718 // Comparison made to same variable
-        _ = (p1 != p2).Should().BeFalse();
-        _ = (p1.GetHashCode() == p2.GetHashCode()).Should().BeTrue();
+        (p1 != p2).ShouldBeFalse();
+        (p1.GetHashCode() == p2.GetHashCode()).ShouldBeTrue();
     }
 
     [Fact]
@@ -61,17 +61,17 @@ public class SitemapPageTests
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always, 0.5);
         var p2 = new SitemapPage(new Uri("https://www.microsoft.com/sitemap.aspx"), DateTime.Now, SitemapPage.Frequency.Always, 0.5);
 
-        _ = p1.Equals(p1).Should().BeTrue();
-        _ = p1.Equals(p2).Should().BeFalse();
+        p1.Equals(p1).ShouldBeTrue();
+        p1.Equals(p2).ShouldBeFalse();
 #pragma warning disable CS1718 // Comparison made to same variable
-        _ = (p1 == p1).Should().BeTrue();
+        (p1 == p1).ShouldBeTrue();
 #pragma warning restore CS1718 // Comparison made to same variable
-        _ = (p1 == p2).Should().BeFalse();
+        (p1 == p2).ShouldBeFalse();
 #pragma warning disable CS1718 // Comparison made to same variable
-        _ = (p1 != p1).Should().BeFalse();
+        (p1 != p1).ShouldBeFalse();
 #pragma warning restore CS1718 // Comparison made to same variable
-        _ = (p1 != p2).Should().BeTrue();
-        _ = (p1.GetHashCode() != p2.GetHashCode()).Should().BeTrue();
+        (p1 != p2).ShouldBeTrue();
+        (p1.GetHashCode() != p2.GetHashCode()).ShouldBeTrue();
     }
 
     [Fact]
@@ -79,9 +79,9 @@ public class SitemapPageTests
     {
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always, 0.5);
 
-        _ = p1.Equals(null).Should().BeFalse();
-        _ = (p1 == null).Should().BeFalse();
-        _ = (p1 != null).Should().BeTrue();
+        p1.Equals(null).ShouldBeFalse();
+        (p1 == null).ShouldBeFalse();
+        (p1 != null).ShouldBeTrue();
     }
 
     [Fact]
@@ -91,8 +91,8 @@ public class SitemapPageTests
 
         var pages = new System.Collections.Generic.HashSet<SitemapPage>();
 
-        _ = pages.Add(p1).Should().BeTrue();
-        _ = pages.Add(p1).Should().BeFalse();
+        pages.Add(p1).ShouldBeTrue();
+        pages.Add(p1).ShouldBeFalse();
     }
 
     [Fact]
@@ -103,8 +103,8 @@ public class SitemapPageTests
 
         var pages = new System.Collections.Generic.HashSet<SitemapPage>();
 
-        _ = pages.Add(p1).Should().BeTrue();
-        _ = pages.Add(p2).Should().BeFalse();
+        pages.Add(p1).ShouldBeTrue();
+        pages.Add(p2).ShouldBeFalse();
     }
 
     [Fact]
@@ -117,11 +117,11 @@ public class SitemapPageTests
             p1
         };
 
-        _ = pages.Should().Contain(p1);
+        pages.ShouldContain(p1);
 
         pages.Add(p1);
 
-        _ = pages.Should().Contain(p1);
+        pages.ShouldContain(p1);
     }
 
     [Fact]
@@ -135,11 +135,11 @@ public class SitemapPageTests
             p1
         };
 
-        _ = pages.Should().Contain(p1);
+        pages.ShouldContain(p1);
 
         pages.Add(p2);
 
-        _ = pages.Should().Contain(p2);
+        pages.ShouldContain(p2);
     }
 
     [Fact]
@@ -152,11 +152,11 @@ public class SitemapPageTests
             { p1, 1 }
         };
 
-        _ = pages.ContainsKey(p1).Should().BeTrue();
+        pages.ContainsKey(p1).ShouldBeTrue();
 
-        _ = new Action(() => pages.Add(p1, 2)).Should().ThrowExactly<ArgumentException>();
+        _ = new Action(() => pages.Add(p1, 2)).ShouldThrow<ArgumentException>();
 
-        _ = pages.ContainsKey(p1).Should().BeTrue();
+        pages.ContainsKey(p1).ShouldBeTrue();
     }
 
     [Fact]
@@ -170,11 +170,11 @@ public class SitemapPageTests
             { p1, 1 }
         };
 
-        _ = pages.ContainsKey(p1).Should().BeTrue();
+        pages.ContainsKey(p1).ShouldBeTrue();
 
-        _ = new Action(() => pages.Add(p2, 2)).Should().ThrowExactly<ArgumentException>();
+        _ = new Action(() => pages.Add(p2, 2)).ShouldThrow<ArgumentException>();
 
-        _ = pages.ContainsKey(p2).Should().BeTrue();
+        pages.ContainsKey(p2).ShouldBeTrue();
     }
 
     [Fact]
@@ -183,7 +183,7 @@ public class SitemapPageTests
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always, 0.5);
         object p2 = null;
 
-        _ = p1.Equals(p2).Should().BeFalse();
+        p1.Equals(p2).ShouldBeFalse();
     }
 
     [Fact]
@@ -192,7 +192,7 @@ public class SitemapPageTests
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always, 0.5);
         var p2 = p1;
 
-        _ = p1.Equals(p2).Should().BeTrue();
+        p1.Equals(p2).ShouldBeTrue();
     }
 
     [Fact]
@@ -201,7 +201,7 @@ public class SitemapPageTests
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always, 0.5);
         var s1 = new Sitemap();
 
-        _ = p1.Equals(s1).Should().BeFalse();
+        p1.Equals(s1).ShouldBeFalse();
     }
 
     [Fact]
@@ -210,7 +210,7 @@ public class SitemapPageTests
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always, 0.5);
         object p2 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now.AddDays(10d), SitemapPage.Frequency.Monthly, 0.2);
 
-        _ = p1.Equals(p2).Should().BeTrue();
+        p1.Equals(p2).ShouldBeTrue();
     }
 
     [Fact]
@@ -219,7 +219,7 @@ public class SitemapPageTests
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always, 0.5);
         object p2 = p1;
 
-        _ = p1.Equals(p2).Should().BeTrue();
+        p1.Equals(p2).ShouldBeTrue();
     }
 
     [Fact]
@@ -228,33 +228,33 @@ public class SitemapPageTests
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always, 0.5);
         SitemapPage p2 = null;
 
-        _ = (null != p1).Should().BeTrue();
-        _ = (null != p2).Should().BeFalse();
+        (null != p1).ShouldBeTrue();
+        (null != p2).ShouldBeFalse();
     }
 
     [Fact]
-    public void Page001() => new Func<object>(() => new SitemapPage(null, null, null, null)).Should().ThrowExactly<ArgumentNullException>();
+    public void Page001() => new Func<object>(() => new SitemapPage(null, null, null, null)).ShouldThrow<ArgumentNullException>();
 
     [Fact]
-    public void Page002() => new Func<object>(() => new SitemapPage(null, DateTime.Now, SitemapPage.Frequency.Always, 0.5)).Should().ThrowExactly<ArgumentNullException>();
+    public void Page002() => new Func<object>(() => new SitemapPage(null, DateTime.Now, SitemapPage.Frequency.Always, 0.5)).ShouldThrow<ArgumentNullException>();
 
     [Fact]
     public void Page003()
     {
         var p1 = new SitemapPage(new Uri("https://microsoft.com/"), null, null, null);
 
-        _ = p1.Address.AbsoluteUri.Should().Be("https://microsoft.com/");
-        _ = p1.ChangeFrequency.HasValue.Should().BeFalse();
-        _ = p1.LastModified.HasValue.Should().BeFalse();
-        _ = p1.Priority.HasValue.Should().BeFalse();
+        p1.Address.AbsoluteUri.ShouldBe("https://microsoft.com/");
+        p1.ChangeFrequency.HasValue.ShouldBeFalse();
+        p1.LastModified.HasValue.ShouldBeFalse();
+        p1.Priority.HasValue.ShouldBeFalse();
     }
 
     [Fact]
     public void Page004() => new Func<object>(() =>
                 new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now,
-                    SitemapPage.Frequency.Always, 1.5)).Should().ThrowExactly<ArgumentOutOfRangeException>();
+                    SitemapPage.Frequency.Always, 1.5)).ShouldThrow<ArgumentOutOfRangeException>();
 
     [Fact]
     public void Page005() => new Func<object>(() =>
-                new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always, -0.5)).Should().ThrowExactly<ArgumentOutOfRangeException>();
+                new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always, -0.5)).ShouldThrow<ArgumentOutOfRangeException>();
 }

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using FluentAssertions;
+using Shouldly;
 using TIKSN.Finance;
 using TIKSN.Finance.PricingStrategy;
 using Xunit;
@@ -47,8 +47,8 @@ public class RoundingPricingStrategyTests
             var actualEstimatedPrice = strategy.EstimateMarketPrice(new Money(currency, price.Key));
             var expectedEstimatedPrice = price.Value;
 
-            _ = actualEstimatedPrice.Currency.Should().Be(currency);
-            _ = actualEstimatedPrice.Amount.Should().Be(expectedEstimatedPrice);
+            actualEstimatedPrice.Currency.ShouldBe(currency);
+            actualEstimatedPrice.Amount.ShouldBe(expectedEstimatedPrice);
         }
     }
 
@@ -78,8 +78,8 @@ public class RoundingPricingStrategyTests
             var actualEstimatedPrice = strategy.EstimateMarketPrice(new Money(currency, price.Key));
             var expectedEstimatedPrice = price.Value;
 
-            _ = actualEstimatedPrice.Currency.Should().Be(currency);
-            _ = actualEstimatedPrice.Amount.Should().Be(expectedEstimatedPrice);
+            actualEstimatedPrice.Currency.ShouldBe(currency);
+            actualEstimatedPrice.Amount.ShouldBe(expectedEstimatedPrice);
         }
     }
 }

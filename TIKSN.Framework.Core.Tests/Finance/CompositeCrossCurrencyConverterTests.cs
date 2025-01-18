@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using FluentAssertions;
+using Shouldly;
 using TIKSN.Finance;
 using Xunit;
 
@@ -19,7 +19,7 @@ public class CompositeCrossCurrencyConverterTests
 
         var pairs = await converter.GetCurrencyPairsAsync(DateTimeOffset.Now, default);
 
-        _ = pairs.Count.Should().Be(3);
+        pairs.Count.ShouldBe(3);
     }
 
     [Fact]
@@ -33,6 +33,6 @@ public class CompositeCrossCurrencyConverterTests
 
         var rate = await converter.GetExchangeRateAsync(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("EUR")), DateTimeOffset.Now, default);
 
-        _ = rate.Should().Be(1.12m);
+        rate.ShouldBe(1.12m);
     }
 }

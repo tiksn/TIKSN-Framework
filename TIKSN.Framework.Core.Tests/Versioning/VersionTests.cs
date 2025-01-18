@@ -1,5 +1,5 @@
-using FluentAssertions;
 using NuGet.Versioning;
+using Shouldly;
 using TIKSN.Versioning;
 using Xunit;
 
@@ -12,7 +12,7 @@ public class VersionTests
     {
         var v = new Version(2, 4);
 
-        _ = v.Equals(v).Should().BeTrue();
+        v.Equals(v).ShouldBeTrue();
     }
 
     [Fact]
@@ -21,7 +21,7 @@ public class VersionTests
         var v1 = new Version(5, 6);
         var v2 = new Version(5, 6);
 
-        _ = v1.Equals(v2).Should().BeTrue();
+        v1.Equals(v2).ShouldBeTrue();
     }
 
     [Fact]
@@ -30,7 +30,7 @@ public class VersionTests
         var v1 = new Version(5, 6);
         var v2 = new Version(5, 6, 1);
 
-        _ = v1.Equals(v2).Should().BeFalse();
+        v1.Equals(v2).ShouldBeFalse();
     }
 
     [Fact]
@@ -39,7 +39,7 @@ public class VersionTests
         var v1 = new Version(5, 6, Milestone.Beta);
         var v2 = new Version(5, 6, Milestone.ReleaseCandidate);
 
-        _ = v1.Equals(v2).Should().BeFalse();
+        v1.Equals(v2).ShouldBeFalse();
     }
 
     [Fact]
@@ -48,7 +48,7 @@ public class VersionTests
         var v1 = new Version(5, 6, Milestone.ReleaseCandidate, 2);
         var v2 = new Version(5, 6, Milestone.ReleaseCandidate, 1);
 
-        _ = v1.Equals(v2).Should().BeFalse();
+        v1.Equals(v2).ShouldBeFalse();
     }
 
     [Fact]
@@ -56,7 +56,7 @@ public class VersionTests
     {
         var v = new Version(2, 4);
 
-        _ = v.Equals(null).Should().BeFalse();
+        v.Equals(null).ShouldBeFalse();
     }
 
     [Fact]
@@ -65,7 +65,7 @@ public class VersionTests
         var v1 = new Version(10, 20, Milestone.ReleaseCandidate, 2);
         var v2 = new Version(10, 20, Milestone.Alpha, 2);
 
-        _ = (!(v1 == v2)).Should().BeTrue();
+        (!(v1 == v2)).ShouldBeTrue();
     }
 
     [Fact]
@@ -74,7 +74,7 @@ public class VersionTests
         var v1 = new Version(10, 20, Milestone.ReleaseCandidate, 2);
         var v2 = new Version(10, 20, Milestone.ReleaseCandidate, 2);
 
-        _ = (v1 == v2).Should().BeTrue();
+        (v1 == v2).ShouldBeTrue();
     }
 
     [Fact]
@@ -83,7 +83,7 @@ public class VersionTests
         var v1 = new Version(10, 30, Milestone.ReleaseCandidate, 2);
         var v2 = new Version(10, 20, Milestone.ReleaseCandidate, 2);
 
-        _ = (v1 > v2).Should().BeTrue();
+        (v1 > v2).ShouldBeTrue();
     }
 
     [Fact]
@@ -92,7 +92,7 @@ public class VersionTests
         var v1 = new Version(10, 20, Milestone.ReleaseCandidate, 2);
         var v2 = new Version(10, 30, Milestone.ReleaseCandidate, 2);
 
-        _ = (!(v1 > v2)).Should().BeTrue();
+        (!(v1 > v2)).ShouldBeTrue();
     }
 
     [Fact]
@@ -101,7 +101,7 @@ public class VersionTests
         var v1 = new Version(10, 20, Milestone.ReleaseCandidate, 2);
         var v2 = new Version(10, 20, Milestone.ReleaseCandidate, 2);
 
-        _ = (v1 >= v2).Should().BeTrue();
+        (v1 >= v2).ShouldBeTrue();
     }
 
     [Fact]
@@ -110,7 +110,7 @@ public class VersionTests
         var v1 = new Version(10, 40, Milestone.ReleaseCandidate, 2);
         var v2 = new Version(10, 30, Milestone.ReleaseCandidate, 2);
 
-        _ = (v1 >= v2).Should().BeTrue();
+        (v1 >= v2).ShouldBeTrue();
     }
 
     [Fact]
@@ -119,7 +119,7 @@ public class VersionTests
         var v1 = new Version(10, 20, Milestone.ReleaseCandidate, 2);
         var v2 = new Version(10, 30, Milestone.ReleaseCandidate, 2);
 
-        _ = (v1 < v2).Should().BeTrue();
+        (v1 < v2).ShouldBeTrue();
     }
 
     [Fact]
@@ -128,7 +128,7 @@ public class VersionTests
         var v1 = new Version(10, 20, Milestone.ReleaseCandidate, 2);
         var v2 = new Version(10, 20, Milestone.ReleaseCandidate, 3);
 
-        _ = (v1 < v2).Should().BeTrue();
+        (v1 < v2).ShouldBeTrue();
     }
 
     [Fact]
@@ -137,7 +137,7 @@ public class VersionTests
         var v1 = new Version(10, 20, Milestone.ReleaseCandidate, 2);
         var v2 = new Version(10, 20, Milestone.ReleaseCandidate, 2);
 
-        _ = (v1 <= v2).Should().BeTrue();
+        (v1 <= v2).ShouldBeTrue();
     }
 
     [Fact]
@@ -146,7 +146,7 @@ public class VersionTests
         var v1 = new Version(10, 10, Milestone.ReleaseCandidate, 4);
         var v2 = new Version(10, 20, Milestone.ReleaseCandidate, 3);
 
-        _ = (v1 <= v2).Should().BeTrue();
+        (v1 <= v2).ShouldBeTrue();
     }
 
     [Fact]
@@ -155,7 +155,7 @@ public class VersionTests
         var v1 = new Version(10, 20, Milestone.ReleaseCandidate, 2);
         var v2 = new Version(10, 20, Milestone.Alpha, 2);
 
-        _ = (v1 != v2).Should().BeTrue();
+        (v1 != v2).ShouldBeTrue();
     }
 
     [Fact]
@@ -164,19 +164,19 @@ public class VersionTests
         var v1 = new Version(10, 20, Milestone.ReleaseCandidate, 2);
         var v2 = new Version(10, 20, Milestone.ReleaseCandidate, 2);
 
-        _ = (!(v1 != v2)).Should().BeTrue();
+        (!(v1 != v2)).ShouldBeTrue();
     }
 
     [Fact]
     public void PrereleaseNumber001()
-        => new System.Func<object>(() => new Version(1, 2, 3, 4, Milestone.ReleaseCandidate, -5)).Should().ThrowExactly<System.ArgumentOutOfRangeException>();
+        => new System.Func<object>(() => new Version(1, 2, 3, 4, Milestone.ReleaseCandidate, -5)).ShouldThrow<System.ArgumentOutOfRangeException>();
 
     [Fact]
     public void ToLongReleaseString001()
     {
         var v = new Version(1, 2, 3, 4, Milestone.ReleaseCandidate, 5);
 
-        _ = v.ToLongReleaseString().Should().Be("1.2.3.4");
+        v.ToLongReleaseString().ShouldBe("1.2.3.4");
     }
 
     [Fact]
@@ -184,7 +184,7 @@ public class VersionTests
     {
         var v = new Version(1, 2, 3, 4, Milestone.Alpha, 5);
 
-        _ = v.ToString().Should().Be("1.2.3.4-alpha.5");
+        v.ToString().ShouldBe("1.2.3.4-alpha.5");
     }
 
     [Fact]
@@ -192,7 +192,7 @@ public class VersionTests
     {
         var v = new Version(1, 2, 3, 4, Milestone.Alpha, 5);
 
-        _ = v.ToString().Should().Be("1.2.3.4-alpha.5");
+        v.ToString().ShouldBe("1.2.3.4-alpha.5");
     }
 
     [Fact]
@@ -200,7 +200,7 @@ public class VersionTests
     {
         var v = new Version(1, 2, 3, 4, Milestone.Beta, 5);
 
-        _ = v.ToString().Should().Be("1.2.3.4-beta.5");
+        v.ToString().ShouldBe("1.2.3.4-beta.5");
     }
 
     [Fact]
@@ -208,7 +208,7 @@ public class VersionTests
     {
         var v = new Version(1, 2, 3, 4, Milestone.ReleaseCandidate, 5);
 
-        _ = v.ToString().Should().Be("1.2.3.4-rc.5");
+        v.ToString().ShouldBe("1.2.3.4-rc.5");
     }
 
     [Fact]
@@ -216,7 +216,7 @@ public class VersionTests
     {
         var v = new Version(1, 2, 3, 4, Milestone.Release);
 
-        _ = v.ToString().Should().Be("1.2.3.4");
+        v.ToString().ShouldBe("1.2.3.4");
     }
 
     [Fact]
@@ -224,75 +224,75 @@ public class VersionTests
     {
         var v = new Version(1, 2, 3, 4, Milestone.Release);
 
-        _ = v.ToString().Should().Be("1.2.3.4");
+        v.ToString().ShouldBe("1.2.3.4");
     }
 
     [Fact]
-    public void ToPrereleaseString008() => new System.Func<object>(() => new Version(1, 2, 3, 4, (Milestone)125689, 5)).Should().ThrowExactly<System.NotSupportedException>();
+    public void ToPrereleaseString008() => new System.Func<object>(() => new Version(1, 2, 3, 4, (Milestone)125689, 5)).ShouldThrow<System.NotSupportedException>();
 
     [Fact]
-    public void ToShortReleaseString001() => new Version(0, 0, 0, 0).ToShortReleaseString().Should().Be("0");
+    public void ToShortReleaseString001() => new Version(0, 0, 0, 0).ToShortReleaseString().ShouldBe("0");
 
     [Fact]
-    public void ToShortReleaseString002() => new Version(0, 0, 0, 4).ToShortReleaseString().Should().Be("0.0.0.4");
+    public void ToShortReleaseString002() => new Version(0, 0, 0, 4).ToShortReleaseString().ShouldBe("0.0.0.4");
 
     [Fact]
-    public void ToShortReleaseString003() => new Version(0, 0, 3, 0).ToShortReleaseString().Should().Be("0.0.3");
+    public void ToShortReleaseString003() => new Version(0, 0, 3, 0).ToShortReleaseString().ShouldBe("0.0.3");
 
     [Fact]
-    public void ToShortReleaseString004() => new Version(0, 0, 3, 4).ToShortReleaseString().Should().Be("0.0.3.4");
+    public void ToShortReleaseString004() => new Version(0, 0, 3, 4).ToShortReleaseString().ShouldBe("0.0.3.4");
 
     [Fact]
-    public void ToShortReleaseString005() => new Version(0, 2, 0, 0).ToShortReleaseString().Should().Be("0.2");
+    public void ToShortReleaseString005() => new Version(0, 2, 0, 0).ToShortReleaseString().ShouldBe("0.2");
 
     [Fact]
-    public void ToShortReleaseString006() => new Version(0, 2, 0, 4).ToShortReleaseString().Should().Be("0.2.0.4");
+    public void ToShortReleaseString006() => new Version(0, 2, 0, 4).ToShortReleaseString().ShouldBe("0.2.0.4");
 
     [Fact]
-    public void ToShortReleaseString007() => new Version(0, 2, 3, 0).ToShortReleaseString().Should().Be("0.2.3");
+    public void ToShortReleaseString007() => new Version(0, 2, 3, 0).ToShortReleaseString().ShouldBe("0.2.3");
 
     [Fact]
-    public void ToShortReleaseString008() => new Version(0, 2, 3, 4).ToShortReleaseString().Should().Be("0.2.3.4");
+    public void ToShortReleaseString008() => new Version(0, 2, 3, 4).ToShortReleaseString().ShouldBe("0.2.3.4");
 
     [Fact]
-    public void ToShortReleaseString009() => new Version(1, 0, 0, 0).ToShortReleaseString().Should().Be("1");
+    public void ToShortReleaseString009() => new Version(1, 0, 0, 0).ToShortReleaseString().ShouldBe("1");
 
     [Fact]
-    public void ToShortReleaseString010() => new Version(1, 0, 0, 4).ToShortReleaseString().Should().Be("1.0.0.4");
+    public void ToShortReleaseString010() => new Version(1, 0, 0, 4).ToShortReleaseString().ShouldBe("1.0.0.4");
 
     [Fact]
-    public void ToShortReleaseString011() => new Version(1, 0, 3, 0).ToShortReleaseString().Should().Be("1.0.3");
+    public void ToShortReleaseString011() => new Version(1, 0, 3, 0).ToShortReleaseString().ShouldBe("1.0.3");
 
     [Fact]
-    public void ToShortReleaseString012() => new Version(1, 0, 3, 4).ToShortReleaseString().Should().Be("1.0.3.4");
+    public void ToShortReleaseString012() => new Version(1, 0, 3, 4).ToShortReleaseString().ShouldBe("1.0.3.4");
 
     [Fact]
-    public void ToShortReleaseString013() => new Version(1, 2, 0, 0).ToShortReleaseString().Should().Be("1.2");
+    public void ToShortReleaseString013() => new Version(1, 2, 0, 0).ToShortReleaseString().ShouldBe("1.2");
 
     [Fact]
-    public void ToShortReleaseString014() => new Version(1, 2, 0, 4).ToShortReleaseString().Should().Be("1.2.0.4");
+    public void ToShortReleaseString014() => new Version(1, 2, 0, 4).ToShortReleaseString().ShouldBe("1.2.0.4");
 
     [Fact]
-    public void ToShortReleaseString015() => new Version(1, 2, 3, 0).ToShortReleaseString().Should().Be("1.2.3");
+    public void ToShortReleaseString015() => new Version(1, 2, 3, 0).ToShortReleaseString().ShouldBe("1.2.3");
 
     [Fact]
-    public void ToShortReleaseString016() => new Version(1, 2, 3, 4).ToShortReleaseString().Should().Be("1.2.3.4");
+    public void ToShortReleaseString016() => new Version(1, 2, 3, 4).ToShortReleaseString().ShouldBe("1.2.3.4");
 
     [Fact]
-    public void ToShortReleaseString017() => new Version(1, 2, 3).ToShortReleaseString().Should().Be("1.2.3");
+    public void ToShortReleaseString017() => new Version(1, 2, 3).ToShortReleaseString().ShouldBe("1.2.3");
 
     [Fact]
-    public void ToShortReleaseString018() => new Version(1, 2).ToShortReleaseString().Should().Be("1.2");
+    public void ToShortReleaseString018() => new Version(1, 2).ToShortReleaseString().ShouldBe("1.2");
 
     [Fact]
-    public void ToShortReleaseString019() => new Version(1, 0).ToShortReleaseString().Should().Be("1");
+    public void ToShortReleaseString019() => new Version(1, 0).ToShortReleaseString().ShouldBe("1");
 
     [Fact]
     public void ToString001()
     {
         var v = new Version(10, 20);
 
-        _ = v.ToString().Should().Be("10.20");
+        v.ToString().ShouldBe("10.20");
     }
 
     [Fact]
@@ -300,7 +300,7 @@ public class VersionTests
     {
         var v = new Version(10, 20, 30);
 
-        _ = v.ToString().Should().Be("10.20.30");
+        v.ToString().ShouldBe("10.20.30");
     }
 
     [Fact]
@@ -308,7 +308,7 @@ public class VersionTests
     {
         var v = new Version(10, 20, 30, 40);
 
-        _ = v.ToString().Should().Be("10.20.30.40");
+        v.ToString().ShouldBe("10.20.30.40");
     }
 
     [Fact]
@@ -316,7 +316,7 @@ public class VersionTests
     {
         var v = new Version(new System.Version(1, 2, 3, 4));
 
-        _ = v.ToString().Should().Be("1.2.3.4");
+        v.ToString().ShouldBe("1.2.3.4");
     }
 
     [Fact]
@@ -324,7 +324,7 @@ public class VersionTests
     {
         var v = new Version(10, 20, Milestone.ReleaseCandidate);
 
-        _ = v.ToString().Should().Be("10.20-rc");
+        v.ToString().ShouldBe("10.20-rc");
     }
 
     [Fact]
@@ -332,7 +332,7 @@ public class VersionTests
     {
         var v = new Version(10, 20, 30, Milestone.ReleaseCandidate);
 
-        _ = v.ToString().Should().Be("10.20.30-rc");
+        v.ToString().ShouldBe("10.20.30-rc");
     }
 
     [Fact]
@@ -340,7 +340,7 @@ public class VersionTests
     {
         var v = new Version(10, 20, 30, 40, Milestone.ReleaseCandidate);
 
-        _ = v.ToString().Should().Be("10.20.30.40-rc");
+        v.ToString().ShouldBe("10.20.30.40-rc");
     }
 
     [Fact]
@@ -348,7 +348,7 @@ public class VersionTests
     {
         var v = new Version(new System.Version(1, 2, 3, 4), Milestone.ReleaseCandidate);
 
-        _ = v.ToString().Should().Be("1.2.3.4-rc");
+        v.ToString().ShouldBe("1.2.3.4-rc");
     }
 
     [Fact]
@@ -356,7 +356,7 @@ public class VersionTests
     {
         var v = new Version(10, 20, Milestone.ReleaseCandidate, 2);
 
-        _ = v.ToString().Should().Be("10.20-rc.2");
+        v.ToString().ShouldBe("10.20-rc.2");
     }
 
     [Fact]
@@ -364,7 +364,7 @@ public class VersionTests
     {
         var v = new Version(10, 20, 30, Milestone.ReleaseCandidate, 2);
 
-        _ = v.ToString().Should().Be("10.20.30-rc.2");
+        v.ToString().ShouldBe("10.20.30-rc.2");
     }
 
     [Fact]
@@ -372,7 +372,7 @@ public class VersionTests
     {
         var v = new Version(10, 20, 30, 40, Milestone.ReleaseCandidate, 2);
 
-        _ = v.ToString().Should().Be("10.20.30.40-rc.2");
+        v.ToString().ShouldBe("10.20.30.40-rc.2");
     }
 
     [Fact]
@@ -380,7 +380,7 @@ public class VersionTests
     {
         var v = new Version(new System.Version(1, 2, 3, 4), Milestone.ReleaseCandidate, 2);
 
-        _ = v.ToString().Should().Be("1.2.3.4-rc.2");
+        v.ToString().ShouldBe("1.2.3.4-rc.2");
     }
 
     [Fact]
@@ -388,14 +388,14 @@ public class VersionTests
     {
         var v = new Version(2, 3);
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(-1);
-        _ = v.Release.Revision.Should().Be(-1);
-        _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PreReleaseNumber.Should().Be(-1);
-        _ = v.Stability.Should().Be(Stability.Stable);
-        _ = v.ReleaseDate.HasValue.Should().BeFalse();
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(-1);
+        v.Release.Revision.ShouldBe(-1);
+        v.Milestone.ShouldBe(Milestone.Release);
+        v.PreReleaseNumber.ShouldBe(-1);
+        v.Stability.ShouldBe(Stability.Stable);
+        v.ReleaseDate.HasValue.ShouldBeFalse();
     }
 
     [Fact]
@@ -403,14 +403,14 @@ public class VersionTests
     {
         var v = new Version(2, 3, 5);
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(5);
-        _ = v.Release.Revision.Should().Be(-1);
-        _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PreReleaseNumber.Should().Be(-1);
-        _ = v.Stability.Should().Be(Stability.Stable);
-        _ = v.ReleaseDate.HasValue.Should().BeFalse();
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(5);
+        v.Release.Revision.ShouldBe(-1);
+        v.Milestone.ShouldBe(Milestone.Release);
+        v.PreReleaseNumber.ShouldBe(-1);
+        v.Stability.ShouldBe(Stability.Stable);
+        v.ReleaseDate.HasValue.ShouldBeFalse();
     }
 
     [Fact]
@@ -418,14 +418,14 @@ public class VersionTests
     {
         var v = new Version(2, 3, 5, 7);
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(5);
-        _ = v.Release.Revision.Should().Be(7);
-        _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PreReleaseNumber.Should().Be(-1);
-        _ = v.Stability.Should().Be(Stability.Stable);
-        _ = v.ReleaseDate.HasValue.Should().BeFalse();
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(5);
+        v.Release.Revision.ShouldBe(7);
+        v.Milestone.ShouldBe(Milestone.Release);
+        v.PreReleaseNumber.ShouldBe(-1);
+        v.Stability.ShouldBe(Stability.Stable);
+        v.ReleaseDate.HasValue.ShouldBeFalse();
     }
 
     [Fact]
@@ -433,14 +433,14 @@ public class VersionTests
     {
         var v = new Version(new System.Version(2, 3, 5, 7));
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(5);
-        _ = v.Release.Revision.Should().Be(7);
-        _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PreReleaseNumber.Should().Be(-1);
-        _ = v.Stability.Should().Be(Stability.Stable);
-        _ = v.ReleaseDate.HasValue.Should().BeFalse();
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(5);
+        v.Release.Revision.ShouldBe(7);
+        v.Milestone.ShouldBe(Milestone.Release);
+        v.PreReleaseNumber.ShouldBe(-1);
+        v.Stability.ShouldBe(Stability.Stable);
+        v.ReleaseDate.HasValue.ShouldBeFalse();
     }
 
     [Fact]
@@ -448,14 +448,14 @@ public class VersionTests
     {
         var v = new Version(new System.Version(2, 3, 5, 7), Milestone.Beta);
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(5);
-        _ = v.Release.Revision.Should().Be(7);
-        _ = v.Milestone.Should().Be(Milestone.Beta);
-        _ = v.PreReleaseNumber.Should().Be(-1);
-        _ = v.Stability.Should().Be(Stability.Unstable);
-        _ = v.ReleaseDate.HasValue.Should().BeFalse();
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(5);
+        v.Release.Revision.ShouldBe(7);
+        v.Milestone.ShouldBe(Milestone.Beta);
+        v.PreReleaseNumber.ShouldBe(-1);
+        v.Stability.ShouldBe(Stability.Unstable);
+        v.ReleaseDate.HasValue.ShouldBeFalse();
     }
 
     [Fact]
@@ -463,14 +463,14 @@ public class VersionTests
     {
         var v = new Version(2, 3, 5, 7, Milestone.Beta);
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(5);
-        _ = v.Release.Revision.Should().Be(7);
-        _ = v.Milestone.Should().Be(Milestone.Beta);
-        _ = v.PreReleaseNumber.Should().Be(-1);
-        _ = v.Stability.Should().Be(Stability.Unstable);
-        _ = v.ReleaseDate.HasValue.Should().BeFalse();
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(5);
+        v.Release.Revision.ShouldBe(7);
+        v.Milestone.ShouldBe(Milestone.Beta);
+        v.PreReleaseNumber.ShouldBe(-1);
+        v.Stability.ShouldBe(Stability.Unstable);
+        v.ReleaseDate.HasValue.ShouldBeFalse();
     }
 
     [Fact]
@@ -478,14 +478,14 @@ public class VersionTests
     {
         var v = new Version(2, 3, 5, Milestone.Beta);
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(5);
-        _ = v.Release.Revision.Should().Be(-1);
-        _ = v.Milestone.Should().Be(Milestone.Beta);
-        _ = v.PreReleaseNumber.Should().Be(-1);
-        _ = v.Stability.Should().Be(Stability.Unstable);
-        _ = v.ReleaseDate.HasValue.Should().BeFalse();
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(5);
+        v.Release.Revision.ShouldBe(-1);
+        v.Milestone.ShouldBe(Milestone.Beta);
+        v.PreReleaseNumber.ShouldBe(-1);
+        v.Stability.ShouldBe(Stability.Unstable);
+        v.ReleaseDate.HasValue.ShouldBeFalse();
     }
 
     [Fact]
@@ -493,14 +493,14 @@ public class VersionTests
     {
         var v = new Version(2, 3, Milestone.Beta);
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(-1);
-        _ = v.Release.Revision.Should().Be(-1);
-        _ = v.Milestone.Should().Be(Milestone.Beta);
-        _ = v.PreReleaseNumber.Should().Be(-1);
-        _ = v.Stability.Should().Be(Stability.Unstable);
-        _ = v.ReleaseDate.HasValue.Should().BeFalse();
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(-1);
+        v.Release.Revision.ShouldBe(-1);
+        v.Milestone.ShouldBe(Milestone.Beta);
+        v.PreReleaseNumber.ShouldBe(-1);
+        v.Stability.ShouldBe(Stability.Unstable);
+        v.ReleaseDate.HasValue.ShouldBeFalse();
     }
 
     [Fact]
@@ -508,14 +508,14 @@ public class VersionTests
     {
         var v = new Version(2, 3, Milestone.Beta, 1);
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(-1);
-        _ = v.Release.Revision.Should().Be(-1);
-        _ = v.Milestone.Should().Be(Milestone.Beta);
-        _ = v.PreReleaseNumber.Should().Be(1);
-        _ = v.Stability.Should().Be(Stability.Unstable);
-        _ = v.ReleaseDate.HasValue.Should().BeFalse();
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(-1);
+        v.Release.Revision.ShouldBe(-1);
+        v.Milestone.ShouldBe(Milestone.Beta);
+        v.PreReleaseNumber.ShouldBe(1);
+        v.Stability.ShouldBe(Stability.Unstable);
+        v.ReleaseDate.HasValue.ShouldBeFalse();
     }
 
     [Fact]
@@ -523,14 +523,14 @@ public class VersionTests
     {
         var v = new Version(2, 3, 5, Milestone.Beta, 1);
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(5);
-        _ = v.Release.Revision.Should().Be(-1);
-        _ = v.Milestone.Should().Be(Milestone.Beta);
-        _ = v.PreReleaseNumber.Should().Be(1);
-        _ = v.Stability.Should().Be(Stability.Unstable);
-        _ = v.ReleaseDate.HasValue.Should().BeFalse();
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(5);
+        v.Release.Revision.ShouldBe(-1);
+        v.Milestone.ShouldBe(Milestone.Beta);
+        v.PreReleaseNumber.ShouldBe(1);
+        v.Stability.ShouldBe(Stability.Unstable);
+        v.ReleaseDate.HasValue.ShouldBeFalse();
     }
 
     [Fact]
@@ -538,14 +538,14 @@ public class VersionTests
     {
         var v = new Version(2, 3, 5, 7, Milestone.Beta, 1);
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(5);
-        _ = v.Release.Revision.Should().Be(7);
-        _ = v.Milestone.Should().Be(Milestone.Beta);
-        _ = v.PreReleaseNumber.Should().Be(1);
-        _ = v.Stability.Should().Be(Stability.Unstable);
-        _ = v.ReleaseDate.HasValue.Should().BeFalse();
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(5);
+        v.Release.Revision.ShouldBe(7);
+        v.Milestone.ShouldBe(Milestone.Beta);
+        v.PreReleaseNumber.ShouldBe(1);
+        v.Stability.ShouldBe(Stability.Unstable);
+        v.ReleaseDate.HasValue.ShouldBeFalse();
     }
 
     [Fact]
@@ -553,14 +553,14 @@ public class VersionTests
     {
         var v = new Version(2, 3, 5, 7, Milestone.Beta, 1);
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(5);
-        _ = v.Release.Revision.Should().Be(7);
-        _ = v.Milestone.Should().Be(Milestone.Beta);
-        _ = v.PreReleaseNumber.Should().Be(1);
-        _ = v.Stability.Should().Be(Stability.Unstable);
-        _ = v.ReleaseDate.HasValue.Should().BeFalse();
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(5);
+        v.Release.Revision.ShouldBe(7);
+        v.Milestone.ShouldBe(Milestone.Beta);
+        v.PreReleaseNumber.ShouldBe(1);
+        v.Stability.ShouldBe(Stability.Unstable);
+        v.ReleaseDate.HasValue.ShouldBeFalse();
     }
 
     [Fact]
@@ -568,14 +568,14 @@ public class VersionTests
     {
         var v = new Version(new System.Version(2, 3, 5, 7), Milestone.Beta, 1);
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(5);
-        _ = v.Release.Revision.Should().Be(7);
-        _ = v.Milestone.Should().Be(Milestone.Beta);
-        _ = v.PreReleaseNumber.Should().Be(1);
-        _ = v.Stability.Should().Be(Stability.Unstable);
-        _ = v.ReleaseDate.HasValue.Should().BeFalse();
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(5);
+        v.Release.Revision.ShouldBe(7);
+        v.Milestone.ShouldBe(Milestone.Beta);
+        v.PreReleaseNumber.ShouldBe(1);
+        v.Stability.ShouldBe(Stability.Unstable);
+        v.ReleaseDate.HasValue.ShouldBeFalse();
     }
 
     [Fact]
@@ -583,15 +583,15 @@ public class VersionTests
     {
         var v = new Version(new System.Version(2, 3, 5, 7), new System.DateTime(1985, 11, 20));
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(5);
-        _ = v.Release.Revision.Should().Be(7);
-        _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PreReleaseNumber.Should().Be(-1);
-        _ = v.Stability.Should().Be(Stability.Stable);
-        _ = v.ReleaseDate.HasValue.Should().BeTrue();
-        _ = v.ReleaseDate.Value.Year.Should().Be(1985);
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(5);
+        v.Release.Revision.ShouldBe(7);
+        v.Milestone.ShouldBe(Milestone.Release);
+        v.PreReleaseNumber.ShouldBe(-1);
+        v.Stability.ShouldBe(Stability.Stable);
+        v.ReleaseDate.HasValue.ShouldBeTrue();
+        v.ReleaseDate.Value.Year.ShouldBe(1985);
     }
 
     [Fact]
@@ -599,15 +599,15 @@ public class VersionTests
     {
         var v = new Version(2, 3, 5, 7, new System.DateTime(1985, 11, 20));
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(5);
-        _ = v.Release.Revision.Should().Be(7);
-        _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PreReleaseNumber.Should().Be(-1);
-        _ = v.Stability.Should().Be(Stability.Stable);
-        _ = v.ReleaseDate.HasValue.Should().BeTrue();
-        _ = v.ReleaseDate.Value.Year.Should().Be(1985);
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(5);
+        v.Release.Revision.ShouldBe(7);
+        v.Milestone.ShouldBe(Milestone.Release);
+        v.PreReleaseNumber.ShouldBe(-1);
+        v.Stability.ShouldBe(Stability.Stable);
+        v.ReleaseDate.HasValue.ShouldBeTrue();
+        v.ReleaseDate.Value.Year.ShouldBe(1985);
     }
 
     [Fact]
@@ -615,15 +615,15 @@ public class VersionTests
     {
         var v = new Version(2, 3, 5, new System.DateTime(1985, 11, 20));
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(5);
-        _ = v.Release.Revision.Should().Be(-1);
-        _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PreReleaseNumber.Should().Be(-1);
-        _ = v.Stability.Should().Be(Stability.Stable);
-        _ = v.ReleaseDate.HasValue.Should().BeTrue();
-        _ = v.ReleaseDate.Value.Year.Should().Be(1985);
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(5);
+        v.Release.Revision.ShouldBe(-1);
+        v.Milestone.ShouldBe(Milestone.Release);
+        v.PreReleaseNumber.ShouldBe(-1);
+        v.Stability.ShouldBe(Stability.Stable);
+        v.ReleaseDate.HasValue.ShouldBeTrue();
+        v.ReleaseDate.Value.Year.ShouldBe(1985);
     }
 
     [Fact]
@@ -631,15 +631,15 @@ public class VersionTests
     {
         var v = new Version(2, 3, new System.DateTime(1985, 11, 20));
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(-1);
-        _ = v.Release.Revision.Should().Be(-1);
-        _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PreReleaseNumber.Should().Be(-1);
-        _ = v.Stability.Should().Be(Stability.Stable);
-        _ = v.ReleaseDate.HasValue.Should().BeTrue();
-        _ = v.ReleaseDate.Value.Year.Should().Be(1985);
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(-1);
+        v.Release.Revision.ShouldBe(-1);
+        v.Milestone.ShouldBe(Milestone.Release);
+        v.PreReleaseNumber.ShouldBe(-1);
+        v.Stability.ShouldBe(Stability.Stable);
+        v.ReleaseDate.HasValue.ShouldBeTrue();
+        v.ReleaseDate.Value.Year.ShouldBe(1985);
     }
 
     [Fact]
@@ -647,15 +647,15 @@ public class VersionTests
     {
         var v = new Version(2, 3, Milestone.Release, new System.DateTime(1985, 11, 20));
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(-1);
-        _ = v.Release.Revision.Should().Be(-1);
-        _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PreReleaseNumber.Should().Be(-1);
-        _ = v.Stability.Should().Be(Stability.Stable);
-        _ = v.ReleaseDate.HasValue.Should().BeTrue();
-        _ = v.ReleaseDate.Value.Year.Should().Be(1985);
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(-1);
+        v.Release.Revision.ShouldBe(-1);
+        v.Milestone.ShouldBe(Milestone.Release);
+        v.PreReleaseNumber.ShouldBe(-1);
+        v.Stability.ShouldBe(Stability.Stable);
+        v.ReleaseDate.HasValue.ShouldBeTrue();
+        v.ReleaseDate.Value.Year.ShouldBe(1985);
     }
 
     [Fact]
@@ -663,15 +663,15 @@ public class VersionTests
     {
         var v = new Version(2, 3, 5, Milestone.Release, new System.DateTime(1985, 11, 20));
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(5);
-        _ = v.Release.Revision.Should().Be(-1);
-        _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PreReleaseNumber.Should().Be(-1);
-        _ = v.Stability.Should().Be(Stability.Stable);
-        _ = v.ReleaseDate.HasValue.Should().BeTrue();
-        _ = v.ReleaseDate.Value.Year.Should().Be(1985);
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(5);
+        v.Release.Revision.ShouldBe(-1);
+        v.Milestone.ShouldBe(Milestone.Release);
+        v.PreReleaseNumber.ShouldBe(-1);
+        v.Stability.ShouldBe(Stability.Stable);
+        v.ReleaseDate.HasValue.ShouldBeTrue();
+        v.ReleaseDate.Value.Year.ShouldBe(1985);
     }
 
     [Fact]
@@ -679,15 +679,15 @@ public class VersionTests
     {
         var v = new Version(2, 3, 5, 7, Milestone.Release, new System.DateTime(1985, 11, 20));
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(5);
-        _ = v.Release.Revision.Should().Be(7);
-        _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PreReleaseNumber.Should().Be(-1);
-        _ = v.Stability.Should().Be(Stability.Stable);
-        _ = v.ReleaseDate.HasValue.Should().BeTrue();
-        _ = v.ReleaseDate.Value.Year.Should().Be(1985);
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(5);
+        v.Release.Revision.ShouldBe(7);
+        v.Milestone.ShouldBe(Milestone.Release);
+        v.PreReleaseNumber.ShouldBe(-1);
+        v.Stability.ShouldBe(Stability.Stable);
+        v.ReleaseDate.HasValue.ShouldBeTrue();
+        v.ReleaseDate.Value.Year.ShouldBe(1985);
     }
 
     [Fact]
@@ -695,15 +695,15 @@ public class VersionTests
     {
         var v = new Version(new System.Version(2, 3, 5, 7), Milestone.Release, new System.DateTime(1985, 11, 20));
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(5);
-        _ = v.Release.Revision.Should().Be(7);
-        _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.PreReleaseNumber.Should().Be(-1);
-        _ = v.Stability.Should().Be(Stability.Stable);
-        _ = v.ReleaseDate.HasValue.Should().BeTrue();
-        _ = v.ReleaseDate.Value.Year.Should().Be(1985);
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(5);
+        v.Release.Revision.ShouldBe(7);
+        v.Milestone.ShouldBe(Milestone.Release);
+        v.PreReleaseNumber.ShouldBe(-1);
+        v.Stability.ShouldBe(Stability.Stable);
+        v.ReleaseDate.HasValue.ShouldBeTrue();
+        v.ReleaseDate.Value.Year.ShouldBe(1985);
     }
 
     [Fact]
@@ -711,14 +711,14 @@ public class VersionTests
     {
         var v = new Version(new System.Version(2, 3, 5, 7), Milestone.Release, new System.DateTime(1985, 11, 20));
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(5);
-        _ = v.Release.Revision.Should().Be(7);
-        _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.Stability.Should().Be(Stability.Stable);
-        _ = v.ReleaseDate.HasValue.Should().BeTrue();
-        _ = v.ReleaseDate.Value.Year.Should().Be(1985);
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(5);
+        v.Release.Revision.ShouldBe(7);
+        v.Milestone.ShouldBe(Milestone.Release);
+        v.Stability.ShouldBe(Stability.Stable);
+        v.ReleaseDate.HasValue.ShouldBeTrue();
+        v.ReleaseDate.Value.Year.ShouldBe(1985);
     }
 
     [Fact]
@@ -726,14 +726,14 @@ public class VersionTests
     {
         var v = new Version(2, 3, 5, 7, Milestone.Release, new System.DateTime(1985, 11, 20));
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(5);
-        _ = v.Release.Revision.Should().Be(7);
-        _ = v.Milestone.Should().Be(Milestone.Release);
-        _ = v.Stability.Should().Be(Stability.Stable);
-        _ = v.ReleaseDate.HasValue.Should().BeTrue();
-        _ = v.ReleaseDate.Value.Year.Should().Be(1985);
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(5);
+        v.Release.Revision.ShouldBe(7);
+        v.Milestone.ShouldBe(Milestone.Release);
+        v.Stability.ShouldBe(Stability.Stable);
+        v.ReleaseDate.HasValue.ShouldBeTrue();
+        v.ReleaseDate.Value.Year.ShouldBe(1985);
     }
 
     [Fact]
@@ -741,15 +741,15 @@ public class VersionTests
     {
         var v = new Version(2, 3, 5, Milestone.ReleaseCandidate, 1, new System.DateTime(1985, 11, 20));
 
-        _ = v.Release.Major.Should().Be(2);
-        _ = v.Release.Minor.Should().Be(3);
-        _ = v.Release.Build.Should().Be(5);
-        _ = v.Release.Revision.Should().Be(-1);
-        _ = v.Milestone.Should().Be(Milestone.ReleaseCandidate);
-        _ = v.PreReleaseNumber.Should().Be(1);
-        _ = v.Stability.Should().Be(Stability.Unstable);
-        _ = v.ReleaseDate.HasValue.Should().BeTrue();
-        _ = v.ReleaseDate.Value.Year.Should().Be(1985);
+        v.Release.Major.ShouldBe(2);
+        v.Release.Minor.ShouldBe(3);
+        v.Release.Build.ShouldBe(5);
+        v.Release.Revision.ShouldBe(-1);
+        v.Milestone.ShouldBe(Milestone.ReleaseCandidate);
+        v.PreReleaseNumber.ShouldBe(1);
+        v.Stability.ShouldBe(Stability.Unstable);
+        v.ReleaseDate.HasValue.ShouldBeTrue();
+        v.ReleaseDate.Value.Year.ShouldBe(1985);
     }
 
     [Theory]
@@ -764,7 +764,7 @@ public class VersionTests
         var nVersion = new NuGetVersion(nugetVersion);
         var version = (Version)nVersion;
 
-        _ = version.ToString().Should().Be(nVersion.ToString());
+        version.ToString().ShouldBe(nVersion.ToString());
     }
 
     [Theory]
@@ -778,7 +778,7 @@ public class VersionTests
         var nVersion = SemanticVersion.Parse(semVersion);
         var version = (Version)nVersion;
 
-        _ = version.ToString().Should().Be(nVersion.ToString());
+        version.ToString().ShouldBe(nVersion.ToString());
     }
 
     [Theory]
@@ -798,11 +798,11 @@ public class VersionTests
         var nequals = nv1 == nv2;
         var versionEquals = version1 == version2;
 
-        _ = versionEquals.Should().Be(nequals);
-        _ = (version1 > version2).Should().Be(nv1 > nv2);
-        _ = (version1 >= version2).Should().Be(nv1 >= nv2);
-        _ = (version1 < version2).Should().Be(nv1 < nv2);
-        _ = (version1 <= version2).Should().Be(nv1 <= nv2);
+        versionEquals.ShouldBe(nequals);
+        (version1 > version2).ShouldBe(nv1 > nv2);
+        (version1 >= version2).ShouldBe(nv1 >= nv2);
+        (version1 < version2).ShouldBe(nv1 < nv2);
+        (version1 <= version2).ShouldBe(nv1 <= nv2);
     }
 
     [Fact]
@@ -825,10 +825,10 @@ public class VersionTests
         var hash4 = version4.GetHashCode();
 
         // Assert
-        _ = hash1.Should().NotBe(hash2);
-        _ = hash2.Should().NotBe(hash3);
-        _ = hash3.Should().NotBe(hash4);
-        _ = hash4.Should().NotBe(hash1);
+        hash1.ShouldNotBe(hash2);
+        hash2.ShouldNotBe(hash3);
+        hash3.ShouldNotBe(hash4);
+        hash4.ShouldNotBe(hash1);
     }
 
     [Fact]
@@ -847,13 +847,13 @@ public class VersionTests
         object version6 = new Version(1, 2, 3);
 
         // Assert
-        _ = version1.Equals(version1).Should().BeTrue();
-        _ = version1.Equals(version2).Should().BeFalse();
-        _ = version2.Equals(version3).Should().BeFalse();
-        _ = version3.Equals(version4).Should().BeTrue();
-        _ = version1.Equals(version5).Should().BeTrue();
-        _ = version1.Equals(version6).Should().BeTrue();
-        _ = version1.Equals("Welcome").Should().BeFalse();
-        _ = version1.Equals(null).Should().BeFalse();
+        version1.Equals(version1).ShouldBeTrue();
+        version1.Equals(version2).ShouldBeFalse();
+        version2.Equals(version3).ShouldBeFalse();
+        version3.Equals(version4).ShouldBeTrue();
+        version1.Equals(version5).ShouldBeTrue();
+        version1.Equals(version6).ShouldBeTrue();
+        version1.Equals("Welcome").ShouldBeFalse();
+        version1.Equals(null).ShouldBeFalse();
     }
 }

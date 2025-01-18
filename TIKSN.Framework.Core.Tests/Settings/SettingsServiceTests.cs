@@ -1,7 +1,7 @@
 using System;
-using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using TIKSN.DependencyInjection;
 using TIKSN.FileSystem;
 using TIKSN.Settings;
@@ -13,6 +13,7 @@ public class SettingsServiceTests
 {
     private readonly ServiceCollection services;
     private readonly ISettingsService settingsService;
+    private static readonly string[] expected = new string[] { "LocalInteger", "LocalString", "LocalGuid" };
 
     public SettingsServiceTests()
     {
@@ -31,23 +32,23 @@ public class SettingsServiceTests
 
         var actualValue = this.settingsService.GetLocalSetting("LocalGuid", Guid.Parse("853dda84-4b61-4c11-9d79-ea3c4c9d8de1"));
 
-        _ = actualValue.Should().Be(expectedValue);
+        actualValue.ShouldBe(expectedValue);
 
         var actualValueOption = this.settingsService.GetLocalSetting<Guid>("LocalGuid");
 
-        _ = actualValueOption.IsSome.Should().BeTrue();
-        _ = actualValueOption.IfNone(Guid.Empty).Should().Be(expectedValue);
+        actualValueOption.IsSome.ShouldBeTrue();
+        actualValueOption.IfNone(Guid.Empty).ShouldBe(expectedValue);
 
         this.settingsService.RemoveLocalSetting("LocalGuid");
 
         var newValue = Guid.NewGuid();
         actualValue = this.settingsService.GetLocalSetting("LocalGuid", newValue);
 
-        _ = actualValue.Should().Be(newValue);
+        actualValue.ShouldBe(newValue);
 
         actualValueOption = this.settingsService.GetLocalSetting<Guid>("LocalGuid");
 
-        _ = actualValueOption.IsNone.Should().BeTrue();
+        actualValueOption.IsNone.ShouldBeTrue();
     }
 
     [Fact]
@@ -60,22 +61,22 @@ public class SettingsServiceTests
 
         var actualValue = this.settingsService.GetLocalSetting("LocalInteger", expectedValue + 10);
 
-        _ = actualValue.Should().Be(expectedValue);
+        actualValue.ShouldBe(expectedValue);
 
         var actualValueOption = this.settingsService.GetLocalSetting<int>("LocalInteger");
 
-        _ = actualValueOption.IsSome.Should().BeTrue();
-        _ = actualValueOption.IfNone(-1).Should().Be(expectedValue);
+        actualValueOption.IsSome.ShouldBeTrue();
+        actualValueOption.IfNone(-1).ShouldBe(expectedValue);
 
         this.settingsService.RemoveLocalSetting("LocalInteger");
 
         actualValue = this.settingsService.GetLocalSetting("LocalInteger", expectedValue + 120);
 
-        _ = actualValue.Should().Be(expectedValue + 120);
+        actualValue.ShouldBe(expectedValue + 120);
 
         actualValueOption = this.settingsService.GetLocalSetting<int>("LocalInteger");
 
-        _ = actualValueOption.IsNone.Should().BeTrue();
+        actualValueOption.IsNone.ShouldBeTrue();
     }
 
     [Fact]
@@ -89,7 +90,7 @@ public class SettingsServiceTests
 
         var names = this.settingsService.ListLocalSetting();
 
-        _ = names.Should().BeEquivalentTo(["LocalInteger", "LocalString", "LocalGuid"]);
+        names.ShouldBeEquivalentTo(expected);
     }
 
     [Fact]
@@ -101,22 +102,22 @@ public class SettingsServiceTests
 
         var actualValue = this.settingsService.GetLocalSetting("LocalString", expectedValue + 10);
 
-        _ = actualValue.Should().Be(expectedValue);
+        actualValue.ShouldBe(expectedValue);
 
         var actualValueOption = this.settingsService.GetLocalSetting<string>("LocalString");
 
-        _ = actualValueOption.IsSome.Should().BeTrue();
-        _ = actualValueOption.IfNone(string.Empty).Should().Be(expectedValue);
+        actualValueOption.IsSome.ShouldBeTrue();
+        actualValueOption.IfNone(string.Empty).ShouldBe(expectedValue);
 
         this.settingsService.RemoveLocalSetting("LocalString");
 
         actualValue = this.settingsService.GetLocalSetting("LocalString", expectedValue + 120);
 
-        _ = actualValue.Should().Be(expectedValue + 120);
+        actualValue.ShouldBe(expectedValue + 120);
 
         actualValueOption = this.settingsService.GetLocalSetting<string>("LocalString");
 
-        _ = actualValueOption.IsNone.Should().BeTrue();
+        actualValueOption.IsNone.ShouldBeTrue();
     }
 
     [Fact]
@@ -128,23 +129,23 @@ public class SettingsServiceTests
 
         var actualValue = this.settingsService.GetRoamingSetting("RoamingGuid", Guid.Parse("853dda84-4b61-4c11-9d79-ea3c4c9d8de1"));
 
-        _ = actualValue.Should().Be(expectedValue);
+        actualValue.ShouldBe(expectedValue);
 
         var actualValueOption = this.settingsService.GetRoamingSetting<Guid>("RoamingGuid");
 
-        _ = actualValueOption.IsSome.Should().BeTrue();
-        _ = actualValueOption.IfNone(Guid.Empty).Should().Be(expectedValue);
+        actualValueOption.IsSome.ShouldBeTrue();
+        actualValueOption.IfNone(Guid.Empty).ShouldBe(expectedValue);
 
         this.settingsService.RemoveRoamingSetting("RoamingGuid");
 
         var newValue = Guid.NewGuid();
         actualValue = this.settingsService.GetRoamingSetting("RoamingGuid", newValue);
 
-        _ = actualValue.Should().Be(newValue);
+        actualValue.ShouldBe(newValue);
 
         actualValueOption = this.settingsService.GetRoamingSetting<Guid>("RoamingGuid");
 
-        _ = actualValueOption.IsNone.Should().BeTrue();
+        actualValueOption.IsNone.ShouldBeTrue();
     }
 
     [Fact]
@@ -157,22 +158,22 @@ public class SettingsServiceTests
 
         var actualValue = this.settingsService.GetRoamingSetting("RoamingInteger", expectedValue + 10);
 
-        _ = actualValue.Should().Be(expectedValue);
+        actualValue.ShouldBe(expectedValue);
 
         var actualValueOption = this.settingsService.GetRoamingSetting<int>("RoamingInteger");
 
-        _ = actualValueOption.IsSome.Should().BeTrue();
-        _ = actualValueOption.IfNone(-1).Should().Be(expectedValue);
+        actualValueOption.IsSome.ShouldBeTrue();
+        actualValueOption.IfNone(-1).ShouldBe(expectedValue);
 
         this.settingsService.RemoveRoamingSetting("RoamingInteger");
 
         actualValue = this.settingsService.GetRoamingSetting("RoamingInteger", expectedValue + 120);
 
-        _ = actualValue.Should().Be(expectedValue + 120);
+        actualValue.ShouldBe(expectedValue + 120);
 
         actualValueOption = this.settingsService.GetRoamingSetting<int>("RoamingInteger");
 
-        _ = actualValueOption.IsNone.Should().BeTrue();
+        actualValueOption.IsNone.ShouldBeTrue();
     }
 
     [Fact]
@@ -186,7 +187,7 @@ public class SettingsServiceTests
 
         var names = this.settingsService.ListRoamingSetting();
 
-        _ = names.Should().BeEquivalentTo(["RoamingInteger", "RoamingString", "RoamingGuid"]);
+        names.ShouldBeEquivalentTo(new string[] { "RoamingInteger", "RoamingString", "RoamingGuid" });
     }
 
     [Fact]
@@ -198,22 +199,22 @@ public class SettingsServiceTests
 
         var actualValue = this.settingsService.GetRoamingSetting("RoamingString", expectedValue + 10);
 
-        _ = actualValue.Should().Be(expectedValue);
+        actualValue.ShouldBe(expectedValue);
 
         var actualValueOption = this.settingsService.GetRoamingSetting<string>("RoamingString");
 
-        _ = actualValueOption.IsSome.Should().BeTrue();
-        _ = actualValueOption.IfNone(string.Empty).Should().Be(expectedValue);
+        actualValueOption.IsSome.ShouldBeTrue();
+        actualValueOption.IfNone(string.Empty).ShouldBe(expectedValue);
 
         this.settingsService.RemoveRoamingSetting("RoamingString");
 
         actualValue = this.settingsService.GetRoamingSetting("RoamingString", expectedValue + 120);
 
-        _ = actualValue.Should().Be(expectedValue + 120);
+        actualValue.ShouldBe(expectedValue + 120);
 
         actualValueOption = this.settingsService.GetRoamingSetting<string>("RoamingString");
 
-        _ = actualValueOption.IsNone.Should().BeTrue();
+        actualValueOption.IsNone.ShouldBeTrue();
     }
 
     private void SetupDenepdencies()

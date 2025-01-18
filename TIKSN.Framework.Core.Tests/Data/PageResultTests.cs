@@ -1,5 +1,4 @@
-using FluentAssertions;
-using LanguageExt;
+using Shouldly;
 using TIKSN.Data;
 using Xunit;
 using static LanguageExt.Prelude;
@@ -22,7 +21,7 @@ public class PageResultTests
             items,
             Optional(totalItems));
 
-        _ = pageResult.TotalPages.Should<Option<long>>().Be(Optional(totalPages));
-        _ = pageResult.TotalItems.Should<Option<long>>().Be(Optional(totalItems));
+        pageResult.TotalPages.ShouldBe(Optional(totalPages));
+        pageResult.TotalItems.ShouldBe(Optional(totalItems));
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using Xunit;
 
 namespace TIKSN.IntegrationTests.Data.Mongo;
@@ -26,6 +26,6 @@ public class MongoRepositoryTests
 
         var retrievedEntity = await testRepository.GetAsync(testEntityId, default);
 
-        _ = retrievedEntity.Value.Should().Be(testEntity.Value);
+        retrievedEntity.Value.ShouldBe(testEntity.Value);
     }
 }

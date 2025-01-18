@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Globalization;
-using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using TIKSN.DependencyInjection;
 using TIKSN.Globalization;
 using Xunit;
@@ -41,8 +41,8 @@ public class CurrencyFactoryTests
 
         // Assert
 
-        _ = currencyInfo.Should().NotBeNull();
-        _ = currencyInfo.ISOCurrencySymbol.Should().Be(outputIsoCurrencySymbol);
+        _ = currencyInfo.ShouldNotBeNull();
+        currencyInfo.ISOCurrencySymbol.ShouldBe(outputIsoCurrencySymbol);
     }
 
     [Theory]
@@ -73,8 +73,8 @@ public class CurrencyFactoryTests
 
         // Assert
 
-        _ = currencyInfo.Should().NotBeNull();
-        _ = currencyInfo.ISOCurrencySymbol.Should().Be(outputIsoCurrencySymbol);
+        _ = currencyInfo.ShouldNotBeNull();
+        currencyInfo.ISOCurrencySymbol.ShouldBe(outputIsoCurrencySymbol);
     }
 
     [Theory]
@@ -99,8 +99,8 @@ public class CurrencyFactoryTests
 
         // Assert
 
-        _ = currencyInfo.Should().NotBeNull();
-        _ = currencyInfo.ISOCurrencySymbol.Should().Be(outputIsoCurrencySymbol);
+        _ = currencyInfo.ShouldNotBeNull();
+        currencyInfo.ISOCurrencySymbol.ShouldBe(outputIsoCurrencySymbol);
     }
 
     [Theory]
@@ -123,7 +123,7 @@ public class CurrencyFactoryTests
 
         // Assert
 
-        _ = currencyInfo.Should().NotBeNull();
-        _ = currencyInfo.ISOCurrencySymbol.Should().Be(outputIsoCurrencySymbol);
+        _ = currencyInfo.ShouldNotBeNull();
+        currencyInfo.ISOCurrencySymbol.ShouldBe(outputIsoCurrencySymbol);
     }
 }

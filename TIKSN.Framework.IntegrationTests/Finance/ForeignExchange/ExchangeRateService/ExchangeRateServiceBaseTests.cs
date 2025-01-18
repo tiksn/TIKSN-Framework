@@ -1,8 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using FluentAssertions;
-using LanguageExt;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using TIKSN.Finance;
 using TIKSN.Finance.ForeignExchange;
 using TIKSN.Globalization;
@@ -44,8 +43,8 @@ public class ExchangeRateServiceBaseTests
             default);
 
         // Assert
-        _ = result.IsSome.Should().BeTrue();
-        _ = result.Map(s => s.Currency).Should<Option<CurrencyInfo>>().Be(Some(eur));
+        result.IsSome.ShouldBeTrue();
+        result.Map(s => s.Currency).ShouldBe(Some(eur));
     }
 
     [Theory]
@@ -80,9 +79,9 @@ public class ExchangeRateServiceBaseTests
             default);
 
         // Assert
-        _ = resultWithoutDoubleConversion.IsNone.Should().BeTrue();
-        _ = resultWithoutDoubleConversion.Map(s => s.Currency).Should<Option<CurrencyInfo>>().Be(None);
-        _ = resultWithDoubleConversion.IsSome.Should().BeTrue();
-        _ = resultWithDoubleConversion.Map(s => s.Currency).Should<Option<CurrencyInfo>>().Be(Some(dkk));
+        resultWithoutDoubleConversion.IsNone.ShouldBeTrue();
+        resultWithoutDoubleConversion.Map(s => s.Currency).ShouldBe(None);
+        resultWithDoubleConversion.IsSome.ShouldBeTrue();
+        resultWithDoubleConversion.Map(s => s.Currency).ShouldBe(Some(dkk));
     }
 }

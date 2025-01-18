@@ -1,5 +1,5 @@
 using System.Globalization;
-using FluentAssertions;
+using Shouldly;
 using TIKSN.Deployment;
 using Xunit;
 
@@ -39,8 +39,8 @@ public class EnvironmentNameTests
             .ToString(format, CultureInfo.InvariantCulture);
 
         // Assert
-        _ = result1.Should().Be(actual);
-        _ = result2.Should().Be(actual);
+        result1.ShouldBe(actual);
+        result2.ShouldBe(actual);
     }
 
     [Theory]
@@ -69,9 +69,9 @@ public class EnvironmentNameTests
         var canParse = EnvironmentName.TryParse(name, CultureInfo.InvariantCulture, out var result2);
 
         // Assert
-        _ = result1Formatted.Should().Be(actual);
-        _ = canParse.Should().Be(result1.IsSome);
-        _ = result1.IfSome(x => x.Should().Be(result2));
+        result1Formatted.ShouldBe(actual);
+        canParse.ShouldBe(result1.IsSome);
+        _ = result1.IfSome(x => x.ShouldBe(result2));
     }
 
     [Theory]
@@ -105,7 +105,7 @@ public class EnvironmentNameTests
         var isEqualActual = environmentName1.Equals(environmentName2);
 
         // Assert
-        _ = isEqualActual.Should().Be(isEqualExpected);
+        isEqualActual.ShouldBe(isEqualExpected);
     }
 
     [Theory]
@@ -143,6 +143,6 @@ public class EnvironmentNameTests
         var isEqualActual = environmentName1.Matches(environmentName2);
 
         // Assert
-        _ = isEqualActual.Should().Be(isEqualExpected);
+        isEqualActual.ShouldBe(isEqualExpected);
     }
 }

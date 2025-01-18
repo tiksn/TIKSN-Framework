@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using TIKSN.Data;
 using Xunit;
 
@@ -31,7 +31,7 @@ public class MongoFileRepositoryTests
         await testFileRepository.UploadAsync(fileName, buffer1, default);
         Func<Task> upload = () => testFileRepository.UploadAsync(fileName, buffer2, default);
 
-        _ = await upload.Should().ThrowAsync<EntityExistsException>();
+        _ = await upload.ShouldThrowAsync<EntityExistsException>();
     }
 
     [Fact]
@@ -48,7 +48,7 @@ public class MongoFileRepositoryTests
         await testFileRepository.UploadAsync(fileName, buffer, default);
         var stage2Exists = await testFileRepository.ExistsAsync(fileName, default);
 
-        _ = stage1Exists.Should().BeFalse();
-        _ = stage2Exists.Should().BeTrue();
+        stage1Exists.ShouldBeFalse();
+        stage2Exists.ShouldBeTrue();
     }
 }

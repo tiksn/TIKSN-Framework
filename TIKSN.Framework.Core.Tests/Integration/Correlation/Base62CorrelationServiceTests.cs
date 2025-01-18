@@ -1,6 +1,6 @@
 using System;
-using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using TIKSN.DependencyInjection;
 using TIKSN.Integration.Correlation;
 using Xunit;
@@ -33,9 +33,9 @@ public class Base62CorrelationServiceTests
         var correlationIDFromBytes = this.correlationService.Create(correlationID.ToBinary());
         this.LogOutput(correlationIDFromBytes, nameof(correlationIDFromBytes));
 
-        _ = correlationIDFromString.Should().Be(correlationID);
-        _ = correlationIDFromBytes.Should().Be(correlationID);
-        _ = correlationIDFromString.Should().Be(correlationIDFromBytes);
+        correlationIDFromString.ShouldBe(correlationID);
+        correlationIDFromBytes.ShouldBe(correlationID);
+        correlationIDFromString.ShouldBe(correlationIDFromBytes);
     }
 
     [Fact]
@@ -46,7 +46,7 @@ public class Base62CorrelationServiceTests
         var bytes = correlationIDFromString.ToBinary();
         var hex = BitConverter.ToString([.. bytes]);
 
-        _ = hex.Should().Be("B3-09-A6-C1-6E-56-F0-6C-03-B2-AE-47-9B-A5-E7-FA");
+        hex.ShouldBe("B3-09-A6-C1-6E-56-F0-6C-03-B2-AE-47-9B-A5-E7-FA");
     }
 
     private void LogOutput(CorrelationId correlationID, string name)

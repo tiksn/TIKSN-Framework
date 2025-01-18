@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 using System.Threading;
-using FluentAssertions;
+using Shouldly;
 using TIKSN.Finance;
 using Xunit;
 
@@ -21,7 +21,7 @@ public class MoneyTests
         var withdrawal = requested - (requested % 1000);
         account -= withdrawal;
 
-        _ = account.Amount.Should().Be(145600m);
+        account.Amount.ShouldBe(145600m);
     }
 
     [Fact]
@@ -36,7 +36,7 @@ public class MoneyTests
         var withdrawal = requested - (requested % 0.5m);
         account -= withdrawal;
 
-        _ = account.Amount.Should().Be(2513.7m);
+        account.Amount.ShouldBe(2513.7m);
     }
 
     [Fact]
@@ -52,8 +52,8 @@ public class MoneyTests
         buyerWallet -= payment;
         sellerWallet += payment;
 
-        _ = buyerWallet.Amount.Should().Be(648.5m);
-        _ = sellerWallet.Amount.Should().Be(1258.2m);
+        buyerWallet.Amount.ShouldBe(648.5m);
+        sellerWallet.Amount.ShouldBe(1258.2m);
     }
 
     [Fact]
@@ -76,7 +76,7 @@ public class MoneyTests
 
         buyerWallet -= (breadPrice * breadQuantity) + (milkPrice * milkBottleVolume * milkQuantity) + (butterPrice / butterPart);
 
-        _ = buyerWallet.Amount.Should().Be(1950m);
+        buyerWallet.Amount.ShouldBe(1950m);
     }
 
     [Fact]
@@ -90,7 +90,7 @@ public class MoneyTests
 
         var commonwealth = (ivan + olga) / 2;
 
-        _ = commonwealth.Amount.Should().Be(1805m);
+        commonwealth.Amount.ShouldBe(1805m);
     }
 
     [Fact]
@@ -104,8 +104,8 @@ public class MoneyTests
         var englandWealth = britainWealth * 45m / 100m;
         var scotlandWealth = britainWealth * 36m / 100m;
 
-        _ = englandWealth.Amount.Should().Be(160200000000m);
-        _ = scotlandWealth.Amount.Should().Be(128160000000m);
+        englandWealth.Amount.ShouldBe(160200000000m);
+        scotlandWealth.Amount.ShouldBe(128160000000m);
     }
 
     [Fact]
@@ -121,7 +121,7 @@ public class MoneyTests
         var wallet2 = new Money(krone, 12.6m);
 
         _ = new Func<object>(() =>
-                wallet1.CompareTo(wallet2)).Should().ThrowExactly<InvalidOperationException>();
+                wallet1.CompareTo(wallet2)).ShouldThrow<InvalidOperationException>();
     }
 
     [Fact]
@@ -137,7 +137,7 @@ public class MoneyTests
         var wallet2 = new Money(krone, 12.6m);
 
         _ = new Func<object>(() =>
-                wallet1.Equals(wallet2)).Should().ThrowExactly<InvalidOperationException>();
+                wallet1.Equals(wallet2)).ShouldThrow<InvalidOperationException>();
     }
 
     [Fact]
@@ -153,7 +153,7 @@ public class MoneyTests
         var wallet2 = new Money(krone, 12.6m);
 
         _ = new Func<object>(() =>
-                wallet1 > wallet2).Should().ThrowExactly<InvalidOperationException>();
+                wallet1 > wallet2).ShouldThrow<InvalidOperationException>();
     }
 
     [Fact]
@@ -169,7 +169,7 @@ public class MoneyTests
         var wallet2 = new Money(krone, 12.6m);
 
         _ = new Func<object>(() =>
-                wallet1 < wallet2).Should().ThrowExactly<InvalidOperationException>();
+                wallet1 < wallet2).ShouldThrow<InvalidOperationException>();
     }
 
     [Fact]
@@ -185,7 +185,7 @@ public class MoneyTests
         var wallet2 = new Money(krone, 12.6m);
 
         _ = new Func<object>(() =>
-                wallet1 >= wallet2).Should().ThrowExactly<InvalidOperationException>();
+                wallet1 >= wallet2).ShouldThrow<InvalidOperationException>();
     }
 
     [Fact]
@@ -201,7 +201,7 @@ public class MoneyTests
         var wallet2 = new Money(krone, 12.6m);
 
         _ = new Func<object>(() =>
-                wallet1 <= wallet2).Should().ThrowExactly<InvalidOperationException>();
+                wallet1 <= wallet2).ShouldThrow<InvalidOperationException>();
     }
 
     [Fact]
@@ -217,7 +217,7 @@ public class MoneyTests
         var wallet2 = new Money(krone, 12.6m);
 
         _ = new Func<object>(() =>
-                wallet1 == wallet2).Should().ThrowExactly<InvalidOperationException>();
+                wallet1 == wallet2).ShouldThrow<InvalidOperationException>();
     }
 
     [Fact]
@@ -233,7 +233,7 @@ public class MoneyTests
         var wallet2 = new Money(krone, 12.6m);
 
         _ = new Func<object>(() =>
-                wallet1 != wallet2).Should().ThrowExactly<InvalidOperationException>();
+                wallet1 != wallet2).ShouldThrow<InvalidOperationException>();
     }
 
     [Fact]
@@ -244,9 +244,9 @@ public class MoneyTests
 
         var payment = new Money(usdollar);
 
-        _ = payment.Amount.Should().Be(decimal.Zero);
-        _ = payment.Currency.Should().Be(usdollar);
-        _ = payment.Currency.ISOCurrencySymbol.Should().Be("USD");
+        payment.Amount.ShouldBe(decimal.Zero);
+        payment.Currency.ShouldBe(usdollar);
+        payment.Currency.ISOCurrencySymbol.ShouldBe("USD");
     }
 
     [Fact]
@@ -257,9 +257,9 @@ public class MoneyTests
 
         var payment = new Money(armenianDram, 1000m);
 
-        _ = payment.Amount.Should().Be(1000m);
-        _ = payment.Currency.Should().Be(armenianDram);
-        _ = payment.Currency.ISOCurrencySymbol.Should().Be("AMD");
+        payment.Amount.ShouldBe(1000m);
+        payment.Currency.ShouldBe(armenianDram);
+        payment.Currency.ISOCurrencySymbol.ShouldBe("AMD");
     }
 
     [Fact]
@@ -274,12 +274,12 @@ public class MoneyTests
         var money1 = new Money(dollar1, 125.6m);
         var money2 = new Money(dollar2, 125.6m);
 
-        _ = (money1 == money2).Should().BeTrue();
-        _ = (money1 != money2).Should().BeFalse();
-        _ = money1.Equals(money2).Should().BeTrue();
-        _ = money2.Equals(money1).Should().BeTrue();
-        _ = money1.CompareTo(money2).Should().Be(0);
-        _ = money2.CompareTo(money1).Should().Be(0);
+        (money1 == money2).ShouldBeTrue();
+        (money1 != money2).ShouldBeFalse();
+        money1.Equals(money2).ShouldBeTrue();
+        money2.Equals(money1).ShouldBeTrue();
+        money1.CompareTo(money2).ShouldBe(0);
+        money2.CompareTo(money1).ShouldBe(0);
     }
 
     [Fact]
@@ -290,7 +290,7 @@ public class MoneyTests
 
         var m = new Money(dollar, 145.6m);
 
-        _ = m.Equals(m).Should().BeTrue();
+        m.Equals(m).ShouldBeTrue();
     }
 
     [Fact]
@@ -301,7 +301,7 @@ public class MoneyTests
 
         var m = new Money(dollar, 145.6m);
 
-        _ = m.Equals(null).Should().BeFalse();
+        m.Equals(null).ShouldBeFalse();
     }
 
     [Fact]
@@ -313,7 +313,7 @@ public class MoneyTests
         var m1 = new Money(dollar, 145.6m);
         object m2 = new Money(dollar, 145.6m);
 
-        _ = m1.Equals(m2).Should().BeTrue();
+        m1.Equals(m2).ShouldBeTrue();
     }
 
     [Fact]
@@ -325,8 +325,8 @@ public class MoneyTests
         var hundred = new Money(dollar, 100m);
         var thousand = new Money(dollar, 1000m);
 
-        _ = (thousand > hundred).Should().BeTrue();
-        _ = (thousand < hundred).Should().BeFalse();
+        (thousand > hundred).ShouldBeTrue();
+        (thousand < hundred).ShouldBeFalse();
     }
 
     [Fact]
@@ -338,10 +338,10 @@ public class MoneyTests
         var m1 = new Money(dollar, 100m);
         var m2 = new Money(dollar, 1000m);
 
-        _ = (m1 >= m2).Should().BeFalse();
-        _ = (m2 >= m1).Should().BeTrue();
-        _ = (m1.CompareTo(m2) >= 0).Should().BeFalse();
-        _ = (m2.CompareTo(m1) >= 0).Should().BeTrue();
+        (m1 >= m2).ShouldBeFalse();
+        (m2 >= m1).ShouldBeTrue();
+        (m1.CompareTo(m2) >= 0).ShouldBeFalse();
+        (m2.CompareTo(m1) >= 0).ShouldBeTrue();
     }
 
     [Fact]
@@ -353,10 +353,10 @@ public class MoneyTests
         var m1 = new Money(dollar, 100m);
         var m2 = new Money(dollar, 100m);
 
-        _ = (m1 >= m2).Should().BeTrue();
-        _ = (m2 >= m1).Should().BeTrue();
-        _ = (m1.CompareTo(m2) >= 0).Should().BeTrue();
-        _ = (m2.CompareTo(m1) >= 0).Should().BeTrue();
+        (m1 >= m2).ShouldBeTrue();
+        (m2 >= m1).ShouldBeTrue();
+        (m1.CompareTo(m2) >= 0).ShouldBeTrue();
+        (m2.CompareTo(m1) >= 0).ShouldBeTrue();
     }
 
     [Fact]
@@ -368,12 +368,12 @@ public class MoneyTests
         var hundred = new Money(dollar, 100m);
         var thousand = new Money(dollar, 1000m);
 
-        _ = (hundred == thousand).Should().BeFalse();
-        _ = (hundred != thousand).Should().BeTrue();
-        _ = hundred.Equals(thousand).Should().BeFalse();
-        _ = thousand.Equals(hundred).Should().BeFalse();
-        _ = hundred.CompareTo(thousand).Should().NotBe(0);
-        _ = thousand.CompareTo(hundred).Should().NotBe(0);
+        (hundred == thousand).ShouldBeFalse();
+        (hundred != thousand).ShouldBeTrue();
+        hundred.Equals(thousand).ShouldBeFalse();
+        thousand.Equals(hundred).ShouldBeFalse();
+        hundred.CompareTo(thousand).ShouldNotBe(0);
+        thousand.CompareTo(hundred).ShouldNotBe(0);
     }
 
     [Fact]
@@ -385,10 +385,10 @@ public class MoneyTests
         var hundred = new Money(dollar, 100m);
         var thousand = new Money(dollar, 1000m);
 
-        _ = (hundred < thousand).Should().BeTrue();
-        _ = (hundred > thousand).Should().BeFalse();
-        _ = (hundred.CompareTo(thousand) < 0).Should().BeTrue();
-        _ = (thousand.CompareTo(hundred) > 0).Should().BeTrue();
+        (hundred < thousand).ShouldBeTrue();
+        (hundred > thousand).ShouldBeFalse();
+        (hundred.CompareTo(thousand) < 0).ShouldBeTrue();
+        (thousand.CompareTo(hundred) > 0).ShouldBeTrue();
     }
 
     [Fact]
@@ -400,9 +400,9 @@ public class MoneyTests
         var hundred = new Money(dollar, 100m);
         var thousand = new Money(dollar, 1000m);
 
-        _ = (hundred <= thousand).Should().BeTrue();
-        _ = (thousand <= hundred).Should().BeFalse();
-        _ = (hundred.CompareTo(thousand) <= 0).Should().BeTrue();
+        (hundred <= thousand).ShouldBeTrue();
+        (thousand <= hundred).ShouldBeFalse();
+        (hundred.CompareTo(thousand) <= 0).ShouldBeTrue();
     }
 
     [Fact]
@@ -414,10 +414,10 @@ public class MoneyTests
         var m1 = new Money(dollar, 100m);
         var m2 = new Money(dollar, 100m);
 
-        _ = (m1 <= m2).Should().BeTrue();
-        _ = (m2 <= m1).Should().BeTrue();
-        _ = (m1.CompareTo(m2) <= 0).Should().BeTrue();
-        _ = (m2.CompareTo(m2) <= 0).Should().BeTrue();
+        (m1 <= m2).ShouldBeTrue();
+        (m2 <= m1).ShouldBeTrue();
+        (m1.CompareTo(m2) <= 0).ShouldBeTrue();
+        (m2.CompareTo(m2) <= 0).ShouldBeTrue();
     }
 
     [Fact]
@@ -429,10 +429,10 @@ public class MoneyTests
         var m1 = new Money(dollar, 100m);
         var m2 = new Money(dollar, 1000m);
 
-        _ = (m1 <= m2).Should().BeTrue();
-        _ = (m2 <= m1).Should().BeFalse();
-        _ = (m1.CompareTo(m2) <= 0).Should().BeTrue();
-        _ = (m2.CompareTo(m1) <= 0).Should().BeFalse();
+        (m1 <= m2).ShouldBeTrue();
+        (m2 <= m1).ShouldBeFalse();
+        (m1.CompareTo(m2) <= 0).ShouldBeTrue();
+        (m2.CompareTo(m1) <= 0).ShouldBeFalse();
     }
 
     [Fact]
@@ -447,7 +447,7 @@ public class MoneyTests
 
         var fund = budget / part;
 
-        _ = fund.Amount.Should().Be(380m);
+        fund.Amount.ShouldBe(380m);
     }
 
     [Fact]
@@ -462,7 +462,7 @@ public class MoneyTests
 
         var fund = budget / part;
 
-        _ = fund.Amount.Should().Be(130m);
+        fund.Amount.ShouldBe(130m);
     }
 
     [Fact]
@@ -477,7 +477,7 @@ public class MoneyTests
 
         var fund = budget / part;
 
-        _ = fund.Amount.Should().Be(70m);
+        fund.Amount.ShouldBe(70m);
     }
 
     [Fact]
@@ -492,7 +492,7 @@ public class MoneyTests
 
         var fund = budget / part;
 
-        _ = fund.Amount.Should().Be(71.2m);
+        fund.Amount.ShouldBe(71.2m);
     }
 
     [Fact]
@@ -507,7 +507,7 @@ public class MoneyTests
 
         var fund = budget / part;
 
-        _ = fund.Amount.Should().Be(30.0m);
+        fund.Amount.ShouldBe(30.0m);
     }
 
     [Fact]
@@ -522,7 +522,7 @@ public class MoneyTests
 
         var fund = budget / part;
 
-        _ = fund.Amount.Should().Be(42m);
+        fund.Amount.ShouldBe(42m);
     }
 
     [Fact]
@@ -537,7 +537,7 @@ public class MoneyTests
 
         var fund = budget / part;
 
-        _ = fund.Amount.Should().Be(4m);
+        fund.Amount.ShouldBe(4m);
     }
 
     [Fact]
@@ -552,7 +552,7 @@ public class MoneyTests
 
         var fund = budget / part;
 
-        _ = fund.Amount.Should().Be(1.2m);
+        fund.Amount.ShouldBe(1.2m);
     }
 
     [Fact]
@@ -567,7 +567,7 @@ public class MoneyTests
 
         var fund = budget / part;
 
-        _ = fund.Amount.Should().Be(2m);
+        fund.Amount.ShouldBe(2m);
     }
 
     [Fact]
@@ -582,7 +582,7 @@ public class MoneyTests
 
         var fund = budget / part;
 
-        _ = fund.Amount.Should().Be(21m);
+        fund.Amount.ShouldBe(21m);
     }
 
     [Fact]
@@ -597,7 +597,7 @@ public class MoneyTests
 
         var fund = budget / part;
 
-        _ = fund.Amount.Should().Be(12m);
+        fund.Amount.ShouldBe(12m);
     }
 
     [Fact]
@@ -612,8 +612,8 @@ public class MoneyTests
 
         var truncated = budget % whole;
 
-        _ = truncated.Amount.Should().Be(6m);
-        _ = (truncated.Amount < whole).Should().BeTrue();
+        truncated.Amount.ShouldBe(6m);
+        (truncated.Amount < whole).ShouldBeTrue();
     }
 
     [Fact]
@@ -628,8 +628,8 @@ public class MoneyTests
 
         var truncated = budget % whole;
 
-        _ = truncated.Amount.Should().Be(2m);
-        _ = (truncated.Amount < whole).Should().BeTrue();
+        truncated.Amount.ShouldBe(2m);
+        (truncated.Amount < whole).ShouldBeTrue();
     }
 
     [Fact]
@@ -644,8 +644,8 @@ public class MoneyTests
 
         var truncated = budget % whole;
 
-        _ = truncated.Amount.Should().Be(8m);
-        _ = (truncated.Amount < whole).Should().BeTrue();
+        truncated.Amount.ShouldBe(8m);
+        (truncated.Amount < whole).ShouldBeTrue();
     }
 
     [Fact]
@@ -660,8 +660,8 @@ public class MoneyTests
 
         var truncated = budget % whole;
 
-        _ = truncated.Amount.Should().Be(10m);
-        _ = (truncated.Amount < whole).Should().BeTrue();
+        truncated.Amount.ShouldBe(10m);
+        (truncated.Amount < whole).ShouldBeTrue();
     }
 
     [Fact]
@@ -676,8 +676,8 @@ public class MoneyTests
 
         var truncated = budget % whole;
 
-        _ = truncated.Amount.Should().Be(98m);
-        _ = (truncated.Amount < whole).Should().BeTrue();
+        truncated.Amount.ShouldBe(98m);
+        (truncated.Amount < whole).ShouldBeTrue();
     }
 
     [Fact]
@@ -692,8 +692,8 @@ public class MoneyTests
 
         var truncated = budget % whole;
 
-        _ = truncated.Amount.Should().Be(16.2m);
-        _ = (truncated.Amount < whole).Should().BeTrue();
+        truncated.Amount.ShouldBe(16.2m);
+        (truncated.Amount < whole).ShouldBeTrue();
     }
 
     [Fact]
@@ -708,8 +708,8 @@ public class MoneyTests
 
         var truncated = budget % whole;
 
-        _ = truncated.Amount.Should().Be(72.8m);
-        _ = (truncated.Amount < whole).Should().BeTrue();
+        truncated.Amount.ShouldBe(72.8m);
+        (truncated.Amount < whole).ShouldBeTrue();
     }
 
     [Fact]
@@ -724,8 +724,8 @@ public class MoneyTests
 
         var truncated = budget % whole;
 
-        _ = truncated.Amount.Should().Be(25.9m);
-        _ = (truncated.Amount < whole).Should().BeTrue();
+        truncated.Amount.ShouldBe(25.9m);
+        (truncated.Amount < whole).ShouldBeTrue();
     }
 
     [Fact]
@@ -740,8 +740,8 @@ public class MoneyTests
 
         var truncated = budget % whole;
 
-        _ = truncated.Amount.Should().Be(41.4m);
-        _ = (truncated.Amount < whole).Should().BeTrue();
+        truncated.Amount.ShouldBe(41.4m);
+        (truncated.Amount < whole).ShouldBeTrue();
     }
 
     [Fact]
@@ -756,8 +756,8 @@ public class MoneyTests
 
         var truncated = budget % whole;
 
-        _ = truncated.Amount.Should().Be(12m);
-        _ = (truncated.Amount < whole).Should().BeTrue();
+        truncated.Amount.ShouldBe(12m);
+        (truncated.Amount < whole).ShouldBeTrue();
     }
 
     [Fact]
@@ -772,7 +772,7 @@ public class MoneyTests
 
         var wallet = payment * m;
 
-        _ = wallet.Amount.Should().Be(287.5m);
+        wallet.Amount.ShouldBe(287.5m);
     }
 
     [Fact]
@@ -787,7 +787,7 @@ public class MoneyTests
 
         var wallet = payment * m;
 
-        _ = wallet.Amount.Should().Be(540m);
+        wallet.Amount.ShouldBe(540m);
     }
 
     [Fact]
@@ -802,7 +802,7 @@ public class MoneyTests
 
         var wallet = payment * m;
 
-        _ = wallet.Amount.Should().Be(6240m);
+        wallet.Amount.ShouldBe(6240m);
     }
 
     [Fact]
@@ -817,7 +817,7 @@ public class MoneyTests
 
         var wallet = payment * m;
 
-        _ = wallet.Amount.Should().Be(166750m);
+        wallet.Amount.ShouldBe(166750m);
     }
 
     [Fact]
@@ -832,7 +832,7 @@ public class MoneyTests
 
         var wallet = payment * m;
 
-        _ = wallet.Amount.Should().Be(14591.2m);
+        wallet.Amount.ShouldBe(14591.2m);
     }
 
     [Fact]
@@ -847,7 +847,7 @@ public class MoneyTests
 
         var wallet = payment * m;
 
-        _ = wallet.Amount.Should().Be(2939.28m);
+        wallet.Amount.ShouldBe(2939.28m);
     }
 
     [Fact]
@@ -862,7 +862,7 @@ public class MoneyTests
 
         var wallet = payment * m;
 
-        _ = wallet.Amount.Should().Be(3704.4m);
+        wallet.Amount.ShouldBe(3704.4m);
     }
 
     [Fact]
@@ -877,7 +877,7 @@ public class MoneyTests
 
         var wallet = payment * m;
 
-        _ = wallet.Amount.Should().Be(1500.4m);
+        wallet.Amount.ShouldBe(1500.4m);
     }
 
     [Fact]
@@ -892,7 +892,7 @@ public class MoneyTests
 
         var wallet = payment * m;
 
-        _ = wallet.Amount.Should().Be(470.4m);
+        wallet.Amount.ShouldBe(470.4m);
     }
 
     [Fact]
@@ -907,7 +907,7 @@ public class MoneyTests
 
         var wallet = payment * m;
 
-        _ = wallet.Amount.Should().Be(99.36m);
+        wallet.Amount.ShouldBe(99.36m);
     }
 
     [Fact]
@@ -919,7 +919,7 @@ public class MoneyTests
         var price = new Money(pound, 66.32m);
 
         _ = new Func<object>(() =>
-                    price.ToString("K", new CultureInfo("pl-PL"))).Should().ThrowExactly<FormatException>();
+                    price.ToString("K", new CultureInfo("pl-PL"))).ShouldThrow<FormatException>();
     }
 
     [Theory]
@@ -956,7 +956,7 @@ public class MoneyTests
         thread.Start();
         thread.Join();
 
-        _ = stringValue.Should().Be(expected);
+        stringValue.ShouldBe(expected);
     }
 
     [Theory]
@@ -980,7 +980,7 @@ public class MoneyTests
 
         var ci = new CultureInfo(culture);
 
-        _ = price.ToString(format, ci).Should().Be(expected);
+        price.ToString(format, ci).ShouldBe(expected);
     }
 
     [Fact]
@@ -992,8 +992,8 @@ public class MoneyTests
         var m1 = new Money(dollar, 235.6m);
         var m2 = -m1;
 
-        _ = m2.Currency.Should().Be(m1.Currency);
-        _ = m2.Amount.Should().Be(-235.6m);
+        m2.Currency.ShouldBe(m1.Currency);
+        m2.Amount.ShouldBe(-235.6m);
     }
 
     [Fact]
@@ -1005,7 +1005,7 @@ public class MoneyTests
         var m1 = new Money(dollar, 235.6m);
         var m2 = +m1;
 
-        _ = m2.Currency.Should().Be(m1.Currency);
-        _ = m2.Amount.Should().Be(235.6m);
+        m2.Currency.ShouldBe(m1.Currency);
+        m2.Amount.ShouldBe(235.6m);
     }
 }

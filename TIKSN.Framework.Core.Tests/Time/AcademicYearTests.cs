@@ -1,5 +1,5 @@
-using FluentAssertions;
 using NodaTime;
+using Shouldly;
 using TIKSN.Time;
 using Xunit;
 
@@ -37,12 +37,12 @@ public class AcademicYearTests
 
         // Assert
 
-        _ = containsYearMonth.Should().Be(expectedContains);
-        _ = containsLocalDate.Should().Be(expectedContains);
-        _ = containsLocalDateTime.Should().Be(expectedContains);
-        _ = containsOffsetDate.Should().Be(expectedContains);
-        _ = containsOffsetDateTime.Should().Be(expectedContains);
-        _ = containsZonedDateTime.Should().Be(expectedContains);
+        containsYearMonth.ShouldBe(expectedContains);
+        containsLocalDate.ShouldBe(expectedContains);
+        containsLocalDateTime.ShouldBe(expectedContains);
+        containsOffsetDate.ShouldBe(expectedContains);
+        containsOffsetDateTime.ShouldBe(expectedContains);
+        containsZonedDateTime.ShouldBe(expectedContains);
     }
 
     [Theory]
@@ -63,8 +63,8 @@ public class AcademicYearTests
 
         // Assert
 
-        _ = actualPrevious.Should().Be(expectedPrevious);
-        _ = actualNext.Should().Be(expectedNext);
+        actualPrevious.ShouldBe(expectedPrevious);
+        actualNext.ShouldBe(expectedNext);
     }
 
     [Theory]
@@ -84,7 +84,7 @@ public class AcademicYearTests
 
         // Assert
 
-        _ = actual.Should().Be(expected);
+        actual.ShouldBe(expected);
     }
 
     [Theory]
@@ -104,6 +104,6 @@ public class AcademicYearTests
 
         // Assert
 
-        _ = actual.Should().Be(expected);
+        actual.ShouldBe(expected);
     }
 }

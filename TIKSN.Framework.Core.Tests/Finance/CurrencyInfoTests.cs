@@ -1,4 +1,4 @@
-using FluentAssertions;
+using Shouldly;
 using TIKSN.Finance;
 using Xunit;
 
@@ -12,8 +12,8 @@ public class CurrencyInfoTests
         var armenia = new System.Globalization.RegionInfo("AM");
         var armenianDram = new CurrencyInfo(armenia);
 
-        _ = armenianDram.ISOCurrencySymbol.Should().Be("AMD");
-        _ = armenianDram.CurrencySymbol.Should().Be("\u058F");
+        armenianDram.ISOCurrencySymbol.ShouldBe("AMD");
+        armenianDram.CurrencySymbol.ShouldBe("\u058F");
     }
 
     [Fact]
@@ -22,8 +22,8 @@ public class CurrencyInfoTests
         var armenia = new System.Globalization.RegionInfo("hy-AM");
         var armenianDram = new CurrencyInfo(armenia);
 
-        _ = armenianDram.ISOCurrencySymbol.Should().Be("AMD");
-        _ = armenianDram.CurrencySymbol.Should().Be("֏");
+        armenianDram.ISOCurrencySymbol.ShouldBe("AMD");
+        armenianDram.CurrencySymbol.ShouldBe("֏");
     }
 
     [Fact]
@@ -32,8 +32,8 @@ public class CurrencyInfoTests
         var germany = new System.Globalization.RegionInfo("DE");
         var euro = new CurrencyInfo(germany);
 
-        _ = euro.ISOCurrencySymbol.Should().Be("EUR");
-        _ = euro.CurrencySymbol.Should().Be("€");
+        euro.ISOCurrencySymbol.ShouldBe("EUR");
+        euro.CurrencySymbol.ShouldBe("€");
     }
 
     [Fact]
@@ -42,8 +42,8 @@ public class CurrencyInfoTests
         var france = new System.Globalization.RegionInfo("FR");
         var euro = new CurrencyInfo(france);
 
-        _ = euro.ISOCurrencySymbol.Should().Be("EUR");
-        _ = euro.CurrencySymbol.Should().Be("€");
+        euro.ISOCurrencySymbol.ShouldBe("EUR");
+        euro.CurrencySymbol.ShouldBe("€");
     }
 
     [Fact]
@@ -52,8 +52,8 @@ public class CurrencyInfoTests
         var germany = new System.Globalization.RegionInfo("de-DE");
         var euro = new CurrencyInfo(germany);
 
-        _ = euro.ISOCurrencySymbol.Should().Be("EUR");
-        _ = euro.CurrencySymbol.Should().Be("€");
+        euro.ISOCurrencySymbol.ShouldBe("EUR");
+        euro.CurrencySymbol.ShouldBe("€");
     }
 
     [Fact]
@@ -62,8 +62,8 @@ public class CurrencyInfoTests
         var unitedStates = new System.Globalization.RegionInfo("US");
         var usDollar = new CurrencyInfo(unitedStates);
 
-        _ = usDollar.ISOCurrencySymbol.Should().Be("USD");
-        _ = usDollar.CurrencySymbol.Should().Be("$");
+        usDollar.ISOCurrencySymbol.ShouldBe("USD");
+        usDollar.CurrencySymbol.ShouldBe("$");
     }
 
     [Fact]
@@ -72,8 +72,8 @@ public class CurrencyInfoTests
         var unitedStates = new System.Globalization.RegionInfo("en-US");
         var usDollar = new CurrencyInfo(unitedStates);
 
-        _ = usDollar.ISOCurrencySymbol.Should().Be("USD");
-        _ = usDollar.CurrencySymbol.Should().Be("$");
+        usDollar.ISOCurrencySymbol.ShouldBe("USD");
+        usDollar.CurrencySymbol.ShouldBe("$");
     }
 
     [Fact]
@@ -82,8 +82,8 @@ public class CurrencyInfoTests
         var unitedStates = new System.Globalization.RegionInfo("es-US");
         var usDollar = new CurrencyInfo(unitedStates);
 
-        _ = usDollar.ISOCurrencySymbol.Should().Be("USD");
-        _ = usDollar.CurrencySymbol.Should().Be("$");
+        usDollar.ISOCurrencySymbol.ShouldBe("USD");
+        usDollar.CurrencySymbol.ShouldBe("$");
     }
 
     [Fact]
@@ -92,8 +92,8 @@ public class CurrencyInfoTests
         var elSalvador = new System.Globalization.RegionInfo("SV");
         var usDollar = new CurrencyInfo(elSalvador);
 
-        _ = usDollar.ISOCurrencySymbol.Should().Be("USD");
-        _ = usDollar.CurrencySymbol.Should().Be("$");
+        usDollar.ISOCurrencySymbol.ShouldBe("USD");
+        usDollar.CurrencySymbol.ShouldBe("$");
     }
 
     [Fact]
@@ -102,8 +102,8 @@ public class CurrencyInfoTests
         var elSalvador = new System.Globalization.RegionInfo("es-SV");
         var usDollar = new CurrencyInfo(elSalvador);
 
-        _ = usDollar.ISOCurrencySymbol.Should().Be("USD");
-        _ = usDollar.CurrencySymbol.Should().Be("$");
+        usDollar.ISOCurrencySymbol.ShouldBe("USD");
+        usDollar.CurrencySymbol.ShouldBe("$");
     }
 
     [Fact]
@@ -112,8 +112,8 @@ public class CurrencyInfoTests
         var ecuador = new System.Globalization.RegionInfo("EC");
         var usDollar = new CurrencyInfo(ecuador);
 
-        _ = usDollar.ISOCurrencySymbol.Should().Be("USD");
-        _ = usDollar.CurrencySymbol.Should().Be("$");
+        usDollar.ISOCurrencySymbol.ShouldBe("USD");
+        usDollar.CurrencySymbol.ShouldBe("$");
     }
 
     [Fact]
@@ -122,8 +122,8 @@ public class CurrencyInfoTests
         var ecuador = new System.Globalization.RegionInfo("es-EC");
         var usDollar = new CurrencyInfo(ecuador);
 
-        _ = usDollar.ISOCurrencySymbol.Should().Be("USD");
-        _ = usDollar.CurrencySymbol.Should().Be("$");
+        usDollar.ISOCurrencySymbol.ShouldBe("USD");
+        usDollar.CurrencySymbol.ShouldBe("$");
     }
 
     [Fact]
@@ -133,24 +133,24 @@ public class CurrencyInfoTests
         var r2 = new System.Globalization.RegionInfo("es-US");
         var r3 = new System.Globalization.RegionInfo("US");
 
-        _ = (r1 != r2).Should().BeTrue();
-        _ = (r1 != r3).Should().BeTrue();
-        _ = (r3 != r2).Should().BeTrue();
+        (r1 != r2).ShouldBeTrue();
+        (r1 != r3).ShouldBeTrue();
+        (r3 != r2).ShouldBeTrue();
 
         var c1 = new CurrencyInfo(r1);
         var c2 = new CurrencyInfo(r2);
         var c3 = new CurrencyInfo(r3);
 
-        _ = c1.Equals(c1).Should().BeTrue();
-        _ = c2.Equals(c2).Should().BeTrue();
-        _ = c3.Equals(c3).Should().BeTrue();
+        c1.Equals(c1).ShouldBeTrue();
+        c2.Equals(c2).ShouldBeTrue();
+        c3.Equals(c3).ShouldBeTrue();
 
-        _ = c1.Equals(c2).Should().BeTrue();
-        _ = c2.Equals(c1).Should().BeTrue();
-        _ = c1.Equals(c3).Should().BeTrue();
-        _ = c3.Equals(c1).Should().BeTrue();
-        _ = c2.Equals(c3).Should().BeTrue();
-        _ = c3.Equals(c2).Should().BeTrue();
+        c1.Equals(c2).ShouldBeTrue();
+        c2.Equals(c1).ShouldBeTrue();
+        c1.Equals(c3).ShouldBeTrue();
+        c3.Equals(c1).ShouldBeTrue();
+        c2.Equals(c3).ShouldBeTrue();
+        c3.Equals(c2).ShouldBeTrue();
     }
 
     [Fact]
@@ -162,8 +162,8 @@ public class CurrencyInfoTests
         var usDollar = new CurrencyInfo(unitedStates);
         var armenianDram = new CurrencyInfo(armenia);
 
-        _ = armenianDram.Equals(usDollar).Should().BeFalse();
-        _ = usDollar.Equals(armenianDram).Should().BeFalse();
+        armenianDram.Equals(usDollar).ShouldBeFalse();
+        usDollar.Equals(armenianDram).ShouldBeFalse();
     }
 
     [Fact]
@@ -175,8 +175,8 @@ public class CurrencyInfoTests
         var usDollar1 = new CurrencyInfo(unitedStates);
         var usDollar2 = new CurrencyInfo(elSalvador);
 
-        _ = (usDollar1 == usDollar2).Should().BeTrue();
-        _ = (usDollar1 != usDollar2).Should().BeFalse();
+        (usDollar1 == usDollar2).ShouldBeTrue();
+        (usDollar1 != usDollar2).ShouldBeFalse();
     }
 
     [Fact]
@@ -188,8 +188,8 @@ public class CurrencyInfoTests
         var usDollar = new CurrencyInfo(unitedStates);
         var armenianDram = new CurrencyInfo(armenia);
 
-        _ = (armenianDram != usDollar).Should().BeTrue();
-        _ = (armenianDram == usDollar).Should().BeFalse();
+        (armenianDram != usDollar).ShouldBeTrue();
+        (armenianDram == usDollar).ShouldBeFalse();
     }
 
     [Fact]
@@ -197,11 +197,11 @@ public class CurrencyInfoTests
     {
         var currency = new CurrencyInfo("eur");
 
-        _ = currency.ISOCurrencySymbol.Should().Be("EUR");
-        _ = currency.CurrencySymbol.Should().Be("EUR");
-        _ = currency.ToString().Should().Be("EUR");
-        _ = currency.IsFund.Should().BeFalse();
-        _ = currency.IsCurrent.Should().BeTrue();
+        currency.ISOCurrencySymbol.ShouldBe("EUR");
+        currency.CurrencySymbol.ShouldBe("EUR");
+        currency.ToString().ShouldBe("EUR");
+        currency.IsFund.ShouldBeFalse();
+        currency.IsCurrent.ShouldBeTrue();
     }
 
     [Fact]
@@ -209,11 +209,11 @@ public class CurrencyInfoTests
     {
         var currency = new CurrencyInfo("BOV");
 
-        _ = currency.ISOCurrencySymbol.Should().Be("BOV");
-        _ = currency.CurrencySymbol.Should().Be("BOV");
-        _ = currency.ToString().Should().Be("BOV");
-        _ = currency.IsFund.Should().BeTrue();
-        _ = currency.IsCurrent.Should().BeTrue();
+        currency.ISOCurrencySymbol.ShouldBe("BOV");
+        currency.CurrencySymbol.ShouldBe("BOV");
+        currency.ToString().ShouldBe("BOV");
+        currency.IsFund.ShouldBeTrue();
+        currency.IsCurrent.ShouldBeTrue();
     }
 
     [Fact]
@@ -221,11 +221,11 @@ public class CurrencyInfoTests
     {
         var currency = new CurrencyInfo("XRE");
 
-        _ = currency.ISOCurrencySymbol.Should().Be("XRE");
-        _ = currency.CurrencySymbol.Should().Be("XRE");
-        _ = currency.ToString().Should().Be("XRE");
-        _ = currency.IsFund.Should().BeTrue();
-        _ = currency.IsCurrent.Should().BeFalse();
+        currency.ISOCurrencySymbol.ShouldBe("XRE");
+        currency.CurrencySymbol.ShouldBe("XRE");
+        currency.ToString().ShouldBe("XRE");
+        currency.IsFund.ShouldBeTrue();
+        currency.IsCurrent.ShouldBeFalse();
     }
 
     [Fact]
@@ -233,11 +233,11 @@ public class CurrencyInfoTests
     {
         var currency = new CurrencyInfo(new System.Globalization.RegionInfo("en-US"));
 
-        _ = currency.ISOCurrencySymbol.Should().Be("USD");
-        _ = currency.CurrencySymbol.Should().Be("$");
-        _ = currency.ToString().Should().Be("USD");
-        _ = currency.IsFund.Should().BeFalse();
-        _ = currency.IsCurrent.Should().BeTrue();
+        currency.ISOCurrencySymbol.ShouldBe("USD");
+        currency.CurrencySymbol.ShouldBe("$");
+        currency.ToString().ShouldBe("USD");
+        currency.IsFund.ShouldBeFalse();
+        currency.IsCurrent.ShouldBeTrue();
     }
 
     [Fact]
@@ -252,13 +252,13 @@ public class CurrencyInfoTests
         object usDollar3 = usDollar1;
         object usDollar4 = new CurrencyInfo(unitedStates);
 
-        _ = usDollar1.Equals(usDollar1).Should().BeTrue();
-        _ = usDollar1.Equals(usDollar2).Should().BeTrue();
-        _ = usDollar1.Equals(someCurrency1).Should().BeFalse();
-        _ = usDollar1.Equals(something1).Should().BeFalse();
-        _ = usDollar1.Equals(something2).Should().BeFalse();
-        _ = usDollar1.Equals(usDollar3).Should().BeTrue();
-        _ = usDollar1.Equals(usDollar4).Should().BeTrue();
+        usDollar1.Equals(usDollar1).ShouldBeTrue();
+        usDollar1.Equals(usDollar2).ShouldBeTrue();
+        usDollar1.Equals(someCurrency1).ShouldBeFalse();
+        usDollar1.Equals(something1).ShouldBeFalse();
+        usDollar1.Equals(something2).ShouldBeFalse();
+        usDollar1.Equals(usDollar3).ShouldBeTrue();
+        usDollar1.Equals(usDollar4).ShouldBeTrue();
     }
 
     [Fact]
@@ -268,8 +268,8 @@ public class CurrencyInfoTests
         var usDollar1 = new CurrencyInfo(unitedStates);
         CurrencyInfo usDollar2 = null;
 
-        _ = (usDollar1 != usDollar2).Should().BeTrue();
-        _ = (usDollar1 == usDollar2).Should().BeFalse();
+        (usDollar1 != usDollar2).ShouldBeTrue();
+        (usDollar1 == usDollar2).ShouldBeFalse();
     }
 
     [Fact]
@@ -278,6 +278,6 @@ public class CurrencyInfoTests
         var unitedStates = new System.Globalization.RegionInfo("US");
         var usDollar = new CurrencyInfo(unitedStates);
 
-        _ = usDollar.ToString().Should().Be("USD");
+        usDollar.ToString().ShouldBe("USD");
     }
 }

@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using Polly;
+using Shouldly;
 using TIKSN.Data;
 using Xunit;
 
@@ -46,7 +46,7 @@ public class MongoUnitOfWorkTests
             await mongoUnitOfWork.CompleteAsync(default);
         }
 
-        _ = retrievedEntity.Value.Should().Be(testEntity.Value);
+        retrievedEntity.Value.ShouldBe(testEntity.Value);
     }
 
     [Fact]
@@ -81,7 +81,7 @@ public class MongoUnitOfWorkTests
             await mongoUnitOfWork.CompleteAsync(default);
         }
 
-        _ = retrievedEntity.Version.Should().Be(4);
+        retrievedEntity.Version.ShouldBe(4);
 
         static Task UpdateEntityWithRetry(IUnitOfWorkFactory mongoUnitOfWorkFactory, Guid testEntityId) => Policy.Handle<MongoCommandException>()
                 .WaitAndRetryAsync(10, i => TimeSpan.FromMilliseconds(i * 10))

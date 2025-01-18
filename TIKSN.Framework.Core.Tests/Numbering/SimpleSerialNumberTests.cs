@@ -1,6 +1,6 @@
 using System;
 using System.Globalization;
-using FluentAssertions;
+using Shouldly;
 using TIKSN.Numbering;
 using TIKSN.Numbering.Acronyms;
 using Xunit;
@@ -63,7 +63,7 @@ public class SimpleSerialNumberTests
         var actualValue = actual.Map(x => x.ToString()).MatchUnsafe(x => x, () => null);
 
         // Assert
-        _ = actualValue.Should().Be(expectedValue);
+        actualValue.ShouldBe(expectedValue);
     }
 
     [Theory]
@@ -85,7 +85,7 @@ public class SimpleSerialNumberTests
         var nextSerialNumberValue = nextSerialNumber.MatchUnsafe(s => s.ToString(), () => null);
 
         // Assert
-        _ = previousSerialNumberValue.Should().Be(previous);
-        _ = nextSerialNumberValue.Should().Be(next);
+        previousSerialNumberValue.ShouldBe(previous);
+        nextSerialNumberValue.ShouldBe(next);
     }
 }

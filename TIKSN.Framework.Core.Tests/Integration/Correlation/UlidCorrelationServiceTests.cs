@@ -1,6 +1,6 @@
 using System;
-using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using TIKSN.DependencyInjection;
 using TIKSN.Integration.Correlation;
 using Xunit;
@@ -33,9 +33,9 @@ public class UlidCorrelationServiceTests
         var correlationIDFromBytes = this.correlationService.Create(correlationID.ToBinary());
         this.LogOutput(correlationIDFromBytes, nameof(correlationIDFromBytes));
 
-        _ = correlationIDFromString.Should().Be(correlationID);
-        _ = correlationIDFromBytes.Should().Be(correlationID);
-        _ = correlationIDFromString.Should().Be(correlationIDFromBytes);
+        correlationIDFromString.ShouldBe(correlationID);
+        correlationIDFromBytes.ShouldBe(correlationID);
+        correlationIDFromString.ShouldBe(correlationIDFromBytes);
     }
 
     private void LogOutput(CorrelationId correlationID, string name)

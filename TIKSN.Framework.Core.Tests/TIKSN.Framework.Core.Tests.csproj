@@ -10,12 +10,7 @@
     <RootNamespace>TIKSN.Tests</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" />
     <PackageReference Include="Bond.CSharp" />
-    <PackageReference Include="Meziantou.FluentAssertionsAnalyzers">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
@@ -23,6 +18,7 @@
     <PackageReference Include="NSubstitute" />
     <PackageReference Include="ReactiveUI" />
     <PackageReference Include="Serilog.Sinks.XUnit" />
+    <PackageReference Include="Shouldly" />
     <PackageReference Include="Spectre.Console.Testing" />
     <PackageReference Include="System.Reactive" />
     <PackageReference Include="xunit" />
