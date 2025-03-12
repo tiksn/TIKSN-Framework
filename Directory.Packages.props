@@ -35,7 +35,7 @@
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="9.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.2" />
-    <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.2.0" />
+    <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.3.0" />
     <PackageVersion Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.1" />
     <PackageVersion Include="Microsoft.Maui.Controls" Version="9.0.40" />
     <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.40" />
