@@ -28,11 +28,11 @@
     <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.2" />
     <PackageVersion Include="Microsoft.Extensions.FileProviders.Abstractions" Version="9.0.3" />
     <PackageVersion Include="Microsoft.Extensions.FileProviders.Physical" Version="9.0.2" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Localization" Version="9.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.3" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.3" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.4" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="9.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.3" />
     <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.3.0" />
