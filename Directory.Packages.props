@@ -26,9 +26,9 @@
     <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="9.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.2" />
-    <PackageVersion Include="Microsoft.Extensions.FileProviders.Abstractions" Version="9.0.3" />
-    <PackageVersion Include="Microsoft.Extensions.FileProviders.Physical" Version="9.0.2" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.FileProviders.Abstractions" Version="9.0.4" />
+    <PackageVersion Include="Microsoft.Extensions.FileProviders.Physical" Version="9.0.4" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Localization" Version="9.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.3" />
