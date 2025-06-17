@@ -1,10 +1,8 @@
 using System;
-using System.Globalization;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using Serilog;
 using Shouldly;
 using Spectre.Console;
 using Spectre.Console.Testing;
@@ -37,11 +35,6 @@ public class ConsoleServiceTests
         _ = services.AddLogging(builder =>
         {
             _ = builder.AddDebug();
-            var loggger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .WriteTo.TestOutput(this.testOutputHelper, formatProvider: CultureInfo.InvariantCulture)
-                .CreateLogger();
-            _ = builder.AddSerilog(loggger);
         });
         var serviceProvider = services.BuildServiceProvider();
         var shellCommandEngine = serviceProvider.GetRequiredService<IShellCommandEngine>();

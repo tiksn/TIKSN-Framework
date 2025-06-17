@@ -1,10 +1,8 @@
 using System;
-using System.Globalization;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using Serilog;
 using Shouldly;
 using TIKSN.DependencyInjection;
 using Xunit;
@@ -24,11 +22,6 @@ public partial class CompositeAssemblyStringLocalizerTests
         _ = services.AddLogging(builder =>
         {
             _ = builder.AddDebug();
-            var loggger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .WriteTo.TestOutput(testOutputHelper, formatProvider: CultureInfo.InvariantCulture)
-                .CreateLogger();
-            _ = builder.AddSerilog(loggger);
         });
         this.serviceProvider = services.BuildServiceProvider();
     }
