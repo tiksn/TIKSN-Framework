@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
-using Serilog;
 using Shouldly;
 using TIKSN.Data.Cache.Memory;
 using TIKSN.DependencyInjection;
@@ -33,11 +31,6 @@ public class MemoryCachedCurrencyConverterTests
         _ = services.AddLogging(builder =>
         {
             _ = builder.AddDebug();
-            var loggger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .WriteTo.TestOutput(testOutputHelper, formatProvider: CultureInfo.InvariantCulture)
-                .CreateLogger();
-            _ = builder.AddSerilog(loggger);
         });
         _ = services.Configure<MemoryCachedCurrencyConverterOptions>(o => o.CacheInterval = TimeSpan.FromMinutes(5));
         var serviceProvider = services.BuildServiceProvider();
