@@ -83,7 +83,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" />
     <PackageReference Include="MongoDB.Driver" />
     <PackageReference Include="Newtonsoft.Json" />
-    <PackageReference Include="NLog.Extensions.Logging" />
     <PackageReference Include="NuGet.Versioning" />
     <PackageReference Include="ReactiveUI" />
     <PackageReference Include="RavenDB.Client" />
