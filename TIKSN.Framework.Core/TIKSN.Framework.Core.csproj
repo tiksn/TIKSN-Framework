@@ -59,7 +59,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" />
-    <PackageReference Include="Bond.CSharp" />
     <PackageReference Include="FluentValidation" />
     <PackageReference Include="IdGen" />
     <PackageReference Include="LanguageExt.Core" />
