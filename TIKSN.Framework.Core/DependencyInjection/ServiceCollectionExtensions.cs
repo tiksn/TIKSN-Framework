@@ -15,7 +15,6 @@ using TIKSN.Identity;
 using TIKSN.Licensing;
 using TIKSN.Network;
 using TIKSN.Serialization;
-using TIKSN.Serialization.Bond;
 using TIKSN.Serialization.MessagePack;
 using TIKSN.Serialization.Numerics;
 using TIKSN.Shell;
@@ -48,12 +47,8 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<IKnownFolders, KnownFolders>();
         services.TryAddSingleton<INetworkConnectivityService, NetworkConnectivityService>();
 
-        services.TryAddSingleton<CompactBinaryBondDeserializer>();
-        services.TryAddSingleton<CompactBinaryBondSerializer>();
         services.TryAddSingleton<DotNetXmlDeserializer>();
         services.TryAddSingleton<DotNetXmlSerializer>();
-        services.TryAddSingleton<FastBinaryBondDeserializer>();
-        services.TryAddSingleton<FastBinaryBondSerializer>();
         services.TryAddSingleton<ICustomDeserializer<byte[], BigInteger>, UnsignedBigIntegerBinaryDeserializer>();
         services.TryAddSingleton<ICustomSerializer<byte[], BigInteger>, UnsignedBigIntegerBinarySerializer>();
         services.TryAddSingleton<IRestRequester, RestRequester>();
@@ -61,12 +56,6 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<JsonSerializer>();
         services.TryAddSingleton<MessagePackDeserializer>();
         services.TryAddSingleton<MessagePackSerializer>();
-        services.TryAddSingleton<SimpleBinaryBondDeserializer>();
-        services.TryAddSingleton<SimpleBinaryBondSerializer>();
-        services.TryAddSingleton<SimpleJsonBondDeserializer>();
-        services.TryAddSingleton<SimpleJsonBondSerializer>();
-        services.TryAddSingleton<SimpleXmlBondDeserializer>();
-        services.TryAddSingleton<SimpleXmlBondSerializer>();
         services.TryAddSingleton<IIdentityGenerator<long>, IdGenIdentityGenerator>();
         services.TryAddScoped<IShellCommandContext, ShellCommandContext>();
         services.TryAddSingleton(MessageBus.Current);

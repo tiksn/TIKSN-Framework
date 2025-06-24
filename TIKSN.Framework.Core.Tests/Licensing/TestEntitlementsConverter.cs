@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using Google.Protobuf;
 using LanguageExt;
 using LanguageExt.Common;
 using TIKSN.Licensing;
@@ -61,7 +63,7 @@ public class TestEntitlementsConverter : IEntitlementsConverter<TestEntitlements
             }
             else
             {
-                result.Salt = entitlements.Salt.ToArray();
+                result.Salt = ByteString.CopyFrom([.. entitlements.Salt]);
             }
         }
 
@@ -104,7 +106,7 @@ public class TestEntitlementsConverter : IEntitlementsConverter<TestEntitlements
                 errors.Add(Error.New(314894957, "EmployeeId is invalid"));
             }
 
-            if (entitlementsData.Salt.Count == 0)
+            if (entitlementsData.Salt.Length == 0)
             {
                 errors.Add(Error.New(139152695, "Salt is missing"));
             }

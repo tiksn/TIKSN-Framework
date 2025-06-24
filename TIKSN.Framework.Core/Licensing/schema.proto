@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+option csharp_namespace = "TIKSN.Licensing";
+
+message LicenseParty {
+  string Email = 1;
+  string Website = 2;
+
+  oneof PartyKind {
+    LicenseIndividualParty IndividualParty = 3;
+    LicenseOrganizationParty OrganizationParty = 4;
+  }
+}
+
+message LicenseIndividualParty {
+  string FirstName = 1;
+  string LastName = 2;
+  string FullName = 3;
+}
+
+message LicenseOrganizationParty {
+  string ShortName = 1;
+  string LongName = 2;
+}
+
+message LicenseMessage {
+  bytes Discriminator = 1;
+  bytes SerialNumber = 2;
+  LicenseParty Licensor = 3;
+  LicenseParty Licensee = 4;
+  int64 NotBefore = 5;
+  int64 NotAfter = 6;
+  optional bytes Entitlements = 7;
+}
+
+message LicenseEnvelope {
+  LicenseMessage Message = 1;
+  string SignatureAlgorithm = 2;
+  bytes Signature = 3;
+}

@@ -1,31 +1,25 @@
 using System.Security.Cryptography.X509Certificates;
+using Google.Protobuf;
 using LanguageExt;
 using LanguageExt.Common;
 using Microsoft.Extensions.DependencyInjection;
-using TIKSN.Serialization.Bond;
 using static LanguageExt.Prelude;
 
 namespace TIKSN.Licensing;
 
-public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<TEntitlements, TEntitlementsData>
+public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<TEntitlements, TEntitlementsData> where TEntitlementsData : IMessage<TEntitlementsData>
 {
-    private readonly CompactBinaryBondDeserializer deserializer;
     private readonly IEntitlementsConverter<TEntitlements, TEntitlementsData> entitlementsConverter;
     private readonly ILicenseDescriptor<TEntitlements> licenseDescriptor;
-    private readonly CompactBinaryBondSerializer serializer;
     private readonly IServiceProvider serviceProvider;
     private readonly TimeProvider timeProvider;
 
     public LicenseFactory(
-        CompactBinaryBondSerializer serializer,
-        CompactBinaryBondDeserializer deserializer,
         ILicenseDescriptor<TEntitlements> licenseDescriptor,
         IEntitlementsConverter<TEntitlements, TEntitlementsData> entitlementsConverter,
         TimeProvider timeProvider,
         IServiceProvider serviceProvider)
     {
-        this.serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
-        this.deserializer = deserializer ?? throw new ArgumentNullException(nameof(deserializer));
         this.licenseDescriptor = licenseDescriptor ?? throw new ArgumentNullException(nameof(licenseDescriptor));
         this.entitlementsConverter = entitlementsConverter ?? throw new ArgumentNullException(nameof(entitlementsConverter));
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
@@ -49,8 +43,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
 
         _ = this.entitlementsConverter.Convert(entitlements)
             .Match(
-                succ => envelope.Message.Entitlements =
-                    new ArraySegment<byte>(this.serializer.Serialize(succ)),
+                succ => envelope.Message.Entitlements = succ.ToByteString(),
                 fail => errors.AddRange(fail));
 
         if (!privateCertificate.HasPrivateKey)
@@ -63,15 +56,15 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
             return errors.ToSeq();
         }
 
-        var messageData = this.serializer.Serialize(envelope.Message);
+        var messageData = envelope.Message.ToByteString();
 
         var keyAlgorithm = privateCertificate.GetKeyAlgorithm();
         envelope.SignatureAlgorithm = keyAlgorithm;
         var signatureService = this.serviceProvider.GetRequiredKeyedService<ICertificateSignatureService>(keyAlgorithm);
-        var signature = signatureService.Sign(messageData, privateCertificate);
-        envelope.Signature = new ArraySegment<byte>(signature);
+        var signature = signatureService.Sign(messageData.ToByteArray(), privateCertificate);
+        envelope.Signature = ByteString.CopyFrom(signature);
 
-        var envelopeData = this.serializer.Serialize(envelope);
+        var envelopeData = envelope.ToByteString();
 
         return new License<TEntitlements>(
             terms,
@@ -93,10 +86,14 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
             return errors.ToSeq();
         }
 
-        var envelope = this.deserializer.Deserialize<LicenseEnvelope>([.. data]);
+        var envelope = LicenseEnvelope.Parser.ParseFrom([.. data]);
 
         var licenseTermsValidation = this.GetTerms(envelope, this.timeProvider);
-        var entitlementsValidation = this.entitlementsConverter.Convert(this.deserializer.Deserialize<TEntitlementsData>([.. envelope.Message.Entitlements]));
+
+        var entitlementsData = Activator.CreateInstance<TEntitlementsData>();
+        entitlementsData.MergeFrom(envelope.Message.Entitlements.CreateCodedInput());
+
+        var entitlementsValidation = this.entitlementsConverter.Convert(entitlementsData);
 
         var keyAlgorithm = publicCertificate.GetKeyAlgorithm();
 
@@ -107,9 +104,9 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
 
         var signatureService = this.serviceProvider.GetRequiredKeyedService<ICertificateSignatureService>(keyAlgorithm);
 
-        var messageData = this.serializer.Serialize(envelope.Message);
+        var messageData = envelope.Message.ToByteArray();
 
-        if (!signatureService.Verify(messageData, [.. envelope.Signature], publicCertificate))
+        if (!signatureService.Verify(messageData, envelope.Signature.ToByteArray(), publicCertificate))
         {
             errors.Add(Error.New(1311896038, "License signature is invalid"));
         }
@@ -133,12 +130,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
     {
         ArgumentNullException.ThrowIfNull(envelope);
 
-        if (envelope.Message.VersionNumber != 1)
-        {
-            return Error.New(2129266854, "License version is invalid");
-        }
-
-        if (envelope.Message.Discriminator.Count != Guid.Empty.ToByteArray().Length ||
+        if (envelope.Message.Discriminator.Count() != Guid.Empty.ToByteArray().Length ||
             envelope.Message.Discriminator.All(x => x == byte.MinValue) ||
             !envelope.Message.Discriminator.SequenceEqual(this.licenseDescriptor.Discriminator.ToByteArray()))
         {
@@ -193,14 +185,15 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
 
         var errors = new List<Error>();
 
-        envelope.Message.VersionNumber = 1;
-
         if (this.licenseDescriptor.Discriminator == Guid.Empty)
         {
             errors.Add(Error.New(13127674, "'Discriminator' should not be empty GUID"));
         }
 
-        envelope.Message.Discriminator = new ArraySegment<byte>(this.licenseDescriptor.Discriminator.ToByteArray());
+        envelope.Message = new LicenseMessage
+        {
+            Discriminator = ByteString.CopyFrom(this.licenseDescriptor.Discriminator.ToByteArray()),
+        };
 
         if (terms.NotAfter < terms.NotBefore)
         {

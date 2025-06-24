@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option csharp_namespace = "TIKSN.Tests.Licensing";
+
+message TestLicenseEntitlements {
+    string Name = 1;
+    int32 Quantity = 2;
+    bytes Salt = 3;
+    int64 CompanyId = 4;
+    int64 EmployeeId = 5;
+}

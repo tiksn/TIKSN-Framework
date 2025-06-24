@@ -10,7 +10,10 @@
     <RootNamespace>TIKSN.Tests</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Bond.CSharp" />
+    <PackageReference Include="Grpc.Tools">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
@@ -43,5 +46,8 @@
       <LastGenOutput>LicensingResource.Designer.cs</LastGenOutput>
       <CustomToolNamespace>TIKSN.Tests.Licensing</CustomToolNamespace>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="Licensing\schema.proto" GrpcServices="None" />
   </ItemGroup>
 </Project>
