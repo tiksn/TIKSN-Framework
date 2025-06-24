@@ -7,8 +7,8 @@ message LicenseParty {
   string Website = 2;
 
   oneof PartyKind {
-    string IndividualParty = 3;
-    string OrganizationParty = 4;
+    LicenseIndividualParty IndividualParty = 3;
+    LicenseOrganizationParty OrganizationParty = 4;
   }
 }
 

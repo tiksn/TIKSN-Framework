@@ -1,13 +1,11 @@
 using System.Security.Cryptography.X509Certificates;
+using Google.Protobuf;
 using LanguageExt;
 using LanguageExt.Common;
 
 namespace TIKSN.Licensing;
 
-#pragma warning disable S2326 // Unused type parameters should be removed
-
-public interface ILicenseFactory<TEntitlements, TEntitlementsData>
-#pragma warning restore S2326 // Unused type parameters should be removed
+public interface ILicenseFactory<TEntitlements, TEntitlementsData> where TEntitlementsData : IMessage<TEntitlementsData>
 {
     Validation<Error, License<TEntitlements>> Create(
         LicenseTerms terms,

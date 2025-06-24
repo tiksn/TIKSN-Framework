@@ -1,8 +1,9 @@
 using System.Net.Mail;
-using Bond;
+using Google.Protobuf;
 using LanguageExt;
 using LanguageExt.Common;
 using static LanguageExt.Prelude;
+using static TIKSN.Licensing.LicenseParty;
 
 namespace TIKSN.Licensing;
 
@@ -40,19 +41,19 @@ internal static class LicenseFactoryTermsValidation
     private static readonly Seq<Ulid> InvalidSerialNumbers =
         Seq(Ulid.Empty, Ulid.MinValue, Ulid.MaxValue);
 
-    internal static Validation<Error, ArraySegment<byte>> ConvertFromUlid(Ulid serialNumber)
+    internal static Validation<Error, ByteString> ConvertFromUlid(Ulid serialNumber)
     {
         if (InvalidSerialNumbers.Contains(serialNumber))
         {
             return Error.New(877535586, "Invalid serial number");
         }
 
-        return new ArraySegment<byte>(serialNumber.ToByteArray());
+        return ByteString.CopyFrom(serialNumber.ToByteArray());
     }
 
-    internal static Validation<Error, Ulid> ConvertToUlid(ArraySegment<byte> serialNumberBytes)
+    internal static Validation<Error, Ulid> ConvertToUlid(ByteString serialNumberBytes)
     {
-        var serialNumber = new Ulid(serialNumberBytes);
+        var serialNumber = new Ulid(serialNumberBytes.ToByteArray());
 
         if (InvalidSerialNumbers.Contains(serialNumber))
         {
@@ -129,34 +130,31 @@ internal static class LicenseFactoryTermsValidation
 
     #region Party
 
-    internal static Validation<Error, IBonded<LicenseParty>> ConvertFromParty(Party party) => party switch
+    internal static Validation<Error, LicenseParty> ConvertFromParty(Party party) => party switch
     {
-        IndividualParty individualParty => ConvertFromIndividual(individualParty).Map<IBonded<LicenseParty>>(x => new Bonded<LicenseIndividualParty>(x)),
-        OrganizationParty organizationParty => ConvertFromOrganization(organizationParty).Map<IBonded<LicenseParty>>(x => new Bonded<LicenseOrganizationParty>(x)),
+        IndividualParty individualParty => ConvertFromIndividual(individualParty),
+        OrganizationParty organizationParty => ConvertFromOrganization(organizationParty),
         _ => Error.New(2143629281, "Invalid party type"),
     };
 
-    internal static Validation<Error, Party> ConvertToParty(IBonded<LicenseParty> licenseParty)
-    {
-        var licensePartyBase = licenseParty.Deserialize();
-        return licensePartyBase.Kind switch
+    internal static Validation<Error, Party> ConvertToParty(LicenseParty licenseParty) =>
+        licenseParty.PartyKindCase switch
         {
-            LicensePartyKind.Unknown => Error.New(2084794372, "Unknown party type"),
-            LicensePartyKind.Individual => ConvertToIndividual(licenseParty.Deserialize<LicenseIndividualParty>()).Map<Party>(x => x),
-            LicensePartyKind.Organization => ConvertToOrganization(licenseParty.Deserialize<LicenseOrganizationParty>()).Map<Party>(x => x),
+            PartyKindOneofCase.None => Error.New(2084794372, "Unknown or No party type"),
+            PartyKindOneofCase.IndividualParty => ConvertToIndividual(licenseParty).Map<Party>(x => x),
+            PartyKindOneofCase.OrganizationParty => ConvertToOrganization(licenseParty).Map<Party>(x => x),
             _ => Error.New(103216125, "Invalid party type"),
         };
-    }
 
-    private static Validation<Error, LicenseIndividualParty> ConvertFromIndividual(
+    private static Validation<Error, LicenseParty> ConvertFromIndividual(
         IndividualParty individualParty)
     {
         ArgumentNullException.ThrowIfNull(individualParty);
 
         var errors = new List<Error>();
-        var result = new LicenseIndividualParty
+        var result = new LicenseParty
         {
-            Kind = LicensePartyKind.Individual,
+            IndividualParty = new LicenseIndividualParty()
         };
 
         if (string.IsNullOrWhiteSpace(individualParty.FirstName))
@@ -165,7 +163,7 @@ internal static class LicenseFactoryTermsValidation
         }
         else
         {
-            result.FirstName = individualParty.FirstName;
+            result.IndividualParty.FirstName = individualParty.FirstName;
         }
 
         if (string.IsNullOrWhiteSpace(individualParty.LastName))
@@ -174,16 +172,16 @@ internal static class LicenseFactoryTermsValidation
         }
         else
         {
-            result.LastName = individualParty.LastName;
+            result.IndividualParty.LastName = individualParty.LastName;
         }
 
         if (string.IsNullOrWhiteSpace(individualParty.FullName))
         {
-            result.FullName = $"{individualParty.FirstName} {individualParty.LastName}";
+            result.IndividualParty.FullName = $"{individualParty.FirstName} {individualParty.LastName}";
         }
         else
         {
-            result.FullName = individualParty.FullName;
+            result.IndividualParty.FullName = individualParty.FullName;
         }
 
         SetBasePartyProperties(individualParty, errors, result);
@@ -196,15 +194,15 @@ internal static class LicenseFactoryTermsValidation
         return result;
     }
 
-    private static Validation<Error, LicenseOrganizationParty> ConvertFromOrganization(
+    private static Validation<Error, LicenseParty> ConvertFromOrganization(
         OrganizationParty organizationParty)
     {
         ArgumentNullException.ThrowIfNull(organizationParty);
 
         var errors = new List<Error>();
-        var result = new LicenseOrganizationParty
+        var result = new LicenseParty
         {
-            Kind = LicensePartyKind.Organization,
+            OrganizationParty = new LicenseOrganizationParty()
         };
 
         if (string.IsNullOrWhiteSpace(organizationParty.LongName))
@@ -213,7 +211,7 @@ internal static class LicenseFactoryTermsValidation
         }
         else
         {
-            result.LongName = organizationParty.LongName;
+            result.OrganizationParty.LongName = organizationParty.LongName;
         }
 
         if (string.IsNullOrWhiteSpace(organizationParty.ShortName))
@@ -222,7 +220,7 @@ internal static class LicenseFactoryTermsValidation
         }
         else
         {
-            result.ShortName = organizationParty.ShortName;
+            result.OrganizationParty.ShortName = organizationParty.ShortName;
         }
 
         SetBasePartyProperties(organizationParty, errors, result);
@@ -236,27 +234,27 @@ internal static class LicenseFactoryTermsValidation
     }
 
     private static Validation<Error, IndividualParty> ConvertToIndividual(
-        LicenseIndividualParty licenseIndividualParty)
+        LicenseParty licenseParty)
     {
-        ArgumentNullException.ThrowIfNull(licenseIndividualParty);
+        ArgumentNullException.ThrowIfNull(licenseParty);
 
         var errors = new List<Error>();
 
-        if (string.IsNullOrWhiteSpace(licenseIndividualParty.FirstName))
+        if (string.IsNullOrWhiteSpace(licenseParty.IndividualParty.FirstName))
         {
             errors.Add(Error.New(1348133387, "First Name is missing"));
         }
 
-        if (string.IsNullOrWhiteSpace(licenseIndividualParty.LastName))
+        if (string.IsNullOrWhiteSpace(licenseParty.IndividualParty.LastName))
         {
             errors.Add(Error.New(946047972, "Last Name is missing"));
         }
 
-        var fullName = string.IsNullOrWhiteSpace(licenseIndividualParty.FullName)
-            ? $"{licenseIndividualParty.FirstName} {licenseIndividualParty.LastName}"
-            : licenseIndividualParty.FullName;
+        var fullName = string.IsNullOrWhiteSpace(licenseParty.IndividualParty.FullName)
+            ? $"{licenseParty.IndividualParty.FirstName} {licenseParty.IndividualParty.LastName}"
+            : licenseParty.IndividualParty.FullName;
 
-        var basePartyProperties = GetBasePartyProperties(licenseIndividualParty);
+        var basePartyProperties = GetBasePartyProperties(licenseParty);
 
         if (errors.Count != 0)
         {
@@ -265,31 +263,31 @@ internal static class LicenseFactoryTermsValidation
 
         return basePartyProperties
             .Map(x => new IndividualParty(
-            licenseIndividualParty.FirstName,
-            licenseIndividualParty.LastName,
+            licenseParty.IndividualParty.FirstName,
+            licenseParty.IndividualParty.LastName,
             fullName,
             x.email,
             x.website));
     }
 
     private static Validation<Error, OrganizationParty> ConvertToOrganization(
-        LicenseOrganizationParty licenseOrganizationParty)
+        LicenseParty licenseParty)
     {
-        ArgumentNullException.ThrowIfNull(licenseOrganizationParty);
+        ArgumentNullException.ThrowIfNull(licenseParty);
 
         var errors = new List<Error>();
 
-        if (string.IsNullOrWhiteSpace(licenseOrganizationParty.LongName))
+        if (string.IsNullOrWhiteSpace(licenseParty.OrganizationParty.LongName))
         {
             errors.Add(Error.New(1625517012, "Long Name is missing"));
         }
 
-        if (string.IsNullOrWhiteSpace(licenseOrganizationParty.ShortName))
+        if (string.IsNullOrWhiteSpace(licenseParty.OrganizationParty.ShortName))
         {
             errors.Add(Error.New(280436811, "Short Name is missing"));
         }
 
-        var basePartyProperties = GetBasePartyProperties(licenseOrganizationParty);
+        var basePartyProperties = GetBasePartyProperties(licenseParty);
 
         if (errors.Count != 0)
         {
@@ -298,8 +296,8 @@ internal static class LicenseFactoryTermsValidation
 
         return basePartyProperties
             .Map(x => new OrganizationParty(
-            licenseOrganizationParty.LongName,
-            licenseOrganizationParty.ShortName,
+            licenseParty.OrganizationParty.LongName,
+            licenseParty.OrganizationParty.ShortName,
             x.email,
             x.website));
     }
