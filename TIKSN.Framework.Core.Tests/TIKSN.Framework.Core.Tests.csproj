@@ -24,7 +24,10 @@
     <PackageReference Include="Spectre.Console.Testing" />
     <PackageReference Include="System.Reactive" />
     <PackageReference Include="xunit" />
-    <PackageReference Include="xunit.analyzers" />
+    <PackageReference Include="xunit.analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="xunit.assert" />
     <PackageReference Include="xunit.runner.visualstudio">
       <PrivateAssets>all</PrivateAssets>
