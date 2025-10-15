@@ -6,7 +6,7 @@
   <ItemGroup>
     <PackageVersion Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
     <PackageVersion Include="Azure.Data.Tables" Version="12.11.0" />
-    <PackageVersion Include="Azure.Storage.Blobs" Version="12.25.1" />
+    <PackageVersion Include="Azure.Storage.Blobs" Version="12.26.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="FluentValidation" Version="12.0.0" />
     <PackageVersion Include="Google.Protobuf" Version="3.32.1" />
@@ -19,13 +19,13 @@
     <PackageVersion Include="MessagePack" Version="3.1.4" />
     <PackageVersion Include="MessagePackAnalyzer" Version="3.1.4" />
     <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Analyzers" Version="9.0.9" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.9" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.9" />
-    <PackageVersion Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.9" />
-    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.9" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="9.0.9" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Analyzers" Version="9.0.10" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.10" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.10" />
+    <PackageVersion Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.10" />
+    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.10" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="9.0.10" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.10" />
     <PackageVersion Include="Microsoft.Extensions.FileProviders.Abstractions" Version="9.0.9" />
     <PackageVersion Include="Microsoft.Extensions.FileProviders.Physical" Version="9.0.9" />
@@ -33,7 +33,7 @@
     <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.9" />
     <PackageVersion Include="Microsoft.Extensions.Localization" Version="9.0.9" />
     <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.9" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.9" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.10" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="9.0.9" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.9" />
     <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.9.0" />
