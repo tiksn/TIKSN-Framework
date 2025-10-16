@@ -54,6 +54,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" VersionOverride="9.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" VersionOverride="9.0.10" />
   <PackageReference Include="Microsoft.Extensions.Configuration" VersionOverride="9.0.10" />
+  <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" VersionOverride="9.0.10" />
+  <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" VersionOverride="9.0.10" />
     <Protobuf Include="Licensing\schema.proto" GrpcServices="None" />
   </ItemGroup>
 </Project>
