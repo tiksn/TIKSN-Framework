@@ -56,7 +56,8 @@
   <PackageReference Include="Microsoft.Extensions.Configuration" />
   <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" />
   <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" />
-  <PackageReference Include="Microsoft.Extensions.Localization" VersionOverride="9.0.10" />
+  <PackageReference Include="Microsoft.Extensions.Localization" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
     <Protobuf Include="Licensing\schema.proto" GrpcServices="None" />
   </ItemGroup>
 </Project>
