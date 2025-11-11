@@ -18,7 +18,7 @@
     <PackageVersion Include="LiteDB" Version="5.0.21" />
     <PackageVersion Include="MessagePack" Version="3.1.4" />
     <PackageVersion Include="MessagePackAnalyzer" Version="3.1.4" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="10.0.100" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Analyzers" Version="9.0.10" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.10" />
