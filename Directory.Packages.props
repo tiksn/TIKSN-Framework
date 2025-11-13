@@ -20,7 +20,7 @@
     <PackageVersion Include="MessagePackAnalyzer" Version="3.1.4" />
     <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="10.0.100" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Analyzers" Version="9.0.10" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Analyzers" Version="10.0.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.10" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.10" />
     <PackageVersion Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.10" />
