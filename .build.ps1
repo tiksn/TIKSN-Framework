@@ -116,11 +116,11 @@ Task Pack Build, Test, {
     }
 
     $dependencyGroups = @(
-        @{Packages = $packages.Core; TargetFramework = 'net9.0' },
-        @{Packages = $packages.Android; TargetFramework = 'net9.0-android21.0' }
-        @{Packages = $packages.IOS; TargetFramework = 'net9.0-ios14.2' }
-        @{Packages = $packages.MacCatalyst; TargetFramework = 'net9.0-maccatalyst14.0' }
-        @{Packages = $packages.Windows; TargetFramework = 'net9.0-windows10.0.19041.0' }
+        @{Packages = $packages.Core; TargetFramework = 'net10.0' },
+        @{Packages = $packages.Android; TargetFramework = 'net10.0-android21.0' }
+        @{Packages = $packages.IOS; TargetFramework = 'net10.0-ios14.2' }
+        @{Packages = $packages.MacCatalyst; TargetFramework = 'net10.0-maccatalyst14.0' }
+        @{Packages = $packages.Windows; TargetFramework = 'net10.0-windows10.0.19041.0' }
     )
 
     $nuspec = [xml](Get-Content -Path $temporaryNuspec -Raw)
@@ -187,7 +187,7 @@ Task Test Build, {
 
 # Synopsis: Build
 Task Build Format, BuildLanguageLocalization, BuildRegionLocalization, BuildCore, BuildMaui, {
-    $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+    $solution = Resolve-Path -Path 'TIKSN Framework.slnx'
     Exec { dotnet build $solution }
 }
 
@@ -234,10 +234,10 @@ Task BuildMaui EstimateVersion, {
 
     Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder }
 
-    Exec { dotnet build $project --framework net9.0-ios /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyIosBuildArtifactsFolder }
-    Exec { dotnet build $project --framework net9.0-maccatalyst /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyMaccatalystBuildArtifactsFolder }
-    Exec { dotnet build $project --framework net9.0-android /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyAndroidBuildArtifactsFolder }
-    Exec { dotnet build $project --framework net9.0-windows10.0.19041.0 /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyWindowsBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net10.0-ios /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyIosBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net10.0-maccatalyst /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyMaccatalystBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net10.0-android /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyAndroidBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net10.0-windows10.0.19041.0 /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyWindowsBuildArtifactsFolder }
 }
 
 # Synopsis: Estimate Next Version
@@ -292,7 +292,7 @@ Task FormatAnalyzers Restore, FormatAnalyzersLanguageLocalization, FormatAnalyze
 
 # Synopsis: Format Analyzers Solution
 Task FormatAnalyzersSolution Restore, {
-    $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+    $solution = Resolve-Path -Path 'TIKSN Framework.slnx'
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $solution }
 }
 
@@ -329,7 +329,7 @@ Task FormatStyle Restore, FormatStyleLanguageLocalization, FormatStyleRegionLoca
 
 # Synopsis: Format Style Solution
 Task FormatStyleSolution Restore, {
-    $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+    $solution = Resolve-Path -Path 'TIKSN Framework.slnx'
     Exec { dotnet format style --severity info --verbosity diagnostic $solution }
 }
 
@@ -363,7 +363,7 @@ Task FormatStyleMaui Restore, {
 
 # Synopsis: Format Whitespace
 Task FormatWhitespace Restore, {
-    $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+    $solution = Resolve-Path -Path 'TIKSN Framework.slnx'
     Exec { dotnet format whitespace --verbosity diagnostic $solution }
 }
 
@@ -409,7 +409,7 @@ Task RestoreTools Clean, {
 
 # Synopsis: Restore packages
 Task RestorePackages Clean, {
-    $solution = Resolve-Path -Path 'TIKSN Framework.sln'
+    $solution = Resolve-Path -Path 'TIKSN Framework.slnx'
     Exec { dotnet restore $solution }
 }
 

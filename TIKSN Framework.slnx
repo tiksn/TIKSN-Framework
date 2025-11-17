@@ -1,0 +1,22 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="ARM" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Framework/">
+    <Project Path="TIKSN.Framework.Core/TIKSN.Framework.Core.csproj" />
+    <Project Path="TIKSN.Framework.Maui/TIKSN.Framework.Maui.csproj" />
+    <Project Path="TIKSN.LanguageLocalization/TIKSN.LanguageLocalization.csproj" />
+    <Project Path="TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="TIKSN-Framework.nuspec" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="TIKSN.Framework.Core.Tests/TIKSN.Framework.Core.Tests.csproj" />
+    <Project Path="TIKSN.Framework.IntegrationTests/TIKSN.Framework.IntegrationTests.csproj" />
+  </Folder>
+</Solution>
