@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="AntimalwareScanning/AntimalwareScanning.csproj" />
+  <Project Path="ShellCommands/ShellCommands.csproj" />
+</Solution>

@@ -35,37 +35,37 @@
     <file src="README.md" target="" />
     <!-- Language Localization will be filled by build script -->
     <!-- Region Localization will be filled by build script -->
-    <!-- Platform: .NET 7 -->
-    <file src="any\TIKSN.Framework.Core.dll" target="lib\net9.0" />
-    <file src="any\TIKSN.Framework.Core.xml" target="lib\net9.0" />
-    <file src="any\TIKSN.Framework.Core.pdb" target="lib\net9.0" />
-    <!-- Platform: .NET 7 Android -->
-    <file src="any-android\TIKSN.Framework.Core.dll" target="lib\net9.0-android21.0" />
-    <file src="any-android\TIKSN.Framework.Core.xml" target="lib\net9.0-android21.0" />
-    <file src="any-android\TIKSN.Framework.Core.pdb" target="lib\net9.0-android21.0" />
-    <file src="any-android\TIKSN.Framework.Maui.dll" target="lib\net9.0-android21.0" />
-    <file src="any-android\TIKSN.Framework.Maui.xml" target="lib\net9.0-android21.0" />
-    <file src="any-android\TIKSN.Framework.Maui.pdb" target="lib\net9.0-android21.0" />
-    <!-- Platform: .NET 7 iOS -->
-    <file src="any-ios\TIKSN.Framework.Core.dll" target="lib\net9.0-ios14.2" />
-    <file src="any-ios\TIKSN.Framework.Core.xml" target="lib\net9.0-ios14.2" />
-    <file src="any-ios\TIKSN.Framework.Core.pdb" target="lib\net9.0-ios14.2" />
-    <file src="any-ios\TIKSN.Framework.Maui.dll" target="lib\net9.0-ios14.2" />
-    <file src="any-ios\TIKSN.Framework.Maui.xml" target="lib\net9.0-ios14.2" />
-    <file src="any-ios\TIKSN.Framework.Maui.pdb" target="lib\net9.0-ios14.2" />
-    <!-- Platform: .NET 7 Mac Catalyst -->
-    <file src="any-maccatalyst\TIKSN.Framework.Core.dll" target="lib\net9.0-maccatalyst14.0" />
-    <file src="any-maccatalyst\TIKSN.Framework.Core.xml" target="lib\net9.0-maccatalyst14.0" />
-    <file src="any-maccatalyst\TIKSN.Framework.Core.pdb" target="lib\net9.0-maccatalyst14.0" />
-    <file src="any-maccatalyst\TIKSN.Framework.Maui.dll" target="lib\net9.0-maccatalyst14.0" />
-    <file src="any-maccatalyst\TIKSN.Framework.Maui.xml" target="lib\net9.0-maccatalyst14.0" />
-    <file src="any-maccatalyst\TIKSN.Framework.Maui.pdb" target="lib\net9.0-maccatalyst14.0" />
-    <!-- Platform: .NET 7 Windows-->
-    <file src="any-windows\TIKSN.Framework.Core.dll" target="lib\net9.0-windows10.0.19041.0" />
-    <file src="any-windows\TIKSN.Framework.Core.xml" target="lib\net9.0-windows10.0.19041.0" />
-    <file src="any-windows\TIKSN.Framework.Core.pdb" target="lib\net9.0-windows10.0.19041.0" />
-    <file src="any-windows\TIKSN.Framework.Maui.dll" target="lib\net9.0-windows10.0.19041.0" />
-    <file src="any-windows\TIKSN.Framework.Maui.xml" target="lib\net9.0-windows10.0.19041.0" />
-    <file src="any-windows\TIKSN.Framework.Maui.pdb" target="lib\net9.0-windows10.0.19041.0" />
+    <!-- Platform: .NET -->
+    <file src="any\TIKSN.Framework.Core.dll" target="lib\net10.0" />
+    <file src="any\TIKSN.Framework.Core.xml" target="lib\net10.0" />
+    <file src="any\TIKSN.Framework.Core.pdb" target="lib\net10.0" />
+    <!-- Platform: .NET Android -->
+    <file src="any-android\TIKSN.Framework.Core.dll" target="lib\net10.0-android21.0" />
+    <file src="any-android\TIKSN.Framework.Core.xml" target="lib\net10.0-android21.0" />
+    <file src="any-android\TIKSN.Framework.Core.pdb" target="lib\net10.0-android21.0" />
+    <file src="any-android\TIKSN.Framework.Maui.dll" target="lib\net10.0-android21.0" />
+    <file src="any-android\TIKSN.Framework.Maui.xml" target="lib\net10.0-android21.0" />
+    <file src="any-android\TIKSN.Framework.Maui.pdb" target="lib\net10.0-android21.0" />
+    <!-- Platform: .NET iOS -->
+    <file src="any-ios\TIKSN.Framework.Core.dll" target="lib\net10.0-ios14.2" />
+    <file src="any-ios\TIKSN.Framework.Core.xml" target="lib\net10.0-ios14.2" />
+    <file src="any-ios\TIKSN.Framework.Core.pdb" target="lib\net10.0-ios14.2" />
+    <file src="any-ios\TIKSN.Framework.Maui.dll" target="lib\net10.0-ios14.2" />
+    <file src="any-ios\TIKSN.Framework.Maui.xml" target="lib\net10.0-ios14.2" />
+    <file src="any-ios\TIKSN.Framework.Maui.pdb" target="lib\net10.0-ios14.2" />
+    <!-- Platform: .NET Mac Catalyst -->
+    <file src="any-maccatalyst\TIKSN.Framework.Core.dll" target="lib\net10.0-maccatalyst14.0" />
+    <file src="any-maccatalyst\TIKSN.Framework.Core.xml" target="lib\net10.0-maccatalyst14.0" />
+    <file src="any-maccatalyst\TIKSN.Framework.Core.pdb" target="lib\net10.0-maccatalyst14.0" />
+    <file src="any-maccatalyst\TIKSN.Framework.Maui.dll" target="lib\net10.0-maccatalyst14.0" />
+    <file src="any-maccatalyst\TIKSN.Framework.Maui.xml" target="lib\net10.0-maccatalyst14.0" />
+    <file src="any-maccatalyst\TIKSN.Framework.Maui.pdb" target="lib\net10.0-maccatalyst14.0" />
+    <!-- Platform: .NET Windows-->
+    <file src="any-windows\TIKSN.Framework.Core.dll" target="lib\net10.0-windows10.0.19041.0" />
+    <file src="any-windows\TIKSN.Framework.Core.xml" target="lib\net10.0-windows10.0.19041.0" />
+    <file src="any-windows\TIKSN.Framework.Core.pdb" target="lib\net10.0-windows10.0.19041.0" />
+    <file src="any-windows\TIKSN.Framework.Maui.dll" target="lib\net10.0-windows10.0.19041.0" />
+    <file src="any-windows\TIKSN.Framework.Maui.xml" target="lib\net10.0-windows10.0.19041.0" />
+    <file src="any-windows\TIKSN.Framework.Maui.pdb" target="lib\net10.0-windows10.0.19041.0" />
   </files>
 </package>
