@@ -28,7 +28,7 @@ jobs:
           lfs: true
           fetch-depth: 0
       - name: "Install .NET Core SDK"
-        uses: actions/setup-dotnet@v5.0.0
+        uses: actions/setup-dotnet@v5.0.1
       - name: Install .NET MAUI
         run: dotnet workload install maui
       - name: "Install InvokeBuild Module"
