@@ -58,7 +58,7 @@
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.15.0.120848" />
     <PackageVersion Include="Spectre.Console" Version="0.54.0" />
     <PackageVersion Include="Spectre.Console.Analyzer" Version="1.0.0" />
-    <PackageVersion Include="Spectre.Console.Cli" Version="0.53.0" />
+    <PackageVersion Include="Spectre.Console.Cli" Version="0.53.1" />
     <PackageVersion Include="Spectre.Console.Testing" Version="0.54.0" />
     <PackageVersion Include="System.Interactive" Version="7.0.0" />
     <PackageVersion Include="System.Interactive.Async" Version="7.0.0" />
