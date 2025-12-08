@@ -9,7 +9,7 @@
     <PackageVersion Include="Azure.Storage.Blobs" Version="12.26.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="FluentValidation" Version="12.1.1" />
-    <PackageVersion Include="Google.Protobuf" Version="3.33.1" />
+    <PackageVersion Include="Google.Protobuf" Version="3.33.2" />
     <PackageVersion Include="Grpc.Tools" Version="2.76.0" />
     <PackageVersion Include="IdGen" Version="3.0.7" />
     <PackageVersion Include="LanguageExt.Core" Version="4.4.9" />
