@@ -119,6 +119,7 @@
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" VersionOverride="10.0.1" />
     <Protobuf Include="Licensing\schema.proto" GrpcServices="None" />
   </ItemGroup>
 </Project>
