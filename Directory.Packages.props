@@ -35,7 +35,7 @@
     <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.1" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.1" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.1" />
-    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.1" />
     <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="10.1.0" />
     <PackageVersion Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.1" />
     <PackageVersion Include="Microsoft.Maui.Controls" Version="10.0.20" />
