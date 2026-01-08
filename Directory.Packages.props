@@ -55,7 +55,7 @@
     <PackageVersion Include="ReactiveUI.Maui" Version="22.3.1" />
     <PackageVersion Include="Roslynator.Analyzers" Version="4.15.0" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
-    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.17.0.131074" />
+    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.18.0.131500" />
     <PackageVersion Include="Spectre.Console" Version="0.54.0" />
     <PackageVersion Include="Spectre.Console.Analyzer" Version="1.0.0" />
     <PackageVersion Include="Spectre.Console.Cli" Version="0.53.1" />
