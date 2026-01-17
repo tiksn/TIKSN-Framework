@@ -408,9 +408,46 @@ Task RestoreTools Clean, {
 }
 
 # Synopsis: Restore packages
-Task RestorePackages Clean, {
+Task RestorePackages Clean, EnsureCentralPackageVersions, {
     $solution = Resolve-Path -Path 'TIKSN Framework.slnx'
     Exec { dotnet restore $solution }
+}
+
+# Synopsis: Ensure Central Package Versions compliance
+Task EnsureCentralPackageVersions Clean, {
+
+    $projectFiles = Get-ChildItem -Path . `
+        -Recurse `
+        -Include *.csproj, *.fsproj, *.vbproj `
+        -File
+
+    $violations = @()
+
+    foreach ($projectFile in $projectFiles) {
+        try {
+            [xml]$xml = Get-Content $projectFile.FullName -Raw
+        }
+        catch {
+            throw "Failed to parse XML: $($projectFile.FullName)"
+        }
+
+        $ns = New-Object System.Xml.XmlNamespaceManager($xml.NameTable)
+        $ns.AddNamespace('msb', $xml.DocumentElement.NamespaceURI)
+
+        $nodes = $xml.SelectNodes('//*[@VersionOverride]', $ns)
+
+        foreach ($node in $nodes) {
+            $violations += [PSCustomObject]@{
+                File  = $projectFile.FullName
+                Node  = $node.Name
+                Value = $node.GetAttribute('VersionOverride')
+            }
+        }
+    }
+
+    if ($violations.Count -gt 0) {
+        throw "VersionOverride attributes are not allowed. File: $($violations[0].File) Node: <$($violations[0].Node)>"
+    }
 }
 
 # Synopsis: Clean previous build leftovers
