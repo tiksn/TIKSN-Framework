@@ -12,7 +12,7 @@ public interface IBareEntityResolver<TBareEntity, in TIdentity>
     where TBareEntity : IEntity<TIdentity>
     where TIdentity : IEquatable<TIdentity>
 {
-    Task<TBareEntity> ResolveAsync(
+    public Task<TBareEntity> ResolveAsync(
         TIdentity id,
         CancellationToken cancellationToken);
 }

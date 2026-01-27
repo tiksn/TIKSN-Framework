@@ -5,5 +5,5 @@ namespace TIKSN.Data.Mongo;
 
 public interface IMongoClientSessionProvider
 {
-    Option<IClientSessionHandle> GetClientSessionHandle();
+    public Option<IClientSessionHandle> GetClientSessionHandle();
 }

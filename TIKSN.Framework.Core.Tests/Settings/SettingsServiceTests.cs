@@ -13,7 +13,8 @@ public class SettingsServiceTests
 {
     private readonly ServiceCollection services;
     private readonly ISettingsService settingsService;
-    private static readonly string[] expected = new string[] { "LocalInteger", "LocalString", "LocalGuid" };
+    private static readonly string[] expectedLocal = ["LocalInteger", "LocalString", "LocalGuid"];
+    private static readonly string[] expectedRoaming = ["RoamingInteger", "RoamingString", "RoamingGuid"];
 
     public SettingsServiceTests()
     {
@@ -90,7 +91,7 @@ public class SettingsServiceTests
 
         var names = this.settingsService.ListLocalSetting();
 
-        names.ShouldBeEquivalentTo(expected);
+        names.ShouldBeEquivalentTo(expectedLocal);
     }
 
     [Fact]
@@ -187,7 +188,7 @@ public class SettingsServiceTests
 
         var names = this.settingsService.ListRoamingSetting();
 
-        names.ShouldBeEquivalentTo(new string[] { "RoamingInteger", "RoamingString", "RoamingGuid" });
+        names.ShouldBeEquivalentTo(expectedRoaming);
     }
 
     [Fact]

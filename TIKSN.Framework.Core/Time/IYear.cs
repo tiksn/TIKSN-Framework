@@ -12,13 +12,13 @@ public interface IYear<TSelf>
 {
     #region Next and Previous
 
-    new TSelf GetNext();
+    public new TSelf GetNext();
 
-    new TSelf GetNext(int numberOfYears);
+    public new TSelf GetNext(int numberOfYears);
 
-    new TSelf GetPrevious();
+    public new TSelf GetPrevious();
 
-    new TSelf GetPrevious(int numberOfYears);
+    public new TSelf GetPrevious(int numberOfYears);
 
     #endregion Next and Previous
 }
@@ -27,35 +27,35 @@ public interface IYear
 {
     #region Contains
 
-    bool Contains(LocalDate localDate);
+    public bool Contains(LocalDate localDate);
 
-    bool Contains(LocalDateTime localDateTime);
+    public bool Contains(LocalDateTime localDateTime);
 
-    bool Contains(ZonedDateTime zonedDateTime);
+    public bool Contains(ZonedDateTime zonedDateTime);
 
-    bool Contains(OffsetDate offsetDate);
+    public bool Contains(OffsetDate offsetDate);
 
-    bool Contains(OffsetDateTime offsetDateTime);
+    public bool Contains(OffsetDateTime offsetDateTime);
 
-    bool Contains(YearMonth yearMonth);
+    public bool Contains(YearMonth yearMonth);
 
     #endregion Contains
 
     #region Next and Previous
 
-    IYear GetNext();
+    public IYear GetNext();
 
-    IYear GetNext(int numberOfYears);
+    public IYear GetNext(int numberOfYears);
 
-    IYear GetPrevious();
+    public IYear GetPrevious();
 
-    IYear GetPrevious(int numberOfYears);
+    public IYear GetPrevious(int numberOfYears);
 
     #endregion Next and Previous
 
     #region Conversion
 
-    DateInterval ToDateInterval();
+    public DateInterval ToDateInterval();
 
     #endregion Conversion
 }

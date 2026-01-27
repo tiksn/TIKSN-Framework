@@ -2,15 +2,15 @@ namespace TIKSN.Data;
 
 public interface IRepository<in T>
 {
-    Task AddAsync(T entity, CancellationToken cancellationToken);
+    public Task AddAsync(T entity, CancellationToken cancellationToken);
 
-    Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken);
+    public Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken);
 
-    Task RemoveAsync(T entity, CancellationToken cancellationToken);
+    public Task RemoveAsync(T entity, CancellationToken cancellationToken);
 
-    Task RemoveRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken);
+    public Task RemoveRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken);
 
-    Task UpdateAsync(T entity, CancellationToken cancellationToken);
+    public Task UpdateAsync(T entity, CancellationToken cancellationToken);
 
-    Task UpdateRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken);
+    public Task UpdateRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken);
 }

@@ -4,8 +4,8 @@ namespace TIKSN.Data;
 
 public interface IPageResult<out T>
 {
-    IReadOnlyList<T> Items { get; }
-    Page Page { get; }
-    Option<long> TotalItems { get; }
-    Option<long> TotalPages { get; }
+    public IReadOnlyList<T> Items { get; }
+    public Page Page { get; }
+    public Option<long> TotalItems { get; }
+    public Option<long> TotalPages { get; }
 }

@@ -68,7 +68,7 @@ public class NationalBankOfUkraine : INationalBankOfUkraine
     {
         var records = await this.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
 
-        return records.Select(item => item.Pair).ToArray();
+        return [.. records.Select(item => item.Pair)];
     }
 
     /// <summary>

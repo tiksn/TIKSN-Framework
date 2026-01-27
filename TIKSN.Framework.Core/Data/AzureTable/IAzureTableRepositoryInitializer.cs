@@ -7,5 +7,5 @@ namespace TIKSN.Data.AzureTable;
 public interface IAzureTableRepositoryInitializer<T> where T : ITableEntity
 #pragma warning restore S2326 // Unused type parameters should be removed
 {
-    Task InitializeAsync(CancellationToken cancellationToken);
+    public Task InitializeAsync(CancellationToken cancellationToken);
 }

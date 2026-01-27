@@ -320,8 +320,7 @@ public class FileSettingsService : ISettingsService
     private string[] ListNames(IFileProvider fileProvider)
     {
         using var db = this.GetDatabase(fileProvider, out var settingsCollection, out var bsonDocument);
-        return bsonDocument.Keys.Where(n => !string.Equals(n, "_id", StringComparison.OrdinalIgnoreCase))
-            .ToArray();
+        return [.. bsonDocument.Keys.Where(n => !string.Equals(n, "_id", StringComparison.OrdinalIgnoreCase))];
     }
 }
 

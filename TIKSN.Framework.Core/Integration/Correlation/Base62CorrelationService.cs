@@ -53,7 +53,7 @@ public class Base62CorrelationService : ICorrelationService
 
     public CorrelationId Create(Seq<byte> binaryRepresentation)
     {
-        var number = this.bigIntegerBinaryDeserializer.Deserialize(binaryRepresentation.Reverse().ToArray());
+        var number = this.bigIntegerBinaryDeserializer.Deserialize([.. binaryRepresentation.Reverse()]);
         var chars = new Stack<char>();
 
         while (number != BigInteger.Zero)

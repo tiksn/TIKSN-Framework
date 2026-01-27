@@ -50,13 +50,13 @@ public class MemoryCacheDecoratorBaseTests
 
     public interface ITestService
     {
-        Option<TestEntity> FindByExternalId(Guid externalId);
+        public Option<TestEntity> FindByExternalId(Guid externalId);
 
-        Task<Option<TestEntity>> FindByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
+        public Task<Option<TestEntity>> FindByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
 
-        Option<TestEntity> FindById(int id);
+        public Option<TestEntity> FindById(int id);
 
-        Task<Option<TestEntity>> FindByIdAsync(int id, CancellationToken cancellationToken);
+        public Task<Option<TestEntity>> FindByIdAsync(int id, CancellationToken cancellationToken);
     }
 
     [Fact]

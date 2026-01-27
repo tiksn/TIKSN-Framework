@@ -7,12 +7,12 @@ namespace TIKSN.Licensing;
 
 public interface ILicenseFactory<TEntitlements, TEntitlementsData> where TEntitlementsData : IMessage<TEntitlementsData>
 {
-    Validation<Error, License<TEntitlements>> Create(
+    public Validation<Error, License<TEntitlements>> Create(
         LicenseTerms terms,
         TEntitlements entitlements,
         X509Certificate2 privateCertificate);
 
-    Validation<Error, License<TEntitlements>> Create(
+    public Validation<Error, License<TEntitlements>> Create(
         Seq<byte> data,
         X509Certificate2 publicCertificate);
 }

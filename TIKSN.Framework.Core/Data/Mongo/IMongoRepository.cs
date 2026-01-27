@@ -5,5 +5,5 @@ public interface IMongoRepository<TDocument, TIdentity> :
     IQueryRepository<TDocument, TIdentity>,
     IStreamRepository<TDocument> where TDocument : IEntity<TIdentity> where TIdentity : IEquatable<TIdentity>
 {
-    Task AddOrUpdateAsync(TDocument entity, CancellationToken cancellationToken);
+    public Task AddOrUpdateAsync(TDocument entity, CancellationToken cancellationToken);
 }

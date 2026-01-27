@@ -66,7 +66,7 @@ public class LiteDbRepository<TDocument, TIdentity> : ILiteDbRepository<TDocumen
     public Task<IReadOnlyList<TDocument>> ListAsync(
         IEnumerable<TIdentity> ids,
         CancellationToken cancellationToken)
-        => Task.FromResult<IReadOnlyList<TDocument>>(this.Collection.Find(item => ids.Contains(item.ID)).ToArray());
+        => Task.FromResult<IReadOnlyList<TDocument>>([.. this.Collection.Find(item => ids.Contains(item.ID))]);
 
     public Task<PageResult<TDocument>> PageAsync(
         PageQuery pageQuery,

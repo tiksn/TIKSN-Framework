@@ -45,7 +45,7 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
             return false;
         }
 
-        return string.CompareOrdinal(this.ISOCurrencySymbol, other.ISOCurrencySymbol) == 0;
+        return string.Equals(this.ISOCurrencySymbol, other.ISOCurrencySymbol, StringComparison.Ordinal);
     }
 
     public override bool Equals(object? obj)

@@ -5,5 +5,5 @@ public interface ITenantEntity<TEntityIdentity, out TTenantIdentity>
     where TEntityIdentity : IEquatable<TEntityIdentity>
     where TTenantIdentity : IEquatable<TTenantIdentity>
 {
-    TTenantIdentity TenantID { get; }
+    public TTenantIdentity TenantID { get; }
 }

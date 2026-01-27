@@ -28,10 +28,7 @@ public class MemoryCachedCurrencyConverterTests
     {
         var services = new ServiceCollection();
         _ = services.AddFrameworkCore();
-        _ = services.AddLogging(builder =>
-        {
-            _ = builder.AddDebug();
-        });
+        _ = services.AddLogging(builder => _ = builder.AddDebug());
         _ = services.Configure<MemoryCachedCurrencyConverterOptions>(o => o.CacheInterval = TimeSpan.FromMinutes(5));
         var serviceProvider = services.BuildServiceProvider();
 

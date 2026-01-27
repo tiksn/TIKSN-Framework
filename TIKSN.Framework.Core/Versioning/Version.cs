@@ -9,8 +9,6 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
     private const Milestone DefaultMilestone = Milestone.Release;
     private const int DefaultPreReleaseNumber = -1;
 
-    private int preReleaseNumber;
-
     public Version(
         int releaseMajor,
         int releaseMinor)
@@ -334,12 +332,12 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
 
     public int PreReleaseNumber
     {
-        get => this.preReleaseNumber;
+        get;
         private set
         {
             ArgumentOutOfRangeException.ThrowIfLessThan(value, -1);
 
-            this.preReleaseNumber = value;
+            field = value;
         }
     }
 
@@ -377,11 +375,11 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
         ArgumentNullException.ThrowIfNull(nuGetVersion);
 
         var (milestone, prereleaseNumber) =
-            GetMilestoneAndPrereleaseNumber(nuGetVersion.IsPrerelease, nuGetVersion.ReleaseLabels.ToArray());
+            GetMilestoneAndPrereleaseNumber(nuGetVersion.IsPrerelease, [.. nuGetVersion.ReleaseLabels]);
 
         var releaseNumbersCount =
             (nuGetVersion.OriginalVersion?
-                .Remove(nuGetVersion.OriginalVersion.Length - nuGetVersion.Release.Length)
+[..^nuGetVersion.Release.Length]
                 .Split('.')
                 .Length) ?? 0;
 
@@ -422,7 +420,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
         ArgumentNullException.ThrowIfNull(semanticVersion);
 
         var (milestone, prereleaseNumber) = GetMilestoneAndPrereleaseNumber(semanticVersion.IsPrerelease,
-            semanticVersion.ReleaseLabels.ToArray());
+            [.. semanticVersion.ReleaseLabels]);
 
         if (semanticVersion.HasMetadata)
         {
@@ -617,7 +615,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
         {
             return this.Release.CompareTo(systemVersion) == 0 &&
                 this.Milestone == DefaultMilestone &&
-                this.preReleaseNumber == DefaultPreReleaseNumber;
+                this.PreReleaseNumber == DefaultPreReleaseNumber;
         }
 
         return false;
@@ -711,12 +709,12 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
             return [];
         }
 
-        if (version.preReleaseNumber == DefaultPreReleaseNumber)
+        if (version.PreReleaseNumber == DefaultPreReleaseNumber)
         {
             return [milestoneTag];
         }
 
-        return [milestoneTag, version.preReleaseNumber.ToString(CultureInfo.InvariantCulture)];
+        return [milestoneTag, version.PreReleaseNumber.ToString(CultureInfo.InvariantCulture)];
     }
 
     private void ValidateMilestoneAndPrerelease()

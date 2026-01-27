@@ -2,5 +2,5 @@ namespace TIKSN.Shell;
 
 public interface IShellCommandContextStore
 {
-    void SetCommandName(string commandName);
+    public void SetCommandName(string commandName);
 }

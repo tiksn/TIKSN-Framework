@@ -2,8 +2,6 @@ namespace TIKSN.Web;
 
 public sealed class SitemapPage : IEquatable<SitemapPage>
 {
-    private double? priority;
-
     public SitemapPage(Uri address, DateTime? lastModified, Frequency? changeFrequency, double? priority)
     {
         this.Address = address ?? throw new ArgumentNullException(nameof(address));
@@ -31,12 +29,12 @@ public sealed class SitemapPage : IEquatable<SitemapPage>
 
     public double? Priority
     {
-        get => this.priority;
+        get;
         private set
         {
             if (!value.HasValue || (value.Value >= 0.0d && value.Value <= 1.0d))
             {
-                this.priority = value;
+                field = value;
             }
             else
             {

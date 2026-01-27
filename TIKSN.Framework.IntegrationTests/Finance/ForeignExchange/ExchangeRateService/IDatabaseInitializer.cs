@@ -5,5 +5,5 @@ namespace TIKSN.IntegrationTests.Finance.ForeignExchange.ExchangeRateService;
 
 public interface IDatabaseInitializer
 {
-    Task InitializeAsync(CancellationToken cancellationToken);
+    public Task InitializeAsync(CancellationToken cancellationToken);
 }

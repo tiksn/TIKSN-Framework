@@ -130,7 +130,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
     {
         ArgumentNullException.ThrowIfNull(envelope);
 
-        if (envelope.Message.Discriminator.Count() != Guid.Empty.ToByteArray().Length ||
+        if (envelope.Message.Discriminator.Length != Guid.Empty.ToByteArray().Length ||
             envelope.Message.Discriminator.All(x => x == byte.MinValue) ||
             !envelope.Message.Discriminator.SequenceEqual(this.licenseDescriptor.Discriminator.ToByteArray()))
         {

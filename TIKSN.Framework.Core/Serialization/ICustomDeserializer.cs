@@ -12,5 +12,5 @@ public interface ICustomDeserializer<in TSerial, out TModel>
     /// </summary>
     /// <param name="serial">Serial to be deserialized into model</param>
     /// <returns>Deserialized model</returns>
-    TModel Deserialize(TSerial serial);
+    public TModel Deserialize(TSerial serial);
 }
