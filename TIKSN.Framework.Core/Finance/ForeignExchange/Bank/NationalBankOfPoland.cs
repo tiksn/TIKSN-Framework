@@ -64,10 +64,9 @@ public class NationalBankOfPoland : INationalBankOfPoland
     {
         var exchangeRates = await this.GetRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
 
-        return exchangeRates
+        return [.. exchangeRates
             .Select(x => x.Pair)
-            .Distinct()
-            .ToList();
+            .Distinct()];
     }
 
     public async Task<decimal> GetExchangeRateAsync(
@@ -152,9 +151,7 @@ public class NationalBankOfPoland : INationalBankOfPoland
         var ratesA = await this.GetRatesAsync(TableA, asOn, cancellationToken).ConfigureAwait(false);
         var ratesB = await this.GetRatesAsync(TableB, asOn, cancellationToken).ConfigureAwait(false);
 
-        return ratesA.Concat(ratesB)
-            .SelectMany(x => new[] { x, new ExchangeRate(x.Pair.Reverse(), x.AsOn, 1m / x.Rate) })
-            .ToArray();
+        return [.. ratesA.Concat(ratesB).SelectMany(x => new[] { x, new ExchangeRate(x.Pair.Reverse(), x.AsOn, 1m / x.Rate) })];
     }
 
 #pragma warning disable CA1812 // Avoid uninstantiated internal classes

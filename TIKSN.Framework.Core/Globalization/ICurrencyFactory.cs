@@ -5,7 +5,7 @@ namespace TIKSN.Globalization;
 
 public interface ICurrencyFactory
 {
-    CurrencyInfo Create(string isoCurrencySymbol);
+    public CurrencyInfo Create(string isoCurrencySymbol);
 
-    CurrencyInfo Create(RegionInfo region);
+    public CurrencyInfo Create(RegionInfo region);
 }

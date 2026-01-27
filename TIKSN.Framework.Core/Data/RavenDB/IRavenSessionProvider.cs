@@ -4,5 +4,5 @@ namespace TIKSN.Data.RavenDB;
 
 public interface IRavenSessionProvider
 {
-    IAsyncDocumentSession Session { get; }
+    public IAsyncDocumentSession Session { get; }
 }

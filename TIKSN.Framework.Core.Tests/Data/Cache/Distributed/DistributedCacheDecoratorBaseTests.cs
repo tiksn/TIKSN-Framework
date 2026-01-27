@@ -56,9 +56,9 @@ public class DistributedCacheDecoratorBaseTests
 
     public interface ITestService
     {
-        Task<Option<TestEntity>> FindByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
+        public Task<Option<TestEntity>> FindByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
 
-        Task<Option<TestEntity>> FindByIdAsync(int id, CancellationToken cancellationToken);
+        public Task<Option<TestEntity>> FindByIdAsync(int id, CancellationToken cancellationToken);
     }
 
     [Fact]

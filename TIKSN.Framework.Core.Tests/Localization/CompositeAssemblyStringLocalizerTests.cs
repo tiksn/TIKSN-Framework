@@ -19,10 +19,7 @@ public partial class CompositeAssemblyStringLocalizerTests
     {
         var services = new ServiceCollection();
         _ = services.AddFrameworkCore();
-        _ = services.AddLogging(builder =>
-        {
-            _ = builder.AddDebug();
-        });
+        _ = services.AddLogging(builder => _ = builder.AddDebug());
         this.serviceProvider = services.BuildServiceProvider();
     }
 

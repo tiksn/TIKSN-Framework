@@ -2,5 +2,5 @@ namespace TIKSN.Advertising;
 
 public interface IAdUnitFactory
 {
-    AdUnit Create(string key);
+    public AdUnit Create(string key);
 }

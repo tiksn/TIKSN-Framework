@@ -5,5 +5,5 @@ public interface IUserEntity<TEntityIdentity, out TUserIdentity>
     where TEntityIdentity : IEquatable<TEntityIdentity>
     where TUserIdentity : IEquatable<TUserIdentity>
 {
-    TUserIdentity UserID { get; }
+    public TUserIdentity UserID { get; }
 }

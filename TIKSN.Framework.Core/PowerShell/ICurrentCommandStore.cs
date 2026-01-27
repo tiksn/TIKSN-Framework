@@ -2,5 +2,5 @@ namespace TIKSN.PowerShell;
 
 public interface ICurrentCommandStore
 {
-    void SetCurrentCommand(CommandBase command);
+    public void SetCurrentCommand(CommandBase command);
 }

@@ -4,5 +4,5 @@ namespace TIKSN.Globalization;
 
 public interface ICultureFactory
 {
-    CultureInfo Create(string name);
+    public CultureInfo Create(string name);
 }

@@ -78,10 +78,10 @@ public abstract class RepositoryAdapter<TDomainEntity, TDomainIdentity, TDataEnt
         => this.DataEntityToDomainEntityMapper.Map(entity);
 
     protected IReadOnlyList<TDomainEntity> Map(IEnumerable<TDataEntity> entities)
-        => entities.Select(this.DataEntityToDomainEntityMapper.Map).ToArray();
+        => [.. entities.Select(this.DataEntityToDomainEntityMapper.Map)];
 
     protected IReadOnlyList<TDomainIdentity> Map(IEnumerable<TDataIdentity> identities)
-        => identities.Select(this.DataIdentityToDomainIdentityMapper.Map).ToArray();
+        => [.. identities.Select(this.DataIdentityToDomainIdentityMapper.Map)];
 
     protected TDomainIdentity Map(TDataIdentity identity)
         => this.DataIdentityToDomainIdentityMapper.Map(identity);
@@ -90,13 +90,13 @@ public abstract class RepositoryAdapter<TDomainEntity, TDomainIdentity, TDataEnt
         => this.DomainEntityToDataEntityMapper.Map(entity);
 
     protected IReadOnlyList<TDataEntity> Map(IEnumerable<TDomainEntity> entities)
-        => entities.Select(this.DomainEntityToDataEntityMapper.Map).ToArray();
+        => [.. entities.Select(this.DomainEntityToDataEntityMapper.Map)];
 
     protected TDataIdentity Map(TDomainIdentity identity)
         => this.DomainIdentityToDataIdentityMapper.Map(identity);
 
     protected IReadOnlyList<TDataIdentity> Map(IEnumerable<TDomainIdentity> identities)
-        => identities.Select(this.DomainIdentityToDataIdentityMapper.Map).ToArray();
+        => [.. identities.Select(this.DomainIdentityToDataIdentityMapper.Map)];
 
     protected async Task<IReadOnlyList<TDomainEntity>> MapAsync(
         Func<Task<IReadOnlyList<TDataEntity>>> retriever)

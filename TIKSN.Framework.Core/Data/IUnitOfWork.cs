@@ -2,9 +2,9 @@ namespace TIKSN.Data;
 
 public interface IUnitOfWork : IAsyncDisposable
 {
-    IServiceProvider Services { get; }
+    public IServiceProvider Services { get; }
 
-    Task CompleteAsync(CancellationToken cancellationToken);
+    public Task CompleteAsync(CancellationToken cancellationToken);
 
-    Task DiscardAsync(CancellationToken cancellationToken);
+    public Task DiscardAsync(CancellationToken cancellationToken);
 }

@@ -2,5 +2,5 @@ namespace TIKSN.Finance.PricingStrategy;
 
 public interface IPricingStrategy
 {
-    Money EstimateMarketPrice(Money basePrice);
+    public Money EstimateMarketPrice(Money basePrice);
 }

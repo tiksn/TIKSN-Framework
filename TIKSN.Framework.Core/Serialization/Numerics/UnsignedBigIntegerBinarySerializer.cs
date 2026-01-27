@@ -24,7 +24,7 @@ public class UnsignedBigIntegerBinarySerializer : ICustomSerializer<byte[], BigI
         var last = underlyingBytes[^1];
         if (last == 0b_0000_0000 && underlyingBytes.Length > 1)
         {
-            return underlyingBytes.SkipLast(1).ToArray();
+            return [.. underlyingBytes.SkipLast(1)];
         }
 
         return underlyingBytes;

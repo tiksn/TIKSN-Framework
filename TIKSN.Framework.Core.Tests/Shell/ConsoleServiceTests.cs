@@ -32,10 +32,7 @@ public class ConsoleServiceTests
         _ = services.AddSingleton<IAnsiConsole>(testConsole);
         _ = services.AddSingleton<IStringLocalizer, TestStringLocalizer>();
         _ = services.AddFrameworkCore();
-        _ = services.AddLogging(builder =>
-        {
-            _ = builder.AddDebug();
-        });
+        _ = services.AddLogging(builder => _ = builder.AddDebug());
         var serviceProvider = services.BuildServiceProvider();
         var shellCommandEngine = serviceProvider.GetRequiredService<IShellCommandEngine>();
 

@@ -2,7 +2,7 @@ namespace TIKSN.Network;
 
 public interface INetworkConnectivityService
 {
-    IObservable<InternetConnectivityState> InternetConnectivityChanged { get; }
+    public IObservable<InternetConnectivityState> InternetConnectivityChanged { get; }
 
-    InternetConnectivityState GetInternetConnectivityState();
+    public InternetConnectivityState GetInternetConnectivityState();
 }

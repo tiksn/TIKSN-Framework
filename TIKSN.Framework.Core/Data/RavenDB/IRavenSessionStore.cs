@@ -4,5 +4,5 @@ namespace TIKSN.Data.RavenDB;
 
 public interface IRavenSessionStore
 {
-    void SetSession(IAsyncDocumentSession session);
+    public void SetSession(IAsyncDocumentSession session);
 }

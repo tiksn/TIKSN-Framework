@@ -12,5 +12,5 @@ public interface ICustomSerializer<out TSerial, in TModel>
     /// </summary>
     /// <param name="obj">Model to serialized</param>
     /// <returns>Serialized result</returns>
-    TSerial Serialize(TModel obj);
+    public TSerial Serialize(TModel obj);
 }

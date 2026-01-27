@@ -4,5 +4,5 @@ namespace TIKSN.Localization;
 
 public interface ILocalizationContext
 {
-    IReadOnlyCollection<CultureInfo> SupportedCultures { get; }
+    public IReadOnlyCollection<CultureInfo> SupportedCultures { get; }
 }

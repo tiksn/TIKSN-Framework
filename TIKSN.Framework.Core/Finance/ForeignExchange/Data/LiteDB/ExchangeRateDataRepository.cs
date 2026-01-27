@@ -21,7 +21,7 @@ public class ExchangeRateDataRepository : LiteDbRepository<ExchangeRateDataEntit
             x.BaseCurrencyCode == baseCurrencyCode &&
             x.CounterCurrencyCode == counterCurrencyCode && x.AsOn >= dateFrom && x.AsOn <= dateTo);
 
-        return Task.FromResult<IReadOnlyList<ExchangeRateDataEntity>>(results.ToArray());
+        return Task.FromResult<IReadOnlyList<ExchangeRateDataEntity>>([.. results]);
     }
 
     public Task<IReadOnlyList<ExchangeRateDataEntity>> SearchAsync(
@@ -36,6 +36,6 @@ public class ExchangeRateDataRepository : LiteDbRepository<ExchangeRateDataEntit
             x.ForeignExchangeID == foreignExchangeID && x.BaseCurrencyCode == baseCurrencyCode &&
             x.CounterCurrencyCode == counterCurrencyCode && x.AsOn >= dateFrom && x.AsOn <= dateTo);
 
-        return Task.FromResult<IReadOnlyList<ExchangeRateDataEntity>>(results.ToArray());
+        return Task.FromResult<IReadOnlyList<ExchangeRateDataEntity>>([.. results]);
     }
 }

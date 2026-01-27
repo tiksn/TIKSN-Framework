@@ -4,9 +4,9 @@ namespace TIKSN.Shell;
 
 public interface IShellCommandEngine
 {
-    void AddAssembly(Assembly assembly);
+    public void AddAssembly(Assembly assembly);
 
-    void AddType(Type type);
+    public void AddType(Type type);
 
-    Task RunAsync();
+    public Task RunAsync();
 }

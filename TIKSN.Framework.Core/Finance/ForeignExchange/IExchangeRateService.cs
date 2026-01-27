@@ -12,7 +12,7 @@ public interface IExchangeRateService
     /// <param name="asOn">Date and Time for which exchange rate will be requested</param>
     /// <param name="cancellationToken">Cancellation Token</param>
     /// <returns>Converted Money</returns>
-    Task<Option<Money>> ConvertCurrencyAsync(
+    public Task<Option<Money>> ConvertCurrencyAsync(
         Money baseMoney,
         CurrencyInfo counterCurrency,
         DateTimeOffset asOn,
@@ -27,7 +27,7 @@ public interface IExchangeRateService
     /// <param name="intermediaryCurrency">Convert via Intermediary Currency</param>
     /// <param name="cancellationToken">Cancellation Token</param>
     /// <returns>Converted Money</returns>
-    Task<Option<Money>> ConvertCurrencyAsync(
+    public Task<Option<Money>> ConvertCurrencyAsync(
         Money baseMoney,
         CurrencyInfo counterCurrency,
         DateTimeOffset asOn,
@@ -41,7 +41,7 @@ public interface IExchangeRateService
     /// <param name="asOn">Date and Time for which exchange rate will be requested</param>
     /// <param name="cancellationToken">Cancellation Token</param>
     /// <returns>Exchange Rate</returns>
-    Task<Option<decimal>> GetExchangeRateAsync(
+    public Task<Option<decimal>> GetExchangeRateAsync(
         CurrencyPair pair,
         DateTimeOffset asOn,
         CancellationToken cancellationToken);
@@ -54,11 +54,11 @@ public interface IExchangeRateService
     /// <param name="intermediaryCurrency">Convert via Intermediary Currency</param>
     /// <param name="cancellationToken">Cancellation Token</param>
     /// <returns>Exchange Rate</returns>
-    Task<Option<decimal>> GetExchangeRateAsync(
+    public Task<Option<decimal>> GetExchangeRateAsync(
         CurrencyPair pair,
         DateTimeOffset asOn,
         CurrencyInfo intermediaryCurrency,
         CancellationToken cancellationToken);
 
-    Task InitializeAsync(CancellationToken cancellationToken);
+    public Task InitializeAsync(CancellationToken cancellationToken);
 }
