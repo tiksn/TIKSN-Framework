@@ -15,7 +15,7 @@
       ]
     },
     "microsoft.cst.devskim.cli": {
-      "version": "1.0.67",
+      "version": "1.0.70",
       "commands": [
         "devskim"
       ]
