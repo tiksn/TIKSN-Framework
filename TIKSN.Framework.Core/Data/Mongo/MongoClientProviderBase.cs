@@ -3,11 +3,12 @@ using MongoDB.Driver;
 
 namespace TIKSN.Data.Mongo;
 
-public abstract class MongoClientProviderBase : IMongoClientProvider
+public abstract class MongoClientProviderBase : IMongoClientProvider, IDisposable
 {
     private readonly IConfiguration configuration;
     private readonly string connectionStringKey;
     private readonly Lock locker;
+    private bool disposedValue;
     private MongoClient? mongoClient;
 
     protected MongoClientProviderBase(
@@ -17,6 +18,12 @@ public abstract class MongoClientProviderBase : IMongoClientProvider
         this.locker = new Lock();
         this.configuration = configuration;
         this.connectionStringKey = connectionStringKey;
+    }
+
+    public void Dispose()
+    {
+        this.Dispose(disposing: true);
+        GC.SuppressFinalize(this);
     }
 
     public IMongoClient GetMongoClient()
@@ -40,5 +47,13 @@ public abstract class MongoClientProviderBase : IMongoClientProvider
 
     protected virtual void ConfigureClientSettings(MongoClientSettings mongoClientSettings)
     {
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!this.disposedValue)
+        {
+            this.disposedValue = true;
+        }
     }
 }
