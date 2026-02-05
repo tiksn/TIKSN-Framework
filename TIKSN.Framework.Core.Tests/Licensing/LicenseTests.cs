@@ -13,7 +13,6 @@ using Shouldly;
 using TIKSN.DependencyInjection;
 using TIKSN.Licensing;
 using Xunit;
-using Xunit.Abstractions;
 using static LanguageExt.Prelude;
 
 namespace TIKSN.Tests.Licensing;

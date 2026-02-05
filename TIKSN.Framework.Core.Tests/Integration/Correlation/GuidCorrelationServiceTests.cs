@@ -4,7 +4,6 @@ using Shouldly;
 using TIKSN.DependencyInjection;
 using TIKSN.Integration.Correlation;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace TIKSN.Tests.Integration.Correlation;
 

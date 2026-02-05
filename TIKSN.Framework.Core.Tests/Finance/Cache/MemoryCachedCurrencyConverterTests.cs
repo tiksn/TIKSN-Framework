@@ -12,7 +12,6 @@ using TIKSN.DependencyInjection;
 using TIKSN.Finance;
 using TIKSN.Finance.Cache;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace TIKSN.Tests.Finance.Cache;
 
