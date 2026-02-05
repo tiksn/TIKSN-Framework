@@ -6,7 +6,6 @@ using Microsoft.Extensions.Logging;
 using Shouldly;
 using TIKSN.DependencyInjection;
 using Xunit;
-using Xunit.Abstractions;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace TIKSN.Tests.Localization;

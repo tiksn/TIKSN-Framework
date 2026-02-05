@@ -10,7 +10,6 @@ using TIKSN.DependencyInjection;
 using TIKSN.Shell;
 using TIKSN.Tests.Localization;
 using Xunit;
-using Xunit.Abstractions;
 using static LanguageExt.Prelude;
 
 namespace TIKSN.Tests.Shell;
