@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <IsPackable>false</IsPackable>
@@ -7,7 +6,6 @@
     <UserSecretsId>TIKSN-Framework-tests-bee60aa7-e44d-4baf-9587-a0a3d5800585</UserSecretsId>
     <RootNamespace>TIKSN.IntegrationTests</RootNamespace>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
@@ -31,9 +29,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\TIKSN.Framework.Core\TIKSN.Framework.Core.csproj" />
   </ItemGroup>
-
 </Project>
