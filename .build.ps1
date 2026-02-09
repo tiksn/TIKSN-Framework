@@ -285,10 +285,10 @@ Task EstimateVersion Restore, {
 }
 
 # Synopsis: Format
-Task Format Restore, FormatXmlFiles, FormatWhitespace, FormatStyle, FormatAnalyzers
+Task Format Restore, FormatXmlFiles, FormatWhitespace, FormatStyle, FormatAnalyzers, CleanupCode
 
 # Synopsis: Format Analyzers
-Task FormatAnalyzers Restore, FormatAnalyzersLanguageLocalization, FormatAnalyzersRegionLocalization, FormatAnalyzersCore, FormatAnalyzersMaui, FormatAnalyzersSolution
+Task FormatAnalyzers Restore, FormatAnalyzersLanguageLocalization, FormatAnalyzersRegionLocalization, FormatAnalyzersCore, FormatAnalyzersMaui, FormatAnalyzersSolution, CleanupCode
 
 # Synopsis: Format Analyzers Solution
 Task FormatAnalyzersSolution Restore, {
@@ -325,7 +325,7 @@ Task FormatAnalyzersMaui Restore, {
 }
 
 # Synopsis: Format Style
-Task FormatStyle Restore, FormatStyleLanguageLocalization, FormatStyleRegionLocalization, FormatStyleCore, FormatStyleMaui, FormatStyleSolution
+Task FormatStyle Restore, FormatStyleLanguageLocalization, FormatStyleRegionLocalization, FormatStyleCore, FormatStyleMaui, FormatStyleSolution, CleanupCode
 
 # Synopsis: Format Style Solution
 Task FormatStyleSolution Restore, {
@@ -368,7 +368,7 @@ Task FormatWhitespace Restore, {
 }
 
 # Synopsis: Format XML Files
-Task FormatXmlFiles Clean, {
+Task FormatXmlFiles Clean, CleanupCode, {
     Get-ChildItem -Include *.xml, *.config, *.props, *.targets, *.nuspec, *.resx, *.ruleset, *.vsixmanifest, *.vsct, *.xlf, *.csproj, *.fsproj, *.vbproj, *.slnx -Recurse -File
     | Where-Object { -not (git check-ignore $PSItem) }
     | ForEach-Object {
@@ -377,6 +377,12 @@ Task FormatXmlFiles Clean, {
         $xml = [xml]$content
         $xml.Save($PSItem)
     }
+}
+
+# Synopsis: Cleanup Code
+Task CleanupCode Restore, {
+    $solution = Resolve-Path -Path 'TIKSN Framework.slnx'
+    Exec { dotnet jb cleanupcode '--profile=Built-in: Reformat Code' $solution }
 }
 
 # Synopsis: Download Currency Codes

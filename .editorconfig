@@ -85,6 +85,59 @@ indent_size = unset
 dotnet_analyzer_diagnostic.severity = warning
 
 ##########################################
+# ReSharper Settings for Selective Named Arguments Preservation
+# Preserves parameter names for ALL null values, boolean flags, and literals (which need context)
+# Removes parameter names only for obvious framework types and variables that match parameter names
+##########################################
+
+[*.{cs,csx,cake}]
+# Enforce named arguments for literals (like null and boolean) but skip single argument methods like ConfigureAwait
+resharper_arguments_literal = named
+resharper_csharp_arguments_literal = named
+resharper_arguments_string_literal = positional
+resharper_csharp_arguments_string_literal = positional
+resharper_arguments_skip_single = true
+resharper_csharp_arguments_skip_single = true
+resharper_csharp_type_member_layout = <Patterns xmlns="urn:schemas-jetbrains-com:member-reordering-patterns"><Pattern Name="Default Pattern"><Entry Name="Public Delegates" Priority="100"><Match><And><Access Is="Public" /><Kind Is="Delegate" /></And></Match></Entry><Entry Name="Public Enums" Priority="100"><Match><And><Access Is="Public" /><Kind Is="Enum" /></And></Match></Entry><Entry Name="Static Fields and Constants" Priority="100"><Match><And><Kind Is="Field" /><Static /></And></Match><Sort><Kind Order="Constant Field, Readonly Field, Field" /></Sort></Entry><Entry Name="Instance Fields" Priority="100"><Match><And><Kind Is="Field" /><Not><Static /></Not></And></Match><Sort><Readonly /></Sort></Entry><Entry Name="Constructors" Priority="100"><Match><Kind Is="Constructor" /></Match><Sort><Static /></Sort></Entry><Entry Name="Properties" Priority="100"><Match><Kind Is="Property" /></Match></Entry><Entry Name="Events" Priority="100"><Match><Kind Is="Event" /></Match><Sort><Static /><Access /><Name /></Sort></Entry><Entry Name="Methods" Priority="100"><Match><Kind Is="Method" /></Match><Sort><Static /><Access /><Name /></Sort></Entry><Entry Name="All other members" Priority="100" /><Entry Name="Nested Types" Priority="100"><Match><Kind Is="Type" /></Match></Entry></Pattern></Patterns>
+
+# Disable redundant argument name inspection to prevent ReSharper from reverting names for null parameter names
+resharper_redundant_explicit_argument_name_specification_highlighting = none
+
+# Prevent alignment spaces on multiline binary expressions like `?? throw`
+resharper_align_multiline_binary_expressions_chain = false
+resharper_csharp_align_multiline_binary_expressions_chain = false
+
+# Prevent ReSharper from injecting extra spaces into XML documentation comments
+xmldoc_indent_text = do_not_touch
+resharper_xmldoc_indent_text = do_not_touch
+
+# Keep attributes on their own line instead of folding them into the member declaration.
+place_attribute_on_same_line = false
+csharp_place_attribute_on_same_line = false
+resharper_csharp_place_attribute_on_same_line = false
+force_attribute_style = separate
+csharp_force_attribute_style = separate
+resharper_csharp_force_attribute_style = separate
+
+# Preserve multiline collection and dictionary array initializer arrangement
+resharper_keep_existing_initializer_arrangement = true
+resharper_csharp_keep_existing_initializer_arrangement = true
+resharper_max_initializer_elements_on_line = 1
+resharper_csharp_max_initializer_elements_on_line = 1
+resharper_max_array_initializer_elements_on_line = 1
+resharper_csharp_max_array_initializer_elements_on_line = 1
+resharper_wrap_array_initializer_style = chop_always
+resharper_csharp_wrap_array_initializer_style = chop_always
+resharper_wrap_object_and_collection_initializer_style = chop_always
+resharper_csharp_wrap_object_and_collection_initializer_style = chop_always
+
+# Preserve trailing commas in argument lists and array initializers
+resharper_trailing_comma_in_multiline_lists = true
+resharper_trailing_comma_in_singleline_lists = true
+resharper_csharp_trailing_comma_in_multiline_lists = true
+resharper_csharp_trailing_comma_in_singleline_lists = true
+
+##########################################
 # Language Rules
 # https://docs.microsoft.com/dotnet/fundamentals/code-analysis/style-rules/language-rules
 ##########################################
