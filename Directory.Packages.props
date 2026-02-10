@@ -24,8 +24,8 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Analyzers" Version="10.0.2" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.2" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.2" />
-    <PackageVersion Include="Microsoft.Extensions.Caching.Abstractions" Version="10.0.2" />
-    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="10.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.Caching.Abstractions" Version="10.0.3" />
+    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="10.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.2" />
     <PackageVersion Include="Microsoft.Extensions.FileProviders.Abstractions" Version="10.0.2" />
@@ -34,7 +34,7 @@
     <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.2" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.2" />
     <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="10.2.0" />
