@@ -21,7 +21,7 @@
     <PackageVersion Include="MessagePackAnalyzer" Version="3.1.4" />
     <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="10.0.103" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.2" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Analyzers" Version="10.0.2" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Analyzers" Version="10.0.3" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.2" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Caching.Abstractions" Version="10.0.2" />
