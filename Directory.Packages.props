@@ -19,7 +19,7 @@
     <PackageVersion Include="MediatR" Version="14.0.0" />
     <PackageVersion Include="MessagePack" Version="3.1.4" />
     <PackageVersion Include="MessagePackAnalyzer" Version="3.1.4" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="10.0.102" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="10.0.103" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.2" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Analyzers" Version="10.0.2" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.2" />
