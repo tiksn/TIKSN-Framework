@@ -59,7 +59,12 @@ public class QueryRepositoryMemoryCacheDecorator<TEntity, TIdentity>
     {
         ArgumentNullException.ThrowIfNull(pageQuery);
 
-        var cacheKey = Tuple.Create(EntityType, CacheKeyKind.Query, pageQuery);
+        var cacheKey = Tuple.Create(
+            EntityType,
+            CacheKeyKind.Page,
+            pageQuery.Page.Size,
+            pageQuery.Page.Number,
+            pageQuery.EstimateTotalItems).ToString();
 
         var result = await this.GetFromMemoryCacheAsync(cacheKey,
             async () => await this.QueryRepository.PageAsync(pageQuery, cancellationToken).ConfigureAwait(false)).ConfigureAwait(false);
