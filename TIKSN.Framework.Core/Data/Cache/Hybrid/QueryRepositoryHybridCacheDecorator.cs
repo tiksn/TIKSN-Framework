@@ -1,51 +1,55 @@
 using LanguageExt;
-using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Options;
-using TIKSN.Serialization;
 
-namespace TIKSN.Data.Cache.Distributed;
+namespace TIKSN.Data.Cache.Hybrid;
 
-public class QueryRepositoryDistributedCacheDecorator<TEntity, TIdentity>
-    : RepositoryDistributedCacheDecorator<TEntity, TIdentity>
+public class QueryRepositoryHybridCacheDecorator<TEntity, TIdentity>
+    : RepositoryHybridCacheDecorator<TEntity, TIdentity>
     , IQueryRepository<TEntity, TIdentity>
     where TEntity : IEntity<TIdentity>
     where TIdentity : IEquatable<TIdentity>
 {
-    public QueryRepositoryDistributedCacheDecorator(IQueryRepository<TEntity, TIdentity> queryRepository,
+    public QueryRepositoryHybridCacheDecorator(
+        IQueryRepository<TEntity, TIdentity> queryRepository,
         IRepository<TEntity> repository,
-        IDistributedCache distributedCache,
-        ISerializer<byte[]> serializer,
-        IDeserializer<byte[]> deserializer,
-        IOptions<DistributedCacheDecoratorOptions> genericOptions,
-        IOptions<DistributedCacheDecoratorOptions<TEntity>> specificOptions)
-        : base(repository, distributedCache, serializer, deserializer, genericOptions, specificOptions) =>
+        HybridCache hybridCache,
+        IOptions<HybridCacheDecoratorOptions> genericOptions,
+        IOptions<HybridCacheDecoratorOptions<TEntity>> specificOptions)
+        : base(repository, hybridCache, genericOptions, specificOptions) =>
         this.QueryRepository = queryRepository;
 
     protected IQueryRepository<TEntity, TIdentity> QueryRepository { get; }
 
     public async Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken)
     {
-        var entity = await this.GetOrDefaultAsync(id, cancellationToken).ConfigureAwait(false);
-        return entity is not null;
+        var cacheKey = Tuple.Create(EntityType, CacheKeyKind.Query, id).ToString();
+
+        return await this.GetFromHybridCacheAsync(
+            cacheKey,
+            async ct => await this.QueryRepository.ExistsAsync(id, ct).ConfigureAwait(false),
+            cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken)
     {
         var cacheKey = Tuple.Create(EntityType, CacheKeyKind.Entity, id).ToString();
 
-        return (await this.GetFromDistributedCacheAsync(cacheKey,
-            async () => await this.QueryRepository.GetAsync(id, cancellationToken).ConfigureAwait(false),
-            cancellationToken).ConfigureAwait(false))
+        return await this.GetFromHybridCacheAsync(
+            cacheKey,
+            async ct => await this.QueryRepository.GetAsync(id, ct).ConfigureAwait(false),
+            cancellationToken).ConfigureAwait(false)
             ?? throw new EntityNotFoundException("Result retrieved from cache or from original source is null.");
     }
 
-    public Task<TEntity?> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
+    public async Task<TEntity?> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
     {
         var cacheKey = Tuple.Create(EntityType, CacheKeyKind.Entity, id).ToString();
 
-        return this.GetFromDistributedCacheAsync(cacheKey,
-            async () => await this.QueryRepository.GetAsync(id, cancellationToken).ConfigureAwait(false),
-            cancellationToken);
+        return await this.GetFromHybridCacheAsync(
+            cacheKey,
+            async ct => await this.QueryRepository.GetOrDefaultAsync(id, ct).ConfigureAwait(false),
+            cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<IReadOnlyList<TEntity>> ListAsync(
@@ -66,9 +70,9 @@ public class QueryRepositoryDistributedCacheDecorator<TEntity, TIdentity>
             pageQuery.Page.Number,
             pageQuery.EstimateTotalItems).ToString();
 
-        var result = await this.GetFromDistributedCacheAsync(
+        var result = await this.GetFromHybridCacheAsync(
             cacheKey,
-            async () => await this.QueryRepository.PageAsync(pageQuery, cancellationToken).ConfigureAwait(false),
+            async ct => await this.QueryRepository.PageAsync(pageQuery, ct).ConfigureAwait(false),
             cancellationToken).ConfigureAwait(false);
 
         return result ?? new PageResult<TEntity>(
