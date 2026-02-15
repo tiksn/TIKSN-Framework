@@ -7,7 +7,7 @@
     <PackageVersion Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
     <PackageVersion Include="Azure.Data.Tables" Version="12.11.0" />
     <PackageVersion Include="Azure.Storage.Blobs" Version="12.27.0" />
-    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
+    <PackageVersion Include="coverlet.collector" Version="8.0.0" />
     <PackageVersion Include="FluentValidation" Version="12.1.1" />
     <PackageVersion Include="Google.Protobuf" Version="3.33.5" />
     <PackageVersion Include="Grpc.Tools" Version="2.78.0" />
@@ -28,7 +28,7 @@
     <PackageVersion Include="Microsoft.Extensions.Caching.Hybrid" Version="10.3.0" />
     <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="10.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.3" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.3" />
     <PackageVersion Include="Microsoft.Extensions.FileProviders.Abstractions" Version="10.0.3" />
     <PackageVersion Include="Microsoft.Extensions.FileProviders.Physical" Version="10.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.3" />
