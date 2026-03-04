@@ -4,19 +4,27 @@
   "tools": {
     "snitch": {
       "version": "2.0.0",
-      "commands": ["snitch"]
+      "commands": [
+        "snitch"
+      ]
     },
     "dotnet-example": {
       "version": "5.0.0",
-      "commands": ["dotnet-example"]
+      "commands": [
+        "dotnet-example"
+      ]
     },
     "microsoft.cst.devskim.cli": {
       "version": "1.0.70",
-      "commands": ["devskim"]
+      "commands": [
+        "devskim"
+      ]
     },
     "dotnet-outdated-tool": {
-      "version": "4.7.0",
-      "commands": ["dotnet-outdated"]
+      "version": "4.7.1",
+      "commands": [
+        "dotnet-outdated"
+      ]
     }
   }
 }
