@@ -1,6 +1,10 @@
+using LanguageExt;
+using TIKSN.Numbering;
+using static LanguageExt.Prelude;
+
 namespace TIKSN.Data;
 
-public sealed class Page : IEquatable<Page>
+public sealed class Page : IEquatable<Page>, ISequentialNavigator<Page>
 {
     public Page(int number, int size)
     {
@@ -39,5 +43,23 @@ public sealed class Page : IEquatable<Page>
 
     public override int GetHashCode() => HashCode.Combine(this.Number, this.Size);
 
-    public Page NextPage() => new(this.Number + 1, this.Size);
+    public Option<Page> GetNext()
+    {
+        if (this.Number == int.MaxValue)
+        {
+            return None;
+        }
+
+        return new Page(this.Number + 1, this.Size);
+    }
+
+    public Option<Page> GetPrevious()
+    {
+        if (this.Number == 1)
+        {
+            return None;
+        }
+
+        return new Page(this.Number - 1, this.Size);
+    }
 }

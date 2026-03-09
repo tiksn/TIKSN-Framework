@@ -8,7 +8,6 @@ using static LanguageExt.Prelude;
 namespace TIKSN.Numbering;
 
 #pragma warning disable CA1000 // Do not declare static members on generic types
-#pragma warning disable MA0018 // Do not declare static members on generic types (deprecated; use CA1000 instead)
 public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleSerialNumber<TSerial, TNumber>>
     where TSerial : ISerial<TSerial>
     where TNumber : IUnsignedNumber<TNumber>
@@ -165,5 +164,4 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
         return charsWritten == result.Length;
     }
 }
-#pragma warning restore MA0018 // Do not declare static members on generic types (deprecated; use CA1000 instead)
 #pragma warning restore CA1000 // Do not declare static members on generic types
