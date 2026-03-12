@@ -76,7 +76,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: "Download Artefact"
-        uses: actions/download-artifact@v8.0.0
+        uses: actions/download-artifact@v8.0.1
         with:
           name: .trash
           path: ".trash"
