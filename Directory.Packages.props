@@ -43,7 +43,7 @@
     <PackageVersion Include="Microsoft.Maui.Controls" Version="10.0.41" />
     <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.41" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
-    <PackageVersion Include="Microsoft.PowerShell.SDK" Version="7.5.4" />
+    <PackageVersion Include="Microsoft.PowerShell.SDK" Version="7.5.5" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.103" />
     <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.14.15" />
     <PackageVersion Include="MongoDB.Driver" Version="3.7.0" />
