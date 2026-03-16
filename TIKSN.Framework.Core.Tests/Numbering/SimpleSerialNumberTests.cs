@@ -88,4 +88,23 @@ public class SimpleSerialNumberTests
         previousSerialNumberValue.ShouldBe(previous);
         nextSerialNumberValue.ShouldBe(next);
     }
+
+    [Theory]
+    [InlineData(null, "ABC-123")]
+    [InlineData("", "ABC-123")]
+    [InlineData("G", "ABC-123")]
+    [InlineData("N", "ABC123")]
+    public void GivenSerialNumber_WhenFormatted_ThenValueShouldBe(string? format, string expected)
+    {
+        // Arrange
+        var simpleSerialNumber = SimpleSerialNumber<TLA, ushort>
+            .Parse("ABC-123", asciiOnly: true, CultureInfo.InvariantCulture)
+            .Match(s => s, () => throw new InvalidOperationException());
+
+        // Act
+        var actual = simpleSerialNumber.ToString(format, CultureInfo.InvariantCulture);
+
+        // Assert
+        actual.ShouldBe(expected);
+    }
 }
