@@ -149,8 +149,23 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
     public override string ToString()
         => this.ToString(format: null, CultureInfo.InvariantCulture);
 
+    /// <summary>
+    /// Formats the serial number using the specified format.
+    /// </summary>
+    /// <param name="format">Format specifier: null, empty, or "G" for "Serial-Number" (with hyphen); "N" for "SerialNumber" (no hyphen).</param>
+    /// <param name="formatProvider">Format provider.</param>
+    /// <returns>Formatted serial number string.</returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
-        => $"{this.Serial.ToString(format: null, formatProvider)}-{this.Number.ToString(format: null, formatProvider)}";
+    {
+        var serialString = this.Serial.ToString(format: null, formatProvider);
+        var numberString = this.Number.ToString(format: null, formatProvider);
+
+        return format switch
+        {
+            "N" => serialString + numberString,
+            _ => $"{serialString}-{numberString}",
+        };
+    }
 
     public bool TryFormat(
         Span<char> destination,
@@ -158,7 +173,7 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
     {
-        var result = this.ToString(format: null, provider);
+        var result = this.ToString(new string(format), provider);
         charsWritten = Math.Min(result.Length, destination.Length);
         result.CopyTo(destination[..charsWritten]);
         return charsWritten == result.Length;

@@ -2,6 +2,7 @@ using System.Collections.Frozen;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using LanguageExt;
+using LanguageExt.Parsec;
 using static LanguageExt.Parsec.Char;
 using static LanguageExt.Parsec.Prim;
 using static LanguageExt.Prelude;
@@ -18,10 +19,18 @@ public sealed class BB26 : IComparable<BB26>, IComparable, ISequentialNavigator<
     }
 
     public int Index => this.Number - 1;
+
     public int Number { get; }
 
     private static IReadOnlyDictionary<char, int> CharToNumberMap { get; } = Enumerable.Range(0, 26).SelectMany(i => new[] { Tuple((char)('A' + i), i + 1), Tuple((char)('a' + i), i + 1) }).ToFrozenDictionary(k => k.Item1, v => v.Item2);
+
     private static IReadOnlyDictionary<int, char> NumberToCharMap { get; } = Enumerable.Range(0, 26).ToFrozenDictionary(i => i + 1, i => (char)('A' + i));
+
+    private static Parser<BB26> Parser { get; } =
+                        from chars in many1(satisfy(CharToNumberMap.ContainsKey))
+                        from _ in eof
+                        let number = chars.Aggregate(0, (acc, c) => (acc * 26) + CharToNumberMap[c])
+                        select new BB26(number);
 
     public static bool operator !=(BB26 left, BB26 right) => !Equals(left, right);
 
@@ -37,16 +46,7 @@ public sealed class BB26 : IComparable<BB26>, IComparable, ISequentialNavigator<
 
     public static Option<BB26> Parse(string s, bool asciiOnly, IFormatProvider? provider)
     {
-        var letterParser = satisfy(CharToNumberMap.ContainsKey);
-        var lettersParser = many1(letterParser);
-
-        var parser =
-            from chars in lettersParser
-            from _ in eof
-            let number = chars.Aggregate(0, (acc, c) => (acc * 26) + CharToNumberMap[c])
-            select new BB26(number);
-
-        var result = parse(parser, s);
+        var result = parse(Parser, s);
 
         return result.ToOption();
     }
