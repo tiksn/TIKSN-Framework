@@ -11,19 +11,19 @@ public class ExchangeRateDataRepository : RavenRepository<ExchangeRateDataEntity
     }
 
     public async Task<IReadOnlyList<ExchangeRateDataEntity>> SearchAsync(
-    Guid foreignExchangeID,
-    string baseCurrencyCode,
-    string counterCurrencyCode,
-    DateTime dateFrom,
-    DateTime dateTo,
-    CancellationToken cancellationToken)
-    => await this.SessionProvider.Session.Query<ExchangeRateDataEntity>(collectionName: this.CollectionName)
-        .Where(item =>
-            item.BaseCurrencyCode == baseCurrencyCode &&
-            item.CounterCurrencyCode == counterCurrencyCode &&
-            item.ForeignExchangeID == foreignExchangeID &&
-            item.AsOn >= dateFrom && item.AsOn <= dateTo)
-        .ToArrayAsync(cancellationToken).ConfigureAwait(false);
+        Guid foreignExchangeID,
+        string baseCurrencyCode,
+        string counterCurrencyCode,
+        DateTime dateFrom,
+        DateTime dateTo,
+        CancellationToken cancellationToken)
+        => await this.SessionProvider.Session.Query<ExchangeRateDataEntity>(collectionName: this.CollectionName)
+            .Where(item =>
+                item.BaseCurrencyCode == baseCurrencyCode &&
+                item.CounterCurrencyCode == counterCurrencyCode &&
+                item.ForeignExchangeID == foreignExchangeID &&
+                item.AsOn >= dateFrom && item.AsOn <= dateTo)
+            .ToArrayAsync(cancellationToken).ConfigureAwait(false);
 
     public async Task<IReadOnlyList<ExchangeRateDataEntity>> SearchAsync(
         string baseCurrencyCode,

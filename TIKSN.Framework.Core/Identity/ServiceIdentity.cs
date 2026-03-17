@@ -59,8 +59,8 @@ public sealed class ServiceIdentity : IEquatable<ServiceIdentity>
         }
 
         return this.ApplicationName == other.ApplicationName &&
-               this.ComponentNames.SequenceEqual(other.ComponentNames) &&
-               this.InstanceId.Equals(other.InstanceId);
+            this.ComponentNames.SequenceEqual(other.ComponentNames) &&
+            this.InstanceId.Equals(other.InstanceId);
     }
 
     public override int GetHashCode() => HashCode.Combine(this.ApplicationName, this.ComponentPath, this.InstanceId);

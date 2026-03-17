@@ -7,7 +7,8 @@ using static LanguageExt.Prelude;
 
 namespace TIKSN.Licensing;
 
-public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<TEntitlements, TEntitlementsData> where TEntitlementsData : IMessage<TEntitlementsData>
+public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<TEntitlements, TEntitlementsData>
+    where TEntitlementsData : IMessage<TEntitlementsData>
 {
     private readonly IEntitlementsConverter<TEntitlements, TEntitlementsData> entitlementsConverter;
     private readonly ILicenseDescriptor<TEntitlements> licenseDescriptor;

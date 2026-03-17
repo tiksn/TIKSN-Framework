@@ -14,8 +14,11 @@ public class PowerShellTraceTelemeter : ITraceTelemeter
         {
             case TelemetrySeverityLevel.Critical:
             case TelemetrySeverityLevel.Error:
-                this.cmdlet.WriteError(new ErrorRecord(new InvalidOperationException(message), errorId: null, ErrorCategory.InvalidOperation,
-targetObject: null));
+                this.cmdlet.WriteError(new ErrorRecord(
+                    new InvalidOperationException(message),
+                    errorId: null,
+                    ErrorCategory.InvalidOperation,
+                    targetObject: null));
                 break;
 
             case TelemetrySeverityLevel.Information:

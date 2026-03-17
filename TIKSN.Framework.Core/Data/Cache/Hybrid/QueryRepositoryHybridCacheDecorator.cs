@@ -4,9 +4,9 @@ using Microsoft.Extensions.Options;
 
 namespace TIKSN.Data.Cache.Hybrid;
 
-public class QueryRepositoryHybridCacheDecorator<TEntity, TIdentity>
-    : RepositoryHybridCacheDecorator<TEntity, TIdentity>
-    , IQueryRepository<TEntity, TIdentity>
+public class QueryRepositoryHybridCacheDecorator<TEntity, TIdentity> :
+    RepositoryHybridCacheDecorator<TEntity, TIdentity>,
+    IQueryRepository<TEntity, TIdentity>
     where TEntity : IEntity<TIdentity>
     where TIdentity : IEquatable<TIdentity>
 {
@@ -36,9 +36,9 @@ public class QueryRepositoryHybridCacheDecorator<TEntity, TIdentity>
         var cacheKey = Tuple.Create(EntityType, CacheKeyKind.Entity, id).ToString();
 
         return await this.GetFromHybridCacheAsync(
-            cacheKey,
-            async ct => await this.QueryRepository.GetAsync(id, ct).ConfigureAwait(false),
-            cancellationToken).ConfigureAwait(false)
+                cacheKey,
+                async ct => await this.QueryRepository.GetAsync(id, ct).ConfigureAwait(false),
+                cancellationToken).ConfigureAwait(false)
             ?? throw new EntityNotFoundException("Result retrieved from cache or from original source is null.");
     }
 

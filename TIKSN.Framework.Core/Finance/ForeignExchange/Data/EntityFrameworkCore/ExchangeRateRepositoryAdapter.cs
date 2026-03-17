@@ -3,16 +3,17 @@ using TIKSN.Mapping;
 
 namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore;
 
-public class ExchangeRateRepositoryAdapter
-    : RepositoryAdapter<ExchangeRateEntity, Guid, ExchangeRateDataEntity, Guid>
-    , IExchangeRateRepository
+public class ExchangeRateRepositoryAdapter :
+    RepositoryAdapter<ExchangeRateEntity, Guid, ExchangeRateDataEntity, Guid>,
+    IExchangeRateRepository
 {
     public ExchangeRateRepositoryAdapter(
         IExchangeRateDataRepository dataRepository,
         IMapper<ExchangeRateEntity, ExchangeRateDataEntity> domainEntityToDataEntityMapper,
         IMapper<ExchangeRateDataEntity, ExchangeRateEntity> dataEntityToDomainEntityMapper,
         IMapper<Guid, Guid> domainIdentityToDataIdentityMapper,
-        IMapper<Guid, Guid> dataIdentityToDomainIdentityMapper) : base(
+        IMapper<Guid, Guid> dataIdentityToDomainIdentityMapper) :
+        base(
             domainEntityToDataEntityMapper,
             dataEntityToDomainEntityMapper,
             domainIdentityToDataIdentityMapper,
@@ -20,7 +21,7 @@ public class ExchangeRateRepositoryAdapter
             dataRepository,
             dataRepository,
             dataRepository)
-            => this.DataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
+        => this.DataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
 
     protected IExchangeRateDataRepository DataRepository { get; }
 

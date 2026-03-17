@@ -3,21 +3,23 @@ using TIKSN.Mapping;
 
 namespace TIKSN.Finance.ForeignExchange.Data.Mongo;
 
-public class ExchangeRateRepositoryAdapter
-    : MongoRepositoryAdapter<ExchangeRateEntity, Guid, ExchangeRateDataEntity, Guid>
-    , IExchangeRateRepository
+public class ExchangeRateRepositoryAdapter :
+    MongoRepositoryAdapter<ExchangeRateEntity, Guid, ExchangeRateDataEntity, Guid>,
+    IExchangeRateRepository
 {
     public ExchangeRateRepositoryAdapter(
         IExchangeRateDataRepository dataRepository,
         IMapper<ExchangeRateEntity, ExchangeRateDataEntity> domainEntityToDataEntityMapper,
         IMapper<ExchangeRateDataEntity, ExchangeRateEntity> dataEntityToDomainEntityMapper,
         IMapper<Guid, Guid> domainIdentityToDataIdentityMapper,
-        IMapper<Guid, Guid> dataIdentityToDomainIdentityMapper) : base(
+        IMapper<Guid, Guid> dataIdentityToDomainIdentityMapper) :
+        base(
             domainEntityToDataEntityMapper,
             dataEntityToDomainEntityMapper,
             domainIdentityToDataIdentityMapper,
             dataIdentityToDomainIdentityMapper,
-            dataRepository) => this.DataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
+            dataRepository) => this.DataRepository =
+        dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
 
     protected IExchangeRateDataRepository DataRepository { get; }
 

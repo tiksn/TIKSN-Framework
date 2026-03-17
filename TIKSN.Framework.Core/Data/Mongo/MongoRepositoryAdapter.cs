@@ -15,14 +15,16 @@ public abstract class MongoRepositoryAdapter<TDomainEntity, TDomainIdentity, TDa
         IMapper<TDataEntity, TDomainEntity> dataEntityToDomainEntityMapper,
         IMapper<TDomainIdentity, TDataIdentity> domainIdentityToDataIdentityMapper,
         IMapper<TDataIdentity, TDomainIdentity> dataIdentityToDomainIdentityMapper,
-        IMongoRepository<TDataEntity, TDataIdentity> mongoRepository) : base(
+        IMongoRepository<TDataEntity, TDataIdentity> mongoRepository) :
+        base(
             domainEntityToDataEntityMapper,
             dataEntityToDomainEntityMapper,
             domainIdentityToDataIdentityMapper,
             dataIdentityToDomainIdentityMapper,
             mongoRepository,
             mongoRepository,
-            mongoRepository) => this.MongoRepository = mongoRepository ?? throw new ArgumentNullException(nameof(mongoRepository));
+            mongoRepository) => this.MongoRepository =
+        mongoRepository ?? throw new ArgumentNullException(nameof(mongoRepository));
 
     protected IMongoRepository<TDataEntity, TDataIdentity> MongoRepository { get; }
 

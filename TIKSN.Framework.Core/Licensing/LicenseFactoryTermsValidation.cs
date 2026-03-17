@@ -263,11 +263,11 @@ internal static class LicenseFactoryTermsValidation
 
         return basePartyProperties
             .Map(x => new IndividualParty(
-            licenseParty.IndividualParty.FirstName,
-            licenseParty.IndividualParty.LastName,
-            fullName,
-            x.email,
-            x.website));
+                licenseParty.IndividualParty.FirstName,
+                licenseParty.IndividualParty.LastName,
+                fullName,
+                x.email,
+                x.website));
     }
 
     private static Validation<Error, OrganizationParty> ConvertToOrganization(
@@ -296,10 +296,10 @@ internal static class LicenseFactoryTermsValidation
 
         return basePartyProperties
             .Map(x => new OrganizationParty(
-            licenseParty.OrganizationParty.LongName,
-            licenseParty.OrganizationParty.ShortName,
-            x.email,
-            x.website));
+                licenseParty.OrganizationParty.LongName,
+                licenseParty.OrganizationParty.ShortName,
+                x.email,
+                x.website));
     }
 
     private static Validation<Error, (MailAddress email, Uri website)> GetBasePartyProperties(

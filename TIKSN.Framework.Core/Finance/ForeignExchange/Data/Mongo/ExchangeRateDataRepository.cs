@@ -7,7 +7,8 @@ public class ExchangeRateDataRepository : MongoRepository<ExchangeRateDataEntity
 {
     public ExchangeRateDataRepository(
         IMongoClientSessionProvider mongoClientSessionProvider,
-        IMongoDatabaseProvider mongoDatabaseProvider) : base(
+        IMongoDatabaseProvider mongoDatabaseProvider) :
+        base(
             mongoClientSessionProvider,
             mongoDatabaseProvider,
             "ExchangeRates")

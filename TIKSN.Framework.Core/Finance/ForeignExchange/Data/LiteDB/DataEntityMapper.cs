@@ -2,11 +2,11 @@ using TIKSN.Mapping;
 
 namespace TIKSN.Finance.ForeignExchange.Data.LiteDB;
 
-public class DataEntityMapper
-    : IMapper<ExchangeRateEntity, ExchangeRateDataEntity>
-    , IMapper<ExchangeRateDataEntity, ExchangeRateEntity>
-    , IMapper<ForeignExchangeEntity, ForeignExchangeDataEntity>
-    , IMapper<ForeignExchangeDataEntity, ForeignExchangeEntity>
+public class DataEntityMapper :
+    IMapper<ExchangeRateEntity, ExchangeRateDataEntity>,
+    IMapper<ExchangeRateDataEntity, ExchangeRateEntity>,
+    IMapper<ForeignExchangeEntity, ForeignExchangeDataEntity>,
+    IMapper<ForeignExchangeDataEntity, ForeignExchangeEntity>
 {
     public ExchangeRateDataEntity Map(ExchangeRateEntity source)
     {

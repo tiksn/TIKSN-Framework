@@ -27,7 +27,9 @@ public class AzureTableRepository<T> :
 
         if (string.IsNullOrEmpty(connectionStringKey))
         {
-            throw new ArgumentException($"'{nameof(connectionStringKey)}' cannot be null or empty.", nameof(connectionStringKey));
+            throw new ArgumentException(
+                $"'{nameof(connectionStringKey)}' cannot be null or empty.",
+                nameof(connectionStringKey));
         }
 
         this.tableName = tableName;

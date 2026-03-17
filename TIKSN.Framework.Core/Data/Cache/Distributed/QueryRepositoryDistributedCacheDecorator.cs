@@ -5,9 +5,9 @@ using TIKSN.Serialization;
 
 namespace TIKSN.Data.Cache.Distributed;
 
-public class QueryRepositoryDistributedCacheDecorator<TEntity, TIdentity>
-    : RepositoryDistributedCacheDecorator<TEntity, TIdentity>
-    , IQueryRepository<TEntity, TIdentity>
+public class QueryRepositoryDistributedCacheDecorator<TEntity, TIdentity> :
+    RepositoryDistributedCacheDecorator<TEntity, TIdentity>,
+    IQueryRepository<TEntity, TIdentity>
     where TEntity : IEntity<TIdentity>
     where TIdentity : IEquatable<TIdentity>
 {
@@ -33,9 +33,10 @@ public class QueryRepositoryDistributedCacheDecorator<TEntity, TIdentity>
     {
         var cacheKey = Tuple.Create(EntityType, CacheKeyKind.Entity, id).ToString();
 
-        return (await this.GetFromDistributedCacheAsync(cacheKey,
-            async () => await this.QueryRepository.GetAsync(id, cancellationToken).ConfigureAwait(false),
-            cancellationToken).ConfigureAwait(false))
+        return await this.GetFromDistributedCacheAsync(
+                cacheKey,
+                async () => await this.QueryRepository.GetAsync(id, cancellationToken).ConfigureAwait(false),
+                cancellationToken).ConfigureAwait(false)
             ?? throw new EntityNotFoundException("Result retrieved from cache or from original source is null.");
     }
 

@@ -15,14 +15,16 @@ public abstract class RavenRepositoryAdapter<TDomainEntity, TDomainIdentity, TDa
         IMapper<TDataEntity, TDomainEntity> dataEntityToDomainEntityMapper,
         IMapper<TDomainIdentity, TDataIdentity> domainIdentityToDataIdentityMapper,
         IMapper<TDataIdentity, TDomainIdentity> dataIdentityToDomainIdentityMapper,
-        IRavenRepository<TDataEntity, TDataIdentity> ravenRepository) : base(
+        IRavenRepository<TDataEntity, TDataIdentity> ravenRepository) :
+        base(
             domainEntityToDataEntityMapper,
             dataEntityToDomainEntityMapper,
             domainIdentityToDataIdentityMapper,
             dataIdentityToDomainIdentityMapper,
             ravenRepository,
             ravenRepository,
-            ravenRepository) => this.RavenRepository = ravenRepository ?? throw new ArgumentNullException(nameof(ravenRepository));
+            ravenRepository) => this.RavenRepository =
+        ravenRepository ?? throw new ArgumentNullException(nameof(ravenRepository));
 
     protected IRavenRepository<TDataEntity, TDataIdentity> RavenRepository { get; }
 }

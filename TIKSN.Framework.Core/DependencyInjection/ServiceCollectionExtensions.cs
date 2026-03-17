@@ -60,7 +60,8 @@ public static class ServiceCollectionExtensions
         services.TryAddScoped<IShellCommandContext, ShellCommandContext>();
         services.TryAddSingleton(MessageBus.Current);
         services.TryAddSingleton(AnsiConsole.Console);
-        services.TryAddSingleton<ISchedulers>(_ => new Schedulers(RxSchedulers.MainThreadScheduler, RxSchedulers.TaskpoolScheduler));
+        services.TryAddSingleton<ISchedulers>(_ =>
+            new Schedulers(RxSchedulers.MainThreadScheduler, RxSchedulers.TaskpoolScheduler));
         services.TryAddKeyedSingleton<ICertificateSignatureService, RSACertificateSignatureService>(
             "1.2.840.113549.1.1.1");
         services.TryAddKeyedSingleton<ICertificateSignatureService, DSACertificateSignatureService>(
