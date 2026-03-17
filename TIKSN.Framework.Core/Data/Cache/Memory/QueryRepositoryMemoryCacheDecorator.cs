@@ -4,9 +4,9 @@ using Microsoft.Extensions.Options;
 
 namespace TIKSN.Data.Cache.Memory;
 
-public class QueryRepositoryMemoryCacheDecorator<TEntity, TIdentity>
-    : RepositoryMemoryCacheDecorator<TEntity, TIdentity>
-    , IQueryRepository<TEntity, TIdentity>
+public class QueryRepositoryMemoryCacheDecorator<TEntity, TIdentity> :
+    RepositoryMemoryCacheDecorator<TEntity, TIdentity>,
+    IQueryRepository<TEntity, TIdentity>
     where TEntity : IEntity<TIdentity>
     where TIdentity : IEquatable<TIdentity>
 {
@@ -34,8 +34,9 @@ public class QueryRepositoryMemoryCacheDecorator<TEntity, TIdentity>
         var cacheKey = Tuple.Create(EntityType, CacheKeyKind.Entity, id);
 
         return await this.GetFromMemoryCacheAsync(
-            cacheKey,
-            async () => await this.QueryRepository.GetAsync(id, cancellationToken).ConfigureAwait(false)).ConfigureAwait(false)
+                    cacheKey,
+                    async () => await this.QueryRepository.GetAsync(id, cancellationToken).ConfigureAwait(false))
+                .ConfigureAwait(false)
             ?? throw new EntityNotFoundException("Result retrieved from cache or from original source is null.");
     }
 
@@ -67,7 +68,8 @@ public class QueryRepositoryMemoryCacheDecorator<TEntity, TIdentity>
             pageQuery.EstimateTotalItems).ToString();
 
         var result = await this.GetFromMemoryCacheAsync(cacheKey,
-            async () => await this.QueryRepository.PageAsync(pageQuery, cancellationToken).ConfigureAwait(false)).ConfigureAwait(false);
+                async () => await this.QueryRepository.PageAsync(pageQuery, cancellationToken).ConfigureAwait(false))
+            .ConfigureAwait(false);
 
         return result ?? new PageResult<TEntity>(
             pageQuery.Page,
@@ -99,7 +101,9 @@ public class QueryRepositoryMemoryCacheDecorator<TEntity, TIdentity>
         object cacheKey,
         Func<Task<IReadOnlyCollection<TEntity>>> queryFromSource)
     {
-        var result = await this.MemoryCache.GetOrCreateAsync(cacheKey, x => this.CreateMemoryCacheQueryAsync(x, queryFromSource)).ConfigureAwait(false);
+        var result = await this.MemoryCache
+            .GetOrCreateAsync(cacheKey, x => this.CreateMemoryCacheQueryAsync(x, queryFromSource))
+            .ConfigureAwait(false);
 
         return result ?? [];
     }

@@ -7,6 +7,7 @@ public sealed record class IndividualParty(
     string LastName,
     string FullName,
     MailAddress Email,
-    Uri Website) : Party(
+    Uri Website) :
+    Party(
         Email,
         Website);

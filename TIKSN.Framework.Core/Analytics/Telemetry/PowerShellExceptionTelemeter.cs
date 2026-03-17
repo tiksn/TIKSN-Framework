@@ -10,14 +10,16 @@ public class PowerShellExceptionTelemeter : IExceptionTelemeter
 
     public Task TrackExceptionAsync(Exception exception, TelemetrySeverityLevel severityLevel)
     {
-        this.cmdlet.WriteError(new ErrorRecord(exception, errorId: null, ErrorCategory.InvalidOperation, targetObject: null));
+        this.cmdlet.WriteError(
+            new ErrorRecord(exception, errorId: null, ErrorCategory.InvalidOperation, targetObject: null));
 
         return Task.CompletedTask;
     }
 
     public Task TrackExceptionAsync(Exception exception)
     {
-        this.cmdlet.WriteError(new ErrorRecord(exception, errorId: null, ErrorCategory.InvalidOperation, targetObject: null));
+        this.cmdlet.WriteError(
+            new ErrorRecord(exception, errorId: null, ErrorCategory.InvalidOperation, targetObject: null));
 
         return Task.CompletedTask;
     }

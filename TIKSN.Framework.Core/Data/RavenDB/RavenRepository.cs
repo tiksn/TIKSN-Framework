@@ -12,7 +12,9 @@ public class RavenRepository<TEntity, TIdentity> : IRavenRepository<TEntity, TId
     {
         if (string.IsNullOrWhiteSpace(collectionName))
         {
-            throw new ArgumentException($"'{nameof(collectionName)}' cannot be null or whitespace.", nameof(collectionName));
+            throw new ArgumentException(
+                $"'{nameof(collectionName)}' cannot be null or whitespace.",
+                nameof(collectionName));
         }
 
         this.SessionProvider = sessionProvider ?? throw new ArgumentNullException(nameof(sessionProvider));

@@ -44,9 +44,10 @@ public partial class MemoryCachedCurrencyConverter : MemoryCacheDecoratorBase<Me
             MemoryCachedCurrencyConverterEntryKind.ExchangeRate, this.instanceID, this.GetCacheIntervalKey(asOn),
             baseMoney.Currency, counterCurrency);
 
-        var cacheEntry = await this.GetFromMemoryCacheAsync(cacheKey,
-            async () => await this.OriginalConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken)
-                .ConfigureAwait(false)).ConfigureAwait(false)
+        var cacheEntry = await this.GetFromMemoryCacheAsync(
+                cacheKey,
+                async () => await this.OriginalConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken)
+                    .ConfigureAwait(false)).ConfigureAwait(false)
             ?? throw new InvalidOperationException("Failed to create MemoryCachedCurrencyConverterEntry.");
 
         return new Money(counterCurrency, baseMoney.Amount * cacheEntry.ExchangeRate);
@@ -59,9 +60,10 @@ public partial class MemoryCachedCurrencyConverter : MemoryCacheDecoratorBase<Me
         var cacheKey = Tuple.Create(MemoryCachedCurrencyConverterEntryType,
             MemoryCachedCurrencyConverterEntryKind.CurrencyPairs, this.instanceID, this.GetCacheIntervalKey(asOn));
 
-        var cacheEntry = await this.GetFromMemoryCacheAsync(cacheKey,
-            async () => await this.GetOriginalCurrencyPairsAsync(asOn, cancellationToken)
-                .ConfigureAwait(false)).ConfigureAwait(false)
+        var cacheEntry = await this.GetFromMemoryCacheAsync(
+                cacheKey,
+                async () => await this.GetOriginalCurrencyPairsAsync(asOn, cancellationToken)
+                    .ConfigureAwait(false)).ConfigureAwait(false)
             ?? throw new InvalidOperationException("Failed to create MemoryCachedCurrencyConverterEntry.");
 
         return cacheEntry.CurrencyPairs;
@@ -78,9 +80,10 @@ public partial class MemoryCachedCurrencyConverter : MemoryCacheDecoratorBase<Me
             MemoryCachedCurrencyConverterEntryKind.ExchangeRate, this.instanceID, this.GetCacheIntervalKey(asOn),
             pair.BaseCurrency, pair.CounterCurrency);
 
-        var cacheEntry = await this.GetFromMemoryCacheAsync(cacheKey,
-            async () => await this.GetOriginalExchangeRateAsync(pair, asOn, cancellationToken)
-                .ConfigureAwait(false)).ConfigureAwait(false)
+        var cacheEntry = await this.GetFromMemoryCacheAsync(
+                cacheKey,
+                async () => await this.GetOriginalExchangeRateAsync(pair, asOn, cancellationToken)
+                    .ConfigureAwait(false)).ConfigureAwait(false)
             ?? throw new InvalidOperationException("Failed to create MemoryCachedCurrencyConverterEntry.");
 
         return cacheEntry.ExchangeRate;
@@ -109,7 +112,8 @@ public partial class MemoryCachedCurrencyConverter : MemoryCacheDecoratorBase<Me
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
-        var currencyPairs = await this.originalConverter.GetCurrencyPairsAsync(asOn, cancellationToken).ConfigureAwait(false);
+        var currencyPairs = await this.originalConverter.GetCurrencyPairsAsync(asOn, cancellationToken)
+            .ConfigureAwait(false);
 
         return MemoryCachedCurrencyConverterEntry.CreateForCurrencyPairs(currencyPairs);
     }
@@ -120,7 +124,8 @@ public partial class MemoryCachedCurrencyConverter : MemoryCacheDecoratorBase<Me
     {
         ArgumentNullException.ThrowIfNull(pair);
 
-        var exchangeRate = await this.originalConverter.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
+        var exchangeRate = await this.originalConverter.GetExchangeRateAsync(pair, asOn, cancellationToken)
+            .ConfigureAwait(false);
 
         return MemoryCachedCurrencyConverterEntry.CreateForExchangeRate(exchangeRate);
     }
@@ -135,7 +140,8 @@ public partial class MemoryCachedCurrencyConverter : MemoryCacheDecoratorBase<Me
         ArgumentNullException.ThrowIfNull(counterCurrency);
 
         var convertedMoney =
-            await this.originalConverter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
+            await this.originalConverter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken)
+                .ConfigureAwait(false);
 
         var exchangeRate = convertedMoney.Amount / baseMoney.Amount;
 

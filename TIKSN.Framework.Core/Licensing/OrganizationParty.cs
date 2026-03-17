@@ -6,6 +6,7 @@ public sealed record class OrganizationParty(
     string LongName,
     string ShortName,
     MailAddress Email,
-    Uri Website) : Party(
+    Uri Website) :
+    Party(
         Email,
         Website);

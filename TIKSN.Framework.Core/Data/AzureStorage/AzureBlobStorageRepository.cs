@@ -3,9 +3,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace TIKSN.Data.AzureStorage;
 
-public class AzureBlobStorageRepository
-    : IAzureBlobStorageRepository
-    , IAzureBlobStorageRepositoryInitializer
+public class AzureBlobStorageRepository :
+    IAzureBlobStorageRepository,
+    IAzureBlobStorageRepositoryInitializer
 {
     private readonly BlobContainerClient blobContainerClient;
     private readonly string containerName;
@@ -17,12 +17,15 @@ public class AzureBlobStorageRepository
     {
         if (string.IsNullOrWhiteSpace(containerName))
         {
-            throw new ArgumentException($"'{nameof(containerName)}' cannot be null or empty or whitespace.", nameof(containerName));
+            throw new ArgumentException(
+                $"'{nameof(containerName)}' cannot be null or empty or whitespace.",
+                nameof(containerName));
         }
 
         ArgumentNullException.ThrowIfNull(configuration);
 
-        this.blobContainerClient = new BlobContainerClient(configuration.GetConnectionString(connectionStringKey), this.containerName);
+        this.blobContainerClient =
+            new BlobContainerClient(configuration.GetConnectionString(connectionStringKey), this.containerName);
 
         this.containerName = containerName;
     }

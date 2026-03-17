@@ -2,12 +2,12 @@ using NodaTime;
 
 namespace TIKSN.Time;
 
-public interface IYear<TSelf>
-    : IEquatable<TSelf>
-    , IComparable<TSelf>
-    , IComparable
-    , ISpanFormattable
-    , IYear
+public interface IYear<TSelf> :
+    IEquatable<TSelf>,
+    IComparable<TSelf>,
+    IComparable,
+    ISpanFormattable,
+    IYear
     where TSelf : IYear<TSelf>
 {
     #region Next and Previous

@@ -2,10 +2,10 @@ using TIKSN.Data;
 
 namespace TIKSN.Finance.ForeignExchange.Data;
 
-public interface IExchangeRateRepository
-    : IRepository<ExchangeRateEntity>
-    , IQueryRepository<ExchangeRateEntity, Guid>
-    , IStreamRepository<ExchangeRateEntity>
+public interface IExchangeRateRepository :
+    IRepository<ExchangeRateEntity>,
+    IQueryRepository<ExchangeRateEntity, Guid>,
+    IStreamRepository<ExchangeRateEntity>
 {
     public Task<IReadOnlyList<ExchangeRateEntity>> SearchAsync(
         string baseCurrencyCode,

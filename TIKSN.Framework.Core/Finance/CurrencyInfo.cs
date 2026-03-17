@@ -114,9 +114,9 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
         var tableXDoc = XDocument.Load(stream);
 
         foreach (var ccyNtryElement in tableXDoc
-            ?.Element("ISO_4217")
-            ?.Element(tableElementName)
-            ?.Elements(entityElementName) ?? [])
+                     ?.Element("ISO_4217")
+                     ?.Element(tableElementName)
+                     ?.Elements(entityElementName) ?? [])
         {
             var ccyElement = ccyNtryElement.Element("Ccy");
 
@@ -142,7 +142,7 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
 
                 var isFund = !string.IsNullOrWhiteSpace(isFundAttributeValue) &&
                     (string.Equals(isFundAttributeValue, "WAHR", StringComparison.OrdinalIgnoreCase) ||
-                    bool.Parse(isFundAttributeValue));
+                        bool.Parse(isFundAttributeValue));
 
                 return (isCurrent, isoCurrencySymbol, currencySymbol, isoCurrencyNumber, isFund);
             }

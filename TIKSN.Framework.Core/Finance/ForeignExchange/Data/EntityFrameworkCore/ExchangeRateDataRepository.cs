@@ -3,9 +3,9 @@ using TIKSN.Data.EntityFrameworkCore;
 
 namespace TIKSN.Finance.ForeignExchange.Data.EntityFrameworkCore;
 
-public class ExchangeRateDataRepository
-    : EntityQueryRepository<ExchangeRatesContext, ExchangeRateDataEntity, Guid>
-    , IExchangeRateDataRepository
+public class ExchangeRateDataRepository :
+    EntityQueryRepository<ExchangeRatesContext, ExchangeRateDataEntity, Guid>,
+    IExchangeRateDataRepository
 {
     public ExchangeRateDataRepository(ExchangeRatesContext dbContext) : base(dbContext)
     {
@@ -37,10 +37,10 @@ public class ExchangeRateDataRepository
         DateTime dateTo,
         CancellationToken cancellationToken)
         => await this.Entities
-        .Where(item =>
-            item.BaseCurrencyCode == baseCurrencyCode &&
-            item.CounterCurrencyCode == counterCurrencyCode &&
-            item.AsOn >= dateFrom && item.AsOn <= dateTo)
-        .Include(item => item.ForeignExchange)
-        .ToArrayAsync(cancellationToken).ConfigureAwait(false);
+            .Where(item =>
+                item.BaseCurrencyCode == baseCurrencyCode &&
+                item.CounterCurrencyCode == counterCurrencyCode &&
+                item.AsOn >= dateFrom && item.AsOn <= dateTo)
+            .Include(item => item.ForeignExchange)
+            .ToArrayAsync(cancellationToken).ConfigureAwait(false);
 }

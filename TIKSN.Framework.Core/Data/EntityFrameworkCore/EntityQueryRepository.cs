@@ -32,7 +32,8 @@ public abstract class EntityQueryRepository<TContext, TEntity, TIdentity> : Enti
     {
         ArgumentNullException.ThrowIfNull(ids);
 
-        return await this.Entities.Where(entity => ids.Contains(entity.ID)).ToListAsync(cancellationToken).ConfigureAwait(false);
+        return await this.Entities.Where(entity => ids.Contains(entity.ID)).ToListAsync(cancellationToken)
+            .ConfigureAwait(false);
     }
 
     public Task<PageResult<TEntity>> PageAsync(
@@ -45,7 +46,8 @@ public abstract class EntityQueryRepository<TContext, TEntity, TIdentity> : Enti
 
     public async IAsyncEnumerable<TEntity> StreamAllAsync([EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        await foreach (var entity in this.Entities.AsAsyncEnumerable().WithCancellation(cancellationToken).ConfigureAwait(false))
+        await foreach (var entity in this.Entities.AsAsyncEnumerable().WithCancellation(cancellationToken)
+                           .ConfigureAwait(false))
         {
             yield return entity;
         }

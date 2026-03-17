@@ -15,14 +15,16 @@ public abstract class LiteDbRepositoryAdapter<TDomainEntity, TDomainIdentity, TD
         IMapper<TDataEntity, TDomainEntity> dataEntityToDomainEntityMapper,
         IMapper<TDomainIdentity, TDataIdentity> domainIdentityToDataIdentityMapper,
         IMapper<TDataIdentity, TDomainIdentity> dataIdentityToDomainIdentityMapper,
-        ILiteDbRepository<TDataEntity, TDataIdentity> liteDbRepository) : base(
+        ILiteDbRepository<TDataEntity, TDataIdentity> liteDbRepository) :
+        base(
             domainEntityToDataEntityMapper,
             dataEntityToDomainEntityMapper,
             domainIdentityToDataIdentityMapper,
             dataIdentityToDomainIdentityMapper,
             liteDbRepository,
             liteDbRepository,
-            liteDbRepository) => this.LiteDbRepository = liteDbRepository ?? throw new ArgumentNullException(nameof(liteDbRepository));
+            liteDbRepository) => this.LiteDbRepository =
+        liteDbRepository ?? throw new ArgumentNullException(nameof(liteDbRepository));
 
     protected ILiteDbRepository<TDataEntity, TDataIdentity> LiteDbRepository { get; }
 

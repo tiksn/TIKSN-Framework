@@ -37,7 +37,7 @@ public abstract class DistributedCacheDecoratorBase<T> : CacheDecoratorBase<T>
                 this.SpecificOptions.Value.AbsoluteExpirationRelativeToNow ??
                 this.GenericOptions.Value.AbsoluteExpirationRelativeToNow,
             SlidingExpiration = this.SpecificOptions.Value.SlidingExpiration ??
-                                this.GenericOptions.Value.SlidingExpiration,
+                this.GenericOptions.Value.SlidingExpiration,
         };
 
     protected async Task<Option<TResult>> FindFromDistributedCacheAsync<TResult>(
@@ -56,7 +56,9 @@ public abstract class DistributedCacheDecoratorBase<T> : CacheDecoratorBase<T>
             var findings = await findFromSource().ConfigureAwait(false);
 
             _ = await findings
-                .IfSomeAsync(async foundItem => await this.SetToDistributedCacheAsync(cacheKey, foundItem, cancellationToken).ConfigureAwait(false)).ConfigureAwait(false);
+                .IfSomeAsync(async foundItem =>
+                    await this.SetToDistributedCacheAsync(cacheKey, foundItem, cancellationToken).ConfigureAwait(false))
+                .ConfigureAwait(false);
 
             return findings;
         }
