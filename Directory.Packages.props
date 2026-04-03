@@ -58,7 +58,7 @@
     <PackageVersion Include="Roslynator.Analyzers" Version="4.15.0" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.22.0.136894" />
-    <PackageVersion Include="Spectre.Console" Version="0.54.0" />
+    <PackageVersion Include="Spectre.Console" Version="0.55.0" />
     <PackageVersion Include="Spectre.Console.Analyzer" Version="1.0.0" />
     <PackageVersion Include="Spectre.Console.Cli" Version="0.53.1" />
     <PackageVersion Include="Spectre.Console.Testing" Version="0.54.0" />
