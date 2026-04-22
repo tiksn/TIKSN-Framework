@@ -47,7 +47,22 @@ public class Base62CorrelationService : ICorrelationService
             number += CodeMap[c];
         }
 
-        var binaryRepresentation = Seq(this.bigIntegerBinarySerializer.Serialize(number).Reverse().ToArray());
+        var littleEndianBytes = this.bigIntegerBinarySerializer.Serialize(number);
+        var expectedLength = this.base62CorrelationServiceOptions.Value.ByteLength;
+        if (littleEndianBytes.Length > expectedLength)
+        {
+            throw new ArgumentException(
+                "Decoded correlation value exceeds configured maximum byte length.",
+                nameof(stringRepresentation));
+        }
+
+        var bigEndianBytes = littleEndianBytes.Reverse();
+        var paddingLength = expectedLength - littleEndianBytes.Length;
+        var paddedBytes = paddingLength == 0
+            ? bigEndianBytes.ToArray()
+            : [.. Enumerable.Repeat((byte)0, paddingLength), .. bigEndianBytes];
+
+        var binaryRepresentation = Seq(paddedBytes);
         return new CorrelationId(stringRepresentation, binaryRepresentation);
     }
 
