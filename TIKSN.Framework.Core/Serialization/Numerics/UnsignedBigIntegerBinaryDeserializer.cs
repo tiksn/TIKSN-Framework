@@ -24,6 +24,9 @@ public class UnsignedBigIntegerBinaryDeserializer : ICustomDeserializer<byte[], 
             return new BigInteger(serial);
         }
 
-        return new BigInteger(serial.Concat(new byte[] { 0b_0000_0000 }).ToArray());
+        return new BigInteger(serial.Concat(new byte[]
+        {
+            0b_0000_0000
+        }).ToArray());
     }
 }

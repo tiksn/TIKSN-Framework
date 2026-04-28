@@ -95,6 +95,7 @@ public class WindowsRegistrySettingsService : ISettingsService
         {
             return defaultValue;
         }
+
         return (T)value;
     }
 
@@ -147,7 +148,8 @@ public class WindowsRegistrySettingsService : ISettingsService
     {
         if (string.IsNullOrWhiteSpace(this.options.Value.SubKey))
         {
-            throw new InvalidOperationException($"Parameter '{nameof(this.options.Value.SubKey)}' is null or white space.");
+            throw new InvalidOperationException(
+                $"Parameter '{nameof(this.options.Value.SubKey)}' is null or white space.");
         }
     }
 }

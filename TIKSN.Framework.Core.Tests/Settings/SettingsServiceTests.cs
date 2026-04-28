@@ -31,7 +31,8 @@ public class SettingsServiceTests
 
         this.settingsService.SetLocalSetting("LocalGuid", expectedValue);
 
-        var actualValue = this.settingsService.GetLocalSetting("LocalGuid", Guid.Parse("853dda84-4b61-4c11-9d79-ea3c4c9d8de1"));
+        var actualValue =
+            this.settingsService.GetLocalSetting("LocalGuid", Guid.Parse("853dda84-4b61-4c11-9d79-ea3c4c9d8de1"));
 
         actualValue.ShouldBe(expectedValue);
 
@@ -128,7 +129,8 @@ public class SettingsServiceTests
 
         this.settingsService.SetRoamingSetting("RoamingGuid", expectedValue);
 
-        var actualValue = this.settingsService.GetRoamingSetting("RoamingGuid", Guid.Parse("853dda84-4b61-4c11-9d79-ea3c4c9d8de1"));
+        var actualValue =
+            this.settingsService.GetRoamingSetting("RoamingGuid", Guid.Parse("853dda84-4b61-4c11-9d79-ea3c4c9d8de1"));
 
         actualValue.ShouldBe(expectedValue);
 

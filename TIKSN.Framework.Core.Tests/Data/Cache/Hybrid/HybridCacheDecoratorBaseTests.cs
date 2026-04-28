@@ -33,14 +33,14 @@ public class HybridCacheDecoratorBaseTests
         _ = containerBuilder.RegisterModule<CoreModule>();
         this.entityMap = new[]
         {
-                new TestEntity(1796652465, Guid.NewGuid(), "Item1"),
-                new TestEntity(489680564, Guid.NewGuid(), "Item2"),
-                new TestEntity(1242007805, Guid.NewGuid(), "Item3"),
-                new TestEntity(307097393, Guid.NewGuid(), "Item4"),
-                new TestEntity(1778174815, Guid.NewGuid(), "Item5"),
-                new TestEntity(2118700136, Guid.NewGuid(), "Item6"),
-                new TestEntity(2035652629, Guid.NewGuid(), "Item7"),
-                new TestEntity(430380339, Guid.NewGuid(), "Item8"),
+            new TestEntity(1796652465, Guid.NewGuid(), "Item1"),
+            new TestEntity(489680564, Guid.NewGuid(), "Item2"),
+            new TestEntity(1242007805, Guid.NewGuid(), "Item3"),
+            new TestEntity(307097393, Guid.NewGuid(), "Item4"),
+            new TestEntity(1778174815, Guid.NewGuid(), "Item5"),
+            new TestEntity(2118700136, Guid.NewGuid(), "Item6"),
+            new TestEntity(2035652629, Guid.NewGuid(), "Item7"),
+            new TestEntity(430380339, Guid.NewGuid(), "Item8"),
         }.ToDictionary(k => k.ID, v => v);
         _ = containerBuilder.RegisterInstance(this.entityMap).SingleInstance();
         _ = containerBuilder.RegisterType<RealTestService>().As<ITestService>();
@@ -159,16 +159,16 @@ public class HybridCacheDecoratorBaseTests
         // Arrange
 
         // Act & Assert
-
-        _ = await Should.ThrowAsync<EntityNotFoundException>(async () => await this.testService.GetByExternalIdAsync(Guid.NewGuid(), default));
+        _ = await Should.ThrowAsync<EntityNotFoundException>(async () =>
+            await this.testService.GetByExternalIdAsync(Guid.NewGuid(), default));
 
     [Fact]
     public async Task GivenMissingEntity_WhenRequestedByIdAsync_ThenShouldCacheMiss() =>
         // Arrange
 
         // Act & Assert
-
-        _ = await Should.ThrowAsync<EntityNotFoundException>(async () => await this.testService.GetByIdAsync(1009129315, default));
+        _ = await Should.ThrowAsync<EntityNotFoundException>(async () =>
+            await this.testService.GetByIdAsync(1009129315, default));
 
     public record TestEntity(int ID, Guid ExternalID, string Name) : IEntity<int>
     {
@@ -184,9 +184,11 @@ public class HybridCacheDecoratorBaseTests
         public RealTestService(Dictionary<int, TestEntity> entityMap)
             => this.entityMap = entityMap ?? throw new ArgumentNullException(nameof(entityMap));
 
-        public Task<TestEntity> GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken) => Task.FromResult(this.Get(x => x.Value.ExternalID == externalId));
+        public Task<TestEntity> GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken) =>
+            Task.FromResult(this.Get(x => x.Value.ExternalID == externalId));
 
-        public Task<TestEntity> GetByIdAsync(int id, CancellationToken cancellationToken) => Task.FromResult(this.Get(x => x.Value.ID == id));
+        public Task<TestEntity> GetByIdAsync(int id, CancellationToken cancellationToken) =>
+            Task.FromResult(this.Get(x => x.Value.ID == id));
 
         private TestEntity Get(Func<KeyValuePair<int, TestEntity>, bool> predicate)
         {
@@ -220,14 +222,18 @@ public class HybridCacheDecoratorBaseTests
         {
             var cacheKey = ("TestServiceDecorator", "ByExternalID", externalId).ToString();
 
-            return await this.GetFromHybridCacheAsync(cacheKey, async ct => await this.testService.GetByExternalIdAsync(externalId, ct).ConfigureAwait(false), cancellationToken).ConfigureAwait(false);
+            return await this.GetFromHybridCacheAsync(cacheKey,
+                async ct => await this.testService.GetByExternalIdAsync(externalId, ct).ConfigureAwait(false),
+                cancellationToken).ConfigureAwait(false);
         }
 
         public async Task<TestEntity> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
             var cacheKey = ("TestServiceDecorator", "ByID", id).ToString();
 
-            return await this.GetFromHybridCacheAsync(cacheKey, async ct => await this.testService.GetByIdAsync(id, ct).ConfigureAwait(false), cancellationToken).ConfigureAwait(false);
+            return await this.GetFromHybridCacheAsync(cacheKey,
+                    async ct => await this.testService.GetByIdAsync(id, ct).ConfigureAwait(false), cancellationToken)
+                .ConfigureAwait(false);
         }
     }
 }

@@ -40,7 +40,8 @@ public class NationalBankOfUkraineTests
     [Fact]
     public async Task GetCurrencyPairsAsync001()
     {
-        var pairs = await this.bank.GetCurrencyPairsAsync(new DateTimeOffset(2016, 05, 06, 0, 0, 0, TimeSpan.Zero), default);
+        var pairs = await this.bank.GetCurrencyPairsAsync(new DateTimeOffset(2016, 05, 06, 0, 0, 0, TimeSpan.Zero),
+            default);
 
         (pairs.Count != 0).ShouldBeTrue();
     }

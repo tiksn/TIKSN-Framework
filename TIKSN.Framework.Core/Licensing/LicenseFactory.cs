@@ -22,7 +22,8 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
         IServiceProvider serviceProvider)
     {
         this.licenseDescriptor = licenseDescriptor ?? throw new ArgumentNullException(nameof(licenseDescriptor));
-        this.entitlementsConverter = entitlementsConverter ?? throw new ArgumentNullException(nameof(entitlementsConverter));
+        this.entitlementsConverter =
+            entitlementsConverter ?? throw new ArgumentNullException(nameof(entitlementsConverter));
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
     }
@@ -100,7 +101,8 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
 
         if (!string.Equals(envelope.SignatureAlgorithm, keyAlgorithm, StringComparison.Ordinal))
         {
-            errors.Add(Error.New(429095162, "License Signature Algorithm is not matching with Certificate Signature Algorithm"));
+            errors.Add(Error.New(429095162,
+                "License Signature Algorithm is not matching with Certificate Signature Algorithm"));
         }
 
         var signatureService = this.serviceProvider.GetRequiredKeyedService<ICertificateSignatureService>(keyAlgorithm);
@@ -168,7 +170,8 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
             .Bind(serialNumber => licensorValidation.Map(licensor => (serialNumber, licensor)))
             .Bind(x => licenseeValidation.Map(licensee => (x.serialNumber, x.licensor, licensee)))
             .Bind(x => notBeforeValidation.Map(notBefore => (x.serialNumber, x.licensor, x.licensee, notBefore)))
-            .Bind(x => notAfterValidation.Map(notAfter => (x.serialNumber, x.licensor, x.licensee, x.notBefore, notAfter)))
+            .Bind(x => notAfterValidation.Map(notAfter =>
+                (x.serialNumber, x.licensor, x.licensee, x.notBefore, notAfter)))
             .Map(x => new LicenseTerms(
                 x.serialNumber,
                 x.licensor,

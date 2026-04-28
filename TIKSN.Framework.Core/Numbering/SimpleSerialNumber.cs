@@ -22,9 +22,11 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
 
     public TSerial Serial { get; }
 
-    public static bool operator !=(SimpleSerialNumber<TSerial, TNumber> left, SimpleSerialNumber<TSerial, TNumber> right) => !Equals(left, right);
+    public static bool operator !=(SimpleSerialNumber<TSerial, TNumber> left,
+        SimpleSerialNumber<TSerial, TNumber> right) => !Equals(left, right);
 
-    public static bool operator ==(SimpleSerialNumber<TSerial, TNumber> left, SimpleSerialNumber<TSerial, TNumber> right) => Equals(left, right);
+    public static bool operator ==(SimpleSerialNumber<TSerial, TNumber> left,
+        SimpleSerialNumber<TSerial, TNumber> right) => Equals(left, right);
 
     public static SimpleSerialNumber<TSerial, TNumber> Parse(string s, IFormatProvider? provider)
     {
@@ -36,10 +38,15 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
         throw new FormatException("Input string was not in a correct format.");
     }
 
-    public static SimpleSerialNumber<TSerial, TNumber> Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    public static SimpleSerialNumber<TSerial, TNumber> Parse(
+        ReadOnlySpan<char> s,
+        IFormatProvider? provider)
         => Parse(s.ToString(), provider);
 
-    public static Option<SimpleSerialNumber<TSerial, TNumber>> Parse(string s, bool asciiOnly, IFormatProvider? provider)
+    public static Option<SimpleSerialNumber<TSerial, TNumber>> Parse(
+        string s,
+        bool asciiOnly,
+        IFormatProvider? provider)
     {
         if (string.IsNullOrEmpty(s))
         {
@@ -86,7 +93,10 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
         return result.ToOption();
     }
 
-    public static Option<SimpleSerialNumber<TSerial, TNumber>> Parse(ReadOnlySpan<char> s, bool asciiOnly, IFormatProvider? provider)
+    public static Option<SimpleSerialNumber<TSerial, TNumber>> Parse(
+        ReadOnlySpan<char> s,
+        bool asciiOnly,
+        IFormatProvider? provider)
         => Parse(s.ToString(), asciiOnly, provider);
 
     public static bool TryParse(string? s, IFormatProvider? provider, out SimpleSerialNumber<TSerial, TNumber> result)
@@ -102,7 +112,10 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
         return serialNumber.IsSome;
     }
 
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out SimpleSerialNumber<TSerial, TNumber> result)
+    public static bool TryParse(
+        ReadOnlySpan<char> s,
+        IFormatProvider? provider,
+        out SimpleSerialNumber<TSerial, TNumber> result)
         => TryParse(s.ToString(), provider, out result);
 
     public bool Equals(SimpleSerialNumber<TSerial, TNumber>? other)
@@ -117,7 +130,8 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
             return true;
         }
 
-        return EqualityComparer<TSerial>.Default.Equals(this.Serial, other.Serial) && EqualityComparer<TNumber>.Default.Equals(this.Number, other.Number);
+        return EqualityComparer<TSerial>.Default.Equals(this.Serial, other.Serial) &&
+            EqualityComparer<TNumber>.Default.Equals(this.Number, other.Number);
     }
 
     public override bool Equals(object? obj)

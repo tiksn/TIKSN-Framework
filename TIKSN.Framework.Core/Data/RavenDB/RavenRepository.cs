@@ -27,8 +27,10 @@ public class RavenRepository<TEntity, TIdentity> : IRavenRepository<TEntity, TId
 
     public async Task AddAsync(TEntity entity, CancellationToken cancellationToken)
     {
-        await this.SessionProvider.Session.StoreAsync(entity, this.CreateDocumentId(entity.ID), cancellationToken).ConfigureAwait(false);
-        this.SessionProvider.Session.Advanced.GetMetadataFor(entity)[Constants.Documents.Metadata.Collection] = this.CollectionName;
+        await this.SessionProvider.Session.StoreAsync(entity, this.CreateDocumentId(entity.ID), cancellationToken)
+            .ConfigureAwait(false);
+        this.SessionProvider.Session.Advanced.GetMetadataFor(entity)[Constants.Documents.Metadata.Collection] =
+            this.CollectionName;
     }
 
     public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken) =>

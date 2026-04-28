@@ -30,11 +30,13 @@ public class CurrencyFactory : MemoryCacheDecoratorBase<CurrencyInfo>, ICurrency
     {
         if (string.IsNullOrWhiteSpace(isoCurrencySymbol))
         {
-            throw new ArgumentException($"'{nameof(isoCurrencySymbol)}' cannot be null or whitespace.", nameof(isoCurrencySymbol));
+            throw new ArgumentException(
+                $"'{nameof(isoCurrencySymbol)}' cannot be null or whitespace.",
+                nameof(isoCurrencySymbol));
         }
 
-        if (this.currencyUnionRedirectionOptions.Value.CurrencyUnionRedirections.TryGetValue(isoCurrencySymbol,
-            out var redirectedRegion))
+        if (this.currencyUnionRedirectionOptions.Value.CurrencyUnionRedirections.TryGetValue(
+                isoCurrencySymbol, out var redirectedRegion))
         {
             return this.Create(this.regionFactory.Create(redirectedRegion));
         }
@@ -49,11 +51,13 @@ public class CurrencyFactory : MemoryCacheDecoratorBase<CurrencyInfo>, ICurrency
     {
         ArgumentNullException.ThrowIfNull(region);
 
-        if (this.regionalCurrencyRedirectionOptions.Value.RegionalCurrencyRedirections.TryGetValue(region.Name, out var regionByName))
+        if (this.regionalCurrencyRedirectionOptions.Value.RegionalCurrencyRedirections.TryGetValue(
+                region.Name, out var regionByName))
         {
             region = this.regionFactory.Create(regionByName);
         }
-        else if (this.regionalCurrencyRedirectionOptions.Value.RegionalCurrencyRedirections.TryGetValue(region.TwoLetterISORegionName, out var regionByISOName))
+        else if (this.regionalCurrencyRedirectionOptions.Value.RegionalCurrencyRedirections.TryGetValue(
+                     region.TwoLetterISORegionName, out var regionByISOName))
         {
             region = this.regionFactory.Create(regionByISOName);
         }

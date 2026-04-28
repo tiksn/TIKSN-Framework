@@ -9,7 +9,8 @@ public static class LicenseExtensions
     public static Validation<Error, License<TEntitlements>> Validate<TEntitlements>(
         this Validation<Error, License<TEntitlements>> licenseValidation,
         Func<License<TEntitlements>, bool> predicate,
-        int failCode, string failMessage) => Validate(
+        int failCode, string failMessage)
+        => Validate(
             licenseValidation,
             predicate,
             Error.New(failCode, failMessage));
@@ -24,7 +25,7 @@ public static class LicenseExtensions
 
         return licenseValidation
             .Bind(license => predicate.Invoke(license)
-                    ? Success<Error, License<TEntitlements>>(license)
-                    : Fail<Error, License<TEntitlements>>(fail));
+                ? Success<Error, License<TEntitlements>>(license)
+                : Fail<Error, License<TEntitlements>>(fail));
     }
 }

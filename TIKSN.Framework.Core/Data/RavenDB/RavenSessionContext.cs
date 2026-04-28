@@ -8,7 +8,8 @@ public class RavenSessionContext : IRavenSessionStore, IRavenSessionProvider
 {
     private Option<IAsyncDocumentSession> session;
 
-    public IAsyncDocumentSession Session => this.session.Match(s => s, () => throw new InvalidOperationException("Raven Session is not initialized"));
+    public IAsyncDocumentSession Session => this.session.Match(s => s,
+        () => throw new InvalidOperationException("Raven Session is not initialized"));
 
     public void SetSession(IAsyncDocumentSession session) => this.session = Some(session);
 }

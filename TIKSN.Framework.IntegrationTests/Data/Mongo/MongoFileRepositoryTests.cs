@@ -13,12 +13,14 @@ public class MongoFileRepositoryTests
     private readonly ServiceProviderFixture serviceProviderFixture;
 
     public MongoFileRepositoryTests(ServiceProviderFixture serviceProviderFixture) =>
-        this.serviceProviderFixture = serviceProviderFixture ?? throw new ArgumentNullException(nameof(serviceProviderFixture));
+        this.serviceProviderFixture =
+            serviceProviderFixture ?? throw new ArgumentNullException(nameof(serviceProviderFixture));
 
     [Fact]
     public async Task TestFileDuplicateUpload()
     {
-        var testFileRepository = this.serviceProviderFixture.GetServiceProvider().GetRequiredService<ITestMongoFileRepository>();
+        var testFileRepository = this.serviceProviderFixture.GetServiceProvider()
+            .GetRequiredService<ITestMongoFileRepository>();
 
         var buffer1 = new byte[1024 * 1024 * 4];
         Random.Shared.NextBytes(buffer1);
@@ -37,7 +39,8 @@ public class MongoFileRepositoryTests
     [Fact]
     public async Task TestFileExists()
     {
-        var testFileRepository = this.serviceProviderFixture.GetServiceProvider().GetRequiredService<ITestMongoFileRepository>();
+        var testFileRepository = this.serviceProviderFixture.GetServiceProvider()
+            .GetRequiredService<ITestMongoFileRepository>();
 
         var buffer = new byte[1024 * 1024];
         Random.Shared.NextBytes(buffer);

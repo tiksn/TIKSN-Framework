@@ -33,7 +33,8 @@ public class CentralBankOfArmeniaTests
 
         var beforeInPound = new Money(poundSterling, 100m);
 
-        var afterInDram = await this.bank.ConvertCurrencyAsync(beforeInPound, armenianDram, this.timeProvider.GetUtcNow(), default);
+        var afterInDram =
+            await this.bank.ConvertCurrencyAsync(beforeInPound, armenianDram, this.timeProvider.GetUtcNow(), default);
 
         (beforeInPound.Amount < afterInDram.Amount).ShouldBeTrue();
     }
@@ -47,7 +48,8 @@ public class CentralBankOfArmeniaTests
         {
             var initial = new Money(pair.BaseCurrency, 10m);
             var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default);
-            var result = await this.bank.ConvertCurrencyAsync(initial, pair.CounterCurrency, this.timeProvider.GetUtcNow(), default);
+            var result = await this.bank.ConvertCurrencyAsync(initial, pair.CounterCurrency,
+                this.timeProvider.GetUtcNow(), default);
 
             (result.Currency == pair.CounterCurrency).ShouldBeTrue();
             (result.Amount > 0m).ShouldBeTrue();
@@ -67,8 +69,10 @@ public class CentralBankOfArmeniaTests
         var before = new Money(dollar, 100m);
 
         _ = await
-                new Func<Task>(async () =>
-                        await this.bank.ConvertCurrencyAsync(before, dram, this.timeProvider.GetUtcNow().AddDays(1d), default)).ShouldThrowAsync<ArgumentException>();
+            new Func<Task>(async () =>
+                    await this.bank.ConvertCurrencyAsync(before, dram, this.timeProvider.GetUtcNow().AddDays(1d),
+                        default))
+                .ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -84,7 +88,8 @@ public class CentralBankOfArmeniaTests
 
         _ = await
             new Func<Task>(async () =>
-                    await this.bank.ConvertCurrencyAsync(before, dram, this.timeProvider.GetUtcNow().AddMinutes(1d), default)).ShouldThrowAsync<ArgumentException>();
+                await this.bank.ConvertCurrencyAsync(before, dram, this.timeProvider.GetUtcNow().AddMinutes(1d),
+                    default)).ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -100,7 +105,8 @@ public class CentralBankOfArmeniaTests
 
         _ = await
             new Func<Task>(async () =>
-                    await this.bank.ConvertCurrencyAsync(before, dram, this.timeProvider.GetUtcNow().AddDays(-20d), default)).ShouldThrowAsync<ArgumentException>();
+                await this.bank.ConvertCurrencyAsync(before, dram, this.timeProvider.GetUtcNow().AddDays(-20d),
+                    default)).ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -136,7 +142,8 @@ public class CentralBankOfArmeniaTests
             _ = pairs.Add(pair);
         }
 
-        (pairs.Count == (await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default)).Count).ShouldBeTrue();
+        (pairs.Count == (await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default)).Count)
+            .ShouldBeTrue();
     }
 
     [Fact]
@@ -144,86 +151,140 @@ public class CentralBankOfArmeniaTests
     {
         var currencyPairs = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default);
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "USD" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "USD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "USD" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "USD");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "GBP" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "GBP");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "GBP" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "GBP");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AUD" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "AUD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AUD" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "AUD");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "EUR" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "EUR");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "EUR" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "EUR");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "XDR" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "XDR");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "XDR" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "XDR");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "IRR" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "IRR");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "IRR" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "IRR");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "PLN" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "PLN");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "PLN" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "PLN");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "CAD" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "CAD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "CAD" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "CAD");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "INR" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "INR");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "INR" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "INR");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "JPY" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "JPY");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "JPY" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "JPY");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "NOK" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "NOK");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "NOK" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "NOK");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "SEK" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "SEK");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "SEK" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "SEK");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "CHF" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "CHF");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "CHF" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "CHF");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "CZK" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "CZK");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "CZK" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "CZK");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "CNY" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "CNY");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "CNY" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "CNY");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "SGD" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "SGD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "SGD" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "SGD");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AED" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "AED");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AED" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "AED");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "KGS" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "KGS");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "KGS" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "KGS");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "KZT" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "KZT");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "KZT" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "KZT");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "RUB" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "RUB");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "RUB" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "RUB");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "UAH" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "UAH");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "UAH" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "UAH");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "UZS" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "UZS");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "UZS" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "UZS");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "BYN" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "BYN");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "BYN" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "BYN");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "TJS" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "TJS");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "TJS" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "TJS");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "GEL" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "GEL");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "GEL" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "GEL");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "HKD" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "HKD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "HKD" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "HKD");
 
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "BRL" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
-        currencyPairs.ShouldContain(c => c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "BRL");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "BRL" && c.CounterCurrency.ISOCurrencySymbol == "AMD");
+        currencyPairs.ShouldContain(c =>
+            c.BaseCurrency.ISOCurrencySymbol == "AMD" && c.CounterCurrency.ISOCurrencySymbol == "BRL");
     }
 
     [Fact]
@@ -246,7 +307,8 @@ public class CentralBankOfArmeniaTests
 
         foreach (var pair in currencyPairs)
         {
-            (await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default) > decimal.Zero).ShouldBeTrue();
+            (await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default) > decimal.Zero)
+                .ShouldBeTrue();
         }
     }
 
@@ -259,7 +321,10 @@ public class CentralBankOfArmeniaTests
         {
             var reversePair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
 
-            Math.Round(await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default) * await this.bank.GetExchangeRateAsync(reversePair, this.timeProvider.GetUtcNow(), default), 5).ShouldBe(decimal.One);
+            Math.Round(
+                    await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default) *
+                    await this.bank.GetExchangeRateAsync(reversePair, this.timeProvider.GetUtcNow(), default), 5)
+                .ShouldBe(decimal.One);
         }
     }
 
@@ -276,7 +341,9 @@ public class CentralBankOfArmeniaTests
 
         _ = await
             new Func<Task>(async () =>
-                    await this.bank.GetExchangeRateAsync(dollarPerDram, this.timeProvider.GetUtcNow().AddDays(1d), default)).ShouldThrowAsync<ArgumentException>();
+                    await this.bank.GetExchangeRateAsync(dollarPerDram, this.timeProvider.GetUtcNow().AddDays(1d),
+                        default))
+                .ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -292,7 +359,8 @@ public class CentralBankOfArmeniaTests
 
         _ = await
             new Func<Task>(async () =>
-                    await this.bank.GetExchangeRateAsync(dollarPerDram, this.timeProvider.GetUtcNow().AddDays(-20d), default)).ShouldThrowAsync<ArgumentException>();
+                await this.bank.GetExchangeRateAsync(dollarPerDram, this.timeProvider.GetUtcNow().AddDays(-20d),
+                    default)).ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -308,7 +376,8 @@ public class CentralBankOfArmeniaTests
 
         _ = await
             new Func<Task>(async () =>
-                    await this.bank.GetExchangeRateAsync(dollarPerDram, this.timeProvider.GetUtcNow().AddMinutes(1d), default)).ShouldThrowAsync<ArgumentException>();
+                await this.bank.GetExchangeRateAsync(dollarPerDram, this.timeProvider.GetUtcNow().AddMinutes(1d),
+                    default)).ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -324,7 +393,8 @@ public class CentralBankOfArmeniaTests
 
         _ = await
             new Func<Task>(async () =>
-                    await this.bank.GetExchangeRateAsync(lekPerDram, this.timeProvider.GetUtcNow(), default)).ShouldThrowAsync<ArgumentException>();
+                    await this.bank.GetExchangeRateAsync(lekPerDram, this.timeProvider.GetUtcNow(), default))
+                .ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -340,6 +410,7 @@ public class CentralBankOfArmeniaTests
 
         _ = await
             new Func<Task>(async () =>
-                    await this.bank.GetExchangeRateAsync(dramPerLek, this.timeProvider.GetUtcNow(), default)).ShouldThrowAsync<ArgumentException>();
+                    await this.bank.GetExchangeRateAsync(dramPerLek, this.timeProvider.GetUtcNow(), default))
+                .ShouldThrowAsync<ArgumentException>();
     }
 }

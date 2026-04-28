@@ -83,9 +83,10 @@ public class MongoUnitOfWorkTests
 
         retrievedEntity.Version.ShouldBe(4);
 
-        static Task UpdateEntityWithRetry(IUnitOfWorkFactory mongoUnitOfWorkFactory, Guid testEntityId) => Policy.Handle<MongoCommandException>()
-                .WaitAndRetryAsync(10, i => TimeSpan.FromMilliseconds(i * 10))
-                .ExecuteAsync(() => UpdateEntity(mongoUnitOfWorkFactory, testEntityId));
+        static Task UpdateEntityWithRetry(IUnitOfWorkFactory mongoUnitOfWorkFactory, Guid testEntityId) => Policy
+            .Handle<MongoCommandException>()
+            .WaitAndRetryAsync(10, i => TimeSpan.FromMilliseconds(i * 10))
+            .ExecuteAsync(() => UpdateEntity(mongoUnitOfWorkFactory, testEntityId));
 
         static async Task UpdateEntity(IUnitOfWorkFactory mongoUnitOfWorkFactory, Guid testEntityId)
         {

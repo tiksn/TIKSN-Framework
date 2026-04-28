@@ -196,10 +196,12 @@ public class A1NotationTests
     }
 
     [Fact]
-    public void GivenA1Notation_WhenConstructedWithNullSerial_ThenThrowsArgumentNullException() => Should.Throw<ArgumentNullException>(() => new A1Notation<ushort>(null, 1));
+    public void GivenA1Notation_WhenConstructedWithNullSerial_ThenThrowsArgumentNullException() =>
+        Should.Throw<ArgumentNullException>(() => new A1Notation<ushort>(null, 1));
 
     [Fact]
-    public void GivenA1Notation_WhenConstructedWithNullNumber_ThenThrowsArgumentNullException() => Should.Throw<ArgumentException>(() => new A1Notation<ushort>(new BB26(1), default));
+    public void GivenA1Notation_WhenConstructedWithNullNumber_ThenThrowsArgumentNullException() =>
+        Should.Throw<ArgumentException>(() => new A1Notation<ushort>(new BB26(1), default));
 
     [Fact]
     public void GivenA1Notation_WhenConstructedWithValidParameters_ThenPropertiesSet()

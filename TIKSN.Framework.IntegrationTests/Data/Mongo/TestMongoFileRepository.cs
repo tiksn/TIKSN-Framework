@@ -6,7 +6,7 @@ namespace TIKSN.IntegrationTests.Data.Mongo;
 public class TestMongoFileRepository : MongoFileRepository<ObjectId, object>, ITestMongoFileRepository
 {
     public TestMongoFileRepository(IMongoDatabaseProvider mongoDatabaseProvider)
-      : base(mongoDatabaseProvider, "Test")
+        : base(mongoDatabaseProvider, "Test")
     {
     }
 }

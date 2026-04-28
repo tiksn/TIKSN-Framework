@@ -34,7 +34,8 @@ public class FederalReserveSystemTests
             var before = new Money(pair.BaseCurrency);
             var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default);
 
-            var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow(), default);
+            var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency,
+                this.timeProvider.GetUtcNow(), default);
 
             (after.Amount == rate * before.Amount).ShouldBeTrue();
         }
@@ -48,7 +49,8 @@ public class FederalReserveSystemTests
 
         var beforeInPound = new Money(poundSterling, 100m);
 
-        var afterInDollar = await this.bank.ConvertCurrencyAsync(beforeInPound, usDollar, this.timeProvider.GetUtcNow(), default);
+        var afterInDollar =
+            await this.bank.ConvertCurrencyAsync(beforeInPound, usDollar, this.timeProvider.GetUtcNow(), default);
 
         (beforeInPound.Amount < afterInDollar.Amount).ShouldBeTrue();
     }
@@ -59,7 +61,8 @@ public class FederalReserveSystemTests
         foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default))
         {
             var before = new Money(pair.BaseCurrency, 10m);
-            var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow(), default);
+            var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency,
+                this.timeProvider.GetUtcNow(), default);
 
             (after.Amount > decimal.Zero).ShouldBeTrue();
             (after.Currency == pair.CounterCurrency).ShouldBeTrue();
@@ -90,7 +93,8 @@ public class FederalReserveSystemTests
 
             _ = await
                 new Func<Task>(async () =>
-                        await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, this.timeProvider.GetUtcNow().AddMinutes(1d), default)).ShouldThrowAsync<ArgumentException>();
+                    await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency,
+                        this.timeProvider.GetUtcNow().AddMinutes(1d), default)).ShouldThrowAsync<ArgumentException>();
         }
     }
 
@@ -100,8 +104,9 @@ public class FederalReserveSystemTests
         var before = new Money(new CurrencyInfo(new RegionInfo("AL")), 10m);
 
         _ = await
-                new Func<Task>(async () =>
-                        await this.bank.ConvertCurrencyAsync(before, new CurrencyInfo(new RegionInfo("AM")), this.timeProvider.GetUtcNow().AddMinutes(1d), default)).ShouldThrowAsync<ArgumentException>();
+            new Func<Task>(async () =>
+                await this.bank.ConvertCurrencyAsync(before, new CurrencyInfo(new RegionInfo("AM")),
+                    this.timeProvider.GetUtcNow().AddMinutes(1d), default)).ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -136,7 +141,8 @@ public class FederalReserveSystemTests
     public async Task GetCurrencyPairs003()
         => await
             new Func<Task>(async () =>
-                    await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow().AddMinutes(1d), default)).ShouldThrowAsync<ArgumentException>();
+                    await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow().AddMinutes(1d), default))
+                .ShouldThrowAsync<ArgumentException>();
 
     [Fact]
     public async Task GetCurrencyPairs004()
@@ -220,7 +226,8 @@ public class FederalReserveSystemTests
         foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default))
         {
             _ = await new Func<Task>(async () =>
-                    await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddMinutes(1d), default)).ShouldThrowAsync<ArgumentException>();
+                    await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddMinutes(1d), default))
+                .ShouldThrowAsync<ArgumentException>();
         }
     }
 
@@ -229,7 +236,9 @@ public class FederalReserveSystemTests
     {
         var pair = new CurrencyPair(new CurrencyInfo(new RegionInfo("AL")), new CurrencyInfo(new RegionInfo("AM")));
 
-        _ = await new Func<Task>(async () => await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddMinutes(1d), default)).ShouldThrowAsync<ArgumentException>();
+        _ = await new Func<Task>(async () =>
+                await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddMinutes(1d), default))
+            .ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]

@@ -26,7 +26,8 @@ public partial class CompositeAssemblyStringLocalizerTests
     public void KeyUniqueness()
     {
         var resourceNamesCache = new ResourceNamesCache();
-        var testStringLocalizer = new TestStringLocalizer(resourceNamesCache, this.serviceProvider.GetRequiredService<ILogger<TestStringLocalizer>>());
+        var testStringLocalizer = new TestStringLocalizer(resourceNamesCache,
+            this.serviceProvider.GetRequiredService<ILogger<TestStringLocalizer>>());
         var allStrings = testStringLocalizer
             .GetAllStrings()
             .GroupBy(item => item.Name.ToLowerInvariant())
@@ -43,9 +44,11 @@ public partial class CompositeAssemblyStringLocalizerTests
         {
             foreach (var duplicateItem in duplicate)
             {
-                LogDuplicateItem(logger, duplicate.Key, duplicateItem.Name, duplicateItem.Value, duplicateItem.SearchedLocation);
+                LogDuplicateItem(logger, duplicate.Key, duplicateItem.Name, duplicateItem.Value,
+                    duplicateItem.SearchedLocation);
             }
         }
+
         duplicatesCount.ShouldBe(0);
     }
 

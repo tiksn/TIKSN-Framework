@@ -19,7 +19,8 @@ public class QueryRepositoryPaginationTests
 
     public QueryRepositoryPaginationTests(
         ServiceProviderFixture serviceProviderFixture)
-        => this.serviceProviderFixture = serviceProviderFixture ?? throw new ArgumentNullException(nameof(serviceProviderFixture));
+        => this.serviceProviderFixture =
+            serviceProviderFixture ?? throw new ArgumentNullException(nameof(serviceProviderFixture));
 
     [Theory]
     [InlineData("LiteDB")]

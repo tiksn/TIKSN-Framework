@@ -36,7 +36,9 @@ public class Base62CorrelationService : ICorrelationService
     {
         if (string.IsNullOrWhiteSpace(stringRepresentation))
         {
-            throw new ArgumentException($"'{nameof(stringRepresentation)}' cannot be null or whitespace.", nameof(stringRepresentation));
+            throw new ArgumentException(
+                $"'{nameof(stringRepresentation)}' cannot be null or whitespace.",
+                nameof(stringRepresentation));
         }
 
         var number = BigInteger.Zero;

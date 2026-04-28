@@ -40,10 +40,10 @@ public class DistributedCacheDecoratorBaseTests
         _ = containerBuilder.RegisterModule<CoreModule>();
         this.entityMap = new[]
         {
-                new TestEntity(1778174815, Guid.NewGuid(), "Item5"),
-                new TestEntity(2118700136, Guid.NewGuid(), "Item6"),
-                new TestEntity(2035652629, Guid.NewGuid(), "Item7"),
-                new TestEntity(430380339, Guid.NewGuid(), "Item8"),
+            new TestEntity(1778174815, Guid.NewGuid(), "Item5"),
+            new TestEntity(2118700136, Guid.NewGuid(), "Item6"),
+            new TestEntity(2035652629, Guid.NewGuid(), "Item7"),
+            new TestEntity(430380339, Guid.NewGuid(), "Item8"),
         }.ToDictionary(k => k.ID, v => v);
         this.counterMap = this.entityMap.ToDictionary(k => k.Key, _ => 0);
         _ = containerBuilder.RegisterInstance(this.entityMap).SingleInstance();
@@ -210,9 +210,11 @@ public class DistributedCacheDecoratorBaseTests
             this.counterMap = counterMap ?? throw new ArgumentNullException(nameof(counterMap));
         }
 
-        public Task<Option<TestEntity>> FindByExternalIdAsync(Guid externalId, CancellationToken cancellationToken) => Task.FromResult(this.Find(x => x.Value.ExternalID == externalId));
+        public Task<Option<TestEntity>> FindByExternalIdAsync(Guid externalId, CancellationToken cancellationToken) =>
+            Task.FromResult(this.Find(x => x.Value.ExternalID == externalId));
 
-        public Task<Option<TestEntity>> FindByIdAsync(int id, CancellationToken cancellationToken) => Task.FromResult(this.Find(x => x.Value.ID == id));
+        public Task<Option<TestEntity>> FindByIdAsync(int id, CancellationToken cancellationToken) =>
+            Task.FromResult(this.Find(x => x.Value.ID == id));
 
         private Option<TestEntity> Find(Func<KeyValuePair<int, TestEntity>, bool> predicate)
         {
@@ -249,14 +251,16 @@ public class DistributedCacheDecoratorBaseTests
         {
             var cacheKey = ("TestServiceDecorator", "ByExternalID", externalId).ToString();
 
-            return this.FindFromDistributedCacheAsync(cacheKey, () => this.testService.FindByExternalIdAsync(externalId, cancellationToken), cancellationToken);
+            return this.FindFromDistributedCacheAsync(cacheKey,
+                () => this.testService.FindByExternalIdAsync(externalId, cancellationToken), cancellationToken);
         }
 
         public Task<Option<TestEntity>> FindByIdAsync(int id, CancellationToken cancellationToken)
         {
             var cacheKey = ("TestServiceDecorator", "ByID", id).ToString();
 
-            return this.FindFromDistributedCacheAsync(cacheKey, () => this.testService.FindByIdAsync(id, cancellationToken), cancellationToken);
+            return this.FindFromDistributedCacheAsync(cacheKey,
+                () => this.testService.FindByIdAsync(id, cancellationToken), cancellationToken);
         }
     }
 }

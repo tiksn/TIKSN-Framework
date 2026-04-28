@@ -93,7 +93,8 @@ public class CachedCurrencyConverter : ICurrencyConverter
         }
 
         var actualMoney =
-            await this.originalConverter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
+            await this.originalConverter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken)
+                .ConfigureAwait(false);
 
         var actualRate = actualMoney.Amount / baseMoney.Amount;
 
@@ -114,7 +115,8 @@ public class CachedCurrencyConverter : ICurrencyConverter
             return cachedPairs.CurrencyPairs;
         }
 
-        var actualPairs = await this.originalConverter.GetCurrencyPairsAsync(asOn, cancellationToken).ConfigureAwait(false);
+        var actualPairs = await this.originalConverter.GetCurrencyPairsAsync(asOn, cancellationToken)
+            .ConfigureAwait(false);
 
         AddToCache(this.cachedCurrencyPairs, this.CurrencyPairsCacheCapacity,
             new CachedCurrencyPairs(actualPairs, asOn, this.timeProvider));
@@ -137,7 +139,8 @@ public class CachedCurrencyConverter : ICurrencyConverter
             return cachedRate.ExchangeRate;
         }
 
-        var actualRate = await this.originalConverter.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
+        var actualRate = await this.originalConverter.GetExchangeRateAsync(pair, asOn, cancellationToken)
+            .ConfigureAwait(false);
 
         AddToCache(this.cachedRates, this.RatesCacheCapacity,
             new CachedRate(pair, actualRate, asOn, this.timeProvider));

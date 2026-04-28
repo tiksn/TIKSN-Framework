@@ -19,22 +19,22 @@ public static class Helper
     public static CurrencyPair SampleCurrencyPair3 => new(SampleCurrency2, SampleCurrency3);
 
     public static IEnumerable<CurrencyPair> SampleCurrencyPairs1 =>
-            [
-                SampleCurrencyPair1,
-                SampleCurrencyPair2,
-                SampleCurrencyPair3
-            ];
+    [
+        SampleCurrencyPair1,
+        SampleCurrencyPair2,
+        SampleCurrencyPair3
+    ];
 
     public static IEnumerable<CurrencyPair> SampleCurrencyPairs2 =>
-            [
-                SampleCurrencyPair1,
-                SampleCurrencyPair2
-            ];
+    [
+        SampleCurrencyPair1,
+        SampleCurrencyPair2
+    ];
 
     public static IEnumerable<CurrencyPair> SampleCurrencyPairs3 =>
-            [
-                SampleCurrencyPair1
-            ];
+    [
+        SampleCurrencyPair1
+    ];
 
     public static Money SampleMoney1 => new(SampleCurrency1, 100m);
 

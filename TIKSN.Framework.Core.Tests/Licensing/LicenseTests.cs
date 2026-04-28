@@ -122,7 +122,9 @@ public class LicenseTests
         out X509Certificate2 privateCertificate)
     {
         var services = new ServiceCollection();
-        _ = services.AddSingleton<IEntitlementsConverter<TestEntitlements, TestLicenseEntitlements>, TestEntitlementsConverter>();
+        _ = services
+            .AddSingleton<IEntitlementsConverter<TestEntitlements, TestLicenseEntitlements>,
+                TestEntitlementsConverter>();
         _ = services.AddFrameworkCore();
         _ = services.AddSingleton<ILicenseDescriptor<TestEntitlements>>(
             new LicenseDescriptor<TestEntitlements>(
@@ -138,7 +140,8 @@ public class LicenseTests
         containerBuilder.Populate(services);
         var serviceProvider = new AutofacServiceProvider(containerBuilder.Build());
 
-        licenseFactory = serviceProvider.GetRequiredService<ILicenseFactory<TestEntitlements, TestLicenseEntitlements>>();
+        licenseFactory =
+            serviceProvider.GetRequiredService<ILicenseFactory<TestEntitlements, TestLicenseEntitlements>>();
         var serialNumber = Ulid.NewUlid();
         licensor = new IndividualParty(
             "Tigran",
@@ -172,13 +175,15 @@ public class LicenseTests
         this.testOutputHelper.WriteLine(JsonConvert.SerializeObject(entitlements, Formatting.Indented));
 
         publicCertificate = new X509Certificate2(this.publicCertificates[kind]);
-        this.testOutputHelper.WriteLine($"Public Certificate Serial Number: {publicCertificate.GetSerialNumberString()}");
+        this.testOutputHelper.WriteLine(
+            $"Public Certificate Serial Number: {publicCertificate.GetSerialNumberString()}");
 
         privateCertificate = new X509Certificate2(
             this.privateCertificates[kind],
             this.privateCertificatePasswords[kind]);
 
-        this.testOutputHelper.WriteLine($"Private Certificate Serial Number: {privateCertificate.GetSerialNumberString()}");
+        this.testOutputHelper.WriteLine(
+            $"Private Certificate Serial Number: {privateCertificate.GetSerialNumberString()}");
     }
 
     private void AssertSuccess(
@@ -191,6 +196,7 @@ public class LicenseTests
         {
             this.testOutputHelper.WriteLine($"License Result Fail: {resultFail}");
         }
+
         result.IsSuccess.ShouldBeTrue();
         _ = result.SuccessToSeq().Single().Terms.ShouldNotBeNull();
         result.SuccessToSeq().Single().Terms.SerialNumber.ShouldBe(terms.SerialNumber);
@@ -203,7 +209,8 @@ public class LicenseTests
         _ = result.SuccessToSeq().Single().Terms.Licensee.ShouldBeOfType<OrganizationParty>();
         ((OrganizationParty)result.SuccessToSeq().Single().Terms.Licensee).LongName.ShouldBe(licensee.LongName);
         ((OrganizationParty)result.SuccessToSeq().Single().Terms.Licensee).ShortName.ShouldBe(licensee.ShortName);
-        ((OrganizationParty)result.SuccessToSeq().Single().Terms.Licensee).Email.Address.ShouldBe(licensee.Email.Address);
+        ((OrganizationParty)result.SuccessToSeq().Single().Terms.Licensee).Email.Address.ShouldBe(
+            licensee.Email.Address);
         ((OrganizationParty)result.SuccessToSeq().Single().Terms.Licensee).Website.ShouldBe(licensee.Website);
         result.SuccessToSeq().Single().Terms.NotBefore.ShouldBe(terms.NotBefore);
         result.SuccessToSeq().Single().Terms.NotAfter.ShouldBe(terms.NotAfter);

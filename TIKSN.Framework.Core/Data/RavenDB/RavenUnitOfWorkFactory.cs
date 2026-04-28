@@ -39,6 +39,7 @@ public class RavenUnitOfWorkFactory : IUnitOfWorkFactory, IDisposable
         {
             this.store.Dispose();
         }
+
         this.disposed = true;
     }
 }

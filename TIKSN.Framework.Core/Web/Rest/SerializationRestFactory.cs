@@ -7,7 +7,8 @@ public sealed class SerializationRestFactory : ISerializerRestFactory, IDeserial
     private readonly IDictionary<string, Tuple<ISerializer<string>, IDeserializer<string>>> map;
 
     public SerializationRestFactory(JsonSerializer jsonSerializer, JsonDeserializer jsonDeserializer,
-        DotNetXmlSerializer dotNetXmlSerializer, DotNetXmlDeserializer dotNetXmlDeserializer) => this.map = new Dictionary<string, Tuple<ISerializer<string>, IDeserializer<string>>>(StringComparer.OrdinalIgnoreCase)
+        DotNetXmlSerializer dotNetXmlSerializer, DotNetXmlDeserializer dotNetXmlDeserializer) => this.map =
+        new Dictionary<string, Tuple<ISerializer<string>, IDeserializer<string>>>(StringComparer.OrdinalIgnoreCase)
         {
             {
                 "application/json",

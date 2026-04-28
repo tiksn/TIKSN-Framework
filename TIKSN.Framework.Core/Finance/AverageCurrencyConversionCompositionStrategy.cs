@@ -23,7 +23,8 @@ public class AverageCurrencyConversionCompositionStrategy : ICurrencyConversionC
         foreach (var converter in filteredConverters)
         {
             var convertedMoney =
-                await converter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
+                await converter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken)
+                    .ConfigureAwait(false);
 
             if (convertedMoney.Currency != counterCurrency)
             {
@@ -47,7 +48,8 @@ public class AverageCurrencyConversionCompositionStrategy : ICurrencyConversionC
         ArgumentNullException.ThrowIfNull(converters);
         ArgumentNullException.ThrowIfNull(pair);
 
-        var filteredConverters = await CurrencyHelper.FilterConvertersAsync(converters, pair, asOn, cancellationToken).ConfigureAwait(false);
+        var filteredConverters = await CurrencyHelper.FilterConvertersAsync(converters, pair, asOn, cancellationToken)
+            .ConfigureAwait(false);
 
         var rates = new List<decimal>();
 

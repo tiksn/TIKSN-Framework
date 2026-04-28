@@ -54,16 +54,13 @@ public class SitemapIndexTests
 
         xmlOutput.ShouldBe("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
             "<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" +
-
             "<sitemap>" +
             "<loc>https://microsoft.com/</loc>" +
             "</sitemap>" +
-
             "<sitemap>" +
             "<loc>https://microsoft.com/siteindex.xml</loc>" +
             "<lastmod>2012-10-25</lastmod>" +
             "</sitemap>" +
-
             "</sitemapindex>");
     }
 }

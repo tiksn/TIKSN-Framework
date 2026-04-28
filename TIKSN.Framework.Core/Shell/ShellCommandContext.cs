@@ -86,7 +86,8 @@ public class ShellCommandContext : IShellCommandContext, IShellCommandContextSto
 
     public bool ShouldProcess(string target, string action) =>
         this.ShouldContinue(this.stringLocalizer.GetRequiredString(LocalizationKeys.Key439104548),
-            string.Format(CultureInfo.InvariantCulture, this.stringLocalizer.GetRequiredString(LocalizationKeys.Key284914810), action, target),
+            string.Format(CultureInfo.InvariantCulture,
+                this.stringLocalizer.GetRequiredString(LocalizationKeys.Key284914810), action, target),
             ref this.yesToAll, ref this.noToAll);
 
     public bool ShouldProcess(string target)

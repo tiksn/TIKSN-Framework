@@ -30,7 +30,8 @@ public class MongoFileRepository<TIdentity, TMetadata> : IFileRepository, IFileR
     public async Task DeleteAsync(string path, CancellationToken cancellationToken)
     {
         var fileInfo = await (await this.bucket
-            .FindAsync(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Filename, path), cancellationToken: cancellationToken).ConfigureAwait(false))
+                .FindAsync(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Filename, path),
+                    cancellationToken: cancellationToken).ConfigureAwait(false))
             .SingleAsync(cancellationToken).ConfigureAwait(false);
 
         await this.bucket.DeleteAsync(fileInfo.Id, cancellationToken).ConfigureAwait(false);
@@ -44,10 +45,12 @@ public class MongoFileRepository<TIdentity, TMetadata> : IFileRepository, IFileR
         CancellationToken cancellationToken)
     {
         var fileInfo = await (await this.bucket
-            .FindAsync(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Filename, path), cancellationToken: cancellationToken).ConfigureAwait(false))
+                .FindAsync(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Filename, path),
+                    cancellationToken: cancellationToken).ConfigureAwait(false))
             .SingleAsync(cancellationToken).ConfigureAwait(false);
 
-        var content = await this.bucket.DownloadAsBytesAsync(fileInfo.Id, options: null, cancellationToken).ConfigureAwait(false);
+        var content = await this.bucket.DownloadAsBytesAsync(fileInfo.Id, options: null, cancellationToken)
+            .ConfigureAwait(false);
 
         return new File(fileInfo.Filename, content);
     }
@@ -56,9 +59,12 @@ public class MongoFileRepository<TIdentity, TMetadata> : IFileRepository, IFileR
         TIdentity id,
         CancellationToken cancellationToken)
     {
-        var content = await this.bucket.DownloadAsBytesAsync(id, options: null, cancellationToken).ConfigureAwait(false);
+        var content = await this.bucket.DownloadAsBytesAsync(id, options: null, cancellationToken)
+            .ConfigureAwait(false);
 
-        var fileInfo = await (await this.bucket.FindAsync(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Id, id), cancellationToken: cancellationToken).ConfigureAwait(false))
+        var fileInfo = await (await this.bucket
+                .FindAsync(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Id, id),
+                    cancellationToken: cancellationToken).ConfigureAwait(false))
             .SingleAsync(cancellationToken).ConfigureAwait(false);
 
         return new File<TIdentity>(id, fileInfo.Filename, content);
@@ -68,7 +74,9 @@ public class MongoFileRepository<TIdentity, TMetadata> : IFileRepository, IFileR
         TIdentity id,
         CancellationToken cancellationToken)
     {
-        var fileInfo = await (await this.bucket.FindAsync(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Id, id), cancellationToken: cancellationToken).ConfigureAwait(false))
+        var fileInfo = await (await this.bucket
+                .FindAsync(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Id, id),
+                    cancellationToken: cancellationToken).ConfigureAwait(false))
             .SingleAsync(cancellationToken).ConfigureAwait(false);
 
         return new FileInfo<TIdentity, TMetadata>(id, fileInfo.Filename,
@@ -79,9 +87,12 @@ public class MongoFileRepository<TIdentity, TMetadata> : IFileRepository, IFileR
         TIdentity id,
         CancellationToken cancellationToken)
     {
-        var content = await this.bucket.DownloadAsBytesAsync(id, options: null, cancellationToken).ConfigureAwait(false);
+        var content = await this.bucket.DownloadAsBytesAsync(id, options: null, cancellationToken)
+            .ConfigureAwait(false);
 
-        var fileInfo = await (await this.bucket.FindAsync(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Id, id), cancellationToken: cancellationToken).ConfigureAwait(false))
+        var fileInfo = await (await this.bucket
+                .FindAsync(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Id, id),
+                    cancellationToken: cancellationToken).ConfigureAwait(false))
             .SingleAsync(cancellationToken).ConfigureAwait(false);
 
         return new File<TIdentity, TMetadata>(id, fileInfo.Filename,
@@ -89,19 +100,25 @@ public class MongoFileRepository<TIdentity, TMetadata> : IFileRepository, IFileR
     }
 
     public async Task<bool> ExistsAsync(string path, CancellationToken cancellationToken) => await (await this.bucket
-        .FindAsync(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Filename, path), cancellationToken: cancellationToken).ConfigureAwait(false))
+            .FindAsync(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Filename, path),
+                cancellationToken: cancellationToken).ConfigureAwait(false))
         .AnyAsync(cancellationToken).ConfigureAwait(false);
 
     public async Task<bool> ExistsByIdAsync(TIdentity id, CancellationToken cancellationToken) =>
-        await (await this.bucket.FindAsync(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Id, id), cancellationToken: cancellationToken).ConfigureAwait(false)).AnyAsync(cancellationToken).ConfigureAwait(false);
+        await (await this.bucket.FindAsync(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Id, id),
+                cancellationToken: cancellationToken).ConfigureAwait(false)).AnyAsync(cancellationToken)
+            .ConfigureAwait(false);
 
     public async Task UploadAsync(string path, byte[] content, CancellationToken cancellationToken)
     {
-        var coursor = await this.bucket.FindAsync(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Filename, path), cancellationToken: cancellationToken).ConfigureAwait(false);
+        var coursor = await this.bucket
+            .FindAsync(Builders<GridFSFileInfo<TIdentity>>.Filter.Eq(item => item.Filename, path),
+                cancellationToken: cancellationToken).ConfigureAwait(false);
         var firstFileInfo = await coursor.FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
         if (firstFileInfo is null)
         {
-            _ = await this.bucketRaw.UploadFromBytesAsync(path, content, options: null, cancellationToken).ConfigureAwait(false);
+            _ = await this.bucketRaw.UploadFromBytesAsync(path, content, options: null, cancellationToken)
+                .ConfigureAwait(false);
         }
         else
         {

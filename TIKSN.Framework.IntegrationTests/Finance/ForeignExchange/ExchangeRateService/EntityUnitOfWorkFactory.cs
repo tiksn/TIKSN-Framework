@@ -13,7 +13,8 @@ public class EntityUnitOfWorkFactory : EntityUnitOfWorkFactoryBase
         IServiceProvider serviceProvider,
         ExchangeRatesContext exchangeRatesContext)
         : base(serviceProvider)
-        => this.exchangeRatesContext = exchangeRatesContext ?? throw new ArgumentNullException(nameof(exchangeRatesContext));
+        => this.exchangeRatesContext =
+            exchangeRatesContext ?? throw new ArgumentNullException(nameof(exchangeRatesContext));
 
     protected override DbContext[] GetContexts()
         => [this.exchangeRatesContext];

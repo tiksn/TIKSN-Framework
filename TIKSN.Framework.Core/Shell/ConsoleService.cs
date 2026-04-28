@@ -28,7 +28,7 @@ public class ConsoleService : IConsoleService
     {
         var textPrompt =
             this.WriteTextPrompt(promptMessage, promptForegroundColor)
-            .Secret(mask: null);
+                .Secret(mask: null);
 
         var secret = this.ansiConsole.Prompt(textPrompt);
         var pwd = new SecureString();
@@ -105,7 +105,8 @@ public class ConsoleService : IConsoleService
     private void WriteObjects<T>(IEnumerable<T> items, string? title)
     {
         var itemType = typeof(T);
-        var itemProperties = itemType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty);
+        var itemProperties =
+            itemType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty);
 
         var table = new Table();
         if (!string.IsNullOrWhiteSpace(title))

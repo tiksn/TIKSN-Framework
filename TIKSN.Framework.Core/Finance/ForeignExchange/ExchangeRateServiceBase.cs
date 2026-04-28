@@ -91,7 +91,9 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
 
             if (combinedRates.Count == 0)
             {
-                combinedRates = await this.FetchExchangeRatesAsync(exchangeRateRepository, pair, asOn, cancellationToken).ConfigureAwait(false);
+                combinedRates = await this
+                    .FetchExchangeRatesAsync(exchangeRateRepository, pair, asOn, cancellationToken)
+                    .ConfigureAwait(false);
             }
 
             await uow.CompleteAsync(cancellationToken).ConfigureAwait(false);
@@ -117,8 +119,10 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
 
         var syntheticCurrencyPair1 = new CurrencyPair(pair.BaseCurrency, intermediaryCurrency);
         var syntheticCurrencyPair2 = new CurrencyPair(intermediaryCurrency, pair.CounterCurrency);
-        var rate1 = await this.GetExchangeRateAsync(syntheticCurrencyPair1, asOn, cancellationToken).ConfigureAwait(false);
-        var rate2 = await this.GetExchangeRateAsync(syntheticCurrencyPair2, asOn, cancellationToken).ConfigureAwait(false);
+        var rate1 = await this.GetExchangeRateAsync(syntheticCurrencyPair1, asOn, cancellationToken)
+            .ConfigureAwait(false);
+        var rate2 = await this.GetExchangeRateAsync(syntheticCurrencyPair2, asOn, cancellationToken)
+            .ConfigureAwait(false);
 
         var rate =
             from r1 in rate1
@@ -307,7 +311,8 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
 #pragma warning disable CA1031 // Do not catch general exception types
         try
         {
-            var exchangeRates = await batchProvider.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
+            var exchangeRates =
+                await batchProvider.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
 
             await SaveExchangeRatesAsync(
                 exchangeRateRepository,

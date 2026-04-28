@@ -61,7 +61,8 @@ public partial class ShellCommandEngine : IShellCommandEngine
                     typeof(IShellCommand).FullName ?? string.Empty), nameof(type));
         }
 
-        var commandAttribute = type.GetTypeInfo().GetCustomAttribute<ShellCommandAttribute>() ?? throw new ArgumentException(
+        var commandAttribute = type.GetTypeInfo().GetCustomAttribute<ShellCommandAttribute>() ??
+            throw new ArgumentException(
                 this.stringLocalizer.GetRequiredString(
                     LocalizationKeys.Key491461331,
                     type.FullName ?? string.Empty,
@@ -124,24 +125,24 @@ public partial class ShellCommandEngine : IShellCommandEngine
             command = NormalizeCommandName(command);
 
             if (string.Equals(command, this.stringLocalizer.GetRequiredString(LocalizationKeys.Key785393579),
-                StringComparison.OrdinalIgnoreCase))
+                    StringComparison.OrdinalIgnoreCase))
             {
                 break;
             }
 
             if (string.Equals(command, this.stringLocalizer.GetRequiredString(LocalizationKeys.Key427524976),
-                StringComparison.OrdinalIgnoreCase))
+                    StringComparison.OrdinalIgnoreCase))
             {
                 var helpItems = new List<ShellCommandHelpItem>
                 {
                     new(
-                    NormalizeCommandName(
-                        this.stringLocalizer.GetRequiredString(LocalizationKeys.Key785393579)),
-                    []),
+                        NormalizeCommandName(
+                            this.stringLocalizer.GetRequiredString(LocalizationKeys.Key785393579)),
+                        []),
                     new(
-                    NormalizeCommandName(
-                        this.stringLocalizer.GetRequiredString(LocalizationKeys.Key427524976)),
-                    []),
+                        NormalizeCommandName(
+                            this.stringLocalizer.GetRequiredString(LocalizationKeys.Key427524976)),
+                        []),
                 };
 
                 foreach (var commandItem in this.commands)
@@ -216,7 +217,8 @@ public partial class ShellCommandEngine : IShellCommandEngine
         EventId = 5833551,
         Level = LogLevel.Debug,
         Message = "Checking Parameter Name localization for '{TypeFullName}' command's '{PropertyName}' parameter")]
-    private static partial void LogCheckingParameterNameLocalization(ILogger logger, string typeFullName, string propertyName);
+    private static partial void LogCheckingParameterNameLocalization(ILogger logger, string typeFullName,
+        string propertyName);
 
     [LoggerMessage(
         EventId = 5832597,
@@ -234,13 +236,18 @@ public partial class ShellCommandEngine : IShellCommandEngine
         EventId = 5833260,
         Level = LogLevel.Trace,
         Message = "Parameter '{ParameterLocalizedName}' has value '{ParameterValue}'")]
-    private static partial void LogParameterNameAndValue(ILogger logger, string parameterLocalizedName, object? parameterValue);
+    private static partial void LogParameterNameAndValue(ILogger logger, string parameterLocalizedName,
+        object? parameterValue);
 
     private static string NormalizeCommandName(string command)
     {
         if (command is not null)
         {
-            var additionalSeparators = new[] { "-", "_" };
+            var additionalSeparators = new[]
+            {
+                "-",
+                "_"
+            };
 
             var normalizedParts = command.Split(' ', StringSplitOptions.RemoveEmptyEntries)
                 .SelectMany(whitespaceSeparatedPart =>
@@ -321,7 +328,7 @@ public partial class ShellCommandEngine : IShellCommandEngine
             {
                 var commandContextStore = (IShellCommandContextStore)
                     commandScope.ServiceProvider
-                    .GetRequiredService<IShellCommandContext>();
+                        .GetRequiredService<IShellCommandContext>();
 
                 commandContextStore.SetCommandName(commandName);
 
@@ -345,7 +352,8 @@ public partial class ShellCommandEngine : IShellCommandEngine
                         property.Item2.SetValue(obj, parameter);
                     }
 
-                    LogParameterNameAndValue(this.logger, property.Item1.GetName(this.stringLocalizer), property.Item2.GetValue(obj));
+                    LogParameterNameAndValue(this.logger, property.Item1.GetName(this.stringLocalizer),
+                        property.Item2.GetValue(obj));
                 }
 
                 var command = obj as IShellCommand;

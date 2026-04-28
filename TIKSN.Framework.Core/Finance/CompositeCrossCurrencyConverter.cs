@@ -32,5 +32,6 @@ public class CompositeCrossCurrencyConverter : CompositeCurrencyConverter
 
     public override async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
         CancellationToken cancellationToken) =>
-        await this.CompositionStrategy.GetExchangeRateAsync(this.Converters, pair, asOn, cancellationToken).ConfigureAwait(false);
+        await this.CompositionStrategy.GetExchangeRateAsync(this.Converters, pair, asOn, cancellationToken)
+            .ConfigureAwait(false);
 }

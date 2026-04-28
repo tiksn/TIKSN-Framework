@@ -196,4 +196,3 @@ public class ServiceIdentityTests
         Assert.Equal($"MyApp:{instanceId}", result);
     }
 }
-

@@ -74,7 +74,8 @@ public class MoneyTests
         var butterPrice = new Money(armenianDram, 2500m);
         var butterPart = 2.5m;
 
-        buyerWallet -= (breadPrice * breadQuantity) + (milkPrice * milkBottleVolume * milkQuantity) + (butterPrice / butterPart);
+        buyerWallet -= (breadPrice * breadQuantity) + (milkPrice * milkBottleVolume * milkQuantity) +
+            (butterPrice / butterPart);
 
         buyerWallet.Amount.ShouldBe(1950m);
     }
@@ -121,7 +122,7 @@ public class MoneyTests
         var wallet2 = new Money(krone, 12.6m);
 
         _ = new Func<object>(() =>
-                wallet1.CompareTo(wallet2)).ShouldThrow<InvalidOperationException>();
+            wallet1.CompareTo(wallet2)).ShouldThrow<InvalidOperationException>();
     }
 
     [Fact]
@@ -137,7 +138,7 @@ public class MoneyTests
         var wallet2 = new Money(krone, 12.6m);
 
         _ = new Func<object>(() =>
-                wallet1.Equals(wallet2)).ShouldThrow<InvalidOperationException>();
+            wallet1.Equals(wallet2)).ShouldThrow<InvalidOperationException>();
     }
 
     [Fact]
@@ -153,7 +154,7 @@ public class MoneyTests
         var wallet2 = new Money(krone, 12.6m);
 
         _ = new Func<object>(() =>
-                wallet1 > wallet2).ShouldThrow<InvalidOperationException>();
+            wallet1 > wallet2).ShouldThrow<InvalidOperationException>();
     }
 
     [Fact]
@@ -169,7 +170,7 @@ public class MoneyTests
         var wallet2 = new Money(krone, 12.6m);
 
         _ = new Func<object>(() =>
-                wallet1 < wallet2).ShouldThrow<InvalidOperationException>();
+            wallet1 < wallet2).ShouldThrow<InvalidOperationException>();
     }
 
     [Fact]
@@ -185,7 +186,7 @@ public class MoneyTests
         var wallet2 = new Money(krone, 12.6m);
 
         _ = new Func<object>(() =>
-                wallet1 >= wallet2).ShouldThrow<InvalidOperationException>();
+            wallet1 >= wallet2).ShouldThrow<InvalidOperationException>();
     }
 
     [Fact]
@@ -201,7 +202,7 @@ public class MoneyTests
         var wallet2 = new Money(krone, 12.6m);
 
         _ = new Func<object>(() =>
-                wallet1 <= wallet2).ShouldThrow<InvalidOperationException>();
+            wallet1 <= wallet2).ShouldThrow<InvalidOperationException>();
     }
 
     [Fact]
@@ -217,7 +218,7 @@ public class MoneyTests
         var wallet2 = new Money(krone, 12.6m);
 
         _ = new Func<object>(() =>
-                wallet1 == wallet2).ShouldThrow<InvalidOperationException>();
+            wallet1 == wallet2).ShouldThrow<InvalidOperationException>();
     }
 
     [Fact]
@@ -233,7 +234,7 @@ public class MoneyTests
         var wallet2 = new Money(krone, 12.6m);
 
         _ = new Func<object>(() =>
-                wallet1 != wallet2).ShouldThrow<InvalidOperationException>();
+            wallet1 != wallet2).ShouldThrow<InvalidOperationException>();
     }
 
     [Fact]
@@ -919,7 +920,7 @@ public class MoneyTests
         var price = new Money(pound, 66.32m);
 
         _ = new Func<object>(() =>
-                    price.ToString("K", new CultureInfo("pl-PL"))).ShouldThrow<FormatException>();
+            price.ToString("K", new CultureInfo("pl-PL"))).ShouldThrow<FormatException>();
     }
 
     [Theory]

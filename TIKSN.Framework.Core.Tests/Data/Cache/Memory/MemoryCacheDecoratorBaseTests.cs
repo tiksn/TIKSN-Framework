@@ -32,14 +32,14 @@ public class MemoryCacheDecoratorBaseTests
         _ = containerBuilder.RegisterModule<CoreModule>();
         this.entityMap = new[]
         {
-                new TestEntity(1796652465, Guid.NewGuid(), "Item1"),
-                new TestEntity(489680564, Guid.NewGuid(), "Item2"),
-                new TestEntity(1242007805, Guid.NewGuid(), "Item3"),
-                new TestEntity(307097393, Guid.NewGuid(), "Item4"),
-                new TestEntity(1778174815, Guid.NewGuid(), "Item5"),
-                new TestEntity(2118700136, Guid.NewGuid(), "Item6"),
-                new TestEntity(2035652629, Guid.NewGuid(), "Item7"),
-                new TestEntity(430380339, Guid.NewGuid(), "Item8"),
+            new TestEntity(1796652465, Guid.NewGuid(), "Item1"),
+            new TestEntity(489680564, Guid.NewGuid(), "Item2"),
+            new TestEntity(1242007805, Guid.NewGuid(), "Item3"),
+            new TestEntity(307097393, Guid.NewGuid(), "Item4"),
+            new TestEntity(1778174815, Guid.NewGuid(), "Item5"),
+            new TestEntity(2118700136, Guid.NewGuid(), "Item6"),
+            new TestEntity(2035652629, Guid.NewGuid(), "Item7"),
+            new TestEntity(430380339, Guid.NewGuid(), "Item8"),
         }.ToDictionary(k => k.ID, v => v);
         _ = containerBuilder.RegisterInstance(this.entityMap).SingleInstance();
         _ = containerBuilder.RegisterType<RealTestService>().As<ITestService>();
@@ -327,11 +327,13 @@ public class MemoryCacheDecoratorBaseTests
 
         public Option<TestEntity> FindByExternalId(Guid externalId) => this.Find(x => x.Value.ExternalID == externalId);
 
-        public Task<Option<TestEntity>> FindByExternalIdAsync(Guid externalId, CancellationToken cancellationToken) => Task.FromResult(this.Find(x => x.Value.ExternalID == externalId));
+        public Task<Option<TestEntity>> FindByExternalIdAsync(Guid externalId, CancellationToken cancellationToken) =>
+            Task.FromResult(this.Find(x => x.Value.ExternalID == externalId));
 
         public Option<TestEntity> FindById(int id) => this.Find(x => x.Value.ID == id);
 
-        public Task<Option<TestEntity>> FindByIdAsync(int id, CancellationToken cancellationToken) => Task.FromResult(this.Find(x => x.Value.ID == id));
+        public Task<Option<TestEntity>> FindByIdAsync(int id, CancellationToken cancellationToken) =>
+            Task.FromResult(this.Find(x => x.Value.ID == id));
 
         private Option<TestEntity> Find(Func<KeyValuePair<int, TestEntity>, bool> predicate)
         {
@@ -372,7 +374,8 @@ public class MemoryCacheDecoratorBaseTests
         {
             var cacheKey = ("TestServiceDecorator", "ByExternalID", externalId);
 
-            return this.FindFromMemoryCacheAsync(cacheKey, () => this.testService.FindByExternalIdAsync(externalId, cancellationToken));
+            return this.FindFromMemoryCacheAsync(cacheKey,
+                () => this.testService.FindByExternalIdAsync(externalId, cancellationToken));
         }
 
         public Option<TestEntity> FindById(int id)

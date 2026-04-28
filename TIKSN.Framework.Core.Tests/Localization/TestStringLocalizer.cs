@@ -8,7 +8,8 @@ public class TestStringLocalizer : CompositeAssemblyStringLocalizer
 {
     public TestStringLocalizer(
         IResourceNamesCache resourceNamesCache,
-        ILogger<TestStringLocalizer> logger) : base(
+        ILogger<TestStringLocalizer> logger) :
+        base(
             resourceNamesCache,
             logger)
     {

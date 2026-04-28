@@ -70,11 +70,21 @@ public class VariantSerialNumberTests
     public void GivenSerialNumber_WhenEqualityChecked_ThenShouldBeCorrect()
     {
         // Arrange
-        var sn1 = VariantSerialNumber<TLA, ushort, TLA>.Parse("ABC-123DEF", asciiOnly: true, CultureInfo.InvariantCulture).Match(s => s, () => throw new InvalidOperationException());
-        var sn2 = VariantSerialNumber<TLA, ushort, TLA>.Parse("ABC-123DEF", asciiOnly: true, CultureInfo.InvariantCulture).Match(s => s, () => throw new InvalidOperationException());
-        var sn3 = VariantSerialNumber<TLA, ushort, TLA>.Parse("ABC-124DEF", asciiOnly: true, CultureInfo.InvariantCulture).Match(s => s, () => throw new InvalidOperationException());
-        var sn4 = VariantSerialNumber<TLA, ushort, TLA>.Parse("ABD-123DEF", asciiOnly: true, CultureInfo.InvariantCulture).Match(s => s, () => throw new InvalidOperationException());
-        var sn5 = VariantSerialNumber<TLA, ushort, TLA>.Parse("ABC-123DEG", asciiOnly: true, CultureInfo.InvariantCulture).Match(s => s, () => throw new InvalidOperationException());
+        var sn1 = VariantSerialNumber<TLA, ushort, TLA>
+            .Parse("ABC-123DEF", asciiOnly: true, CultureInfo.InvariantCulture)
+            .Match(s => s, () => throw new InvalidOperationException());
+        var sn2 = VariantSerialNumber<TLA, ushort, TLA>
+            .Parse("ABC-123DEF", asciiOnly: true, CultureInfo.InvariantCulture)
+            .Match(s => s, () => throw new InvalidOperationException());
+        var sn3 = VariantSerialNumber<TLA, ushort, TLA>
+            .Parse("ABC-124DEF", asciiOnly: true, CultureInfo.InvariantCulture)
+            .Match(s => s, () => throw new InvalidOperationException());
+        var sn4 = VariantSerialNumber<TLA, ushort, TLA>
+            .Parse("ABD-123DEF", asciiOnly: true, CultureInfo.InvariantCulture)
+            .Match(s => s, () => throw new InvalidOperationException());
+        var sn5 = VariantSerialNumber<TLA, ushort, TLA>
+            .Parse("ABC-123DEG", asciiOnly: true, CultureInfo.InvariantCulture)
+            .Match(s => s, () => throw new InvalidOperationException());
 
         // Assert
         sn1.ShouldBe(sn2);
