@@ -378,8 +378,7 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
             GetMilestoneAndPrereleaseNumber(nuGetVersion.IsPrerelease, [.. nuGetVersion.ReleaseLabels]);
 
         var releaseNumbersCount =
-            (nuGetVersion.OriginalVersion?
-[..^nuGetVersion.Release.Length]
+            (nuGetVersion.OriginalVersion?[..^nuGetVersion.Release.Length]
                 .Split('.')
                 .Length) ?? 0;
 
@@ -387,23 +386,23 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
         if (releaseNumbersCount == 2)
         {
             release = new System.Version(
-                        nuGetVersion.Major,
-                        nuGetVersion.Minor);
+                nuGetVersion.Major,
+                nuGetVersion.Minor);
         }
         else if (releaseNumbersCount == 3)
         {
             release = new System.Version(
-                        nuGetVersion.Major,
-                        nuGetVersion.Minor,
-                        nuGetVersion.Patch);
+                nuGetVersion.Major,
+                nuGetVersion.Minor,
+                nuGetVersion.Patch);
         }
         else
         {
             release = new System.Version(
-                        nuGetVersion.Major,
-                        nuGetVersion.Minor,
-                        nuGetVersion.Patch,
-                        nuGetVersion.Revision);
+                nuGetVersion.Major,
+                nuGetVersion.Minor,
+                nuGetVersion.Patch,
+                nuGetVersion.Revision);
         }
 
         if (nuGetVersion.HasMetadata)
@@ -686,7 +685,8 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
         };
     }
 
-    private static DateTimeOffset GetReleaseDate(string metadata) => DateTimeOffset.Parse(metadata, CultureInfo.InvariantCulture);
+    private static DateTimeOffset GetReleaseDate(string metadata) =>
+        DateTimeOffset.Parse(metadata, CultureInfo.InvariantCulture);
 
     private static string[] GetReleaseLabels(Version version)
     {

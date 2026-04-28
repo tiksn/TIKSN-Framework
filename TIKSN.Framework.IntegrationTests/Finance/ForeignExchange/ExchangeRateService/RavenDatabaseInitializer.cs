@@ -24,7 +24,7 @@ public class RavenDatabaseInitializer : IDatabaseInitializer
     {
         var store =
             new DocumentStore { Urls = [.. this.options.Value.Urls], Database = this.options.Value.Database }
-            .Initialize();
+                .Initialize();
 
         _ = store.Operations.ForDatabase(this.options.Value.Database);
         await EnsureDatabaseExistsAsync(store);
@@ -45,7 +45,8 @@ public class RavenDatabaseInitializer : IDatabaseInitializer
         {
             try
             {
-                _ = await store.Maintenance.Server.SendAsync(new CreateDatabaseOperation(new DatabaseRecord(store.Database)));
+                _ = await store.Maintenance.Server.SendAsync(
+                    new CreateDatabaseOperation(new DatabaseRecord(store.Database)));
             }
             catch (ConcurrencyException)
             {

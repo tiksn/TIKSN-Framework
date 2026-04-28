@@ -48,8 +48,9 @@ public abstract class MongoRepository<TDocument, TIdentity> :
         Task NoneAsync() => this.Collection.ReplaceOneAsync(item => item.ID.Equals(entity.ID), entity, replaceOptions,
             cancellationToken);
 
-        Task SomeAsync(IClientSessionHandle clientSessionHandle) => this.Collection.ReplaceOneAsync(clientSessionHandle, item => item.ID.Equals(entity.ID), entity,
-                replaceOptions, cancellationToken);
+        Task SomeAsync(IClientSessionHandle clientSessionHandle) => this.Collection.ReplaceOneAsync(clientSessionHandle,
+            item => item.ID.Equals(entity.ID), entity,
+            replaceOptions, cancellationToken);
 
         return this.MongoClientSessionProvider.GetClientSessionHandle().Match(SomeAsync, NoneAsync);
     }
@@ -153,14 +154,18 @@ public abstract class MongoRepository<TDocument, TIdentity> :
         return this.MongoClientSessionProvider.GetClientSessionHandle().Match(SomeAsync, NoneAsync);
     }
 
-    public async IAsyncEnumerable<TDocument> StreamAllAsync([EnumeratorCancellation] CancellationToken cancellationToken)
+    public async IAsyncEnumerable<TDocument> StreamAllAsync(
+        [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        Task<IAsyncCursor<TDocument>> NoneAsync() => this.Collection.Find(FilterDefinition<TDocument>.Empty).ToCursorAsync(cancellationToken);
+        Task<IAsyncCursor<TDocument>> NoneAsync() =>
+            this.Collection.Find(FilterDefinition<TDocument>.Empty).ToCursorAsync(cancellationToken);
 
-        Task<IAsyncCursor<TDocument>> SomeAsync(IClientSessionHandle clientSessionHandle) => this.Collection.Find(clientSessionHandle, FilterDefinition<TDocument>.Empty)
-                .ToCursorAsync(cancellationToken);
+        Task<IAsyncCursor<TDocument>> SomeAsync(IClientSessionHandle clientSessionHandle) => this.Collection
+            .Find(clientSessionHandle, FilterDefinition<TDocument>.Empty)
+            .ToCursorAsync(cancellationToken);
 
-        var cursor = await this.MongoClientSessionProvider.GetClientSessionHandle().Match(SomeAsync, NoneAsync).ConfigureAwait(false);
+        var cursor = await this.MongoClientSessionProvider.GetClientSessionHandle().Match(SomeAsync, NoneAsync)
+            .ConfigureAwait(false);
 
         while (await cursor.MoveNextAsync(cancellationToken).ConfigureAwait(false))
         {
@@ -174,10 +179,11 @@ public abstract class MongoRepository<TDocument, TIdentity> :
     public Task UpdateAsync(TDocument entity, CancellationToken cancellationToken)
     {
         Task NoneAsync() => this.Collection.ReplaceOneAsync(item => item.ID.Equals(entity.ID), entity,
-                cancellationToken: cancellationToken);
+            cancellationToken: cancellationToken);
 
-        Task SomeAsync(IClientSessionHandle clientSessionHandle) => this.Collection.ReplaceOneAsync(clientSessionHandle, item => item.ID.Equals(entity.ID), entity,
-                cancellationToken: cancellationToken);
+        Task SomeAsync(IClientSessionHandle clientSessionHandle) => this.Collection.ReplaceOneAsync(clientSessionHandle,
+            item => item.ID.Equals(entity.ID), entity,
+            cancellationToken: cancellationToken);
 
         return this.MongoClientSessionProvider.GetClientSessionHandle().Match(SomeAsync, NoneAsync);
     }

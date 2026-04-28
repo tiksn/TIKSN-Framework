@@ -169,7 +169,8 @@ public class VersionTests
 
     [Fact]
     public void PrereleaseNumber001()
-        => new System.Func<object>(() => new Version(1, 2, 3, 4, Milestone.ReleaseCandidate, -5)).ShouldThrow<System.ArgumentOutOfRangeException>();
+        => new System.Func<object>(() => new Version(1, 2, 3, 4, Milestone.ReleaseCandidate, -5))
+            .ShouldThrow<System.ArgumentOutOfRangeException>();
 
     [Fact]
     public void ToLongReleaseString001()
@@ -228,7 +229,8 @@ public class VersionTests
     }
 
     [Fact]
-    public void ToPrereleaseString008() => new System.Func<object>(() => new Version(1, 2, 3, 4, (Milestone)125689, 5)).ShouldThrow<System.NotSupportedException>();
+    public void ToPrereleaseString008() => new System.Func<object>(() => new Version(1, 2, 3, 4, (Milestone)125689, 5))
+        .ShouldThrow<System.NotSupportedException>();
 
     [Fact]
     public void ToShortReleaseString001() => new Version(0, 0, 0, 0).ToShortReleaseString().ShouldBe("0");

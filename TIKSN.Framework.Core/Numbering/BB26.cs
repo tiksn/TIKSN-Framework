@@ -22,19 +22,26 @@ public sealed class BB26 : IComparable<BB26>, IComparable, ISequentialNavigator<
 
     public int Number { get; }
 
-    private static IReadOnlyDictionary<char, int> CharToNumberMap { get; } = Enumerable.Range(0, 26).SelectMany(i => new[] { Tuple((char)('A' + i), i + 1), Tuple((char)('a' + i), i + 1) }).ToFrozenDictionary(k => k.Item1, v => v.Item2);
+    private static IReadOnlyDictionary<char, int> CharToNumberMap { get; } = Enumerable.Range(0, 26).SelectMany(i =>
+        new[]
+        {
+            Tuple((char)('A' + i), i + 1),
+            Tuple((char)('a' + i), i + 1)
+        }).ToFrozenDictionary(k => k.Item1, v => v.Item2);
 
-    private static IReadOnlyDictionary<int, char> NumberToCharMap { get; } = Enumerable.Range(0, 26).ToFrozenDictionary(i => i + 1, i => (char)('A' + i));
+    private static IReadOnlyDictionary<int, char> NumberToCharMap { get; } =
+        Enumerable.Range(0, 26).ToFrozenDictionary(i => i + 1, i => (char)('A' + i));
 
     private static Parser<BB26> Parser { get; } =
-                        from chars in many1(satisfy(CharToNumberMap.ContainsKey))
-                        from _ in eof
-                        let number = chars.Aggregate(0, (acc, c) => (acc * 26) + CharToNumberMap[c])
-                        select new BB26(number);
+        from chars in many1(satisfy(CharToNumberMap.ContainsKey))
+        from _ in eof
+        let number = chars.Aggregate(0, (acc, c) => (acc * 26) + CharToNumberMap[c])
+        select new BB26(number);
 
     public static bool operator !=(BB26 left, BB26 right) => !Equals(left, right);
 
-    public static bool operator <(BB26 left, BB26 right) => left is null ? right is not null : left.CompareTo(right) < 0;
+    public static bool operator <(BB26 left, BB26 right) =>
+        left is null ? right is not null : left.CompareTo(right) < 0;
 
     public static bool operator <=(BB26 left, BB26 right) => left is null || left.CompareTo(right) <= 0;
 
@@ -66,10 +73,16 @@ public sealed class BB26 : IComparable<BB26>, IComparable, ISequentialNavigator<
         throw new FormatException("Input string was not in a correct format.");
     }
 
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out BB26 result)
+    public static bool TryParse(
+        ReadOnlySpan<char> s,
+        IFormatProvider? provider,
+        [MaybeNullWhen(false)] out BB26 result)
         => TryParse(s.ToString(), provider, out result);
 
-    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out BB26 result)
+    public static bool TryParse(
+        [NotNullWhen(true)] string? s,
+        IFormatProvider? provider,
+        [MaybeNullWhen(false)] out BB26 result)
     {
         if (s is null)
         {
@@ -155,6 +168,7 @@ public sealed class BB26 : IComparable<BB26>, IComparable, ISequentialNavigator<
             {
                 remainderNumber = NumberToCharMap.Count;
             }
+
             chars.Add(NumberToCharMap[remainderNumber]);
             carry -= remainderNumber;
             carry /= NumberToCharMap.Count;

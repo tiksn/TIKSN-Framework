@@ -77,14 +77,20 @@ public sealed class EnvironmentName : ISpanFormattable, ISpanParsable<Environmen
         throw new FormatException("Name was not in a correct format.");
     }
 
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out EnvironmentName result)
+    public static bool TryParse(
+        ReadOnlySpan<char> s,
+        IFormatProvider? provider,
+        [MaybeNullWhen(false)] out EnvironmentName result)
     {
         var environmentName = Parse(s, asciiOnly: false, provider);
         result = environmentName.MatchUnsafe(x => x, () => default);
         return environmentName.IsSome;
     }
 
-    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out EnvironmentName result)
+    public static bool TryParse(
+        [NotNullWhen(true)] string? s,
+        IFormatProvider? provider,
+        [MaybeNullWhen(false)] out EnvironmentName result)
     {
         if (s is null)
         {

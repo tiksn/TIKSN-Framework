@@ -8,7 +8,8 @@ using static LanguageExt.Prelude;
 namespace TIKSN.Numbering;
 
 #pragma warning disable CA1000 // Do not declare static members on generic types
-public sealed class VariantSerialNumber<TSerial, TNumber, TVariant> : ISerialNumber<VariantSerialNumber<TSerial, TNumber, TVariant>>
+public sealed class
+    VariantSerialNumber<TSerial, TNumber, TVariant> : ISerialNumber<VariantSerialNumber<TSerial, TNumber, TVariant>>
     where TSerial : ISerial<TSerial>
     where TNumber : IUnsignedNumber<TNumber>
     where TVariant : ISerial<TVariant>
@@ -26,9 +27,11 @@ public sealed class VariantSerialNumber<TSerial, TNumber, TVariant> : ISerialNum
 
     public TVariant Variant { get; }
 
-    public static bool operator !=(VariantSerialNumber<TSerial, TNumber, TVariant> left, VariantSerialNumber<TSerial, TNumber, TVariant> right) => !Equals(left, right);
+    public static bool operator !=(VariantSerialNumber<TSerial, TNumber, TVariant> left,
+        VariantSerialNumber<TSerial, TNumber, TVariant> right) => !Equals(left, right);
 
-    public static bool operator ==(VariantSerialNumber<TSerial, TNumber, TVariant> left, VariantSerialNumber<TSerial, TNumber, TVariant> right) => Equals(left, right);
+    public static bool operator ==(VariantSerialNumber<TSerial, TNumber, TVariant> left,
+        VariantSerialNumber<TSerial, TNumber, TVariant> right) => Equals(left, right);
 
     public static VariantSerialNumber<TSerial, TNumber, TVariant> Parse(string s, IFormatProvider? provider)
     {
@@ -43,7 +46,8 @@ public sealed class VariantSerialNumber<TSerial, TNumber, TVariant> : ISerialNum
     public static VariantSerialNumber<TSerial, TNumber, TVariant> Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
         => Parse(s.ToString(), provider);
 
-    public static Option<VariantSerialNumber<TSerial, TNumber, TVariant>> Parse(string s, bool asciiOnly, IFormatProvider? provider)
+    public static Option<VariantSerialNumber<TSerial, TNumber, TVariant>> Parse(string s, bool asciiOnly,
+        IFormatProvider? provider)
     {
         if (string.IsNullOrEmpty(s))
         {
@@ -101,10 +105,16 @@ public sealed class VariantSerialNumber<TSerial, TNumber, TVariant> : ISerialNum
         return result.ToOption();
     }
 
-    public static Option<VariantSerialNumber<TSerial, TNumber, TVariant>> Parse(ReadOnlySpan<char> s, bool asciiOnly, IFormatProvider? provider)
+    public static Option<VariantSerialNumber<TSerial, TNumber, TVariant>> Parse(
+        ReadOnlySpan<char> s,
+        bool asciiOnly,
+        IFormatProvider? provider)
         => Parse(s.ToString(), asciiOnly, provider);
 
-    public static bool TryParse(string? s, IFormatProvider? provider, out VariantSerialNumber<TSerial, TNumber, TVariant> result)
+    public static bool TryParse(
+        string? s,
+        IFormatProvider? provider,
+        out VariantSerialNumber<TSerial, TNumber, TVariant> result)
     {
         if (s is null)
         {
@@ -117,7 +127,8 @@ public sealed class VariantSerialNumber<TSerial, TNumber, TVariant> : ISerialNum
         return serialNumber.IsSome;
     }
 
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out VariantSerialNumber<TSerial, TNumber, TVariant> result)
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider,
+        out VariantSerialNumber<TSerial, TNumber, TVariant> result)
         => TryParse(s.ToString(), provider, out result);
 
     public bool Equals(VariantSerialNumber<TSerial, TNumber, TVariant>? other)
@@ -133,12 +144,13 @@ public sealed class VariantSerialNumber<TSerial, TNumber, TVariant> : ISerialNum
         }
 
         return EqualityComparer<TSerial>.Default.Equals(this.Serial, other.Serial) &&
-               EqualityComparer<TNumber>.Default.Equals(this.Number, other.Number) &&
-               EqualityComparer<TVariant>.Default.Equals(this.Variant, other.Variant);
+            EqualityComparer<TNumber>.Default.Equals(this.Number, other.Number) &&
+            EqualityComparer<TVariant>.Default.Equals(this.Variant, other.Variant);
     }
 
     public override bool Equals(object? obj)
-        => ReferenceEquals(this, obj) || (obj is VariantSerialNumber<TSerial, TNumber, TVariant> other && this.Equals(other));
+        => ReferenceEquals(this, obj) ||
+            (obj is VariantSerialNumber<TSerial, TNumber, TVariant> other && this.Equals(other));
 
     public override int GetHashCode() => HashCode.Combine(this.Serial, this.Number, this.Variant);
 
@@ -160,11 +172,13 @@ public sealed class VariantSerialNumber<TSerial, TNumber, TVariant> : ISerialNum
             return None;
         }
 
-        return new VariantSerialNumber<TSerial, TNumber, TVariant>(this.Serial, this.Number - TNumber.One, this.Variant);
+        return new VariantSerialNumber<TSerial, TNumber, TVariant>(
+            this.Serial,
+            this.Number - TNumber.One,
+            this.Variant);
     }
 
-    public override string ToString()
-        => this.ToString(format: null, CultureInfo.InvariantCulture);
+    public override string ToString() => this.ToString(format: null, CultureInfo.InvariantCulture);
 
     /// <summary>
     /// Formats the serial number using the specified format.

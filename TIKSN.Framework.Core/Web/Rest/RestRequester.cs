@@ -22,10 +22,10 @@ public class RestRequester : IRestRequester
         this.serializerRestFactory =
             serializerRestFactory ?? throw new ArgumentNullException(nameof(serializerRestFactory));
         this.deserializerRestFactory = deserializerRestFactory ??
-                                        throw new ArgumentNullException(nameof(deserializerRestFactory));
+            throw new ArgumentNullException(nameof(deserializerRestFactory));
         this.restAuthenticationTokenProvider = restAuthenticationTokenProvider ??
-                                                throw new ArgumentNullException(
-                                                    nameof(restAuthenticationTokenProvider));
+            throw new ArgumentNullException(
+                nameof(restAuthenticationTokenProvider));
     }
 
 #pragma warning disable MA0051 // Method is too long
@@ -39,7 +39,8 @@ public class RestRequester : IRestRequester
 
         var requestType = request.GetType().GetTypeInfo();
 
-        var restEndpointAttribute = requestType.GetCustomAttribute<RestEndpointAttribute>() ?? throw new NotSupportedException("Requested Type has to have RestEndpointAttribute.");
+        var restEndpointAttribute = requestType.GetCustomAttribute<RestEndpointAttribute>() ??
+            throw new NotSupportedException("Requested Type has to have RestEndpointAttribute.");
 
         var resourceLocation = restEndpointAttribute.ResourceTemplate;
         var requestUrl = new Uri(resourceLocation, UriKind.Relative);
@@ -128,8 +129,8 @@ public class RestRequester : IRestRequester
         if (requestContent is not null && requestContentMediaType is not null)
         {
             return new(
-            this.serializerRestFactory.Create(requestContentMediaType).Serialize(requestContent), Encoding.UTF8,
-            requestContentMediaType);
+                this.serializerRestFactory.Create(requestContentMediaType).Serialize(requestContent), Encoding.UTF8,
+                requestContentMediaType);
         }
 
         return null;
@@ -176,8 +177,12 @@ public class RestRequester : IRestRequester
         {
             RestVerb.Get => await httpClient.GetAsync(requestUrl, cancellationToken).ConfigureAwait(false),
             RestVerb.Delete => await httpClient.DeleteAsync(requestUrl, cancellationToken).ConfigureAwait(false),
-            RestVerb.Put => await this.MakePutRequestAsync(httpClient, requestUrl, requestContent, requestContentMediaType, cancellationToken).ConfigureAwait(false),
-            RestVerb.Post => await this.MakePostRequestAsync(httpClient, requestUrl, requestContent, requestContentMediaType, cancellationToken).ConfigureAwait(false),
+            RestVerb.Put => await this
+                .MakePutRequestAsync(httpClient, requestUrl, requestContent, requestContentMediaType, cancellationToken)
+                .ConfigureAwait(false),
+            RestVerb.Post => await this
+                .MakePostRequestAsync(httpClient, requestUrl, requestContent, requestContentMediaType,
+                    cancellationToken).ConfigureAwait(false),
             _ => throw new NotSupportedException($"Request method '{verb}' is not supported."),
         };
         return await this.ParseResponseAsync<TResult>(response, responseContentMediaType).ConfigureAwait(false);
@@ -221,7 +226,8 @@ public class RestRequester : IRestRequester
         }
 
         var authenticationToken =
-            await this.restAuthenticationTokenProvider.GetAuthenticationTokenAsync(restEndpointAttribute.ApiKey).ConfigureAwait(false);
+            await this.restAuthenticationTokenProvider.GetAuthenticationTokenAsync(restEndpointAttribute.ApiKey)
+                .ConfigureAwait(false);
 
         httpClient.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue(authenticationSchema, authenticationToken);

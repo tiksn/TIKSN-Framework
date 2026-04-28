@@ -26,7 +26,8 @@ public class HostEnvironmentExtensionsTests
     [InlineData("Central-Development", "Local-Development", false)]
     [InlineData("Central-Development", "Development", true)]
     [InlineData("Central-Development", "Production", false)]
-    public void GivenNames_WhenMatches_ThenMustMatch(string hostEnvironmentName, string licenseEnvironmentName, bool matchesExpected)
+    public void GivenNames_WhenMatches_ThenMustMatch(
+        string hostEnvironmentName, string licenseEnvironmentName, bool matchesExpected)
     {
         // Arrange
         var hostEnvironment = Substitute.For<IHostEnvironment>();

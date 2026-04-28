@@ -35,7 +35,8 @@ public class MemoryCachedCurrencyConverterTests
         this.memoryCache = serviceProvider.GetRequiredService<IMemoryCache>();
         this.options = serviceProvider.GetRequiredService<IOptions<MemoryCachedCurrencyConverterOptions>>();
         this.genericOptions = serviceProvider.GetRequiredService<IOptions<MemoryCacheDecoratorOptions>>();
-        this.specificOptions = serviceProvider.GetRequiredService<IOptions<MemoryCacheDecoratorOptions<MemoryCachedCurrencyConverterEntry>>>();
+        this.specificOptions = serviceProvider
+            .GetRequiredService<IOptions<MemoryCacheDecoratorOptions<MemoryCachedCurrencyConverterEntry>>>();
     }
 
     [Fact]
@@ -48,7 +49,8 @@ public class MemoryCachedCurrencyConverterTests
 
         _ = originalConverter.GetCurrencyPairsAsync(moment1, default).Returns(expectedPairs);
 
-        var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger, this.memoryCache, this.options, this.genericOptions, this.specificOptions);
+        var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger,
+            this.memoryCache, this.options, this.genericOptions, this.specificOptions);
 
         var actualPairs = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default);
 
@@ -65,7 +67,8 @@ public class MemoryCachedCurrencyConverterTests
 
         _ = originalConverter.GetCurrencyPairsAsync(moment1, default).Returns(expectedPairs);
 
-        var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger, this.memoryCache, this.options, this.genericOptions, this.specificOptions);
+        var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger,
+            this.memoryCache, this.options, this.genericOptions, this.specificOptions);
 
         _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default);
 
@@ -82,7 +85,8 @@ public class MemoryCachedCurrencyConverterTests
 
         _ = originalConverter.GetCurrencyPairsAsync(moment1, default).Returns(expectedPairs);
 
-        var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger, this.memoryCache, this.options, this.genericOptions, this.specificOptions);
+        var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger,
+            this.memoryCache, this.options, this.genericOptions, this.specificOptions);
 
         _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default);
         _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default);
@@ -102,7 +106,8 @@ public class MemoryCachedCurrencyConverterTests
         _ = originalConverter.GetCurrencyPairsAsync(moment1, default).Returns(expectedPairs);
         _ = originalConverter.GetCurrencyPairsAsync(moment2, default).Returns(expectedPairs);
 
-        var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger, this.memoryCache, this.options, this.genericOptions, this.specificOptions);
+        var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger,
+            this.memoryCache, this.options, this.genericOptions, this.specificOptions);
 
         _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default);
         _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment2, default);
@@ -123,7 +128,8 @@ public class MemoryCachedCurrencyConverterTests
         _ = originalConverter.GetCurrencyPairsAsync(moment1, default).Returns(expectedPairs);
         _ = originalConverter.GetCurrencyPairsAsync(moment2, default).Returns(expectedPairs);
 
-        var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger, this.memoryCache, this.options, this.genericOptions, this.specificOptions);
+        var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger,
+            this.memoryCache, this.options, this.genericOptions, this.specificOptions);
 
         _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default);
         _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default);
@@ -146,7 +152,8 @@ public class MemoryCachedCurrencyConverterTests
         _ = originalConverter.GetCurrencyPairsAsync(moment1, default).Returns(expectedPairs);
         _ = originalConverter.GetCurrencyPairsAsync(moment2, default).Returns(expectedPairs);
 
-        var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger, this.memoryCache, this.options, this.genericOptions, this.specificOptions);
+        var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger,
+            this.memoryCache, this.options, this.genericOptions, this.specificOptions);
 
         _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment1, default);
         _ = await memoryCachedCurrencyConverter.GetCurrencyPairsAsync(moment11, default);
@@ -172,7 +179,8 @@ public class MemoryCachedCurrencyConverterTests
         _ = originalConverter.GetExchangeRateAsync(pair, moment1, default).Returns(exchangeRate);
         _ = originalConverter.GetExchangeRateAsync(pair, moment2, default).Returns(exchangeRate);
 
-        var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger, this.memoryCache, this.options, this.genericOptions, this.specificOptions);
+        var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger,
+            this.memoryCache, this.options, this.genericOptions, this.specificOptions);
 
         _ = await memoryCachedCurrencyConverter.GetExchangeRateAsync(pair, moment1, default);
         _ = await memoryCachedCurrencyConverter.GetExchangeRateAsync(pair, moment11, default);
@@ -195,7 +203,8 @@ public class MemoryCachedCurrencyConverterTests
 
         _ = originalConverter.GetExchangeRateAsync(pair, moment1, default).Returns(exchangeRate);
 
-        var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger, this.memoryCache, this.options, this.genericOptions, this.specificOptions);
+        var memoryCachedCurrencyConverter = new MemoryCachedCurrencyConverter(originalConverter, this.logger,
+            this.memoryCache, this.options, this.genericOptions, this.specificOptions);
 
         var actualRate = await memoryCachedCurrencyConverter.GetExchangeRateAsync(pair, moment1, default);
 

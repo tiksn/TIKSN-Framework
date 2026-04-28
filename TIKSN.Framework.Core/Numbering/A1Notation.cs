@@ -32,15 +32,24 @@ public sealed class A1Notation<TNumber> : ISerialNumber<A1Notation<TNumber>>
 
     public static bool operator ==(A1Notation<TNumber> left, A1Notation<TNumber> right) => Equals(left, right);
 
-    public static Option<A1Notation<TNumber>> Parse(string s, bool asciiOnly, IFormatProvider? provider) => Validate(SimpleSerialNumber<BB26, TNumber>.Parse(s, asciiOnly, provider)).Map(x => new A1Notation<TNumber>(x));
+    public static Option<A1Notation<TNumber>> Parse(string s, bool asciiOnly, IFormatProvider? provider) =>
+        Validate(SimpleSerialNumber<BB26, TNumber>.Parse(s, asciiOnly, provider)).Map(x => new A1Notation<TNumber>(x));
 
-    public static Option<A1Notation<TNumber>> Parse(ReadOnlySpan<char> s, bool asciiOnly, IFormatProvider? provider) => Validate(SimpleSerialNumber<BB26, TNumber>.Parse(s, asciiOnly, provider)).Map(x => new A1Notation<TNumber>(x));
+    public static Option<A1Notation<TNumber>> Parse(ReadOnlySpan<char> s, bool asciiOnly, IFormatProvider? provider) =>
+        Validate(SimpleSerialNumber<BB26, TNumber>.Parse(s, asciiOnly, provider)).Map(x => new A1Notation<TNumber>(x));
 
-    public static A1Notation<TNumber> Parse(ReadOnlySpan<char> s, IFormatProvider? provider) => new(SimpleSerialNumber<BB26, TNumber>.Parse(s, provider));
+    public static A1Notation<TNumber> Parse(
+        ReadOnlySpan<char> s,
+        IFormatProvider? provider) =>
+        new(SimpleSerialNumber<BB26, TNumber>.Parse(s, provider));
 
-    public static A1Notation<TNumber> Parse(string s, IFormatProvider? provider) => new(SimpleSerialNumber<BB26, TNumber>.Parse(s, provider));
+    public static A1Notation<TNumber> Parse(string s, IFormatProvider? provider) =>
+        new(SimpleSerialNumber<BB26, TNumber>.Parse(s, provider));
 
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out A1Notation<TNumber> result)
+    public static bool TryParse(
+        ReadOnlySpan<char> s,
+        IFormatProvider? provider,
+        [MaybeNullWhen(false)] out A1Notation<TNumber> result)
     {
         var parsed = SimpleSerialNumber<BB26, TNumber>.TryParse(s, provider, out var serialNumber);
 
@@ -49,7 +58,10 @@ public sealed class A1Notation<TNumber> : ISerialNumber<A1Notation<TNumber>>
         return parsed;
     }
 
-    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out A1Notation<TNumber> result)
+    public static bool TryParse(
+        [NotNullWhen(true)] string? s,
+        IFormatProvider? provider,
+        [MaybeNullWhen(false)] out A1Notation<TNumber> result)
     {
         var parsed = SimpleSerialNumber<BB26, TNumber>.TryParse(s, provider, out var serialNumber);
 
@@ -66,13 +78,22 @@ public sealed class A1Notation<TNumber> : ISerialNumber<A1Notation<TNumber>>
 
     public Option<A1Notation<TNumber>> GetNext() => this.serialNumber.GetNext().Map(x => new A1Notation<TNumber>(x));
 
-    public Option<A1Notation<TNumber>> GetPrevious() => Validate(this.serialNumber.GetPrevious()).Map(x => new A1Notation<TNumber>(x));
+    public Option<A1Notation<TNumber>> GetPrevious() =>
+        Validate(this.serialNumber.GetPrevious()).Map(x => new A1Notation<TNumber>(x));
 
-    public string ToString(string? format, IFormatProvider? formatProvider) => this.serialNumber.ToString(format ?? "N", formatProvider);
+    public string ToString(string? format, IFormatProvider? formatProvider) =>
+        this.serialNumber.ToString(format ?? "N", formatProvider);
 
     public override string ToString() => this.ToString(format: null, CultureInfo.InvariantCulture);
 
-    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider) => this.serialNumber.TryFormat(destination, out charsWritten, format.Length == 0 ? "N" : format, provider);
+    public bool TryFormat(
+        Span<char> destination,
+        out int charsWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider) =>
+        this.serialNumber.TryFormat(destination, out charsWritten, format.Length == 0 ? "N" : format, provider);
 
-    private static Option<SimpleSerialNumber<BB26, TNumber>> Validate(Option<SimpleSerialNumber<BB26, TNumber>> serialNumber) => serialNumber.Bind(x => TNumber.IsZero(x.Number) ? None : Some(x));
+    private static Option<SimpleSerialNumber<BB26, TNumber>>
+        Validate(Option<SimpleSerialNumber<BB26, TNumber>> serialNumber) =>
+        serialNumber.Bind(x => TNumber.IsZero(x.Number) ? None : Some(x));
 }

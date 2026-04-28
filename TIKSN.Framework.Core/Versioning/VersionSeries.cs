@@ -196,7 +196,7 @@ public sealed class VersionSeries : IEquatable<VersionSeries>
     }
 
     public override string ToString()
-                => this.series.Match(s => s.ToString(), m => m.ToString(CultureInfo.InvariantCulture));
+        => this.series.Match(s => s.ToString(), m => m.ToString(CultureInfo.InvariantCulture));
 
     private static Option<Version> MatchesReleaseMajor(int releaseMajor, Version version)
         => releaseMajor.Equals(version.Release.Major) ? version : Option<Version>.None;
@@ -205,14 +205,19 @@ public sealed class VersionSeries : IEquatable<VersionSeries>
     {
         var seriesVersionNumbers = new[]
         {
-        seriesVersion.Release.Major, seriesVersion.Release.Minor, seriesVersion.Release.Build,
-        seriesVersion.Release.Revision,
-    }.Where(x => x != -1).ToArray();
+            seriesVersion.Release.Major,
+            seriesVersion.Release.Minor,
+            seriesVersion.Release.Build,
+            seriesVersion.Release.Revision,
+        }.Where(x => x != -1).ToArray();
 
         var versionNumbers = new[]
         {
-        version.Release.Major, version.Release.Minor, version.Release.Build, version.Release.Revision,
-    }.Where(x => x != -1).ToArray();
+            version.Release.Major,
+            version.Release.Minor,
+            version.Release.Build,
+            version.Release.Revision,
+        }.Where(x => x != -1).ToArray();
 
         if (seriesVersionNumbers.Length > versionNumbers.Length)
         {

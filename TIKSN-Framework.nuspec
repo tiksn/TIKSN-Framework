@@ -4,26 +4,30 @@
     <id>TIKSN-Framework</id>
     <version>4.5.0-alpha.0</version>
     <title>TIKSN Framework</title>
-    <authors>TIKSN</authors>
-    <owners>TIKSN</owners>
+    <authors>TIKSN Development</authors>
+    <owners>TIKSN Development</owners>
     <projectUrl>https://tiksn.com/project/tiksn-framework/</projectUrl>
     <repository type="git" url="https://github.com/tiksn/TIKSN-Framework" />
     <icon>icon.png</icon>
     <readme>README.md</readme>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
-    <description>This is a .NET Framework enhancement framework. Main features are Versioning,
-      Finance, Currency, Foreign Exchange, Money, Pricing strategy, Telemetry, Composite Weighted
-      Progress, Repository and Unity of Wok pattern implementation with Entity Framework Core,
-      Network Connectivity Service and Triggering, Settings, Windows Registry configuration source,
-      Azure Storage Repository, MongoDB Repository, NoDB Repository, Lingual and Regional
-      Localization, Serialization, Rest Requester, Rest Repository, Dependency Injection,
-      Composition Root Setup base classes.</description>
-    <copyright>Copyright © 2024, TIKSN Lab</copyright>
+    <description>
+      TIKSN Framework is a comprehensive .NET 10 toolkit for building modular applications with
+      modern dependency injection and cross-platform support. It includes versioning, finance and
+      money types, telemetry, licensing, composite weighted progress tracking, repository and unit
+      of work abstractions for Entity Framework Core, Azure Storage, MongoDB, LiteDB, and RavenDB,
+      language and region localization, JSON, MessagePack, and Protocol Buffers serialization,
+      REST client and repository helpers, shell application infrastructure, and .NET MAUI support.
+    </description>
+    <copyright>Copyright © 2024, TIKSN Development</copyright>
     <releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/releases</releaseNotes>
     <language />
-    <tags>Framework, Versioning, Finance, Currency, Money, Foreign Exchange, Telemetry,
-      Configuration, Azure Storage, MongoDB, NoDB, Rest, Localization, Dependency Injection, MAUI</tags>
+    <tags>
+      dotnet dotnet10 framework modularity dependency-injection autofac versioning finance money
+      currency telemetry licensing progress repository unit-of-work entity-framework-core azure-storage
+      mongodb litedb ravendb localization serialization json messagepack protobuf rest shell maui
+    </tags>
     <dependencies>
       <!-- will be propagated by build script-->
     </dependencies>

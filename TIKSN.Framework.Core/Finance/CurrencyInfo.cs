@@ -92,12 +92,18 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
         return first.Equals(second);
     }
 
-    private (bool isCurrent, string isoCurrencySymbol, string currencySymbol, int? isoCurrencyNumber, bool isFund) InitializeCurrency(string isoSymbol, string? symbol)
-        => this.TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA1.xml", isoSymbol, symbol, lookingForCurrent: true, "CcyTbl", "CcyNtry")
-            .Match(s => Some(s), () => this.TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA3.xml", isoSymbol, symbol, lookingForCurrent: false, "HstrcCcyTbl", "HstrcCcyNtry"))
-            .MatchUnsafe(s => s, () => throw new CurrencyNotFoundException($"ISO symbol '{isoSymbol}' was not found in resources."));
+    private (bool isCurrent, string isoCurrencySymbol, string currencySymbol, int? isoCurrencyNumber, bool isFund)
+        InitializeCurrency(string isoSymbol, string? symbol)
+        => this.TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA1.xml", isoSymbol, symbol,
+                lookingForCurrent: true, "CcyTbl", "CcyNtry")
+            .Match(s => Some(s),
+                () => this.TryExtractCurrencyInformation("TIKSN.Finance.Resources.TableA3.xml", isoSymbol, symbol,
+                    lookingForCurrent: false, "HstrcCcyTbl", "HstrcCcyNtry"))
+            .MatchUnsafe(s => s,
+                () => throw new CurrencyNotFoundException($"ISO symbol '{isoSymbol}' was not found in resources."));
 
-    private Option<(bool isCurrent, string isoCurrencySymbol, string currencySymbol, int? isoCurrencyNumber, bool isFund)> TryExtractCurrencyInformation(
+    private Option<(bool isCurrent, string isoCurrencySymbol, string currencySymbol, int? isoCurrencyNumber, bool isFund
+        )> TryExtractCurrencyInformation(
         string tableResource,
         string isoSymbol,
         string? symbol,
@@ -126,7 +132,9 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
                 var isoCurrencySymbol = ccyElement.Value;
                 var currencySymbol = string.IsNullOrEmpty(symbol) ? isoCurrencySymbol : symbol;
                 var ccyNbrElement = ccyNtryElement.Element("CcyNbr");
-                int? isoCurrencyNumber = ccyNbrElement is null ? null : int.Parse(ccyNbrElement.Value, CultureInfo.InvariantCulture);
+                int? isoCurrencyNumber = ccyNbrElement is null
+                    ? null
+                    : int.Parse(ccyNbrElement.Value, CultureInfo.InvariantCulture);
 
                 var ccyNmElement = ccyNtryElement.Element("CcyNm");
                 var isFundAttributeValue = ccyNmElement?.Attribute("IsFund")?.Value;

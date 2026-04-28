@@ -69,7 +69,8 @@ public class SwissNationalBankTests
 
             _ = await
                 new Func<Task>(async () =>
-                        await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, moment, default)).ShouldThrowAsync<ArgumentException>();
+                        await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, moment, default))
+                    .ShouldThrowAsync<ArgumentException>();
         }
     }
 
@@ -83,8 +84,9 @@ public class SwissNationalBankTests
             var before = new Money(pair.BaseCurrency, 100m);
 
             _ = await
-            new Func<Task>(async () =>
-                    await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, moment, default)).ShouldThrowAsync<ArgumentException>();
+                new Func<Task>(async () =>
+                        await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, moment, default))
+                    .ShouldThrowAsync<ArgumentException>();
         }
     }
 
@@ -100,7 +102,8 @@ public class SwissNationalBankTests
         var before = new Money(aoa, 100m);
 
         _ = await new Func<Task>(async () =>
-                    await this.bank.ConvertCurrencyAsync(before, bwp, this.timeProvider.GetUtcNow(), default)).ShouldThrowAsync<ArgumentException>();
+                await this.bank.ConvertCurrencyAsync(before, bwp, this.timeProvider.GetUtcNow(), default))
+            .ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -108,7 +111,8 @@ public class SwissNationalBankTests
     {
         var moment = this.timeProvider.GetUtcNow().AddMinutes(10d);
 
-        _ = await new Func<Task>(async () => await this.bank.GetCurrencyPairsAsync(moment, default)).ShouldThrowAsync<ArgumentException>();
+        _ = await new Func<Task>(async () => await this.bank.GetCurrencyPairsAsync(moment, default))
+            .ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -126,7 +130,8 @@ public class SwissNationalBankTests
     {
         var moment = this.timeProvider.GetUtcNow().AddDays(-10d);
 
-        _ = await new Func<Task>(async () => await this.bank.GetCurrencyPairsAsync(moment, default)).ShouldThrowAsync<ArgumentException>();
+        _ = await new Func<Task>(async () => await this.bank.GetCurrencyPairsAsync(moment, default))
+            .ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -180,7 +185,8 @@ public class SwissNationalBankTests
 
         foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default))
         {
-            _ = await new Func<Task>(async () => await this.bank.GetExchangeRateAsync(pair, moment, default)).ShouldThrowAsync<ArgumentException>();
+            _ = await new Func<Task>(async () => await this.bank.GetExchangeRateAsync(pair, moment, default))
+                .ShouldThrowAsync<ArgumentException>();
         }
     }
 
@@ -195,7 +201,9 @@ public class SwissNationalBankTests
 
         var pair = new CurrencyPair(aoa, bwp);
 
-        _ = await new Func<Task>(async () => await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default)).ShouldThrowAsync<ArgumentException>();
+        _ = await new Func<Task>(async () =>
+                await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(), default))
+            .ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -205,7 +213,8 @@ public class SwissNationalBankTests
 
         foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), default))
         {
-            _ = await new Func<Task>(async () => await this.bank.GetExchangeRateAsync(pair, moment, default)).ShouldThrowAsync<ArgumentException>();
+            _ = await new Func<Task>(async () => await this.bank.GetExchangeRateAsync(pair, moment, default))
+                .ShouldThrowAsync<ArgumentException>();
         }
     }
 }

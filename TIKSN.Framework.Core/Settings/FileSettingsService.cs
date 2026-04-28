@@ -151,6 +151,7 @@ public class FileSettingsService : ISettingsService
                         CheckType(BsonType.Guid);
                         return (T)(object)bsonValue.AsGuid;
                     }
+
                     throw new NotSupportedException("Object Type is not supported.");
                 case TypeCode.Empty:
                 case TypeCode.DBNull:

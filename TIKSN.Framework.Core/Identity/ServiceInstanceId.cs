@@ -37,7 +37,8 @@ public sealed class ServiceInstanceId : IEquatable<ServiceInstanceId>
         return left.Equals(right);
     }
 
-    public static ServiceInstanceId Parse(string input) => TryParse(input).IfNone(() => throw new FormatException("Invalid Service Instance ID format."));
+    public static ServiceInstanceId Parse(string input) =>
+        TryParse(input).IfNone(() => throw new FormatException("Invalid Service Instance ID format."));
 
     public static Option<ServiceInstanceId> TryParse(string input)
     {
@@ -51,7 +52,8 @@ public sealed class ServiceInstanceId : IEquatable<ServiceInstanceId>
             return new ServiceInstanceId(ulidValue);
         }
 
-        if (long.TryParse(input, NumberStyles.Integer, CultureInfo.InvariantCulture, out var longValue) && longValue >= 0L)
+        if (long.TryParse(input, NumberStyles.Integer, CultureInfo.InvariantCulture, out var longValue) &&
+            longValue >= 0L)
         {
             return new ServiceInstanceId(longValue);
         }

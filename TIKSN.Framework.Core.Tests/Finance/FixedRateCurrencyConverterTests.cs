@@ -44,7 +44,9 @@ public class FixedRateCurrencyConverterTests
 
         var converter = new FixedRateCurrencyConverter(new CurrencyPair(usDollar, poundSterling), 2m);
 
-        _ = await new Func<Task>(async () => await converter.ConvertCurrencyAsync(initial, euro, DateTimeOffset.Now, default).ConfigureAwait(true)).ShouldThrowAsync<ArgumentException>();
+        _ = await new Func<Task>(async () =>
+                await converter.ConvertCurrencyAsync(initial, euro, DateTimeOffset.Now, default).ConfigureAwait(true))
+            .ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -64,7 +66,9 @@ public class FixedRateCurrencyConverterTests
 
         var converter = new FixedRateCurrencyConverter(new CurrencyPair(usDollar, poundSterling), 2m);
 
-        _ = await new Func<Task>(async () => await converter.ConvertCurrencyAsync(initial, euro, DateTimeOffset.Now, default).ConfigureAwait(true)).ShouldThrowAsync<ArgumentException>();
+        _ = await new Func<Task>(async () =>
+                await converter.ConvertCurrencyAsync(initial, euro, DateTimeOffset.Now, default).ConfigureAwait(true))
+            .ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -124,7 +128,9 @@ public class FixedRateCurrencyConverterTests
         converter.CurrencyPair.BaseCurrency.ShouldBe(usDollar);
         converter.CurrencyPair.CounterCurrency.ShouldBe(poundSterling);
 
-        ReferenceEquals(pair, (await converter.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true)).Single()).ShouldBeTrue();
+        ReferenceEquals(pair,
+                (await converter.GetCurrencyPairsAsync(DateTimeOffset.Now, default).ConfigureAwait(true)).Single())
+            .ShouldBeTrue();
     }
 
     [Fact]
@@ -138,7 +144,8 @@ public class FixedRateCurrencyConverterTests
 
         var converter = new FixedRateCurrencyConverter(new CurrencyPair(usDollar, poundSterling), 2m);
 
-        (await converter.GetExchangeRateAsync(new CurrencyPair(usDollar, poundSterling), DateTimeOffset.Now, default).ConfigureAwait(true)).ShouldBe(2m);
+        (await converter.GetExchangeRateAsync(new CurrencyPair(usDollar, poundSterling), DateTimeOffset.Now, default)
+            .ConfigureAwait(true)).ShouldBe(2m);
     }
 
     [Fact]
@@ -152,7 +159,9 @@ public class FixedRateCurrencyConverterTests
 
         var converter = new FixedRateCurrencyConverter(new CurrencyPair(usDollar, poundSterling), 2m);
 
-        _ = await new Func<Task>(async () => await converter.GetExchangeRateAsync(new CurrencyPair(poundSterling, usDollar), DateTimeOffset.Now, default).ConfigureAwait(true)).ShouldThrowAsync<ArgumentException>();
+        _ = await new Func<Task>(async () =>
+            await converter.GetExchangeRateAsync(new CurrencyPair(poundSterling, usDollar), DateTimeOffset.Now, default)
+                .ConfigureAwait(true)).ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -168,7 +177,9 @@ public class FixedRateCurrencyConverterTests
 
         var converter = new FixedRateCurrencyConverter(new CurrencyPair(usDollar, poundSterling), 2m);
 
-        _ = await new Func<Task>(async () => await converter.GetExchangeRateAsync(new CurrencyPair(euro, usDollar), DateTimeOffset.Now, default).ConfigureAwait(true)).ShouldThrowAsync<ArgumentException>();
+        _ = await new Func<Task>(async () =>
+            await converter.GetExchangeRateAsync(new CurrencyPair(euro, usDollar), DateTimeOffset.Now, default)
+                .ConfigureAwait(true)).ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -184,7 +195,9 @@ public class FixedRateCurrencyConverterTests
 
         var converter = new FixedRateCurrencyConverter(new CurrencyPair(usDollar, poundSterling), 2m);
 
-        _ = await new Func<Task>(async () => await converter.GetExchangeRateAsync(new CurrencyPair(usDollar, euro), DateTimeOffset.Now, default).ConfigureAwait(true)).ShouldThrowAsync<ArgumentException>();
+        _ = await new Func<Task>(async () =>
+            await converter.GetExchangeRateAsync(new CurrencyPair(usDollar, euro), DateTimeOffset.Now, default)
+                .ConfigureAwait(true)).ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact]

@@ -6,7 +6,9 @@ public sealed class CurrencyPair : IEquatable<CurrencyPair>
     {
         if (baseCurrency == counterCurrency)
         {
-            throw new ArgumentException("Base currency and counter currency cannot be the same.", nameof(counterCurrency));
+            throw new ArgumentException(
+                "Base currency and counter currency cannot be the same.",
+                nameof(counterCurrency));
         }
 
         this.BaseCurrency = baseCurrency;

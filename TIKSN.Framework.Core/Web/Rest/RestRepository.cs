@@ -28,11 +28,14 @@ public partial class RestRepository<TEntity, TIdentity> :
         ILogger<RestRepository<TEntity, TIdentity>> logger)
     {
         this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-        this.serializerRestFactory = serializerRestFactory ?? throw new ArgumentNullException(nameof(serializerRestFactory));
+        this.serializerRestFactory =
+            serializerRestFactory ?? throw new ArgumentNullException(nameof(serializerRestFactory));
         this.options = options ?? throw new ArgumentNullException(nameof(options));
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        this.restAuthenticationTokenProvider = restAuthenticationTokenProvider ?? throw new ArgumentNullException(nameof(restAuthenticationTokenProvider));
-        this.deserializerRestFactory = deserializerRestFactory ?? throw new ArgumentNullException(nameof(deserializerRestFactory));
+        this.restAuthenticationTokenProvider = restAuthenticationTokenProvider ??
+            throw new ArgumentNullException(nameof(restAuthenticationTokenProvider));
+        this.deserializerRestFactory =
+            deserializerRestFactory ?? throw new ArgumentNullException(nameof(deserializerRestFactory));
     }
 
     public Task AddAsync(TEntity entity, CancellationToken cancellationToken) =>
@@ -43,7 +46,7 @@ public partial class RestRepository<TEntity, TIdentity> :
 
     public async Task<TEntity> GetAsync(TIdentity id, CancellationToken cancellationToken) =>
         await this.GetOrDefaultAsync(id, cancellationToken).ConfigureAwait(false)
-            ?? throw new EntityNotFoundException();
+        ?? throw new EntityNotFoundException();
 
     public async Task<TEntity?> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
     {
@@ -251,7 +254,8 @@ public partial class RestRepository<TEntity, TIdentity> :
         }
 
         var authenticationToken =
-            await this.restAuthenticationTokenProvider.GetAuthenticationTokenAsync(this.options.Value.EndpointKey ?? string.Empty).ConfigureAwait(false);
+            await this.restAuthenticationTokenProvider
+                .GetAuthenticationTokenAsync(this.options.Value.EndpointKey ?? string.Empty).ConfigureAwait(false);
 
         httpClient.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue(authenticationSchema, authenticationToken);

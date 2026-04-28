@@ -33,7 +33,8 @@ public class BB26Tests
         yield return new TheoryDataRow<int, string>(3_752_127, "HELLO");
     }
 
-    public static IEnumerable<TheoryDataRow<string, int>> GetBB26StringAndNumberTestData() => GetBB26NumberAndStringTestData().Select(x => new TheoryDataRow<string, int>(x.Data.Item2, x.Data.Item1));
+    public static IEnumerable<TheoryDataRow<string, int>> GetBB26StringAndNumberTestData() =>
+        GetBB26NumberAndStringTestData().Select(x => new TheoryDataRow<string, int>(x.Data.Item2, x.Data.Item1));
 
     [Theory]
     [MemberData(nameof(GetBB26NumberAndStringTestData))]

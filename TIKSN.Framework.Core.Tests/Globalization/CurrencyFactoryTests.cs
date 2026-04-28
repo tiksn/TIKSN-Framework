@@ -19,15 +19,13 @@ public class CurrencyFactoryTests
     [InlineData("GIP", "GBP")]
     [InlineData("SHP", "GBP")]
     [InlineData("XZZ", "UAH")]
-    public void GivenConfiguredOptions_WhenCurrencyInfoCreated_ThenItShouldMatchToOutput(string inputIsoCurrencySymbol, string outputIsoCurrencySymbol)
+    public void GivenConfiguredOptions_WhenCurrencyInfoCreated_ThenItShouldMatchToOutput(
+        string inputIsoCurrencySymbol, string outputIsoCurrencySymbol)
     {
         // Arrange
 
         var configurationRoot = new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string>()
-            {
-                { "CurrencyUnionRedirections:XZZ", "uk-UA"}
-            })
+            .AddInMemoryCollection(new Dictionary<string, string>() { { "CurrencyUnionRedirections:XZZ", "uk-UA" } })
             .Build();
         var services = new ServiceCollection();
         _ = services.AddFrameworkCore();
@@ -51,15 +49,13 @@ public class CurrencyFactoryTests
     [InlineData("029", "XCD")]
     [InlineData("419", "USD")]
     [InlineData("XK", "UAH")]
-    public void GivenConfiguredOptions_WhenRegionCurrencyInfoCreated_ThenItShouldMatchToOutput(string inputRegionName, string outputIsoCurrencySymbol)
+    public void GivenConfiguredOptions_WhenRegionCurrencyInfoCreated_ThenItShouldMatchToOutput(
+        string inputRegionName, string outputIsoCurrencySymbol)
     {
         // Arrange
 
         var configurationRoot = new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string>()
-            {
-            { "RegionalCurrencyRedirections:XK", "uk-UA"}
-            })
+            .AddInMemoryCollection(new Dictionary<string, string>() { { "RegionalCurrencyRedirections:XK", "uk-UA" } })
             .Build();
         var services = new ServiceCollection();
         _ = services.AddFrameworkCore();
@@ -84,7 +80,8 @@ public class CurrencyFactoryTests
     [InlineData("FKP", "GBP")]
     [InlineData("GIP", "GBP")]
     [InlineData("SHP", "GBP")]
-    public void GivenInputIsoCurrencySymbol_WhenCurrencyInfoCreated_ThenItShouldMatchToOutput(string inputIsoCurrencySymbol, string outputIsoCurrencySymbol)
+    public void GivenInputIsoCurrencySymbol_WhenCurrencyInfoCreated_ThenItShouldMatchToOutput(
+        string inputIsoCurrencySymbol, string outputIsoCurrencySymbol)
     {
         // Arrange
 
@@ -108,7 +105,8 @@ public class CurrencyFactoryTests
     [InlineData("150", "EUR")]
     [InlineData("029", "XCD")]
     [InlineData("419", "USD")]
-    public void GivenInputIsoCurrencySymbol_WhenRegionCurrencyInfoCreated_ThenItShouldMatchToOutput(string inputRegionName, string outputIsoCurrencySymbol)
+    public void GivenInputIsoCurrencySymbol_WhenRegionCurrencyInfoCreated_ThenItShouldMatchToOutput(
+        string inputRegionName, string outputIsoCurrencySymbol)
     {
         // Arrange
 

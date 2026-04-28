@@ -20,7 +20,8 @@ public class SingleEntryCurrencyConversionCompositionStrategy : ICurrencyConvers
 
         var converter = filteredConverters.Single();
 
-        return await converter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken).ConfigureAwait(false);
+        return await converter.ConvertCurrencyAsync(baseMoney, counterCurrency, asOn, cancellationToken)
+            .ConfigureAwait(false);
     }
 
     public async Task<decimal> GetExchangeRateAsync(
@@ -32,7 +33,8 @@ public class SingleEntryCurrencyConversionCompositionStrategy : ICurrencyConvers
         ArgumentNullException.ThrowIfNull(converters);
         ArgumentNullException.ThrowIfNull(pair);
 
-        var filteredConverters = await CurrencyHelper.FilterConvertersAsync(converters, pair, asOn, cancellationToken).ConfigureAwait(false);
+        var filteredConverters = await CurrencyHelper.FilterConvertersAsync(converters, pair, asOn, cancellationToken)
+            .ConfigureAwait(false);
 
         var converter = filteredConverters.Single();
 

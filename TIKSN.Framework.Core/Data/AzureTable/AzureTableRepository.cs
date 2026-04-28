@@ -99,7 +99,8 @@ public class AzureTableRepository<T> :
 
     public async Task<T> RetrieveAsync(string partitionKey, string rowKey, CancellationToken cancellationToken)
     {
-        var response = await this.tableClient.GetEntityAsync<T>(partitionKey, rowKey, cancellationToken: cancellationToken).ConfigureAwait(false);
+        var response = await this.tableClient
+            .GetEntityAsync<T>(partitionKey, rowKey, cancellationToken: cancellationToken).ConfigureAwait(false);
         return response.Value;
     }
 
