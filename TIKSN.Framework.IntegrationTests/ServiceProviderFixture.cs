@@ -29,9 +29,13 @@ public class ServiceProviderFixture : IDisposable
 
         this.CreateHost(string.Empty, (context, builder) => { });
         this.CreateHost("LiteDB", (context, builder) => builder.RegisterModule<LiteDbExchangeRateServiceTestModule>());
-        this.CreateHost("MongoDB", (context, builder) => builder.RegisterModule<MongoDbExchangeRateServiceTestModule>());
-        this.CreateHost("SQLite", (context, builder) => builder.RegisterModule(new SQLiteExchangeRateServiceTestModule(context.Configuration)));
-        this.CreateHost("RavenDB", (context, builder) => builder.RegisterModule<RavenDbExchangeRateServiceTestModule>());
+        this.CreateHost("MongoDB",
+            (context, builder) => builder.RegisterModule<MongoDbExchangeRateServiceTestModule>());
+        this.CreateHost("SQLite",
+            (context, builder) =>
+                builder.RegisterModule(new SQLiteExchangeRateServiceTestModule(context.Configuration)));
+        this.CreateHost("RavenDB",
+            (context, builder) => builder.RegisterModule<RavenDbExchangeRateServiceTestModule>());
     }
 
     public void CreateHost(string key, Action<HostBuilderContext, ContainerBuilder> configureContainer)
@@ -52,10 +56,12 @@ public class ServiceProviderFixture : IDisposable
                 _ = builder.RegisterModule<CoreModule>();
                 _ = builder.RegisterType<TextLocalizer>().As<IStringLocalizer>().SingleInstance();
                 _ = builder.RegisterType<TestMongoRepository>().As<ITestMongoRepository>().InstancePerLifetimeScope();
-                _ = builder.RegisterType<TestMongoFileRepository>().As<ITestMongoFileRepository>().InstancePerLifetimeScope();
+                _ = builder.RegisterType<TestMongoFileRepository>().As<ITestMongoFileRepository>()
+                    .InstancePerLifetimeScope();
                 _ = builder.RegisterType<TestMongoDatabaseProvider>().As<IMongoDatabaseProvider>().SingleInstance();
                 _ = builder.RegisterType<TestMongoClientProvider>().As<IMongoClientProvider>().SingleInstance();
-                _ = builder.RegisterType<TestExchangeRateService>().As<IExchangeRateService>().InstancePerLifetimeScope();
+                _ = builder.RegisterType<TestExchangeRateService>().As<IExchangeRateService>()
+                    .InstancePerLifetimeScope();
 
                 configureContainer(context, builder);
             })
@@ -72,18 +78,12 @@ public class ServiceProviderFixture : IDisposable
 
         static Dictionary<string, string> GetInMemoryConfiguration() => new()
         {
-            {
-                "ConnectionStrings:Mongo",
-                "mongodb://localhost:27017/TIKSN_Framework_IntegrationTests?w=majority"
-            },
+            { "ConnectionStrings:Mongo", "mongodb://localhost:27017/TIKSN_Framework_IntegrationTests?w=majority" },
             {
                 "ConnectionStrings:LiteDB",
                 "Filename=TIKSN-Framework-IntegrationTests.db;Upgrade=true;Connection=Shared"
             },
-            {
-                "ConnectionStrings:SQLite",
-                "Data Source=TIKSN-Framework-IntegrationTests.sqlite;"
-            },
+            { "ConnectionStrings:SQLite", "Data Source=TIKSN-Framework-IntegrationTests.sqlite;" },
         };
     }
 

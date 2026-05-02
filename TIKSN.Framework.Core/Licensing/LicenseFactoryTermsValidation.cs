@@ -152,10 +152,7 @@ internal static class LicenseFactoryTermsValidation
         ArgumentNullException.ThrowIfNull(individualParty);
 
         var errors = new List<Error>();
-        var result = new LicenseParty
-        {
-            IndividualParty = new LicenseIndividualParty()
-        };
+        var result = new LicenseParty { IndividualParty = new LicenseIndividualParty() };
 
         if (string.IsNullOrWhiteSpace(individualParty.FirstName))
         {
@@ -200,10 +197,7 @@ internal static class LicenseFactoryTermsValidation
         ArgumentNullException.ThrowIfNull(organizationParty);
 
         var errors = new List<Error>();
-        var result = new LicenseParty
-        {
-            OrganizationParty = new LicenseOrganizationParty()
-        };
+        var result = new LicenseParty { OrganizationParty = new LicenseOrganizationParty() };
 
         if (string.IsNullOrWhiteSpace(organizationParty.LongName))
         {

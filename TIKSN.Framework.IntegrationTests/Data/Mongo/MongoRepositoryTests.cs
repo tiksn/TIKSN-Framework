@@ -22,7 +22,11 @@ public class MongoRepositoryTests
             this.serviceProviderFixture.GetServiceProvider().GetRequiredService<ITestMongoRepository>();
 
         var testEntityId = Guid.NewGuid();
-        var testEntity = new TestMongoEntity { ID = testEntityId, Value = Guid.NewGuid() };
+        var testEntity = new TestMongoEntity
+        {
+            ID = testEntityId,
+            Value = Guid.NewGuid()
+        };
 
         await testRepository.AddAsync(testEntity, default);
 

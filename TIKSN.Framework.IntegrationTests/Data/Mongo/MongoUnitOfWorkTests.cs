@@ -22,7 +22,11 @@ public class MongoUnitOfWorkTests
     public async Task TestCreationAndRetrieval()
     {
         var testEntityId = Guid.NewGuid();
-        var testEntity = new TestMongoEntity { ID = testEntityId, Value = Guid.NewGuid() };
+        var testEntity = new TestMongoEntity
+        {
+            ID = testEntityId,
+            Value = Guid.NewGuid()
+        };
         TestMongoEntity retrievedEntity = null;
 
         var mongoUnitOfWorkFactory =
@@ -53,7 +57,12 @@ public class MongoUnitOfWorkTests
     public async Task TestConcurrentUpdates()
     {
         var testEntityId = Guid.NewGuid();
-        var testEntity = new TestMongoEntity { ID = testEntityId, Value = Guid.NewGuid(), Version = 1 };
+        var testEntity = new TestMongoEntity
+        {
+            ID = testEntityId,
+            Value = Guid.NewGuid(),
+            Version = 1
+        };
         TestMongoEntity retrievedEntity = null;
 
         var mongoUnitOfWorkFactory =

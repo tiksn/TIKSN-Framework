@@ -10,5 +10,6 @@ public class TestMongoEntity : IEntity<Guid>
 
     public int Version { get; set; }
 
-    [BsonId] public Guid ID { get; set; }
+    [BsonId]
+    public Guid ID { get; set; }
 }

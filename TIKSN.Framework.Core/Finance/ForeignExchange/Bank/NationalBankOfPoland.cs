@@ -122,7 +122,11 @@ public class NationalBankOfPoland : INationalBankOfPoland
 
         var requestUrl = new Uri(string.Format(PolishCulture, WebServiceUrlFormat, table, weekAgoWarsaw, asOnWarsaw));
 
-        using var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = requestUrl, };
+        using var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Get,
+            RequestUri = requestUrl,
+        };
         request.Headers.Accept.Add(AcceptHeaderValue);
 
         var response = await this.httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);

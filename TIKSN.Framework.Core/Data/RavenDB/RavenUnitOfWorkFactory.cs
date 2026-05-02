@@ -16,7 +16,11 @@ public class RavenUnitOfWorkFactory : IUnitOfWorkFactory, IDisposable
     {
         ArgumentNullException.ThrowIfNull(options);
 
-        this.store = new DocumentStore { Urls = [.. options.Value.Urls], Database = options.Value.Database };
+        this.store = new DocumentStore
+        {
+            Urls = [.. options.Value.Urls],
+            Database = options.Value.Database
+        };
         this.store = this.store.Initialize();
         this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
     }
