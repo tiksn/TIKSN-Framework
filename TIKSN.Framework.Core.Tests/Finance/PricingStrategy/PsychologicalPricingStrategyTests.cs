@@ -94,7 +94,7 @@ public class PsychologicalPricingStrategyTests
 
         for (var i = 0; i < 100; i++)
         {
-            var initialPrice = random.Next(0, 10);
+            var initialPrice = random.Next(minValue: 0, maxValue: 10);
             var estimatedPrice = strategy.EstimateMarketPrice(new Money(currency, initialPrice));
 
             AddRatio(ratios, initialPrice, estimatedPrice.Amount);
@@ -102,7 +102,7 @@ public class PsychologicalPricingStrategyTests
 
         for (var i = 0; i < 100; i++)
         {
-            var initialPrice = random.Next(10, 100);
+            var initialPrice = random.Next(minValue: 10, maxValue: 100);
             var estimatedPrice = strategy.EstimateMarketPrice(new Money(currency, initialPrice));
 
             AddRatio(ratios, initialPrice, estimatedPrice.Amount);
@@ -110,7 +110,7 @@ public class PsychologicalPricingStrategyTests
 
         for (var i = 0; i < 100; i++)
         {
-            var initialPrice = random.Next(100, 10000);
+            var initialPrice = random.Next(minValue: 100, maxValue: 10000);
             var estimatedPrice = strategy.EstimateMarketPrice(new Money(currency, initialPrice));
 
             AddRatio(ratios, initialPrice, estimatedPrice.Amount);

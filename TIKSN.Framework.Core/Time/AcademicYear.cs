@@ -32,6 +32,17 @@ public readonly struct AcademicYear : IYear<AcademicYear>
         this.absoluteStartYear = calendar.GetAbsoluteYear(startYearOfEra, era);
     }
 
+    #region Conversion
+
+    public DateInterval ToDateInterval()
+    {
+        var startDay = StartDate.InYear(this.absoluteStartYear);
+        var endDay = startDay.PlusYears(1).PlusDays(-1);
+        return new DateInterval(startDay, endDay);
+    }
+
+    #endregion Conversion
+
     #region Contains
 
     public bool Contains(LocalDate localDate)
@@ -181,15 +192,4 @@ public readonly struct AcademicYear : IYear<AcademicYear>
         => this.GetPrevious(1);
 
     #endregion Next and Previous
-
-    #region Conversion
-
-    public DateInterval ToDateInterval()
-    {
-        var startDay = StartDate.InYear(this.absoluteStartYear);
-        var endDay = startDay.PlusYears(1).PlusDays(-1);
-        return new DateInterval(startDay, endDay);
-    }
-
-    #endregion Conversion
 }

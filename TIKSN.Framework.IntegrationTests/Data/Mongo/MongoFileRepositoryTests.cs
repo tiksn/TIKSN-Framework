@@ -30,8 +30,10 @@ public class MongoFileRepositoryTests
 
         var fileName = $"file{Random.Shared.Next()}.bin";
 
-        await testFileRepository.UploadAsync(fileName, buffer1, default);
-        Func<Task> upload = () => testFileRepository.UploadAsync(fileName, buffer2, default);
+        await testFileRepository.UploadAsync(fileName, buffer1,
+            cancellationToken: TestContext.Current.CancellationToken);
+        var upload = () =>
+            testFileRepository.UploadAsync(fileName, buffer2, cancellationToken: TestContext.Current.CancellationToken);
 
         _ = await upload.ShouldThrowAsync<EntityExistsException>();
     }
@@ -47,9 +49,12 @@ public class MongoFileRepositoryTests
 
         var fileName = $"file{Random.Shared.Next()}.bin";
 
-        var stage1Exists = await testFileRepository.ExistsAsync(fileName, default);
-        await testFileRepository.UploadAsync(fileName, buffer, default);
-        var stage2Exists = await testFileRepository.ExistsAsync(fileName, default);
+        var stage1Exists =
+            await testFileRepository.ExistsAsync(fileName, cancellationToken: TestContext.Current.CancellationToken);
+        await testFileRepository.UploadAsync(fileName, buffer,
+            cancellationToken: TestContext.Current.CancellationToken);
+        var stage2Exists =
+            await testFileRepository.ExistsAsync(fileName, cancellationToken: TestContext.Current.CancellationToken);
 
         stage1Exists.ShouldBeFalse();
         stage2Exists.ShouldBeTrue();

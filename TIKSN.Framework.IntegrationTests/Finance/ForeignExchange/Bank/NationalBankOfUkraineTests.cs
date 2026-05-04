@@ -24,13 +24,16 @@ public class NationalBankOfUkraineTests
     [Fact]
     public async Task ConvertCurrencyAsync001()
     {
-        var date = new DateTimeOffset(2016, 05, 06, 0, 0, 0, TimeSpan.Zero);
-        var pairs = await this.bank.GetCurrencyPairsAsync(date, default);
+        var date = new DateTimeOffset(year: 2016, month: 05, day: 06, hour: 0, minute: 0, second: 0, TimeSpan.Zero);
+        var pairs = await this.bank.GetCurrencyPairsAsync(date,
+            cancellationToken: TestContext.Current.CancellationToken);
 
         foreach (var pair in pairs)
         {
-            var baseMoney = new Money(pair.BaseCurrency, 100);
-            var convertedMoney = await this.bank.ConvertCurrencyAsync(baseMoney, pair.CounterCurrency, date, default);
+            var baseMoney = new Money(pair.BaseCurrency, amount: 100);
+            var convertedMoney =
+                await this.bank.ConvertCurrencyAsync(baseMoney, pair.CounterCurrency, date,
+                    cancellationToken: TestContext.Current.CancellationToken);
 
             convertedMoney.Currency.ShouldBe(pair.CounterCurrency);
             (convertedMoney.Amount > decimal.Zero).ShouldBeTrue();
@@ -40,8 +43,9 @@ public class NationalBankOfUkraineTests
     [Fact]
     public async Task GetCurrencyPairsAsync001()
     {
-        var pairs = await this.bank.GetCurrencyPairsAsync(new DateTimeOffset(2016, 05, 06, 0, 0, 0, TimeSpan.Zero),
-            default);
+        var pairs = await this.bank.GetCurrencyPairsAsync(
+            new DateTimeOffset(year: 2016, month: 05, day: 06, hour: 0, minute: 0, second: 0, TimeSpan.Zero),
+            cancellationToken: TestContext.Current.CancellationToken);
 
         (pairs.Count != 0).ShouldBeTrue();
     }
@@ -49,12 +53,14 @@ public class NationalBankOfUkraineTests
     [Fact]
     public async Task GetExchangeRateAsync001()
     {
-        var date = new DateTimeOffset(2016, 05, 06, 0, 0, 0, TimeSpan.Zero);
-        var pairs = await this.bank.GetCurrencyPairsAsync(date, default);
+        var date = new DateTimeOffset(year: 2016, month: 05, day: 06, hour: 0, minute: 0, second: 0, TimeSpan.Zero);
+        var pairs = await this.bank.GetCurrencyPairsAsync(date,
+            cancellationToken: TestContext.Current.CancellationToken);
 
         foreach (var pair in pairs)
         {
-            var rate = await this.bank.GetExchangeRateAsync(pair, date, default);
+            var rate = await this.bank.GetExchangeRateAsync(pair, date,
+                cancellationToken: TestContext.Current.CancellationToken);
 
             (rate > decimal.Zero).ShouldBeTrue();
         }

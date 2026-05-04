@@ -14,7 +14,8 @@ public class CachedCurrencyConverterTests
     {
         var converter =
             new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
-        var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(2020, 12, 31, 0, 0, 0, TimeSpan.Zero));
+        var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(year: 2020, month: 12, day: 31, hour: 0,
+            minute: 0, second: 0, TimeSpan.Zero));
 
         var interval = TimeSpan.FromDays(10);
         var capacity = 20;
@@ -36,7 +37,8 @@ public class CachedCurrencyConverterTests
     {
         var converter =
             new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
-        var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(2020, 12, 31, 0, 0, 0, TimeSpan.Zero));
+        var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(year: 2020, month: 12, day: 31, hour: 0,
+            minute: 0, second: 0, TimeSpan.Zero));
 
         var interval = TimeSpan.FromDays(10);
 
@@ -57,7 +59,8 @@ public class CachedCurrencyConverterTests
     {
         var converter =
             new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
-        var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(2020, 12, 31, 0, 0, 0, TimeSpan.Zero));
+        var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(year: 2020, month: 12, day: 31, hour: 0,
+            minute: 0, second: 0, TimeSpan.Zero));
 
         var interval = TimeSpan.FromDays(10);
 
@@ -70,13 +73,15 @@ public class CachedCurrencyConverterTests
     [Fact]
     public void CachedCurrencyConverter_004()
     {
-        var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(2020, 12, 31, 0, 0, 0, TimeSpan.Zero));
+        var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(year: 2020, month: 12, day: 31, hour: 0,
+            minute: 0, second: 0, TimeSpan.Zero));
 
         var interval = TimeSpan.FromDays(10);
         var capacity = 20;
 
         _ = new Func<object>(() =>
-                new CachedCurrencyConverter(null, fakeTimeProvider, interval, interval, capacity, capacity))
+                new CachedCurrencyConverter(originalConverter: null, fakeTimeProvider, interval, interval, capacity,
+                    capacity))
             .ShouldThrow<ArgumentNullException>();
     }
 
@@ -85,7 +90,8 @@ public class CachedCurrencyConverterTests
     {
         var converter =
             new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
-        var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(2020, 12, 31, 0, 0, 0, TimeSpan.Zero));
+        var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(year: 2020, month: 12, day: 31, hour: 0,
+            minute: 0, second: 0, TimeSpan.Zero));
 
         var interval = TimeSpan.FromDays(10);
         var negativeCapacity = -10;
@@ -101,7 +107,8 @@ public class CachedCurrencyConverterTests
     {
         var converter =
             new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
-        var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(2020, 12, 31, 0, 0, 0, TimeSpan.Zero));
+        var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(year: 2020, month: 12, day: 31, hour: 0,
+            minute: 0, second: 0, TimeSpan.Zero));
 
         var interval = TimeSpan.FromDays(10);
         var negativeCapacity = -10;
@@ -117,7 +124,8 @@ public class CachedCurrencyConverterTests
     {
         var converter =
             new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
-        var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(2020, 12, 31, 0, 0, 0, TimeSpan.Zero));
+        var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(year: 2020, month: 12, day: 31, hour: 0,
+            minute: 0, second: 0, TimeSpan.Zero));
 
         var negativeInterval = TimeSpan.FromDays(-10);
         var positiveInterval = TimeSpan.FromDays(10);
@@ -132,7 +140,8 @@ public class CachedCurrencyConverterTests
     {
         var converter =
             new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
-        var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(2020, 12, 31, 0, 0, 0, TimeSpan.Zero));
+        var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(year: 2020, month: 12, day: 31, hour: 0,
+            minute: 0, second: 0, TimeSpan.Zero));
 
         var negativeInterval = TimeSpan.FromDays(-10);
         var positiveInterval = TimeSpan.FromDays(10);

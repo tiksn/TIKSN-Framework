@@ -11,10 +11,10 @@ namespace TIKSN.Tests.Settings;
 
 public class SettingsServiceTests
 {
+    private static readonly string[] expectedLocal = ["LocalInteger", "LocalString", "LocalGuid",];
+    private static readonly string[] expectedRoaming = ["RoamingInteger", "RoamingString", "RoamingGuid",];
     private readonly ServiceCollection services;
     private readonly ISettingsService settingsService;
-    private static readonly string[] expectedLocal = ["LocalInteger", "LocalString", "LocalGuid"];
-    private static readonly string[] expectedRoaming = ["RoamingInteger", "RoamingString", "RoamingGuid"];
 
     public SettingsServiceTests()
     {

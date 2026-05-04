@@ -25,18 +25,6 @@ public sealed class ServiceInstanceId : IEquatable<ServiceInstanceId>
 
     public static ServiceInstanceId Create(Ulid value) => new(value);
 
-    public static bool operator !=(ServiceInstanceId? left, ServiceInstanceId? right) => !(left == right);
-
-    public static bool operator ==(ServiceInstanceId? left, ServiceInstanceId? right)
-    {
-        if (left is null)
-        {
-            return right is null;
-        }
-
-        return left.Equals(right);
-    }
-
     public static ServiceInstanceId Parse(string input) =>
         TryParse(input).IfNone(() => throw new FormatException("Invalid Service Instance ID format."));
 
@@ -60,6 +48,18 @@ public sealed class ServiceInstanceId : IEquatable<ServiceInstanceId>
 
         return Option<ServiceInstanceId>.None;
     }
+
+    public static bool operator ==(ServiceInstanceId? left, ServiceInstanceId? right)
+    {
+        if (left is null)
+        {
+            return right is null;
+        }
+
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(ServiceInstanceId? left, ServiceInstanceId? right) => !(left == right);
 
     public override bool Equals(object? obj) => this.Equals(obj as ServiceInstanceId);
 

@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations;
-using Raven.Client.Exceptions;
 using Raven.Client.Exceptions.Database;
 using Raven.Client.ServerWide;
 using Raven.Client.ServerWide.Operations;
@@ -25,8 +24,8 @@ public class RavenDatabaseInitializer : IDatabaseInitializer
         var store =
             new DocumentStore
             {
-                Urls = [.. this.options.Value.Urls],
-                Database = this.options.Value.Database
+                Urls = [.. this.options.Value.Urls,],
+                Database = this.options.Value.Database,
             }
                 .Initialize();
 
@@ -47,15 +46,8 @@ public class RavenDatabaseInitializer : IDatabaseInitializer
         }
         catch (DatabaseDoesNotExistException)
         {
-            try
-            {
-                _ = await store.Maintenance.Server.SendAsync(
-                    new CreateDatabaseOperation(new DatabaseRecord(store.Database)));
-            }
-            catch (ConcurrencyException)
-            {
-                throw;
-            }
+            _ = await store.Maintenance.Server.SendAsync(
+                new CreateDatabaseOperation(new DatabaseRecord(store.Database)));
         }
     }
 }

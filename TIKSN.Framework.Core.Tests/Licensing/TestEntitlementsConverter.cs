@@ -16,13 +16,13 @@ public class TestEntitlementsConverter : IEntitlementsConverter<TestEntitlements
 
         if (entitlements == null)
         {
-            errors.Add(Error.New(1272355232, "Value must not be NULL"));
+            errors.Add(Error.New(code: 1272355232, "Value must not be NULL"));
         }
         else
         {
             if (string.IsNullOrWhiteSpace(entitlements.Name))
             {
-                errors.Add(Error.New(1989842507, "Name is missing"));
+                errors.Add(Error.New(code: 1989842507, "Name is missing"));
             }
             else
             {
@@ -31,7 +31,7 @@ public class TestEntitlementsConverter : IEntitlementsConverter<TestEntitlements
 
             if (entitlements.Quantity <= 0)
             {
-                errors.Add(Error.New(622153499, "Quantity is invalid"));
+                errors.Add(Error.New(code: 622153499, "Quantity is invalid"));
             }
             else
             {
@@ -40,7 +40,7 @@ public class TestEntitlementsConverter : IEntitlementsConverter<TestEntitlements
 
             if (entitlements.CompanyId <= 0)
             {
-                errors.Add(Error.New(715969796, "CompanyId is invalid"));
+                errors.Add(Error.New(code: 715969796, "CompanyId is invalid"));
             }
             else
             {
@@ -49,7 +49,7 @@ public class TestEntitlementsConverter : IEntitlementsConverter<TestEntitlements
 
             if (entitlements.EmployeeId <= 0)
             {
-                errors.Add(Error.New(314894957, "EmployeeId is invalid"));
+                errors.Add(Error.New(code: 314894957, "EmployeeId is invalid"));
             }
             else
             {
@@ -58,11 +58,11 @@ public class TestEntitlementsConverter : IEntitlementsConverter<TestEntitlements
 
             if (entitlements.Salt.Count == 0)
             {
-                errors.Add(Error.New(139152695, "Salt is missing"));
+                errors.Add(Error.New(code: 139152695, "Salt is missing"));
             }
             else
             {
-                result.Salt = ByteString.CopyFrom([.. entitlements.Salt]);
+                result.Salt = ByteString.CopyFrom([.. entitlements.Salt,]);
             }
         }
 
@@ -81,33 +81,33 @@ public class TestEntitlementsConverter : IEntitlementsConverter<TestEntitlements
 
         if (entitlementsData == null)
         {
-            errors.Add(Error.New(716270800, "Value must not be NULL"));
+            errors.Add(Error.New(code: 716270800, "Value must not be NULL"));
         }
         else
         {
             if (string.IsNullOrWhiteSpace(entitlementsData.Name))
             {
-                errors.Add(Error.New(1989842507, "Name is missing"));
+                errors.Add(Error.New(code: 1989842507, "Name is missing"));
             }
 
             if (entitlementsData.Quantity <= 0)
             {
-                errors.Add(Error.New(622153499, "Quantity is invalid"));
+                errors.Add(Error.New(code: 622153499, "Quantity is invalid"));
             }
 
             if (entitlementsData.CompanyId <= 0)
             {
-                errors.Add(Error.New(715969796, "CompanyId is invalid"));
+                errors.Add(Error.New(code: 715969796, "CompanyId is invalid"));
             }
 
             if (entitlementsData.EmployeeId <= 0)
             {
-                errors.Add(Error.New(314894957, "EmployeeId is invalid"));
+                errors.Add(Error.New(code: 314894957, "EmployeeId is invalid"));
             }
 
             if (entitlementsData.Salt.Length == 0)
             {
-                errors.Add(Error.New(139152695, "Salt is missing"));
+                errors.Add(Error.New(code: 139152695, "Salt is missing"));
             }
         }
 

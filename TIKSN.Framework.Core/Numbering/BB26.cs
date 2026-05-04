@@ -18,10 +18,6 @@ public sealed class BB26 : IComparable<BB26>, IComparable, ISequentialNavigator<
         this.Number = number;
     }
 
-    public int Index => this.Number - 1;
-
-    public int Number { get; }
-
     private static IReadOnlyDictionary<char, int> CharToNumberMap { get; } = Enumerable.Range(0, 26).SelectMany(i =>
         new[]
         {
@@ -38,18 +34,9 @@ public sealed class BB26 : IComparable<BB26>, IComparable, ISequentialNavigator<
         let number = chars.Aggregate(0, (acc, c) => (acc * 26) + CharToNumberMap[c])
         select new BB26(number);
 
-    public static bool operator !=(BB26 left, BB26 right) => !Equals(left, right);
+    public int Index => this.Number - 1;
 
-    public static bool operator <(BB26 left, BB26 right) =>
-        left is null ? right is not null : left.CompareTo(right) < 0;
-
-    public static bool operator <=(BB26 left, BB26 right) => left is null || left.CompareTo(right) <= 0;
-
-    public static bool operator ==(BB26 left, BB26 right) => Equals(left, right);
-
-    public static bool operator >(BB26 left, BB26 right) => left?.CompareTo(right) > 0;
-
-    public static bool operator >=(BB26 left, BB26 right) => left is null ? right is null : left.CompareTo(right) >= 0;
+    public int Number { get; }
 
     public static Option<BB26> Parse(string s, bool asciiOnly, IFormatProvider? provider)
     {
@@ -94,6 +81,19 @@ public sealed class BB26 : IComparable<BB26>, IComparable, ISequentialNavigator<
         result = bb26Number.MatchUnsafe(x => x, () => default)!;
         return bb26Number.IsSome;
     }
+
+    public static bool operator ==(BB26 left, BB26 right) => Equals(left, right);
+
+    public static bool operator >(BB26 left, BB26 right) => left?.CompareTo(right) > 0;
+
+    public static bool operator >=(BB26 left, BB26 right) => left is null ? right is null : left.CompareTo(right) >= 0;
+
+    public static bool operator !=(BB26 left, BB26 right) => !Equals(left, right);
+
+    public static bool operator <(BB26 left, BB26 right) =>
+        left is null ? right is not null : left.CompareTo(right) < 0;
+
+    public static bool operator <=(BB26 left, BB26 right) => left is null || left.CompareTo(right) <= 0;
 
     public int CompareTo(BB26? other)
     {

@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using LanguageExt;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -14,7 +13,6 @@ using TIKSN.Data;
 using TIKSN.Data.Cache.Hybrid;
 using TIKSN.DependencyInjection;
 using Xunit;
-using static LanguageExt.Prelude;
 
 namespace TIKSN.Tests.Data.Cache.Hybrid;
 
@@ -33,27 +31,20 @@ public class HybridCacheDecoratorBaseTests
         _ = containerBuilder.RegisterModule<CoreModule>();
         this.entityMap = new[]
         {
-            new TestEntity(1796652465, Guid.NewGuid(), "Item1"),
-            new TestEntity(489680564, Guid.NewGuid(), "Item2"),
-            new TestEntity(1242007805, Guid.NewGuid(), "Item3"),
-            new TestEntity(307097393, Guid.NewGuid(), "Item4"),
-            new TestEntity(1778174815, Guid.NewGuid(), "Item5"),
-            new TestEntity(2118700136, Guid.NewGuid(), "Item6"),
-            new TestEntity(2035652629, Guid.NewGuid(), "Item7"),
-            new TestEntity(430380339, Guid.NewGuid(), "Item8"),
+            new TestEntity(ID: 1796652465, Guid.NewGuid(), "Item1"),
+            new TestEntity(ID: 489680564, Guid.NewGuid(), "Item2"),
+            new TestEntity(ID: 1242007805, Guid.NewGuid(), "Item3"),
+            new TestEntity(ID: 307097393, Guid.NewGuid(), "Item4"),
+            new TestEntity(ID: 1778174815, Guid.NewGuid(), "Item5"),
+            new TestEntity(ID: 2118700136, Guid.NewGuid(), "Item6"),
+            new TestEntity(ID: 2035652629, Guid.NewGuid(), "Item7"),
+            new TestEntity(ID: 430380339, Guid.NewGuid(), "Item8"),
         }.ToDictionary(k => k.ID, v => v);
         _ = containerBuilder.RegisterInstance(this.entityMap).SingleInstance();
         _ = containerBuilder.RegisterType<RealTestService>().As<ITestService>();
         containerBuilder.RegisterDecorator<TestServiceHybridCacheDecorator, ITestService>();
         var serviceProvider = new AutofacServiceProvider(containerBuilder.Build());
         this.testService = serviceProvider.GetService<ITestService>();
-    }
-
-    public interface ITestService
-    {
-        public Task<TestEntity> GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
-
-        public Task<TestEntity> GetByIdAsync(int id, CancellationToken cancellationToken);
     }
 
     [Fact]
@@ -66,7 +57,8 @@ public class HybridCacheDecoratorBaseTests
 
         // Act
 
-        var actual = await this.testService.GetByExternalIdAsync(entity.ExternalID, default);
+        var actual = await this.testService.GetByExternalIdAsync(entity.ExternalID,
+            cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
 
@@ -87,8 +79,10 @@ public class HybridCacheDecoratorBaseTests
 
         // Act
 
-        var actual1 = await this.testService.GetByExternalIdAsync(entity.ExternalID, default);
-        var actual2 = await this.testService.GetByExternalIdAsync(entity.ExternalID, default);
+        var actual1 = await this.testService.GetByExternalIdAsync(entity.ExternalID,
+            cancellationToken: TestContext.Current.CancellationToken);
+        var actual2 = await this.testService.GetByExternalIdAsync(entity.ExternalID,
+            cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
 
@@ -115,7 +109,9 @@ public class HybridCacheDecoratorBaseTests
 
         // Act
 
-        var actual = await this.testService.GetByIdAsync(1778174815, default);
+        var actual =
+            await this.testService.GetByIdAsync(id: 1778174815,
+                cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
 
@@ -136,8 +132,12 @@ public class HybridCacheDecoratorBaseTests
 
         // Act
 
-        var actual1 = await this.testService.GetByIdAsync(2035652629, default);
-        var actual2 = await this.testService.GetByIdAsync(2035652629, default);
+        var actual1 =
+            await this.testService.GetByIdAsync(id: 2035652629,
+                cancellationToken: TestContext.Current.CancellationToken);
+        var actual2 =
+            await this.testService.GetByIdAsync(id: 2035652629,
+                cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
 
@@ -160,7 +160,8 @@ public class HybridCacheDecoratorBaseTests
 
         // Act & Assert
         _ = await Should.ThrowAsync<EntityNotFoundException>(async () =>
-            await this.testService.GetByExternalIdAsync(Guid.NewGuid(), default));
+            await this.testService.GetByExternalIdAsync(Guid.NewGuid(),
+                cancellationToken: TestContext.Current.CancellationToken));
 
     [Fact]
     public async Task GivenMissingEntity_WhenRequestedByIdAsync_ThenShouldCacheMiss() =>
@@ -168,13 +169,14 @@ public class HybridCacheDecoratorBaseTests
 
         // Act & Assert
         _ = await Should.ThrowAsync<EntityNotFoundException>(async () =>
-            await this.testService.GetByIdAsync(1009129315, default));
+            await this.testService.GetByIdAsync(id: 1009129315,
+                cancellationToken: TestContext.Current.CancellationToken));
 
-    public record TestEntity(int ID, Guid ExternalID, string Name) : IEntity<int>
+    public interface ITestService
     {
-        public int ETag { get; set; }
+        public Task<TestEntity> GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
 
-        public void Advance() => this.ETag++;
+        public Task<TestEntity> GetByIdAsync(int id, CancellationToken cancellationToken);
     }
 
     public class RealTestService : ITestService
@@ -204,6 +206,13 @@ public class HybridCacheDecoratorBaseTests
             entity.Advance();
             return entity;
         }
+    }
+
+    public record TestEntity(int ID, Guid ExternalID, string Name) : IEntity<int>
+    {
+        public int ETag { get; set; }
+
+        public void Advance() => this.ETag++;
     }
 
     public class TestServiceHybridCacheDecorator : HybridCacheDecoratorBase<TestEntity>, ITestService

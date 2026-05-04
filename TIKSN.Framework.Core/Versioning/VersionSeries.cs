@@ -95,12 +95,6 @@ public sealed class VersionSeries : IEquatable<VersionSeries>
         int preReleaseNumber) =>
         this.series = Right(new Version(release, milestone, preReleaseNumber));
 
-    public static bool operator !=(VersionSeries versionSeries1, VersionSeries versionSeries2)
-        => versionSeries1?.Equals(versionSeries2) != true;
-
-    public static bool operator ==(VersionSeries versionSeries1, VersionSeries versionSeries2)
-        => versionSeries1?.Equals(versionSeries2) == true;
-
     public static VersionSeries Parse(string input)
     {
         ArgumentNullException.ThrowIfNull(input);
@@ -136,6 +130,12 @@ public sealed class VersionSeries : IEquatable<VersionSeries>
         result = null!;
         return false;
     }
+
+    public static bool operator ==(VersionSeries versionSeries1, VersionSeries versionSeries2)
+        => versionSeries1?.Equals(versionSeries2) == true;
+
+    public static bool operator !=(VersionSeries versionSeries1, VersionSeries versionSeries2)
+        => versionSeries1?.Equals(versionSeries2) != true;
 
     public bool Equals(VersionSeries? other)
     {

@@ -8,6 +8,7 @@ public class AdUnitSelectorOptions
         this.IsDebug = false;
     }
 
-    public bool IsDebuggerSensitive { get; set; }
     public bool IsDebug { get; set; }
+
+    public bool IsDebuggerSensitive { get; set; }
 }

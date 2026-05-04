@@ -19,9 +19,9 @@ public sealed class CurrencyPair : IEquatable<CurrencyPair>
 
     public CurrencyInfo CounterCurrency { get; }
 
-    public static bool operator !=(CurrencyPair pair1, CurrencyPair pair2) => !Equals(pair1, pair2);
-
     public static bool operator ==(CurrencyPair pair1, CurrencyPair pair2) => Equals(pair1, pair2);
+
+    public static bool operator !=(CurrencyPair pair1, CurrencyPair pair2) => !Equals(pair1, pair2);
 
     public bool Equals(CurrencyPair? other)
     {

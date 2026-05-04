@@ -22,12 +22,6 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
 
     public TSerial Serial { get; }
 
-    public static bool operator !=(SimpleSerialNumber<TSerial, TNumber> left,
-        SimpleSerialNumber<TSerial, TNumber> right) => !Equals(left, right);
-
-    public static bool operator ==(SimpleSerialNumber<TSerial, TNumber> left,
-        SimpleSerialNumber<TSerial, TNumber> right) => Equals(left, right);
-
     public static SimpleSerialNumber<TSerial, TNumber> Parse(string s, IFormatProvider? provider)
     {
         if (TryParse(s, provider, out var result))
@@ -117,6 +111,12 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
         IFormatProvider? provider,
         out SimpleSerialNumber<TSerial, TNumber> result)
         => TryParse(s.ToString(), provider, out result);
+
+    public static bool operator ==(SimpleSerialNumber<TSerial, TNumber> left,
+        SimpleSerialNumber<TSerial, TNumber> right) => Equals(left, right);
+
+    public static bool operator !=(SimpleSerialNumber<TSerial, TNumber> left,
+        SimpleSerialNumber<TSerial, TNumber> right) => !Equals(left, right);
 
     public bool Equals(SimpleSerialNumber<TSerial, TNumber>? other)
     {

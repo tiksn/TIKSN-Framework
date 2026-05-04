@@ -17,5 +17,5 @@ public class EntityUnitOfWorkFactory : EntityUnitOfWorkFactoryBase
             exchangeRatesContext ?? throw new ArgumentNullException(nameof(exchangeRatesContext));
 
     protected override DbContext[] GetContexts()
-        => [this.exchangeRatesContext];
+        => [this.exchangeRatesContext,];
 }

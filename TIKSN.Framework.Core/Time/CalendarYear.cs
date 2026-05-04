@@ -29,6 +29,17 @@ public readonly struct CalendarYear : IYear<CalendarYear>
         this.absoluteYear = calendar.GetAbsoluteYear(yearOfEra, era);
     }
 
+    #region Conversion
+
+    public DateInterval ToDateInterval()
+    {
+        var startDate = new LocalDate(this.absoluteYear, month: 1, day: 1);
+        var endDate = new LocalDate(this.absoluteYear, month: 12, day: 31);
+        return new DateInterval(startDate, endDate);
+    }
+
+    #endregion Conversion
+
     #region Contains
 
     public bool Contains(LocalDate localDate)
@@ -148,15 +159,4 @@ public readonly struct CalendarYear : IYear<CalendarYear>
         => this.GetPrevious(1);
 
     #endregion Next and Previous
-
-    #region Conversion
-
-    public DateInterval ToDateInterval()
-    {
-        var startDate = new LocalDate(this.absoluteYear, month: 1, day: 1);
-        var endDate = new LocalDate(this.absoluteYear, month: 12, day: 31);
-        return new DateInterval(startDate, endDate);
-    }
-
-    #endregion Conversion
 }

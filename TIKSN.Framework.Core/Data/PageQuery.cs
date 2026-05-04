@@ -12,9 +12,9 @@ public class PageQuery : IEquatable<PageQuery>
 
     public Page Page { get; }
 
-    public static bool operator !=(PageQuery left, PageQuery right) => !Equals(left, right);
-
     public static bool operator ==(PageQuery left, PageQuery right) => Equals(left, right);
+
+    public static bool operator !=(PageQuery left, PageQuery right) => !Equals(left, right);
 
     public bool Equals(PageQuery? other)
     {

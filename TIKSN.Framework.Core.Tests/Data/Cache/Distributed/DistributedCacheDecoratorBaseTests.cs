@@ -40,10 +40,10 @@ public class DistributedCacheDecoratorBaseTests
         _ = containerBuilder.RegisterModule<CoreModule>();
         this.entityMap = new[]
         {
-            new TestEntity(1778174815, Guid.NewGuid(), "Item5"),
-            new TestEntity(2118700136, Guid.NewGuid(), "Item6"),
-            new TestEntity(2035652629, Guid.NewGuid(), "Item7"),
-            new TestEntity(430380339, Guid.NewGuid(), "Item8"),
+            new TestEntity(ID: 1778174815, Guid.NewGuid(), "Item5"),
+            new TestEntity(ID: 2118700136, Guid.NewGuid(), "Item6"),
+            new TestEntity(ID: 2035652629, Guid.NewGuid(), "Item7"),
+            new TestEntity(ID: 430380339, Guid.NewGuid(), "Item8"),
         }.ToDictionary(k => k.ID, v => v);
         this.counterMap = this.entityMap.ToDictionary(k => k.Key, _ => 0);
         _ = containerBuilder.RegisterInstance(this.entityMap).SingleInstance();
@@ -54,11 +54,36 @@ public class DistributedCacheDecoratorBaseTests
         this.testService = serviceProvider.GetService<ITestService>();
     }
 
-    public interface ITestService
+    [Fact]
+    public async Task GivenExistingEntity_WhenRequestedByExternalIdTwice_ThenShouldCacheHitOnce()
     {
-        public Task<Option<TestEntity>> FindByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
+        // Arrange
 
-        public Task<Option<TestEntity>> FindByIdAsync(int id, CancellationToken cancellationToken);
+        var entity = this.entityMap[430380339];
+        var oldCount = this.counterMap[entity.ID];
+
+        // Act
+
+        var actual1 = await this.testService.FindByExternalIdAsync(entity.ExternalID,
+            cancellationToken: TestContext.Current.CancellationToken);
+        var newCount1 = this.counterMap[entity.ID];
+        var actual2 = await this.testService.FindByExternalIdAsync(entity.ExternalID,
+            cancellationToken: TestContext.Current.CancellationToken);
+        var newCount2 = this.counterMap[entity.ID];
+
+        // Assert
+
+        actual1.IsSome.ShouldBeTrue();
+        actual1.Single().ID.ShouldBe(entity.ID);
+        actual1.Single().ExternalID.ShouldBe(entity.ExternalID);
+        actual1.Single().Name.ShouldBe(entity.Name);
+        newCount1.ShouldBe(oldCount + 1);
+
+        actual2.IsSome.ShouldBeTrue();
+        actual2.Single().ID.ShouldBe(entity.ID);
+        actual2.Single().ExternalID.ShouldBe(entity.ExternalID);
+        actual2.Single().Name.ShouldBe(entity.Name);
+        newCount2.ShouldBe(oldCount + 1);
     }
 
     [Fact]
@@ -71,7 +96,8 @@ public class DistributedCacheDecoratorBaseTests
 
         // Act
 
-        var actual = await this.testService.FindByExternalIdAsync(entity.ExternalID, default);
+        var actual = await this.testService.FindByExternalIdAsync(entity.ExternalID,
+            cancellationToken: TestContext.Current.CancellationToken);
 
         var newCount = this.counterMap[entity.ID];
 
@@ -85,18 +111,22 @@ public class DistributedCacheDecoratorBaseTests
     }
 
     [Fact]
-    public async Task GivenExistingEntity_WhenRequestedByExternalIdTwice_ThenShouldCacheHitOnce()
+    public async Task GivenExistingEntity_WhenRequestedByIdTwice_ThenShouldCacheHitOnce()
     {
         // Arrange
 
-        var entity = this.entityMap[430380339];
+        var entity = this.entityMap[2035652629];
         var oldCount = this.counterMap[entity.ID];
 
         // Act
 
-        var actual1 = await this.testService.FindByExternalIdAsync(entity.ExternalID, default);
+        var actual1 =
+            await this.testService.FindByIdAsync(id: 2035652629,
+                cancellationToken: TestContext.Current.CancellationToken);
         var newCount1 = this.counterMap[entity.ID];
-        var actual2 = await this.testService.FindByExternalIdAsync(entity.ExternalID, default);
+        var actual2 =
+            await this.testService.FindByIdAsync(id: 2035652629,
+                cancellationToken: TestContext.Current.CancellationToken);
         var newCount2 = this.counterMap[entity.ID];
 
         // Assert
@@ -124,7 +154,9 @@ public class DistributedCacheDecoratorBaseTests
 
         // Act
 
-        var actual = await this.testService.FindByIdAsync(1778174815, default);
+        var actual =
+            await this.testService.FindByIdAsync(id: 1778174815,
+                cancellationToken: TestContext.Current.CancellationToken);
 
         var newCount = this.counterMap[entity.ID];
 
@@ -138,43 +170,14 @@ public class DistributedCacheDecoratorBaseTests
     }
 
     [Fact]
-    public async Task GivenExistingEntity_WhenRequestedByIdTwice_ThenShouldCacheHitOnce()
-    {
-        // Arrange
-
-        var entity = this.entityMap[2035652629];
-        var oldCount = this.counterMap[entity.ID];
-
-        // Act
-
-        var actual1 = await this.testService.FindByIdAsync(2035652629, default);
-        var newCount1 = this.counterMap[entity.ID];
-        var actual2 = await this.testService.FindByIdAsync(2035652629, default);
-        var newCount2 = this.counterMap[entity.ID];
-
-        // Assert
-
-        actual1.IsSome.ShouldBeTrue();
-        actual1.Single().ID.ShouldBe(entity.ID);
-        actual1.Single().ExternalID.ShouldBe(entity.ExternalID);
-        actual1.Single().Name.ShouldBe(entity.Name);
-        newCount1.ShouldBe(oldCount + 1);
-
-        actual2.IsSome.ShouldBeTrue();
-        actual2.Single().ID.ShouldBe(entity.ID);
-        actual2.Single().ExternalID.ShouldBe(entity.ExternalID);
-        actual2.Single().Name.ShouldBe(entity.Name);
-        newCount2.ShouldBe(oldCount + 1);
-    }
-
-    [Fact]
     public async Task GivenMissingEntity_WhenRequestedByExternalId_ThenShouldCacheMiss()
     {
         // Arrange
 
         // Act
 
-        var actual = await this.testService.FindByExternalIdAsync(Guid.NewGuid(), default);
+        var actual = await this.testService.FindByExternalIdAsync(Guid.NewGuid(),
+            cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
 
@@ -188,14 +191,21 @@ public class DistributedCacheDecoratorBaseTests
 
         // Act
 
-        var actual = await this.testService.FindByIdAsync(1009129315, default);
+        var actual =
+            await this.testService.FindByIdAsync(id: 1009129315,
+                cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
 
         actual.IsNone.ShouldBeTrue();
     }
 
-    public record TestEntity(int ID, Guid ExternalID, string Name) : IEntity<int>;
+    public interface ITestService
+    {
+        public Task<Option<TestEntity>> FindByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
+
+        public Task<Option<TestEntity>> FindByIdAsync(int id, CancellationToken cancellationToken);
+    }
 
     public class RealTestService : ITestService
     {
@@ -232,6 +242,8 @@ public class DistributedCacheDecoratorBaseTests
             return entity;
         }
     }
+
+    public record TestEntity(int ID, Guid ExternalID, string Name) : IEntity<int>;
 
     public class TestServiceMemoryCacheDecorator : DistributedCacheDecoratorBase<TestEntity>, ITestService
     {

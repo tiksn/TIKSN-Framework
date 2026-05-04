@@ -184,6 +184,18 @@ public class FileSettingsService : ISettingsService
         return value;
     }
 
+    private static void SetValue(BsonDocument document, string name, Type type, object valueObject)
+    {
+        if (type == typeof(Guid))
+        {
+            document[name] = new BsonValue((Guid)valueObject);
+        }
+        else
+        {
+            throw new NotSupportedException("Type is not supported.");
+        }
+    }
+
     private static T SetterProcessor<T>(BsonDocument document, string name, T value)
     {
         object valueObject = value;
@@ -265,18 +277,6 @@ public class FileSettingsService : ISettingsService
         }
 
         return value;
-    }
-
-    private static void SetValue(BsonDocument document, string name, Type type, object valueObject)
-    {
-        if (type == typeof(Guid))
-        {
-            document[name] = new BsonValue((Guid)valueObject);
-        }
-        else
-        {
-            throw new NotSupportedException("Type is not supported.");
-        }
     }
 
     private T Apply<T>(

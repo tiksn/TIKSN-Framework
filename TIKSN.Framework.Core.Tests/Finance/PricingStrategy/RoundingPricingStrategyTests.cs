@@ -39,7 +39,7 @@ public class RoundingPricingStrategyTests
             { 154m, 200m },
             { 6283m, 6000m },
             { 870387m, 900000m },
-            { 526213m, 500000m }
+            { 526213m, 500000m },
         };
 
         foreach (var price in prices)
@@ -70,7 +70,7 @@ public class RoundingPricingStrategyTests
             { 794m, 790m },
             { 191m, 190m },
             { 149m, 150m },
-            { 6283m, 6300m }
+            { 6283m, 6300m },
         };
 
         foreach (var price in prices)

@@ -27,12 +27,6 @@ public sealed class
 
     public TVariant Variant { get; }
 
-    public static bool operator !=(VariantSerialNumber<TSerial, TNumber, TVariant> left,
-        VariantSerialNumber<TSerial, TNumber, TVariant> right) => !Equals(left, right);
-
-    public static bool operator ==(VariantSerialNumber<TSerial, TNumber, TVariant> left,
-        VariantSerialNumber<TSerial, TNumber, TVariant> right) => Equals(left, right);
-
     public static VariantSerialNumber<TSerial, TNumber, TVariant> Parse(string s, IFormatProvider? provider)
     {
         if (TryParse(s, provider, out var result))
@@ -130,6 +124,12 @@ public sealed class
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider,
         out VariantSerialNumber<TSerial, TNumber, TVariant> result)
         => TryParse(s.ToString(), provider, out result);
+
+    public static bool operator ==(VariantSerialNumber<TSerial, TNumber, TVariant> left,
+        VariantSerialNumber<TSerial, TNumber, TVariant> right) => Equals(left, right);
+
+    public static bool operator !=(VariantSerialNumber<TSerial, TNumber, TVariant> left,
+        VariantSerialNumber<TSerial, TNumber, TVariant> right) => !Equals(left, right);
 
     public bool Equals(VariantSerialNumber<TSerial, TNumber, TVariant>? other)
     {

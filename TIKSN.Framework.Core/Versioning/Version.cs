@@ -358,18 +358,6 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
         }
     }
 
-    public static explicit operator NuGetVersion(Version version)
-        => ToNuGetVersion(version);
-
-    public static explicit operator SemanticVersion(Version version)
-        => ToSemanticVersion(version);
-
-    public static explicit operator Version(NuGetVersion nuGetVersion)
-        => FromNuGetVersion(nuGetVersion);
-
-    public static explicit operator Version(SemanticVersion semanticVersion)
-        => FromSemanticVersion(semanticVersion);
-
     public static Version FromNuGetVersion(NuGetVersion nuGetVersion)
     {
         ArgumentNullException.ThrowIfNull(nuGetVersion);
@@ -431,54 +419,6 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
             prereleaseNumber);
     }
 
-    public static bool operator !=(Version v1, Version v2)
-    {
-        ArgumentNullException.ThrowIfNull(v1);
-        ArgumentNullException.ThrowIfNull(v2);
-
-        return v1.CompareTo(v2) != 0;
-    }
-
-    public static bool operator <(Version v1, Version v2)
-    {
-        ArgumentNullException.ThrowIfNull(v1);
-        ArgumentNullException.ThrowIfNull(v2);
-
-        return v1.CompareTo(v2) < 0;
-    }
-
-    public static bool operator <=(Version v1, Version v2)
-    {
-        ArgumentNullException.ThrowIfNull(v1);
-        ArgumentNullException.ThrowIfNull(v2);
-
-        return v1.CompareTo(v2) <= 0;
-    }
-
-    public static bool operator ==(Version v1, Version v2)
-    {
-        ArgumentNullException.ThrowIfNull(v1);
-        ArgumentNullException.ThrowIfNull(v2);
-
-        return v1.CompareTo(v2) == 0;
-    }
-
-    public static bool operator >(Version v1, Version v2)
-    {
-        ArgumentNullException.ThrowIfNull(v1);
-        ArgumentNullException.ThrowIfNull(v2);
-
-        return v1.CompareTo(v2) > 0;
-    }
-
-    public static bool operator >=(Version v1, Version v2)
-    {
-        ArgumentNullException.ThrowIfNull(v1);
-        ArgumentNullException.ThrowIfNull(v2);
-
-        return v1.CompareTo(v2) >= 0;
-    }
-
     public static NuGetVersion ToNuGetVersion(Version version)
     {
         ArgumentNullException.ThrowIfNull(version);
@@ -520,6 +460,66 @@ public sealed class Version : IComparable<Version>, IEquatable<Version>, ICompar
         }
 
         return new SemanticVersion(version.Release.Major, version.Release.Minor, 0, releaseLabels, metadata);
+    }
+
+    public static bool operator ==(Version v1, Version v2)
+    {
+        ArgumentNullException.ThrowIfNull(v1);
+        ArgumentNullException.ThrowIfNull(v2);
+
+        return v1.CompareTo(v2) == 0;
+    }
+
+    public static explicit operator NuGetVersion(Version version)
+        => ToNuGetVersion(version);
+
+    public static explicit operator SemanticVersion(Version version)
+        => ToSemanticVersion(version);
+
+    public static explicit operator Version(NuGetVersion nuGetVersion)
+        => FromNuGetVersion(nuGetVersion);
+
+    public static explicit operator Version(SemanticVersion semanticVersion)
+        => FromSemanticVersion(semanticVersion);
+
+    public static bool operator >(Version v1, Version v2)
+    {
+        ArgumentNullException.ThrowIfNull(v1);
+        ArgumentNullException.ThrowIfNull(v2);
+
+        return v1.CompareTo(v2) > 0;
+    }
+
+    public static bool operator >=(Version v1, Version v2)
+    {
+        ArgumentNullException.ThrowIfNull(v1);
+        ArgumentNullException.ThrowIfNull(v2);
+
+        return v1.CompareTo(v2) >= 0;
+    }
+
+    public static bool operator !=(Version v1, Version v2)
+    {
+        ArgumentNullException.ThrowIfNull(v1);
+        ArgumentNullException.ThrowIfNull(v2);
+
+        return v1.CompareTo(v2) != 0;
+    }
+
+    public static bool operator <(Version v1, Version v2)
+    {
+        ArgumentNullException.ThrowIfNull(v1);
+        ArgumentNullException.ThrowIfNull(v2);
+
+        return v1.CompareTo(v2) < 0;
+    }
+
+    public static bool operator <=(Version v1, Version v2)
+    {
+        ArgumentNullException.ThrowIfNull(v1);
+        ArgumentNullException.ThrowIfNull(v2);
+
+        return v1.CompareTo(v2) <= 0;
     }
 
     public int CompareTo(Version? other)

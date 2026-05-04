@@ -2,14 +2,6 @@ namespace TIKSN.Web;
 
 public sealed class SitemapPage : IEquatable<SitemapPage>
 {
-    public SitemapPage(Uri address, DateTime? lastModified, Frequency? changeFrequency, double? priority)
-    {
-        this.Address = address ?? throw new ArgumentNullException(nameof(address));
-        this.LastModified = lastModified;
-        this.ChangeFrequency = changeFrequency;
-        this.Priority = priority;
-    }
-
     public enum Frequency
     {
         Always = 0,
@@ -19,6 +11,14 @@ public sealed class SitemapPage : IEquatable<SitemapPage>
         Monthly = 4,
         Yearly = 5,
         Never = 6,
+    }
+
+    public SitemapPage(Uri address, DateTime? lastModified, Frequency? changeFrequency, double? priority)
+    {
+        this.Address = address ?? throw new ArgumentNullException(nameof(address));
+        this.LastModified = lastModified;
+        this.ChangeFrequency = changeFrequency;
+        this.Priority = priority;
     }
 
     public Uri Address { get; }
@@ -43,9 +43,9 @@ public sealed class SitemapPage : IEquatable<SitemapPage>
         }
     }
 
-    public static bool operator !=(SitemapPage? page1, SitemapPage? page2) => !Equals(page1, page2);
-
     public static bool operator ==(SitemapPage? page1, SitemapPage? page2) => Equals(page1, page2);
+
+    public static bool operator !=(SitemapPage? page1, SitemapPage? page2) => !Equals(page1, page2);
 
     public bool Equals(SitemapPage? other)
     {

@@ -9,11 +9,6 @@ public class CompositeStringLocalizer : IStringLocalizer
 
     public virtual IEnumerable<IStringLocalizer> Localizers { get; }
 
-    public LocalizedString this[string name] => this.GetLocalizedString(l => l[name]);
-
-    public LocalizedString this[string name, params object[] arguments] =>
-        this.GetLocalizedString(l => l[name, arguments]);
-
     public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
     {
         var localizedStrings = new List<LocalizedString>();
@@ -41,4 +36,9 @@ public class CompositeStringLocalizer : IStringLocalizer
 
         return localizedStrings[0];
     }
+
+    public LocalizedString this[string name] => this.GetLocalizedString(l => l[name]);
+
+    public LocalizedString this[string name, params object[] arguments] =>
+        this.GetLocalizedString(l => l[name, arguments]);
 }

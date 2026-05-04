@@ -7,6 +7,16 @@ namespace TIKSN.Conversion;
 
 public static class FSharpExtensions
 {
+    public static FSharpResult<T, Error> ToFSharp<T>(this Fin<T> fin)
+        => fin.Match(
+            FSharpResult<T, Error>.NewOk,
+            FSharpResult<T, Error>.NewError);
+
+    public static FSharpResult<T, Exception> ToFSharp<T>(this Result<T> result)
+        => result.Match(
+            FSharpResult<T, Exception>.NewOk,
+            FSharpResult<T, Exception>.NewError);
+
     public static Fin<T> ToFin<T>(this FSharpResult<T, Error> result)
         => result.IsOk
             ? Fin<T>.Succ(result.ResultValue)
@@ -46,16 +56,6 @@ public static class FSharpExtensions
         => result.IsOk
             ? Fin<T>.Succ(result.ResultValue)
             : Fin<T>.Fail(Error.Many(result.ErrorValue.Map(x => Error.New(x)).ToSeq()));
-
-    public static FSharpResult<T, Error> ToFSharp<T>(this Fin<T> fin)
-        => fin.Match(
-            FSharpResult<T, Error>.NewOk,
-            FSharpResult<T, Error>.NewError);
-
-    public static FSharpResult<T, Exception> ToFSharp<T>(this Result<T> result)
-        => result.Match(
-            FSharpResult<T, Exception>.NewOk,
-            FSharpResult<T, Exception>.NewError);
 
     public static Result<T> ToResult<T>(this FSharpResult<T, Exception> result)
         => result.IsOk

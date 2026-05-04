@@ -23,11 +23,6 @@ public class StringLocalizerMonitor : IStringLocalizer
         this.options = options;
     }
 
-    public LocalizedString this[string name] => this.Log(this.stringLocalizer[name]);
-
-    public LocalizedString this[string name, params object[] arguments] =>
-        this.Log(this.stringLocalizer[name, arguments]);
-
     public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures) =>
         this.stringLocalizer.GetAllStrings(includeParentCultures);
 
@@ -41,4 +36,9 @@ public class StringLocalizerMonitor : IStringLocalizer
 
         return localizedString;
     }
+
+    public LocalizedString this[string name] => this.Log(this.stringLocalizer[name]);
+
+    public LocalizedString this[string name, params object[] arguments] =>
+        this.Log(this.stringLocalizer[name, arguments]);
 }

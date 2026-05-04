@@ -25,12 +25,13 @@ public class MongoRepositoryTests
         var testEntity = new TestMongoEntity
         {
             ID = testEntityId,
-            Value = Guid.NewGuid()
+            Value = Guid.NewGuid(),
         };
 
-        await testRepository.AddAsync(testEntity, default);
+        await testRepository.AddAsync(testEntity, cancellationToken: TestContext.Current.CancellationToken);
 
-        var retrievedEntity = await testRepository.GetAsync(testEntityId, default);
+        var retrievedEntity =
+            await testRepository.GetAsync(testEntityId, cancellationToken: TestContext.Current.CancellationToken);
 
         retrievedEntity.Value.ShouldBe(testEntity.Value);
     }

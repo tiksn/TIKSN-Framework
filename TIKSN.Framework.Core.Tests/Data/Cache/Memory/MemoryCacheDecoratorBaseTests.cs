@@ -32,52 +32,20 @@ public class MemoryCacheDecoratorBaseTests
         _ = containerBuilder.RegisterModule<CoreModule>();
         this.entityMap = new[]
         {
-            new TestEntity(1796652465, Guid.NewGuid(), "Item1"),
-            new TestEntity(489680564, Guid.NewGuid(), "Item2"),
-            new TestEntity(1242007805, Guid.NewGuid(), "Item3"),
-            new TestEntity(307097393, Guid.NewGuid(), "Item4"),
-            new TestEntity(1778174815, Guid.NewGuid(), "Item5"),
-            new TestEntity(2118700136, Guid.NewGuid(), "Item6"),
-            new TestEntity(2035652629, Guid.NewGuid(), "Item7"),
-            new TestEntity(430380339, Guid.NewGuid(), "Item8"),
+            new TestEntity(ID: 1796652465, Guid.NewGuid(), "Item1"),
+            new TestEntity(ID: 489680564, Guid.NewGuid(), "Item2"),
+            new TestEntity(ID: 1242007805, Guid.NewGuid(), "Item3"),
+            new TestEntity(ID: 307097393, Guid.NewGuid(), "Item4"),
+            new TestEntity(ID: 1778174815, Guid.NewGuid(), "Item5"),
+            new TestEntity(ID: 2118700136, Guid.NewGuid(), "Item6"),
+            new TestEntity(ID: 2035652629, Guid.NewGuid(), "Item7"),
+            new TestEntity(ID: 430380339, Guid.NewGuid(), "Item8"),
         }.ToDictionary(k => k.ID, v => v);
         _ = containerBuilder.RegisterInstance(this.entityMap).SingleInstance();
         _ = containerBuilder.RegisterType<RealTestService>().As<ITestService>();
         containerBuilder.RegisterDecorator<TestServiceMemoryCacheDecorator, ITestService>();
         var serviceProvider = new AutofacServiceProvider(containerBuilder.Build());
         this.testService = serviceProvider.GetService<ITestService>();
-    }
-
-    public interface ITestService
-    {
-        public Option<TestEntity> FindByExternalId(Guid externalId);
-
-        public Task<Option<TestEntity>> FindByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
-
-        public Option<TestEntity> FindById(int id);
-
-        public Task<Option<TestEntity>> FindByIdAsync(int id, CancellationToken cancellationToken);
-    }
-
-    [Fact]
-    public void GivenExistingEntity_WhenRequestedByExternalId_ThenShouldCacheHit()
-    {
-        // Arrange
-
-        var entity = this.entityMap[489680564];
-        var oldETag = entity.ETag;
-
-        // Act
-
-        var actual = this.testService.FindByExternalId(entity.ExternalID);
-
-        // Assert
-
-        actual.IsSome.ShouldBeTrue();
-        actual.Single().ID.ShouldBe(entity.ID);
-        actual.Single().ExternalID.ShouldBe(entity.ExternalID);
-        actual.Single().Name.ShouldBe(entity.Name);
-        actual.Single().ETag.ShouldBe(oldETag + 1);
     }
 
     [Fact]
@@ -90,7 +58,8 @@ public class MemoryCacheDecoratorBaseTests
 
         // Act
 
-        var actual = await this.testService.FindByExternalIdAsync(entity.ExternalID, default);
+        var actual = await this.testService.FindByExternalIdAsync(entity.ExternalID,
+            cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
 
@@ -99,6 +68,36 @@ public class MemoryCacheDecoratorBaseTests
         actual.Single().ExternalID.ShouldBe(entity.ExternalID);
         actual.Single().Name.ShouldBe(entity.Name);
         actual.Single().ETag.ShouldBe(oldETag + 1);
+    }
+
+    [Fact]
+    public async Task GivenExistingEntity_WhenRequestedByExternalIdTwiceAsync_ThenShouldCacheHitOnce()
+    {
+        // Arrange
+
+        var entity = this.entityMap[430380339];
+        var oldETag = entity.ETag;
+
+        // Act
+
+        var actual1 = await this.testService.FindByExternalIdAsync(entity.ExternalID,
+            cancellationToken: TestContext.Current.CancellationToken);
+        var actual2 = await this.testService.FindByExternalIdAsync(entity.ExternalID,
+            cancellationToken: TestContext.Current.CancellationToken);
+
+        // Assert
+
+        actual1.IsSome.ShouldBeTrue();
+        actual1.Single().ID.ShouldBe(entity.ID);
+        actual1.Single().ExternalID.ShouldBe(entity.ExternalID);
+        actual1.Single().Name.ShouldBe(entity.Name);
+        actual1.Single().ETag.ShouldBe(oldETag + 1);
+
+        actual2.IsSome.ShouldBeTrue();
+        actual2.Single().ID.ShouldBe(entity.ID);
+        actual2.Single().ExternalID.ShouldBe(entity.ExternalID);
+        actual2.Single().Name.ShouldBe(entity.Name);
+        actual2.Single().ETag.ShouldBe(oldETag + 1);
     }
 
     [Fact]
@@ -130,17 +129,93 @@ public class MemoryCacheDecoratorBaseTests
     }
 
     [Fact]
-    public async Task GivenExistingEntity_WhenRequestedByExternalIdTwiceAsync_ThenShouldCacheHitOnce()
+    public void GivenExistingEntity_WhenRequestedByExternalId_ThenShouldCacheHit()
     {
         // Arrange
 
-        var entity = this.entityMap[430380339];
+        var entity = this.entityMap[489680564];
         var oldETag = entity.ETag;
 
         // Act
 
-        var actual1 = await this.testService.FindByExternalIdAsync(entity.ExternalID, default);
-        var actual2 = await this.testService.FindByExternalIdAsync(entity.ExternalID, default);
+        var actual = this.testService.FindByExternalId(entity.ExternalID);
+
+        // Assert
+
+        actual.IsSome.ShouldBeTrue();
+        actual.Single().ID.ShouldBe(entity.ID);
+        actual.Single().ExternalID.ShouldBe(entity.ExternalID);
+        actual.Single().Name.ShouldBe(entity.Name);
+        actual.Single().ETag.ShouldBe(oldETag + 1);
+    }
+
+    [Fact]
+    public async Task GivenExistingEntity_WhenRequestedByIdAsync_ThenShouldCacheHit()
+    {
+        // Arrange
+
+        var entity = this.entityMap[1778174815];
+        var oldETag = entity.ETag;
+
+        // Act
+
+        var actual =
+            await this.testService.FindByIdAsync(id: 1778174815,
+                cancellationToken: TestContext.Current.CancellationToken);
+
+        // Assert
+
+        actual.IsSome.ShouldBeTrue();
+        actual.Single().ID.ShouldBe(entity.ID);
+        actual.Single().ExternalID.ShouldBe(entity.ExternalID);
+        actual.Single().Name.ShouldBe(entity.Name);
+        actual.Single().ETag.ShouldBe(oldETag + 1);
+    }
+
+    [Fact]
+    public async Task GivenExistingEntity_WhenRequestedByIdTwiceAsync_ThenShouldCacheHitOnce()
+    {
+        // Arrange
+
+        var entity = this.entityMap[2035652629];
+        var oldETag = entity.ETag;
+
+        // Act
+
+        var actual1 =
+            await this.testService.FindByIdAsync(id: 2035652629,
+                cancellationToken: TestContext.Current.CancellationToken);
+        var actual2 =
+            await this.testService.FindByIdAsync(id: 2035652629,
+                cancellationToken: TestContext.Current.CancellationToken);
+
+        // Assert
+
+        actual1.IsSome.ShouldBeTrue();
+        actual1.Single().ID.ShouldBe(entity.ID);
+        actual1.Single().ExternalID.ShouldBe(entity.ExternalID);
+        actual1.Single().Name.ShouldBe(entity.Name);
+        actual1.Single().ETag.ShouldBe(oldETag + 1);
+
+        actual2.IsSome.ShouldBeTrue();
+        actual2.Single().ID.ShouldBe(entity.ID);
+        actual2.Single().ExternalID.ShouldBe(entity.ExternalID);
+        actual2.Single().Name.ShouldBe(entity.Name);
+        actual2.Single().ETag.ShouldBe(oldETag + 1);
+    }
+
+    [Fact]
+    public void GivenExistingEntity_WhenRequestedByIdTwice_ThenShouldCacheHitOnce()
+    {
+        // Arrange
+
+        var entity = this.entityMap[1242007805];
+        var oldETag = entity.ETag;
+
+        // Act
+
+        var actual1 = this.testService.FindById(1242007805);
+        var actual2 = this.testService.FindById(1242007805);
 
         // Assert
 
@@ -179,80 +254,18 @@ public class MemoryCacheDecoratorBaseTests
     }
 
     [Fact]
-    public async Task GivenExistingEntity_WhenRequestedByIdAsync_ThenShouldCacheHit()
+    public async Task GivenMissingEntity_WhenRequestedByExternalIdAsync_ThenShouldCacheMiss()
     {
         // Arrange
 
-        var entity = this.entityMap[1778174815];
-        var oldETag = entity.ETag;
-
         // Act
 
-        var actual = await this.testService.FindByIdAsync(1778174815, default);
+        var actual = await this.testService.FindByExternalIdAsync(Guid.NewGuid(),
+            cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
 
-        actual.IsSome.ShouldBeTrue();
-        actual.Single().ID.ShouldBe(entity.ID);
-        actual.Single().ExternalID.ShouldBe(entity.ExternalID);
-        actual.Single().Name.ShouldBe(entity.Name);
-        actual.Single().ETag.ShouldBe(oldETag + 1);
-    }
-
-    [Fact]
-    public void GivenExistingEntity_WhenRequestedByIdTwice_ThenShouldCacheHitOnce()
-    {
-        // Arrange
-
-        var entity = this.entityMap[1242007805];
-        var oldETag = entity.ETag;
-
-        // Act
-
-        var actual1 = this.testService.FindById(1242007805);
-        var actual2 = this.testService.FindById(1242007805);
-
-        // Assert
-
-        actual1.IsSome.ShouldBeTrue();
-        actual1.Single().ID.ShouldBe(entity.ID);
-        actual1.Single().ExternalID.ShouldBe(entity.ExternalID);
-        actual1.Single().Name.ShouldBe(entity.Name);
-        actual1.Single().ETag.ShouldBe(oldETag + 1);
-
-        actual2.IsSome.ShouldBeTrue();
-        actual2.Single().ID.ShouldBe(entity.ID);
-        actual2.Single().ExternalID.ShouldBe(entity.ExternalID);
-        actual2.Single().Name.ShouldBe(entity.Name);
-        actual2.Single().ETag.ShouldBe(oldETag + 1);
-    }
-
-    [Fact]
-    public async Task GivenExistingEntity_WhenRequestedByIdTwiceAsync_ThenShouldCacheHitOnce()
-    {
-        // Arrange
-
-        var entity = this.entityMap[2035652629];
-        var oldETag = entity.ETag;
-
-        // Act
-
-        var actual1 = await this.testService.FindByIdAsync(2035652629, default);
-        var actual2 = await this.testService.FindByIdAsync(2035652629, default);
-
-        // Assert
-
-        actual1.IsSome.ShouldBeTrue();
-        actual1.Single().ID.ShouldBe(entity.ID);
-        actual1.Single().ExternalID.ShouldBe(entity.ExternalID);
-        actual1.Single().Name.ShouldBe(entity.Name);
-        actual1.Single().ETag.ShouldBe(oldETag + 1);
-
-        actual2.IsSome.ShouldBeTrue();
-        actual2.Single().ID.ShouldBe(entity.ID);
-        actual2.Single().ExternalID.ShouldBe(entity.ExternalID);
-        actual2.Single().Name.ShouldBe(entity.Name);
-        actual2.Single().ETag.ShouldBe(oldETag + 1);
+        actual.IsNone.ShouldBeTrue();
     }
 
     [Fact]
@@ -270,13 +283,15 @@ public class MemoryCacheDecoratorBaseTests
     }
 
     [Fact]
-    public async Task GivenMissingEntity_WhenRequestedByExternalIdAsync_ThenShouldCacheMiss()
+    public async Task GivenMissingEntity_WhenRequestedByIdAsync_ThenShouldCacheMiss()
     {
         // Arrange
 
         // Act
 
-        var actual = await this.testService.FindByExternalIdAsync(Guid.NewGuid(), default);
+        var actual =
+            await this.testService.FindByIdAsync(id: 1009129315,
+                cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
 
@@ -297,25 +312,15 @@ public class MemoryCacheDecoratorBaseTests
         actual.IsNone.ShouldBeTrue();
     }
 
-    [Fact]
-    public async Task GivenMissingEntity_WhenRequestedByIdAsync_ThenShouldCacheMiss()
+    public interface ITestService
     {
-        // Arrange
+        public Option<TestEntity> FindByExternalId(Guid externalId);
 
-        // Act
+        public Task<Option<TestEntity>> FindByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
 
-        var actual = await this.testService.FindByIdAsync(1009129315, default);
+        public Option<TestEntity> FindById(int id);
 
-        // Assert
-
-        actual.IsNone.ShouldBeTrue();
-    }
-
-    public record TestEntity(int ID, Guid ExternalID, string Name) : IEntity<int>
-    {
-        public int ETag { get; private set; }
-
-        public void Advance() => this.ETag++;
+        public Task<Option<TestEntity>> FindByIdAsync(int id, CancellationToken cancellationToken);
     }
 
     public class RealTestService : ITestService
@@ -349,6 +354,13 @@ public class MemoryCacheDecoratorBaseTests
             entity.Advance();
             return entity;
         }
+    }
+
+    public record TestEntity(int ID, Guid ExternalID, string Name) : IEntity<int>
+    {
+        public int ETag { get; private set; }
+
+        public void Advance() => this.ETag++;
     }
 
     public class TestServiceMemoryCacheDecorator : MemoryCacheDecoratorBase<TestEntity>, ITestService

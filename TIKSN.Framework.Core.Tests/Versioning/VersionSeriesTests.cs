@@ -1,50 +1,15 @@
+using System;
 using System.Linq;
 using NuGet.Versioning;
 using Shouldly;
 using TIKSN.Versioning;
 using Xunit;
+using Version = TIKSN.Versioning.Version;
 
 namespace TIKSN.Tests.Versioning;
 
 public class VersionSeriesTests
 {
-    [Theory]
-    [InlineData("1")]
-    [InlineData("1.2")]
-    [InlineData("1.2.3")]
-    [InlineData("1.2.3.4")]
-    [InlineData("1.2-rc")]
-    [InlineData("1.2.3-rc")]
-    [InlineData("1.2.3.4-rc")]
-    [InlineData("1.2-rc.5")]
-    [InlineData("1.2.3-rc.5")]
-    [InlineData("1.2.3.4-rc.5")]
-    public void GivenSeries_WhenVersionSeriesCreated_ThenParseShouldMatchToToString(string series)
-    {
-        var versionSeries = VersionSeries.Parse(series);
-
-        versionSeries.ToString().ShouldBe(series);
-    }
-
-    [Theory]
-    [InlineData("1")]
-    [InlineData("1.2")]
-    [InlineData("1.2.3")]
-    [InlineData("1.2.3.4")]
-    [InlineData("1.2-rc")]
-    [InlineData("1.2.3-rc")]
-    [InlineData("1.2.3.4-rc")]
-    [InlineData("1.2-rc.5")]
-    [InlineData("1.2.3-rc.5")]
-    [InlineData("1.2.3.4-rc.5")]
-    public void GivenSeries_WhenTwoIdenticalVersionSeriesCreated_ThenTheyShouldBeEqual(string series)
-    {
-        var versionSeries1 = VersionSeries.Parse(series);
-        var versionSeries2 = VersionSeries.Parse(series);
-
-        versionSeries1.Equals(versionSeries2).ShouldBeTrue();
-    }
-
     [Theory]
     [InlineData("1", "1.2", true)]
     [InlineData("1", "1.0", true)]
@@ -106,9 +71,46 @@ public class VersionSeriesTests
 
         if (match.IsSome)
         {
-            match.Match(v => v, () => new Version(0, 0))
+            match.Match(v => v, () => new Version(releaseMajor: 0, releaseMinor: 0))
                 .ShouldBe(versionToTest);
         }
+    }
+
+    [Theory]
+    [InlineData("1")]
+    [InlineData("1.2")]
+    [InlineData("1.2.3")]
+    [InlineData("1.2.3.4")]
+    [InlineData("1.2-rc")]
+    [InlineData("1.2.3-rc")]
+    [InlineData("1.2.3.4-rc")]
+    [InlineData("1.2-rc.5")]
+    [InlineData("1.2.3-rc.5")]
+    [InlineData("1.2.3.4-rc.5")]
+    public void GivenSeries_WhenTwoIdenticalVersionSeriesCreated_ThenTheyShouldBeEqual(string series)
+    {
+        var versionSeries1 = VersionSeries.Parse(series);
+        var versionSeries2 = VersionSeries.Parse(series);
+
+        versionSeries1.Equals(versionSeries2).ShouldBeTrue();
+    }
+
+    [Theory]
+    [InlineData("1")]
+    [InlineData("1.2")]
+    [InlineData("1.2.3")]
+    [InlineData("1.2.3.4")]
+    [InlineData("1.2-rc")]
+    [InlineData("1.2.3-rc")]
+    [InlineData("1.2.3.4-rc")]
+    [InlineData("1.2-rc.5")]
+    [InlineData("1.2.3-rc.5")]
+    [InlineData("1.2.3.4-rc.5")]
+    public void GivenSeries_WhenVersionSeriesCreated_ThenParseShouldMatchToToString(string series)
+    {
+        var versionSeries = VersionSeries.Parse(series);
+
+        versionSeries.ToString().ShouldBe(series);
     }
 
     [Theory]
@@ -121,10 +123,10 @@ public class VersionSeriesTests
     {
         // Arrange
         var versionSeries = VersionSeries.Parse("1.2");
-        var versions = versionsList.Split('|', System.StringSplitOptions.RemoveEmptyEntries)
+        var versions = versionsList.Split(separator: '|', StringSplitOptions.RemoveEmptyEntries)
             .Select(x => (Version)NuGetVersion.Parse(x.Trim()))
             .ToArray();
-        var expectedMatches = matchesList.Split('|', System.StringSplitOptions.RemoveEmptyEntries)
+        var expectedMatches = matchesList.Split(separator: '|', StringSplitOptions.RemoveEmptyEntries)
             .Select(x => (Version)NuGetVersion.Parse(x.Trim()))
             .ToArray();
         var expectedHasMatches = expectedMatches.Length != 0;
@@ -134,7 +136,7 @@ public class VersionSeriesTests
 
         // Assert
         match.IsSome.ShouldBe(expectedHasMatches);
-        match.Match(result => result, System.Array.Empty<Version>)
+        match.Match(result => result, Array.Empty<Version>)
             .ShouldBeEquivalentTo(expectedMatches);
     }
 }

@@ -42,7 +42,7 @@ public class GuidCorrelationServiceTests
         this.testOutputHelper.WriteLine("-------------------------");
         this.testOutputHelper.WriteLine(name);
         this.testOutputHelper.WriteLine(correlationID.ToString());
-        this.testOutputHelper.WriteLine(BitConverter.ToString([.. correlationID.ToBinary()]));
+        this.testOutputHelper.WriteLine(BitConverter.ToString([.. correlationID.ToBinary(),]));
         this.testOutputHelper.WriteLine("");
     }
 }

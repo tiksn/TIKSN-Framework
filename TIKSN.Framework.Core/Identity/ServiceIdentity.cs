@@ -34,11 +34,11 @@ public sealed class ServiceIdentity : IEquatable<ServiceIdentity>
     public ServiceInstanceId InstanceId { get; }
     public string ServicePath { get; }
 
-    public static bool operator !=(ServiceIdentity? left, ServiceIdentity? right)
-        => !(left == right);
-
     public static bool operator ==(ServiceIdentity? left, ServiceIdentity? right)
         => EqualityComparer<ServiceIdentity>.Default.Equals(left, right);
+
+    public static bool operator !=(ServiceIdentity? left, ServiceIdentity? right)
+        => !(left == right);
 
     public ServiceIdentity CreateAnotherInstance(ServiceInstanceId newInstanceId)
         => new(this.ApplicationName, this.ComponentNames, newInstanceId);
