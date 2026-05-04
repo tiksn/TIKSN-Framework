@@ -23,7 +23,11 @@ public class RavenDatabaseInitializer : IDatabaseInitializer
     public async Task InitializeAsync(CancellationToken cancellationToken)
     {
         var store =
-            new DocumentStore { Urls = [.. this.options.Value.Urls], Database = this.options.Value.Database }
+            new DocumentStore
+            {
+                Urls = [.. this.options.Value.Urls],
+                Database = this.options.Value.Database
+            }
                 .Initialize();
 
         _ = store.Operations.ForDatabase(this.options.Value.Database);
