@@ -1,3 +1,6 @@
+#requires -Version 7.4
+#requires -PSEdition Core
+
 [CmdletBinding()]
 param (
     [Parameter()]

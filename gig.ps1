@@ -1,4 +1,6 @@
-#For PowerShell v3
+#requires -Version 7.4
+#requires -PSEdition Core
+
 Function gig {
     param(
         [Parameter(Mandatory = $true)]

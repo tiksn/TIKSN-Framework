@@ -1,3 +1,6 @@
+#requires -Version 7.4
+#requires -PSEdition Core
+
 docker run --rm `
     -e CREATE_LOG_FILE=true `
     -e DEFAULT_BRANCH=main `
