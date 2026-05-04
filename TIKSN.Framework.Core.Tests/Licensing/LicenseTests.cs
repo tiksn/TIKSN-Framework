@@ -83,6 +83,7 @@ public class LicenseTests
     [Theory]
     [InlineData("RSA")]
     [InlineData("DSA")]
+    [InlineData("EdDSA")]
     public void GivenPrivateCertificate_WhenLicenseCreated_ThenItShouldBeValid(
         string kind)
     {
@@ -183,9 +184,13 @@ public class LicenseTests
         this.testOutputHelper.WriteLine(
             $"Public Certificate Serial Number: {publicCertificate.GetSerialNumberString()}");
 
-        privateCertificate = new X509Certificate2(
-            this.privateCertificates[kind],
-            this.privateCertificatePasswords[kind]);
+        privateCertificate = kind == "EdDSA"
+            ? new EdDSAX509Certificate2(
+                this.privateCertificates[kind],
+                this.privateCertificatePasswords[kind])
+            : new X509Certificate2(
+                this.privateCertificates[kind],
+                this.privateCertificatePasswords[kind]);
 
         this.testOutputHelper.WriteLine(
             $"Private Certificate Serial Number: {privateCertificate.GetSerialNumberString()}");
