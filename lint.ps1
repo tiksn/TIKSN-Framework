@@ -1,4 +1,4 @@
-#requires -Version 7.6
+#requires -Version 7.4
 #requires -PSEdition Core
 
 docker run --rm `
