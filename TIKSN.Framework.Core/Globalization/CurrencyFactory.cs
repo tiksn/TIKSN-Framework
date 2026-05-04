@@ -9,8 +9,8 @@ namespace TIKSN.Globalization;
 public class CurrencyFactory : MemoryCacheDecoratorBase<CurrencyInfo>, ICurrencyFactory
 {
     private readonly IOptions<CurrencyUnionRedirectionOptions> currencyUnionRedirectionOptions;
-    private readonly IOptions<RegionalCurrencyRedirectionOptions> regionalCurrencyRedirectionOptions;
     private readonly IRegionFactory regionFactory;
+    private readonly IOptions<RegionalCurrencyRedirectionOptions> regionalCurrencyRedirectionOptions;
 
     public CurrencyFactory(
         IMemoryCache memoryCache,

@@ -36,6 +36,17 @@ public readonly struct FiscalYear : IYear<FiscalYear>
         this.startDate = startDate;
     }
 
+    #region Conversion
+
+    public DateInterval ToDateInterval()
+    {
+        var startDay = this.startDate.InYear(this.absoluteStartYear);
+        var endDay = startDay.PlusYears(1).PlusDays(-1);
+        return new DateInterval(startDay, endDay);
+    }
+
+    #endregion Conversion
+
     #region Contains
 
     public bool Contains(LocalDate localDate)
@@ -185,15 +196,4 @@ public readonly struct FiscalYear : IYear<FiscalYear>
         => this.GetPrevious(1);
 
     #endregion Next and Previous
-
-    #region Conversion
-
-    public DateInterval ToDateInterval()
-    {
-        var startDay = this.startDate.InYear(this.absoluteStartYear);
-        var endDay = startDay.PlusYears(1).PlusDays(-1);
-        return new DateInterval(startDay, endDay);
-    }
-
-    #endregion Conversion
 }

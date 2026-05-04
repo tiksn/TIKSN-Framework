@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Shouldly;
 using TIKSN.Web;
 using Xunit;
@@ -11,7 +12,7 @@ public class SitemapPageTests
     public void Equality001()
     {
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
-            0.5);
+            priority: 0.5);
         SitemapPage p2 = null;
 
         (null == p1).ShouldBeFalse();
@@ -22,9 +23,9 @@ public class SitemapPageTests
     public void Equals001()
     {
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
-            0.5);
+            priority: 0.5);
         var p2 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
-            0.5);
+            priority: 0.5);
 
         p1.Equals(p1).ShouldBeTrue();
         p1.Equals(p2).ShouldBeTrue();
@@ -43,9 +44,9 @@ public class SitemapPageTests
     public void Equals002()
     {
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
-            0.5);
+            priority: 0.5);
         var p2 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now.AddDays(10d),
-            SitemapPage.Frequency.Monthly, 0.2);
+            SitemapPage.Frequency.Monthly, priority: 0.2);
 
         p1.Equals(p1).ShouldBeTrue();
         p1.Equals(p2).ShouldBeTrue();
@@ -64,9 +65,9 @@ public class SitemapPageTests
     public void Equals003()
     {
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
-            0.5);
+            priority: 0.5);
         var p2 = new SitemapPage(new Uri("https://www.microsoft.com/sitemap.aspx"), DateTime.Now,
-            SitemapPage.Frequency.Always, 0.5);
+            SitemapPage.Frequency.Always, priority: 0.5);
 
         p1.Equals(p1).ShouldBeTrue();
         p1.Equals(p2).ShouldBeFalse();
@@ -85,7 +86,7 @@ public class SitemapPageTests
     public void Equals004()
     {
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
-            0.5);
+            priority: 0.5);
 
         p1.Equals(null).ShouldBeFalse();
         (p1 == null).ShouldBeFalse();
@@ -96,9 +97,9 @@ public class SitemapPageTests
     public void Equals005()
     {
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
-            0.5);
+            priority: 0.5);
 
-        var pages = new System.Collections.Generic.HashSet<SitemapPage>();
+        var pages = new HashSet<SitemapPage>();
 
         pages.Add(p1).ShouldBeTrue();
         pages.Add(p1).ShouldBeFalse();
@@ -108,11 +109,11 @@ public class SitemapPageTests
     public void Equals007()
     {
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
-            0.5);
+            priority: 0.5);
         var p2 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now.AddDays(10d),
-            SitemapPage.Frequency.Monthly, 0.2);
+            SitemapPage.Frequency.Monthly, priority: 0.2);
 
-        var pages = new System.Collections.Generic.HashSet<SitemapPage>();
+        var pages = new HashSet<SitemapPage>();
 
         pages.Add(p1).ShouldBeTrue();
         pages.Add(p2).ShouldBeFalse();
@@ -122,9 +123,12 @@ public class SitemapPageTests
     public void Equals008()
     {
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
-            0.5);
+            priority: 0.5);
 
-        var pages = new System.Collections.Generic.List<SitemapPage> { p1 };
+        var pages = new List<SitemapPage>
+        {
+            p1,
+        };
 
         pages.ShouldContain(p1);
 
@@ -137,11 +141,14 @@ public class SitemapPageTests
     public void Equals009()
     {
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
-            0.5);
+            priority: 0.5);
         var p2 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now.AddDays(10d),
-            SitemapPage.Frequency.Monthly, 0.2);
+            SitemapPage.Frequency.Monthly, priority: 0.2);
 
-        var pages = new System.Collections.Generic.List<SitemapPage> { p1 };
+        var pages = new List<SitemapPage>
+        {
+            p1,
+        };
 
         pages.ShouldContain(p1);
 
@@ -154,13 +161,16 @@ public class SitemapPageTests
     public void Equals010()
     {
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
-            0.5);
+            priority: 0.5);
 
-        var pages = new System.Collections.Generic.Dictionary<SitemapPage, int> { { p1, 1 } };
+        var pages = new Dictionary<SitemapPage, int>
+        {
+            { p1, 1 },
+        };
 
         pages.ContainsKey(p1).ShouldBeTrue();
 
-        _ = new Action(() => pages.Add(p1, 2)).ShouldThrow<ArgumentException>();
+        _ = new Action(() => pages.Add(p1, value: 2)).ShouldThrow<ArgumentException>();
 
         pages.ContainsKey(p1).ShouldBeTrue();
     }
@@ -169,15 +179,18 @@ public class SitemapPageTests
     public void Equals011()
     {
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
-            0.5);
+            priority: 0.5);
         var p2 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now.AddDays(10d),
-            SitemapPage.Frequency.Monthly, 0.2);
+            SitemapPage.Frequency.Monthly, priority: 0.2);
 
-        var pages = new System.Collections.Generic.Dictionary<SitemapPage, int> { { p1, 1 } };
+        var pages = new Dictionary<SitemapPage, int>
+        {
+            { p1, 1 },
+        };
 
         pages.ContainsKey(p1).ShouldBeTrue();
 
-        _ = new Action(() => pages.Add(p2, 2)).ShouldThrow<ArgumentException>();
+        _ = new Action(() => pages.Add(p2, value: 2)).ShouldThrow<ArgumentException>();
 
         pages.ContainsKey(p2).ShouldBeTrue();
     }
@@ -186,7 +199,7 @@ public class SitemapPageTests
     public void Equals012()
     {
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
-            0.5);
+            priority: 0.5);
         object p2 = null;
 
         p1.Equals(p2).ShouldBeFalse();
@@ -196,7 +209,7 @@ public class SitemapPageTests
     public void Equals013()
     {
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
-            0.5);
+            priority: 0.5);
         var p2 = p1;
 
         p1.Equals(p2).ShouldBeTrue();
@@ -206,7 +219,7 @@ public class SitemapPageTests
     public void Equals014()
     {
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
-            0.5);
+            priority: 0.5);
         var s1 = new Sitemap();
 
         p1.Equals(s1).ShouldBeFalse();
@@ -216,9 +229,9 @@ public class SitemapPageTests
     public void Equals015()
     {
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
-            0.5);
+            priority: 0.5);
         object p2 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now.AddDays(10d),
-            SitemapPage.Frequency.Monthly, 0.2);
+            SitemapPage.Frequency.Monthly, priority: 0.2);
 
         p1.Equals(p2).ShouldBeTrue();
     }
@@ -227,7 +240,7 @@ public class SitemapPageTests
     public void Equals016()
     {
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
-            0.5);
+            priority: 0.5);
         object p2 = p1;
 
         p1.Equals(p2).ShouldBeTrue();
@@ -237,7 +250,7 @@ public class SitemapPageTests
     public void Inequality001()
     {
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
-            0.5);
+            priority: 0.5);
         SitemapPage p2 = null;
 
         (null != p1).ShouldBeTrue();
@@ -246,17 +259,21 @@ public class SitemapPageTests
 
     [Fact]
     public void Page001() =>
-        new Func<object>(() => new SitemapPage(null, null, null, null)).ShouldThrow<ArgumentNullException>();
+        new Func<object>(() =>
+                new SitemapPage(address: null, lastModified: null, changeFrequency: null, priority: null))
+            .ShouldThrow<ArgumentNullException>();
 
     [Fact]
     public void Page002() =>
-        new Func<object>(() => new SitemapPage(null, DateTime.Now, SitemapPage.Frequency.Always, 0.5))
+        new Func<object>(() =>
+                new SitemapPage(address: null, DateTime.Now, SitemapPage.Frequency.Always, priority: 0.5))
             .ShouldThrow<ArgumentNullException>();
 
     [Fact]
     public void Page003()
     {
-        var p1 = new SitemapPage(new Uri("https://microsoft.com/"), null, null, null);
+        var p1 = new SitemapPage(new Uri("https://microsoft.com/"), lastModified: null, changeFrequency: null,
+            priority: null);
 
         p1.Address.AbsoluteUri.ShouldBe("https://microsoft.com/");
         p1.ChangeFrequency.HasValue.ShouldBeFalse();
@@ -267,10 +284,11 @@ public class SitemapPageTests
     [Fact]
     public void Page004() => new Func<object>(() =>
         new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now,
-            SitemapPage.Frequency.Always, 1.5)).ShouldThrow<ArgumentOutOfRangeException>();
+            SitemapPage.Frequency.Always, priority: 1.5)).ShouldThrow<ArgumentOutOfRangeException>();
 
     [Fact]
     public void Page005() => new Func<object>(() =>
-            new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always, -0.5))
+            new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
+                priority: -0.5))
         .ShouldThrow<ArgumentOutOfRangeException>();
 }

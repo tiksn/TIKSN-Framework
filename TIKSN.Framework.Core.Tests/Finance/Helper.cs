@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using TIKSN.Finance;
@@ -22,25 +23,25 @@ public static class Helper
     [
         SampleCurrencyPair1,
         SampleCurrencyPair2,
-        SampleCurrencyPair3
+        SampleCurrencyPair3,
     ];
 
     public static IEnumerable<CurrencyPair> SampleCurrencyPairs2 =>
     [
         SampleCurrencyPair1,
-        SampleCurrencyPair2
+        SampleCurrencyPair2,
     ];
 
     public static IEnumerable<CurrencyPair> SampleCurrencyPairs3 =>
     [
-        SampleCurrencyPair1
+        SampleCurrencyPair1,
     ];
 
-    public static Money SampleMoney1 => new(SampleCurrency1, 100m);
+    public static Money SampleMoney1 => new(SampleCurrency1, amount: 100m);
 
     public static decimal GetRandomForeignExchangeRate()
     {
-        var rng = new System.Random();
+        var rng = new Random();
 
         return (decimal)rng.NextDouble();
     }

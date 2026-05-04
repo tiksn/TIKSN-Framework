@@ -19,10 +19,6 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
     protected Acronym(string value)
         => this.value = value ?? throw new ArgumentNullException(nameof(value));
 
-    public static bool operator !=(Acronym<TSelf> left, Acronym<TSelf> right) => !Equals(left, right);
-
-    public static bool operator ==(Acronym<TSelf> left, Acronym<TSelf> right) => Equals(left, right);
-
     public static TSelf Parse(string s, IFormatProvider? provider)
     {
         if (TryParse(s, provider, out var result))
@@ -82,6 +78,10 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
 
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out TSelf result)
         => TryParse(s.ToString(), provider, out result);
+
+    public static bool operator ==(Acronym<TSelf> left, Acronym<TSelf> right) => Equals(left, right);
+
+    public static bool operator !=(Acronym<TSelf> left, Acronym<TSelf> right) => !Equals(left, right);
 
     public bool Equals(TSelf? other)
     {

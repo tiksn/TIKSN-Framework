@@ -16,7 +16,7 @@ public class FiscalYearTests
     {
         // Arrange
 
-        var fiscalYear2023 = new FiscalYear(2023, new AnnualDate(10, 1));
+        var fiscalYear2023 = new FiscalYear(startYear: 2023, new AnnualDate(month: 10, day: 1));
 
         var yearMonth = new YearMonth(year, month);
         var localDate = new LocalDate(year, month, day);
@@ -54,7 +54,7 @@ public class FiscalYearTests
     {
         // Arrange
 
-        var fiscalYear = new FiscalYear(year, new AnnualDate(10, 1));
+        var fiscalYear = new FiscalYear(year, new AnnualDate(month: 10, day: 1));
 
         // Act
 
@@ -76,7 +76,7 @@ public class FiscalYearTests
     {
         // Arrange
 
-        var fiscalYear = new FiscalYear(year, new AnnualDate(10, 1));
+        var fiscalYear = new FiscalYear(year, new AnnualDate(month: 10, day: 1));
 
         // Act
 
@@ -96,7 +96,7 @@ public class FiscalYearTests
     {
         // Arrange
 
-        var fiscalYear = new FiscalYear(year, new AnnualDate(10, 1));
+        var fiscalYear = new FiscalYear(year, new AnnualDate(month: 10, day: 1));
 
         // Act
 

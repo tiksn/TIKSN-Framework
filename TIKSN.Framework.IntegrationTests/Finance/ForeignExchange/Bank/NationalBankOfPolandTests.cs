@@ -27,33 +27,17 @@ public class NationalBankOfPolandTests
     }
 
     [Fact]
-    public async Task Given_WhenPairsRequested_ThenResultShouldBeUnique()
-    {
-        // Arrange
-
-        // Act
-        var result = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetLocalNow(), default);
-
-        // Assert
-        _ = result.ShouldNotBeNull();
-        result.ShouldNotBeEmpty();
-        result.ShouldBeUnique();
-        result.ShouldAllBe(x =>
-            x.BaseCurrency.ISOCurrencySymbol == "PLN" ||
-            x.CounterCurrency.ISOCurrencySymbol == "PLN");
-    }
-
-    [Fact]
     public async Task Given10USD_WhenUSDRateRequestedHistorical_ThenResultShouldBeGreaterThan10()
     {
         // Arrange
         var thePLN = this.currencyFactory.Create("PLN");
         var theUSD = this.currencyFactory.Create("USD");
-        var the10USD = new Money(theUSD, 10m);
+        var the10USD = new Money(theUSD, amount: 10m);
         var asOn = this.timeProvider.GetLocalNow().AddMonths(-1);
 
         // Act
-        var result = await this.bank.ConvertCurrencyAsync(the10USD, thePLN, asOn, default);
+        var result = await this.bank.ConvertCurrencyAsync(the10USD, thePLN, asOn,
+            cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
         _ = result.ShouldNotBeNull();
@@ -67,10 +51,11 @@ public class NationalBankOfPolandTests
         // Arrange
         var thePLN = this.currencyFactory.Create("PLN");
         var theUSD = this.currencyFactory.Create("USD");
-        var the10USD = new Money(theUSD, 10m);
+        var the10USD = new Money(theUSD, amount: 10m);
 
         // Act
-        var result = await this.bank.ConvertCurrencyAsync(the10USD, thePLN, this.timeProvider.GetLocalNow(), default);
+        var result = await this.bank.ConvertCurrencyAsync(the10USD, thePLN, this.timeProvider.GetLocalNow(),
+            cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
         _ = result.ShouldNotBeNull();
@@ -84,14 +69,33 @@ public class NationalBankOfPolandTests
         // Arrange
         var thePLN = this.currencyFactory.Create("PLN");
         var theUSD = this.currencyFactory.Create("USD");
-        var the10USD = new Money(theUSD, 10m);
+        var the10USD = new Money(theUSD, amount: 10m);
 
         // Act
-        var result = await this.bank.ConvertCurrencyAsync(the10USD, thePLN, this.timeProvider.GetUtcNow(), default);
+        var result = await this.bank.ConvertCurrencyAsync(the10USD, thePLN, this.timeProvider.GetUtcNow(),
+            cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
         _ = result.ShouldNotBeNull();
         result.Currency.ISOCurrencySymbol.ShouldBe("PLN");
         result.Amount.ShouldBeGreaterThan(10m);
+    }
+
+    [Fact]
+    public async Task Given_WhenPairsRequested_ThenResultShouldBeUnique()
+    {
+        // Arrange
+
+        // Act
+        var result = await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetLocalNow(),
+            cancellationToken: TestContext.Current.CancellationToken);
+
+        // Assert
+        _ = result.ShouldNotBeNull();
+        result.ShouldNotBeEmpty();
+        result.ShouldBeUnique();
+        result.ShouldAllBe(x =>
+            x.BaseCurrency.ISOCurrencySymbol == "PLN" ||
+            x.CounterCurrency.ISOCurrencySymbol == "PLN");
     }
 }

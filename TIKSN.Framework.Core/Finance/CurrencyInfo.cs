@@ -26,17 +26,17 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
 
     public string CurrencySymbol { get; }
 
-    public bool IsCurrent { get; }
-
-    public bool IsFund { get; }
-
     public int? ISOCurrencyNumber { get; }
 
     public string ISOCurrencySymbol { get; }
 
-    public static bool operator !=(CurrencyInfo first, CurrencyInfo second) => !Equals(first, second);
+    public bool IsCurrent { get; }
+
+    public bool IsFund { get; }
 
     public static bool operator ==(CurrencyInfo first, CurrencyInfo second) => Equals(first, second);
+
+    public static bool operator !=(CurrencyInfo first, CurrencyInfo second) => !Equals(first, second);
 
     public bool Equals(CurrencyInfo? other)
     {

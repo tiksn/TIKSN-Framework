@@ -22,6 +22,8 @@ public readonly struct CorrelationId : IEquatable<CorrelationId>
         this.binaryRepresentation = binaryRepresentation;
     }
 
+    public static bool operator ==(CorrelationId left, CorrelationId right) => left.Equals(right);
+
     /// <summary>
     ///     Implicitly convert <see cref="CorrelationId" /> to byte array.
     /// </summary>
@@ -38,8 +40,6 @@ public readonly struct CorrelationId : IEquatable<CorrelationId>
     public static implicit operator string(CorrelationId correlationId) => correlationId.stringRepresentation;
 
     public static bool operator !=(CorrelationId left, CorrelationId right) => !(left == right);
-
-    public static bool operator ==(CorrelationId left, CorrelationId right) => left.Equals(right);
 
     /// <summary>
     ///     Indicates whether this instance and a <paramref name="other" /> are equal by their binary representation.

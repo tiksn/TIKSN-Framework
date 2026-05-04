@@ -46,7 +46,7 @@ public class ServiceProviderFixture : IDisposable
                 _ = services.AddFrameworkCore();
                 _ = services.Configure<RavenUnitOfWorkFactoryOptions>(options =>
                 {
-                    options.Urls = ["http://localhost:8080"];
+                    options.Urls = ["http://localhost:8080",];
                     options.Database = "TIKSN-Framework-IntegrationTests";
                 });
             })

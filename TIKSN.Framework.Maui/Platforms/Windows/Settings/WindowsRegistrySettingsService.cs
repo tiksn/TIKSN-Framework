@@ -104,6 +104,11 @@ public class WindowsRegistrySettingsService : ISettingsService
         string name,
         T defaultValue) => (T)subKey.GetValue(name, defaultValue);
 
+    private static IReadOnlyCollection<string> ListNames(
+        RegistryKey subKey,
+        string name,
+        IReadOnlyCollection<string> value) => subKey.GetValueNames();
+
     private static T RemoveSetting<T>(
         RegistryKey subKey,
         string name,
@@ -123,11 +128,6 @@ public class WindowsRegistrySettingsService : ISettingsService
 
         return value;
     }
-
-    private static IReadOnlyCollection<string> ListNames(
-        RegistryKey subKey,
-        string name,
-        IReadOnlyCollection<string> value) => subKey.GetValueNames();
 
     private T Process<T>(
         RegistryHive hiveKey,

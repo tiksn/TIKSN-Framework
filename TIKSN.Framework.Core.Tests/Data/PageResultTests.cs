@@ -7,7 +7,7 @@ namespace TIKSN.Tests.Data;
 
 public class PageResultTests
 {
-    private static readonly char[] items = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+    private static readonly char[] items = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',];
 
     [Theory]
     [InlineData(null, null)]
@@ -17,7 +17,7 @@ public class PageResultTests
     public void TotalPagesTest(long? totalItems, long? totalPages)
     {
         PageResult<char> pageResult = new(
-            new Page(1, 10),
+            new Page(number: 1, size: 10),
             items,
             Optional(totalItems));
 

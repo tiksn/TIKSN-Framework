@@ -10,27 +10,27 @@ public class BB26Tests
 {
     public static IEnumerable<TheoryDataRow<int, string>> GetBB26NumberAndStringTestData()
     {
-        yield return new TheoryDataRow<int, string>(1, "A");
-        yield return new TheoryDataRow<int, string>(2, "B");
-        yield return new TheoryDataRow<int, string>(3, "C");
-        yield return new TheoryDataRow<int, string>(4, "D");
-        yield return new TheoryDataRow<int, string>(10, "J");
-        yield return new TheoryDataRow<int, string>(11, "K");
-        yield return new TheoryDataRow<int, string>(21, "U");
-        yield return new TheoryDataRow<int, string>(25, "Y");
-        yield return new TheoryDataRow<int, string>(26, "Z");
-        yield return new TheoryDataRow<int, string>(27, "AA");
-        yield return new TheoryDataRow<int, string>(28, "AB");
-        yield return new TheoryDataRow<int, string>(29, "AC");
-        yield return new TheoryDataRow<int, string>(702, "ZZ");
-        yield return new TheoryDataRow<int, string>(703, "AAA");
-        yield return new TheoryDataRow<int, string>(731, "ABC");
-        yield return new TheoryDataRow<int, string>(760, "ACF");
-        yield return new TheoryDataRow<int, string>(1_457, "BDA");
-        yield return new TheoryDataRow<int, string>(1_482, "BDZ");
-        yield return new TheoryDataRow<int, string>(16_384, "XFD");
-        yield return new TheoryDataRow<int, string>(18_278, "ZZZ");
-        yield return new TheoryDataRow<int, string>(3_752_127, "HELLO");
+        yield return new TheoryDataRow<int, string>(p1: 1, "A");
+        yield return new TheoryDataRow<int, string>(p1: 2, "B");
+        yield return new TheoryDataRow<int, string>(p1: 3, "C");
+        yield return new TheoryDataRow<int, string>(p1: 4, "D");
+        yield return new TheoryDataRow<int, string>(p1: 10, "J");
+        yield return new TheoryDataRow<int, string>(p1: 11, "K");
+        yield return new TheoryDataRow<int, string>(p1: 21, "U");
+        yield return new TheoryDataRow<int, string>(p1: 25, "Y");
+        yield return new TheoryDataRow<int, string>(p1: 26, "Z");
+        yield return new TheoryDataRow<int, string>(p1: 27, "AA");
+        yield return new TheoryDataRow<int, string>(p1: 28, "AB");
+        yield return new TheoryDataRow<int, string>(p1: 29, "AC");
+        yield return new TheoryDataRow<int, string>(p1: 702, "ZZ");
+        yield return new TheoryDataRow<int, string>(p1: 703, "AAA");
+        yield return new TheoryDataRow<int, string>(p1: 731, "ABC");
+        yield return new TheoryDataRow<int, string>(p1: 760, "ACF");
+        yield return new TheoryDataRow<int, string>(p1: 1_457, "BDA");
+        yield return new TheoryDataRow<int, string>(p1: 1_482, "BDZ");
+        yield return new TheoryDataRow<int, string>(p1: 16_384, "XFD");
+        yield return new TheoryDataRow<int, string>(p1: 18_278, "ZZZ");
+        yield return new TheoryDataRow<int, string>(p1: 3_752_127, "HELLO");
     }
 
     public static IEnumerable<TheoryDataRow<string, int>> GetBB26StringAndNumberTestData() =>
@@ -55,7 +55,7 @@ public class BB26Tests
     public void GiveninputString_WhenToStringIsCalled_ThenResultShouldBe(string inputString, int expectedNumber)
     {
         // Arrange
-        var bb26 = BB26.Parse(inputString, null);
+        var bb26 = BB26.Parse(inputString, provider: null);
 
         // Act
         var actualNumber = bb26.Number;

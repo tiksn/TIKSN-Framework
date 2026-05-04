@@ -13,15 +13,15 @@ public class RestRepositoryOptions<T>
         this.AcceptLanguages = new Dictionary<double, string>();
     }
 
+    public IDictionary<double, string> AcceptLanguages { get; }
+
+    public RestAuthenticationType Authentication { get; set; }
+
+    public Encoding Encoding { get; set; }
+
     public string? EndpointKey { get; set; }
 
     public string MediaType { get; set; }
 
-    public RestAuthenticationType Authentication { get; set; }
-
-    public IDictionary<double, string> AcceptLanguages { get; }
-
     public string? ResourceTemplate { get; set; }
-
-    public Encoding Encoding { get; set; }
 }

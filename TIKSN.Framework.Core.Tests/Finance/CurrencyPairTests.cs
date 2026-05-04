@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using Shouldly;
 using TIKSN.Finance;
 using Xunit;
@@ -10,7 +11,7 @@ public class CurrencyPairTests
     [Fact]
     public void CurrencyPair001()
     {
-        var unitedStates = new System.Globalization.RegionInfo("US");
+        var unitedStates = new RegionInfo("US");
         var usDollar1 = new CurrencyInfo(unitedStates);
         var usDollar2 = new CurrencyInfo(unitedStates);
 
@@ -20,9 +21,9 @@ public class CurrencyPairTests
     [Fact]
     public void Equals001()
     {
-        var unitedStates = new System.Globalization.RegionInfo("US");
-        var unitedKingdom = new System.Globalization.RegionInfo("GB");
-        var italy = new System.Globalization.RegionInfo("IT");
+        var unitedStates = new RegionInfo("US");
+        var unitedKingdom = new RegionInfo("GB");
+        var italy = new RegionInfo("IT");
 
         var usDollar = new CurrencyInfo(unitedStates);
         var poundSterling = new CurrencyInfo(unitedKingdom);
@@ -72,8 +73,8 @@ public class CurrencyPairTests
     [Fact]
     public void Equals002()
     {
-        var unitedStates = new System.Globalization.RegionInfo("US");
-        var unitedKingdom = new System.Globalization.RegionInfo("GB");
+        var unitedStates = new RegionInfo("US");
+        var unitedKingdom = new RegionInfo("GB");
 
         var usDollar = new CurrencyInfo(unitedStates);
         var poundSterling = new CurrencyInfo(unitedKingdom);
@@ -99,8 +100,8 @@ public class CurrencyPairTests
     [Fact]
     public void Equals003()
     {
-        var unitedStates = new System.Globalization.RegionInfo("US");
-        var unitedKingdom = new System.Globalization.RegionInfo("GB");
+        var unitedStates = new RegionInfo("US");
+        var unitedKingdom = new RegionInfo("GB");
 
         var usDollar = new CurrencyInfo(unitedStates);
         var poundSterling = new CurrencyInfo(unitedKingdom);
@@ -123,8 +124,8 @@ public class CurrencyPairTests
     [Fact]
     public void ToString001()
     {
-        var unitedStates = new System.Globalization.RegionInfo("US");
-        var unitedKingdom = new System.Globalization.RegionInfo("GB");
+        var unitedStates = new RegionInfo("US");
+        var unitedKingdom = new RegionInfo("GB");
 
         var usDollar = new CurrencyInfo(unitedStates);
         var poundSterling = new CurrencyInfo(unitedKingdom);

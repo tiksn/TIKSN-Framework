@@ -269,11 +269,56 @@ public sealed class Money : IEquatable<Money>, IComparable<Money>, IFormattable,
         return new(money.Currency, -money.Amount);
     }
 
-    public static Money operator -(Money money) => Negate(money);
+    public static Money Plus(Money money)
+    {
+        ArgumentNullException.ThrowIfNull(money);
 
-    public static Money operator -(Money first, Money second) => Subtract(first, second);
+        return money;
+    }
+
+    public static Money Subtract(Money left, Money right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+        ArgumentNullException.ThrowIfNull(right);
+
+        AssertCurrenciesIdentical(left, right);
+
+        return new(left.Currency, left.Amount - right.Amount);
+    }
+
+    public static Money operator +(Money first, Money second) => Add(first, second);
+
+    public static Money operator /(Money dividend, sbyte divisor) => Divide(dividend, divisor);
+
+    public static decimal operator /(Money dividend, Money divisor) => Divide(dividend, divisor);
+
+    public static Money operator /(Money dividend, byte divisor) => Divide(dividend, divisor);
+
+    public static Money operator /(Money dividend, short divisor) => Divide(dividend, divisor);
+
+    public static Money operator /(Money dividend, ushort divisor) => Divide(dividend, divisor);
+
+    public static Money operator /(Money dividend, int divisor) => Divide(dividend, divisor);
+
+    public static Money operator /(Money dividend, uint divisor) => Divide(dividend, divisor);
+
+    public static Money operator /(Money dividend, long divisor) => Divide(dividend, divisor);
+
+    public static Money operator /(Money dividend, ulong divisor) => Divide(dividend, divisor);
+
+    public static Money operator /(Money dividend, decimal divisor) => Divide(dividend, divisor);
+
+    public static bool operator ==(Money first, Money second) => Equals(first, second);
+
+    public static bool operator >(Money first, Money second) => CompareTo(first, second) > 0;
+
+    public static bool operator >=(Money first, Money second) => CompareTo(first, second) >= 0;
 
     public static bool operator !=(Money first, Money second) => !Equals(first, second);
+
+    public static bool operator <(Money first, Money second) => CompareTo(first, second) < 0;
+
+    public static bool operator <=(Money first, Money second) => CompareTo(first, second) <= 0;
 
     public static Money operator %(Money dividend, sbyte divisor) => Mod(dividend, divisor);
 
@@ -313,56 +358,11 @@ public sealed class Money : IEquatable<Money>, IComparable<Money>, IFormattable,
 
     public static Money operator *(Money first, decimal second) => Multiply(first, second);
 
-    public static Money operator /(Money dividend, sbyte divisor) => Divide(dividend, divisor);
+    public static Money operator -(Money first, Money second) => Subtract(first, second);
 
-    public static decimal operator /(Money dividend, Money divisor) => Divide(dividend, divisor);
-
-    public static Money operator /(Money dividend, byte divisor) => Divide(dividend, divisor);
-
-    public static Money operator /(Money dividend, short divisor) => Divide(dividend, divisor);
-
-    public static Money operator /(Money dividend, ushort divisor) => Divide(dividend, divisor);
-
-    public static Money operator /(Money dividend, int divisor) => Divide(dividend, divisor);
-
-    public static Money operator /(Money dividend, uint divisor) => Divide(dividend, divisor);
-
-    public static Money operator /(Money dividend, long divisor) => Divide(dividend, divisor);
-
-    public static Money operator /(Money dividend, ulong divisor) => Divide(dividend, divisor);
-
-    public static Money operator /(Money dividend, decimal divisor) => Divide(dividend, divisor);
+    public static Money operator -(Money money) => Negate(money);
 
     public static Money operator +(Money money) => Plus(money);
-
-    public static Money operator +(Money first, Money second) => Add(first, second);
-
-    public static bool operator <(Money first, Money second) => CompareTo(first, second) < 0;
-
-    public static bool operator <=(Money first, Money second) => CompareTo(first, second) <= 0;
-
-    public static bool operator ==(Money first, Money second) => Equals(first, second);
-
-    public static bool operator >(Money first, Money second) => CompareTo(first, second) > 0;
-
-    public static bool operator >=(Money first, Money second) => CompareTo(first, second) >= 0;
-
-    public static Money Plus(Money money)
-    {
-        ArgumentNullException.ThrowIfNull(money);
-
-        return money;
-    }
-
-    public static Money Subtract(Money left, Money right)
-    {
-        ArgumentNullException.ThrowIfNull(left);
-        ArgumentNullException.ThrowIfNull(right);
-
-        AssertCurrenciesIdentical(left, right);
-
-        return new(left.Currency, left.Amount - right.Amount);
-    }
 
     public int CompareTo(Money? other)
     {

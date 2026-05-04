@@ -14,7 +14,7 @@ public class SitemapIndexTests
     {
         var sIndex = new SitemapIndex();
 
-        sIndex.Sitemaps.Add(new Uri("https://microsoft.com/"), new DateOnly(2012, 8, 4));
+        sIndex.Sitemaps.Add(new Uri("https://microsoft.com/"), new DateOnly(year: 2012, month: 8, day: 4));
 
         sIndex.Sitemaps.Count.ShouldBe(1);
     }
@@ -41,8 +41,9 @@ public class SitemapIndexTests
     {
         var sIndex = new SitemapIndex();
 
-        sIndex.Sitemaps.Add(new Uri("https://microsoft.com/"), null);
-        sIndex.Sitemaps.Add(new Uri("https://microsoft.com/siteindex.xml"), new DateOnly(2012, 10, 25));
+        sIndex.Sitemaps.Add(new Uri("https://microsoft.com/"), value: null);
+        sIndex.Sitemaps.Add(new Uri("https://microsoft.com/siteindex.xml"),
+            new DateOnly(year: 2012, month: 10, day: 25));
 
         var sBuilder = new StringBuilder();
 

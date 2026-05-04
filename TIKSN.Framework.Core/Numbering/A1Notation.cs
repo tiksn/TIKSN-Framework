@@ -28,10 +28,6 @@ public sealed class A1Notation<TNumber> : ISerialNumber<A1Notation<TNumber>>
 
     public BB26 Serial => this.serialNumber.Serial;
 
-    public static bool operator !=(A1Notation<TNumber> left, A1Notation<TNumber> right) => !Equals(left, right);
-
-    public static bool operator ==(A1Notation<TNumber> left, A1Notation<TNumber> right) => Equals(left, right);
-
     public static Option<A1Notation<TNumber>> Parse(string s, bool asciiOnly, IFormatProvider? provider) =>
         Validate(SimpleSerialNumber<BB26, TNumber>.Parse(s, asciiOnly, provider)).Map(x => new A1Notation<TNumber>(x));
 
@@ -69,6 +65,10 @@ public sealed class A1Notation<TNumber> : ISerialNumber<A1Notation<TNumber>>
 
         return parsed;
     }
+
+    public static bool operator ==(A1Notation<TNumber> left, A1Notation<TNumber> right) => Equals(left, right);
+
+    public static bool operator !=(A1Notation<TNumber> left, A1Notation<TNumber> right) => !Equals(left, right);
 
     public bool Equals(A1Notation<TNumber>? other) => this.serialNumber.Equals(other?.serialNumber);
 

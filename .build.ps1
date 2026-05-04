@@ -154,7 +154,7 @@ Task DevSkim Restore, {
 # Synopsis: Cleanup Code
 Task CleanupCode Restore, {
     $solution = Resolve-Path -Path 'TIKSN Framework.slnx'
-    Exec { dotnet jb cleanupcode '--profile=Built-in: Reformat Code' $solution }
+    Exec { dotnet jb cleanupcode '--profile=TIKSN Cleanup' $solution }
 }
 
 # Synopsis: Format XML Files

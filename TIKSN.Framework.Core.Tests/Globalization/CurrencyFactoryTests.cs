@@ -25,7 +25,10 @@ public class CurrencyFactoryTests
         // Arrange
 
         var configurationRoot = new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string>() { { "CurrencyUnionRedirections:XZZ", "uk-UA" } })
+            .AddInMemoryCollection(new Dictionary<string, string>
+            {
+                { "CurrencyUnionRedirections:XZZ", "uk-UA" },
+            })
             .Build();
         var services = new ServiceCollection();
         _ = services.AddFrameworkCore();
@@ -55,7 +58,10 @@ public class CurrencyFactoryTests
         // Arrange
 
         var configurationRoot = new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string>() { { "RegionalCurrencyRedirections:XK", "uk-UA" } })
+            .AddInMemoryCollection(new Dictionary<string, string>
+            {
+                { "RegionalCurrencyRedirections:XK", "uk-UA" },
+            })
             .Build();
         var services = new ServiceCollection();
         _ = services.AddFrameworkCore();

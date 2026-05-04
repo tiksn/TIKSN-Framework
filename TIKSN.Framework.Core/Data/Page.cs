@@ -19,9 +19,9 @@ public sealed class Page : IEquatable<Page>, ISequentialNavigator<Page>
     public int Number { get; }
     public int Size { get; }
 
-    public static bool operator !=(Page left, Page right) => !Equals(left, right);
-
     public static bool operator ==(Page left, Page right) => Equals(left, right);
+
+    public static bool operator !=(Page left, Page right) => !Equals(left, right);
 
     public bool Equals(Page? other)
     {

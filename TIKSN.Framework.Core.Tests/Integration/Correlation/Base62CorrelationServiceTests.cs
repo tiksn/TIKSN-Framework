@@ -43,7 +43,7 @@ public class Base62CorrelationServiceTests
         var correlationIDFromString = this.correlationService.Create("5Rq2J6PNGnciW2thvTHQTa");
         this.LogOutput(correlationIDFromString, nameof(correlationIDFromString));
         var bytes = correlationIDFromString.ToBinary();
-        var hex = BitConverter.ToString([.. bytes]);
+        var hex = BitConverter.ToString([.. bytes,]);
 
         hex.ShouldBe("B3-09-A6-C1-6E-56-F0-6C-03-B2-AE-47-9B-A5-E7-FA");
     }
@@ -53,7 +53,7 @@ public class Base62CorrelationServiceTests
         this.testOutputHelper.WriteLine("-------------------------");
         this.testOutputHelper.WriteLine(name);
         this.testOutputHelper.WriteLine(correlationID.ToString());
-        this.testOutputHelper.WriteLine(BitConverter.ToString([.. correlationID.ToBinary()]));
+        this.testOutputHelper.WriteLine(BitConverter.ToString([.. correlationID.ToBinary(),]));
         this.testOutputHelper.WriteLine("");
     }
 }

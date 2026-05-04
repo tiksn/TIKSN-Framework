@@ -28,23 +28,52 @@ public class LicenseTests
     {
         this.testOutputHelper = testOutputHelper ?? throw new ArgumentNullException(nameof(testOutputHelper));
 
-        this.publicCertificates = new Dictionary<string, byte[]>()
+        this.publicCertificates = new Dictionary<string, byte[]>
         {
             { "RSA", LicensingResource.LicensingTest1Public },
             { "DSA", LicensingResource.LicensingTest2Public },
         };
 
-        this.privateCertificates = new Dictionary<string, byte[]>()
+        this.privateCertificates = new Dictionary<string, byte[]>
         {
             { "RSA", LicensingResource.LicensingTest1Private_pfx },
             { "DSA", LicensingResource.LicensingTest2Private_pfx },
         };
 
-        this.privateCertificatePasswords = new Dictionary<string, string>()
+        this.privateCertificatePasswords = new Dictionary<string, string>
         {
             { "RSA", LicensingResource.LicensingTest1PrivatePassword },
             { "DSA", LicensingResource.LicensingTest2PrivatePassword },
         };
+    }
+
+    [Theory]
+    [InlineData("RSA")]
+    [InlineData("DSA")]
+    public void GivenPrivateCertificate_WhenLicenseCreatedWithValidation_ThenItShouldBeInvalid(
+        string kind)
+    {
+        // Arrange
+
+        this.Arrange(
+            kind,
+            out var licenseFactory,
+            out var licensor,
+            out var licensee,
+            out var terms,
+            out var entitlements,
+            out var publicCertificate,
+            out var privateCertificate);
+
+        // Act
+
+        var result = licenseFactory.Create(terms, entitlements, privateCertificate)
+            .Validate(license => license.Entitlements.CompanyId == 2000, failCode: 1638412088, "Wrong Company ID")
+            .Validate(license => license.Entitlements.EmployeeId == 20004000, failCode: 102340273, "Wrong Employee ID");
+
+        // Assert
+
+        result.IsFail.ShouldBeTrue();
     }
 
     [Theory]
@@ -82,35 +111,6 @@ public class LicenseTests
         this.AssertSuccess(licensor, licensee, terms, result);
     }
 
-    [Theory]
-    [InlineData("RSA")]
-    [InlineData("DSA")]
-    public void GivenPrivateCertificate_WhenLicenseCreatedWithValidation_ThenItShouldBeInvalid(
-        string kind)
-    {
-        // Arrange
-
-        this.Arrange(
-            kind,
-            out var licenseFactory,
-            out var licensor,
-            out var licensee,
-            out var terms,
-            out var entitlements,
-            out var publicCertificate,
-            out var privateCertificate);
-
-        // Act
-
-        var result = licenseFactory.Create(terms, entitlements, privateCertificate)
-            .Validate(license => license.Entitlements.CompanyId == 2000, 1638412088, "Wrong Company ID")
-            .Validate(license => license.Entitlements.EmployeeId == 20004000, 102340273, "Wrong Employee ID");
-
-        // Assert
-
-        result.IsFail.ShouldBeTrue();
-    }
-
     private void Arrange(
         string kind,
         out ILicenseFactory<TestEntitlements, TestLicenseEntitlements> licenseFactory,
@@ -131,7 +131,8 @@ public class LicenseTests
                 "Test License",
                 Guid.Parse("20559a6a-2ea6-45b2-9dc7-928406bc1719")));
 
-        var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(2022, 9, 24, 0, 0, 0, TimeSpan.Zero));
+        var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(year: 2022, month: 9, day: 24, hour: 0,
+            minute: 0, second: 0, TimeSpan.Zero));
         _ = services.AddSingleton<TimeProvider>(fakeTimeProvider);
 
         _ = services.AddSingleton(fakeTimeProvider);
@@ -154,8 +155,8 @@ public class LicenseTests
             "Microsoft",
             new MailAddress("info@microsoft.com"),
             new Uri("https://www.microsoft.com/"));
-        var notBefore = new DateTimeOffset(2022, 8, 24, 0, 0, 0, TimeSpan.Zero);
-        var notAfter = new DateTimeOffset(2023, 8, 24, 0, 0, 0, TimeSpan.Zero);
+        var notBefore = new DateTimeOffset(year: 2022, month: 8, day: 24, hour: 0, minute: 0, second: 0, TimeSpan.Zero);
+        var notAfter = new DateTimeOffset(year: 2023, month: 8, day: 24, hour: 0, minute: 0, second: 0, TimeSpan.Zero);
 
         terms = new LicenseTerms(
             serialNumber,
@@ -167,10 +168,10 @@ public class LicenseTests
         this.testOutputHelper.WriteLine(JsonConvert.SerializeObject(terms, Formatting.Indented));
         entitlements = new TestEntitlements(
             "Test-Name",
-            100,
-            Seq<byte>(1, 2, 3, 4, 5, 6, 7, 8, 9, 0),
-            1000,
-            10002000);
+            Quantity: 100,
+            Seq<byte>(a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, 9, 0),
+            CompanyId: 1000,
+            EmployeeId: 10002000);
         this.testOutputHelper.WriteLine("License Entitlements:");
         this.testOutputHelper.WriteLine(JsonConvert.SerializeObject(entitlements, Formatting.Indented));
 

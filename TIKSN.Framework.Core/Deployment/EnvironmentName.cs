@@ -16,6 +16,33 @@ public sealed class EnvironmentName : ISpanFormattable, ISpanParsable<Environmen
     private EnvironmentName(Seq<string> segments)
         => this.segments = segments;
 
+    #region Matches
+
+    public bool Matches(EnvironmentName other)
+    {
+        if (other is null)
+        {
+            return false;
+        }
+
+        if (ReferenceEquals(this, other))
+        {
+            return true;
+        }
+
+        var segmentsTail =
+            this.segments.Length <= other.segments.Length
+                ? this.segments
+                : this.segments.Skip(this.segments.Length - other.segments.Length);
+
+        return Enumerable.SequenceEqual(
+            segmentsTail,
+            other.segments,
+            StringComparer.InvariantCultureIgnoreCase);
+    }
+
+    #endregion Matches
+
     #region Parsing
 
     public static Option<EnvironmentName> Parse(
@@ -172,31 +199,4 @@ public sealed class EnvironmentName : ISpanFormattable, ISpanParsable<Environmen
     public override int GetHashCode() => this.segments.GetHashCode();
 
     #endregion Equality
-
-    #region Matches
-
-    public bool Matches(EnvironmentName other)
-    {
-        if (other is null)
-        {
-            return false;
-        }
-
-        if (ReferenceEquals(this, other))
-        {
-            return true;
-        }
-
-        var segmentsTail =
-            this.segments.Length <= other.segments.Length
-                ? this.segments
-                : this.segments.Skip(this.segments.Length - other.segments.Length);
-
-        return Enumerable.SequenceEqual(
-            segmentsTail,
-            other.segments,
-            StringComparer.InvariantCultureIgnoreCase);
-    }
-
-    #endregion Matches
 }

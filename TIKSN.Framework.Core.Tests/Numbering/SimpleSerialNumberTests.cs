@@ -10,6 +10,48 @@ namespace TIKSN.Tests.Numbering;
 public class SimpleSerialNumberTests
 {
     [Theory]
+    [InlineData(null, "ABC-123")]
+    [InlineData("", "ABC-123")]
+    [InlineData("G", "ABC-123")]
+    [InlineData("N", "ABC123")]
+    public void GivenSerialNumber_WhenFormatted_ThenValueShouldBe(string? format, string expected)
+    {
+        // Arrange
+        var simpleSerialNumber = SimpleSerialNumber<TLA, ushort>
+            .Parse("ABC-123", asciiOnly: true, CultureInfo.InvariantCulture)
+            .Match(s => s, () => throw new InvalidOperationException());
+
+        // Act
+        var actual = simpleSerialNumber.ToString(format, CultureInfo.InvariantCulture);
+
+        // Assert
+        actual.ShouldBe(expected);
+    }
+
+    [Theory]
+    [InlineData("ABC-123", "ABC-122", "ABC-124")]
+    [InlineData("ABC-0", null, "ABC-1")]
+    [InlineData("ABC-65535", "ABC-65534", null)]
+    public void GivenSerialNumber_WhenNextAndPreviousRequested_ThenValueShouldBe(
+        string serialNumber, string previous, string next)
+    {
+        // Arrange
+        var simpleSerialNumber = SimpleSerialNumber<TLA, ushort>
+            .Parse(serialNumber, asciiOnly: true, CultureInfo.InvariantCulture)
+            .Match(s => s, () => throw new InvalidOperationException());
+
+        // Act
+        var previousSerialNumber = simpleSerialNumber.GetPrevious();
+        var previousSerialNumberValue = previousSerialNumber.MatchUnsafe(s => s.ToString(), () => null);
+        var nextSerialNumber = simpleSerialNumber.GetNext();
+        var nextSerialNumberValue = nextSerialNumber.MatchUnsafe(s => s.ToString(), () => null);
+
+        // Assert
+        previousSerialNumberValue.ShouldBe(previous);
+        nextSerialNumberValue.ShouldBe(next);
+    }
+
+    [Theory]
     [InlineData(null, false, null)]
     [InlineData(null, true, null)]
     [InlineData("", false, null)]
@@ -64,47 +106,5 @@ public class SimpleSerialNumberTests
 
         // Assert
         actualValue.ShouldBe(expectedValue);
-    }
-
-    [Theory]
-    [InlineData("ABC-123", "ABC-122", "ABC-124")]
-    [InlineData("ABC-0", null, "ABC-1")]
-    [InlineData("ABC-65535", "ABC-65534", null)]
-    public void GivenSerialNumber_WhenNextAndPreviousRequested_ThenValueShouldBe(
-        string serialNumber, string previous, string next)
-    {
-        // Arrange
-        var simpleSerialNumber = SimpleSerialNumber<TLA, ushort>
-            .Parse(serialNumber, asciiOnly: true, CultureInfo.InvariantCulture)
-            .Match(s => s, () => throw new InvalidOperationException());
-
-        // Act
-        var previousSerialNumber = simpleSerialNumber.GetPrevious();
-        var previousSerialNumberValue = previousSerialNumber.MatchUnsafe(s => s.ToString(), () => null);
-        var nextSerialNumber = simpleSerialNumber.GetNext();
-        var nextSerialNumberValue = nextSerialNumber.MatchUnsafe(s => s.ToString(), () => null);
-
-        // Assert
-        previousSerialNumberValue.ShouldBe(previous);
-        nextSerialNumberValue.ShouldBe(next);
-    }
-
-    [Theory]
-    [InlineData(null, "ABC-123")]
-    [InlineData("", "ABC-123")]
-    [InlineData("G", "ABC-123")]
-    [InlineData("N", "ABC123")]
-    public void GivenSerialNumber_WhenFormatted_ThenValueShouldBe(string? format, string expected)
-    {
-        // Arrange
-        var simpleSerialNumber = SimpleSerialNumber<TLA, ushort>
-            .Parse("ABC-123", asciiOnly: true, CultureInfo.InvariantCulture)
-            .Match(s => s, () => throw new InvalidOperationException());
-
-        // Act
-        var actual = simpleSerialNumber.ToString(format, CultureInfo.InvariantCulture);
-
-        // Assert
-        actual.ShouldBe(expected);
     }
 }
