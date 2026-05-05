@@ -66,6 +66,8 @@ public static class ServiceCollectionExtensions
             "1.2.840.113549.1.1.1");
         services.TryAddKeyedSingleton<ICertificateSignatureService, DSACertificateSignatureService>(
             "1.2.840.10040.4.1");
+        services.TryAddKeyedSingleton<ICertificateSignatureService, EdDSACertificateSignatureService>(
+            "1.3.101.112");
         services.TryAddSingleton<IConsoleService, ConsoleService>();
         services.TryAddSingleton<IKnownFolders, KnownFolders>();
 

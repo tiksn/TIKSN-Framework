@@ -32,24 +32,28 @@ public class LicenseTests
         {
             { "RSA", LicensingResource.LicensingTest1Public },
             { "DSA", LicensingResource.LicensingTest2Public },
+            { "EdDSA", LicensingResource.LicensingTest3Public },
         };
 
         this.privateCertificates = new Dictionary<string, byte[]>
         {
             { "RSA", LicensingResource.LicensingTest1Private_pfx },
             { "DSA", LicensingResource.LicensingTest2Private_pfx },
+            { "EdDSA", LicensingResource.LicensingTest3Private_pfx },
         };
 
         this.privateCertificatePasswords = new Dictionary<string, string>
         {
             { "RSA", LicensingResource.LicensingTest1PrivatePassword },
             { "DSA", LicensingResource.LicensingTest2PrivatePassword },
+            { "EdDSA", LicensingResource.LicensingTest3PrivatePassword },
         };
     }
 
     [Theory]
     [InlineData("RSA")]
     [InlineData("DSA")]
+    [InlineData("EdDSA")]
     public void GivenPrivateCertificate_WhenLicenseCreatedWithValidation_ThenItShouldBeInvalid(
         string kind)
     {
@@ -79,6 +83,7 @@ public class LicenseTests
     [Theory]
     [InlineData("RSA")]
     [InlineData("DSA")]
+    [InlineData("EdDSA")]
     public void GivenPrivateCertificate_WhenLicenseCreated_ThenItShouldBeValid(
         string kind)
     {
@@ -179,9 +184,13 @@ public class LicenseTests
         this.testOutputHelper.WriteLine(
             $"Public Certificate Serial Number: {publicCertificate.GetSerialNumberString()}");
 
-        privateCertificate = new X509Certificate2(
-            this.privateCertificates[kind],
-            this.privateCertificatePasswords[kind]);
+        privateCertificate = kind == "EdDSA"
+            ? new EdDSAX509Certificate2(
+                this.privateCertificates[kind],
+                this.privateCertificatePasswords[kind])
+            : new X509Certificate2(
+                this.privateCertificates[kind],
+                this.privateCertificatePasswords[kind]);
 
         this.testOutputHelper.WriteLine(
             $"Private Certificate Serial Number: {privateCertificate.GetSerialNumberString()}");
