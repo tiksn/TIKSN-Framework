@@ -55,7 +55,7 @@
     <PackageVersion Include="Polly" Version="8.6.6" />
     <PackageVersion Include="RavenDB.Client" Version="7.2.2" />
     <PackageVersion Include="ReactiveUI" Version="23.2.19" />
-    <PackageVersion Include="ReactiveUI.Maui" Version="23.2.19" />
+    <PackageVersion Include="ReactiveUI.Maui" Version="23.2.27" />
     <PackageVersion Include="Roslynator.Analyzers" Version="4.15.0" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.25.0.139117" />
