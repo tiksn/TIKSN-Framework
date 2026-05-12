@@ -14,5 +14,7 @@ public sealed class TLA : Acronym<TLA>, IAcronymLength
     {
     }
 
-    public static int LetterCount => 3;
+    public static int MaximumLetterCount => 3;
+
+    public static int MinimumLetterCount => 3;
 }

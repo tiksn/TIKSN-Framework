@@ -41,4 +41,38 @@ public class AcronymTests
         // Assert
         actualValue.ShouldBe(expectedValue);
     }
+
+    [Theory]
+    [InlineData("A", null)]
+    [InlineData("AB", "AB")]
+    [InlineData("ABC", "ABC")]
+    [InlineData("ABCD", "ABCD")]
+    [InlineData("ABCDE", null)]
+    public void GivenVariableLengthAcronym_WhenParsed_ThenValueShouldRespectLengthRange(
+        string input,
+        string expectedValue)
+    {
+        // Arrange
+
+        // Act
+        var actual = VariableLengthAcronym.Parse(input, asciiOnly: true, CultureInfo.InvariantCulture);
+        var actualValue = actual.Map(x => x.ToString()).MatchUnsafe(x => x, () => null);
+
+        // Assert
+        actualValue.ShouldBe(expectedValue);
+    }
+
+    private sealed class VariableLengthAcronym : Acronym<VariableLengthAcronym>, IAcronymLength
+    {
+#pragma warning disable IDE0051 // Remove unused private members
+
+        private VariableLengthAcronym(string value) : base(value)
+#pragma warning restore IDE0051 // Remove unused private members
+        {
+        }
+
+        public static int MaximumLetterCount => 4;
+
+        public static int MinimumLetterCount => 2;
+    }
 }

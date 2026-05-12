@@ -46,7 +46,8 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
         var culture = provider as CultureInfo ?? CultureInfo.InvariantCulture;
 
         var lettersParser =
-            from letters in count(TSelf.LetterCount, letterParser.Map(x => char.ToUpper(x, culture)))
+            from letters in many(letterParser.Map(x => char.ToUpper(x, culture)))
+            where letters.Length >= TSelf.MinimumLetterCount && letters.Length <= TSelf.MaximumLetterCount
             from _ in eof
             select letters;
 

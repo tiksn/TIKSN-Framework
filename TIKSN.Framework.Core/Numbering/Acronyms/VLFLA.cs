@@ -14,5 +14,7 @@ public sealed class VLFLA : Acronym<VLFLA>, IAcronymLength
     {
     }
 
-    public static int LetterCount => 5;
+    public static int MaximumLetterCount => 5;
+
+    public static int MinimumLetterCount => 5;
 }
