@@ -170,7 +170,7 @@ public class A1NotationTests
         success.ShouldBe(expectedSuccess);
         if (expectedSuccess)
         {
-            result.ShouldNotBeNull();
+            _ = result.ShouldNotBeNull();
         }
         else
         {

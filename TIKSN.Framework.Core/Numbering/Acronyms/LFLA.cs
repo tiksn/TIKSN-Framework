@@ -14,5 +14,7 @@ public sealed class LFLA : Acronym<LFLA>, IAcronymLength
     {
     }
 
-    public static int LetterCount => 4;
+    public static int MaximumLetterCount => 4;
+
+    public static int MinimumLetterCount => 4;
 }
