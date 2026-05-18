@@ -132,6 +132,6 @@ public class AcademicYearTests
         Action action = () => _ = new AcademicYear(0);
 
         // Assert
-        action.ShouldThrow<ArgumentOutOfRangeException>();
+        _ = action.ShouldThrow<ArgumentOutOfRangeException>();
     }
 }

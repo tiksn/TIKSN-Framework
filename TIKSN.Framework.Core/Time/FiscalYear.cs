@@ -51,6 +51,9 @@ public readonly struct FiscalYear : IYear<FiscalYear>
 
     #endregion Conversion
 
+    internal AnnualDate GetStartDate()
+        => this.startDate;
+
     #region Contains
 
     public bool Contains(LocalDate localDate)

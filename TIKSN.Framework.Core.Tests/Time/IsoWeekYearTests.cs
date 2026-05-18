@@ -153,6 +153,6 @@ public class IsoWeekYearTests
         Action action = () => _ = new IsoWeekYear(0);
 
         // Assert
-        action.ShouldThrow<ArgumentOutOfRangeException>();
+        _ = action.ShouldThrow<ArgumentOutOfRangeException>();
     }
 }

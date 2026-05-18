@@ -7,8 +7,8 @@ namespace TIKSN.Time;
 
 public readonly struct CycleMonth : IMonth<CycleMonth>
 {
-    private readonly YearMonth startMonth;
     private readonly int startDayOfMonth;
+    private readonly YearMonth startMonth;
 
     public CycleMonth(YearMonth startMonth, int startDayOfMonth)
     {
@@ -30,6 +30,9 @@ public readonly struct CycleMonth : IMonth<CycleMonth>
     }
 
     #endregion Conversion
+
+    internal int GetStartDayOfMonth()
+        => this.startDayOfMonth;
 
     #region Contains
 

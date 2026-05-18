@@ -45,6 +45,19 @@ public class CalendarMonthTests
         containsZonedDateTime.ShouldBe(expectedContains);
     }
 
+    [Theory]
+    [InlineData(0, 1)]
+    [InlineData(2023, 0)]
+    [InlineData(2023, 13)]
+    public void GivenInvalidMonthInfo_WhenCreated_ThenShouldThrow(int year, int month)
+    {
+        // Act
+        Action action = () => _ = new CalendarMonth(year, month);
+
+        // Assert
+        _ = action.ShouldThrow<ArgumentOutOfRangeException>();
+    }
+
     [Fact]
     public void GivenMonthBeforeCommonEra_WhenNextWouldBeYearZero_ThenNoneShouldBeReturned()
     {
@@ -117,18 +130,5 @@ public class CalendarMonthTests
         // Assert
 
         actual.ShouldBe(expected);
-    }
-
-    [Theory]
-    [InlineData(0, 1)]
-    [InlineData(2023, 0)]
-    [InlineData(2023, 13)]
-    public void GivenInvalidMonthInfo_WhenCreated_ThenShouldThrow(int year, int month)
-    {
-        // Act
-        Action action = () => _ = new CalendarMonth(year, month);
-
-        // Assert
-        action.ShouldThrow<ArgumentOutOfRangeException>();
     }
 }

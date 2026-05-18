@@ -6,14 +6,25 @@ namespace TIKSN.Time;
 
 internal static class MonthHelper
 {
-    public static YearMonth EnsureNonZero(YearMonth yearMonth, string paramName)
+    public static bool Contains(DateInterval interval, LocalDate localDate)
+        => interval.Start <= localDate && localDate <= interval.End;
+
+    public static bool Contains(DateInterval interval, YearMonth yearMonth)
     {
-        if (GetAbsoluteYear(yearMonth) == 0)
+        var monthStart = yearMonth.OnDayOfMonth(1);
+        var monthEnd = monthStart.PlusMonths(1).PlusDays(-1);
+
+        return monthStart <= interval.End && interval.Start <= monthEnd;
+    }
+
+    public static int EnsureDayOfMonth(int dayOfMonth, string paramName)
+    {
+        if (dayOfMonth is < 1 or > 31)
         {
             throw new ArgumentOutOfRangeException(paramName);
         }
 
-        return yearMonth;
+        return dayOfMonth;
     }
 
     public static int EnsureMonthOfYear(int monthOfYear, string paramName)
@@ -26,14 +37,14 @@ internal static class MonthHelper
         return monthOfYear;
     }
 
-    public static int EnsureDayOfMonth(int dayOfMonth, string paramName)
+    public static YearMonth EnsureNonZero(YearMonth yearMonth, string paramName)
     {
-        if (dayOfMonth is < 1 or > 31)
+        if (GetAbsoluteYear(yearMonth) == 0)
         {
             throw new ArgumentOutOfRangeException(paramName);
         }
 
-        return dayOfMonth;
+        return yearMonth;
     }
 
     public static LocalDate GetClampedDate(YearMonth yearMonth, int dayOfMonth)
@@ -53,27 +64,18 @@ internal static class MonthHelper
         }
     }
 
-    public static Option<YearMonth> GetShiftedYearMonth(YearMonth yearMonth, long numberOfMonths)
+    public static int GetShiftedMonthOfYear(int monthOfYear, long numberOfMonths)
     {
-        if (numberOfMonths is < int.MinValue or > int.MaxValue)
+        var zeroBasedMonth = monthOfYear - 1L;
+        var shiftedMonth = zeroBasedMonth + numberOfMonths;
+        var newZeroBasedMonth = shiftedMonth % 12;
+
+        if (newZeroBasedMonth < 0)
         {
-            return None;
+            newZeroBasedMonth += 12;
         }
 
-        try
-        {
-            var shiftedYearMonth = yearMonth.PlusMonths((int)numberOfMonths);
-
-            return GetAbsoluteYear(shiftedYearMonth) == 0 ? None : shiftedYearMonth;
-        }
-        catch (ArgumentOutOfRangeException)
-        {
-            return None;
-        }
-        catch (OverflowException)
-        {
-            return None;
-        }
+        return (int)newZeroBasedMonth + 1;
     }
 
     public static Option<TYear> GetShiftedYear<TYear>(
@@ -105,29 +107,27 @@ internal static class MonthHelper
         return yearShift < 0 ? getPreviousYears(year, (int)-yearShift) : year;
     }
 
-    public static int GetShiftedMonthOfYear(int monthOfYear, long numberOfMonths)
+    public static Option<YearMonth> GetShiftedYearMonth(YearMonth yearMonth, long numberOfMonths)
     {
-        var zeroBasedMonth = monthOfYear - 1L;
-        var shiftedMonth = zeroBasedMonth + numberOfMonths;
-        var newZeroBasedMonth = shiftedMonth % 12;
-
-        if (newZeroBasedMonth < 0)
+        if (numberOfMonths is < int.MinValue or > int.MaxValue)
         {
-            newZeroBasedMonth += 12;
+            return None;
         }
 
-        return (int)newZeroBasedMonth + 1;
-    }
+        try
+        {
+            var shiftedYearMonth = yearMonth.PlusMonths((int)numberOfMonths);
 
-    public static bool Contains(DateInterval interval, LocalDate localDate)
-        => interval.Start <= localDate && localDate <= interval.End;
-
-    public static bool Contains(DateInterval interval, YearMonth yearMonth)
-    {
-        var monthStart = yearMonth.OnDayOfMonth(1);
-        var monthEnd = monthStart.PlusMonths(1).PlusDays(-1);
-
-        return monthStart <= interval.End && interval.Start <= monthEnd;
+            return GetAbsoluteYear(shiftedYearMonth) == 0 ? None : shiftedYearMonth;
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            return None;
+        }
+        catch (OverflowException)
+        {
+            return None;
+        }
     }
 
     private static int GetAbsoluteYear(YearMonth yearMonth)

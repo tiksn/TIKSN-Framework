@@ -132,6 +132,6 @@ public class CalendarYearTests
         Action action = () => _ = new CalendarYear(0);
 
         // Assert
-        action.ShouldThrow<ArgumentOutOfRangeException>();
+        _ = action.ShouldThrow<ArgumentOutOfRangeException>();
     }
 }
