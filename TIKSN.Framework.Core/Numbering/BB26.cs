@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using LanguageExt;
 using LanguageExt.Parsec;
+using TIKSN.Navigation;
 using static LanguageExt.Parsec.Char;
 using static LanguageExt.Parsec.Prim;
 using static LanguageExt.Prelude;

@@ -1,6 +1,8 @@
 using System.Globalization;
+using LanguageExt;
 using NodaTime;
 using NodaTime.Calendars;
+using TIKSN.Navigation;
 
 namespace TIKSN.Time;
 
@@ -29,7 +31,9 @@ public readonly struct AcademicYear : IYear<AcademicYear>
         ArgumentNullException.ThrowIfNull(era);
         ArgumentNullException.ThrowIfNull(calendar);
 
-        this.absoluteStartYear = calendar.GetAbsoluteYear(startYearOfEra, era);
+        this.absoluteStartYear = YearHelper.EnsureNonZero(
+            calendar.GetAbsoluteYear(startYearOfEra, era),
+            nameof(startYearOfEra));
     }
 
     #region Conversion
@@ -167,29 +171,29 @@ public readonly struct AcademicYear : IYear<AcademicYear>
 
     #region Next and Previous
 
-    public AcademicYear GetNext(int numberOfYears)
-        => new(this.absoluteStartYear + numberOfYears);
+    public Option<AcademicYear> GetNext(int numberOfYears)
+        => YearHelper.GetNextYear(this.absoluteStartYear, numberOfYears).Map(year => new AcademicYear(year));
 
-    public AcademicYear GetNext()
+    public Option<AcademicYear> GetNext()
         => this.GetNext(1);
 
-    IYear IYear.GetNext(int numberOfYears)
-        => this.GetNext(numberOfYears);
+    Option<IYear> ISequentialNavigator<IYear>.GetNext()
+        => this.GetNext().Map(year => (IYear)year);
 
-    IYear IYear.GetNext()
-        => this.GetNext(1);
+    Option<IYear> IYear.GetNext(int numberOfYears)
+        => this.GetNext(numberOfYears).Map(year => (IYear)year);
 
-    public AcademicYear GetPrevious(int numberOfYears)
-        => new(this.absoluteStartYear - numberOfYears);
+    public Option<AcademicYear> GetPrevious(int numberOfYears)
+        => YearHelper.GetPreviousYear(this.absoluteStartYear, numberOfYears).Map(year => new AcademicYear(year));
 
-    public AcademicYear GetPrevious()
+    public Option<AcademicYear> GetPrevious()
         => this.GetPrevious(1);
 
-    IYear IYear.GetPrevious(int numberOfYears)
-        => this.GetPrevious(numberOfYears);
+    Option<IYear> ISequentialNavigator<IYear>.GetPrevious()
+        => this.GetPrevious().Map(year => (IYear)year);
 
-    IYear IYear.GetPrevious()
-        => this.GetPrevious(1);
+    Option<IYear> IYear.GetPrevious(int numberOfYears)
+        => this.GetPrevious(numberOfYears).Map(year => (IYear)year);
 
     #endregion Next and Previous
 }

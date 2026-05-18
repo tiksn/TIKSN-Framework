@@ -1,5 +1,5 @@
 using LanguageExt;
-using TIKSN.Numbering;
+using TIKSN.Navigation;
 using static LanguageExt.Prelude;
 
 namespace TIKSN.Data;

@@ -1,4 +1,6 @@
+using System;
 using NodaTime;
+using NodaTime.Calendars;
 using Shouldly;
 using TIKSN.Time;
 using Xunit;
@@ -45,6 +47,22 @@ public class AcademicYearTests
         containsZonedDateTime.ShouldBe(expectedContains);
     }
 
+    [Fact]
+    public void GivenYearBeforeCommonEra_WhenNextWouldBeZero_ThenNoneShouldBeReturned()
+    {
+        // Arrange
+
+        var academicYear = new AcademicYear(Era.BeforeCommon, startYearOfEra: 2);
+
+        // Act
+
+        var actual = academicYear.GetNext();
+
+        // Assert
+
+        actual.IsNone.ShouldBeTrue();
+    }
+
     [Theory]
     [InlineData(2022, "2021/2022", "2023/2024")]
     [InlineData(2023, "2022/2023", "2024/2025")]
@@ -58,8 +76,8 @@ public class AcademicYearTests
 
         // Act
 
-        var actualPrevious = academicYear.GetPrevious().ToString();
-        var actualNext = academicYear.GetNext().ToString();
+        var actualPrevious = academicYear.GetPrevious().MatchUnsafe(y => y.ToString(), () => null);
+        var actualNext = academicYear.GetNext().MatchUnsafe(y => y.ToString(), () => null);
 
         // Assert
 
@@ -105,5 +123,15 @@ public class AcademicYearTests
         // Assert
 
         actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void GivenZeroYear_WhenCreated_ThenShouldThrow()
+    {
+        // Act
+        Action action = () => _ = new AcademicYear(0);
+
+        // Assert
+        action.ShouldThrow<ArgumentOutOfRangeException>();
     }
 }
