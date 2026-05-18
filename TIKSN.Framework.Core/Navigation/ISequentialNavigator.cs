@@ -1,6 +1,6 @@
 using LanguageExt;
 
-namespace TIKSN.Numbering;
+namespace TIKSN.Navigation;
 
 public interface ISequentialNavigator<TSelf>
 {

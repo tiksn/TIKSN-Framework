@@ -1,4 +1,6 @@
+using System;
 using NodaTime;
+using NodaTime.Calendars;
 using Shouldly;
 using TIKSN.Time;
 using Xunit;
@@ -45,6 +47,22 @@ public class FiscalYearTests
         containsZonedDateTime.ShouldBe(expectedContains);
     }
 
+    [Fact]
+    public void GivenYearBeforeCommonEra_WhenNextWouldBeZero_ThenNoneShouldBeReturned()
+    {
+        // Arrange
+
+        var fiscalYear = new FiscalYear(Era.BeforeCommon, startYearOfEra: 2, new AnnualDate(month: 10, day: 1));
+
+        // Act
+
+        var actual = fiscalYear.GetNext();
+
+        // Assert
+
+        actual.IsNone.ShouldBeTrue();
+    }
+
     [Theory]
     [InlineData(2022, "2021/2022", "2023/2024")]
     [InlineData(2023, "2022/2023", "2024/2025")]
@@ -58,8 +76,8 @@ public class FiscalYearTests
 
         // Act
 
-        var actualPrevious = fiscalYear.GetPrevious().ToString();
-        var actualNext = fiscalYear.GetNext().ToString();
+        var actualPrevious = fiscalYear.GetPrevious().MatchUnsafe(y => y.ToString(), () => null);
+        var actualNext = fiscalYear.GetNext().MatchUnsafe(y => y.ToString(), () => null);
 
         // Assert
 
@@ -105,5 +123,15 @@ public class FiscalYearTests
         // Assert
 
         actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void GivenZeroYear_WhenCreated_ThenShouldThrow()
+    {
+        // Act
+        Action action = () => _ = new FiscalYear(0, new AnnualDate(month: 10, day: 1));
+
+        // Assert
+        action.ShouldThrow<ArgumentOutOfRangeException>();
     }
 }

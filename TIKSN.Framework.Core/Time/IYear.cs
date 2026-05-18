@@ -1,4 +1,6 @@
+using LanguageExt;
 using NodaTime;
+using TIKSN.Navigation;
 
 namespace TIKSN.Time;
 
@@ -12,18 +14,18 @@ public interface IYear<TSelf> :
 {
     #region Next and Previous
 
-    public new TSelf GetNext();
+    public new Option<TSelf> GetNext();
 
-    public new TSelf GetNext(int numberOfYears);
+    public new Option<TSelf> GetNext(int numberOfYears);
 
-    public new TSelf GetPrevious();
+    public new Option<TSelf> GetPrevious();
 
-    public new TSelf GetPrevious(int numberOfYears);
+    public new Option<TSelf> GetPrevious(int numberOfYears);
 
     #endregion Next and Previous
 }
 
-public interface IYear
+public interface IYear : ISequentialNavigator<IYear>
 {
     #region Contains
 
@@ -43,13 +45,9 @@ public interface IYear
 
     #region Next and Previous
 
-    public IYear GetNext();
+    public Option<IYear> GetNext(int numberOfYears);
 
-    public IYear GetNext(int numberOfYears);
-
-    public IYear GetPrevious();
-
-    public IYear GetPrevious(int numberOfYears);
+    public Option<IYear> GetPrevious(int numberOfYears);
 
     #endregion Next and Previous
 

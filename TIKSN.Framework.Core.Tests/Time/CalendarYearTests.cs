@@ -1,4 +1,6 @@
+using System;
 using NodaTime;
+using NodaTime.Calendars;
 using Shouldly;
 using TIKSN.Time;
 using Xunit;
@@ -45,6 +47,22 @@ public class CalendarYearTests
         containsZonedDateTime.ShouldBe(expectedContains);
     }
 
+    [Fact]
+    public void GivenYearBeforeCommonEra_WhenNextWouldBeZero_ThenNoneShouldBeReturned()
+    {
+        // Arrange
+
+        var calendarYear = new CalendarYear(Era.BeforeCommon, yearOfEra: 2);
+
+        // Act
+
+        var actual = calendarYear.GetNext();
+
+        // Assert
+
+        actual.IsNone.ShouldBeTrue();
+    }
+
     [Theory]
     [InlineData(2022, "2021", "2023")]
     [InlineData(2023, "2022", "2024")]
@@ -58,8 +76,8 @@ public class CalendarYearTests
 
         // Act
 
-        var actualPrevious = calendarYear.GetPrevious().ToString();
-        var actualNext = calendarYear.GetNext().ToString();
+        var actualPrevious = calendarYear.GetPrevious().MatchUnsafe(y => y.ToString(), () => null);
+        var actualNext = calendarYear.GetNext().MatchUnsafe(y => y.ToString(), () => null);
 
         // Assert
 
@@ -105,5 +123,15 @@ public class CalendarYearTests
         // Assert
 
         actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void GivenZeroYear_WhenCreated_ThenShouldThrow()
+    {
+        // Act
+        Action action = () => _ = new CalendarYear(0);
+
+        // Assert
+        action.ShouldThrow<ArgumentOutOfRangeException>();
     }
 }
