@@ -47,26 +47,16 @@ public class FiscalMonthTests
     }
 
     [Theory]
-    [InlineData(2023, 9, false)]
-    [InlineData(2023, 10, true)]
-    [InlineData(2023, 11, true)]
-    [InlineData(2023, 12, false)]
-    public void GivenYearMonth_WhenContainsChecked_ThenOverlapResultShouldMatch(
-        int year, int month, bool expectedContains)
+    [InlineData(0)]
+    [InlineData(13)]
+    public void GivenInvalidMonthOrdinal_WhenCreated_ThenShouldThrow(int monthOfFiscalYear)
     {
-        // Arrange
-
-        var fiscalMonth = new FiscalMonth(
-            new FiscalYear(startYear: 2023, new AnnualDate(month: 10, day: 15)),
-            monthOfFiscalYear: 1);
-
         // Act
-
-        var actual = fiscalMonth.Contains(new YearMonth(year, month));
+        Action action = () =>
+            _ = new FiscalMonth(new FiscalYear(2023, new AnnualDate(month: 10, day: 1)), monthOfFiscalYear);
 
         // Assert
-
-        actual.ShouldBe(expectedContains);
+        _ = action.ShouldThrow<ArgumentOutOfRangeException>();
     }
 
     [Fact]
@@ -150,14 +140,25 @@ public class FiscalMonthTests
     }
 
     [Theory]
-    [InlineData(0)]
-    [InlineData(13)]
-    public void GivenInvalidMonthOrdinal_WhenCreated_ThenShouldThrow(int monthOfFiscalYear)
+    [InlineData(2023, 9, false)]
+    [InlineData(2023, 10, true)]
+    [InlineData(2023, 11, true)]
+    [InlineData(2023, 12, false)]
+    public void GivenYearMonth_WhenContainsChecked_ThenOverlapResultShouldMatch(
+        int year, int month, bool expectedContains)
     {
+        // Arrange
+
+        var fiscalMonth = new FiscalMonth(
+            new FiscalYear(startYear: 2023, new AnnualDate(month: 10, day: 15)),
+            monthOfFiscalYear: 1);
+
         // Act
-        Action action = () => _ = new FiscalMonth(new FiscalYear(2023, new AnnualDate(month: 10, day: 1)), monthOfFiscalYear);
+
+        var actual = fiscalMonth.Contains(new YearMonth(year, month));
 
         // Assert
-        action.ShouldThrow<ArgumentOutOfRangeException>();
+
+        actual.ShouldBe(expectedContains);
     }
 }

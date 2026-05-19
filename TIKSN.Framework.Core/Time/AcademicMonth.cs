@@ -107,7 +107,8 @@ public readonly struct AcademicMonth : IMonth<AcademicMonth>
         => this.ToString(string.Empty, CultureInfo.InvariantCulture);
 
     public string ToString(string? format, IFormatProvider? formatProvider)
-        => $"{this.academicYear.ToString(format, formatProvider)}-{this.monthOfAcademicYear.ToString("00", formatProvider)}";
+        =>
+            $"{this.academicYear.ToString(format, formatProvider)}-{this.monthOfAcademicYear.ToString("00", formatProvider)}";
 
     public bool TryFormat(
         Span<char> destination,
@@ -130,11 +131,11 @@ public readonly struct AcademicMonth : IMonth<AcademicMonth>
         var shiftedMonth = MonthHelper.GetShiftedMonthOfYear(this.monthOfAcademicYear, numberOfMonths);
 
         return MonthHelper.GetShiftedYear(
-            this.academicYear,
-            this.monthOfAcademicYear,
-            numberOfMonths,
-            static (year, years) => year.GetNext(years),
-            static (year, years) => year.GetPrevious(years))
+                this.academicYear,
+                this.monthOfAcademicYear,
+                numberOfMonths,
+                static (year, years) => year.GetNext(years),
+                static (year, years) => year.GetPrevious(years))
             .Map(year => new AcademicMonth(year, shiftedMonth));
     }
 
@@ -152,11 +153,11 @@ public readonly struct AcademicMonth : IMonth<AcademicMonth>
         var shiftedMonth = MonthHelper.GetShiftedMonthOfYear(this.monthOfAcademicYear, -1L * numberOfMonths);
 
         return MonthHelper.GetShiftedYear(
-            this.academicYear,
-            this.monthOfAcademicYear,
-            -1L * numberOfMonths,
-            static (year, years) => year.GetNext(years),
-            static (year, years) => year.GetPrevious(years))
+                this.academicYear,
+                this.monthOfAcademicYear,
+                -1L * numberOfMonths,
+                static (year, years) => year.GetNext(years),
+                static (year, years) => year.GetPrevious(years))
             .Map(year => new AcademicMonth(year, shiftedMonth));
     }
 

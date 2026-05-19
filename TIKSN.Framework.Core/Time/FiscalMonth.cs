@@ -107,7 +107,8 @@ public readonly struct FiscalMonth : IMonth<FiscalMonth>
         => this.ToString(string.Empty, CultureInfo.InvariantCulture);
 
     public string ToString(string? format, IFormatProvider? formatProvider)
-        => $"{this.fiscalYear.ToString(format, formatProvider)}-{this.monthOfFiscalYear.ToString("00", formatProvider)}";
+        =>
+            $"{this.fiscalYear.ToString(format, formatProvider)}-{this.monthOfFiscalYear.ToString("00", formatProvider)}";
 
     public bool TryFormat(
         Span<char> destination,
@@ -130,11 +131,11 @@ public readonly struct FiscalMonth : IMonth<FiscalMonth>
         var shiftedMonth = MonthHelper.GetShiftedMonthOfYear(this.monthOfFiscalYear, numberOfMonths);
 
         return MonthHelper.GetShiftedYear(
-            this.fiscalYear,
-            this.monthOfFiscalYear,
-            numberOfMonths,
-            static (year, years) => year.GetNext(years),
-            static (year, years) => year.GetPrevious(years))
+                this.fiscalYear,
+                this.monthOfFiscalYear,
+                numberOfMonths,
+                static (year, years) => year.GetNext(years),
+                static (year, years) => year.GetPrevious(years))
             .Map(year => new FiscalMonth(year, shiftedMonth));
     }
 
@@ -152,11 +153,11 @@ public readonly struct FiscalMonth : IMonth<FiscalMonth>
         var shiftedMonth = MonthHelper.GetShiftedMonthOfYear(this.monthOfFiscalYear, -1L * numberOfMonths);
 
         return MonthHelper.GetShiftedYear(
-            this.fiscalYear,
-            this.monthOfFiscalYear,
-            -1L * numberOfMonths,
-            static (year, years) => year.GetNext(years),
-            static (year, years) => year.GetPrevious(years))
+                this.fiscalYear,
+                this.monthOfFiscalYear,
+                -1L * numberOfMonths,
+                static (year, years) => year.GetNext(years),
+                static (year, years) => year.GetPrevious(years))
             .Map(year => new FiscalMonth(year, shiftedMonth));
     }
 

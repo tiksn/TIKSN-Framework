@@ -45,23 +45,15 @@ public class AcademicMonthTests
     }
 
     [Theory]
-    [InlineData(2023, 8, false)]
-    [InlineData(2023, 9, true)]
-    [InlineData(2023, 10, false)]
-    public void GivenYearMonth_WhenContainsChecked_ThenOverlapResultShouldMatch(
-        int year, int month, bool expectedContains)
+    [InlineData(0)]
+    [InlineData(13)]
+    public void GivenInvalidMonthOrdinal_WhenCreated_ThenShouldThrow(int monthOfAcademicYear)
     {
-        // Arrange
-
-        var academicMonth = new AcademicMonth(new AcademicYear(2023), monthOfAcademicYear: 1);
-
         // Act
-
-        var actual = academicMonth.Contains(new YearMonth(year, month));
+        Action action = () => _ = new AcademicMonth(new AcademicYear(2023), monthOfAcademicYear);
 
         // Assert
-
-        actual.ShouldBe(expectedContains);
+        _ = action.ShouldThrow<ArgumentOutOfRangeException>();
     }
 
     [Fact]
@@ -69,7 +61,8 @@ public class AcademicMonthTests
     {
         // Arrange
 
-        var academicMonth = new AcademicMonth(new AcademicYear(Era.BeforeCommon, startYearOfEra: 2), monthOfAcademicYear: 12);
+        var academicMonth =
+            new AcademicMonth(new AcademicYear(Era.BeforeCommon, startYearOfEra: 2), monthOfAcademicYear: 12);
 
         // Act
 
@@ -139,14 +132,22 @@ public class AcademicMonthTests
     }
 
     [Theory]
-    [InlineData(0)]
-    [InlineData(13)]
-    public void GivenInvalidMonthOrdinal_WhenCreated_ThenShouldThrow(int monthOfAcademicYear)
+    [InlineData(2023, 8, false)]
+    [InlineData(2023, 9, true)]
+    [InlineData(2023, 10, false)]
+    public void GivenYearMonth_WhenContainsChecked_ThenOverlapResultShouldMatch(
+        int year, int month, bool expectedContains)
     {
+        // Arrange
+
+        var academicMonth = new AcademicMonth(new AcademicYear(2023), monthOfAcademicYear: 1);
+
         // Act
-        Action action = () => _ = new AcademicMonth(new AcademicYear(2023), monthOfAcademicYear);
+
+        var actual = academicMonth.Contains(new YearMonth(year, month));
 
         // Assert
-        action.ShouldThrow<ArgumentOutOfRangeException>();
+
+        actual.ShouldBe(expectedContains);
     }
 }

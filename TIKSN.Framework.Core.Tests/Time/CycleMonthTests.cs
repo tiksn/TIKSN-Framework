@@ -8,6 +8,48 @@ namespace TIKSN.Tests.Time;
 
 public class CycleMonthTests
 {
+    [Fact]
+    public void GivenCycleMonth_WhenNextAndPreviousRequested_ThenResultShouldMatch()
+    {
+        // Arrange
+
+        var cycleMonth = new CycleMonth(new YearMonth(2026, 12), 15);
+
+        // Act
+
+        var actualPrevious = cycleMonth.GetPrevious().MatchUnsafe(
+            m => m.ToDateInterval().ToString(),
+            () => null);
+        var actualNext = cycleMonth.GetNext().MatchUnsafe(
+            m => m.ToDateInterval().ToString(),
+            () => null);
+
+        // Assert
+
+        actualPrevious.ShouldBe("[2026-11-15, 2026-12-14]");
+        actualNext.ShouldBe("[2027-01-15, 2027-02-14]");
+    }
+
+    [Theory]
+    [InlineData(2026, 5, 15, "[2026-05-15, 2026-06-14]")]
+    [InlineData(2025, 2, 31, "[2025-02-28, 2025-03-30]")]
+    [InlineData(2024, 2, 31, "[2024-02-29, 2024-03-30]")]
+    public void GivenCycleMonth_WhenToDateInterval_ThenResultShouldMatch(
+        int year, int month, int startDayOfMonth, string expected)
+    {
+        // Arrange
+
+        var cycleMonth = new CycleMonth(new YearMonth(year, month), startDayOfMonth);
+
+        // Act
+
+        var actual = cycleMonth.ToDateInterval().ToString();
+
+        // Assert
+
+        actual.ShouldBe(expected);
+    }
+
     [Theory]
     [InlineData(2026, 5, 14, 11, 43, 2, false)]
     [InlineData(2026, 5, 15, 11, 43, 2, true)]
@@ -44,24 +86,15 @@ public class CycleMonthTests
     }
 
     [Theory]
-    [InlineData(2026, 4, false)]
-    [InlineData(2026, 5, true)]
-    [InlineData(2026, 6, true)]
-    [InlineData(2026, 7, false)]
-    public void GivenYearMonth_WhenContainsChecked_ThenOverlapResultShouldMatch(
-        int year, int month, bool expectedContains)
+    [InlineData(0)]
+    [InlineData(32)]
+    public void GivenInvalidStartDay_WhenCreated_ThenShouldThrow(int startDayOfMonth)
     {
-        // Arrange
-
-        var cycleMonth = new CycleMonth(new YearMonth(2026, 5), 15);
-
         // Act
-
-        var actual = cycleMonth.Contains(new YearMonth(year, month));
+        Action action = () => _ = new CycleMonth(new YearMonth(2026, 5), startDayOfMonth);
 
         // Assert
-
-        actual.ShouldBe(expectedContains);
+        _ = action.ShouldThrow<ArgumentOutOfRangeException>();
     }
 
     [Fact]
@@ -96,56 +129,23 @@ public class CycleMonthTests
     }
 
     [Theory]
-    [InlineData(2026, 5, 15, "[2026-05-15, 2026-06-14]")]
-    [InlineData(2025, 2, 31, "[2025-02-28, 2025-03-30]")]
-    [InlineData(2024, 2, 31, "[2024-02-29, 2024-03-30]")]
-    public void GivenCycleMonth_WhenToDateInterval_ThenResultShouldMatch(
-        int year, int month, int startDayOfMonth, string expected)
+    [InlineData(2026, 4, false)]
+    [InlineData(2026, 5, true)]
+    [InlineData(2026, 6, true)]
+    [InlineData(2026, 7, false)]
+    public void GivenYearMonth_WhenContainsChecked_ThenOverlapResultShouldMatch(
+        int year, int month, bool expectedContains)
     {
         // Arrange
 
-        var cycleMonth = new CycleMonth(new YearMonth(year, month), startDayOfMonth);
+        var cycleMonth = new CycleMonth(new YearMonth(2026, 5), 15);
 
         // Act
 
-        var actual = cycleMonth.ToDateInterval().ToString();
+        var actual = cycleMonth.Contains(new YearMonth(year, month));
 
         // Assert
 
-        actual.ShouldBe(expected);
-    }
-
-    [Fact]
-    public void GivenCycleMonth_WhenNextAndPreviousRequested_ThenResultShouldMatch()
-    {
-        // Arrange
-
-        var cycleMonth = new CycleMonth(new YearMonth(2026, 12), 15);
-
-        // Act
-
-        var actualPrevious = cycleMonth.GetPrevious().MatchUnsafe(
-            m => m.ToDateInterval().ToString(),
-            () => null);
-        var actualNext = cycleMonth.GetNext().MatchUnsafe(
-            m => m.ToDateInterval().ToString(),
-            () => null);
-
-        // Assert
-
-        actualPrevious.ShouldBe("[2026-11-15, 2026-12-14]");
-        actualNext.ShouldBe("[2027-01-15, 2027-02-14]");
-    }
-
-    [Theory]
-    [InlineData(0)]
-    [InlineData(32)]
-    public void GivenInvalidStartDay_WhenCreated_ThenShouldThrow(int startDayOfMonth)
-    {
-        // Act
-        Action action = () => _ = new CycleMonth(new YearMonth(2026, 5), startDayOfMonth);
-
-        // Assert
-        action.ShouldThrow<ArgumentOutOfRangeException>();
+        actual.ShouldBe(expectedContains);
     }
 }

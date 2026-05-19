@@ -132,6 +132,6 @@ public class FiscalYearTests
         Action action = () => _ = new FiscalYear(0, new AnnualDate(month: 10, day: 1));
 
         // Assert
-        action.ShouldThrow<ArgumentOutOfRangeException>();
+        _ = action.ShouldThrow<ArgumentOutOfRangeException>();
     }
 }
