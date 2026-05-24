@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Google.Protobuf;
 using LanguageExt;
@@ -61,10 +62,37 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
         var messageData = envelope.Message.ToByteString();
 
         var keyAlgorithm = privateCertificate.GetKeyAlgorithm();
+        var signatureServiceValidation = this.GetSignatureService(keyAlgorithm);
+
+        if (errors.Count != 0)
+        {
+            return errors.ToSeq();
+        }
+
         envelope.SignatureAlgorithm = keyAlgorithm;
-        var signatureService = this.serviceProvider.GetRequiredKeyedService<ICertificateSignatureService>(keyAlgorithm);
-        var signature = signatureService.Sign(messageData.ToByteArray(), privateCertificate);
-        envelope.Signature = ByteString.CopyFrom(signature);
+        if (signatureServiceValidation.IsFail)
+        {
+            return signatureServiceValidation.FailToSeq();
+        }
+
+        try
+        {
+            var signatureService = signatureServiceValidation.SuccessToSeq().Single();
+            var signature = signatureService.Sign(messageData.ToByteArray(), privateCertificate);
+            envelope.Signature = ByteString.CopyFrom(signature);
+        }
+        catch (CryptographicException)
+        {
+            return Error.New(75510623, "License signing failed");
+        }
+        catch (InvalidOperationException)
+        {
+            return Error.New(75510930, "License signing failed");
+        }
+        catch (NotSupportedException)
+        {
+            return Error.New(75510931, "License signing failed");
+        }
 
         var envelopeData = envelope.ToByteString();
 
@@ -88,36 +116,73 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
             return errors.ToSeq();
         }
 
-        var envelope = LicenseEnvelope.Parser.ParseFrom([.. data]);
+        var envelopeValidation = ParseEnvelope(data);
 
-        var licenseTermsValidation = this.GetTerms(envelope, this.timeProvider);
-
-        var entitlementsData = Activator.CreateInstance<TEntitlementsData>();
-        entitlementsData.MergeFrom(envelope.Message.Entitlements.CreateCodedInput());
-
-        var entitlementsValidation = this.entitlementsConverter.Convert(entitlementsData);
-
-        var keyAlgorithm = publicCertificate.GetKeyAlgorithm();
-
-        if (!string.Equals(envelope.SignatureAlgorithm, keyAlgorithm, StringComparison.Ordinal))
+        if (envelopeValidation.IsFail)
         {
-            errors.Add(Error.New(429095162,
-                "License Signature Algorithm is not matching with Certificate Signature Algorithm"));
+            return envelopeValidation.FailToSeq();
         }
 
-        var signatureService = this.serviceProvider.GetRequiredKeyedService<ICertificateSignatureService>(keyAlgorithm);
+        var envelope = envelopeValidation.SuccessToSeq().Single();
+        var envelopeShapeValidation = ValidateEnvelopeShape(envelope);
+
+        if (envelopeShapeValidation.IsFail)
+        {
+            return envelopeShapeValidation.FailToSeq();
+        }
+
+        var keyAlgorithm = publicCertificate.GetKeyAlgorithm();
+        var signatureSuiteValidation = ValidateVerificationSignatureAlgorithm(envelope, keyAlgorithm);
+
+        if (signatureSuiteValidation.IsFail)
+        {
+            return signatureSuiteValidation.FailToSeq();
+        }
+
+        var signatureServiceValidation = this.GetSignatureService(keyAlgorithm);
+
+        if (signatureServiceValidation.IsFail)
+        {
+            return signatureServiceValidation.FailToSeq();
+        }
+
+        var signatureService = signatureServiceValidation.SuccessToSeq().Single();
 
         var messageData = envelope.Message.ToByteArray();
 
-        if (!signatureService.Verify(messageData, envelope.Signature.ToByteArray(), publicCertificate))
+        bool isSignatureValid;
+
+        try
         {
-            errors.Add(Error.New(1311896038, "License signature is invalid"));
+            isSignatureValid =
+                signatureService.Verify(messageData, envelope.Signature.ToByteArray(), publicCertificate);
+        }
+        catch (CryptographicException)
+        {
+            isSignatureValid = false;
+        }
+        catch (InvalidOperationException)
+        {
+            isSignatureValid = false;
+        }
+        catch (NotSupportedException)
+        {
+            isSignatureValid = false;
+        }
+
+        if (!isSignatureValid)
+        {
+            errors.Add(Error.New(75511191, "License signature is invalid"));
         }
 
         if (errors.Count != 0)
         {
             return errors.ToSeq();
         }
+
+        var now = this.timeProvider.GetUtcNow();
+        var licenseTermsValidation = this.GetTerms(envelope, now);
+        var entitlementsValidation = this.GetEntitlements(envelope);
 
         return licenseTermsValidation
             .Bind(terms => entitlementsValidation.Map(entitlements => (terms, entitlements)))
@@ -127,9 +192,122 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
                 data));
     }
 
+    private static Validation<Error, LicenseEnvelope> ParseEnvelope(
+        Seq<byte> data)
+    {
+        try
+        {
+            return LicenseEnvelope.Parser.ParseFrom([.. data]);
+        }
+        catch (InvalidProtocolBufferException)
+        {
+            return Error.New(75510624, "License data is malformed");
+        }
+    }
+
+    private static Validation<Error, Unit> ValidateEnvelopeShape(
+        LicenseEnvelope envelope)
+    {
+        var errors = new List<Error>();
+
+        if (envelope.Message is null)
+        {
+            errors.Add(Error.New(75510625, "License message is missing"));
+            return errors.ToSeq();
+        }
+
+        if (string.IsNullOrWhiteSpace(envelope.SignatureAlgorithm))
+        {
+            errors.Add(Error.New(75510626, "License signature algorithm is missing"));
+        }
+
+        if (envelope.Signature is null || envelope.Signature.Length == 0)
+        {
+            errors.Add(Error.New(75510627, "License signature is missing"));
+        }
+
+        if (envelope.Message.Discriminator is null || envelope.Message.Discriminator.Length == 0)
+        {
+            errors.Add(Error.New(75510628, "License descriptor is missing"));
+        }
+
+        if (envelope.Message.SerialNumber is null || envelope.Message.SerialNumber.Length == 0)
+        {
+            errors.Add(Error.New(75510629, "License serial number is missing"));
+        }
+
+        if (envelope.Message.Licensor is null)
+        {
+            errors.Add(Error.New(75510630, "License licensor is missing"));
+        }
+
+        if (envelope.Message.Licensee is null)
+        {
+            errors.Add(Error.New(75510631, "License licensee is missing"));
+        }
+
+        if (!envelope.Message.HasEntitlements || envelope.Message.Entitlements.Length == 0)
+        {
+            errors.Add(Error.New(75510632, "License entitlements are missing"));
+        }
+
+        if (errors.Count != 0)
+        {
+            return errors.ToSeq();
+        }
+
+        return unit;
+    }
+
+    private static Validation<Error, Unit> ValidateVerificationSignatureAlgorithm(
+        LicenseEnvelope envelope,
+        string keyAlgorithm)
+    {
+        if (!string.Equals(envelope.SignatureAlgorithm, keyAlgorithm, StringComparison.Ordinal))
+        {
+            return Error.New(75511259,
+                "License Signature Algorithm is not matching with Certificate Signature Algorithm");
+        }
+
+        return unit;
+    }
+
+    private Validation<Error, TEntitlements> GetEntitlements(
+        LicenseEnvelope envelope)
+    {
+        try
+        {
+            var entitlementsData = Activator.CreateInstance<TEntitlementsData>();
+            entitlementsData.MergeFrom(envelope.Message.Entitlements.CreateCodedInput());
+            return this.entitlementsConverter.Convert(entitlementsData);
+        }
+        catch (InvalidProtocolBufferException)
+        {
+            return Error.New(75510633, "License entitlements are malformed");
+        }
+        catch (InvalidOperationException)
+        {
+            return Error.New(75510654, "License entitlements are invalid");
+        }
+    }
+
+    private Validation<Error, ICertificateSignatureService> GetSignatureService(
+        string keyAlgorithm)
+    {
+        try
+        {
+            return Success<Error, ICertificateSignatureService>(
+                this.serviceProvider.GetRequiredKeyedService<ICertificateSignatureService>(keyAlgorithm));
+        }
+        catch (InvalidOperationException)
+        {
+            return Error.New(75510655, "Certificate signature algorithm is not registered");
+        }
+    }
+
     private Validation<Error, LicenseTerms> GetTerms(
         LicenseEnvelope envelope,
-        TimeProvider timeProvider)
+        DateTimeOffset now)
     {
         ArgumentNullException.ThrowIfNull(envelope);
 
@@ -148,9 +326,9 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
 
         notBeforeValidation = notBeforeValidation.Bind(notBeforeValue =>
         {
-            if (timeProvider.GetUtcNow() < notBeforeValue)
+            if (now < notBeforeValue)
             {
-                return Error.New(504364885, "License is not valid yet");
+                return Error.New(75511224, "License is not valid yet");
             }
 
             return Success<Error, DateTimeOffset>(notBeforeValue);
@@ -158,9 +336,9 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
 
         notAfterValidation = notAfterValidation.Bind(notAfterValue =>
         {
-            if (notAfterValue < timeProvider.GetUtcNow())
+            if (notAfterValue < now)
             {
-                return Error.New(428925195, "License is not valid anymore");
+                return Error.New(75511242, "License is not valid anymore");
             }
 
             return Success<Error, DateTimeOffset>(notAfterValue);

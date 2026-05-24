@@ -31,7 +31,14 @@ internal static class LicenseFactoryTermsValidation
             return Error.New(1106123090, "Invalid date ticks");
         }
 
-        return new DateTimeOffset(dateTicks, TimeSpan.Zero);
+        try
+        {
+            return new DateTimeOffset(dateTicks, TimeSpan.Zero);
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            return Error.New(75510616, "Invalid date ticks");
+        }
     }
 
     #endregion Date
@@ -45,7 +52,7 @@ internal static class LicenseFactoryTermsValidation
     {
         if (InvalidSerialNumbers.Contains(serialNumber))
         {
-            return Error.New(877535586, "Invalid serial number");
+            return Error.New(75510929, "Invalid serial number");
         }
 
         return ByteString.CopyFrom(serialNumber.ToByteArray());
@@ -53,6 +60,11 @@ internal static class LicenseFactoryTermsValidation
 
     internal static Validation<Error, Ulid> ConvertToUlid(ByteString serialNumberBytes)
     {
+        if (serialNumberBytes is null || serialNumberBytes.Length != 16)
+        {
+            return Error.New(75510617, "Invalid serial number bytes");
+        }
+
         var serialNumber = new Ulid(serialNumberBytes.ToByteArray());
 
         if (InvalidSerialNumbers.Contains(serialNumber))
@@ -92,7 +104,16 @@ internal static class LicenseFactoryTermsValidation
             return Error.New(1063052190, "URL is missing");
         }
 
-        var result = new Uri(address);
+        Uri result;
+
+        try
+        {
+            result = new Uri(address);
+        }
+        catch (UriFormatException)
+        {
+            return Error.New(75510619, "Invalid URL");
+        }
 
         if (!ValidUriSchemes.Contains(result.Scheme))
         {
@@ -123,7 +144,14 @@ internal static class LicenseFactoryTermsValidation
             return Error.New(2037180511, "Mail Address is missing");
         }
 
-        return new MailAddress(address);
+        try
+        {
+            return new MailAddress(address);
+        }
+        catch (FormatException)
+        {
+            return Error.New(75510620, "Invalid Mail Address");
+        }
     }
 
     #endregion Mail Address
@@ -137,14 +165,21 @@ internal static class LicenseFactoryTermsValidation
         _ => Error.New(2143629281, "Invalid party type"),
     };
 
-    internal static Validation<Error, Party> ConvertToParty(LicenseParty licenseParty) =>
-        licenseParty.PartyKindCase switch
+    internal static Validation<Error, Party> ConvertToParty(LicenseParty licenseParty)
+    {
+        if (licenseParty is null)
+        {
+            return Error.New(75510621, "Party is missing");
+        }
+
+        return licenseParty.PartyKindCase switch
         {
             PartyKindOneofCase.None => Error.New(2084794372, "Unknown or No party type"),
             PartyKindOneofCase.IndividualParty => ConvertToIndividual(licenseParty).Map<Party>(x => x),
             PartyKindOneofCase.OrganizationParty => ConvertToOrganization(licenseParty).Map<Party>(x => x),
             _ => Error.New(103216125, "Invalid party type"),
         };
+    }
 
     private static Validation<Error, LicenseParty> ConvertFromIndividual(
         IndividualParty individualParty)

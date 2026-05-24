@@ -4,6 +4,7 @@ using System.Net.Mail;
 using System.Security.Cryptography.X509Certificates;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Google.Protobuf;
 using LanguageExt;
 using LanguageExt.Common;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,6 +49,279 @@ public class LicenseTests
             { "DSA", LicensingResource.LicensingTest2PrivatePassword },
             { "EdDSA", LicensingResource.LicensingTest3PrivatePassword },
         };
+    }
+
+    [Fact]
+    public void GivenEmptyEnvelope_WhenLicenseCreated_ThenItShouldFail()
+    {
+        // Arrange
+
+        this.Arrange(
+            "RSA",
+            out var licenseFactory,
+            out _,
+            out _,
+            out _,
+            out _,
+            out var publicCertificate,
+            out _);
+
+        // Act
+
+        var result = licenseFactory.Create(ToSeq(new LicenseEnvelope()), publicCertificate);
+
+        // Assert
+
+        this.AssertFail(result);
+    }
+
+    [Fact]
+    public void GivenExpiredLicense_WhenLicenseCreated_ThenItShouldFail()
+    {
+        // Arrange
+
+        this.Arrange(
+            "RSA",
+            out var licenseFactory,
+            out var licensor,
+            out var licensee,
+            out var terms,
+            out var entitlements,
+            out var publicCertificate,
+            out var privateCertificate);
+        var expiredTerms = new LicenseTerms(
+            terms.SerialNumber,
+            licensor,
+            licensee,
+            new DateTimeOffset(year: 2021, month: 8, day: 24, hour: 0, minute: 0, second: 0, TimeSpan.Zero),
+            new DateTimeOffset(year: 2021, month: 9, day: 24, hour: 0, minute: 0, second: 0, TimeSpan.Zero));
+        var license = licenseFactory.Create(expiredTerms, entitlements, privateCertificate).SuccessToSeq().Single();
+
+        // Act
+
+        var result = licenseFactory.Create(license.Data, publicCertificate);
+
+        // Assert
+
+        this.AssertFail(result);
+    }
+
+    [Fact]
+    public void GivenInvalidPartyEmail_WhenLicenseCreated_ThenItShouldFail()
+    {
+        // Arrange
+
+        const string kind = "RSA";
+        this.Arrange(
+            kind,
+            out var licenseFactory,
+            out _,
+            out _,
+            out var terms,
+            out var entitlements,
+            out var publicCertificate,
+            out var privateCertificate);
+        var envelope = CreateEnvelope(licenseFactory, terms, entitlements, privateCertificate);
+        envelope.Message.Licensor.Email = "not an email address";
+
+        // Act
+
+        var result = licenseFactory.Create(Resign(envelope, kind, privateCertificate), publicCertificate);
+
+        // Assert
+
+        this.AssertFail(result);
+    }
+
+    [Fact]
+    public void GivenInvalidPartyWebsite_WhenLicenseCreated_ThenItShouldFail()
+    {
+        // Arrange
+
+        const string kind = "RSA";
+        this.Arrange(
+            kind,
+            out var licenseFactory,
+            out _,
+            out _,
+            out var terms,
+            out var entitlements,
+            out var publicCertificate,
+            out var privateCertificate);
+        var envelope = CreateEnvelope(licenseFactory, terms, entitlements, privateCertificate);
+        envelope.Message.Licensee.Website = "ftp://www.microsoft.com/";
+
+        // Act
+
+        var result = licenseFactory.Create(Resign(envelope, kind, privateCertificate), publicCertificate);
+
+        // Assert
+
+        this.AssertFail(result);
+    }
+
+    [Fact]
+    public void GivenInvalidSerialNumber_WhenLicenseCreated_ThenItShouldFail()
+    {
+        // Arrange
+
+        const string kind = "RSA";
+        this.Arrange(
+            kind,
+            out var licenseFactory,
+            out _,
+            out _,
+            out var terms,
+            out var entitlements,
+            out var publicCertificate,
+            out var privateCertificate);
+        var envelope = CreateEnvelope(licenseFactory, terms, entitlements, privateCertificate);
+        envelope.Message.SerialNumber = ByteString.CopyFrom([1, 2, 3]);
+
+        // Act
+
+        var result = licenseFactory.Create(Resign(envelope, kind, privateCertificate), publicCertificate);
+
+        // Assert
+
+        this.AssertFail(result);
+    }
+
+    [Fact]
+    public void GivenMalformedData_WhenLicenseCreated_ThenItShouldFail()
+    {
+        // Arrange
+
+        this.Arrange(
+            "RSA",
+            out var licenseFactory,
+            out _,
+            out _,
+            out _,
+            out _,
+            out var publicCertificate,
+            out _);
+
+        // Act
+
+        var result = licenseFactory.Create(new[]
+        {
+            (byte)0xff
+        }.ToSeq(), publicCertificate);
+
+        // Assert
+
+        this.AssertFail(result);
+    }
+
+    [Fact]
+    public void GivenMalformedEntitlements_WhenLicenseCreated_ThenItShouldFail()
+    {
+        // Arrange
+
+        const string kind = "RSA";
+        this.Arrange(
+            kind,
+            out var licenseFactory,
+            out _,
+            out _,
+            out var terms,
+            out var entitlements,
+            out var publicCertificate,
+            out var privateCertificate);
+        var envelope = CreateEnvelope(licenseFactory, terms, entitlements, privateCertificate);
+        envelope.Message.Entitlements = ByteString.CopyFrom([0xff]);
+
+        // Act
+
+        var result = licenseFactory.Create(Resign(envelope, kind, privateCertificate), publicCertificate);
+
+        // Assert
+
+        this.AssertFail(result);
+    }
+
+    [Fact]
+    public void GivenMissingEntitlements_WhenLicenseCreated_ThenItShouldFail()
+    {
+        // Arrange
+
+        this.Arrange(
+            "RSA",
+            out var licenseFactory,
+            out _,
+            out _,
+            out var terms,
+            out var entitlements,
+            out var publicCertificate,
+            out var privateCertificate);
+        var envelope = CreateEnvelope(licenseFactory, terms, entitlements, privateCertificate);
+        envelope.Message.Entitlements = ByteString.Empty;
+
+        // Act
+
+        var result = licenseFactory.Create(ToSeq(envelope), publicCertificate);
+
+        // Assert
+
+        this.AssertFail(result);
+    }
+
+    [Fact]
+    public void GivenMissingSignature_WhenLicenseCreated_ThenItShouldFail()
+    {
+        // Arrange
+
+        this.Arrange(
+            "RSA",
+            out var licenseFactory,
+            out _,
+            out _,
+            out var terms,
+            out var entitlements,
+            out var publicCertificate,
+            out var privateCertificate);
+        var envelope = CreateEnvelope(licenseFactory, terms, entitlements, privateCertificate);
+        envelope.Signature = ByteString.Empty;
+
+        // Act
+
+        var result = licenseFactory.Create(ToSeq(envelope), publicCertificate);
+
+        // Assert
+
+        this.AssertFail(result);
+    }
+
+    [Fact]
+    public void GivenNotYetValidLicense_WhenLicenseCreated_ThenItShouldFail()
+    {
+        // Arrange
+
+        this.Arrange(
+            "RSA",
+            out var licenseFactory,
+            out var licensor,
+            out var licensee,
+            out var terms,
+            out var entitlements,
+            out var publicCertificate,
+            out var privateCertificate);
+        var futureTerms = new LicenseTerms(
+            terms.SerialNumber,
+            licensor,
+            licensee,
+            new DateTimeOffset(year: 2023, month: 8, day: 24, hour: 0, minute: 0, second: 0, TimeSpan.Zero),
+            new DateTimeOffset(year: 2024, month: 8, day: 24, hour: 0, minute: 0, second: 0, TimeSpan.Zero));
+        var license = licenseFactory.Create(futureTerms, entitlements, privateCertificate).SuccessToSeq().Single();
+
+        // Act
+
+        var result = licenseFactory.Create(license.Data, publicCertificate);
+
+        // Assert
+
+        this.AssertFail(result);
     }
 
     [Theory]
@@ -116,6 +390,130 @@ public class LicenseTests
         this.AssertSuccess(licensor, licensee, terms, result);
     }
 
+    [Fact]
+    public void GivenTamperedDates_WhenLicenseCreated_ThenItShouldFail()
+    {
+        // Arrange
+
+        this.Arrange(
+            "RSA",
+            out var licenseFactory,
+            out _,
+            out _,
+            out var terms,
+            out var entitlements,
+            out var publicCertificate,
+            out var privateCertificate);
+        var envelope = CreateEnvelope(licenseFactory, terms, entitlements, privateCertificate);
+        envelope.Message.NotAfter += TimeSpan.FromDays(1).Ticks;
+
+        // Act
+
+        var result = licenseFactory.Create(ToSeq(envelope), publicCertificate);
+
+        // Assert
+
+        this.AssertFail(result);
+    }
+
+    [Fact]
+    public void GivenTamperedEntitlements_WhenLicenseCreated_ThenItShouldFail()
+    {
+        // Arrange
+
+        this.Arrange(
+            "RSA",
+            out var licenseFactory,
+            out _,
+            out _,
+            out var terms,
+            out var entitlements,
+            out var publicCertificate,
+            out var privateCertificate);
+        var envelope = CreateEnvelope(licenseFactory, terms, entitlements, privateCertificate);
+        envelope.Message.Entitlements = ByteString.CopyFromUtf8("tampered");
+
+        // Act
+
+        var result = licenseFactory.Create(ToSeq(envelope), publicCertificate);
+
+        // Assert
+
+        this.AssertFail(result);
+    }
+
+    [Fact]
+    public void GivenWrongCertificate_WhenLicenseCreated_ThenItShouldFail()
+    {
+        // Arrange
+
+        this.Arrange(
+            "RSA",
+            out var licenseFactory,
+            out _,
+            out _,
+            out var terms,
+            out var entitlements,
+            out _,
+            out var privateCertificate);
+        this.Arrange(
+            "DSA",
+            out _,
+            out _,
+            out _,
+            out _,
+            out _,
+            out var wrongPublicCertificate,
+            out _);
+        var license = licenseFactory.Create(terms, entitlements, privateCertificate).SuccessToSeq().Single();
+
+        // Act
+
+        var result = licenseFactory.Create(license.Data, wrongPublicCertificate);
+
+        // Assert
+
+        this.AssertFail(result);
+    }
+
+    [Fact]
+    public void GivenWrongDescriptor_WhenLicenseCreated_ThenItShouldFail()
+    {
+        // Arrange
+
+        this.Arrange(
+            "RSA",
+            out var licenseFactory,
+            out _,
+            out _,
+            out var terms,
+            out var entitlements,
+            out var publicCertificate,
+            out var privateCertificate);
+        this.Arrange(
+            "RSA",
+            out var otherLicenseFactory,
+            out _,
+            out _,
+            out _,
+            out _,
+            out _,
+            out _,
+            descriptor: Guid.Parse("7587ba79-b0b9-427e-8dc6-3d7528682386"));
+        var license = licenseFactory.Create(terms, entitlements, privateCertificate).SuccessToSeq().Single();
+
+        // Act
+
+        var result = otherLicenseFactory.Create(license.Data, publicCertificate);
+
+        // Assert
+
+        this.AssertFail(result);
+    }
+
+    private static Seq<byte> ToSeq(
+        IMessage message) => message.ToByteArray().ToSeq();
+
     private void Arrange(
         string kind,
         out ILicenseFactory<TestEntitlements, TestLicenseEntitlements> licenseFactory,
@@ -124,7 +522,8 @@ public class LicenseTests
         out LicenseTerms terms,
         out TestEntitlements entitlements,
         out X509Certificate2 publicCertificate,
-        out X509Certificate2 privateCertificate)
+        out X509Certificate2 privateCertificate,
+        Guid? descriptor = null)
     {
         var services = new ServiceCollection();
         _ = services
@@ -134,7 +533,7 @@ public class LicenseTests
         _ = services.AddSingleton<ILicenseDescriptor<TestEntitlements>>(
             new LicenseDescriptor<TestEntitlements>(
                 "Test License",
-                Guid.Parse("20559a6a-2ea6-45b2-9dc7-928406bc1719")));
+                descriptor ?? Guid.Parse("20559a6a-2ea6-45b2-9dc7-928406bc1719")));
 
         var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(year: 2022, month: 9, day: 24, hour: 0,
             minute: 0, second: 0, TimeSpan.Zero));
@@ -196,6 +595,17 @@ public class LicenseTests
             $"Private Certificate Serial Number: {privateCertificate.GetSerialNumberString()}");
     }
 
+    private void AssertFail(
+        Validation<Error, License<TestEntitlements>> result)
+    {
+        foreach (var resultSuccess in result.SuccessToSeq())
+        {
+            this.testOutputHelper.WriteLine($"License Result Success: {resultSuccess}");
+        }
+
+        result.IsFail.ShouldBeTrue();
+    }
+
     private void AssertSuccess(
         IndividualParty licensor,
         OrganizationParty licensee,
@@ -226,5 +636,34 @@ public class LicenseTests
         result.SuccessToSeq().Single().Terms.NotAfter.ShouldBe(terms.NotAfter);
         result.SuccessToSeq().Single().Data.ShouldNotBeEmpty();
         this.testOutputHelper.WriteLine($"License Data Length: {result.SuccessToSeq().Single().Data.Length}");
+    }
+
+    private static LicenseEnvelope CreateEnvelope(
+        ILicenseFactory<TestEntitlements, TestLicenseEntitlements> licenseFactory,
+        LicenseTerms terms,
+        TestEntitlements entitlements,
+        X509Certificate2 privateCertificate)
+    {
+        var license = licenseFactory.Create(terms, entitlements, privateCertificate).SuccessToSeq().Single();
+        return LicenseEnvelope.Parser.ParseFrom([.. license.Data]);
+    }
+
+    private static Seq<byte> Resign(
+        LicenseEnvelope envelope,
+        string kind,
+        X509Certificate2 privateCertificate)
+    {
+        ICertificateSignatureService signatureService = kind switch
+        {
+            "RSA" => new RSACertificateSignatureService(),
+            "DSA" => new DSACertificateSignatureService(),
+            "EdDSA" => new EdDSACertificateSignatureService(),
+            _ => throw new ArgumentOutOfRangeException(nameof(kind), kind, message: null),
+        };
+
+        envelope.SignatureAlgorithm = privateCertificate.GetKeyAlgorithm();
+        envelope.Signature =
+            ByteString.CopyFrom(signatureService.Sign(envelope.Message.ToByteArray(), privateCertificate));
+        return ToSeq(envelope);
     }
 }
