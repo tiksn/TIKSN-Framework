@@ -63,11 +63,11 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<ISchedulers>(_ =>
             new Schedulers(RxSchedulers.MainThreadScheduler, RxSchedulers.TaskpoolScheduler));
         services.TryAddKeyedSingleton<ICertificateSignatureService, RSACertificateSignatureService>(
-            "1.2.840.113549.1.1.1");
+            LicenseKeyAlgorithms.Rsa);
         services.TryAddKeyedSingleton<ICertificateSignatureService, DSACertificateSignatureService>(
-            "1.2.840.10040.4.1");
+            LicenseKeyAlgorithms.Dsa);
         services.TryAddKeyedSingleton<ICertificateSignatureService, EdDSACertificateSignatureService>(
-            "1.3.101.112");
+            LicenseKeyAlgorithms.Ed25519);
         services.TryAddSingleton<IConsoleService, ConsoleService>();
         services.TryAddSingleton<IKnownFolders, KnownFolders>();
 
