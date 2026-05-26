@@ -5,7 +5,9 @@
     <DocumentationFile>bin\$(Configuration)\net10.0\TIKSN.Framework.Core.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     <Authors>TIKSN Development</Authors>
     <RootNamespace>TIKSN</RootNamespace>
     <LangVersion>latest</LangVersion>

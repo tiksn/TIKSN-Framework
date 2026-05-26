@@ -511,6 +511,35 @@ public class LicenseTests
         this.AssertFail(result);
     }
 
+    private static LicenseEnvelope CreateEnvelope(
+        ILicenseFactory<TestEntitlements, TestLicenseEntitlements> licenseFactory,
+        LicenseTerms terms,
+        TestEntitlements entitlements,
+        X509Certificate2 privateCertificate)
+    {
+        var license = licenseFactory.Create(terms, entitlements, privateCertificate).SuccessToSeq().Single();
+        return LicenseEnvelope.Parser.ParseFrom([.. license.Data]);
+    }
+
+    private static Seq<byte> Resign(
+        LicenseEnvelope envelope,
+        string kind,
+        X509Certificate2 privateCertificate)
+    {
+        ICertificateSignatureService signatureService = kind switch
+        {
+            "RSA" => new RSACertificateSignatureService(),
+            "DSA" => new DSACertificateSignatureService(),
+            "EdDSA" => new EdDSACertificateSignatureService(),
+            _ => throw new ArgumentOutOfRangeException(nameof(kind), kind, message: null),
+        };
+
+        envelope.SignatureAlgorithm = privateCertificate.GetKeyAlgorithm();
+        envelope.Signature =
+            ByteString.CopyFrom(signatureService.Sign(envelope.Message.ToByteArray(), privateCertificate));
+        return ToSeq(envelope);
+    }
+
     private static Seq<byte> ToSeq(
         IMessage message) => message.ToByteArray().ToSeq();
 
@@ -636,34 +665,5 @@ public class LicenseTests
         result.SuccessToSeq().Single().Terms.NotAfter.ShouldBe(terms.NotAfter);
         result.SuccessToSeq().Single().Data.ShouldNotBeEmpty();
         this.testOutputHelper.WriteLine($"License Data Length: {result.SuccessToSeq().Single().Data.Length}");
-    }
-
-    private static LicenseEnvelope CreateEnvelope(
-        ILicenseFactory<TestEntitlements, TestLicenseEntitlements> licenseFactory,
-        LicenseTerms terms,
-        TestEntitlements entitlements,
-        X509Certificate2 privateCertificate)
-    {
-        var license = licenseFactory.Create(terms, entitlements, privateCertificate).SuccessToSeq().Single();
-        return LicenseEnvelope.Parser.ParseFrom([.. license.Data]);
-    }
-
-    private static Seq<byte> Resign(
-        LicenseEnvelope envelope,
-        string kind,
-        X509Certificate2 privateCertificate)
-    {
-        ICertificateSignatureService signatureService = kind switch
-        {
-            "RSA" => new RSACertificateSignatureService(),
-            "DSA" => new DSACertificateSignatureService(),
-            "EdDSA" => new EdDSACertificateSignatureService(),
-            _ => throw new ArgumentOutOfRangeException(nameof(kind), kind, message: null),
-        };
-
-        envelope.SignatureAlgorithm = privateCertificate.GetKeyAlgorithm();
-        envelope.Signature =
-            ByteString.CopyFrom(signatureService.Sign(envelope.Message.ToByteArray(), privateCertificate));
-        return ToSeq(envelope);
     }
 }
