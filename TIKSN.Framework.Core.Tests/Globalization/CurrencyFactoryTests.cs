@@ -130,4 +130,108 @@ public class CurrencyFactoryTests
         _ = currencyInfo.ShouldNotBeNull();
         currencyInfo.ISOCurrencySymbol.ShouldBe(outputIsoCurrencySymbol);
     }
+
+    [Fact]
+    public void GivenInvalidIsoCurrencySymbol_WhenTryCreateCalled_ThenItShouldReturnFalse()
+    {
+        // Arrange
+
+        var services = new ServiceCollection();
+        _ = services.AddFrameworkCore();
+        var serviceProvider = services.BuildServiceProvider();
+        var currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+
+        // Act
+
+        var created = currencyFactory.TryCreate("ZZZ", out var currency);
+
+        // Assert
+
+        created.ShouldBeFalse();
+        currency.ShouldBeNull();
+    }
+
+    [Fact]
+    public void GivenNullIsoCurrencySymbol_WhenTryCreateCalled_ThenItShouldReturnFalse()
+    {
+        // Arrange
+
+        var services = new ServiceCollection();
+        _ = services.AddFrameworkCore();
+        var serviceProvider = services.BuildServiceProvider();
+        var currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+        string isoCurrencySymbol = null;
+
+        // Act
+
+        var created = currencyFactory.TryCreate(isoCurrencySymbol, out var currency);
+
+        // Assert
+
+        created.ShouldBeFalse();
+        currency.ShouldBeNull();
+    }
+
+    [Fact]
+    public void GivenNullRegion_WhenTryCreateCalled_ThenItShouldReturnFalse()
+    {
+        // Arrange
+
+        var services = new ServiceCollection();
+        _ = services.AddFrameworkCore();
+        var serviceProvider = services.BuildServiceProvider();
+        var currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+        RegionInfo region = null;
+
+        // Act
+
+        var created = currencyFactory.TryCreate(region, out var currency);
+
+        // Assert
+
+        created.ShouldBeFalse();
+        currency.ShouldBeNull();
+    }
+
+    [Fact]
+    public void GivenValidIsoCurrencySymbol_WhenTryCreateCalled_ThenItShouldReturnCurrency()
+    {
+        // Arrange
+
+        var services = new ServiceCollection();
+        _ = services.AddFrameworkCore();
+        var serviceProvider = services.BuildServiceProvider();
+        var currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+
+        // Act
+
+        var created = currencyFactory.TryCreate("USD", out var currency);
+
+        // Assert
+
+        created.ShouldBeTrue();
+        currency.ShouldNotBeNull();
+        currency.ISOCurrencySymbol.ShouldBe("USD");
+    }
+
+    [Fact]
+    public void GivenValidRegion_WhenTryCreateCalled_ThenItShouldReturnCurrency()
+    {
+        // Arrange
+
+        var services = new ServiceCollection();
+        _ = services.AddFrameworkCore();
+        var serviceProvider = services.BuildServiceProvider();
+        var currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+
+        // Act
+
+        var created = currencyFactory.TryCreate(new RegionInfo("US"), out var currency);
+
+        // Assert
+
+        created.ShouldBeTrue();
+        currency.ShouldNotBeNull();
+        currency.ISOCurrencySymbol.ShouldBe("USD");
+    }
 }
