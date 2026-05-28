@@ -39,6 +39,7 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<ICountryFactory, CountryFactory>();
         services.TryAddSingleton<ICurrencyFactory, CurrencyFactory>();
         services.TryAddSingleton<IDateTimeZoneLookup, DateTimeZoneLookup>();
+        services.TryAddSingleton<ITimeZoneInfoLookup, TimeZoneInfoLookup>();
         services.TryAddSingleton<IRegionFactory, RegionFactory>();
         services.TryAddSingleton<IResourceNamesCache, ResourceNamesCache>();
         services.TryAddSingleton<IShellCommandEngine, ShellCommandEngine>();

@@ -119,28 +119,28 @@ public class DateTimeZoneLookup : IDateTimeZoneLookup
     }
 
     private static FrozenDictionary<string, Seq<DateTimeZone>> BuildRegionCodeToZones() => GetZoneLocations()
-            .GroupBy(location => NormalizeRegionCode(location.CountryCode), StringComparer.Ordinal)
-            .ToFrozenDictionary(
-                group => group.Key,
-                group => group
-                    .Select(location => DateTimeZoneProviders.Tzdb[NormalizeZoneId(location.ZoneId)])
-                    .DistinctBy(timeZone => timeZone.Id)
-                    .OrderBy(timeZone => timeZone.Id, StringComparer.Ordinal)
-                    .ToSeq(),
-                StringComparer.Ordinal);
+        .GroupBy(location => NormalizeRegionCode(location.CountryCode), StringComparer.Ordinal)
+        .ToFrozenDictionary(
+            group => group.Key,
+            group => group
+                .Select(location => DateTimeZoneProviders.Tzdb[NormalizeZoneId(location.ZoneId)])
+                .DistinctBy(timeZone => timeZone.Id)
+                .OrderBy(timeZone => timeZone.Id, StringComparer.Ordinal)
+                .ToSeq(),
+            StringComparer.Ordinal);
 
     private static FrozenDictionary<string, string[]> BuildZoneIdToRegionCodes() => GetZoneLocations()
-            .Where(location =>
-                string.Equals(location.ZoneId, NormalizeZoneId(location.ZoneId), StringComparison.Ordinal))
-            .GroupBy(location => location.ZoneId, StringComparer.Ordinal)
-            .ToFrozenDictionary(
-                group => group.Key,
-                group => group
-                    .Select(location => NormalizeRegionCode(location.CountryCode))
-                    .Distinct(StringComparer.Ordinal)
-                    .OrderBy(regionCode => regionCode, StringComparer.Ordinal)
-                    .ToArray(),
-                StringComparer.Ordinal);
+        .Where(location =>
+            string.Equals(location.ZoneId, NormalizeZoneId(location.ZoneId), StringComparison.Ordinal))
+        .GroupBy(location => location.ZoneId, StringComparer.Ordinal)
+        .ToFrozenDictionary(
+            group => group.Key,
+            group => group
+                .Select(location => NormalizeRegionCode(location.CountryCode))
+                .Distinct(StringComparer.Ordinal)
+                .OrderBy(regionCode => regionCode, StringComparer.Ordinal)
+                .ToArray(),
+            StringComparer.Ordinal);
 
     private static IEnumerable<TzdbZoneLocation> GetZoneLocations() =>
         Source.ZoneLocations ?? Enumerable.Empty<TzdbZoneLocation>();
