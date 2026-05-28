@@ -40,6 +40,7 @@ public class RegistrationsTests : IDisposable
     [InlineData(typeof(ICultureFactory))]
     [InlineData(typeof(IRegionFactory))]
     [InlineData(typeof(ICurrencyFactory))]
+    [InlineData(typeof(IDateTimeZoneLookup))]
     public void GivenHost_WhenServiceResolved_ThenItShouldNotBeNull(Type serviceType)
     {
         var service = this.host.Services.GetRequiredService(serviceType);

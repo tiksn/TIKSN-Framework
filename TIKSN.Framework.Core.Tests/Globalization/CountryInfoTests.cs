@@ -77,7 +77,7 @@ public class CountryInfoTests
 
         // Act & Assert
 
-        country.Regions.ShouldBeAssignableTo<System.Collections.ObjectModel.ReadOnlyCollection<RegionInfo>>();
+        _ = country.Regions.ShouldBeAssignableTo<System.Collections.ObjectModel.ReadOnlyCollection<RegionInfo>>();
     }
 
     [Fact]

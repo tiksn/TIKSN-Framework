@@ -57,7 +57,7 @@ public class CultureFactoryTests
         // Assert
 
         created.ShouldBeTrue();
-        culture.ShouldNotBeNull();
+        _ = culture.ShouldNotBeNull();
         culture.Name.ShouldBe("en-US");
     }
 

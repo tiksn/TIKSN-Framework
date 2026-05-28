@@ -57,7 +57,7 @@ public class RegionFactoryTests
         // Assert
 
         created.ShouldBeTrue();
-        region.ShouldNotBeNull();
+        _ = region.ShouldNotBeNull();
         region.TwoLetterISORegionName.ShouldBe("US");
     }
 
@@ -75,7 +75,7 @@ public class RegionFactoryTests
         // Assert
 
         created.ShouldBeTrue();
-        region.ShouldNotBeNull();
+        _ = region.ShouldNotBeNull();
         region.TwoLetterISORegionName.ShouldBe("US");
     }
 
