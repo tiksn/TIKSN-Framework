@@ -13,20 +13,30 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
     <description>
-      TIKSN Framework is a comprehensive .NET 10 toolkit for building modular applications with
-      modern dependency injection and cross-platform support. It includes versioning, finance and
-      money types, telemetry, licensing, composite weighted progress tracking, repository and unit
-      of work abstractions for Entity Framework Core, Azure Storage, MongoDB, LiteDB, and RavenDB,
-      language and region localization, JSON, MessagePack, and Protocol Buffers serialization,
-      REST client and repository helpers, shell application infrastructure, and .NET MAUI support.
+      TIKSN Framework is a .NET 10 application framework and utility library for building modular
+      services, command-line tools, data-driven applications, and .NET MAUI apps. It includes
+      dependency injection helpers, Autofac modules, repository, query repository, file repository,
+      stream repository, pagination, unit-of-work abstractions, Entity Framework Core, Azure Table
+      Storage, Azure Blob Storage, MongoDB, LiteDB, and RavenDB adapters, memory, distributed, and
+      hybrid repository cache decorators, finance and money types, pricing models, currency
+      conversion, central-bank foreign exchange providers, globalization, language and region
+      localization resources, JSON, XML, MessagePack, custom binary serialization, Protocol
+      Buffers-backed licensing schema support, license generation and signature services, shell
+      and PowerShell application infrastructure, telemetry abstractions, correlation IDs, settings,
+      known folders, network connectivity, antimalware abstractions, versioning, numbering, time
+      period types, REST helpers, sitemap models, and platform-specific MAUI registrations.
     </description>
-    <copyright>Copyright © 2024, TIKSN Development</copyright>
+    <copyright>Copyright © 2026, TIKSN Development</copyright>
     <releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/releases</releaseNotes>
     <language />
     <tags>
-      dotnet dotnet10 framework modularity dependency-injection autofac versioning finance money
-      currency telemetry licensing progress repository unit-of-work entity-framework-core azure-storage
-      mongodb litedb ravendb localization serialization json messagepack protobuf rest shell maui
+      dotnet dotnet10 framework modularity dependency-injection autofac maui android ios maccatalyst
+      windows repository query-repository file-repository stream-repository unit-of-work pagination
+      entity-framework-core azure-table azure-blob azure-storage mongodb litedb ravendb caching
+      hybrid-cache distributed-cache finance money currency pricing foreign-exchange central-bank
+      globalization localization language-localization region-localization serialization json xml
+      messagepack protobuf licensing shell powershell telemetry correlation versioning numbering rest
+      sitemap antimalware settings known-folders
     </tags>
     <dependencies>
       <!-- will be propagated by build script-->
