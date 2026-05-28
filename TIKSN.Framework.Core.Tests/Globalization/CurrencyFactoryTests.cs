@@ -210,7 +210,7 @@ public class CurrencyFactoryTests
         // Assert
 
         created.ShouldBeTrue();
-        currency.ShouldNotBeNull();
+        _ = currency.ShouldNotBeNull();
         currency.ISOCurrencySymbol.ShouldBe("USD");
     }
 
@@ -231,7 +231,7 @@ public class CurrencyFactoryTests
         // Assert
 
         created.ShouldBeTrue();
-        currency.ShouldNotBeNull();
+        _ = currency.ShouldNotBeNull();
         currency.ISOCurrencySymbol.ShouldBe("USD");
     }
 }

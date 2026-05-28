@@ -99,9 +99,12 @@ public class CountryFactory : MemoryCacheDecoratorBase<CountryInfo>, ICountryFac
             throw new ArgumentNullException(nameof(regionNames), "Country regions cannot be null.");
         }
 
-        return [.. regionNames
-            .Select(NormalizeCode)
-            .Distinct(StringComparer.Ordinal)];
+        return
+        [
+            .. regionNames
+                .Select(NormalizeCode)
+                .Distinct(StringComparer.Ordinal)
+        ];
     }
 
     private static void ValidateConfiguredConcreteRegionCode(string code)
