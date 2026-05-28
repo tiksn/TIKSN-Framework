@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
@@ -19,5 +20,19 @@ public class RegionFactory : MemoryCacheDecoratorBase<RegionInfo>, IRegionFactor
 
         return this.GetFromMemoryCache(cacheKey, () => new RegionInfo(name))
             ?? throw new InvalidOperationException("Failed to create RegionInfo.");
+    }
+
+    public bool TryCreate(string name, [NotNullWhen(true)] out RegionInfo? region)
+    {
+        try
+        {
+            region = this.Create(name);
+            return true;
+        }
+        catch (ArgumentException)
+        {
+            region = null;
+            return false;
+        }
     }
 }

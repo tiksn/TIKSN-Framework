@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
@@ -66,5 +67,43 @@ public class CurrencyFactory : MemoryCacheDecoratorBase<CurrencyInfo>, ICurrency
 
         return this.GetFromMemoryCache(cacheKey, () => new CurrencyInfo(region))
             ?? throw new InvalidOperationException("Failed to create CurrencyInfo.");
+    }
+
+    public bool TryCreate(string isoCurrencySymbol, [NotNullWhen(true)] out CurrencyInfo? currency)
+    {
+        try
+        {
+            currency = this.Create(isoCurrencySymbol);
+            return true;
+        }
+        catch (ArgumentException)
+        {
+            currency = null;
+            return false;
+        }
+        catch (CurrencyNotFoundException)
+        {
+            currency = null;
+            return false;
+        }
+    }
+
+    public bool TryCreate(RegionInfo region, [NotNullWhen(true)] out CurrencyInfo? currency)
+    {
+        try
+        {
+            currency = this.Create(region);
+            return true;
+        }
+        catch (ArgumentException)
+        {
+            currency = null;
+            return false;
+        }
+        catch (CurrencyNotFoundException)
+        {
+            currency = null;
+            return false;
+        }
     }
 }

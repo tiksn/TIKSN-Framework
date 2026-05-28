@@ -36,6 +36,7 @@ public static class ServiceCollectionExtensions
         _ = services.AddOptions();
 
         services.TryAddSingleton<ICultureFactory, CultureFactory>();
+        services.TryAddSingleton<ICountryFactory, CountryFactory>();
         services.TryAddSingleton<ICurrencyFactory, CurrencyFactory>();
         services.TryAddSingleton<IRegionFactory, RegionFactory>();
         services.TryAddSingleton<IResourceNamesCache, ResourceNamesCache>();
