@@ -12,7 +12,12 @@ public class ExchangeRateDataRepository :
     }
 
     protected override IOrderedQueryable<ExchangeRateDataEntity> OrderedEntities
-        => this.Entities.OrderBy(x => x.AsOn);
+        => this.Entities
+            .OrderBy(x => x.AsOn)
+            .ThenBy(x => x.BaseCurrencyCode)
+            .ThenBy(x => x.CounterCurrencyCode)
+            .ThenBy(x => x.ForeignExchangeID)
+            .ThenBy(x => x.ID);
 
     public async Task<IReadOnlyList<ExchangeRateDataEntity>> SearchAsync(
         Guid foreignExchangeID,
