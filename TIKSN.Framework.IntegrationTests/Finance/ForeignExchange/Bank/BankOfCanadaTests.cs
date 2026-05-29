@@ -162,51 +162,39 @@ public class BankOfCanadaTests
             this.timeProvider.GetUtcNow(),
             cancellationToken: TestContext.Current.CancellationToken);
 
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/USD");
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/AUD");
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/BRL");
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/CNY");
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/EUR");
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/HKD");
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/INR");
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/IDR");
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/JPY");
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/MXN");
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/NZD");
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/NOK");
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/PEN");
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/RUB");
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/SGD");
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/ZAR");
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/KRW");
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/SEK");
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/CHF");
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/TWD");
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/TRY");
-        currencyPairs.ShouldContain(c => c.ToString() == "CAD/GBP");
+        var expectedForeignCurrencies = new[]
+        {
+            "AUD",
+            "BRL",
+            "CNY",
+            "EUR",
+            "HKD",
+            "INR",
+            "IDR",
+            "JPY",
+            "MYR",
+            "MXN",
+            "NZD",
+            "NOK",
+            "PEN",
+            "PLN",
+            "SGD",
+            "ZAR",
+            "KRW",
+            "SEK",
+            "CHF",
+            "TWD",
+            "THB",
+            "TRY",
+            "GBP",
+            "USD",
+        };
 
-        currencyPairs.ShouldContain(c => c.ToString() == "USD/CAD");
-        currencyPairs.ShouldContain(c => c.ToString() == "AUD/CAD");
-        currencyPairs.ShouldContain(c => c.ToString() == "BRL/CAD");
-        currencyPairs.ShouldContain(c => c.ToString() == "CNY/CAD");
-        currencyPairs.ShouldContain(c => c.ToString() == "EUR/CAD");
-        currencyPairs.ShouldContain(c => c.ToString() == "HKD/CAD");
-        currencyPairs.ShouldContain(c => c.ToString() == "INR/CAD");
-        currencyPairs.ShouldContain(c => c.ToString() == "IDR/CAD");
-        currencyPairs.ShouldContain(c => c.ToString() == "JPY/CAD");
-        currencyPairs.ShouldContain(c => c.ToString() == "MXN/CAD");
-        currencyPairs.ShouldContain(c => c.ToString() == "NZD/CAD");
-        currencyPairs.ShouldContain(c => c.ToString() == "NOK/CAD");
-        currencyPairs.ShouldContain(c => c.ToString() == "PEN/CAD");
-        currencyPairs.ShouldContain(c => c.ToString() == "RUB/CAD");
-        currencyPairs.ShouldContain(c => c.ToString() == "SGD/CAD");
-        currencyPairs.ShouldContain(c => c.ToString() == "ZAR/CAD");
-        currencyPairs.ShouldContain(c => c.ToString() == "KRW/CAD");
-        currencyPairs.ShouldContain(c => c.ToString() == "SEK/CAD");
-        currencyPairs.ShouldContain(c => c.ToString() == "CHF/CAD");
-        currencyPairs.ShouldContain(c => c.ToString() == "TWD/CAD");
-        currencyPairs.ShouldContain(c => c.ToString() == "TRY/CAD");
-        currencyPairs.ShouldContain(c => c.ToString() == "GBP/CAD");
+        foreach (var currencyCode in expectedForeignCurrencies)
+        {
+            currencyPairs.ShouldContain(c => c.ToString() == $"CAD/{currencyCode}");
+            currencyPairs.ShouldContain(c => c.ToString() == $"{currencyCode}/CAD");
+        }
     }
 
     [Fact]
