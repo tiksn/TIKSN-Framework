@@ -158,10 +158,13 @@ public abstract class MongoRepository<TDocument, TIdentity> :
         [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         Task<IAsyncCursor<TDocument>> NoneAsync() =>
-            this.Collection.Find(FilterDefinition<TDocument>.Empty).ToCursorAsync(cancellationToken);
+            this.Collection.Find(FilterDefinition<TDocument>.Empty)
+                .Sort(this.PageSortDefinition)
+                .ToCursorAsync(cancellationToken);
 
         Task<IAsyncCursor<TDocument>> SomeAsync(IClientSessionHandle clientSessionHandle) => this.Collection
             .Find(clientSessionHandle, FilterDefinition<TDocument>.Empty)
+            .Sort(this.PageSortDefinition)
             .ToCursorAsync(cancellationToken);
 
         var cursor = await this.MongoClientSessionProvider.GetClientSessionHandle().Match(SomeAsync, NoneAsync)

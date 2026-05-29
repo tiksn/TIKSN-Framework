@@ -16,7 +16,12 @@ public class ExchangeRateDataRepository : MongoRepository<ExchangeRateDataEntity
     }
 
     protected override SortDefinition<ExchangeRateDataEntity> PageSortDefinition
-        => Builders<ExchangeRateDataEntity>.Sort.Ascending(x => x.AsOn);
+        => Builders<ExchangeRateDataEntity>.Sort.Combine(
+            Builders<ExchangeRateDataEntity>.Sort.Ascending(x => x.AsOn),
+            Builders<ExchangeRateDataEntity>.Sort.Ascending(x => x.BaseCurrencyCode),
+            Builders<ExchangeRateDataEntity>.Sort.Ascending(x => x.CounterCurrencyCode),
+            Builders<ExchangeRateDataEntity>.Sort.Ascending(x => x.ForeignExchangeID),
+            Builders<ExchangeRateDataEntity>.Sort.Ascending(x => x.ID));
 
     public Task<IReadOnlyList<ExchangeRateDataEntity>> SearchAsync(
         string baseCurrencyCode,

@@ -101,7 +101,7 @@ public class LiteDbRepository<TDocument, TIdentity> : ILiteDbRepository<TDocumen
     }
 
     public IAsyncEnumerable<TDocument> StreamAllAsync(CancellationToken cancellationToken) =>
-        this.Collection.FindAll().ToAsyncEnumerable();
+        this.Collection.Find(this.PageQuery).ToAsyncEnumerable();
 
     public Task UpdateAsync(TDocument entity, CancellationToken cancellationToken)
     {
