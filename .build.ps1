@@ -134,7 +134,7 @@ Task RestorePackages Clean, EnsureCentralPackageVersions, {
 }
 
 # Synopsis: Restore
-Task Restore RestoreWorkloads, RestoreTools, RestorePackages
+Task Restore RestoreWorkloads, RestoreTools, RestorePackages, DownloadCurrencyCodes
 
 # Synopsis: Download Currency Codes
 Task DownloadCurrencyCodes Clean, {
@@ -332,7 +332,7 @@ Task BuildRegionLocalization EstimateVersion, {
 }
 
 # Synopsis: Build Core
-Task BuildCore EstimateVersion, {
+Task BuildCore EstimateVersion, DownloadCurrencyCodes, {
     $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
     $anyBuildArtifactsFolder = $state.AnyBuildArtifactsFolder
     $project = Resolve-Path -Path 'TIKSN.Framework.Core/TIKSN.Framework.Core.csproj'
@@ -361,7 +361,7 @@ Task BuildMaui EstimateVersion, {
 }
 
 # Synopsis: Build
-Task Build Format, BuildLanguageLocalization, BuildRegionLocalization, BuildCore, BuildMaui, {
+Task Build Format, DownloadCurrencyCodes, BuildLanguageLocalization, BuildRegionLocalization, BuildCore, BuildMaui, {
     $solution = Resolve-Path -Path 'TIKSN Framework.slnx'
     Exec { dotnet build $solution }
 }
