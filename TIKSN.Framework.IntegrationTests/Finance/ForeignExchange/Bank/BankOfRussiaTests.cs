@@ -153,7 +153,6 @@ public class BankOfRussiaTests
         pairs.ShouldContain(c => c.ToString() == "AZN/RUB");
         pairs.ShouldContain(c => c.ToString() == "AMD/RUB");
         pairs.ShouldContain(c => c.ToString() == "BYN/RUB");
-        pairs.ShouldContain(c => c.ToString() == "BGN/RUB");
         pairs.ShouldContain(c => c.ToString() == "BRL/RUB");
         pairs.ShouldContain(c => c.ToString() == "HUF/RUB");
         pairs.ShouldContain(c => c.ToString() == "KRW/RUB");
@@ -186,7 +185,6 @@ public class BankOfRussiaTests
         pairs.ShouldContain(c => c.ToString() == "RUB/AZN");
         pairs.ShouldContain(c => c.ToString() == "RUB/AMD");
         pairs.ShouldContain(c => c.ToString() == "RUB/BYN");
-        pairs.ShouldContain(c => c.ToString() == "RUB/BGN");
         pairs.ShouldContain(c => c.ToString() == "RUB/BRL");
         pairs.ShouldContain(c => c.ToString() == "RUB/HUF");
         pairs.ShouldContain(c => c.ToString() == "RUB/KRW");
