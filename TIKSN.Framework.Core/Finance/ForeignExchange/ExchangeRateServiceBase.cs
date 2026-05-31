@@ -184,8 +184,12 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
         DateTimeOffset asOn,
         IReadOnlyList<ExchangeRateEntity> combinedRates)
         => combinedRates
-            .OrderBy(item => Math.Abs((item.AsOn - asOn.LocalDateTime).Ticks))
+            .OrderBy(item => Math.Abs((item.AsOn - asOn.UtcDateTime).Ticks))
             .ToOption();
+
+    private static bool IsMatchingPair(ExchangeRateEntity rate, CurrencyPair pair)
+        => string.Equals(rate.BaseCurrencyCode, pair.BaseCurrency.ISOCurrencySymbol, StringComparison.Ordinal) &&
+            string.Equals(rate.CounterCurrencyCode, pair.CounterCurrency.ISOCurrencySymbol, StringComparison.Ordinal);
 
     [LoggerMessage(
         EventId = 4905787,
@@ -208,21 +212,7 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
     private static partial void LogExchangeRateNotFound(
         ILogger logger, CurrencyPair currencyPair);
 
-    [LoggerMessage(
-        EventId = 4907633,
-        Level = LogLevel.Error,
-        Message = "Failed to fetch exchange rate for {CurrencyPair}")]
-    private static partial void LogFetchExchangeRateFailed(
-        ILogger logger, Exception ex, CurrencyPair currencyPair);
-
-    [LoggerMessage(
-        EventId = 4906959,
-        Level = LogLevel.Error,
-        Message = "Failed to fetch exchange rates")]
-    private static partial void LogFetchExchangeRatesFailed(
-        ILogger logger, Exception ex);
-
-    private static async Task SaveExchangeRatesAsync(
+    private static async Task<IReadOnlyList<ExchangeRateEntity>> SaveExchangeRatesAsync(
         IExchangeRateRepository exchangeRateRepository,
         Guid foreignExchangeID,
         IEnumerable<ExchangeRate> exchangeRates,
@@ -245,6 +235,8 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
         {
             await exchangeRateRepository.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
         }
+
+        return entities;
     }
 
     private async Task<IReadOnlyList<ExchangeRateEntity>> FetchExchangeRatesAsync(
@@ -267,14 +259,14 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
 
             if (rates.Count == 0)
             {
-                await provider.Value.RateProvider.Match(
-                    batchProvider => this.FetchExchangeRatesAsync(
+                var fetchedRates = await provider.Value.RateProvider.Match(
+                    batchProvider => FetchExchangeRatesAsync(
                         exchangeRateRepository,
                         provider.Key,
                         batchProvider,
                         asOn,
                         cancellationToken),
-                    individualProvider => this.FetchExchangeRatesAsync(
+                    individualProvider => FetchExchangeRatesAsync(
                         exchangeRateRepository,
                         provider.Key,
                         individualProvider,
@@ -282,13 +274,7 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
                         asOn,
                         cancellationToken)).ConfigureAwait(false);
 
-                rates = await exchangeRateRepository.SearchAsync(
-                    provider.Key,
-                    pair.BaseCurrency.ISOCurrencySymbol,
-                    pair.CounterCurrency.ISOCurrencySymbol,
-                    dateFrom,
-                    dateTo,
-                    cancellationToken).ConfigureAwait(false);
+                rates = [.. fetchedRates.Where(rate => IsMatchingPair(rate, pair))];
 
                 combinedRates.AddRange(rates);
             }
@@ -301,33 +287,24 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
         return combinedRates;
     }
 
-    private async Task FetchExchangeRatesAsync(
+    private static async Task<IReadOnlyList<ExchangeRateEntity>> FetchExchangeRatesAsync(
         IExchangeRateRepository exchangeRateRepository,
         Guid foreignExchangeID,
         IExchangeRatesProvider batchProvider,
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
-#pragma warning disable CA1031 // Do not catch general exception types
-        try
-        {
-            var exchangeRates =
-                await batchProvider.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
+        var exchangeRates =
+            await batchProvider.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
 
-            await SaveExchangeRatesAsync(
-                exchangeRateRepository,
-                foreignExchangeID,
-                exchangeRates,
-                cancellationToken).ConfigureAwait(false);
-        }
-        catch (Exception ex)
-        {
-            LogFetchExchangeRatesFailed(this.Logger, ex);
-        }
-#pragma warning restore CA1031 // Do not catch general exception types
+        return await SaveExchangeRatesAsync(
+            exchangeRateRepository,
+            foreignExchangeID,
+            exchangeRates,
+            cancellationToken).ConfigureAwait(false);
     }
 
-    private async Task FetchExchangeRatesAsync(
+    private static async Task<IReadOnlyList<ExchangeRateEntity>> FetchExchangeRatesAsync(
         IExchangeRateRepository exchangeRateRepository,
         Guid foreignExchangeID,
         IExchangeRateProvider individualProvider,
@@ -337,25 +314,16 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
     {
         ArgumentNullException.ThrowIfNull(pair);
 
-#pragma warning disable CA1031 // Do not catch general exception types
-        try
-        {
-            var exchangeRate = await individualProvider.GetExchangeRateAsync(
-                pair.BaseCurrency,
-                pair.CounterCurrency,
-                asOn,
-                cancellationToken).ConfigureAwait(false);
+        var exchangeRate = await individualProvider.GetExchangeRateAsync(
+            pair.BaseCurrency,
+            pair.CounterCurrency,
+            asOn,
+            cancellationToken).ConfigureAwait(false);
 
-            await SaveExchangeRatesAsync(
-                exchangeRateRepository,
-                foreignExchangeID,
-                [exchangeRate],
-                cancellationToken).ConfigureAwait(false);
-        }
-        catch (Exception ex)
-        {
-            LogFetchExchangeRateFailed(this.Logger, ex, pair);
-        }
-#pragma warning restore CA1031 // Do not catch general exception types
+        return await SaveExchangeRatesAsync(
+            exchangeRateRepository,
+            foreignExchangeID,
+            [exchangeRate],
+            cancellationToken).ConfigureAwait(false);
     }
 }
