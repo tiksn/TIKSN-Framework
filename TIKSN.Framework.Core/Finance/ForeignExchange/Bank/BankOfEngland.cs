@@ -51,12 +51,12 @@ public class BankOfEngland : IBankOfEngland
 
         foreach (var pair in SeriesCodes.Keys)
         {
-            var rate = await this.GetExchangeRateAsync(
-                pair,
+            var rates = await this.GetSeriesCodeExchangeRateAsync(
+                SeriesCodes[pair],
                 asOn,
                 cancellationToken).ConfigureAwait(false);
 
-            if (rate != decimal.Zero)
+            if (rates.Count != 0)
             {
                 pairs.Add(pair);
             }
@@ -109,9 +109,14 @@ public class BankOfEngland : IBankOfEngland
         var exchangeRates = await this.GetSeriesCodeExchangeRateAsync(seriesCode, asOn, cancellationToken)
             .ConfigureAwait(false);
 
-        return exchangeRates
-            .Where(x => x.Pair == pair)
-            .MinByWithTies(x => x.AsOn - asOn)[0];
+        var exchangeRate = exchangeRates
+            .Where(x => x.Pair == pair && x.AsOn <= asOn)
+            .OrderByDescending(x => x.AsOn)
+            .FirstOrDefault();
+
+        return exchangeRate ?? throw new InvalidOperationException(
+            string.Create(CultureInfo.InvariantCulture,
+                $"No Bank of England exchange rate found for {pair} on or before {asOn:O}."));
     }
 
     public async Task<IReadOnlyCollection<ExchangeRate>> GetExchangeRatesAsync(DateTimeOffset asOn,
@@ -253,15 +258,17 @@ public class BankOfEngland : IBankOfEngland
             ToInternalDataFormat(asOn), seriesCode));
 
         var responseStream = await this.httpClient.GetStreamAsync(requestUrl, cancellationToken).ConfigureAwait(false);
-
-        var xdoc = XDocument.Load(responseStream);
+        XDocument xdoc;
+        await using (responseStream.ConfigureAwait(false))
+        {
+            xdoc = XDocument.Load(responseStream);
+        }
 
         List<ExchangeRate> rates = [];
 
         foreach (var item in xdoc
-                     ?.Element("{http://www.gesmes.org/xml/2002-08-01}Envelope")
-                     ?.Element("{https://www.bankofengland.co.uk/website/agg_series}Cube")
-                     ?.Elements("{https://www.bankofengland.co.uk/website/agg_series}Cube") ?? [])
+                     .Descendants()
+                     .Where(x => x.Name.LocalName == "Cube" && x.Attribute("TIME") is not null))
         {
             var time = item.Attribute("TIME");
             if (time is not null)

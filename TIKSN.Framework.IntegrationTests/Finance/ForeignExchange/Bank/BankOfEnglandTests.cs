@@ -294,7 +294,7 @@ public class BankOfEnglandTests
         // In case or failure, check currency pair information from BOE website and set deadline
         // up to 3 month.
 
-        var deadline = new DateTimeOffset(year: 2024, month: 02, day: 01, hour: 0, minute: 0, second: 0, TimeSpan.Zero);
+        var deadline = new DateTimeOffset(year: 2026, month: 09, day: 01, hour: 0, minute: 0, second: 0, TimeSpan.Zero);
 
         deadline.ShouldBeGreaterThan(this.timeProvider.GetUtcNow());
     }
