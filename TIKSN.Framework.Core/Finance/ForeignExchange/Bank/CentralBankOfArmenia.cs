@@ -9,7 +9,7 @@ public class CentralBankOfArmenia : ICentralBankOfArmenia
     private static readonly CurrencyInfo AMD = new(new RegionInfo("hy-AM"));
 
     private static readonly Uri RSS =
-        new("https://www.cba.am/_layouts/rssreader.aspx?rss=280F57B8-763C-4EE4-90E0-8136C13E47DA");
+        new("https://old.cba.am/_layouts/rssreader.aspx?rss=280F57B8-763C-4EE4-90E0-8136C13E47DA");
 
     private readonly ICurrencyFactory currencyFactory;
     private readonly HttpClient httpClient;
