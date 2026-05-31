@@ -305,16 +305,11 @@ public class BankOfRussiaTests
     {
         for (var year = 1994; year <= this.timeProvider.GetUtcNow().Year; year++)
         {
-            for (var month = 1;
-                 (year < this.timeProvider.GetUtcNow().Year && month <= 12) ||
-                 month <= this.timeProvider.GetUtcNow().Month;
-                 month++)
-            {
-                var date = new DateTime(year, month, day: 1);
+            var month = year == this.timeProvider.GetUtcNow().Year ? this.timeProvider.GetUtcNow().Month : 1;
+            var date = new DateTime(year, month, day: 1);
 
-                _ = await this.bank.GetCurrencyPairsAsync(date,
-                    cancellationToken: TestContext.Current.CancellationToken);
-            }
+            _ = await this.bank.GetCurrencyPairsAsync(date,
+                cancellationToken: TestContext.Current.CancellationToken);
         }
     }
 

@@ -81,10 +81,7 @@ public static class ServiceCollectionExtensions
             .ConfigureHttpClient(config =>
                 config.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("TIKSN-Framework",
                     typeof(ServiceCollectionExtensions).Assembly.GetName().Version?.ToString())));
-        _ = services.AddHttpClient<IEuropeanCentralBank, EuropeanCentralBank>()
-            .ConfigureHttpClient(config =>
-                config.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("TIKSN-Framework",
-                    typeof(ServiceCollectionExtensions).Assembly.GetName().Version?.ToString())));
+        _ = services.AddHttpClient<IEuropeanCentralBank, EuropeanCentralBank>();
         _ = services.AddHttpClient<IFederalReserveSystem, FederalReserveSystem>();
         _ = services.AddHttpClient<INationalBankOfPoland, NationalBankOfPoland>();
         _ = services.AddHttpClient<INationalBankOfUkraine, NationalBankOfUkraine>();
