@@ -10,6 +10,9 @@ public class BankOfRussia : IBankOfRussia
     private static readonly CompositeFormat AddressFormat =
         CompositeFormat.Parse("https://www.cbr.ru/scripts/XML_daily.asp?date_req={0:00}.{1:00}.{2}");
 
+    private static readonly Dictionary<DateOnly, IReadOnlyCollection<PublishedRate>> PublishedRatesCache = [];
+
+    private static readonly Lock PublishedRatesCacheLock = new();
     private static readonly CurrencyInfo RussianRuble = new(new RegionInfo("ru-RU"));
     private static readonly CultureInfo RussianRussia = new("ru-RU");
     private readonly ICurrencyFactory currencyFactory;
@@ -85,60 +88,73 @@ public class BankOfRussia : IBankOfRussia
 
         var address = new Uri(string.Format(RussianRussia, AddressFormat, thatDay.Day, thatDay.Month, thatDay.Year));
 
-        var result = new List<ExchangeRate>();
+        var date = DateOnly.FromDateTime(thatDay);
+        var publishedRates = GetCachedPublishedRates(date);
 
-        var responseStream = await this.httpClient.GetStreamAsync(address, cancellationToken).ConfigureAwait(false);
+        if (publishedRates == null)
+        {
+            var responseStream = await this.httpClient.GetStreamAsync(address, cancellationToken).ConfigureAwait(false);
+            publishedRates = ReadPublishedRates(responseStream);
+            CachePublishedRates(date, publishedRates);
+        }
 
+        return this.ApplyPublishedRates(publishedRates, asOn);
+    }
+
+    private static void CachePublishedRates(
+        DateOnly date,
+        IReadOnlyCollection<PublishedRate> publishedRates)
+    {
+        lock (PublishedRatesCacheLock)
+        {
+            PublishedRatesCache[date] = publishedRates;
+        }
+    }
+
+    private static IReadOnlyCollection<PublishedRate>? GetCachedPublishedRates(DateOnly date)
+    {
+        lock (PublishedRatesCacheLock)
+        {
+            return PublishedRatesCache.GetValueOrDefault(date);
+        }
+    }
+
+    private static List<PublishedRate> ReadPublishedRates(Stream responseStream)
+    {
 #pragma warning disable SYSLIB0001 // Type or member is obsolete
         using var stream​Reader = new Stream​Reader(responseStream, Encoding.UTF7);
 #pragma warning restore SYSLIB0001 // Type or member is obsolete
 
         var xdoc = XDocument.Load(stream​Reader);
+        var publishedRates = new List<PublishedRate>();
 
-        lock (this.rates)
+        foreach (var valuteElement in xdoc
+                     ?.Element("ValCurs")
+                     ?.Elements("Valute") ?? [])
         {
-            this.rates.Clear();
+            var charCodeElement = valuteElement.Element("CharCode");
 
-            foreach (var valuteElement in xdoc
-                         ?.Element("ValCurs")
-                         ?.Elements("Valute") ?? [])
+            if (charCodeElement == null)
             {
-                var charCodeElement = valuteElement.Element("CharCode");
-
-                if (charCodeElement == null)
-                {
-                    continue;
-                }
-
-                var nominalElement = valuteElement.Element("Nominal");
-                var valueElement = valuteElement.Element("Value");
-
-                var code = charCodeElement.Value;
-
-                if (string.Equals(code, "NULL", StringComparison.Ordinal))
-                {
-                    continue;
-                }
-
-                var currency = this.currencyFactory.Create(charCodeElement.Value);
-
-                var value = decimal.Parse(valueElement?.Value ?? string.Empty, RussianRussia);
-                var nominal = decimal.Parse(nominalElement?.Value ?? string.Empty, RussianRussia);
-
-                result.Add(new ExchangeRate(new CurrencyPair(currency, RussianRuble), asOn,
-                    value / nominal));
-                result.Add(new ExchangeRate(new CurrencyPair(RussianRuble, currency), asOn,
-                    nominal / value));
-
-                var rate = value / nominal;
-
-                this.rates.Add(currency, rate);
+                continue;
             }
 
-            this.published = asOn;
+            var code = charCodeElement.Value;
+
+            if (string.Equals(code, "NULL", StringComparison.Ordinal))
+            {
+                continue;
+            }
+
+            var nominalElement = valuteElement.Element("Nominal");
+            var valueElement = valuteElement.Element("Value");
+            var value = decimal.Parse(valueElement?.Value ?? string.Empty, RussianRussia);
+            var nominal = decimal.Parse(nominalElement?.Value ?? string.Empty, RussianRussia);
+
+            publishedRates.Add(new PublishedRate(code, value / nominal));
         }
 
-        return result;
+        return publishedRates;
     }
 
     private static void ValidateDate(DateTimeOffset asOn, TimeProvider timeProvider)
@@ -147,6 +163,34 @@ public class BankOfRussia : IBankOfRussia
         {
             throw new ArgumentException("Exchange rate forecasting not supported.", nameof(asOn));
         }
+    }
+
+    private List<ExchangeRate> ApplyPublishedRates(
+        IReadOnlyCollection<PublishedRate> publishedRates,
+        DateTimeOffset asOn)
+    {
+        var result = new List<ExchangeRate>();
+
+        lock (this.rates)
+        {
+            this.rates.Clear();
+
+            foreach (var publishedRate in publishedRates)
+            {
+                var currency = this.currencyFactory.Create(publishedRate.CurrencyCode);
+
+                result.Add(new ExchangeRate(new CurrencyPair(currency, RussianRuble), asOn,
+                    publishedRate.Rate));
+                result.Add(new ExchangeRate(new CurrencyPair(RussianRuble, currency), asOn,
+                    decimal.One / publishedRate.Rate));
+
+                this.rates.Add(currency, publishedRate.Rate);
+            }
+
+            this.published = asOn;
+        }
+
+        return result;
     }
 
     private async Task FetchOnDemandAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
@@ -175,4 +219,6 @@ public class BankOfRussia : IBankOfRussia
 
         throw new InvalidOperationException("Currency pair not supported.");
     }
+
+    private sealed record PublishedRate(string CurrencyCode, decimal Rate);
 }
