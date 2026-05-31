@@ -131,17 +131,7 @@ public class FederalReserveSystem : IFederalReserveSystem
                         var period = DateTimeOffset.Parse(obsElement?.Attribute("TIME_PERIOD")?.Value ?? string.Empty,
                             EnglishUnitedStates);
 
-                        decimal obsValueRate;
-
-                        if (string.Equals(seriesElement?.Attribute("UNIT")?.Value, "Currency:_Per_USD",
-                                StringComparison.OrdinalIgnoreCase))
-                        {
-                            obsValueRate = obsValue;
-                        }
-                        else
-                        {
-                            obsValueRate = decimal.One / obsValue;
-                        }
+                        var obsValueRate = IsCurrencyPerUsdSeries(seriesElement) ? obsValue : decimal.One / obsValue;
 
                         rates.Add(period, obsValueRate);
                     }
@@ -170,6 +160,29 @@ public class FederalReserveSystem : IFederalReserveSystem
         }
 
         return result;
+    }
+
+    private static bool IsCurrencyPerUsdSeries(XElement? seriesElement)
+    {
+        if (seriesElement is null)
+        {
+            return false;
+        }
+
+        if (string.Equals(seriesElement.Attribute("UNIT")?.Value, "Currency:_Per_USD",
+                StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        var seriesName = seriesElement.Attribute("SERIES_NAME")?.Value;
+
+        if (!string.IsNullOrWhiteSpace(seriesName))
+        {
+            return seriesName.StartsWith("RXI_", StringComparison.OrdinalIgnoreCase);
+        }
+
+        return false;
     }
 
     private static void ValidateDate(DateTimeOffset asOn, TimeProvider timeProvider)
