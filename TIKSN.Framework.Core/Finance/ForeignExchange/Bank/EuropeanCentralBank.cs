@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Globalization;
 using System.Xml.Linq;
 using TIKSN.Globalization;
@@ -6,15 +7,18 @@ namespace TIKSN.Finance.ForeignExchange.Bank;
 
 public class EuropeanCentralBank : IEuropeanCentralBank
 {
+    private static readonly TimeZoneInfo EuropeanCentralBankTimeZone = CreateEuropeanCentralBankTimeZone();
     private static readonly Uri DailyRatesUrl = new("https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml");
 
     private static readonly CurrencyInfo Euro = new(new RegionInfo("de-DE"));
+
 
     private static readonly Uri Last90DaysRatesUrl =
         new("https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml");
 
     private static readonly Uri Since1999RatesUrl = new("https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.xml");
     private readonly ICurrencyFactory currencyFactory;
+    private readonly ConcurrentDictionary<(Uri RequestURL, DateOnly RequestDate), XDocument> exchangeRateDocuments = [];
     private readonly HttpClient httpClient;
     private readonly TimeProvider timeProvider;
 
@@ -94,20 +98,19 @@ public class EuropeanCentralBank : IEuropeanCentralBank
     {
         var requestURL = GetRatesUrl(asOn, this.timeProvider);
 
-        var responseStream = await this.httpClient.GetStreamAsync(requestURL, cancellationToken).ConfigureAwait(false);
-
-        var xdoc = XDocument.Load(responseStream);
+        var xdoc = await this.GetExchangeRateDocumentAsync(requestURL, cancellationToken).ConfigureAwait(false);
 
         var groupsCubes = xdoc
             ?.Element("{http://www.gesmes.org/xml/2002-08-01}Envelope")
             ?.Element("{http://www.ecb.int/vocabulary/2002-08-01/eurofxref}Cube")
             ?.Elements("{http://www.ecb.int/vocabulary/2002-08-01/eurofxref}Cube") ?? [];
 
+        var asOnDate = GetCentralEuropeanDate(asOn);
         var groupCubes = groupsCubes
             .Select(x =>
-                new Tuple<XElement, DateTimeOffset>(x,
-                    DateTimeOffset.Parse(x?.Attribute("time")?.Value ?? string.Empty, CultureInfo.InvariantCulture)))
-            .Where(z => z.Item2 <= asOn)
+                new Tuple<XElement, DateOnly>(x,
+                    DateOnly.Parse(x?.Attribute("time")?.Value ?? string.Empty, CultureInfo.InvariantCulture)))
+            .Where(z => z.Item2 <= asOnDate)
             .OrderByDescending(y => y.Item2)
             .Select(x => (x.Item1, x.Item2))
             .First();
@@ -121,25 +124,73 @@ public class EuropeanCentralBank : IEuropeanCentralBank
             var rate = decimal.Parse(rateCube?.Attribute("rate")?.Value ?? string.Empty, CultureInfo.InvariantCulture);
 
             rates.Add(new ExchangeRate(new CurrencyPair(Euro, this.currencyFactory.Create(currencyCode)),
-                groupCubes.Item2, rate));
+                CreateEuropeanCentralBankDateTimeOffset(groupCubes.Item2), rate));
         }
 
         return rates;
     }
 
+    private static DateTimeOffset CreateEuropeanCentralBankDateTimeOffset(DateOnly date)
+    {
+        var localDateTime = date.ToDateTime(TimeOnly.MinValue);
+
+        return new DateTimeOffset(localDateTime, EuropeanCentralBankTimeZone.GetUtcOffset(localDateTime));
+    }
+
+    private static TimeZoneInfo CreateEuropeanCentralBankTimeZone()
+    {
+        try
+        {
+            return TimeZoneInfo.FindSystemTimeZoneById("Europe/Frankfurt");
+        }
+        catch (TimeZoneNotFoundException)
+        {
+            return TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time");
+        }
+        catch (InvalidTimeZoneException)
+        {
+            return TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time");
+        }
+    }
+
+    private static DateOnly GetCentralEuropeanDate(DateTimeOffset dateTime) =>
+        DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(dateTime, EuropeanCentralBankTimeZone).DateTime);
+
     private static Uri GetRatesUrl(DateTimeOffset asOn, TimeProvider timeProvider)
     {
-        if (asOn.Date == timeProvider.GetUtcNow().Date)
+        var asOnDate = GetCentralEuropeanDate(asOn);
+        var today = GetCentralEuropeanDate(timeProvider.GetUtcNow());
+
+        if (asOnDate == today)
         {
             return DailyRatesUrl;
         }
 
-        if (asOn.Date >= timeProvider.GetUtcNow().AddDays(-90).Date)
+        if (asOnDate >= today.AddDays(-90))
         {
             return Last90DaysRatesUrl;
         }
 
         return Since1999RatesUrl;
+    }
+
+    private async Task<XDocument> GetExchangeRateDocumentAsync(Uri requestURL, CancellationToken cancellationToken)
+    {
+        var cacheKey = (requestURL, GetCentralEuropeanDate(this.timeProvider.GetUtcNow()));
+
+        if (this.exchangeRateDocuments.TryGetValue(cacheKey, out var cachedDocument))
+        {
+            return cachedDocument;
+        }
+
+        var responseStream = await this.httpClient.GetStreamAsync(requestURL, cancellationToken).ConfigureAwait(false);
+
+        await using (responseStream.ConfigureAwait(false))
+        {
+            var document = XDocument.Load(responseStream);
+
+            return this.exchangeRateDocuments.GetOrAdd(cacheKey, document);
+        }
     }
 
     private void VerifyDate(DateTimeOffset asOn)

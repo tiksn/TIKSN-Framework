@@ -177,7 +177,6 @@ public class EuropeanCentralBankTests
             cancellationToken: TestContext.Current.CancellationToken);
 
         pairs.ShouldContain(p => p.ToString() == "AUD/EUR");
-        pairs.ShouldContain(p => p.ToString() == "BGN/EUR");
         pairs.ShouldContain(p => p.ToString() == "BRL/EUR");
         pairs.ShouldContain(p => p.ToString() == "CAD/EUR");
         pairs.ShouldContain(p => p.ToString() == "CHF/EUR");
@@ -190,6 +189,7 @@ public class EuropeanCentralBankTests
         pairs.ShouldContain(p => p.ToString() == "IDR/EUR");
         pairs.ShouldContain(p => p.ToString() == "ILS/EUR");
         pairs.ShouldContain(p => p.ToString() == "INR/EUR");
+        pairs.ShouldContain(p => p.ToString() == "ISK/EUR");
         pairs.ShouldContain(p => p.ToString() == "JPY/EUR");
         pairs.ShouldContain(p => p.ToString() == "KRW/EUR");
         pairs.ShouldContain(p => p.ToString() == "MXN/EUR");
@@ -207,7 +207,6 @@ public class EuropeanCentralBankTests
         pairs.ShouldContain(p => p.ToString() == "ZAR/EUR");
 
         pairs.ShouldContain(p => p.ToString() == "EUR/AUD");
-        pairs.ShouldContain(p => p.ToString() == "EUR/BGN");
         pairs.ShouldContain(p => p.ToString() == "EUR/BRL");
         pairs.ShouldContain(p => p.ToString() == "EUR/CAD");
         pairs.ShouldContain(p => p.ToString() == "EUR/CHF");
@@ -220,6 +219,7 @@ public class EuropeanCentralBankTests
         pairs.ShouldContain(p => p.ToString() == "EUR/IDR");
         pairs.ShouldContain(p => p.ToString() == "EUR/ILS");
         pairs.ShouldContain(p => p.ToString() == "EUR/INR");
+        pairs.ShouldContain(p => p.ToString() == "EUR/ISK");
         pairs.ShouldContain(p => p.ToString() == "EUR/JPY");
         pairs.ShouldContain(p => p.ToString() == "EUR/KRW");
         pairs.ShouldContain(p => p.ToString() == "EUR/MXN");
