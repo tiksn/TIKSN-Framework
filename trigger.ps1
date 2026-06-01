@@ -27,7 +27,8 @@ else {
     $checkpointFile = Join-Path -Path $trashFolder -ChildPath "$Instance.clixml"
     if (Test-Path -Path $checkpointFile) {
         $checkpointData = Import-Clixml -Path $checkpointFile
-        $checkpointData.Task = @($Task)
+        $checkpointData['File'] = (Resolve-Path -Path '.build.ps1').ProviderPath
+        $checkpointData['Task'] = @($Task)
         $checkpointData | Export-Clixml -Path $checkpointFile
     }
     Build-Checkpoint -Checkpoint $checkpointFile -Build @{Task = $Task; Instance = $Instance; Version = $Version } -Preserve -Auto
