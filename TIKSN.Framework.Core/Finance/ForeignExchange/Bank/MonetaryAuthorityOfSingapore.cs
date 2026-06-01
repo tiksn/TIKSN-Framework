@@ -18,7 +18,7 @@ public class MonetaryAuthorityOfSingapore : IMonetaryAuthorityOfSingapore
     /// Units is the foreign-currency quantity represented by each published SGD rate.
     /// </summary>
     private static readonly Dictionary<string, RateSeries> RateSeriesMap =
-        new Dictionary<string, RateSeries>(StringComparer.InvariantCulture)
+        new(StringComparer.InvariantCulture)
         {
             ["Australian Dollar"] = new("AUD", Units: 1m),
             ["Euro"] = new("EUR", Units: 1m),
@@ -180,7 +180,8 @@ public class MonetaryAuthorityOfSingapore : IMonetaryAuthorityOfSingapore
 
     private async Task<IReadOnlyCollection<ExchangeRate>> FetchRatesAsync(CancellationToken cancellationToken)
     {
-        var responseStream = await this.httpClient.GetStreamAsync(DataStoreUrl, cancellationToken).ConfigureAwait(false);
+        var responseStream =
+            await this.httpClient.GetStreamAsync(DataStoreUrl, cancellationToken).ConfigureAwait(false);
 
         await using (responseStream.ConfigureAwait(false))
         {

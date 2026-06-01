@@ -17,7 +17,7 @@ param (
 
 if ([System.String]::IsNullOrWhiteSpace($Instance)) {
     $Instance = Get-Date -Format 'yyyyMMddHHmmss'
-    Invoke-Build -Task $Task -Instance $Instance -Version $Version
+    Invoke-Build -Task $Task -Instance $Instance -Version $Version -Summary
 }
 else {
     $trashFolder = Join-Path -Path . -ChildPath '.trash'

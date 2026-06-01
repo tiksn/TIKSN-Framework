@@ -192,6 +192,10 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
                 data));
     }
 
+    private static bool HasPrivateKey(
+        X509Certificate2 certificate) =>
+        certificate.HasPrivateKey || certificate is EdDSAX509Certificate2;
+
     private static Validation<Error, LicenseEnvelope> ParseEnvelope(
         Seq<byte> data)
     {
@@ -204,10 +208,6 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
             return Error.New(75510624, "License data is malformed");
         }
     }
-
-    private static bool HasPrivateKey(
-        X509Certificate2 certificate) =>
-        certificate.HasPrivateKey || certificate is EdDSAX509Certificate2;
 
     private static Validation<Error, Unit> ValidateEnvelopeShape(
         LicenseEnvelope envelope)
