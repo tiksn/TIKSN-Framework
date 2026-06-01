@@ -1044,6 +1044,12 @@ public static class LocalizationKeys
     public static string Key816611612 => "816611612";
 
     /// <summary>
+    /// Key: 827519006
+    /// Original Value: Monetary Authority of Singapore
+    /// </summary>
+    public static string Key827519006 => "827519006";
+
+    /// <summary>
     /// Key: 829543091
     /// Original Value: Developing for Developers
     /// </summary>
