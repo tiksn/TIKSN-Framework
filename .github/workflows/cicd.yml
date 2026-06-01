@@ -18,8 +18,8 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
 jobs:
-  ci:
-    name: CI
+  build:
+    name: Build
     runs-on: windows-latest
     steps:
       - name: "Checkout"
@@ -47,22 +47,80 @@ jobs:
       - name: "Build"
         shell: pwsh
         run: .\build.ps1 -Instance ${{github.run_id}}
+      - name: "Publish Artefacts"
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: build-artifact
+          path: ".trash"
+          include-hidden-files: true
+
+  test:
+    name: Test
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v6
+        with:
+          lfs: true
+          fetch-depth: 0
+          persist-credentials: false
+      - name: "Install .NET Core SDK"
+        uses: actions/setup-dotnet@v5.3.0
+      - name: "Install InvokeBuild Module"
+        shell: pwsh
+        run: Install-Module -Name InvokeBuild -Force
+      - name: "Download Build Artefacts"
+        uses: actions/download-artifact@v8.0.1
+        with:
+          name: build-artifact
+          path: ".trash"
       - name: "Test"
         shell: pwsh
         run: .\test.ps1 -Instance ${{github.run_id}}
+      - name: "Publish Test Artefacts"
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: test-artifact
+          path: ".trash"
+          include-hidden-files: true
+
+  pack:
+    name: Pack
+    needs: test
+    runs-on: windows-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v6
+        with:
+          lfs: true
+          fetch-depth: 0
+          persist-credentials: false
+      - name: "Install .NET Core SDK"
+        uses: actions/setup-dotnet@v5.3.0
+      - name: Install .NET MAUI
+        run: dotnet workload install maui
+      - name: "Install InvokeBuild Module"
+        shell: pwsh
+        run: Install-Module -Name InvokeBuild -Force
+      - name: "Download Test Artefacts"
+        uses: actions/download-artifact@v8.0.1
+        with:
+          name: test-artifact
+          path: ".trash"
       - name: "Pack"
         shell: pwsh
         run: .\pack.ps1 -Instance ${{github.run_id}}
       - name: "Publish Artefacts"
         uses: actions/upload-artifact@v7.0.1
         with:
-          name: .trash
+          name: pack-artifact
           path: ".trash"
           include-hidden-files: true
 
-  cd:
-    name: CD
-    needs: ci
+  publish:
+    name: Publish
+    needs: pack
     if: github.event_name == 'release'
     environment:
       name: "NuGet"
@@ -78,7 +136,7 @@ jobs:
       - name: "Download Artefact"
         uses: actions/download-artifact@v8.0.1
         with:
-          name: .trash
+          name: pack-artifact
           path: ".trash"
       - name: "Install InvokeBuild Module"
         shell: pwsh
