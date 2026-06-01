@@ -49,7 +49,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
                 succ => envelope.Message.Entitlements = succ.ToByteString(),
                 fail => errors.AddRange(fail));
 
-        if (!privateCertificate.HasPrivateKey)
+        if (!HasPrivateKey(privateCertificate))
         {
             errors.Add(Error.New(124921383, "Certificate Private Key is missing"));
         }
@@ -204,6 +204,10 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
             return Error.New(75510624, "License data is malformed");
         }
     }
+
+    private static bool HasPrivateKey(
+        X509Certificate2 certificate) =>
+        certificate.HasPrivateKey || certificate is EdDSAX509Certificate2;
 
     private static Validation<Error, Unit> ValidateEnvelopeShape(
         LicenseEnvelope envelope)
