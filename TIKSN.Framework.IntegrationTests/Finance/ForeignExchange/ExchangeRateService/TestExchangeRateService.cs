@@ -21,6 +21,7 @@ public sealed class TestExchangeRateService : ExchangeRateServiceBase
         ICentralBankOfArmenia centralBankOfArmenia,
         IEuropeanCentralBank europeanCentralBank,
         IFederalReserveSystem financeReserveSystem,
+        IMonetaryAuthorityOfSingapore monetaryAuthorityOfSingapore,
         INationalBankOfPoland nationalBankOfPoland,
         INationalBankOfUkraine nationalBankOfUkraine,
         IReserveBankOfAustralia reserveBankOfAustralia,
@@ -78,6 +79,14 @@ public sealed class TestExchangeRateService : ExchangeRateServiceBase
             LocalizationKeys.Key724813953,
             "US",
             TimeSpan.FromHours(24));
+
+        this.AddBatchProvider(
+            Guid.Parse("5bb733e2-c8ab-40f5-a51d-e7f3fb92746a"),
+            monetaryAuthorityOfSingapore,
+            LocalizationKeys.Key827519006,
+            LocalizationKeys.Key827519006,
+            "SG",
+            TimeSpan.FromDays(30));
 
         this.AddBatchProvider(
             Guid.Parse("cbe21065-1ead-463c-be4e-d95d30051101"),

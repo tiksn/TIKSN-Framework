@@ -86,6 +86,7 @@ public static class ServiceCollectionExtensions
                     typeof(ServiceCollectionExtensions).Assembly.GetName().Version?.ToString())));
         _ = services.AddHttpClient<IEuropeanCentralBank, EuropeanCentralBank>();
         _ = services.AddHttpClient<IFederalReserveSystem, FederalReserveSystem>();
+        _ = services.AddHttpClient<IMonetaryAuthorityOfSingapore, MonetaryAuthorityOfSingapore>();
         _ = services.AddHttpClient<INationalBankOfPoland, NationalBankOfPoland>();
         _ = services.AddHttpClient<INationalBankOfUkraine, NationalBankOfUkraine>();
         _ = services.AddHttpClient<IReserveBankOfAustralia, ReserveBankOfAustralia>();
