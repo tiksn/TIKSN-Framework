@@ -371,9 +371,7 @@ Task Test UnitTest, IntegrationTest
 
 # Synopsis: Integration Test
 Task IntegrationTest Build, {
-    if (-not $env:CI) {
-        Exec { dotnet test '.\TIKSN.Framework.IntegrationTests\TIKSN.Framework.IntegrationTests.csproj' }
-    }
+    Exec { dotnet test '.\TIKSN.Framework.IntegrationTests\TIKSN.Framework.IntegrationTests.csproj' }
 }
 
 # Synopsis: Unit Test

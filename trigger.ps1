@@ -21,7 +21,6 @@ if ([System.String]::IsNullOrWhiteSpace($Instance)) {
 }
 else {
     $trashFolder = Join-Path -Path . -ChildPath '.trash'
-    $trashFolder = Join-Path -Path $trashFolder -ChildPath $date
     if (-not (Test-Path -Path $trashFolder)) {
         New-Item -Path $trashFolder -ItemType Directory | Out-Null
     }
