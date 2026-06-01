@@ -306,7 +306,7 @@ public class BankOfRussiaTests
         for (var year = 1994; year <= this.timeProvider.GetUtcNow().Year; year++)
         {
             var month = year == this.timeProvider.GetUtcNow().Year ? this.timeProvider.GetUtcNow().Month : 1;
-            var date = new DateTime(year, month, day: 1);
+            var date = new DateTimeOffset(year, month, day: 1, hour: 0, minute: 0, second: 0, TimeSpan.Zero);
 
             _ = await this.bank.GetCurrencyPairsAsync(date,
                 cancellationToken: TestContext.Current.CancellationToken);

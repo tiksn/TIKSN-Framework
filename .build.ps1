@@ -367,12 +367,18 @@ Task Build Format, DownloadCurrencyCodes, BuildLanguageLocalization, BuildRegion
 }
 
 # Synopsis: Test
-Task Test Build, {
-    Exec { dotnet test '.\TIKSN.Framework.Core.Tests\TIKSN.Framework.Core.Tests.csproj' }
+Task Test UnitTest, IntegrationTest
 
+# Synopsis: Integration Test
+Task IntegrationTest Build, {
     if (-not $env:CI) {
         Exec { dotnet test '.\TIKSN.Framework.IntegrationTests\TIKSN.Framework.IntegrationTests.csproj' }
     }
+}
+
+# Synopsis: Unit Test
+Task UnitTest Build, {
+    Exec { dotnet test '.\TIKSN.Framework.Core.Tests\TIKSN.Framework.Core.Tests.csproj' }
 }
 
 # Synopsis: Pack NuGet package

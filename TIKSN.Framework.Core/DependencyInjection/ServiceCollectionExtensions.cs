@@ -75,7 +75,10 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<IKnownFolders, KnownFolders>();
 
         _ = services.AddHttpClient<IBankOfCanada, BankOfCanada>();
-        _ = services.AddHttpClient<IBankOfEngland, BankOfEngland>();
+        _ = services.AddHttpClient<IBankOfEngland, BankOfEngland>()
+            .ConfigureHttpClient(config =>
+                config.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("TIKSN-Framework",
+                    typeof(ServiceCollectionExtensions).Assembly.GetName().Version?.ToString())));
         _ = services.AddHttpClient<IBankOfRussia, BankOfRussia>();
         _ = services.AddHttpClient<ICentralBankOfArmenia, CentralBankOfArmenia>()
             .ConfigureHttpClient(config =>
