@@ -180,6 +180,46 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
         return (dateFrom, dateTo);
     }
 
+    private static async Task<IReadOnlyList<ExchangeRateEntity>> FetchExchangeRatesAsync(
+        IExchangeRateRepository exchangeRateRepository,
+        Guid foreignExchangeID,
+        IExchangeRatesProvider batchProvider,
+        DateTimeOffset asOn,
+        CancellationToken cancellationToken)
+    {
+        var exchangeRates =
+            await batchProvider.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
+
+        return await SaveExchangeRatesAsync(
+            exchangeRateRepository,
+            foreignExchangeID,
+            exchangeRates,
+            cancellationToken).ConfigureAwait(false);
+    }
+
+    private static async Task<IReadOnlyList<ExchangeRateEntity>> FetchExchangeRatesAsync(
+        IExchangeRateRepository exchangeRateRepository,
+        Guid foreignExchangeID,
+        IExchangeRateProvider individualProvider,
+        CurrencyPair pair,
+        DateTimeOffset asOn,
+        CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(pair);
+
+        var exchangeRate = await individualProvider.GetExchangeRateAsync(
+            pair.BaseCurrency,
+            pair.CounterCurrency,
+            asOn,
+            cancellationToken).ConfigureAwait(false);
+
+        return await SaveExchangeRatesAsync(
+            exchangeRateRepository,
+            foreignExchangeID,
+            [exchangeRate],
+            cancellationToken).ConfigureAwait(false);
+    }
+
     private static Option<ExchangeRateEntity> GetPreferredExchangeRate(
         DateTimeOffset asOn,
         IReadOnlyList<ExchangeRateEntity> combinedRates)
@@ -285,45 +325,5 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
         }
 
         return combinedRates;
-    }
-
-    private static async Task<IReadOnlyList<ExchangeRateEntity>> FetchExchangeRatesAsync(
-        IExchangeRateRepository exchangeRateRepository,
-        Guid foreignExchangeID,
-        IExchangeRatesProvider batchProvider,
-        DateTimeOffset asOn,
-        CancellationToken cancellationToken)
-    {
-        var exchangeRates =
-            await batchProvider.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
-
-        return await SaveExchangeRatesAsync(
-            exchangeRateRepository,
-            foreignExchangeID,
-            exchangeRates,
-            cancellationToken).ConfigureAwait(false);
-    }
-
-    private static async Task<IReadOnlyList<ExchangeRateEntity>> FetchExchangeRatesAsync(
-        IExchangeRateRepository exchangeRateRepository,
-        Guid foreignExchangeID,
-        IExchangeRateProvider individualProvider,
-        CurrencyPair pair,
-        DateTimeOffset asOn,
-        CancellationToken cancellationToken)
-    {
-        ArgumentNullException.ThrowIfNull(pair);
-
-        var exchangeRate = await individualProvider.GetExchangeRateAsync(
-            pair.BaseCurrency,
-            pair.CounterCurrency,
-            asOn,
-            cancellationToken).ConfigureAwait(false);
-
-        return await SaveExchangeRatesAsync(
-            exchangeRateRepository,
-            foreignExchangeID,
-            [exchangeRate],
-            cancellationToken).ConfigureAwait(false);
     }
 }

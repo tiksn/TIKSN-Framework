@@ -59,7 +59,7 @@ public class QueryRepositoryPaginationTests
         firstPageResult.Page.Number.ShouldBe(1);
         firstPageResult.Page.Size.ShouldBe(10);
         _ = firstPageResult.Items.ShouldNotBeNull();
-        firstPageResult.Items.ShouldBeEquivalentTo(items);
+        firstPageResult.Items.ToList().ShouldBeEquivalentTo(items);
         firstPageResult.TotalItems.ShouldBe(totalItems);
         firstPageResult.TotalPages.ShouldBe((long)Math.Ceiling(totalItems / 10m));
     }
