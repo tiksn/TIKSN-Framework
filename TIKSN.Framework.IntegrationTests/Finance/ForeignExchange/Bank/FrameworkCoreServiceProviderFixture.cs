@@ -18,9 +18,9 @@ public sealed class FrameworkCoreServiceProviderFixture : IDisposable
         this.serviceProvider = services.BuildServiceProvider();
     }
 
+    public void Dispose() => this.serviceProvider.Dispose();
+
     public T GetRequiredService<T>()
         where T : notnull
         => this.serviceProvider.GetRequiredService<T>();
-
-    public void Dispose() => this.serviceProvider.Dispose();
 }

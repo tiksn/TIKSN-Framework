@@ -12,6 +12,8 @@ public class FederalReserveSystem : IFederalReserveSystem
             "https://www.federalreserve.gov/datadownload/Output.aspx?rel=H10&series=60f32914ab61dfab590e0e470153e3ae&lastObs=&from={0}&to={1}&filetype=sdmx&label=include&layout=seriescolumn");
 
     private static readonly CultureInfo EnglishUnitedStates = new("en-US");
+    private static readonly Dictionary<Uri, IReadOnlyCollection<ExchangeRate>> ExchangeRatesCache = [];
+    private static readonly SemaphoreSlim ExchangeRatesSemaphore = new(initialCount: 1, maxCount: 1);
     private static readonly TimeZoneInfo FederalReserveTimeZone = FindFederalReserveTimeZone();
     private static readonly CurrencyInfo UnitedStatesDollar = new(new RegionInfo("en-US"));
     private readonly ICurrencyFactory currencyFactory;
@@ -102,6 +104,70 @@ public class FederalReserveSystem : IFederalReserveSystem
             requestedDate.AddDays(-10d).ToString("MM/dd/yyyy", EnglishUnitedStates),
             requestedDate.ToString("MM/dd/yyyy", EnglishUnitedStates)));
 
+        await ExchangeRatesSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            if (ExchangeRatesCache.TryGetValue(dataUrl, out var cachedRates))
+            {
+                return cachedRates;
+            }
+
+            var rates = await this.GetExchangeRatesCoreAsync(dataUrl, cancellationToken).ConfigureAwait(false);
+            ExchangeRatesCache[dataUrl] = rates;
+
+            return rates;
+        }
+        finally
+        {
+            _ = ExchangeRatesSemaphore.Release();
+        }
+    }
+
+    private static TimeZoneInfo FindFederalReserveTimeZone()
+    {
+        if (TimeZoneInfo.TryFindSystemTimeZoneById("America/New_York", out var ianaTimeZone))
+        {
+            return ianaTimeZone;
+        }
+
+        return TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+    }
+
+    private static bool IsCurrencyPerUsdSeries(XElement? seriesElement)
+    {
+        if (seriesElement is null)
+        {
+            return false;
+        }
+
+        if (string.Equals(seriesElement.Attribute("UNIT")?.Value, "Currency:_Per_USD",
+                StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        var seriesName = seriesElement.Attribute("SERIES_NAME")?.Value;
+
+        if (!string.IsNullOrWhiteSpace(seriesName))
+        {
+            return seriesName.StartsWith("RXI_", StringComparison.OrdinalIgnoreCase);
+        }
+
+        return false;
+    }
+
+    private static void ValidateDate(DateTimeOffset asOn, TimeProvider timeProvider)
+    {
+        if (asOn > timeProvider.GetUtcNow())
+        {
+            throw new ArgumentException("Exchange rate forecasting are not supported.", nameof(asOn));
+        }
+    }
+
+    private async Task<IReadOnlyCollection<ExchangeRate>> GetExchangeRatesCoreAsync(
+        Uri dataUrl,
+        CancellationToken cancellationToken)
+    {
         var response = await this.httpClient.GetAsync(dataUrl, cancellationToken).ConfigureAwait(false);
         using (response)
         {
@@ -177,47 +243,6 @@ public class FederalReserveSystem : IFederalReserveSystem
             }
 
             return result;
-        }
-    }
-
-    private static TimeZoneInfo FindFederalReserveTimeZone()
-    {
-        if (TimeZoneInfo.TryFindSystemTimeZoneById("America/New_York", out var ianaTimeZone))
-        {
-            return ianaTimeZone;
-        }
-
-        return TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
-    }
-
-    private static bool IsCurrencyPerUsdSeries(XElement? seriesElement)
-    {
-        if (seriesElement is null)
-        {
-            return false;
-        }
-
-        if (string.Equals(seriesElement.Attribute("UNIT")?.Value, "Currency:_Per_USD",
-                StringComparison.OrdinalIgnoreCase))
-        {
-            return true;
-        }
-
-        var seriesName = seriesElement.Attribute("SERIES_NAME")?.Value;
-
-        if (!string.IsNullOrWhiteSpace(seriesName))
-        {
-            return seriesName.StartsWith("RXI_", StringComparison.OrdinalIgnoreCase);
-        }
-
-        return false;
-    }
-
-    private static void ValidateDate(DateTimeOffset asOn, TimeProvider timeProvider)
-    {
-        if (asOn > timeProvider.GetUtcNow())
-        {
-            throw new ArgumentException("Exchange rate forecasting are not supported.", nameof(asOn));
         }
     }
 

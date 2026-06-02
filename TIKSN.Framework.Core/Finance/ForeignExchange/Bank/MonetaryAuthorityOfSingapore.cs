@@ -14,6 +14,11 @@ public class MonetaryAuthorityOfSingapore : IMonetaryAuthorityOfSingapore
     private static readonly Uri DataStoreUrl =
         new("https://data.gov.sg/api/action/datastore_search?resource_id=d_cdd73fd4341b345fa4307e44d6f82175&limit=100");
 
+    private static readonly Dictionary<(Uri RequestUrl, DateOnly RequestDate), IReadOnlyCollection<ExchangeRate>>
+        ExchangeRatesCache = [];
+
+    private static readonly SemaphoreSlim ExchangeRatesSemaphore = new(initialCount: 1, maxCount: 1);
+
     /// <summary>
     /// Units is the foreign-currency quantity represented by each published SGD rate.
     /// </summary>
@@ -180,6 +185,30 @@ public class MonetaryAuthorityOfSingapore : IMonetaryAuthorityOfSingapore
 
     private async Task<IReadOnlyCollection<ExchangeRate>> FetchRatesAsync(CancellationToken cancellationToken)
     {
+        var cacheKey = (DataStoreUrl, GetSingaporeDate(this.timeProvider.GetUtcNow()));
+
+        await ExchangeRatesSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            if (!ExchangeRatesCache.TryGetValue(cacheKey, out var rates))
+            {
+                rates = await this.FetchRatesCoreAsync(cancellationToken).ConfigureAwait(false);
+                ExchangeRatesCache[cacheKey] = rates;
+            }
+
+            this.lastFetchDate = this.timeProvider.GetUtcNow();
+            this.cachedRates = rates;
+
+            return rates;
+        }
+        finally
+        {
+            _ = ExchangeRatesSemaphore.Release();
+        }
+    }
+
+    private async Task<IReadOnlyCollection<ExchangeRate>> FetchRatesCoreAsync(CancellationToken cancellationToken)
+    {
         var responseStream =
             await this.httpClient.GetStreamAsync(DataStoreUrl, cancellationToken).ConfigureAwait(false);
 
@@ -211,9 +240,6 @@ public class MonetaryAuthorityOfSingapore : IMonetaryAuthorityOfSingapore
                     this.AddExchangeRates(rates, series, property);
                 }
             }
-
-            this.lastFetchDate = this.timeProvider.GetUtcNow();
-            this.cachedRates = rates;
 
             return rates;
         }

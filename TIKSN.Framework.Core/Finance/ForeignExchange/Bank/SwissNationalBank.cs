@@ -8,7 +8,12 @@ namespace TIKSN.Finance.ForeignExchange.Bank;
 public class SwissNationalBank : ISwissNationalBank
 {
     private const string RSSURL = "https://www.snb.ch/selector/en/mmr/exfeed/rss";
+    private static readonly Dictionary<(Uri RssUrl, DateOnly RequestDate), XDocument> ExchangeRateDocumentCache = [];
+    private static readonly SemaphoreSlim ExchangeRateDocumentSemaphore = new(initialCount: 1, maxCount: 1);
     private static readonly CurrencyInfo SwissFranc = new(new RegionInfo("de-CH"));
+    private static readonly Uri RssUrl = new(RSSURL);
+
+
     private readonly ICurrencyFactory currencyFactory;
     private readonly Dictionary<CurrencyInfo, Tuple<DateTimeOffset, decimal>> foreignRates;
     private readonly HttpClient httpClient;
@@ -76,10 +81,7 @@ public class SwissNationalBank : ISwissNationalBank
     {
         var result = new List<ExchangeRate>();
 
-        var responseStream =
-            await this.httpClient.GetStreamAsync(new Uri(RSSURL), cancellationToken).ConfigureAwait(false);
-
-        var xdoc = XDocument.Load(responseStream);
+        var xdoc = await this.GetExchangeRateDocumentAsync(cancellationToken).ConfigureAwait(false);
 
         lock (this.foreignRates)
         {
@@ -163,6 +165,40 @@ public class SwissNationalBank : ISwissNationalBank
         }
 
         return results;
+    }
+
+    private async Task<XDocument> GetExchangeRateDocumentAsync(CancellationToken cancellationToken)
+    {
+        var cacheKey = (RssUrl, DateOnly.FromDateTime(this.timeProvider.GetUtcNow().Date));
+
+        await ExchangeRateDocumentSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            if (ExchangeRateDocumentCache.TryGetValue(cacheKey, out var cachedDocument))
+            {
+                return cachedDocument;
+            }
+
+            var document = await this.GetExchangeRateDocumentCoreAsync(cancellationToken).ConfigureAwait(false);
+            ExchangeRateDocumentCache[cacheKey] = document;
+
+            return document;
+        }
+        finally
+        {
+            _ = ExchangeRateDocumentSemaphore.Release();
+        }
+    }
+
+    private async Task<XDocument> GetExchangeRateDocumentCoreAsync(CancellationToken cancellationToken)
+    {
+        var responseStream =
+            await this.httpClient.GetStreamAsync(RssUrl, cancellationToken).ConfigureAwait(false);
+
+        await using (responseStream.ConfigureAwait(false))
+        {
+            return XDocument.Load(responseStream);
+        }
     }
 
     private decimal GetRate(

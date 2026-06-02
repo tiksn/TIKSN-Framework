@@ -13,6 +13,8 @@ public class BankOfRussia : IBankOfRussia
     private static readonly Dictionary<DateOnly, IReadOnlyCollection<PublishedRate>> PublishedRatesCache = [];
 
     private static readonly Lock PublishedRatesCacheLock = new();
+    private static readonly SemaphoreSlim PublishedRatesSemaphore = new(initialCount: 1, maxCount: 1);
+
     private static readonly CurrencyInfo RussianRuble = new(new RegionInfo("ru-RU"));
     private static readonly CultureInfo RussianRussia = new("ru-RU");
     private readonly ICurrencyFactory currencyFactory;
@@ -93,9 +95,21 @@ public class BankOfRussia : IBankOfRussia
 
         if (publishedRates == null)
         {
-            var responseStream = await this.httpClient.GetStreamAsync(address, cancellationToken).ConfigureAwait(false);
-            publishedRates = ReadPublishedRates(responseStream);
-            CachePublishedRates(date, publishedRates);
+            await PublishedRatesSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+            try
+            {
+                publishedRates = GetCachedPublishedRates(date);
+                if (publishedRates == null)
+                {
+                    publishedRates = await this.FetchPublishedRatesAsync(address, cancellationToken)
+                        .ConfigureAwait(false);
+                    CachePublishedRates(date, publishedRates);
+                }
+            }
+            finally
+            {
+                _ = PublishedRatesSemaphore.Release();
+            }
         }
 
         return this.ApplyPublishedRates(publishedRates, asOn);
@@ -200,6 +214,17 @@ public class BankOfRussia : IBankOfRussia
         if (!this.published.HasValue || this.published.Value.Date != asOn.Date)
         {
             _ = await this.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
+        }
+    }
+
+    private async Task<IReadOnlyCollection<PublishedRate>> FetchPublishedRatesAsync(
+        Uri address,
+        CancellationToken cancellationToken)
+    {
+        var responseStream = await this.httpClient.GetStreamAsync(address, cancellationToken).ConfigureAwait(false);
+        await using (responseStream.ConfigureAwait(false))
+        {
+            return ReadPublishedRates(responseStream);
         }
     }
 

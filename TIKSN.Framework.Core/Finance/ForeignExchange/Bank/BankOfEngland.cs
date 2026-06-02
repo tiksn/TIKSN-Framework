@@ -6,6 +6,9 @@ namespace TIKSN.Finance.ForeignExchange.Bank;
 
 public class BankOfEngland : IBankOfEngland
 {
+    private static readonly Dictionary<Uri, IReadOnlyList<ExchangeRate>> ExchangeRatesCache = [];
+    private static readonly SemaphoreSlim ExchangeRatesSemaphore = new(initialCount: 1, maxCount: 1);
+
     private static readonly (Dictionary<CurrencyPair, string>, Dictionary<string, CurrencyPair>) SeriesCodesMaps =
         CreateSeriesCodesMaps();
 
@@ -246,8 +249,6 @@ public class BankOfEngland : IBankOfEngland
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
-        var pair = Pairs[seriesCode];
-
         if (asOn > this.timeProvider.GetUtcNow())
         {
             throw new ArgumentException("Exchange rate forecasting are not supported.", nameof(asOn));
@@ -256,6 +257,34 @@ public class BankOfEngland : IBankOfEngland
         var requestUrl = new Uri(string.Format(CultureInfo.InvariantCulture, UrlFormat,
             ToInternalDataFormat(asOn.AddMonths(-1)),
             ToInternalDataFormat(asOn), seriesCode));
+
+        await ExchangeRatesSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            if (ExchangeRatesCache.TryGetValue(requestUrl, out var cachedRates))
+            {
+                return cachedRates;
+            }
+
+            var rates = await this
+                .GetSeriesCodeExchangeRateCoreAsync(seriesCode, requestUrl, cancellationToken)
+                .ConfigureAwait(false);
+            ExchangeRatesCache[requestUrl] = rates;
+
+            return rates;
+        }
+        finally
+        {
+            _ = ExchangeRatesSemaphore.Release();
+        }
+    }
+
+    private async Task<IReadOnlyList<ExchangeRate>> GetSeriesCodeExchangeRateCoreAsync(
+        string seriesCode,
+        Uri requestUrl,
+        CancellationToken cancellationToken)
+    {
+        var pair = Pairs[seriesCode];
 
         var responseStream = await this.httpClient.GetStreamAsync(requestUrl, cancellationToken).ConfigureAwait(false);
         XDocument xdoc;

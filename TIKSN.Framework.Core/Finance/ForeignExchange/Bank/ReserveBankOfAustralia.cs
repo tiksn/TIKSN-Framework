@@ -10,6 +10,9 @@ public class ReserveBankOfAustralia : IReserveBankOfAustralia
     private const string RSS = "https://www.rba.gov.au/rss/rss-cb-exchange-rates.xml";
 
     private static readonly CurrencyInfo AustralianDollar = new(new RegionInfo("en-AU"));
+    private static readonly Dictionary<(Uri RssUrl, DateOnly RequestDate), XDocument> ExchangeRateDocumentCache = [];
+    private static readonly SemaphoreSlim ExchangeRateDocumentSemaphore = new(initialCount: 1, maxCount: 1);
+    private static readonly Uri RssUrl = new(RSS);
     private readonly ICurrencyFactory currencyFactory;
     private readonly HttpClient httpClient;
     private readonly Dictionary<CurrencyInfo, decimal> rates;
@@ -95,10 +98,7 @@ public class ReserveBankOfAustralia : IReserveBankOfAustralia
     {
         var result = new List<ExchangeRate>();
 
-        var responseStream =
-            await this.httpClient.GetStreamAsync(new Uri(RSS), cancellationToken).ConfigureAwait(false);
-
-        var xdoc = await XDocument.LoadAsync(responseStream, LoadOptions.None, cancellationToken).ConfigureAwait(false);
+        var xdoc = await this.GetExchangeRateDocumentAsync(cancellationToken).ConfigureAwait(false);
 
         this.PopulateResult(result, xdoc);
 
@@ -110,6 +110,42 @@ public class ReserveBankOfAustralia : IReserveBankOfAustralia
         if (this.timeProvider.GetUtcNow() - this.lastFetchDate > TimeSpan.FromDays(1d))
         {
             _ = await this.GetExchangeRatesAsync(this.timeProvider.GetUtcNow(), cancellationToken)
+                .ConfigureAwait(false);
+        }
+    }
+
+    private async Task<XDocument> GetExchangeRateDocumentAsync(CancellationToken cancellationToken)
+    {
+        var cacheKey = (RssUrl, DateOnly.FromDateTime(this.timeProvider.GetUtcNow().Date));
+
+        await ExchangeRateDocumentSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            if (ExchangeRateDocumentCache.TryGetValue(cacheKey, out var cachedDocument))
+            {
+                return cachedDocument;
+            }
+
+            var document = await this.GetExchangeRateDocumentCoreAsync(cancellationToken).ConfigureAwait(false);
+            ExchangeRateDocumentCache[cacheKey] = document;
+
+            return document;
+        }
+        finally
+        {
+            _ = ExchangeRateDocumentSemaphore.Release();
+        }
+    }
+
+    private async Task<XDocument> GetExchangeRateDocumentCoreAsync(CancellationToken cancellationToken)
+    {
+        var responseStream =
+            await this.httpClient.GetStreamAsync(RssUrl, cancellationToken).ConfigureAwait(false);
+
+        await using (responseStream.ConfigureAwait(false))
+        {
+            return await XDocument
+                .LoadAsync(responseStream, LoadOptions.None, cancellationToken)
                 .ConfigureAwait(false);
         }
     }
