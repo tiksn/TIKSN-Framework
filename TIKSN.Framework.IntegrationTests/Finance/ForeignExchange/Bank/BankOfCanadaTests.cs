@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using TIKSN.DependencyInjection;
 using TIKSN.Finance;
 using TIKSN.Finance.ForeignExchange.Bank;
 using Xunit;
@@ -16,14 +14,12 @@ public class BankOfCanadaTests
     private readonly IBankOfCanada bank;
     private readonly TimeProvider timeProvider;
 
-    public BankOfCanadaTests()
+    public BankOfCanadaTests(FrameworkCoreServiceProviderFixture fixture)
     {
-        var services = new ServiceCollection();
-        _ = services.AddFrameworkCore();
+        ArgumentNullException.ThrowIfNull(fixture);
 
-        var serviceProvider = services.BuildServiceProvider();
-        this.timeProvider = serviceProvider.GetRequiredService<TimeProvider>();
-        this.bank = serviceProvider.GetRequiredService<IBankOfCanada>();
+        this.timeProvider = fixture.GetRequiredService<TimeProvider>();
+        this.bank = fixture.GetRequiredService<IBankOfCanada>();
     }
 
     [Fact]

@@ -1,8 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using TIKSN.DependencyInjection;
 using TIKSN.Finance;
 using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Globalization;
@@ -16,14 +14,13 @@ public class MonetaryAuthorityOfSingaporeTests
     private readonly ICurrencyFactory currencyFactory;
     private readonly TimeProvider timeProvider;
 
-    public MonetaryAuthorityOfSingaporeTests()
+    public MonetaryAuthorityOfSingaporeTests(FrameworkCoreServiceProviderFixture fixture)
     {
-        var services = new ServiceCollection();
-        _ = services.AddFrameworkCore();
-        var serviceProvider = services.BuildServiceProvider();
-        this.bank = serviceProvider.GetRequiredService<IMonetaryAuthorityOfSingapore>();
-        this.currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
-        this.timeProvider = serviceProvider.GetRequiredService<TimeProvider>();
+        ArgumentNullException.ThrowIfNull(fixture);
+
+        this.bank = fixture.GetRequiredService<IMonetaryAuthorityOfSingapore>();
+        this.currencyFactory = fixture.GetRequiredService<ICurrencyFactory>();
+        this.timeProvider = fixture.GetRequiredService<TimeProvider>();
     }
 
     [Fact]
