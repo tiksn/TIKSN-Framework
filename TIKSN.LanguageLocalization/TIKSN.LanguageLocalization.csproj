@@ -1,18 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup Label="MultilingualAppToolkit">
-    <MultilingualAppToolkitVersion>4.0</MultilingualAppToolkitVersion>
-    <MultilingualFallbackLanguage>en</MultilingualFallbackLanguage>
-    <MultilingualAppToolkitVersionedTargets>$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\v$(MultilingualAppToolkitVersion)\Microsoft.Multilingual.ResxResources.targets</MultilingualAppToolkitVersionedTargets>
-    <MultilingualAppToolkitUnversionedTargets>$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.ResxResources.targets</MultilingualAppToolkitUnversionedTargets>
-    <MultilingualAppToolkitTargets Condition="'$(MultilingualAppToolkitTargets)' == '' and Exists('$(MultilingualAppToolkitVersionedTargets)')">$(MultilingualAppToolkitVersionedTargets)</MultilingualAppToolkitTargets>
-    <MultilingualAppToolkitTargets Condition="'$(MultilingualAppToolkitTargets)' == '' and Exists('$(MultilingualAppToolkitUnversionedTargets)')">$(MultilingualAppToolkitUnversionedTargets)</MultilingualAppToolkitTargets>
-    <TranslationReport Condition="'$(Configuration)' == 'Release'">true</TranslationReport>
-    <SuppressPseudoWarning Condition="'$(Configuration)' == 'Debug'">true</SuppressPseudoWarning>
-    <DocumentationFile>bin\$(Configuration)\netstandard2.0\TIKSN.LanguageLocalization.xml</DocumentationFile>
-  </PropertyGroup>
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <NeutralLanguage>en</NeutralLanguage>
+    <DocumentationFile>bin\$(Configuration)\netstandard2.0\TIKSN.LanguageLocalization.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
@@ -30,10 +20,6 @@
     <NoWarn>1701;1702;CS1591</NoWarn>
     <!-- <TreatWarningsAsErrors>True</TreatWarningsAsErrors> -->
   </PropertyGroup>
-  <Import Project="$(MultilingualAppToolkitTargets)" Label="MultilingualAppToolkit" Condition="'$(MultilingualAppToolkitTargets)' != ''" />
-  <Target Name="MATPrerequisite" BeforeTargets="PrepareForBuild" Condition="'$(MultilingualAppToolkitTargets)' == '' and '$(BuildingInsideVisualStudio)' == 'true'" Label="MultilingualAppToolkit">
-    <Warning Text="$(MSBuildProjectFile) is Multilingual build enabled, but the Multilingual App Toolkit is unavailable during the build. If building with Visual Studio, please check to ensure that toolkit is properly installed." />
-  </Target>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers">
       <PrivateAssets>all</PrivateAssets>
@@ -52,16 +38,5 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <XliffResource Include="MultilingualResources\TIKSN.LanguageLocalization.hy.xlf">
-      <Generator>XliffResxGenerator</Generator>
-    </XliffResource>
-    <XliffResource Include="MultilingualResources\TIKSN.LanguageLocalization.ru.xlf">
-      <Generator>XliffResxGenerator</Generator>
-    </XliffResource>
-    <XliffResource Include="MultilingualResources\TIKSN.LanguageLocalization.uk.xlf">
-      <Generator>XliffResxGenerator</Generator>
-    </XliffResource>
   </ItemGroup>
 </Project>
