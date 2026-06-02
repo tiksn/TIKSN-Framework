@@ -252,6 +252,13 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
     private static partial void LogExchangeRateNotFound(
         ILogger logger, CurrencyPair currencyPair);
 
+    [LoggerMessage(
+        EventId = 4904362,
+        Level = LogLevel.Warning,
+        Message = "Exchange rate provider with ID {ForeignExchangeID} is unavailable")]
+    private static partial void LogExchangeRateProviderUnavailable(
+        ILogger logger, Guid foreignExchangeID, Exception exception);
+
     private static async Task<IReadOnlyList<ExchangeRateEntity>> SaveExchangeRatesAsync(
         IExchangeRateRepository exchangeRateRepository,
         Guid foreignExchangeID,
@@ -299,20 +306,30 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
 
             if (rates.Count == 0)
             {
-                var fetchedRates = await provider.Value.RateProvider.Match(
-                    batchProvider => FetchExchangeRatesAsync(
-                        exchangeRateRepository,
-                        provider.Key,
-                        batchProvider,
-                        asOn,
-                        cancellationToken),
-                    individualProvider => FetchExchangeRatesAsync(
-                        exchangeRateRepository,
-                        provider.Key,
-                        individualProvider,
-                        pair,
-                        asOn,
-                        cancellationToken)).ConfigureAwait(false);
+                IReadOnlyList<ExchangeRateEntity> fetchedRates;
+
+                try
+                {
+                    fetchedRates = await provider.Value.RateProvider.Match(
+                        batchProvider => FetchExchangeRatesAsync(
+                            exchangeRateRepository,
+                            provider.Key,
+                            batchProvider,
+                            asOn,
+                            cancellationToken),
+                        individualProvider => FetchExchangeRatesAsync(
+                            exchangeRateRepository,
+                            provider.Key,
+                            individualProvider,
+                            pair,
+                            asOn,
+                            cancellationToken)).ConfigureAwait(false);
+                }
+                catch (Exception ex) when (ex is not OperationCanceledException)
+                {
+                    LogExchangeRateProviderUnavailable(this.Logger, provider.Key, ex);
+                    continue;
+                }
 
                 rates = [.. fetchedRates.Where(rate => IsMatchingPair(rate, pair))];
 
