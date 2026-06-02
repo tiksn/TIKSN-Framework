@@ -134,7 +134,7 @@ public class EuropeanCentralBankTests
 
         foreach (var pair in pairs)
         {
-            var reversedPair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
+            var reversedPair = CurrencyPairTestHelper.CurrencyPairFactory.Reverse(pair);
 
             pairs.ShouldContain(p => p == reversedPair);
         }
@@ -357,7 +357,7 @@ public class EuropeanCentralBankTests
         var amd = new CurrencyInfo(new RegionInfo("AM"));
         var all = new CurrencyInfo(new RegionInfo("AL"));
 
-        var pair = new CurrencyPair(amd, all);
+        var pair = CurrencyPairTestHelper.CurrencyPairFactory.Create(amd, all);
 
         _ = await new Func<Task>(async () =>
                 await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(),

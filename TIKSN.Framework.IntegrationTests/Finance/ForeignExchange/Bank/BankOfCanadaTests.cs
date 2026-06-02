@@ -202,7 +202,7 @@ public class BankOfCanadaTests
 
         foreach (var pair in currencyPairs)
         {
-            var reversePair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
+            var reversePair = CurrencyPairTestHelper.CurrencyPairFactory.Reverse(pair);
 
             currencyPairs.ShouldContain(c => c == reversePair);
         }
@@ -262,7 +262,7 @@ public class BankOfCanadaTests
         var usd = new CurrencyInfo(us);
         var cad = new CurrencyInfo(ca);
 
-        var pair = new CurrencyPair(cad, usd);
+        var pair = CurrencyPairTestHelper.CurrencyPairFactory.Create(cad, usd);
 
         _ = await new Func<Task>(async () =>
                 await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddMinutes(1d),
@@ -279,7 +279,7 @@ public class BankOfCanadaTests
         var aoa = new CurrencyInfo(ao);
         var bwp = new CurrencyInfo(bw);
 
-        var pair = new CurrencyPair(bwp, aoa);
+        var pair = CurrencyPairTestHelper.CurrencyPairFactory.Create(bwp, aoa);
 
         _ = await new Func<Task>(async () =>
                 await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(),

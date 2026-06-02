@@ -46,6 +46,7 @@ public class MonetaryAuthorityOfSingapore : IMonetaryAuthorityOfSingapore
     private static readonly DateTimeZone SingaporeTimeZone = DateTimeZoneProviders.Tzdb["Asia/Singapore"];
 
     private readonly ICurrencyFactory currencyFactory;
+    private readonly ICurrencyPairFactory currencyPairFactory;
     private readonly HttpClient httpClient;
     private readonly TimeProvider timeProvider;
     private IReadOnlyCollection<ExchangeRate>? cachedRates;
@@ -54,10 +55,12 @@ public class MonetaryAuthorityOfSingapore : IMonetaryAuthorityOfSingapore
     public MonetaryAuthorityOfSingapore(
         HttpClient httpClient,
         ICurrencyFactory currencyFactory,
+        ICurrencyPairFactory currencyPairFactory,
         TimeProvider timeProvider)
     {
         this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
+        this.currencyPairFactory = currencyPairFactory ?? throw new ArgumentNullException(nameof(currencyPairFactory));
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         this.lastFetchDate = DateTimeOffset.MinValue;
     }
@@ -71,7 +74,7 @@ public class MonetaryAuthorityOfSingapore : IMonetaryAuthorityOfSingapore
         ArgumentNullException.ThrowIfNull(baseMoney);
         ArgumentNullException.ThrowIfNull(counterCurrency);
 
-        var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
+        var pair = this.currencyPairFactory.Create(baseMoney.Currency, counterCurrency);
         var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
 
         return new Money(counterCurrency, baseMoney.Amount * rate);
@@ -177,10 +180,10 @@ public class MonetaryAuthorityOfSingapore : IMonetaryAuthorityOfSingapore
 
         var currency = this.currencyFactory.Create(series.CurrencyCode);
         var rate = rawRate / series.Units;
-        var exchangeRate = new ExchangeRate(new CurrencyPair(currency, SingaporeDollar), asOn, rate);
+        var exchangeRate = new ExchangeRate(this.currencyPairFactory.Create(currency, SingaporeDollar), asOn, rate);
 
         rates.Add(exchangeRate);
-        rates.Add(exchangeRate.Reverse());
+        rates.Add(new ExchangeRate(this.currencyPairFactory.Reverse(exchangeRate.Pair), asOn, decimal.One / rate));
     }
 
     private async Task<IReadOnlyCollection<ExchangeRate>> FetchRatesAsync(CancellationToken cancellationToken)

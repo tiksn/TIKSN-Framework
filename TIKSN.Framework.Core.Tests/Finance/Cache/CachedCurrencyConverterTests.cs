@@ -13,7 +13,7 @@ public class CachedCurrencyConverterTests
     public void CachedCurrencyConverter_001()
     {
         var converter =
-            new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
+            CreateFixedRateCurrencyConverter(Helper.SampleCurrencyPair1);
         var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(year: 2020, month: 12, day: 31, hour: 0,
             minute: 0, second: 0, TimeSpan.Zero));
 
@@ -21,7 +21,7 @@ public class CachedCurrencyConverterTests
         var capacity = 20;
 
         var cachedConverter =
-            new CachedCurrencyConverter(converter, fakeTimeProvider, interval, interval, capacity, capacity);
+            CreateCachedCurrencyConverter(converter, fakeTimeProvider, interval, interval, capacity, capacity);
 
         cachedConverter.RatesCacheInterval.ShouldBe(interval);
         cachedConverter.CurrencyPairsCacheInterval.ShouldBe(interval);
@@ -36,13 +36,13 @@ public class CachedCurrencyConverterTests
     public void CachedCurrencyConverter_002()
     {
         var converter =
-            new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
+            CreateFixedRateCurrencyConverter(Helper.SampleCurrencyPair1);
         var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(year: 2020, month: 12, day: 31, hour: 0,
             minute: 0, second: 0, TimeSpan.Zero));
 
         var interval = TimeSpan.FromDays(10);
 
-        var cachedConverter = new CachedCurrencyConverter(converter, fakeTimeProvider, interval, interval);
+        var cachedConverter = CreateCachedCurrencyConverter(converter, fakeTimeProvider, interval, interval);
 
         cachedConverter.CurrencyPairsCacheInterval.ShouldBe(interval);
         cachedConverter.RatesCacheInterval.ShouldBe(interval);
@@ -58,13 +58,13 @@ public class CachedCurrencyConverterTests
     public void CachedCurrencyConverter_003()
     {
         var converter =
-            new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
+            CreateFixedRateCurrencyConverter(Helper.SampleCurrencyPair1);
         var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(year: 2020, month: 12, day: 31, hour: 0,
             minute: 0, second: 0, TimeSpan.Zero));
 
         var interval = TimeSpan.FromDays(10);
 
-        var cachedConverter = new CachedCurrencyConverter(converter, fakeTimeProvider, interval, interval);
+        var cachedConverter = CreateCachedCurrencyConverter(converter, fakeTimeProvider, interval, interval);
 
         cachedConverter.RatesCacheSize.ShouldBe(0);
         cachedConverter.CurrencyPairsCacheSize.ShouldBe(0);
@@ -80,7 +80,8 @@ public class CachedCurrencyConverterTests
         var capacity = 20;
 
         _ = new Func<object>(() =>
-                new CachedCurrencyConverter(originalConverter: null, fakeTimeProvider, interval, interval, capacity,
+                new CachedCurrencyConverter(null, Helper.CurrencyPairFactory, fakeTimeProvider, interval, interval,
+                    capacity,
                     capacity))
             .ShouldThrow<ArgumentNullException>();
     }
@@ -89,7 +90,7 @@ public class CachedCurrencyConverterTests
     public void CachedCurrencyConverter_NegativeCapacity001()
     {
         var converter =
-            new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
+            CreateFixedRateCurrencyConverter(Helper.SampleCurrencyPair1);
         var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(year: 2020, month: 12, day: 31, hour: 0,
             minute: 0, second: 0, TimeSpan.Zero));
 
@@ -98,7 +99,7 @@ public class CachedCurrencyConverterTests
         var positiveCapacity = 10;
 
         _ = new Func<object>(() =>
-            new CachedCurrencyConverter(converter, fakeTimeProvider, interval, interval, negativeCapacity,
+            CreateCachedCurrencyConverter(converter, fakeTimeProvider, interval, interval, negativeCapacity,
                 positiveCapacity)).ShouldThrow<ArgumentOutOfRangeException>();
     }
 
@@ -106,7 +107,7 @@ public class CachedCurrencyConverterTests
     public void CachedCurrencyConverter_NegativeCapacity002()
     {
         var converter =
-            new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
+            CreateFixedRateCurrencyConverter(Helper.SampleCurrencyPair1);
         var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(year: 2020, month: 12, day: 31, hour: 0,
             minute: 0, second: 0, TimeSpan.Zero));
 
@@ -115,7 +116,7 @@ public class CachedCurrencyConverterTests
         var positiveCapacity = 10;
 
         _ = new Func<object>(() =>
-            new CachedCurrencyConverter(converter, fakeTimeProvider, interval, interval, positiveCapacity,
+            CreateCachedCurrencyConverter(converter, fakeTimeProvider, interval, interval, positiveCapacity,
                 negativeCapacity)).ShouldThrow<ArgumentOutOfRangeException>();
     }
 
@@ -123,7 +124,7 @@ public class CachedCurrencyConverterTests
     public void CachedCurrencyConverter_NegativeInterval001()
     {
         var converter =
-            new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
+            CreateFixedRateCurrencyConverter(Helper.SampleCurrencyPair1);
         var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(year: 2020, month: 12, day: 31, hour: 0,
             minute: 0, second: 0, TimeSpan.Zero));
 
@@ -131,7 +132,7 @@ public class CachedCurrencyConverterTests
         var positiveInterval = TimeSpan.FromDays(10);
 
         _ = new Func<object>(() =>
-                new CachedCurrencyConverter(converter, fakeTimeProvider, negativeInterval, positiveInterval))
+                CreateCachedCurrencyConverter(converter, fakeTimeProvider, negativeInterval, positiveInterval))
             .ShouldThrow<ArgumentOutOfRangeException>();
     }
 
@@ -139,7 +140,7 @@ public class CachedCurrencyConverterTests
     public void CachedCurrencyConverter_NegativeInterval002()
     {
         var converter =
-            new FixedRateCurrencyConverter(Helper.SampleCurrencyPair1, Helper.GetRandomForeignExchangeRate());
+            CreateFixedRateCurrencyConverter(Helper.SampleCurrencyPair1);
         var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(year: 2020, month: 12, day: 31, hour: 0,
             minute: 0, second: 0, TimeSpan.Zero));
 
@@ -147,7 +148,26 @@ public class CachedCurrencyConverterTests
         var positiveInterval = TimeSpan.FromDays(10);
 
         _ = new Func<object>(() =>
-                new CachedCurrencyConverter(converter, fakeTimeProvider, positiveInterval, negativeInterval))
+                CreateCachedCurrencyConverter(converter, fakeTimeProvider, positiveInterval, negativeInterval))
             .ShouldThrow<ArgumentOutOfRangeException>();
     }
+
+    private static CachedCurrencyConverter CreateCachedCurrencyConverter(
+        ICurrencyConverter converter,
+        TimeProvider timeProvider,
+        TimeSpan ratesCacheInterval,
+        TimeSpan currencyPairsCacheInterval,
+        int? ratesCacheCapacity = null,
+        int? currencyPairsCacheCapacity = null)
+        => new(
+            converter,
+            Helper.CurrencyPairFactory,
+            timeProvider,
+            ratesCacheInterval,
+            currencyPairsCacheInterval,
+            ratesCacheCapacity,
+            currencyPairsCacheCapacity);
+
+    private static FixedRateCurrencyConverter CreateFixedRateCurrencyConverter(CurrencyPair pair)
+        => new(pair, Helper.GetRandomForeignExchangeRate(), Helper.CurrencyPairFactory);
 }

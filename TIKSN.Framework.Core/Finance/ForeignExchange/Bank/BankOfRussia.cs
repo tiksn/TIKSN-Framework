@@ -18,6 +18,7 @@ public class BankOfRussia : IBankOfRussia
     private static readonly CurrencyInfo RussianRuble = new(new RegionInfo("ru-RU"));
     private static readonly CultureInfo RussianRussia = new("ru-RU");
     private readonly ICurrencyFactory currencyFactory;
+    private readonly ICurrencyPairFactory currencyPairFactory;
     private readonly HttpClient httpClient;
     private readonly Dictionary<CurrencyInfo, decimal> rates;
     private readonly TimeProvider timeProvider;
@@ -26,12 +27,14 @@ public class BankOfRussia : IBankOfRussia
     public BankOfRussia(
         HttpClient httpClient,
         ICurrencyFactory currencyFactory,
+        ICurrencyPairFactory currencyPairFactory,
         TimeProvider timeProvider)
     {
         this.rates = [];
         this.published = null;
         this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
+        this.currencyPairFactory = currencyPairFactory ?? throw new ArgumentNullException(nameof(currencyPairFactory));
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
@@ -61,8 +64,8 @@ public class BankOfRussia : IBankOfRussia
 
         foreach (var foreignCurrency in this.rates.Keys)
         {
-            pairs.Add(new CurrencyPair(foreignCurrency, RussianRuble));
-            pairs.Add(new CurrencyPair(RussianRuble, foreignCurrency));
+            pairs.Add(this.currencyPairFactory.Create(foreignCurrency, RussianRuble));
+            pairs.Add(this.currencyPairFactory.Create(RussianRuble, foreignCurrency));
         }
 
         return pairs;
@@ -193,9 +196,9 @@ public class BankOfRussia : IBankOfRussia
             {
                 var currency = this.currencyFactory.Create(publishedRate.CurrencyCode);
 
-                result.Add(new ExchangeRate(new CurrencyPair(currency, RussianRuble), asOn,
+                result.Add(new ExchangeRate(this.currencyPairFactory.Create(currency, RussianRuble), asOn,
                     publishedRate.Rate));
-                result.Add(new ExchangeRate(new CurrencyPair(RussianRuble, currency), asOn,
+                result.Add(new ExchangeRate(this.currencyPairFactory.Create(RussianRuble, currency), asOn,
                     decimal.One / publishedRate.Rate));
 
                 this.rates.Add(currency, publishedRate.Rate);

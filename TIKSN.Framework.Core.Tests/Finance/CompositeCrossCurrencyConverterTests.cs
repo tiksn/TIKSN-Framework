@@ -13,12 +13,9 @@ public class CompositeCrossCurrencyConverterTests
     {
         var converter = new CompositeCrossCurrencyConverter(new AverageCurrencyConversionCompositionStrategy());
 
-        converter.Add(new FixedRateCurrencyConverter(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("EUR")),
-            rate: 1.12m));
-        converter.Add(new FixedRateCurrencyConverter(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("GBP")),
-            rate: 1.13m));
-        converter.Add(new FixedRateCurrencyConverter(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("CHF")),
-            rate: 1.14m));
+        converter.Add(CreateFixedRateCurrencyConverter("USD", "EUR", rate: 1.12m));
+        converter.Add(CreateFixedRateCurrencyConverter("USD", "GBP", rate: 1.13m));
+        converter.Add(CreateFixedRateCurrencyConverter("USD", "CHF", rate: 1.14m));
 
         var pairs = await converter.GetCurrencyPairsAsync(DateTimeOffset.Now,
             cancellationToken: TestContext.Current.CancellationToken);
@@ -31,18 +28,23 @@ public class CompositeCrossCurrencyConverterTests
     {
         var converter = new CompositeCrossCurrencyConverter(new AverageCurrencyConversionCompositionStrategy());
 
-        converter.Add(new FixedRateCurrencyConverter(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("EUR")),
-            rate: 1.12m));
-        converter.Add(new FixedRateCurrencyConverter(
-            new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("GBP")),
-            rate: 1.13m));
-        converter.Add(new FixedRateCurrencyConverter(new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("CHF")),
-            rate: 1.14m));
+        converter.Add(CreateFixedRateCurrencyConverter("USD", "EUR", rate: 1.12m));
+        converter.Add(CreateFixedRateCurrencyConverter("USD", "GBP", rate: 1.13m));
+        converter.Add(CreateFixedRateCurrencyConverter("USD", "CHF", rate: 1.14m));
 
         var rate = await converter.GetExchangeRateAsync(
-            new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("EUR")), DateTimeOffset.Now,
+            Helper.CurrencyPairFactory.Create("USD", "EUR"), DateTimeOffset.Now,
             cancellationToken: TestContext.Current.CancellationToken);
 
         rate.ShouldBe(1.12m);
     }
+
+    private static FixedRateCurrencyConverter CreateFixedRateCurrencyConverter(
+        string baseIsoCurrencySymbol,
+        string counterIsoCurrencySymbol,
+        decimal rate)
+        => new(
+            Helper.CurrencyPairFactory.Create(baseIsoCurrencySymbol, counterIsoCurrencySymbol),
+            rate,
+            Helper.CurrencyPairFactory);
 }

@@ -11,6 +11,8 @@ namespace TIKSN.Finance.ForeignExchange;
 
 public abstract partial class ExchangeRateServiceBase : IExchangeRateService
 {
+    private readonly ICurrencyPairFactory currencyPairFactory;
+
     private readonly Dictionary<Guid,
         (Either<IExchangeRateProvider, IExchangeRatesProvider> RateProvider,
         string LongNameKey, string ShortNameKey,
@@ -20,10 +22,12 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
 
     protected ExchangeRateServiceBase(
         ILogger<ExchangeRateServiceBase> logger,
+        ICurrencyPairFactory currencyPairFactory,
         IRegionFactory regionFactory,
         IUnitOfWorkFactory unitOfWorkFactory)
     {
         this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        this.currencyPairFactory = currencyPairFactory ?? throw new ArgumentNullException(nameof(currencyPairFactory));
         this.RegionFactory = regionFactory ?? throw new ArgumentNullException(nameof(regionFactory));
 
         this.providers = [];
@@ -43,7 +47,7 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
         ArgumentNullException.ThrowIfNull(baseMoney);
         ArgumentNullException.ThrowIfNull(counterCurrency);
 
-        var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
+        var pair = this.currencyPairFactory.Create(baseMoney.Currency, counterCurrency);
 
         var rate = await this.GetExchangeRateAsync(
             pair, asOn, cancellationToken).ConfigureAwait(false);
@@ -62,7 +66,7 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
         ArgumentNullException.ThrowIfNull(counterCurrency);
         ArgumentNullException.ThrowIfNull(intermediaryCurrency);
 
-        var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
+        var pair = this.currencyPairFactory.Create(baseMoney.Currency, counterCurrency);
 
         var rate = await this.GetExchangeRateAsync(
             pair, asOn, intermediaryCurrency, cancellationToken).ConfigureAwait(false);
@@ -117,8 +121,8 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
         ArgumentNullException.ThrowIfNull(pair);
         ArgumentNullException.ThrowIfNull(intermediaryCurrency);
 
-        var syntheticCurrencyPair1 = new CurrencyPair(pair.BaseCurrency, intermediaryCurrency);
-        var syntheticCurrencyPair2 = new CurrencyPair(intermediaryCurrency, pair.CounterCurrency);
+        var syntheticCurrencyPair1 = this.currencyPairFactory.Create(pair.BaseCurrency, intermediaryCurrency);
+        var syntheticCurrencyPair2 = this.currencyPairFactory.Create(intermediaryCurrency, pair.CounterCurrency);
         var rate1 = await this.GetExchangeRateAsync(syntheticCurrencyPair1, asOn, cancellationToken)
             .ConfigureAwait(false);
         var rate2 = await this.GetExchangeRateAsync(syntheticCurrencyPair2, asOn, cancellationToken)

@@ -21,7 +21,9 @@ public class FixedRateCurrencyConverterTests
 
         var initial = new Money(usDollar, amount: 100);
 
-        var converter = new FixedRateCurrencyConverter(new CurrencyPair(usDollar, poundSterling), rate: 2m);
+        var converter = CreateFixedRateCurrencyConverter(
+            Helper.CurrencyPairFactory.Create(usDollar, poundSterling),
+            rate: 2m);
 
         var final = await converter.ConvertCurrencyAsync(initial, poundSterling, DateTime.Now,
             cancellationToken: TestContext.Current.CancellationToken);
@@ -43,7 +45,9 @@ public class FixedRateCurrencyConverterTests
 
         var initial = new Money(usDollar, amount: 100);
 
-        var converter = new FixedRateCurrencyConverter(new CurrencyPair(usDollar, poundSterling), rate: 2m);
+        var converter = CreateFixedRateCurrencyConverter(
+            Helper.CurrencyPairFactory.Create(usDollar, poundSterling),
+            rate: 2m);
 
         _ = await new Func<Task>(async () =>
                 await converter.ConvertCurrencyAsync(initial, euro, DateTimeOffset.Now,
@@ -67,7 +71,9 @@ public class FixedRateCurrencyConverterTests
 
         var initial = new Money(armenianDram, amount: 100);
 
-        var converter = new FixedRateCurrencyConverter(new CurrencyPair(usDollar, poundSterling), rate: 2m);
+        var converter = CreateFixedRateCurrencyConverter(
+            Helper.CurrencyPairFactory.Create(usDollar, poundSterling),
+            rate: 2m);
 
         _ = await new Func<Task>(async () =>
                 await converter.ConvertCurrencyAsync(initial, euro, DateTimeOffset.Now,
@@ -88,17 +94,19 @@ public class FixedRateCurrencyConverterTests
 
         _ = new CurrencyInfo(italy);
 
-        var converter = new FixedRateCurrencyConverter(new CurrencyPair(usDollar, poundSterling), rate: 2m);
+        var converter = CreateFixedRateCurrencyConverter(
+            Helper.CurrencyPairFactory.Create(usDollar, poundSterling),
+            rate: 2m);
 
-        ReferenceEquals(converter.CurrencyPair.BaseCurrency, usDollar).ShouldBeTrue();
-        ReferenceEquals(converter.CurrencyPair.CounterCurrency, poundSterling).ShouldBeTrue();
+        converter.CurrencyPair.BaseCurrency.ShouldBe(usDollar);
+        converter.CurrencyPair.CounterCurrency.ShouldBe(poundSterling);
         return Task.CompletedTask;
     }
 
     [Fact]
     public Task FixedRateCurrencyConverter001()
     {
-        _ = new Func<object>(() => new FixedRateCurrencyConverter(pair: null, rate: 0.5m))
+        _ = new Func<object>(() => CreateFixedRateCurrencyConverter(pair: null, rate: 0.5m))
             .ShouldThrow<ArgumentNullException>();
         return Task.CompletedTask;
     }
@@ -112,9 +120,10 @@ public class FixedRateCurrencyConverterTests
         var usDollar = new CurrencyInfo(unitedStates);
         var armenianDram = new CurrencyInfo(armenia);
 
-        var pair = new CurrencyPair(usDollar, armenianDram);
+        var pair = Helper.CurrencyPairFactory.Create(usDollar, armenianDram);
 
-        _ = new Func<object>(() => new FixedRateCurrencyConverter(pair, rate: -0.5m)).ShouldThrow<ArgumentException>();
+        _ = new Func<object>(() => CreateFixedRateCurrencyConverter(pair, rate: -0.5m))
+            .ShouldThrow<ArgumentException>();
         return Task.CompletedTask;
     }
 
@@ -127,9 +136,9 @@ public class FixedRateCurrencyConverterTests
         var usDollar = new CurrencyInfo(unitedStates);
         var poundSterling = new CurrencyInfo(unitedKingdom);
 
-        var pair = new CurrencyPair(usDollar, poundSterling);
+        var pair = Helper.CurrencyPairFactory.Create(usDollar, poundSterling);
 
-        var converter = new FixedRateCurrencyConverter(pair, rate: 2m);
+        var converter = CreateFixedRateCurrencyConverter(pair, rate: 2m);
 
         converter.CurrencyPair.BaseCurrency.ShouldBe(usDollar);
         converter.CurrencyPair.CounterCurrency.ShouldBe(poundSterling);
@@ -150,9 +159,12 @@ public class FixedRateCurrencyConverterTests
         var usDollar = new CurrencyInfo(unitedStates);
         var poundSterling = new CurrencyInfo(unitedKingdom);
 
-        var converter = new FixedRateCurrencyConverter(new CurrencyPair(usDollar, poundSterling), rate: 2m);
+        var converter = CreateFixedRateCurrencyConverter(
+            Helper.CurrencyPairFactory.Create(usDollar, poundSterling),
+            rate: 2m);
 
-        (await converter.GetExchangeRateAsync(new CurrencyPair(usDollar, poundSterling), DateTimeOffset.Now,
+        (await converter.GetExchangeRateAsync(Helper.CurrencyPairFactory.Create(usDollar, poundSterling),
+                DateTimeOffset.Now,
                 cancellationToken: TestContext.Current.CancellationToken)
             .ConfigureAwait(true)).ShouldBe(2m);
     }
@@ -166,10 +178,13 @@ public class FixedRateCurrencyConverterTests
         var usDollar = new CurrencyInfo(unitedStates);
         var poundSterling = new CurrencyInfo(unitedKingdom);
 
-        var converter = new FixedRateCurrencyConverter(new CurrencyPair(usDollar, poundSterling), rate: 2m);
+        var converter = CreateFixedRateCurrencyConverter(
+            Helper.CurrencyPairFactory.Create(usDollar, poundSterling),
+            rate: 2m);
 
         _ = await new Func<Task>(async () =>
-            await converter.GetExchangeRateAsync(new CurrencyPair(poundSterling, usDollar), DateTimeOffset.Now,
+            await converter.GetExchangeRateAsync(Helper.CurrencyPairFactory.Create(poundSterling, usDollar),
+                    DateTimeOffset.Now,
                     cancellationToken: TestContext.Current.CancellationToken)
                 .ConfigureAwait(true)).ShouldThrowAsync<ArgumentException>();
     }
@@ -185,10 +200,13 @@ public class FixedRateCurrencyConverterTests
         var poundSterling = new CurrencyInfo(unitedKingdom);
         var euro = new CurrencyInfo(italy);
 
-        var converter = new FixedRateCurrencyConverter(new CurrencyPair(usDollar, poundSterling), rate: 2m);
+        var converter = CreateFixedRateCurrencyConverter(
+            Helper.CurrencyPairFactory.Create(usDollar, poundSterling),
+            rate: 2m);
 
         _ = await new Func<Task>(async () =>
-            await converter.GetExchangeRateAsync(new CurrencyPair(euro, usDollar), DateTimeOffset.Now,
+            await converter.GetExchangeRateAsync(Helper.CurrencyPairFactory.Create(euro, usDollar),
+                    DateTimeOffset.Now,
                     cancellationToken: TestContext.Current.CancellationToken)
                 .ConfigureAwait(true)).ShouldThrowAsync<ArgumentException>();
     }
@@ -204,10 +222,12 @@ public class FixedRateCurrencyConverterTests
         var poundSterling = new CurrencyInfo(unitedKingdom);
         var euro = new CurrencyInfo(italy);
 
-        var converter = new FixedRateCurrencyConverter(new CurrencyPair(usDollar, poundSterling), rate: 2m);
+        var converter = CreateFixedRateCurrencyConverter(
+            Helper.CurrencyPairFactory.Create(usDollar, poundSterling),
+            rate: 2m);
 
         _ = await new Func<Task>(async () =>
-            await converter.GetExchangeRateAsync(new CurrencyPair(usDollar, euro), DateTimeOffset.Now,
+            await converter.GetExchangeRateAsync(Helper.CurrencyPairFactory.Create(usDollar, euro), DateTimeOffset.Now,
                     cancellationToken: TestContext.Current.CancellationToken)
                 .ConfigureAwait(true)).ShouldThrowAsync<ArgumentException>();
     }
@@ -221,9 +241,9 @@ public class FixedRateCurrencyConverterTests
         var usDollar = new CurrencyInfo(unitedStates);
         var poundSterling = new CurrencyInfo(unitedKingdom);
 
-        var pair = new CurrencyPair(poundSterling, usDollar);
+        var pair = Helper.CurrencyPairFactory.Create(poundSterling, usDollar);
 
-        var converter = new FixedRateCurrencyConverter(pair, rate: 1.6m);
+        var converter = CreateFixedRateCurrencyConverter(pair, rate: 1.6m);
 
         var lastMonth = DateTimeOffset.Now.AddMonths(-1);
         var nextMonth = DateTimeOffset.Now.AddMonths(1);
@@ -235,4 +255,7 @@ public class FixedRateCurrencyConverterTests
 
         (rateInLastMonth == rateInNextMonth).ShouldBeTrue();
     }
+
+    private static FixedRateCurrencyConverter CreateFixedRateCurrencyConverter(CurrencyPair pair, decimal rate)
+        => new(pair, rate, Helper.CurrencyPairFactory);
 }

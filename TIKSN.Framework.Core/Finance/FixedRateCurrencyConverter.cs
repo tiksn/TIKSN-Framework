@@ -2,11 +2,13 @@ namespace TIKSN.Finance;
 
 public class FixedRateCurrencyConverter : ICurrencyConverter
 {
+    private readonly ICurrencyPairFactory currencyPairFactory;
     private readonly decimal rate;
 
-    public FixedRateCurrencyConverter(CurrencyPair pair, decimal rate)
+    public FixedRateCurrencyConverter(CurrencyPair pair, decimal rate, ICurrencyPairFactory currencyPairFactory)
     {
         this.CurrencyPair = pair ?? throw new ArgumentNullException(nameof(pair));
+        this.currencyPairFactory = currencyPairFactory ?? throw new ArgumentNullException(nameof(currencyPairFactory));
 
         if (rate > decimal.Zero)
         {
@@ -29,7 +31,7 @@ public class FixedRateCurrencyConverter : ICurrencyConverter
         ArgumentNullException.ThrowIfNull(baseMoney);
         ArgumentNullException.ThrowIfNull(counterCurrency);
 
-        var requiredPair = new CurrencyPair(baseMoney.Currency, counterCurrency);
+        var requiredPair = this.currencyPairFactory.Create(baseMoney.Currency, counterCurrency);
 
         if (this.CurrencyPair == requiredPair)
         {

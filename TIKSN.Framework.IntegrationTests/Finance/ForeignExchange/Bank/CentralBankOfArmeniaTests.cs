@@ -306,7 +306,7 @@ public class CentralBankOfArmeniaTests
 
         foreach (var pair in currencyPairs)
         {
-            var reverse = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
+            var reverse = CurrencyPairTestHelper.CurrencyPairFactory.Reverse(pair);
 
             currencyPairs.ShouldContain(c => c == reverse);
         }
@@ -337,7 +337,7 @@ public class CentralBankOfArmeniaTests
 
         foreach (var pair in currencyPairs)
         {
-            var reversePair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
+            var reversePair = CurrencyPairTestHelper.CurrencyPairFactory.Reverse(pair);
 
             Math.Round(
                     await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(),
@@ -357,7 +357,7 @@ public class CentralBankOfArmeniaTests
         var dollar = new CurrencyInfo(unitedStates);
         var dram = new CurrencyInfo(armenia);
 
-        var dollarPerDram = new CurrencyPair(dollar, dram);
+        var dollarPerDram = CurrencyPairTestHelper.CurrencyPairFactory.Create(dollar, dram);
 
         _ = await
             new Func<Task>(async () =>
@@ -375,7 +375,7 @@ public class CentralBankOfArmeniaTests
         var dollar = new CurrencyInfo(unitedStates);
         var dram = new CurrencyInfo(armenia);
 
-        var dollarPerDram = new CurrencyPair(dollar, dram);
+        var dollarPerDram = CurrencyPairTestHelper.CurrencyPairFactory.Create(dollar, dram);
 
         _ = await
             new Func<Task>(async () =>
@@ -392,7 +392,7 @@ public class CentralBankOfArmeniaTests
         var dollar = new CurrencyInfo(unitedStates);
         var dram = new CurrencyInfo(armenia);
 
-        var dollarPerDram = new CurrencyPair(dollar, dram);
+        var dollarPerDram = CurrencyPairTestHelper.CurrencyPairFactory.Create(dollar, dram);
 
         _ = await
             new Func<Task>(async () =>
@@ -409,7 +409,7 @@ public class CentralBankOfArmeniaTests
         var lek = new CurrencyInfo(albania);
         var dram = new CurrencyInfo(armenia);
 
-        var lekPerDram = new CurrencyPair(lek, dram);
+        var lekPerDram = CurrencyPairTestHelper.CurrencyPairFactory.Create(lek, dram);
 
         _ = await
             new Func<Task>(async () =>
@@ -427,7 +427,7 @@ public class CentralBankOfArmeniaTests
         var lek = new CurrencyInfo(albania);
         var dram = new CurrencyInfo(armenia);
 
-        var dramPerLek = new CurrencyPair(dram, lek);
+        var dramPerLek = CurrencyPairTestHelper.CurrencyPairFactory.Create(dram, lek);
 
         _ = await
             new Func<Task>(async () =>

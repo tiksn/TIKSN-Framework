@@ -48,7 +48,7 @@ public class MemoryCachedCurrencyConverterTests
         var originalConverter = Substitute.For<ICurrencyConverter>();
         var expectedPairs = new List<CurrencyPair>
         {
-            new(new CurrencyInfo("USD"), new CurrencyInfo("EUR")),
+            Helper.CurrencyPairFactory.Create("USD", "EUR"),
         };
 
         _ = originalConverter.GetCurrencyPairsAsync(moment1, cancellationToken: TestContext.Current.CancellationToken)
@@ -73,7 +73,7 @@ public class MemoryCachedCurrencyConverterTests
         var originalConverter = Substitute.For<ICurrencyConverter>();
         var expectedPairs = new List<CurrencyPair>
         {
-            new(new CurrencyInfo("USD"), new CurrencyInfo("EUR")),
+            Helper.CurrencyPairFactory.Create("USD", "EUR"),
         };
 
         _ = originalConverter.GetCurrencyPairsAsync(moment1, cancellationToken: TestContext.Current.CancellationToken)
@@ -98,7 +98,7 @@ public class MemoryCachedCurrencyConverterTests
         var originalConverter = Substitute.For<ICurrencyConverter>();
         var expectedPairs = new List<CurrencyPair>
         {
-            new(new CurrencyInfo("USD"), new CurrencyInfo("EUR")),
+            Helper.CurrencyPairFactory.Create("USD", "EUR"),
         };
 
         _ = originalConverter.GetCurrencyPairsAsync(moment1, cancellationToken: TestContext.Current.CancellationToken)
@@ -127,7 +127,7 @@ public class MemoryCachedCurrencyConverterTests
         var originalConverter = Substitute.For<ICurrencyConverter>();
         var expectedPairs = new List<CurrencyPair>
         {
-            new(new CurrencyInfo("USD"), new CurrencyInfo("EUR")),
+            Helper.CurrencyPairFactory.Create("USD", "EUR"),
         };
 
         _ = originalConverter.GetCurrencyPairsAsync(moment1, cancellationToken: TestContext.Current.CancellationToken)
@@ -160,7 +160,7 @@ public class MemoryCachedCurrencyConverterTests
         var originalConverter = Substitute.For<ICurrencyConverter>();
         var expectedPairs = new List<CurrencyPair>
         {
-            new(new CurrencyInfo("USD"), new CurrencyInfo("EUR")),
+            Helper.CurrencyPairFactory.Create("USD", "EUR"),
         };
 
         _ = originalConverter.GetCurrencyPairsAsync(moment1, cancellationToken: TestContext.Current.CancellationToken)
@@ -197,7 +197,7 @@ public class MemoryCachedCurrencyConverterTests
         var originalConverter = Substitute.For<ICurrencyConverter>();
         var expectedPairs = new List<CurrencyPair>
         {
-            new(new CurrencyInfo("USD"), new CurrencyInfo("EUR")),
+            Helper.CurrencyPairFactory.Create("USD", "EUR"),
         };
 
         _ = originalConverter.GetCurrencyPairsAsync(moment1, cancellationToken: TestContext.Current.CancellationToken)
@@ -227,7 +227,7 @@ public class MemoryCachedCurrencyConverterTests
     public async Task GetExchangeRate001()
     {
         var exchangeRate = 10.23m;
-        var pair = new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("EUR"));
+        var pair = Helper.CurrencyPairFactory.Create("USD", "EUR");
 
         var moment1 = new DateTimeOffset(year: 2015, month: 12, day: 1, hour: 0, minute: 0, second: 0,
             TimeSpan.FromHours(2));
@@ -267,7 +267,7 @@ public class MemoryCachedCurrencyConverterTests
     public async Task GetExchangeRate002()
     {
         var exchangeRate = 10.23m;
-        var pair = new CurrencyPair(new CurrencyInfo("USD"), new CurrencyInfo("EUR"));
+        var pair = Helper.CurrencyPairFactory.Create("USD", "EUR");
 
         var moment1 = new DateTimeOffset(year: 2015, month: 12, day: 1, hour: 0, minute: 0, second: 0,
             TimeSpan.FromHours(2));

@@ -19,6 +19,7 @@ public class BankOfCanada : IBankOfCanada
         new("https://www.bankofcanada.ca/valet/observations/group/FX_RATES_DAILY/json");
 
     private readonly ICurrencyFactory currencyFactory;
+    private readonly ICurrencyPairFactory currencyPairFactory;
     private readonly HttpClient httpClient;
     private readonly Dictionary<DateOnly, Dictionary<CurrencyInfo, decimal>> rates;
     private readonly TimeProvider timeProvider;
@@ -27,6 +28,7 @@ public class BankOfCanada : IBankOfCanada
     public BankOfCanada(
         HttpClient httpClient,
         ICurrencyFactory currencyFactory,
+        ICurrencyPairFactory currencyPairFactory,
         TimeProvider timeProvider)
     {
         this.rates = [];
@@ -34,6 +36,7 @@ public class BankOfCanada : IBankOfCanada
         this.lastFetchDate = DateTimeOffset.MinValue;
         this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
+        this.currencyPairFactory = currencyPairFactory ?? throw new ArgumentNullException(nameof(currencyPairFactory));
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
@@ -45,7 +48,7 @@ public class BankOfCanada : IBankOfCanada
         ArgumentNullException.ThrowIfNull(baseMoney);
         ArgumentNullException.ThrowIfNull(counterCurrency);
 
-        var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
+        var pair = this.currencyPairFactory.Create(baseMoney.Currency, counterCurrency);
 
         var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
 
@@ -67,8 +70,8 @@ public class BankOfCanada : IBankOfCanada
 
         foreach (var against in this.GetRatesByDate(asOn).Keys)
         {
-            result.Add(new CurrencyPair(CanadianDollar, against));
-            result.Add(new CurrencyPair(against, CanadianDollar));
+            result.Add(this.currencyPairFactory.Create(CanadianDollar, against));
+            result.Add(this.currencyPairFactory.Create(against, CanadianDollar));
         }
 
         return result;
@@ -113,7 +116,7 @@ public class BankOfCanada : IBankOfCanada
 
             if (asOnDate == rawItem.Item2)
             {
-                result.Add(new ExchangeRate(new CurrencyPair(currency, CanadianDollar),
+                result.Add(new ExchangeRate(this.currencyPairFactory.Create(currency, CanadianDollar),
                     GetRateDateTimeOffset(rawItem.Item2), rawItem.Item3));
             }
 

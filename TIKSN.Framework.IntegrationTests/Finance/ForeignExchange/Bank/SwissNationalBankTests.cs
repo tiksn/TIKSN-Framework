@@ -152,7 +152,7 @@ public class SwissNationalBankTests
 
         foreach (var pair in pairs)
         {
-            var reversed = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
+            var reversed = CurrencyPairTestHelper.CurrencyPairFactory.Reverse(pair);
 
             pairs.ShouldContain(p => p == reversed);
         }
@@ -216,7 +216,7 @@ public class SwissNationalBankTests
         var aoa = new CurrencyInfo(ao);
         var bwp = new CurrencyInfo(bw);
 
-        var pair = new CurrencyPair(aoa, bwp);
+        var pair = CurrencyPairTestHelper.CurrencyPairFactory.Create(aoa, bwp);
 
         _ = await new Func<Task>(async () =>
                 await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(),

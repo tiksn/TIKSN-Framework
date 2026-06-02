@@ -25,14 +25,17 @@ public class NationalBankOfUkraine : INationalBankOfUkraine
         CompositeFormat.Parse("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date={0:yyyyMMdd}");
 
     private readonly ICurrencyFactory currencyFactory;
+    private readonly ICurrencyPairFactory currencyPairFactory;
     private readonly HttpClient httpClient;
 
     public NationalBankOfUkraine(
         HttpClient httpClient,
-        ICurrencyFactory currencyFactory)
+        ICurrencyFactory currencyFactory,
+        ICurrencyPairFactory currencyPairFactory)
     {
         this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
+        this.currencyPairFactory = currencyPairFactory ?? throw new ArgumentNullException(nameof(currencyPairFactory));
     }
 
     /// <summary>
@@ -192,10 +195,10 @@ public class NationalBankOfUkraine : INationalBankOfUkraine
             if (!string.IsNullOrEmpty(currencyCode))
             {
                 _ = result.Add(new ExchangeRate(
-                    new CurrencyPair(this.currencyFactory.Create(currencyCode), UkrainianHryvnia), asOn,
+                    this.currencyPairFactory.Create(this.currencyFactory.Create(currencyCode), UkrainianHryvnia), asOn,
                     rate));
                 _ = result.Add(new ExchangeRate(
-                    new CurrencyPair(UkrainianHryvnia, this.currencyFactory.Create(currencyCode)), asOn,
+                    this.currencyPairFactory.Create(UkrainianHryvnia, this.currencyFactory.Create(currencyCode)), asOn,
                     decimal.One / rate));
             }
         }

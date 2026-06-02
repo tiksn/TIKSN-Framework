@@ -1,23 +1,27 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Microsoft.Extensions.DependencyInjection;
+using TIKSN.DependencyInjection;
 using TIKSN.Finance;
 
 namespace TIKSN.Tests.Finance;
 
 public static class Helper
 {
+    public static ICurrencyPairFactory CurrencyPairFactory { get; } = CreateCurrencyPairFactory();
+
     public static CurrencyInfo SampleCurrency1 => new(new RegionInfo("US"));
 
     public static CurrencyInfo SampleCurrency2 => new(new RegionInfo("DE"));
 
     public static CurrencyInfo SampleCurrency3 => new(new RegionInfo("GB"));
 
-    public static CurrencyPair SampleCurrencyPair1 => new(SampleCurrency1, SampleCurrency2);
+    public static CurrencyPair SampleCurrencyPair1 => CurrencyPairFactory.Create(SampleCurrency1, SampleCurrency2);
 
-    public static CurrencyPair SampleCurrencyPair2 => new(SampleCurrency1, SampleCurrency3);
+    public static CurrencyPair SampleCurrencyPair2 => CurrencyPairFactory.Create(SampleCurrency1, SampleCurrency3);
 
-    public static CurrencyPair SampleCurrencyPair3 => new(SampleCurrency2, SampleCurrency3);
+    public static CurrencyPair SampleCurrencyPair3 => CurrencyPairFactory.Create(SampleCurrency2, SampleCurrency3);
 
     public static IEnumerable<CurrencyPair> SampleCurrencyPairs1 =>
     [
@@ -44,5 +48,12 @@ public static class Helper
         var rng = new Random();
 
         return (decimal)rng.NextDouble();
+    }
+
+    private static ICurrencyPairFactory CreateCurrencyPairFactory()
+    {
+        var services = new ServiceCollection();
+        _ = services.AddFrameworkCore();
+        return services.BuildServiceProvider().GetRequiredService<ICurrencyPairFactory>();
     }
 }

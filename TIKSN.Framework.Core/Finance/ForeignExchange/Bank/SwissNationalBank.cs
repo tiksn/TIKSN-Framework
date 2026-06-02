@@ -15,6 +15,7 @@ public class SwissNationalBank : ISwissNationalBank
 
 
     private readonly ICurrencyFactory currencyFactory;
+    private readonly ICurrencyPairFactory currencyPairFactory;
     private readonly Dictionary<CurrencyInfo, Tuple<DateTimeOffset, decimal>> foreignRates;
     private readonly HttpClient httpClient;
     private readonly TimeProvider timeProvider;
@@ -22,11 +23,13 @@ public class SwissNationalBank : ISwissNationalBank
     public SwissNationalBank(
         HttpClient httpClient,
         ICurrencyFactory currencyFactory,
+        ICurrencyPairFactory currencyPairFactory,
         TimeProvider timeProvider)
     {
         this.foreignRates = [];
         this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
+        this.currencyPairFactory = currencyPairFactory ?? throw new ArgumentNullException(nameof(currencyPairFactory));
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
@@ -56,8 +59,8 @@ public class SwissNationalBank : ISwissNationalBank
 
         foreach (var currency in this.FilterByDate(asOn).Select(x => x.Key))
         {
-            pairs.Add(new CurrencyPair(SwissFranc, currency));
-            pairs.Add(new CurrencyPair(currency, SwissFranc));
+            pairs.Add(this.currencyPairFactory.Create(SwissFranc, currency));
+            pairs.Add(this.currencyPairFactory.Create(currency, SwissFranc));
         }
 
         return pairs;
@@ -111,7 +114,7 @@ public class SwissNationalBank : ISwissNationalBank
                     StringComparison.Ordinal));
 
                 this.foreignRates[currency] = new Tuple<DateTimeOffset, decimal>(date, rate);
-                result.Add(new ExchangeRate(new CurrencyPair(currency, SwissFranc), date, rate));
+                result.Add(new ExchangeRate(this.currencyPairFactory.Create(currency, SwissFranc), date, rate));
             }
         }
 
