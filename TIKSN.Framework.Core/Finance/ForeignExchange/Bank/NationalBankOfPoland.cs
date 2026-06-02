@@ -20,6 +20,8 @@ public class NationalBankOfPoland : INationalBankOfPoland
     private const string TableB = "b";
 
     private static readonly MediaTypeWithQualityHeaderValue AcceptHeaderValue = new("application/json");
+    private static readonly Dictionary<Uri, IReadOnlyList<ExchangeRate>> ExchangeRatesCache = [];
+    private static readonly SemaphoreSlim ExchangeRatesSemaphore = new(initialCount: 1, maxCount: 1);
 
     private static readonly RegionInfo Poland = new("pl-PL");
     private static readonly CultureInfo PolishCulture = new("pl-PL");
@@ -122,6 +124,46 @@ public class NationalBankOfPoland : INationalBankOfPoland
 
         var requestUrl = new Uri(string.Format(PolishCulture, WebServiceUrlFormat, table, weekAgoWarsaw, asOnWarsaw));
 
+        await ExchangeRatesSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            if (ExchangeRatesCache.TryGetValue(requestUrl, out var cachedRates))
+            {
+                return cachedRates;
+            }
+
+            var rates = await this.GetRatesCoreAsync(requestUrl, cancellationToken).ConfigureAwait(false);
+            ExchangeRatesCache[requestUrl] = rates;
+
+            return rates;
+        }
+        finally
+        {
+            _ = ExchangeRatesSemaphore.Release();
+        }
+    }
+
+    private async Task<IReadOnlyCollection<ExchangeRate>> GetRatesAsync(
+        DateTimeOffset asOn,
+        CancellationToken cancellationToken)
+    {
+        var ratesA = await this.GetRatesAsync(TableA, asOn, cancellationToken).ConfigureAwait(false);
+        var ratesB = await this.GetRatesAsync(TableB, asOn, cancellationToken).ConfigureAwait(false);
+
+        return
+        [
+            .. ratesA.Concat(ratesB).SelectMany(x => new[]
+            {
+                x,
+                new ExchangeRate(x.Pair.Reverse(), x.AsOn, 1m / x.Rate),
+            }),
+        ];
+    }
+
+    private async Task<IReadOnlyList<ExchangeRate>> GetRatesCoreAsync(
+        Uri requestUrl,
+        CancellationToken cancellationToken)
+    {
         using var request = new HttpRequestMessage
         {
             Method = HttpMethod.Get,
@@ -146,23 +188,6 @@ public class NationalBankOfPoland : INationalBankOfPoland
             ?.SelectMany(CreateDatesAndRates)
             .Select(this.CreateExchangeRate)
             .ToArray() ?? [];
-    }
-
-    private async Task<IReadOnlyCollection<ExchangeRate>> GetRatesAsync(
-        DateTimeOffset asOn,
-        CancellationToken cancellationToken)
-    {
-        var ratesA = await this.GetRatesAsync(TableA, asOn, cancellationToken).ConfigureAwait(false);
-        var ratesB = await this.GetRatesAsync(TableB, asOn, cancellationToken).ConfigureAwait(false);
-
-        return
-        [
-            .. ratesA.Concat(ratesB).SelectMany(x => new[]
-            {
-                x,
-                new ExchangeRate(x.Pair.Reverse(), x.AsOn, 1m / x.Rate),
-            }),
-        ];
     }
 
 #pragma warning disable CA1812 // Avoid uninstantiated internal classes

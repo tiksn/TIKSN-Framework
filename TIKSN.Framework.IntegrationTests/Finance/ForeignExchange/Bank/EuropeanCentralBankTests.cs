@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using TIKSN.DependencyInjection;
 using TIKSN.Finance;
 using TIKSN.Finance.ForeignExchange.Bank;
 using Xunit;
@@ -17,13 +15,12 @@ public class EuropeanCentralBankTests
     private readonly IEuropeanCentralBank bank;
     private readonly TimeProvider timeProvider;
 
-    public EuropeanCentralBankTests()
+    public EuropeanCentralBankTests(FrameworkCoreServiceProviderFixture fixture)
     {
-        var services = new ServiceCollection();
-        _ = services.AddFrameworkCore();
-        var serviceProvider = services.BuildServiceProvider();
-        this.timeProvider = serviceProvider.GetRequiredService<TimeProvider>();
-        this.bank = serviceProvider.GetRequiredService<IEuropeanCentralBank>();
+        ArgumentNullException.ThrowIfNull(fixture);
+
+        this.timeProvider = fixture.GetRequiredService<TimeProvider>();
+        this.bank = fixture.GetRequiredService<IEuropeanCentralBank>();
     }
 
     [Fact]

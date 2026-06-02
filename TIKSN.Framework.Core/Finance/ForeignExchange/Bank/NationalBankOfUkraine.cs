@@ -11,6 +11,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank;
 /// <seealso cref="ICurrencyConverter" />
 public class NationalBankOfUkraine : INationalBankOfUkraine
 {
+    private static readonly Dictionary<Uri, IReadOnlyCollection<ExchangeRate>> ExchangeRatesCache = [];
+    private static readonly SemaphoreSlim ExchangeRatesSemaphore = new(initialCount: 1, maxCount: 1);
     private static readonly string[] IgnoreList = ["___",];
 
     private static readonly RegionInfo Ukraine = new("uk-UA");
@@ -95,36 +97,24 @@ public class NationalBankOfUkraine : INationalBankOfUkraine
         CancellationToken cancellationToken)
     {
         var requestUri = new Uri(string.Format(UkrainianCulture, WebServiceUrlFormat, asOn));
-        var response = await this.httpClient.GetStringAsync(requestUri, cancellationToken).ConfigureAwait(false);
-        var xdocument = XDocument.Parse(response);
-        var result = new HashSet<ExchangeRate>();
 
-        foreach (var currencyElement in xdocument
-                     ?.Element("exchange")
-                     ?.Elements("currency") ?? [])
+        await ExchangeRatesSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
         {
-            var currencyCode = currencyElement?.Element("cc")?.Value;
-
-            if (IgnoreList.Contains(currencyCode, StringComparer.OrdinalIgnoreCase))
+            if (ExchangeRatesCache.TryGetValue(requestUri, out var cachedRates))
             {
-                continue;
+                return cachedRates;
             }
 
-            var rate = decimal.Parse(currencyElement?.Element("rate")?.Value ?? string.Empty,
-                CultureInfo.InvariantCulture);
+            var rates = await this.GetExchangeRatesCoreAsync(requestUri, asOn, cancellationToken).ConfigureAwait(false);
+            ExchangeRatesCache[requestUri] = rates;
 
-            if (!string.IsNullOrEmpty(currencyCode))
-            {
-                _ = result.Add(new ExchangeRate(
-                    new CurrencyPair(this.currencyFactory.Create(currencyCode), UkrainianHryvnia), asOn,
-                    rate));
-                _ = result.Add(new ExchangeRate(
-                    new CurrencyPair(UkrainianHryvnia, this.currencyFactory.Create(currencyCode)), asOn,
-                    decimal.One / rate));
-            }
+            return rates;
         }
-
-        return result;
+        finally
+        {
+            _ = ExchangeRatesSemaphore.Release();
+        }
     }
 
     private static NotSupportedException CreatePairNotSupportedException(
@@ -174,5 +164,42 @@ public class NationalBankOfUkraine : INationalBankOfUkraine
             ?? throw CreatePairNotSupportedException(baseCurrency: null, currency);
 
         return record.Rate;
+    }
+
+    private async Task<IReadOnlyCollection<ExchangeRate>> GetExchangeRatesCoreAsync(
+        Uri requestUri,
+        DateTimeOffset asOn,
+        CancellationToken cancellationToken)
+    {
+        var response = await this.httpClient.GetStringAsync(requestUri, cancellationToken).ConfigureAwait(false);
+        var xdocument = XDocument.Parse(response);
+        var result = new HashSet<ExchangeRate>();
+
+        foreach (var currencyElement in xdocument
+                     ?.Element("exchange")
+                     ?.Elements("currency") ?? [])
+        {
+            var currencyCode = currencyElement?.Element("cc")?.Value;
+
+            if (IgnoreList.Contains(currencyCode, StringComparer.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            var rate = decimal.Parse(currencyElement?.Element("rate")?.Value ?? string.Empty,
+                CultureInfo.InvariantCulture);
+
+            if (!string.IsNullOrEmpty(currencyCode))
+            {
+                _ = result.Add(new ExchangeRate(
+                    new CurrencyPair(this.currencyFactory.Create(currencyCode), UkrainianHryvnia), asOn,
+                    rate));
+                _ = result.Add(new ExchangeRate(
+                    new CurrencyPair(UkrainianHryvnia, this.currencyFactory.Create(currencyCode)), asOn,
+                    decimal.One / rate));
+            }
+        }
+
+        return result;
     }
 }

@@ -7,6 +7,8 @@ namespace TIKSN.Finance.ForeignExchange.Bank;
 public class CentralBankOfArmenia : ICentralBankOfArmenia
 {
     private static readonly CurrencyInfo AMD = new(new RegionInfo("hy-AM"));
+    private static readonly Dictionary<(Uri RssUrl, DateOnly RequestDate), XDocument> ExchangeRateDocumentCache = [];
+    private static readonly SemaphoreSlim ExchangeRateDocumentSemaphore = new(initialCount: 1, maxCount: 1);
 
     private static readonly Uri RSS =
         new("https://old.cba.am/_layouts/rssreader.aspx?rss=280F57B8-763C-4EE4-90E0-8136C13E47DA");
@@ -96,9 +98,7 @@ public class CentralBankOfArmenia : ICentralBankOfArmenia
 
         var result = new List<ExchangeRate>();
 
-        var responseStream = await this.httpClient.GetStreamAsync(RSS, cancellationToken).ConfigureAwait(false);
-
-        var xdoc = XDocument.Load(responseStream);
+        var xdoc = await this.GetExchangeRateDocumentAsync(cancellationToken).ConfigureAwait(false);
 
         lock (this.oneWayRates)
         {
@@ -162,6 +162,39 @@ public class CentralBankOfArmenia : ICentralBankOfArmenia
             this.timeProvider.GetUtcNow() - this.lastFetchDate > TimeSpan.FromDays(1d))
         {
             _ = await this.GetExchangeRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
+        }
+    }
+
+    private async Task<XDocument> GetExchangeRateDocumentAsync(CancellationToken cancellationToken)
+    {
+        var cacheKey = (RSS, DateOnly.FromDateTime(this.timeProvider.GetUtcNow().Date));
+
+        await ExchangeRateDocumentSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            if (ExchangeRateDocumentCache.TryGetValue(cacheKey, out var cachedDocument))
+            {
+                return cachedDocument;
+            }
+
+            var document = await this.GetExchangeRateDocumentCoreAsync(cancellationToken).ConfigureAwait(false);
+            ExchangeRateDocumentCache[cacheKey] = document;
+
+            return document;
+        }
+        finally
+        {
+            _ = ExchangeRateDocumentSemaphore.Release();
+        }
+    }
+
+    private async Task<XDocument> GetExchangeRateDocumentCoreAsync(CancellationToken cancellationToken)
+    {
+        var responseStream = await this.httpClient.GetStreamAsync(RSS, cancellationToken).ConfigureAwait(false);
+
+        await using (responseStream.ConfigureAwait(false))
+        {
+            return XDocument.Load(responseStream);
         }
     }
 

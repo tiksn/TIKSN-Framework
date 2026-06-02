@@ -9,9 +9,12 @@ public class FederalReserveSystem : IFederalReserveSystem
 {
     private static readonly CompositeFormat DataUrlFormat =
         CompositeFormat.Parse(
-            "https://www.federalreserve.gov/datadownload/Output.aspx?rel=H10&series=60f32914ab61dfab590e0e470153e3ae&lastObs=7&from={0}&to={1}&filetype=sdmx&label=include&layout=seriescolumn");
+            "https://www.federalreserve.gov/datadownload/Output.aspx?rel=H10&series=60f32914ab61dfab590e0e470153e3ae&lastObs=&from={0}&to={1}&filetype=sdmx&label=include&layout=seriescolumn");
 
     private static readonly CultureInfo EnglishUnitedStates = new("en-US");
+    private static readonly Dictionary<Uri, IReadOnlyCollection<ExchangeRate>> ExchangeRatesCache = [];
+    private static readonly SemaphoreSlim ExchangeRatesSemaphore = new(initialCount: 1, maxCount: 1);
+    private static readonly TimeZoneInfo FederalReserveTimeZone = FindFederalReserveTimeZone();
     private static readonly CurrencyInfo UnitedStatesDollar = new(new RegionInfo("en-US"));
     private readonly ICurrencyFactory currencyFactory;
     private readonly HttpClient httpClient;
@@ -96,70 +99,38 @@ public class FederalReserveSystem : IFederalReserveSystem
         CancellationToken cancellationToken)
 #pragma warning restore MA0051 // Method is too long
     {
+        var requestedDate = TimeZoneInfo.ConvertTime(asOn, FederalReserveTimeZone);
         var dataUrl = new Uri(string.Format(EnglishUnitedStates, DataUrlFormat,
-            this.timeProvider.GetUtcNow().AddDays(-10d).ToString("MM/dd/yyyy", EnglishUnitedStates),
-            this.timeProvider.GetUtcNow().ToString("MM/dd/yyyy", EnglishUnitedStates)));
+            requestedDate.AddDays(-10d).ToString("MM/dd/yyyy", EnglishUnitedStates),
+            requestedDate.ToString("MM/dd/yyyy", EnglishUnitedStates)));
 
-        var responseStream = await this.httpClient.GetStreamAsync(dataUrl, cancellationToken).ConfigureAwait(false);
-
-        var xdoc = XDocument.Load(responseStream);
-
-        var result = new List<ExchangeRate>();
-
-        foreach (var seriesElement in xdoc
-                     ?.Element("{http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message}MessageGroup")
-                     ?.Element("{http://www.federalreserve.gov/structure/compact/common}DataSet")
-                     ?.Elements("{http://www.federalreserve.gov/structure/compact/H10_H10}Series") ?? [])
+        await ExchangeRatesSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
         {
-            var currencyCode = seriesElement?.Attribute("CURRENCY")?.Value;
-            var fx = seriesElement?.Attribute("FX")?.Value;
-
-            if (!string.Equals(currencyCode, "NA", StringComparison.Ordinal)
-                && currencyCode is not null
-                && fx is not null)
+            if (ExchangeRatesCache.TryGetValue(dataUrl, out var cachedRates))
             {
-                var rates = new Dictionary<DateTimeOffset, decimal>();
-
-                foreach (var obsElement in seriesElement?.Elements(
-                             "{http://www.federalreserve.gov/structure/compact/common}Obs") ?? [])
-                {
-                    var obsStatus = obsElement?.Attribute("OBS_STATUS")?.Value;
-                    if (!string.Equals(obsStatus, "ND", StringComparison.Ordinal))
-                    {
-                        var obsValue = decimal.Parse(obsElement?.Attribute("OBS_VALUE")?.Value ?? string.Empty,
-                            EnglishUnitedStates);
-                        var period = DateTimeOffset.Parse(obsElement?.Attribute("TIME_PERIOD")?.Value ?? string.Empty,
-                            EnglishUnitedStates);
-
-                        var obsValueRate = IsCurrencyPerUsdSeries(seriesElement) ? obsValue : decimal.One / obsValue;
-
-                        rates.Add(period, obsValueRate);
-                    }
-                }
-
-                var date = rates.Keys.Max();
-                var rate = rates[date];
-
-                if (string.Equals(fx, "ZAL", StringComparison.Ordinal))
-                {
-                    result.Add(new ExchangeRate(
-                        new CurrencyPair(UnitedStatesDollar, this.currencyFactory.Create(currencyCode)), date,
-                        rate));
-                }
-                else if (string.Equals(fx, "VEB", StringComparison.Ordinal))
-                {
-                    result.Add(new ExchangeRate(
-                        new CurrencyPair(UnitedStatesDollar, this.currencyFactory.Create("VEF")), date, rate));
-                }
-                else
-                {
-                    result.Add(new ExchangeRate(
-                        new CurrencyPair(UnitedStatesDollar, this.currencyFactory.Create(fx)), date, rate));
-                }
+                return cachedRates;
             }
+
+            var rates = await this.GetExchangeRatesCoreAsync(dataUrl, cancellationToken).ConfigureAwait(false);
+            ExchangeRatesCache[dataUrl] = rates;
+
+            return rates;
+        }
+        finally
+        {
+            _ = ExchangeRatesSemaphore.Release();
+        }
+    }
+
+    private static TimeZoneInfo FindFederalReserveTimeZone()
+    {
+        if (TimeZoneInfo.TryFindSystemTimeZoneById("America/New_York", out var ianaTimeZone))
+        {
+            return ianaTimeZone;
         }
 
-        return result;
+        return TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
     }
 
     private static bool IsCurrencyPerUsdSeries(XElement? seriesElement)
@@ -190,6 +161,88 @@ public class FederalReserveSystem : IFederalReserveSystem
         if (asOn > timeProvider.GetUtcNow())
         {
             throw new ArgumentException("Exchange rate forecasting are not supported.", nameof(asOn));
+        }
+    }
+
+    private async Task<IReadOnlyCollection<ExchangeRate>> GetExchangeRatesCoreAsync(
+        Uri dataUrl,
+        CancellationToken cancellationToken)
+    {
+        var response = await this.httpClient.GetAsync(dataUrl, cancellationToken).ConfigureAwait(false);
+        using (response)
+        {
+            _ = response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                throw new InvalidOperationException(
+                    string.Create(CultureInfo.InvariantCulture,
+                        $"Federal Reserve returned an empty exchange rate document from {dataUrl}."));
+            }
+
+            var xdoc = XDocument.Parse(content);
+
+            var result = new List<ExchangeRate>();
+
+            foreach (var seriesElement in xdoc
+                         ?.Element("{http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message}MessageGroup")
+                         ?.Element("{http://www.federalreserve.gov/structure/compact/common}DataSet")
+                         ?.Elements("{http://www.federalreserve.gov/structure/compact/H10_H10}Series") ?? [])
+            {
+                var currencyCode = seriesElement?.Attribute("CURRENCY")?.Value;
+                var fx = seriesElement?.Attribute("FX")?.Value;
+
+                if (!string.Equals(currencyCode, "NA", StringComparison.Ordinal)
+                    && currencyCode is not null
+                    && fx is not null)
+                {
+                    var rates = new Dictionary<DateTimeOffset, decimal>();
+
+                    foreach (var obsElement in seriesElement?.Elements(
+                                 "{http://www.federalreserve.gov/structure/compact/common}Obs") ?? [])
+                    {
+                        var obsStatus = obsElement?.Attribute("OBS_STATUS")?.Value;
+                        if (!string.Equals(obsStatus, "ND", StringComparison.Ordinal))
+                        {
+                            var obsValue = decimal.Parse(obsElement?.Attribute("OBS_VALUE")?.Value ?? string.Empty,
+                                EnglishUnitedStates);
+                            var period = DateTimeOffset.Parse(
+                                obsElement?.Attribute("TIME_PERIOD")?.Value ?? string.Empty,
+                                EnglishUnitedStates);
+
+                            var obsValueRate = IsCurrencyPerUsdSeries(seriesElement)
+                                ? obsValue
+                                : decimal.One / obsValue;
+
+                            rates.Add(period, obsValueRate);
+                        }
+                    }
+
+                    var date = rates.Keys.Max();
+                    var rate = rates[date];
+
+                    if (string.Equals(fx, "ZAL", StringComparison.Ordinal))
+                    {
+                        result.Add(new ExchangeRate(
+                            new CurrencyPair(UnitedStatesDollar, this.currencyFactory.Create(currencyCode)), date,
+                            rate));
+                    }
+                    else if (string.Equals(fx, "VEB", StringComparison.Ordinal))
+                    {
+                        result.Add(new ExchangeRate(
+                            new CurrencyPair(UnitedStatesDollar, this.currencyFactory.Create("VEF")), date, rate));
+                    }
+                    else
+                    {
+                        result.Add(new ExchangeRate(
+                            new CurrencyPair(UnitedStatesDollar, this.currencyFactory.Create(fx)), date, rate));
+                    }
+                }
+            }
+
+            return result;
         }
     }
 

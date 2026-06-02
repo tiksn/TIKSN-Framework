@@ -1,8 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using TIKSN.DependencyInjection;
 using TIKSN.Finance;
 using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Globalization;
@@ -16,14 +14,13 @@ public class NationalBankOfPolandTests
     private readonly ICurrencyFactory currencyFactory;
     private readonly TimeProvider timeProvider;
 
-    public NationalBankOfPolandTests()
+    public NationalBankOfPolandTests(FrameworkCoreServiceProviderFixture fixture)
     {
-        var services = new ServiceCollection();
-        _ = services.AddFrameworkCore();
-        var serviceProvider = services.BuildServiceProvider();
-        this.bank = serviceProvider.GetRequiredService<INationalBankOfPoland>();
-        this.currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
-        this.timeProvider = serviceProvider.GetRequiredService<TimeProvider>();
+        ArgumentNullException.ThrowIfNull(fixture);
+
+        this.bank = fixture.GetRequiredService<INationalBankOfPoland>();
+        this.currencyFactory = fixture.GetRequiredService<ICurrencyFactory>();
+        this.timeProvider = fixture.GetRequiredService<TimeProvider>();
     }
 
     [Fact]

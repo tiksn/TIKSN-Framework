@@ -1,4 +1,3 @@
-using System.Collections.Concurrent;
 using System.Globalization;
 using System.Xml.Linq;
 using TIKSN.Globalization;
@@ -12,13 +11,16 @@ public class EuropeanCentralBank : IEuropeanCentralBank
 
     private static readonly CurrencyInfo Euro = new(new RegionInfo("de-DE"));
 
+    private static readonly SemaphoreSlim ExchangeRateDocumentSemaphore = new(initialCount: 1, maxCount: 1);
+
+    private static readonly Dictionary<(Uri RequestURL, DateOnly RequestDate), XDocument> ExchangeRateDocuments = [];
+
 
     private static readonly Uri Last90DaysRatesUrl =
         new("https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml");
 
     private static readonly Uri Since1999RatesUrl = new("https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.xml");
     private readonly ICurrencyFactory currencyFactory;
-    private readonly ConcurrentDictionary<(Uri RequestURL, DateOnly RequestDate), XDocument> exchangeRateDocuments = [];
     private readonly HttpClient httpClient;
     private readonly TimeProvider timeProvider;
 
@@ -178,18 +180,35 @@ public class EuropeanCentralBank : IEuropeanCentralBank
     {
         var cacheKey = (requestURL, GetCentralEuropeanDate(this.timeProvider.GetUtcNow()));
 
-        if (this.exchangeRateDocuments.TryGetValue(cacheKey, out var cachedDocument))
+        await ExchangeRateDocumentSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
         {
-            return cachedDocument;
-        }
+            if (ExchangeRateDocuments.TryGetValue(cacheKey, out var cachedDocument))
+            {
+                return cachedDocument;
+            }
 
+            var document = await this.GetExchangeRateDocumentCoreAsync(requestURL, cancellationToken)
+                .ConfigureAwait(false);
+            ExchangeRateDocuments[cacheKey] = document;
+
+            return document;
+        }
+        finally
+        {
+            _ = ExchangeRateDocumentSemaphore.Release();
+        }
+    }
+
+    private async Task<XDocument> GetExchangeRateDocumentCoreAsync(
+        Uri requestURL,
+        CancellationToken cancellationToken)
+    {
         var responseStream = await this.httpClient.GetStreamAsync(requestURL, cancellationToken).ConfigureAwait(false);
 
         await using (responseStream.ConfigureAwait(false))
         {
-            var document = XDocument.Load(responseStream);
-
-            return this.exchangeRateDocuments.GetOrAdd(cacheKey, document);
+            return XDocument.Load(responseStream);
         }
     }
 

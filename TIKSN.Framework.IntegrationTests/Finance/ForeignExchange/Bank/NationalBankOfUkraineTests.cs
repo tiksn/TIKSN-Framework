@@ -1,8 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using TIKSN.DependencyInjection;
 using TIKSN.Finance;
 using TIKSN.Finance.ForeignExchange.Bank;
 using Xunit;
@@ -13,12 +11,11 @@ public class NationalBankOfUkraineTests
 {
     private readonly INationalBankOfUkraine bank;
 
-    public NationalBankOfUkraineTests()
+    public NationalBankOfUkraineTests(FrameworkCoreServiceProviderFixture fixture)
     {
-        var services = new ServiceCollection();
-        _ = services.AddFrameworkCore();
-        var serviceProvider = services.BuildServiceProvider();
-        this.bank = serviceProvider.GetRequiredService<INationalBankOfUkraine>();
+        ArgumentNullException.ThrowIfNull(fixture);
+
+        this.bank = fixture.GetRequiredService<INationalBankOfUkraine>();
     }
 
     [Fact]

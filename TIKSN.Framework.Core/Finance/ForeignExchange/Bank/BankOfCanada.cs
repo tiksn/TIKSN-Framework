@@ -10,6 +10,11 @@ public class BankOfCanada : IBankOfCanada
     private static readonly TimeZoneInfo BankTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
     private static readonly CurrencyInfo CanadianDollar = new(new RegionInfo("en-CA"));
 
+    private static readonly Dictionary<(Uri RestUrl, DateOnly RequestDate), List<Tuple<string, DateOnly, decimal>>>
+        RawDataCache = [];
+
+    private static readonly SemaphoreSlim RawDataSemaphore = new(initialCount: 1, maxCount: 1);
+
     private static readonly Uri RestURL =
         new("https://www.bankofcanada.ca/valet/observations/group/FX_RATES_DAILY/json");
 
@@ -99,7 +104,7 @@ public class BankOfCanada : IBankOfCanada
 
         var ratesList = new List<Tuple<CurrencyInfo, DateOnly, decimal>>();
 
-        var rawData = await this.FetchRawDataAsync(RestURL).ConfigureAwait(false);
+        var rawData = await this.FetchRawDataAsync(RestURL, cancellationToken).ConfigureAwait(false);
 
         var asOnDate = GetRateDate(asOn);
         foreach (var rawItem in rawData)
@@ -151,12 +156,40 @@ public class BankOfCanada : IBankOfCanada
         }
     }
 
-    private async Task<List<Tuple<string, DateOnly, decimal>>> FetchRawDataAsync(Uri restUrl)
+    private async Task<List<Tuple<string, DateOnly, decimal>>> FetchRawDataAsync(
+        Uri restUrl,
+        CancellationToken cancellationToken)
     {
-        var responseStream = await this.httpClient.GetStreamAsync(restUrl).ConfigureAwait(false);
+        var cacheKey = (restUrl, GetRateDate(this.timeProvider.GetUtcNow()));
+
+        await RawDataSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            if (RawDataCache.TryGetValue(cacheKey, out var cachedRawData))
+            {
+                return cachedRawData;
+            }
+
+            var rawData = await this.FetchRawDataCoreAsync(restUrl, cancellationToken).ConfigureAwait(false);
+            RawDataCache[cacheKey] = rawData;
+
+            return rawData;
+        }
+        finally
+        {
+            _ = RawDataSemaphore.Release();
+        }
+    }
+
+    private async Task<List<Tuple<string, DateOnly, decimal>>> FetchRawDataCoreAsync(
+        Uri restUrl,
+        CancellationToken cancellationToken)
+    {
+        var responseStream = await this.httpClient.GetStreamAsync(restUrl, cancellationToken).ConfigureAwait(false);
 
         using var streamReader = new StreamReader(responseStream);
-        var root = JsonSerializer.Deserialize<JsonElement>(await streamReader.ReadToEndAsync().ConfigureAwait(false));
+        var root = JsonSerializer.Deserialize<JsonElement>(
+            await streamReader.ReadToEndAsync(cancellationToken).ConfigureAwait(false));
 
         var result = new List<Tuple<string, DateOnly, decimal>>();
 
