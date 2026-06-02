@@ -22,16 +22,19 @@ public class EuropeanCentralBank : IEuropeanCentralBank
 
     private static readonly Uri Since1999RatesUrl = new("https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.xml");
     private readonly ICurrencyFactory currencyFactory;
+    private readonly ICurrencyPairFactory currencyPairFactory;
     private readonly HttpClient httpClient;
     private readonly TimeProvider timeProvider;
 
     public EuropeanCentralBank(
         HttpClient httpClient,
         ICurrencyFactory currencyFactory,
+        ICurrencyPairFactory currencyPairFactory,
         TimeProvider timeProvider)
     {
         this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
+        this.currencyPairFactory = currencyPairFactory ?? throw new ArgumentNullException(nameof(currencyPairFactory));
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
@@ -44,7 +47,7 @@ public class EuropeanCentralBank : IEuropeanCentralBank
         ArgumentNullException.ThrowIfNull(baseMoney);
         ArgumentNullException.ThrowIfNull(counterCurrency);
 
-        var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
+        var pair = this.currencyPairFactory.Create(baseMoney.Currency, counterCurrency);
         var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
 
         return new Money(counterCurrency, baseMoney.Amount * rate);
@@ -63,7 +66,7 @@ public class EuropeanCentralBank : IEuropeanCentralBank
         foreach (var pair in rates.Select(x => x.Pair))
         {
             result.Add(pair);
-            result.Add(new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency));
+            result.Add(this.currencyPairFactory.Reverse(pair));
         }
 
         return result;
@@ -86,7 +89,7 @@ public class EuropeanCentralBank : IEuropeanCentralBank
             return rate.Rate;
         }
 
-        var reverseRate = rates.SingleOrDefault(item => item.Pair.Reverse() == pair);
+        var reverseRate = rates.SingleOrDefault(item => this.currencyPairFactory.Reverse(item.Pair) == pair);
         if (reverseRate != null)
         {
             return reverseRate.Reverse().Rate;
@@ -126,7 +129,7 @@ public class EuropeanCentralBank : IEuropeanCentralBank
             var currencyCode = rateCube?.Attribute("currency")?.Value ?? string.Empty;
             var rate = decimal.Parse(rateCube?.Attribute("rate")?.Value ?? string.Empty, CultureInfo.InvariantCulture);
 
-            rates.Add(new ExchangeRate(new CurrencyPair(Euro, this.currencyFactory.Create(currencyCode)),
+            rates.Add(new ExchangeRate(this.currencyPairFactory.Create(Euro, this.currencyFactory.Create(currencyCode)),
                 CreateEuropeanCentralBankDateTimeOffset(groupCubes.Item2), rate));
         }
 

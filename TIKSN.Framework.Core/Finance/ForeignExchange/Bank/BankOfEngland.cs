@@ -9,26 +9,28 @@ public class BankOfEngland : IBankOfEngland
     private static readonly Dictionary<Uri, IReadOnlyList<ExchangeRate>> ExchangeRatesCache = [];
     private static readonly SemaphoreSlim ExchangeRatesSemaphore = new(initialCount: 1, maxCount: 1);
 
-    private static readonly (Dictionary<CurrencyPair, string>, Dictionary<string, CurrencyPair>) SeriesCodesMaps =
-        CreateSeriesCodesMaps();
-
     private static readonly CompositeFormat UrlFormat =
         CompositeFormat.Parse(
             "https://www.bankofengland.co.uk/boeapps/database/_iadb-fromshowcolumns.asp?CodeVer=new&xml.x=yes&Datefrom={0}&Dateto={1}&SeriesCodes={2}&VPD=Y&VFD=N");
 
+    private readonly ICurrencyPairFactory currencyPairFactory;
     private readonly HttpClient httpClient;
+    private readonly (Dictionary<CurrencyPair, string>, Dictionary<string, CurrencyPair>) seriesCodesMaps;
     private readonly TimeProvider timeProvider;
 
     public BankOfEngland(
         HttpClient httpClient,
+        ICurrencyPairFactory currencyPairFactory,
         TimeProvider timeProvider)
     {
         this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+        this.currencyPairFactory = currencyPairFactory ?? throw new ArgumentNullException(nameof(currencyPairFactory));
+        this.seriesCodesMaps = CreateSeriesCodesMaps(this.currencyPairFactory);
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
-    private static Dictionary<string, CurrencyPair> Pairs => SeriesCodesMaps.Item2;
-    private static Dictionary<CurrencyPair, string> SeriesCodes => SeriesCodesMaps.Item1;
+    private Dictionary<string, CurrencyPair> Pairs => this.seriesCodesMaps.Item2;
+    private Dictionary<CurrencyPair, string> SeriesCodes => this.seriesCodesMaps.Item1;
 
     public async Task<Money> ConvertCurrencyAsync(
         Money baseMoney,
@@ -52,10 +54,10 @@ public class BankOfEngland : IBankOfEngland
     {
         var pairs = new List<CurrencyPair>();
 
-        foreach (var pair in SeriesCodes.Keys)
+        foreach (var pair in this.SeriesCodes.Keys)
         {
             var rates = await this.GetSeriesCodeExchangeRateAsync(
-                SeriesCodes[pair],
+                this.SeriesCodes[pair],
                 asOn,
                 cancellationToken).ConfigureAwait(false);
 
@@ -98,11 +100,11 @@ public class BankOfEngland : IBankOfEngland
         }
 
         string seriesCode;
-        var pair = new CurrencyPair(baseCurrency, counterCurrency);
+        var pair = this.currencyPairFactory.Create(baseCurrency, counterCurrency);
 
         try
         {
-            seriesCode = SeriesCodes[pair];
+            seriesCode = this.SeriesCodes[pair];
         }
         catch (KeyNotFoundException)
         {
@@ -126,7 +128,7 @@ public class BankOfEngland : IBankOfEngland
         CancellationToken cancellationToken)
     {
         List<ExchangeRate> rates = [];
-        foreach (var seriesCode in SeriesCodes)
+        foreach (var seriesCode in this.SeriesCodes)
         {
             var exchangeRates = await this.GetSeriesCodeExchangeRateAsync(seriesCode.Value, asOn, cancellationToken)
                 .ConfigureAwait(false);
@@ -138,6 +140,7 @@ public class BankOfEngland : IBankOfEngland
 
     private static void AddSeriesCode(
         List<(CurrencyPair pair, string serieCode)> codes,
+        ICurrencyPairFactory currencyPairFactory,
         string baseCountryCode,
         string counterCountryCode,
         string serieCode)
@@ -148,93 +151,94 @@ public class BankOfEngland : IBankOfEngland
         var baseCurrency = new CurrencyInfo(baseCountry);
         var counterCurrency = new CurrencyInfo(counterCountry);
 
-        var pair = new CurrencyPair(baseCurrency, counterCurrency);
+        var pair = currencyPairFactory.Create(baseCurrency, counterCurrency);
 
         codes.Add((pair, serieCode));
     }
 
 #pragma warning disable MA0051 // Method is too long
 
-    private static (Dictionary<CurrencyPair, string>, Dictionary<string, CurrencyPair>) CreateSeriesCodesMaps()
+    private static (Dictionary<CurrencyPair, string>, Dictionary<string, CurrencyPair>) CreateSeriesCodesMaps(
+        ICurrencyPairFactory currencyPairFactory)
 #pragma warning restore MA0051 // Method is too long
     {
         List<(CurrencyPair pair, string serieCode)> codes = [];
 
-        AddSeriesCode(codes, "en-AU", "en-US", "XUDLADD");
-        AddSeriesCode(codes, "en-AU", "en-GB", "XUDLADS");
+        AddSeriesCode(codes, currencyPairFactory, "en-AU", "en-US", "XUDLADD");
+        AddSeriesCode(codes, currencyPairFactory, "en-AU", "en-GB", "XUDLADS");
 
-        AddSeriesCode(codes, "en-CA", "en-GB", "XUDLCDS");
+        AddSeriesCode(codes, currencyPairFactory, "en-CA", "en-GB", "XUDLCDS");
 
-        AddSeriesCode(codes, "zh-CN", "en-US", "XUDLBK73");
+        AddSeriesCode(codes, currencyPairFactory, "zh-CN", "en-US", "XUDLBK73");
 
-        AddSeriesCode(codes, "cs-CZ", "en-US", "XUDLBK27");
-        AddSeriesCode(codes, "cs-CZ", "en-GB", "XUDLBK25");
+        AddSeriesCode(codes, currencyPairFactory, "cs-CZ", "en-US", "XUDLBK27");
+        AddSeriesCode(codes, currencyPairFactory, "cs-CZ", "en-GB", "XUDLBK25");
 
-        AddSeriesCode(codes, "da-DK", "en-US", "XUDLDKD");
-        AddSeriesCode(codes, "da-DK", "en-GB", "XUDLDKS");
+        AddSeriesCode(codes, currencyPairFactory, "da-DK", "en-US", "XUDLDKD");
+        AddSeriesCode(codes, currencyPairFactory, "da-DK", "en-GB", "XUDLDKS");
 
-        AddSeriesCode(codes, "de-DE", "en-US", "XUDLERD");
-        AddSeriesCode(codes, "de-DE", "en-GB", "XUDLERS");
+        AddSeriesCode(codes, currencyPairFactory, "de-DE", "en-US", "XUDLERD");
+        AddSeriesCode(codes, currencyPairFactory, "de-DE", "en-GB", "XUDLERS");
 
-        AddSeriesCode(codes, "zh-HK", "en-US", "XUDLHDD");
-        AddSeriesCode(codes, "zh-HK", "en-GB", "XUDLHDS");
+        AddSeriesCode(codes, currencyPairFactory, "zh-HK", "en-US", "XUDLHDD");
+        AddSeriesCode(codes, currencyPairFactory, "zh-HK", "en-GB", "XUDLHDS");
 
-        AddSeriesCode(codes, "hu-HU", "en-US", "XUDLBK35");
-        AddSeriesCode(codes, "hu-HU", "en-GB", "XUDLBK33");
+        AddSeriesCode(codes, currencyPairFactory, "hu-HU", "en-US", "XUDLBK35");
+        AddSeriesCode(codes, currencyPairFactory, "hu-HU", "en-GB", "XUDLBK33");
 
-        AddSeriesCode(codes, "hi-IN", "en-GB", "XUDLBK97");
-        AddSeriesCode(codes, "hi-IN", "en-US", "XUDLBK64");
+        AddSeriesCode(codes, currencyPairFactory, "hi-IN", "en-GB", "XUDLBK97");
+        AddSeriesCode(codes, currencyPairFactory, "hi-IN", "en-US", "XUDLBK64");
 
-        AddSeriesCode(codes, "he-IL", "en-GB", "XUDLBK78");
-        AddSeriesCode(codes, "he-IL", "en-US", "XUDLBK65");
+        AddSeriesCode(codes, currencyPairFactory, "he-IL", "en-GB", "XUDLBK78");
+        AddSeriesCode(codes, currencyPairFactory, "he-IL", "en-US", "XUDLBK65");
 
-        AddSeriesCode(codes, "ja-JP", "en-US", "XUDLJYD");
-        AddSeriesCode(codes, "ja-JP", "en-GB", "XUDLJYS");
+        AddSeriesCode(codes, currencyPairFactory, "ja-JP", "en-US", "XUDLJYD");
+        AddSeriesCode(codes, currencyPairFactory, "ja-JP", "en-GB", "XUDLJYS");
 
-        AddSeriesCode(codes, "ms-MY", "en-GB", "XUDLBK83");
-        AddSeriesCode(codes, "ms-MY", "en-US", "XUDLBK66");
+        AddSeriesCode(codes, currencyPairFactory, "ms-MY", "en-GB", "XUDLBK83");
+        AddSeriesCode(codes, currencyPairFactory, "ms-MY", "en-US", "XUDLBK66");
 
-        AddSeriesCode(codes, "en-NZ", "en-US", "XUDLNDD");
-        AddSeriesCode(codes, "en-NZ", "en-GB", "XUDLNDS");
+        AddSeriesCode(codes, currencyPairFactory, "en-NZ", "en-US", "XUDLNDD");
+        AddSeriesCode(codes, currencyPairFactory, "en-NZ", "en-GB", "XUDLNDS");
 
-        AddSeriesCode(codes, "nn-NO", "en-US", "XUDLNKD");
-        AddSeriesCode(codes, "nn-NO", "en-GB", "XUDLNKS");
+        AddSeriesCode(codes, currencyPairFactory, "nn-NO", "en-US", "XUDLNKD");
+        AddSeriesCode(codes, currencyPairFactory, "nn-NO", "en-GB", "XUDLNKS");
 
-        AddSeriesCode(codes, "pl-PL", "en-US", "XUDLBK49");
-        AddSeriesCode(codes, "pl-PL", "en-GB", "XUDLBK47");
+        AddSeriesCode(codes, currencyPairFactory, "pl-PL", "en-US", "XUDLBK49");
+        AddSeriesCode(codes, currencyPairFactory, "pl-PL", "en-GB", "XUDLBK47");
 
-        AddSeriesCode(codes, "ar-SA", "en-US", "XUDLSRD");
-        AddSeriesCode(codes, "ar-SA", "en-GB", "XUDLSRS");
+        AddSeriesCode(codes, currencyPairFactory, "ar-SA", "en-US", "XUDLSRD");
+        AddSeriesCode(codes, currencyPairFactory, "ar-SA", "en-GB", "XUDLSRS");
 
-        AddSeriesCode(codes, "zh-SG", "en-US", "XUDLSGD");
-        AddSeriesCode(codes, "zh-SG", "en-GB", "XUDLSGS");
+        AddSeriesCode(codes, currencyPairFactory, "zh-SG", "en-US", "XUDLSGD");
+        AddSeriesCode(codes, currencyPairFactory, "zh-SG", "en-GB", "XUDLSGS");
 
-        AddSeriesCode(codes, "af-ZA", "en-US", "XUDLZRD");
-        AddSeriesCode(codes, "af-ZA", "en-GB", "XUDLZRS");
+        AddSeriesCode(codes, currencyPairFactory, "af-ZA", "en-US", "XUDLZRD");
+        AddSeriesCode(codes, currencyPairFactory, "af-ZA", "en-GB", "XUDLZRS");
 
-        AddSeriesCode(codes, "ko-KR", "en-GB", "XUDLBK93");
-        AddSeriesCode(codes, "ko-KR", "en-US", "XUDLBK74");
+        AddSeriesCode(codes, currencyPairFactory, "ko-KR", "en-GB", "XUDLBK93");
+        AddSeriesCode(codes, currencyPairFactory, "ko-KR", "en-US", "XUDLBK74");
 
-        AddSeriesCode(codes, "en-GB", "en-US", "XUDLGBD");
+        AddSeriesCode(codes, currencyPairFactory, "en-GB", "en-US", "XUDLGBD");
 
-        AddSeriesCode(codes, "se-SE", "en-US", "XUDLSKD");
-        AddSeriesCode(codes, "se-SE", "en-GB", "XUDLSKS");
+        AddSeriesCode(codes, currencyPairFactory, "se-SE", "en-US", "XUDLSKD");
+        AddSeriesCode(codes, currencyPairFactory, "se-SE", "en-GB", "XUDLSKS");
 
-        AddSeriesCode(codes, "de-CH", "en-US", "XUDLSFD");
-        AddSeriesCode(codes, "de-CH", "en-GB", "XUDLSFS");
+        AddSeriesCode(codes, currencyPairFactory, "de-CH", "en-US", "XUDLSFD");
+        AddSeriesCode(codes, currencyPairFactory, "de-CH", "en-GB", "XUDLSFS");
 
-        AddSeriesCode(codes, "zh-TW", "en-US", "XUDLTWD");
-        AddSeriesCode(codes, "zh-TW", "en-GB", "XUDLTWS");
+        AddSeriesCode(codes, currencyPairFactory, "zh-TW", "en-US", "XUDLTWD");
+        AddSeriesCode(codes, currencyPairFactory, "zh-TW", "en-GB", "XUDLTWS");
 
-        AddSeriesCode(codes, "th-TH", "en-GB", "XUDLBK87");
-        AddSeriesCode(codes, "th-TH", "en-US", "XUDLBK72");
+        AddSeriesCode(codes, currencyPairFactory, "th-TH", "en-GB", "XUDLBK87");
+        AddSeriesCode(codes, currencyPairFactory, "th-TH", "en-US", "XUDLBK72");
 
-        AddSeriesCode(codes, "tr-TR", "en-GB", "XUDLBK95");
-        AddSeriesCode(codes, "tr-TR", "en-US", "XUDLBK75");
+        AddSeriesCode(codes, currencyPairFactory, "tr-TR", "en-GB", "XUDLBK95");
+        AddSeriesCode(codes, currencyPairFactory, "tr-TR", "en-US", "XUDLBK75");
 
-        AddSeriesCode(codes, "en-US", "en-GB", "XUDLUSS");
+        AddSeriesCode(codes, currencyPairFactory, "en-US", "en-GB", "XUDLUSS");
 
-        AddSeriesCode(codes, "zh-CN", "en-GB", "XUDLBK89");
+        AddSeriesCode(codes, currencyPairFactory, "zh-CN", "en-GB", "XUDLBK89");
 
         return ValueTuple.Create(
             codes.ToDictionary(k => k.pair, v => v.serieCode),
@@ -284,7 +288,7 @@ public class BankOfEngland : IBankOfEngland
         Uri requestUrl,
         CancellationToken cancellationToken)
     {
-        var pair = Pairs[seriesCode];
+        var pair = this.Pairs[seriesCode];
 
         var responseStream = await this.httpClient.GetStreamAsync(requestUrl, cancellationToken).ConfigureAwait(false);
         XDocument xdoc;
@@ -316,7 +320,7 @@ public class BankOfEngland : IBankOfEngland
                     var rate = decimal.One / reverseRate;
 
                     rates.Add(new ExchangeRate(pair, itemTime, rate));
-                    rates.Add(new ExchangeRate(pair.Reverse(), itemTime, reverseRate));
+                    rates.Add(new ExchangeRate(this.currencyPairFactory.Reverse(pair), itemTime, reverseRate));
                 }
             }
         }

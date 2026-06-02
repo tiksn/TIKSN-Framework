@@ -109,7 +109,7 @@ public class BankOfRussiaTests
 
         foreach (var pair in currencyPairs)
         {
-            var reversePair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
+            var reversePair = CurrencyPairTestHelper.CurrencyPairFactory.Reverse(pair);
 
             currencyPairs.ShouldContain(c => c == reversePair);
         }
@@ -332,7 +332,7 @@ public class BankOfRussiaTests
         var usd = new CurrencyInfo(us);
         var rub = new CurrencyInfo(ru);
 
-        var pair = new CurrencyPair(rub, usd);
+        var pair = CurrencyPairTestHelper.CurrencyPairFactory.Create(rub, usd);
 
         _ = await
             new Func<Task>(async () =>
@@ -350,7 +350,7 @@ public class BankOfRussiaTests
         var aoa = new CurrencyInfo(ao);
         var bwp = new CurrencyInfo(bw);
 
-        var pair = new CurrencyPair(bwp, aoa);
+        var pair = CurrencyPairTestHelper.CurrencyPairFactory.Create(bwp, aoa);
 
         _ = await
             new Func<Task>(async () =>

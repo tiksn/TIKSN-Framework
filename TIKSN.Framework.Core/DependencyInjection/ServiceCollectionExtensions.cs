@@ -9,6 +9,7 @@ using ReactiveUI;
 using Spectre.Console;
 using TIKSN.Concurrency;
 using TIKSN.FileSystem;
+using TIKSN.Finance;
 using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Globalization;
 using TIKSN.Identity;
@@ -38,6 +39,7 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<ICultureFactory, CultureFactory>();
         services.TryAddSingleton<ICountryFactory, CountryFactory>();
         services.TryAddSingleton<ICurrencyFactory, CurrencyFactory>();
+        services.TryAddSingleton<ICurrencyPairFactory, CurrencyPairFactory>();
         services.TryAddSingleton<IDateTimeZoneLookup, DateTimeZoneLookup>();
         services.TryAddSingleton<ITimeZoneInfoLookup, TimeZoneInfoLookup>();
         services.TryAddSingleton<IRegionFactory, RegionFactory>();

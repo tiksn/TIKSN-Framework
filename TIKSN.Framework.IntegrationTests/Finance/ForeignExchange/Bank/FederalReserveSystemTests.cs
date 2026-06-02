@@ -126,7 +126,7 @@ public class FederalReserveSystemTests
 
         foreach (var pair in pairs)
         {
-            var reversed = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
+            var reversed = CurrencyPairTestHelper.CurrencyPairFactory.Reverse(pair);
 
             pairs.ShouldContain(c => c == reversed);
         }
@@ -253,7 +253,7 @@ public class FederalReserveSystemTests
     [Fact]
     public async Task GetExchangeRate004()
     {
-        var pair = new CurrencyPair(new CurrencyInfo(new RegionInfo("AL")), new CurrencyInfo(new RegionInfo("AM")));
+        var pair = CurrencyPairTestHelper.CurrencyPairFactory.Create(new RegionInfo("AL"), new RegionInfo("AM"));
 
         _ = await new Func<Task>(async () =>
                 await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddMinutes(1d),
@@ -264,7 +264,7 @@ public class FederalReserveSystemTests
     [Fact]
     public async Task GetExchangeRate005()
     {
-        var pair = new CurrencyPair(new CurrencyInfo(new RegionInfo("US")), new CurrencyInfo(new RegionInfo("CN")));
+        var pair = CurrencyPairTestHelper.CurrencyPairFactory.Create(new RegionInfo("US"), new RegionInfo("CN"));
 
         var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(),
             cancellationToken: TestContext.Current.CancellationToken);
@@ -275,7 +275,7 @@ public class FederalReserveSystemTests
     [Fact]
     public async Task GetExchangeRate006()
     {
-        var pair = new CurrencyPair(new CurrencyInfo(new RegionInfo("US")), new CurrencyInfo(new RegionInfo("SG")));
+        var pair = CurrencyPairTestHelper.CurrencyPairFactory.Create(new RegionInfo("US"), new RegionInfo("SG"));
 
         var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(),
             cancellationToken: TestContext.Current.CancellationToken);
@@ -286,7 +286,7 @@ public class FederalReserveSystemTests
     [Fact]
     public async Task GetExchangeRate007()
     {
-        var pair = new CurrencyPair(new CurrencyInfo(new RegionInfo("US")), new CurrencyInfo(new RegionInfo("DE")));
+        var pair = CurrencyPairTestHelper.CurrencyPairFactory.Create(new RegionInfo("US"), new RegionInfo("DE"));
 
         var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(),
             cancellationToken: TestContext.Current.CancellationToken);
@@ -297,7 +297,7 @@ public class FederalReserveSystemTests
     [Fact]
     public async Task GetExchangeRate008()
     {
-        var pair = new CurrencyPair(new CurrencyInfo(new RegionInfo("US")), new CurrencyInfo(new RegionInfo("GB")));
+        var pair = CurrencyPairTestHelper.CurrencyPairFactory.Create(new RegionInfo("US"), new RegionInfo("GB"));
 
         var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(),
             cancellationToken: TestContext.Current.CancellationToken);

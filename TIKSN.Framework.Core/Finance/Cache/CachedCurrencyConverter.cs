@@ -4,11 +4,13 @@ public class CachedCurrencyConverter : ICurrencyConverter
 {
     private readonly List<CachedCurrencyPairs> cachedCurrencyPairs;
     private readonly List<CachedRate> cachedRates;
+    private readonly ICurrencyPairFactory currencyPairFactory;
     private readonly ICurrencyConverter originalConverter;
     private readonly TimeProvider timeProvider;
 
     public CachedCurrencyConverter(
         ICurrencyConverter originalConverter,
+        ICurrencyPairFactory currencyPairFactory,
         TimeProvider timeProvider,
         TimeSpan ratesCacheInterval,
         TimeSpan currencyPairsCacheInterval,
@@ -40,6 +42,7 @@ public class CachedCurrencyConverter : ICurrencyConverter
         }
 
         this.originalConverter = originalConverter ?? throw new ArgumentNullException(nameof(originalConverter));
+        this.currencyPairFactory = currencyPairFactory ?? throw new ArgumentNullException(nameof(currencyPairFactory));
         this.RatesCacheInterval = ratesCacheInterval;
         this.CurrencyPairsCacheInterval = currencyPairsCacheInterval;
         this.RatesCacheCapacity = ratesCacheCapacity;
@@ -82,7 +85,7 @@ public class CachedCurrencyConverter : ICurrencyConverter
             return new Money(counterCurrency);
         }
 
-        var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
+        var pair = this.currencyPairFactory.Create(baseMoney.Currency, counterCurrency);
 
         var cachedRate = this.GetFromCache(this.cachedRates.Where(item => item.Pair == pair),
             this.RatesCacheInterval, asOn);

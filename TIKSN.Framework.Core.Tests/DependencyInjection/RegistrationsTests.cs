@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Shouldly;
 using TIKSN.DependencyInjection;
+using TIKSN.Finance;
 using TIKSN.Globalization;
 using Xunit;
 
@@ -40,6 +41,7 @@ public class RegistrationsTests : IDisposable
     [InlineData(typeof(ICultureFactory))]
     [InlineData(typeof(IRegionFactory))]
     [InlineData(typeof(ICurrencyFactory))]
+    [InlineData(typeof(ICurrencyPairFactory))]
     [InlineData(typeof(IDateTimeZoneLookup))]
     [InlineData(typeof(ITimeZoneInfoLookup))]
     public void GivenHost_WhenServiceResolved_ThenItShouldNotBeNull(Type serviceType)

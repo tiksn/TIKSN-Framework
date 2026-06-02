@@ -14,6 +14,7 @@ public class ReserveBankOfAustralia : IReserveBankOfAustralia
     private static readonly SemaphoreSlim ExchangeRateDocumentSemaphore = new(initialCount: 1, maxCount: 1);
     private static readonly Uri RssUrl = new(RSS);
     private readonly ICurrencyFactory currencyFactory;
+    private readonly ICurrencyPairFactory currencyPairFactory;
     private readonly HttpClient httpClient;
     private readonly Dictionary<CurrencyInfo, decimal> rates;
     private readonly TimeProvider timeProvider;
@@ -23,6 +24,7 @@ public class ReserveBankOfAustralia : IReserveBankOfAustralia
     public ReserveBankOfAustralia(
         HttpClient httpClient,
         ICurrencyFactory currencyFactory,
+        ICurrencyPairFactory currencyPairFactory,
         TimeProvider timeProvider)
     {
         this.publishedDate = DateTimeOffset.MinValue;
@@ -30,6 +32,7 @@ public class ReserveBankOfAustralia : IReserveBankOfAustralia
         this.lastFetchDate = DateTimeOffset.MinValue;
         this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
+        this.currencyPairFactory = currencyPairFactory ?? throw new ArgumentNullException(nameof(currencyPairFactory));
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
@@ -42,7 +45,7 @@ public class ReserveBankOfAustralia : IReserveBankOfAustralia
         ArgumentNullException.ThrowIfNull(baseMoney);
         ArgumentNullException.ThrowIfNull(counterCurrency);
 
-        var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
+        var pair = this.currencyPairFactory.Create(baseMoney.Currency, counterCurrency);
 
         var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
 
@@ -59,8 +62,8 @@ public class ReserveBankOfAustralia : IReserveBankOfAustralia
 
         var pairs = new List<CurrencyPair>();
 
-        pairs.AddRange(this.rates.Keys.Select(r => new CurrencyPair(AustralianDollar, r)));
-        pairs.AddRange(this.rates.Keys.Select(r => new CurrencyPair(r, AustralianDollar)));
+        pairs.AddRange(this.rates.Keys.Select(r => this.currencyPairFactory.Create(AustralianDollar, r)));
+        pairs.AddRange(this.rates.Keys.Select(r => this.currencyPairFactory.Create(r, AustralianDollar)));
 
         return pairs;
     }
@@ -186,7 +189,7 @@ public class ReserveBankOfAustralia : IReserveBankOfAustralia
 
             this.publishedDate = period;
 
-            result.Add(new ExchangeRate(new CurrencyPair(AustralianDollar, foreignCurrency), period,
+            result.Add(new ExchangeRate(this.currencyPairFactory.Create(AustralianDollar, foreignCurrency), period,
                 exchangeRate));
         }
     }

@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using TIKSN.Data;
+using TIKSN.Finance;
 using TIKSN.Finance.ForeignExchange;
 using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Globalization;
@@ -27,10 +28,11 @@ public sealed class TestExchangeRateService : ExchangeRateServiceBase
         IReserveBankOfAustralia reserveBankOfAustralia,
         ISwissNationalBank swissNationalBank,
         ILogger<TestExchangeRateService> logger,
+        ICurrencyPairFactory currencyPairFactory,
         IRegionFactory regionFactory,
         IUnitOfWorkFactory unitOfWorkFactory,
         IDatabaseInitializer databaseInitializer)
-        : base(logger, regionFactory, unitOfWorkFactory)
+        : base(logger, currencyPairFactory, regionFactory, unitOfWorkFactory)
     {
         this.AddBatchProvider(
             Guid.Parse("e3cabe08-7451-445b-aeec-d41824f11317"),

@@ -65,7 +65,7 @@ public class MonetaryAuthorityOfSingaporeTests
     {
         var theSGD = this.currencyFactory.Create("SGD");
         var theUSD = this.currencyFactory.Create("USD");
-        var pair = new CurrencyPair(theUSD, theSGD);
+        var pair = CurrencyPairTestHelper.CurrencyPairFactory.Create(theUSD, theSGD);
         var asOn = new DateTimeOffset(year: 2024, month: 12, day: 31, hour: 0, minute: 0, second: 0,
             offset: TimeSpan.FromHours(8));
 

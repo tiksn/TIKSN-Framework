@@ -116,9 +116,9 @@ public class BankOfEnglandTests
     [Fact]
     public async Task ConvertCurrency003()
     {
-        var pair = new CurrencyPair(
-            new CurrencyInfo(new RegionInfo("AM")),
-            new CurrencyInfo(new RegionInfo("BY")));
+        var pair = CurrencyPairTestHelper.CurrencyPairFactory.Create(
+            new RegionInfo("AM"),
+            new RegionInfo("BY"));
 
         var before = new Money(pair.BaseCurrency, amount: 10m);
 
@@ -274,9 +274,9 @@ public class BankOfEnglandTests
     [Fact]
     public async Task GetExchangeRate003()
     {
-        var pair = new CurrencyPair(
-            new CurrencyInfo(new RegionInfo("AM")),
-            new CurrencyInfo(new RegionInfo("BY")));
+        var pair = CurrencyPairTestHelper.CurrencyPairFactory.Create(
+            new RegionInfo("AM"),
+            new RegionInfo("BY"));
 
         _ = await
             new Func<Task>(async () =>

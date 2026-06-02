@@ -195,7 +195,7 @@ public class ReserveBankOfAustraliaTests
 
         foreach (var pair in currencyPairs)
         {
-            var reversedPair = new CurrencyPair(pair.CounterCurrency, pair.BaseCurrency);
+            var reversedPair = CurrencyPairTestHelper.CurrencyPairFactory.Reverse(pair);
 
             currencyPairs.ShouldContain(p => p == reversedPair);
         }
@@ -290,7 +290,7 @@ public class ReserveBankOfAustraliaTests
         var armenianDram = new CurrencyInfo(armenia);
         var belarusianRuble = new CurrencyInfo(belarus);
 
-        var pair = new CurrencyPair(armenianDram, belarusianRuble);
+        var pair = CurrencyPairTestHelper.CurrencyPairFactory.Create(armenianDram, belarusianRuble);
 
         _ = await new Func<Task>(async () =>
                 await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(),

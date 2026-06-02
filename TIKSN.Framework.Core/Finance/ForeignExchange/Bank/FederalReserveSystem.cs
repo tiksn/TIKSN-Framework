@@ -17,16 +17,19 @@ public class FederalReserveSystem : IFederalReserveSystem
     private static readonly TimeZoneInfo FederalReserveTimeZone = FindFederalReserveTimeZone();
     private static readonly CurrencyInfo UnitedStatesDollar = new(new RegionInfo("en-US"));
     private readonly ICurrencyFactory currencyFactory;
+    private readonly ICurrencyPairFactory currencyPairFactory;
     private readonly HttpClient httpClient;
     private readonly TimeProvider timeProvider;
 
     public FederalReserveSystem(
         HttpClient httpClient,
         ICurrencyFactory currencyFactory,
+        ICurrencyPairFactory currencyPairFactory,
         TimeProvider timeProvider)
     {
         this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
+        this.currencyPairFactory = currencyPairFactory ?? throw new ArgumentNullException(nameof(currencyPairFactory));
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
@@ -39,7 +42,7 @@ public class FederalReserveSystem : IFederalReserveSystem
         ArgumentNullException.ThrowIfNull(baseMoney);
         ArgumentNullException.ThrowIfNull(counterCurrency);
 
-        var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
+        var pair = this.currencyPairFactory.Create(baseMoney.Currency, counterCurrency);
 
         var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
 
@@ -58,8 +61,8 @@ public class FederalReserveSystem : IFederalReserveSystem
 
         foreach (var someCurrency in rates.Keys)
         {
-            result.Add(new CurrencyPair(UnitedStatesDollar, someCurrency));
-            result.Add(new CurrencyPair(someCurrency, UnitedStatesDollar));
+            result.Add(this.currencyPairFactory.Create(UnitedStatesDollar, someCurrency));
+            result.Add(this.currencyPairFactory.Create(someCurrency, UnitedStatesDollar));
         }
 
         return result;
@@ -226,18 +229,23 @@ public class FederalReserveSystem : IFederalReserveSystem
                     if (string.Equals(fx, "ZAL", StringComparison.Ordinal))
                     {
                         result.Add(new ExchangeRate(
-                            new CurrencyPair(UnitedStatesDollar, this.currencyFactory.Create(currencyCode)), date,
+                            this.currencyPairFactory.Create(UnitedStatesDollar,
+                                this.currencyFactory.Create(currencyCode)), date,
                             rate));
                     }
                     else if (string.Equals(fx, "VEB", StringComparison.Ordinal))
                     {
                         result.Add(new ExchangeRate(
-                            new CurrencyPair(UnitedStatesDollar, this.currencyFactory.Create("VEF")), date, rate));
+                            this.currencyPairFactory.Create(UnitedStatesDollar, this.currencyFactory.Create("VEF")),
+                            date,
+                            rate));
                     }
                     else
                     {
                         result.Add(new ExchangeRate(
-                            new CurrencyPair(UnitedStatesDollar, this.currencyFactory.Create(fx)), date, rate));
+                            this.currencyPairFactory.Create(UnitedStatesDollar, this.currencyFactory.Create(fx)),
+                            date,
+                            rate));
                     }
                 }
             }

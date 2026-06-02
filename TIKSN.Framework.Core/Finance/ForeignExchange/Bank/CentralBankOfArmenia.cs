@@ -14,6 +14,7 @@ public class CentralBankOfArmenia : ICentralBankOfArmenia
         new("https://old.cba.am/_layouts/rssreader.aspx?rss=280F57B8-763C-4EE4-90E0-8136C13E47DA");
 
     private readonly ICurrencyFactory currencyFactory;
+    private readonly ICurrencyPairFactory currencyPairFactory;
     private readonly HttpClient httpClient;
     private readonly Dictionary<CurrencyInfo, decimal> oneWayRates;
     private readonly TimeProvider timeProvider;
@@ -23,6 +24,7 @@ public class CentralBankOfArmenia : ICentralBankOfArmenia
     public CentralBankOfArmenia(
         HttpClient httpClient,
         ICurrencyFactory currencyFactory,
+        ICurrencyPairFactory currencyPairFactory,
         TimeProvider timeProvider)
     {
         this.oneWayRates = [];
@@ -30,6 +32,7 @@ public class CentralBankOfArmenia : ICentralBankOfArmenia
         this.lastFetchDate = DateTimeOffset.MinValue;
         this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
+        this.currencyPairFactory = currencyPairFactory ?? throw new ArgumentNullException(nameof(currencyPairFactory));
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
@@ -42,7 +45,7 @@ public class CentralBankOfArmenia : ICentralBankOfArmenia
         ArgumentNullException.ThrowIfNull(baseMoney);
         ArgumentNullException.ThrowIfNull(counterCurrency);
 
-        var pair = new CurrencyPair(baseMoney.Currency, counterCurrency);
+        var pair = this.currencyPairFactory.Create(baseMoney.Currency, counterCurrency);
 
         var rate = await this.GetExchangeRateAsync(pair, asOn, cancellationToken).ConfigureAwait(false);
 
@@ -59,8 +62,8 @@ public class CentralBankOfArmenia : ICentralBankOfArmenia
 
         foreach (var rateCurrency in this.oneWayRates.Select(x => x.Key))
         {
-            rates.Add(new CurrencyPair(rateCurrency, AMD));
-            rates.Add(new CurrencyPair(AMD, rateCurrency));
+            rates.Add(this.currencyPairFactory.Create(rateCurrency, AMD));
+            rates.Add(this.currencyPairFactory.Create(AMD, rateCurrency));
         }
 
         return rates;
@@ -139,8 +142,8 @@ public class CentralBankOfArmenia : ICentralBankOfArmenia
 
                     var currency = this.currencyFactory.Create(currencyCode);
                     this.oneWayRates[currency] = rate;
-                    result.Add(new ExchangeRate(new CurrencyPair(AMD, currency), publishedAt, rate));
-                    result.Add(new ExchangeRate(new CurrencyPair(currency, AMD), publishedAt,
+                    result.Add(new ExchangeRate(this.currencyPairFactory.Create(AMD, currency), publishedAt, rate));
+                    result.Add(new ExchangeRate(this.currencyPairFactory.Create(currency, AMD), publishedAt,
                         baseUnit / counterUnit));
                 }
 

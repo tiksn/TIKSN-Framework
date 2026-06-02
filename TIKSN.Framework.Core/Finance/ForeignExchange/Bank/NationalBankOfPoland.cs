@@ -32,14 +32,17 @@ public class NationalBankOfPoland : INationalBankOfPoland
         CompositeFormat.Parse("https://api.nbp.pl/api/exchangerates/tables/{0}/{1:yyyy-MM-dd}/{2:yyyy-MM-dd}");
 
     private readonly ICurrencyFactory currencyFactory;
+    private readonly ICurrencyPairFactory currencyPairFactory;
     private readonly HttpClient httpClient;
 
     public NationalBankOfPoland(
         HttpClient httpClient,
-        ICurrencyFactory currencyFactory)
+        ICurrencyFactory currencyFactory,
+        ICurrencyPairFactory currencyPairFactory)
     {
         this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         this.currencyFactory = currencyFactory ?? throw new ArgumentNullException(nameof(currencyFactory));
+        this.currencyPairFactory = currencyPairFactory ?? throw new ArgumentNullException(nameof(currencyPairFactory));
     }
 
     public async Task<Money> ConvertCurrencyAsync(
@@ -108,7 +111,7 @@ public class NationalBankOfPoland : INationalBankOfPoland
     private ExchangeRate CreateExchangeRate(ValueTuple<DateTimeOffset, Rate> entry)
     {
         var currency = this.currencyFactory.Create(entry.Item2.Code);
-        var pair = new CurrencyPair(currency, PolishZloty);
+        var pair = this.currencyPairFactory.Create(currency, PolishZloty);
         return new ExchangeRate(pair, entry.Item1, entry.Item2.Mid);
     }
 
@@ -155,7 +158,7 @@ public class NationalBankOfPoland : INationalBankOfPoland
             .. ratesA.Concat(ratesB).SelectMany(x => new[]
             {
                 x,
-                new ExchangeRate(x.Pair.Reverse(), x.AsOn, 1m / x.Rate),
+                new ExchangeRate(this.currencyPairFactory.Reverse(x.Pair), x.AsOn, 1m / x.Rate),
             }),
         ];
     }
