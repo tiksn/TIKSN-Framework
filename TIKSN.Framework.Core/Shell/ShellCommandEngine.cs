@@ -235,7 +235,8 @@ public partial class ShellCommandEngine : IShellCommandEngine
     [LoggerMessage(
         EventId = 5833260,
         Level = LogLevel.Trace,
-        Message = "Parameter '{ParameterLocalizedName}' has value '{ParameterValue}'")]
+        Message = "Parameter '{ParameterLocalizedName}' has value '{ParameterValue}'",
+        SkipEnabledCheck = true)]
     private static partial void LogParameterNameAndValue(ILogger logger, string parameterLocalizedName,
         object? parameterValue);
 
@@ -352,8 +353,12 @@ public partial class ShellCommandEngine : IShellCommandEngine
                         property.Item2.SetValue(obj, parameter);
                     }
 
-                    LogParameterNameAndValue(this.logger, property.Item1.GetName(this.stringLocalizer),
-                        property.Item2.GetValue(obj));
+                    if (this.logger.IsEnabled(LogLevel.Trace))
+                    {
+                        var parameterLocalizedName = property.Item1.GetName(this.stringLocalizer);
+                        var parameterValue = property.Item2.GetValue(obj);
+                        LogParameterNameAndValue(this.logger, parameterLocalizedName, parameterValue);
+                    }
                 }
 
                 var command = obj as IShellCommand;

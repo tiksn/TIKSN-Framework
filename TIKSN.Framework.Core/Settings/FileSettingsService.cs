@@ -198,6 +198,12 @@ public class FileSettingsService : ISettingsService
 
     private static T SetterProcessor<T>(BsonDocument document, string name, T value)
     {
+        if (value is null)
+        {
+            document[name] = BsonValue.Null;
+            return value;
+        }
+
         object valueObject = value;
 
         var type = typeof(T);
@@ -320,7 +326,7 @@ public class FileSettingsService : ISettingsService
 
     private string[] ListNames(IFileProvider fileProvider)
     {
-        using var db = this.GetDatabase(fileProvider, out var settingsCollection, out var bsonDocument);
+        using var db = this.GetDatabase(fileProvider, out _, out var bsonDocument);
         return [.. bsonDocument.Keys.Where(n => !string.Equals(n, "_id", StringComparison.OrdinalIgnoreCase))];
     }
 }

@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace TIKSN.Web;
 
 public class UriTemplate
@@ -13,37 +15,36 @@ public class UriTemplate
 
     public Uri Compose()
     {
-        var resourceLocation = this.template;
+        var resourceLocation = new StringBuilder(this.template);
 
         foreach (var parameter in this.values)
         {
             var parameterName = $"{{{parameter.Key}}}";
             var escapedParameterValue = Uri.EscapeDataString(parameter.Value) ?? string.Empty;
 
-            if (resourceLocation.Contains(parameterName, StringComparison.Ordinal))
+            if (resourceLocation.ToString().Contains(parameterName, StringComparison.Ordinal))
             {
-                resourceLocation =
-                    resourceLocation.Replace(parameterName, escapedParameterValue, StringComparison.Ordinal);
+                _ = resourceLocation.Replace(parameterName, escapedParameterValue);
             }
             else
             {
                 var queryToAppend = $"{parameterName}={escapedParameterValue}";
-                if (resourceLocation.EndsWith('?'))
+                if (resourceLocation.Length > 0 && resourceLocation[^1] == '?')
                 {
-                    resourceLocation += queryToAppend;
+                    _ = resourceLocation.Append(queryToAppend);
                 }
-                else if (resourceLocation.Contains(value: '?', StringComparison.Ordinal))
+                else if (resourceLocation.ToString().Contains(value: '?', StringComparison.Ordinal))
                 {
-                    resourceLocation = $"{resourceLocation}&{queryToAppend}";
+                    _ = resourceLocation.Append('&').Append(queryToAppend);
                 }
                 else
                 {
-                    resourceLocation = $"{resourceLocation}?{queryToAppend}";
+                    _ = resourceLocation.Append('?').Append(queryToAppend);
                 }
             }
         }
 
-        return new Uri(resourceLocation, UriKind.Relative);
+        return new Uri(resourceLocation.ToString(), UriKind.Relative);
     }
 
     public void Fill(string name, string value) => this.values.Add(name, value);

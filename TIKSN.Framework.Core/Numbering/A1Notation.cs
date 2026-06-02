@@ -6,6 +6,7 @@ using static LanguageExt.Prelude;
 
 namespace TIKSN.Numbering;
 
+#pragma warning disable CA1000 // Parse/TryParse members intentionally follow .NET parsing conventions.
 public sealed class A1Notation<TNumber> : ISerialNumber<A1Notation<TNumber>>
     where TNumber : IUnsignedNumber<TNumber>
 {
@@ -97,3 +98,4 @@ public sealed class A1Notation<TNumber> : ISerialNumber<A1Notation<TNumber>>
         Validate(Option<SimpleSerialNumber<BB26, TNumber>> serialNumber) =>
         serialNumber.Bind(x => TNumber.IsZero(x.Number) ? None : Some(x));
 }
+#pragma warning restore CA1000 // Parse/TryParse members intentionally follow .NET parsing conventions.

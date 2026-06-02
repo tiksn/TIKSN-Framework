@@ -1,6 +1,8 @@
 namespace TIKSN.Data;
 
+#pragma warning disable S4035 // Public model supports equality through IEquatable<T>.
 public class PageQuery : IEquatable<PageQuery>
+#pragma warning restore S4035 // Public model supports equality through IEquatable<T>.
 {
     public PageQuery(Page page, bool estimateTotalItems = false)
     {

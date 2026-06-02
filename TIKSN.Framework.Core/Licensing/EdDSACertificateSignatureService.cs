@@ -5,7 +5,9 @@ using Org.BouncyCastle.X509;
 
 namespace TIKSN.Licensing;
 
+#pragma warning disable S101 // EdDSA is the conventional cryptographic algorithm spelling.
 public class EdDSACertificateSignatureService : ICertificateSignatureService
+#pragma warning restore S101 // EdDSA is the conventional cryptographic algorithm spelling.
 {
     public byte[] Sign(
         byte[] data,

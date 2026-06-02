@@ -15,7 +15,7 @@ public class CuidCorrelationService : ICorrelationService
     private const int QuartetteUpperBoundary = 36 * 36 * 36 * 36;
     private const int Radix = 36;
     private const string UppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private static readonly IReadOnlyDictionary<char, int> CodeMap = CreateCodeMap();
+    private static readonly Dictionary<char, int> CodeMap = CreateCodeMap();
     private readonly Lock locker;
     private readonly Random random;
     private readonly TimeProvider timeProvider;
@@ -298,30 +298,34 @@ public class CuidCorrelationService : ICorrelationService
         WriteBase36(value, chars);
     }
 
+    private string CreateHostname()
+    {
+#pragma warning disable CA1031 // Do not catch general exception types
+        try
+        {
+            return Environment.MachineName;
+        }
+        catch
+        {
+#pragma warning disable CA5394 // Do not use insecure randomness
+            return this.random.Next().ToString(CultureInfo.InvariantCulture);
+#pragma warning restore CA5394 // Do not use insecure randomness
+        }
+#pragma warning restore CA1031 // Do not catch general exception types
+    }
+
     private string GetHostname()
     {
-        if (this.hostname == null)
+        var currentHostname = this.hostname;
+        if (currentHostname is not null)
         {
-            lock (this.locker)
-            {
-                if (this.hostname == null)
-                {
-#pragma warning disable CA1031 // Do not catch general exception types
-                    try
-                    {
-                        this.hostname = Environment.MachineName;
-                    }
-                    catch
-                    {
-#pragma warning disable CA5394 // Do not use insecure randomness
-                        this.hostname = this.random.Next().ToString(CultureInfo.InvariantCulture);
-#pragma warning restore CA5394 // Do not use insecure randomness
-                    }
-#pragma warning restore CA1031 // Do not catch general exception types
-                }
-            }
+            return currentHostname;
         }
 
-        return this.hostname;
+        lock (this.locker)
+        {
+            this.hostname ??= this.CreateHostname();
+            return this.hostname;
+        }
     }
 }

@@ -7,7 +7,7 @@ namespace TIKSN.Localization;
 /// <summary>
 ///     IStringLocalizer decorator for monitoring not found resources.
 /// </summary>
-public class StringLocalizerMonitor : IStringLocalizer
+public partial class StringLocalizerMonitor : IStringLocalizer
 {
     private readonly ILogger<StringLocalizerMonitor> logger;
     private readonly IOptions<StringLocalizerMonitorOptions> options;
@@ -26,12 +26,16 @@ public class StringLocalizerMonitor : IStringLocalizer
     public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures) =>
         this.stringLocalizer.GetAllStrings(includeParentCultures);
 
+    [LoggerMessage(
+        EventId = 76338392,
+        Message = "Resource with name '{ResourceName}' is not found.")]
+    private static partial void LogResourceNotFound(ILogger logger, LogLevel logLevel, string resourceName);
+
     private LocalizedString Log(LocalizedString localizedString)
     {
         if (localizedString.ResourceNotFound)
         {
-            this.logger.Log(this.options.Value.LogLevel, eventId: 414761847,
-                $"Resource with name '{localizedString.Name}' is not found.", exception: null, (s, _) => s);
+            LogResourceNotFound(this.logger, this.options.Value.LogLevel, localizedString.Name);
         }
 
         return localizedString;

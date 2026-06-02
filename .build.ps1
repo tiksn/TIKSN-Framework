@@ -318,7 +318,7 @@ Task BuildLanguageLocalization EstimateVersion, {
     $project = Resolve-Path -Path 'TIKSN.LanguageLocalization/TIKSN.LanguageLocalization.csproj'
     $nextVersion = $state.NextVersion
 
-    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder }
+    Exec { dotnet build $project /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
 }
 
 # Synopsis: Build Region Localization
@@ -328,7 +328,7 @@ Task BuildRegionLocalization EstimateVersion, {
     $project = Resolve-Path -Path 'TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj'
     $nextVersion = $state.NextVersion
 
-    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder }
+    Exec { dotnet build $project /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
 }
 
 # Synopsis: Build Core
@@ -338,7 +338,7 @@ Task BuildCore EstimateVersion, DownloadCurrencyCodes, {
     $project = Resolve-Path -Path 'TIKSN.Framework.Core/TIKSN.Framework.Core.csproj'
     $nextVersion = $state.NextVersion
 
-    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder }
+    Exec { dotnet build $project /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
 }
 
 # Synopsis: Build MAUI
