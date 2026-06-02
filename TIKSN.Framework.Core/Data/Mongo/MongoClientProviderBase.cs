@@ -28,21 +28,24 @@ public abstract class MongoClientProviderBase : IMongoClientProvider, IDisposabl
 
     public IMongoClient GetMongoClient()
     {
-        if (this.mongoClient == null)
+        var client = this.mongoClient;
+        if (client is null)
         {
             lock (this.locker)
             {
-                if (this.mongoClient == null)
+                client = this.mongoClient;
+                if (client is null)
                 {
                     var connectionString = this.configuration.GetConnectionString(this.connectionStringKey);
                     var mongoClientSettings = MongoClientSettings.FromConnectionString(connectionString);
                     this.ConfigureClientSettings(mongoClientSettings);
-                    this.mongoClient = new MongoClient(mongoClientSettings);
+                    client = new MongoClient(mongoClientSettings);
+                    this.mongoClient = client;
                 }
             }
         }
 
-        return this.mongoClient;
+        return client;
     }
 
     protected virtual void ConfigureClientSettings(MongoClientSettings mongoClientSettings)
@@ -53,6 +56,11 @@ public abstract class MongoClientProviderBase : IMongoClientProvider, IDisposabl
     {
         if (!this.disposedValue)
         {
+            if (disposing)
+            {
+                this.mongoClient?.Dispose();
+            }
+
             this.disposedValue = true;
         }
     }

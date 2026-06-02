@@ -7,7 +7,8 @@ using static LanguageExt.Prelude;
 
 namespace TIKSN.Numbering;
 
-#pragma warning disable CA1000 // Do not declare static members on generic types
+#pragma warning disable CA1000 // Parse/TryParse members intentionally follow .NET parsing conventions.
+#pragma warning disable S1481 // Parser query range variables are required by query syntax.
 public sealed class NumberFirstSerialNumber<TNumber, TSerial> :
     ISerialNumber<NumberFirstSerialNumber<TNumber, TSerial>>
     where TNumber : IUnsignedNumber<TNumber>
@@ -200,4 +201,5 @@ public sealed class NumberFirstSerialNumber<TNumber, TSerial> :
         return charsWritten == result.Length;
     }
 }
-#pragma warning restore CA1000 // Do not declare static members on generic types
+#pragma warning restore S1481 // Parser query range variables are required by query syntax.
+#pragma warning restore CA1000 // Parse/TryParse members intentionally follow .NET parsing conventions.

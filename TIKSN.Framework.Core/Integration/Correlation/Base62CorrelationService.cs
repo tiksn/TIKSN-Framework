@@ -10,7 +10,7 @@ public class Base62CorrelationService : ICorrelationService
 {
     private const string Alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private const int Radix = 62;
-    private static readonly IReadOnlyDictionary<char, int> CodeMap = CreateCodeMap();
+    private static readonly Dictionary<char, int> CodeMap = CreateCodeMap();
 
     private readonly IOptions<Base62CorrelationServiceOptions> base62CorrelationServiceOptions;
     private readonly ICustomDeserializer<byte[], BigInteger> bigIntegerBinaryDeserializer;

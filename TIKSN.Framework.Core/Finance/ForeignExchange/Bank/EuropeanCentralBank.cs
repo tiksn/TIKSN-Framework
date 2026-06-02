@@ -11,6 +11,7 @@ public class EuropeanCentralBank : IEuropeanCentralBank
 
     private static readonly CurrencyInfo Euro = new(new RegionInfo("de-DE"));
 
+
     private static readonly SemaphoreSlim ExchangeRateDocumentSemaphore = new(initialCount: 1, maxCount: 1);
 
     private static readonly Dictionary<(Uri RequestURL, DateOnly RequestDate), XDocument> ExchangeRateDocuments = [];

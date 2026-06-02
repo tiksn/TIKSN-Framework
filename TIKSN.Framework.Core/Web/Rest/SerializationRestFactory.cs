@@ -4,7 +4,7 @@ namespace TIKSN.Web.Rest;
 
 public sealed class SerializationRestFactory : ISerializerRestFactory, IDeserializerRestFactory
 {
-    private readonly IDictionary<string, Tuple<ISerializer<string>, IDeserializer<string>>> map;
+    private readonly Dictionary<string, Tuple<ISerializer<string>, IDeserializer<string>>> map;
 
     public SerializationRestFactory(JsonSerializer jsonSerializer, JsonDeserializer jsonDeserializer,
         DotNetXmlSerializer dotNetXmlSerializer, DotNetXmlDeserializer dotNetXmlDeserializer) => this.map =
