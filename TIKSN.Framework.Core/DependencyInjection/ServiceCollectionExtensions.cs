@@ -78,7 +78,6 @@ public static class ServiceCollectionExtensions
 
         _ = services.AddHttpClient<IBankOfCanada, BankOfCanada>();
         _ = services.AddHttpClient<IBankOfEngland, BankOfEngland>();
-        _ = services.AddHttpClient<IBankOfRussia, BankOfRussia>();
         _ = services.AddHttpClient<ICentralBankOfArmenia, CentralBankOfArmenia>()
             .ConfigureHttpClient(config =>
                 config.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("TIKSN-Framework",

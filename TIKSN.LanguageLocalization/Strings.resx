@@ -618,9 +618,6 @@
   <data name="344909065" xml:space="preserve">
     <value>National Bank of Ukraine</value>
   </data>
-  <data name="466192205" xml:space="preserve">
-    <value>Central Bank of Russia</value>
-  </data>
   <data name="645369586" xml:space="preserve">
     <value>Reserve Bank of Australia</value>
   </data>
@@ -641,9 +638,6 @@
   </data>
   <data name="827519006" xml:space="preserve">
     <value>Monetary Authority of Singapore</value>
-  </data>
-  <data name="937230874" xml:space="preserve">
-    <value>The Central Bank of the Russian Federation</value>
   </data>
   <data name="999430243" xml:space="preserve">
     <value>currencylayer.com</value>
