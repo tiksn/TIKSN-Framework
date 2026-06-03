@@ -122,13 +122,13 @@ public class CentralBankOfArmeniaTests
         var passed = false;
 
         await Task.Run(async () =>
-        {
-            var ci = new CultureInfo("ru-RU");
-            Thread.CurrentThread.CurrentCulture = ci;
-            Thread.CurrentThread.CurrentUICulture = ci;
+            {
+                var ci = new CultureInfo("ru-RU");
+                Thread.CurrentThread.CurrentCulture = ci;
+                Thread.CurrentThread.CurrentUICulture = ci;
 
-            _ = await this.bank.GetExchangeRatesAsync(this.timeProvider.GetUtcNow(),
-                cancellationToken: TestContext.Current.CancellationToken);
+                _ = await this.bank.GetExchangeRatesAsync(this.timeProvider.GetUtcNow(),
+                    cancellationToken: TestContext.Current.CancellationToken);
 
             passed = true;
         }, TestContext.Current.CancellationToken);

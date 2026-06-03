@@ -102,7 +102,11 @@ public class WindowsRegistrySettingsService : ISettingsService
     private static T GetSetting<T>(
         RegistryKey subKey,
         string name,
-        T defaultValue) => (T)subKey.GetValue(name, defaultValue)!;
+        T defaultValue)
+    {
+        var value = subKey.GetValue(name, defaultValue);
+        return value is null ? defaultValue : (T)value;
+    }
 
     private static IReadOnlyCollection<string> ListNames(
         RegistryKey subKey,
@@ -124,7 +128,9 @@ public class WindowsRegistrySettingsService : ISettingsService
         string name,
         T value)
     {
-        subKey.SetValue(name, value ?? throw new ArgumentNullException(nameof(value)));
+        ArgumentNullException.ThrowIfNull(value);
+
+        subKey.SetValue(name, value);
 
         return value;
     }
