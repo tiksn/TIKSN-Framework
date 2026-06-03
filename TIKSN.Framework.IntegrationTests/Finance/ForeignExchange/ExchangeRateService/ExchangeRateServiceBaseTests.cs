@@ -89,4 +89,34 @@ public class ExchangeRateServiceBaseTests
         result.IsSome.ShouldBeTrue();
         result.Map(s => s.Currency).ShouldBe(Some(eur));
     }
+
+    [Theory]
+    [InlineData("LiteDB")]
+    [InlineData("SQLite")]
+    [InlineData("MongoDB")]
+    [InlineData("RavenDB")]
+    public async Task Given_10USD_When_ExchangedForJapaneseYen_Then_ResultShouldBeJapaneseYen(string database)
+    {
+        // Arrange
+        var exchangeRateService = this.serviceProviderFixture.GetServiceProvider(database)
+            .GetRequiredService<IExchangeRateService>();
+        var currencyFactory = this.serviceProviderFixture.GetServiceProvider(database)
+            .GetRequiredService<ICurrencyFactory>();
+        var usd = currencyFactory.Create("USD");
+        var jpy = currencyFactory.Create("JPY");
+        var usd10 = new Money(usd, amount: 10m);
+
+        await exchangeRateService.InitializeAsync(TestContext.Current.CancellationToken);
+
+        // Act
+        var result = await exchangeRateService.ConvertCurrencyAsync(
+            usd10,
+            jpy,
+            DateTimeOffset.Now,
+            cancellationToken: TestContext.Current.CancellationToken);
+
+        // Assert
+        result.IsSome.ShouldBeTrue();
+        result.Map(s => s.Currency).ShouldBe(Some(jpy));
+    }
 }
