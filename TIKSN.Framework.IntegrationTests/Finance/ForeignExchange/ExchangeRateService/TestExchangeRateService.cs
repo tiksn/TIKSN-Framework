@@ -18,6 +18,7 @@ public sealed class TestExchangeRateService : ExchangeRateServiceBase
     public TestExchangeRateService(
         IBankOfCanada bankOfCanada,
         IBankOfEngland bankOfEngland,
+        IBankOfJapan bankOfJapan,
         ICentralBankOfArmenia centralBankOfArmenia,
         IEuropeanCentralBank europeanCentralBank,
         IFederalReserveSystem financeReserveSystem,
@@ -48,6 +49,14 @@ public sealed class TestExchangeRateService : ExchangeRateServiceBase
             LocalizationKeys.Key758955736,
             "GB",
             TimeSpan.FromHours(12));
+
+        this.AddBatchProvider(
+            Guid.Parse("a4ba0ab2-37c5-4c8c-9ce0-fbd625da6d22"),
+            bankOfJapan,
+            LocalizationKeys.Key823284291,
+            LocalizationKeys.Key823284291,
+            "JP",
+            TimeSpan.FromHours(24));
 
         this.AddBatchProvider(
             Guid.Parse("183ed360-7176-47e1-b41c-56ec426c2f5a"),

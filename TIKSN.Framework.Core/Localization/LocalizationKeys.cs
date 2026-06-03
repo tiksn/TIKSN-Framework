@@ -1038,6 +1038,12 @@ public static class LocalizationKeys
     public static string Key816611612 => "816611612";
 
     /// <summary>
+    /// Key: 823284291
+    /// Original Value: Bank of Japan
+    /// </summary>
+    public static string Key823284291 => "823284291";
+
+    /// <summary>
     /// Key: 827519006
     /// Original Value: Monetary Authority of Singapore
     /// </summary>
