@@ -20,9 +20,9 @@ namespace TIKSN.Tests.Licensing;
 
 public class LicenseTests
 {
-    private readonly IReadOnlyDictionary<string, string> privateCertificatePasswords;
-    private readonly IReadOnlyDictionary<string, byte[]> privateCertificates;
-    private readonly IReadOnlyDictionary<string, byte[]> publicCertificates;
+    private readonly Dictionary<string, string> privateCertificatePasswords;
+    private readonly Dictionary<string, byte[]> privateCertificates;
+    private readonly Dictionary<string, byte[]> publicCertificates;
     private readonly ITestOutputHelper testOutputHelper;
 
     public LicenseTests(ITestOutputHelper testOutputHelper)
@@ -608,7 +608,7 @@ public class LicenseTests
         this.testOutputHelper.WriteLine("License Entitlements:");
         this.testOutputHelper.WriteLine(JsonConvert.SerializeObject(entitlements, Formatting.Indented));
 
-        publicCertificate = new X509Certificate2(this.publicCertificates[kind]);
+        publicCertificate = X509CertificateLoader.LoadCertificate(this.publicCertificates[kind]);
         this.testOutputHelper.WriteLine(
             $"Public Certificate Serial Number: {publicCertificate.GetSerialNumberString()}");
 
@@ -616,7 +616,7 @@ public class LicenseTests
             ? new EdDSAX509Certificate2(
                 this.privateCertificates[kind],
                 this.privateCertificatePasswords[kind])
-            : new X509Certificate2(
+            : X509CertificateLoader.LoadPkcs12(
                 this.privateCertificates[kind],
                 this.privateCertificatePasswords[kind]);
 

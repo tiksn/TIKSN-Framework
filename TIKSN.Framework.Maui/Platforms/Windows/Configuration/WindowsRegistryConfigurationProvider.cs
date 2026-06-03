@@ -51,7 +51,7 @@ public class WindowsRegistryConfigurationProvider : ConfigurationProvider
         }
     }
 
-    private static string CombineConfigurationPath(string parentConfigurationKey, string childConfigurationKey)
+    private static string CombineConfigurationPath(string? parentConfigurationKey, string childConfigurationKey)
     {
         if (string.IsNullOrEmpty(parentConfigurationKey))
         {
@@ -61,7 +61,7 @@ public class WindowsRegistryConfigurationProvider : ConfigurationProvider
         return ConfigurationPath.Combine(parentConfigurationKey, childConfigurationKey);
     }
 
-    private void PopulateKeys(RegistryKey currentRegistryKey, string parentConfigurationKey)
+    private void PopulateKeys(RegistryKey currentRegistryKey, string? parentConfigurationKey)
     {
         this.PopulateValues(currentRegistryKey, parentConfigurationKey);
 
@@ -84,13 +84,13 @@ public class WindowsRegistryConfigurationProvider : ConfigurationProvider
         }
     }
 
-    private void PopulateValues(RegistryKey currentRegistryKey, string parentConfigurationKey)
+    private void PopulateValues(RegistryKey currentRegistryKey, string? parentConfigurationKey)
     {
         foreach (var valueName in currentRegistryKey.GetValueNames())
         {
             var valueData = currentRegistryKey.GetValue(valueName);
 
-            this.Set(CombineConfigurationPath(parentConfigurationKey, valueName), valueData.ToString());
+            this.Set(CombineConfigurationPath(parentConfigurationKey, valueName), valueData?.ToString());
         }
     }
 }

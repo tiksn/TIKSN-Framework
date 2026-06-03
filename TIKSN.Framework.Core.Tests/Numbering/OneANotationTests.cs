@@ -77,7 +77,7 @@ public class OneANotationTests
     [InlineData("1AA", "2AA", null)]
     [InlineData("65535AA", null, "65534AA")]
     public void GivenOneANotation_WhenGetNextAndPrevious_ThenResultShouldBe(
-        string input, string? expectedNext, string? expectedPrevious)
+        string input, string expectedNext, string expectedPrevious)
     {
         var oneANotation = OneANotation<ushort>.Parse(input, asciiOnly: false, CultureInfo.InvariantCulture)
             .Match(x => x, () => throw new InvalidOperationException());
@@ -107,7 +107,7 @@ public class OneANotationTests
     [InlineData("G", "1A")]
     [InlineData("N", "1A")]
     [InlineData("H", "1-A")]
-    public void GivenOneANotation_WhenToStringWithFormat_ThenResultShouldBe(string? format, string expected)
+    public void GivenOneANotation_WhenToStringWithFormat_ThenResultShouldBe(string format, string expected)
     {
         var oneANotation = OneANotation<ushort>.Parse("1A", asciiOnly: false, CultureInfo.InvariantCulture)
             .Match(x => x, () => throw new InvalidOperationException());

@@ -6,7 +6,7 @@ namespace TIKSN.Configuration;
 public class WindowsRegistryConfigurationSource : IConfigurationSource
 {
     public RegistryView RegistryView { get; set; }
-    public string RootKey { get; set; }
+    public string RootKey { get; set; } = string.Empty;
 
     public IConfigurationProvider Build(IConfigurationBuilder builder) =>
         new WindowsRegistryConfigurationProvider(this.RootKey, this.RegistryView);

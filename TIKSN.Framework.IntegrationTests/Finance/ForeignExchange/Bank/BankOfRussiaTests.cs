@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Shouldly;
@@ -268,11 +266,11 @@ public class BankOfRussiaTests
             atTheMoment.Day);
 
         var httpClient = this.httpClientFactory.CreateClient();
-        var responseStream = await httpClient.GetStreamAsync(webUrl);
+        await using var responseStream = await httpClient.GetStreamAsync(
+            webUrl,
+            TestContext.Current.CancellationToken);
 
-        var stream​Reader = new Stream​Reader(responseStream, Encoding.UTF7);
-
-        var xdoc = XDocument.Load(stream​Reader);
+        var xdoc = XDocument.Load(responseStream);
 
         var webPairs = new List<string>();
 
