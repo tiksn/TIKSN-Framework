@@ -352,18 +352,21 @@ Task BuildMaui EstimateVersion, {
     $project = Resolve-Path -Path 'TIKSN.Framework.Maui/TIKSN.Framework.Maui.csproj'
     $nextVersion = $state.NextVersion
 
-    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder }
+    Exec { dotnet build $project /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
 
-    Exec { dotnet build $project --framework net10.0-ios /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyIosBuildArtifactsFolder }
-    Exec { dotnet build $project --framework net10.0-maccatalyst /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyMaccatalystBuildArtifactsFolder }
-    Exec { dotnet build $project --framework net10.0-android /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyAndroidBuildArtifactsFolder }
-    Exec { dotnet build $project --framework net10.0-windows10.0.19041.0 /v:m /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyWindowsBuildArtifactsFolder }
+    Exec { dotnet build $project --framework net10.0-ios /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyIosBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
+    Exec { dotnet build $project --framework net10.0-maccatalyst /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyMaccatalystBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
+    Exec { dotnet build $project --framework net10.0-android /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyAndroidBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
+    Exec { dotnet build $project --framework net10.0-windows10.0.19041.0 /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyWindowsBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
 }
 
 # Synopsis: Build
 Task Build Format, DownloadCurrencyCodes, BuildLanguageLocalization, BuildRegionLocalization, BuildCore, BuildMaui, {
+    $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
     $solution = Resolve-Path -Path 'TIKSN Framework.slnx'
-    Exec { dotnet build $solution }
+    $nextVersion = $state.NextVersion
+
+    Exec { dotnet build $solution /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:TreatWarningsAsErrors=true }
 }
 
 # Synopsis: Test
