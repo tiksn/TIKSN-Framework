@@ -17,6 +17,7 @@ using TIKSN.Data.RavenDB;
 using TIKSN.DependencyInjection;
 using TIKSN.Finance.ForeignExchange;
 using TIKSN.IntegrationTests.Data.Mongo;
+using TIKSN.IntegrationTests.Finance.ForeignExchange.Bank;
 using TIKSN.IntegrationTests.Finance.ForeignExchange.ExchangeRateService;
 using Xunit;
 
@@ -47,6 +48,7 @@ public class ServiceProviderFixture : IDisposable, IAsyncLifetime
             .ConfigureServices(services =>
             {
                 _ = services.AddFrameworkCore();
+                _ = FrameworkCoreServiceProviderFixture.AddReserveBankOfNewZealandBrowserClient(services);
                 _ = services.Configure<RavenUnitOfWorkFactoryOptions>(options =>
                 {
                     options.Urls = [this.ravenDbContainer.GetConnectionString(),];
