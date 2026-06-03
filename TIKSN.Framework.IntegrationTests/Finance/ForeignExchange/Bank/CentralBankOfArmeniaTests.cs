@@ -131,7 +131,7 @@ public class CentralBankOfArmeniaTests
                 cancellationToken: TestContext.Current.CancellationToken);
 
             passed = true;
-        });
+        }, TestContext.Current.CancellationToken);
 
         passed.ShouldBeTrue();
     }

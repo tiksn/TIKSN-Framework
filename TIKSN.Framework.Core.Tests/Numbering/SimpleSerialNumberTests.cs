@@ -14,7 +14,7 @@ public class SimpleSerialNumberTests
     [InlineData("", "ABC-123")]
     [InlineData("G", "ABC-123")]
     [InlineData("N", "ABC123")]
-    public void GivenSerialNumber_WhenFormatted_ThenValueShouldBe(string? format, string expected)
+    public void GivenSerialNumber_WhenFormatted_ThenValueShouldBe(string format, string expected)
     {
         // Arrange
         var simpleSerialNumber = SimpleSerialNumber<TLA, ushort>

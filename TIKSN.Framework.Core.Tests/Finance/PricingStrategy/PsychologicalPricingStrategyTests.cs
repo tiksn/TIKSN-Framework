@@ -66,7 +66,7 @@ public class PsychologicalPricingStrategyTests
 
         var strategy = new PsychologicalPricingStrategy();
 
-        var random = new Random();
+        var random = new Random(0);
 
         for (var i = 0; i < 100; i++)
         {

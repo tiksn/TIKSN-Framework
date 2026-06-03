@@ -47,14 +47,14 @@ public class WindowsRegistrySettingsService : ISettingsService
         this.Process<IReadOnlyCollection<string>>(
             RegistryHive.CurrentUser,
             string.Empty,
-            value: null,
+            [],
             ListNames);
 
     public IReadOnlyCollection<string> ListRoamingSetting() =>
         this.Process<IReadOnlyCollection<string>>(
             RegistryHive.LocalMachine,
             string.Empty,
-            value: null,
+            [],
             ListNames);
 
     public void RemoveLocalSetting(string name) =>
@@ -102,7 +102,7 @@ public class WindowsRegistrySettingsService : ISettingsService
     private static T GetSetting<T>(
         RegistryKey subKey,
         string name,
-        T defaultValue) => (T)subKey.GetValue(name, defaultValue);
+        T defaultValue) => (T)subKey.GetValue(name, defaultValue)!;
 
     private static IReadOnlyCollection<string> ListNames(
         RegistryKey subKey,
@@ -124,7 +124,7 @@ public class WindowsRegistrySettingsService : ISettingsService
         string name,
         T value)
     {
-        subKey.SetValue(name, value);
+        subKey.SetValue(name, value ?? throw new ArgumentNullException(nameof(value)));
 
         return value;
     }
@@ -141,6 +141,7 @@ public class WindowsRegistrySettingsService : ISettingsService
 
         using var rootKey = RegistryKey.OpenBaseKey(hiveKey, this.options.Value.RegistryView);
         using var registrySubKey = rootKey.CreateSubKey(this.options.Value.SubKey, writable: true);
+        ArgumentNullException.ThrowIfNull(registrySubKey);
         return processor(registrySubKey, name, value);
     }
 

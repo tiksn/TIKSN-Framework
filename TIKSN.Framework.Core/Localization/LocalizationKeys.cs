@@ -480,12 +480,6 @@ public static class LocalizationKeys
     public static string Key462896969 => "462896969";
 
     /// <summary>
-    /// Key: 466192205
-    /// Original Value: Central Bank of Russia
-    /// </summary>
-    public static string Key466192205 => "466192205";
-
-    /// <summary>
     /// Key: 469078176
     /// Original Value: Italian
     /// </summary>
@@ -1210,12 +1204,6 @@ public static class LocalizationKeys
     /// Original Value: Advertisement
     /// </summary>
     public static string Key931254976 => "931254976";
-
-    /// <summary>
-    /// Key: 937230874
-    /// Original Value: The Central Bank of the Russian Federation
-    /// </summary>
-    public static string Key937230874 => "937230874";
 
     /// <summary>
     /// Key: 950501550

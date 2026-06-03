@@ -49,9 +49,9 @@ public class QueryRepositoryPaginationTests
         var firstPageResult = await exchangeRateRepository.PageAsync(firstPageQuery,
             cancellationToken: TestContext.Current.CancellationToken);
         var items = await exchangeRateRepository.StreamAllAsync(TestContext.Current.CancellationToken).Take(10)
-            .ToListAsync();
+            .ToListAsync(TestContext.Current.CancellationToken);
         var totalItems = await exchangeRateRepository.StreamAllAsync(TestContext.Current.CancellationToken)
-            .LongCountAsync();
+            .LongCountAsync(TestContext.Current.CancellationToken);
 
         // Assert
 

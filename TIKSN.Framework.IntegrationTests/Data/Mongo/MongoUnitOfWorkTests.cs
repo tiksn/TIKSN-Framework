@@ -33,13 +33,14 @@ public class MongoUnitOfWorkTests
         var mongoUnitOfWorkFactory =
             this.serviceProviderFixture.GetServiceProvider("MongoDB").GetRequiredService<IUnitOfWorkFactory>();
 
-        await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default))
+        await using (var mongoUnitOfWork =
+                     await mongoUnitOfWorkFactory.CreateAsync(TestContext.Current.CancellationToken))
         {
             var testRepository = mongoUnitOfWork.Services.GetRequiredService<ITestMongoRepository>();
 
             await testRepository.AddAsync(testEntity, cancellationToken: TestContext.Current.CancellationToken);
 
-            await mongoUnitOfWork.CompleteAsync(default);
+            await mongoUnitOfWork.CompleteAsync(TestContext.Current.CancellationToken);
         }
 
         var tasks = Enumerable.Repeat(element: 0, count: 3)
@@ -47,14 +48,15 @@ public class MongoUnitOfWorkTests
             .ToArray();
         await Task.WhenAll(tasks);
 
-        await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default))
+        await using (var mongoUnitOfWork =
+                     await mongoUnitOfWorkFactory.CreateAsync(TestContext.Current.CancellationToken))
         {
             var testRepository = mongoUnitOfWork.Services.GetRequiredService<ITestMongoRepository>();
 
             retrievedEntity =
                 await testRepository.GetAsync(testEntityId, cancellationToken: TestContext.Current.CancellationToken);
 
-            await mongoUnitOfWork.CompleteAsync(default);
+            await mongoUnitOfWork.CompleteAsync(TestContext.Current.CancellationToken);
         }
 
         retrievedEntity.Version.ShouldBe(4);
@@ -66,7 +68,8 @@ public class MongoUnitOfWorkTests
 
         static async Task UpdateEntity(IUnitOfWorkFactory mongoUnitOfWorkFactory, Guid testEntityId)
         {
-            await using var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default);
+            await using var mongoUnitOfWork =
+                await mongoUnitOfWorkFactory.CreateAsync(TestContext.Current.CancellationToken);
             var testRepository = mongoUnitOfWork.Services.GetRequiredService<ITestMongoRepository>();
 
             var entity =
@@ -76,7 +79,7 @@ public class MongoUnitOfWorkTests
 
             await testRepository.UpdateAsync(entity, cancellationToken: TestContext.Current.CancellationToken);
 
-            await mongoUnitOfWork.CompleteAsync(default);
+            await mongoUnitOfWork.CompleteAsync(TestContext.Current.CancellationToken);
         }
     }
 
@@ -94,23 +97,25 @@ public class MongoUnitOfWorkTests
         var mongoUnitOfWorkFactory =
             this.serviceProviderFixture.GetServiceProvider("MongoDB").GetRequiredService<IUnitOfWorkFactory>();
 
-        await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default))
+        await using (var mongoUnitOfWork =
+                     await mongoUnitOfWorkFactory.CreateAsync(TestContext.Current.CancellationToken))
         {
             var testRepository = mongoUnitOfWork.Services.GetRequiredService<ITestMongoRepository>();
 
             await testRepository.AddAsync(testEntity, cancellationToken: TestContext.Current.CancellationToken);
 
-            await mongoUnitOfWork.CompleteAsync(default);
+            await mongoUnitOfWork.CompleteAsync(TestContext.Current.CancellationToken);
         }
 
-        await using (var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(default))
+        await using (var mongoUnitOfWork =
+                     await mongoUnitOfWorkFactory.CreateAsync(TestContext.Current.CancellationToken))
         {
             var testRepository = mongoUnitOfWork.Services.GetRequiredService<ITestMongoRepository>();
 
             retrievedEntity =
                 await testRepository.GetAsync(testEntityId, cancellationToken: TestContext.Current.CancellationToken);
 
-            await mongoUnitOfWork.CompleteAsync(default);
+            await mongoUnitOfWork.CompleteAsync(TestContext.Current.CancellationToken);
         }
 
         retrievedEntity.Value.ShouldBe(testEntity.Value);

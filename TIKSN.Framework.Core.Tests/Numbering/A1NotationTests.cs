@@ -61,7 +61,7 @@ public class A1NotationTests
     [InlineData("AA1", "AA2", null)]
     [InlineData("AA65535", null, "AA65534")]
     public void GivenA1Notation_WhenGetNextAndPrevious_ThenResultShouldBe(
-        string input, string? expectedNext, string? expectedPrevious)
+        string input, string expectedNext, string expectedPrevious)
     {
         var a1Notation = A1Notation<ushort>.Parse(input, asciiOnly: false, CultureInfo.InvariantCulture)
             .Match(x => x, () => throw new InvalidOperationException());

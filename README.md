@@ -37,7 +37,7 @@ The repository uses the .NET SDK pinned in `global.json` (`10.0.100`, rolling fo
 - Data access: repository, query repository, file repository, stream repository, unit-of-work abstractions, pagination helpers, and adapters for Entity Framework Core, Azure Table Storage, Azure Blob Storage, MongoDB, LiteDB, and RavenDB.
 - Data caching: memory, distributed, and hybrid cache decorators for repository and query repository implementations.
 - Finance: `Money`, currency metadata, currency pairs, fixed/composite/cached converters, pricing models, pricing strategies, and foreign exchange providers.
-- Foreign exchange sources: Bank of Canada, Bank of England, Bank of Russia, Central Bank of Armenia, European Central Bank, Federal Reserve System, National Bank of Poland, National Bank of Ukraine, Reserve Bank of Australia, and Swiss National Bank.
+- Foreign exchange sources: Bank of Canada, Bank of England, Central Bank of Armenia, European Central Bank, Federal Reserve System, National Bank of Poland, National Bank of Ukraine, Reserve Bank of Australia, and Swiss National Bank.
 - Globalization and localization: culture, country, currency, region, time zone, language localization, region localization, and composite string localizers.
 - Serialization: JSON, XML, MessagePack, custom serializer/deserializer abstractions, unsigned `BigInteger` binary serialization, and Protocol Buffers schema support used by licensing.
 - Licensing: license descriptors, license generation, entitlement conversion hooks, and RSA, DSA, and Ed25519 certificate signature services.

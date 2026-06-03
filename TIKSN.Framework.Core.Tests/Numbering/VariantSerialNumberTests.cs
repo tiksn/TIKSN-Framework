@@ -44,7 +44,7 @@ public class VariantSerialNumberTests
     [InlineData("", "ABC-123DEF")]
     [InlineData("G", "ABC-123DEF")]
     [InlineData("N", "ABC123DEF")]
-    public void GivenSerialNumber_WhenFormatted_ThenValueShouldBe(string? format, string expected)
+    public void GivenSerialNumber_WhenFormatted_ThenValueShouldBe(string format, string expected)
     {
         // Arrange
         var variantSerialNumber = VariantSerialNumber<TLA, ushort, TLA>
