@@ -13,7 +13,6 @@ public sealed class CountryInfo : IEquatable<CountryInfo>
         ArgumentNullException.ThrowIfNull(regions);
 
         this.Name = name;
-        this.TwoLetterISORegionName = name;
         this.PrincipalRegion = principalRegion;
         this.Regions = Array.AsReadOnly(regions.ToArray());
         this.regionNames = [.. this.Regions.Select(x => x.TwoLetterISORegionName)];
@@ -31,8 +30,6 @@ public sealed class CountryInfo : IEquatable<CountryInfo>
     public RegionInfo PrincipalRegion { get; }
 
     public IReadOnlyCollection<RegionInfo> Regions { get; }
-
-    public string TwoLetterISORegionName { get; }
 
     public static bool operator ==(CountryInfo? first, CountryInfo? second) => Equals(first, second);
 
