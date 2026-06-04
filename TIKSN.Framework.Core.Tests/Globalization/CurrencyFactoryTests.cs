@@ -80,6 +80,74 @@ public class CurrencyFactoryTests
     }
 
     [Theory]
+    [InlineData("CN", new[]
+    {
+        "CNY",
+        "HKD",
+        "MOP"
+    })]
+    [InlineData("FR", new[]
+    {
+        "EUR",
+        "XPF"
+    })]
+    [InlineData("US", new[]
+    {
+        "USD"
+    })]
+    public void GivenCountry_WhenAllCurrencyInfoCreated_ThenDistinctRegionalCurrenciesShouldBeReturned(
+        string inputCountryName,
+        string[] outputIsoCurrencySymbols)
+    {
+        // Arrange
+
+        var services = new ServiceCollection();
+        _ = services.AddFrameworkCore();
+        var serviceProvider = services.BuildServiceProvider();
+        var countryFactory = serviceProvider.GetRequiredService<ICountryFactory>();
+        var currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+        var country = countryFactory.Create(inputCountryName);
+
+        // Act
+
+        var currencyInfos = currencyFactory.CreateAll(country);
+
+        // Assert
+
+        System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Select(
+                currencyInfos,
+                x => x.ISOCurrencySymbol))
+            .ShouldBe(outputIsoCurrencySymbols);
+    }
+
+    [Theory]
+    [InlineData("CN", "CNY")]
+    [InlineData("FR", "EUR")]
+    [InlineData("US", "USD")]
+    public void GivenCountry_WhenCurrencyInfoCreated_ThenPrincipalRegionCurrencyShouldBeReturned(
+        string inputCountryName,
+        string outputIsoCurrencySymbol)
+    {
+        // Arrange
+
+        var services = new ServiceCollection();
+        _ = services.AddFrameworkCore();
+        var serviceProvider = services.BuildServiceProvider();
+        var countryFactory = serviceProvider.GetRequiredService<ICountryFactory>();
+        var currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+        var country = countryFactory.Create(inputCountryName);
+
+        // Act
+
+        var currencyInfo = currencyFactory.Create(country);
+
+        // Assert
+
+        _ = currencyInfo.ShouldNotBeNull();
+        currencyInfo.ISOCurrencySymbol.ShouldBe(outputIsoCurrencySymbol);
+    }
+
+    [Theory]
     [InlineData("GGP", "GBP")]
     [InlineData("JEP", "GBP")]
     [InlineData("IMP", "GBP")]
@@ -144,6 +212,48 @@ public class CurrencyFactoryTests
         // Act
 
         var created = currencyFactory.TryCreate("ZZZ", out var currency);
+
+        // Assert
+
+        created.ShouldBeFalse();
+        currency.ShouldBeNull();
+    }
+
+    [Fact]
+    public void GivenNullCountry_WhenTryCreateAllCalled_ThenItShouldReturnFalse()
+    {
+        // Arrange
+
+        var services = new ServiceCollection();
+        _ = services.AddFrameworkCore();
+        var serviceProvider = services.BuildServiceProvider();
+        var currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+        CountryInfo country = null;
+
+        // Act
+
+        var created = currencyFactory.TryCreateAll(country, out var currencies);
+
+        // Assert
+
+        created.ShouldBeFalse();
+        currencies.ShouldBeNull();
+    }
+
+    [Fact]
+    public void GivenNullCountry_WhenTryCreateCalled_ThenItShouldReturnFalse()
+    {
+        // Arrange
+
+        var services = new ServiceCollection();
+        _ = services.AddFrameworkCore();
+        var serviceProvider = services.BuildServiceProvider();
+        var currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
+        CountryInfo country = null;
+
+        // Act
+
+        var created = currencyFactory.TryCreate(country, out var currency);
 
         // Assert
 

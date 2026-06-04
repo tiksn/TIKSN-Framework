@@ -50,7 +50,9 @@ public class CurrencyPairFactory : MemoryCacheDecoratorBase<CurrencyPair>, ICurr
         ArgumentNullException.ThrowIfNull(baseCountry);
         ArgumentNullException.ThrowIfNull(counterCountry);
 
-        return this.Create(baseCountry.PrincipalRegion, counterCountry.PrincipalRegion);
+        return this.Create(
+            this.currencyFactory.Create(baseCountry),
+            this.currencyFactory.Create(counterCountry));
     }
 
     public CurrencyPair Reverse(CurrencyPair pair)

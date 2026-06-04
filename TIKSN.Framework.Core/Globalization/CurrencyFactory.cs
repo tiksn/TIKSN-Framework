@@ -69,11 +69,48 @@ public class CurrencyFactory : MemoryCacheDecoratorBase<CurrencyInfo>, ICurrency
             ?? throw new InvalidOperationException("Failed to create CurrencyInfo.");
     }
 
+    public CurrencyInfo Create(CountryInfo country)
+    {
+        ArgumentNullException.ThrowIfNull(country);
+
+        return this.Create(country.PrincipalRegion);
+    }
+
+    public IReadOnlyCollection<CurrencyInfo> CreateAll(CountryInfo country)
+    {
+        ArgumentNullException.ThrowIfNull(country);
+
+        return Array.AsReadOnly(country.Regions
+            .Select(this.Create)
+            .Distinct()
+            .OrderBy(x => x.ISOCurrencySymbol, StringComparer.Ordinal)
+            .ToArray());
+    }
+
     public bool TryCreate(string isoCurrencySymbol, [NotNullWhen(true)] out CurrencyInfo? currency)
     {
         try
         {
             currency = this.Create(isoCurrencySymbol);
+            return true;
+        }
+        catch (ArgumentException)
+        {
+            currency = null;
+            return false;
+        }
+        catch (CurrencyNotFoundException)
+        {
+            currency = null;
+            return false;
+        }
+    }
+
+    public bool TryCreate(CountryInfo country, [NotNullWhen(true)] out CurrencyInfo? currency)
+    {
+        try
+        {
+            currency = this.Create(country);
             return true;
         }
         catch (ArgumentException)
@@ -103,6 +140,27 @@ public class CurrencyFactory : MemoryCacheDecoratorBase<CurrencyInfo>, ICurrency
         catch (CurrencyNotFoundException)
         {
             currency = null;
+            return false;
+        }
+    }
+
+    public bool TryCreateAll(
+        CountryInfo country,
+        [NotNullWhen(true)] out IReadOnlyCollection<CurrencyInfo>? currencies)
+    {
+        try
+        {
+            currencies = this.CreateAll(country);
+            return true;
+        }
+        catch (ArgumentException)
+        {
+            currencies = null;
+            return false;
+        }
+        catch (CurrencyNotFoundException)
+        {
+            currencies = null;
             return false;
         }
     }

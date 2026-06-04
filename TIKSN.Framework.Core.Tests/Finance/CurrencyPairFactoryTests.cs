@@ -17,10 +17,10 @@ public class CurrencyPairFactoryTests
         var countryFactory = serviceProvider.GetRequiredService<ICountryFactory>();
         var currencyPairFactory = serviceProvider.GetRequiredService<ICurrencyPairFactory>();
 
-        var pair = currencyPairFactory.Create(countryFactory.Create("US"), countryFactory.Create("GB"));
+        var pair = currencyPairFactory.Create(countryFactory.Create("CN"), countryFactory.Create("US"));
 
-        pair.BaseCurrency.ISOCurrencySymbol.ShouldBe("USD");
-        pair.CounterCurrency.ISOCurrencySymbol.ShouldBe("GBP");
+        pair.BaseCurrency.ISOCurrencySymbol.ShouldBe("CNY");
+        pair.CounterCurrency.ISOCurrencySymbol.ShouldBe("USD");
     }
 
     [Fact]
