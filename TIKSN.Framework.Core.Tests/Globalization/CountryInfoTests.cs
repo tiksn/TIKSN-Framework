@@ -47,7 +47,6 @@ public class CountryInfoTests
         // Act & Assert
 
         country.Name.ShouldBe("US");
-        country.TwoLetterISORegionName.ShouldBe("US");
         country.PrincipalRegion.TwoLetterISORegionName.ShouldBe("US");
         country.Regions.Select(x => x.TwoLetterISORegionName).ShouldBe(["AS", "GU", "MP", "PR", "UM", "US", "VI"]);
         country.ToString().ShouldBe("US");

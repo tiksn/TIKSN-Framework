@@ -23,6 +23,10 @@ public class CountryFactory : MemoryCacheDecoratorBase<CountryInfo>, ICountryFac
         this.countryInfoOptions = countryInfoOptions ?? throw new ArgumentNullException(nameof(countryInfoOptions));
     }
 
+    private static EqualityComparer<RegionInfo> RegionInfoEqualityComparer => EqualityComparer<RegionInfo>.Create(
+        (x, y) => string.Equals(x?.TwoLetterISORegionName, y?.TwoLetterISORegionName, StringComparison.Ordinal),
+        x => x.TwoLetterISORegionName.GetHashCode(StringComparison.Ordinal));
+
     public CountryInfo Create(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
@@ -50,10 +54,10 @@ public class CountryFactory : MemoryCacheDecoratorBase<CountryInfo>, ICountryFac
             throw new CountryNotFoundException("Country region cannot be null.");
         }
 
-        var countryName = this.ResolveCountryName(region);
+        var countryName = region.TwoLetterISORegionName;
         var cacheKey = Tuple.Create(EntityType, countryName);
 
-        return this.GetFromMemoryCache(cacheKey, () => this.CreateCountry(countryName))
+        return this.GetFromMemoryCache(cacheKey, () => this.GetOrCreateCountry(region))
             ?? throw new InvalidOperationException("Failed to create CountryInfo.");
     }
 
@@ -85,127 +89,95 @@ public class CountryFactory : MemoryCacheDecoratorBase<CountryInfo>, ICountryFac
         }
     }
 
-    private static string NormalizeCode(string code)
+    private static void ValidateConcreteRegion(RegionInfo region)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(code);
-
-        return code.Trim().ToUpperInvariant();
-    }
-
-    private static string[] ParseRegionNames(IEnumerable<string> regionNames)
-    {
-        if (regionNames is null)
-        {
-            throw new ArgumentNullException(nameof(regionNames), "Country regions cannot be null.");
-        }
-
-        return
-        [
-            .. regionNames
-                .Select(NormalizeCode)
-                .Distinct(StringComparer.Ordinal)
-        ];
-    }
-
-    private static void ValidateConfiguredConcreteRegionCode(string code)
-    {
-        if (code.Length != 2)
-        {
-            throw new ArgumentException($"Region '{code}' is not a concrete two-letter region.", nameof(code));
-        }
-
-        RegionInfo region;
-        try
-        {
-            region = new RegionInfo(code);
-        }
-        catch (ArgumentException ex)
-        {
-            throw new ArgumentException($"Region '{code}' is not a concrete two-letter region.", nameof(code), ex);
-        }
-
-        if (!string.Equals(region.TwoLetterISORegionName, code, StringComparison.Ordinal))
-        {
-            throw new ArgumentException($"Region '{code}' is not a concrete two-letter region.", nameof(code));
-        }
-    }
-
-    private static void ValidateCountryRegionMapping(string countryName, string[] regionNames)
-    {
-        ValidateConfiguredConcreteRegionCode(countryName);
-
-        if (regionNames.Length == 0)
-        {
-            throw new ArgumentException($"Country '{countryName}' must contain at least one region.",
-                nameof(regionNames));
-        }
-
-        foreach (var regionName in regionNames)
-        {
-            ValidateConfiguredConcreteRegionCode(regionName);
-        }
-
-        if (!regionNames.Contains(countryName, StringComparer.Ordinal))
-        {
-            throw new ArgumentException(
-                $"Country '{countryName}' must include its principal region.",
-                nameof(regionNames));
-        }
-    }
-
-    private CountryInfo CreateCountry(string countryName)
-    {
-        var countryRegions = this.GetCountryRegions();
-        if (!countryRegions.TryGetValue(countryName, out var regionNames))
-        {
-            regionNames = [countryName];
-        }
-
-        ValidateCountryRegionMapping(countryName, regionNames);
-
-        var principalRegion = this.regionFactory.Create(countryName);
-        var regions = regionNames.Select(this.regionFactory.Create).ToArray();
-
-        return new CountryInfo(countryName, principalRegion, regions);
-    }
-
-    private Dictionary<string, string[]> GetCountryRegions()
-    {
-        var countryRegions = new Dictionary<string, string[]>(StringComparer.Ordinal);
-
-        foreach (var configuredCountryRegions in this.countryInfoOptions.Value.CountryRegions)
-        {
-            countryRegions[NormalizeCode(configuredCountryRegions.Key)] =
-                ParseRegionNames(configuredCountryRegions.Value);
-        }
-
-        return countryRegions;
-    }
-
-    private string ResolveCountryName(RegionInfo region)
-    {
-        var regionName = region.TwoLetterISORegionName;
-        if (regionName.Length != 2)
+        if (region.TwoLetterISORegionName.Length != 2)
         {
             throw new CountryNotFoundException($"Region '{region.Name}' is not a concrete two-letter region.");
         }
+    }
 
-        var countryRegions = this.GetCountryRegions();
-        if (countryRegions.ContainsKey(regionName))
+    private static void ValidateCountryRegionMapping(RegionInfo principalRegion, HashSet<RegionInfo> regions)
+    {
+        ValidateConcreteRegion(principalRegion);
+
+        if (regions.Count == 0)
         {
-            return regionName;
+            throw new ArgumentException(
+                $"Country '{principalRegion.TwoLetterISORegionName}' must contain at least one region.",
+                nameof(regions));
         }
 
-        var containingCountries = countryRegions
-            .Where(x => x.Value.Contains(regionName, StringComparer.Ordinal))
-            .Select(x => x.Key)
-            .ToArray();
-
-        if (containingCountries.Length > 1)
+        foreach (var region in regions)
         {
-            throw new CountryNotFoundException($"Region '{region.Name}' is configured for multiple countries.");
+            ValidateConcreteRegion(region);
         }
 
-        return containingCountries.Length == 1 ? containingCountries[0] : regionName;
+        if (!regions.Any(r => r.Equals(principalRegion)))
+        {
+            throw new ArgumentException(
+                $"Country '{principalRegion.TwoLetterISORegionName}' must include its principal region.",
+                nameof(regions));
+        }
+    }
+
+    private CountryInfo CreateCountryInfo(RegionInfo region)
+    {
+        var principalRegion = region;
+
+        var regionsByPrincipalRegion = this.GetRegionsByPrincipalRegion();
+        if (!regionsByPrincipalRegion.TryGetValue(principalRegion, out var regions))
+        {
+            regions = new HashSet<RegionInfo>([region]);
+        }
+
+        ValidateCountryRegionMapping(principalRegion, regions);
+
+        return new CountryInfo(principalRegion.TwoLetterISORegionName, principalRegion, regions);
+    }
+
+    private CountryInfo GetOrCreateCountry(RegionInfo region)
+    {
+        var principalRegionByRegion = this.GetPrincipalRegionByRegion();
+        if (principalRegionByRegion.TryGetValue(region, out var principalRegion))
+        {
+            var cacheKey = Tuple.Create(EntityType, principalRegion.TwoLetterISORegionName);
+
+            return this.GetFromMemoryCache(cacheKey, () => this.CreateCountryInfo(principalRegion))
+                ?? throw new InvalidOperationException("Failed to create CountryInfo.");
+        }
+
+        return this.CreateCountryInfo(region);
+    }
+
+    private Dictionary<RegionInfo, RegionInfo> GetPrincipalRegionByRegion()
+    {
+        var principalRegionByRegion = new Dictionary<RegionInfo, RegionInfo>(RegionInfoEqualityComparer);
+
+        foreach (var configuredCountry in this.countryInfoOptions.Value.CountryRegions)
+        {
+            var principalRegion = this.regionFactory.Create(configuredCountry.Key);
+            foreach (var regionCode in configuredCountry.Value)
+            {
+                var region = this.regionFactory.Create(regionCode);
+                principalRegionByRegion.Add(region, principalRegion);
+            }
+        }
+
+        return principalRegionByRegion;
+    }
+
+    private Dictionary<RegionInfo, HashSet<RegionInfo>> GetRegionsByPrincipalRegion()
+    {
+        var regionsByPrincipalRegion = new Dictionary<RegionInfo, HashSet<RegionInfo>>(RegionInfoEqualityComparer);
+
+        foreach (var configuredCountry in this.countryInfoOptions.Value.CountryRegions)
+        {
+            var principalRegion = this.regionFactory.Create(configuredCountry.Key);
+            regionsByPrincipalRegion.Add(principalRegion,
+                configuredCountry.Value.Select(this.regionFactory.Create).ToHashSet(RegionInfoEqualityComparer));
+        }
+
+        return regionsByPrincipalRegion;
     }
 }

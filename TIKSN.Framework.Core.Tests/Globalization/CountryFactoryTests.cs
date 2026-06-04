@@ -1,16 +1,40 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using LanguageExt;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using TIKSN.DependencyInjection;
 using TIKSN.Globalization;
 using Xunit;
+using static LanguageExt.Prelude;
 
 namespace TIKSN.Tests.Globalization;
 
 public class CountryFactoryTests
 {
+    public static TheoryData<string> GetMultiRegionCountryCultureNames()
+    {
+        var services = new ServiceCollection();
+        _ = services.AddFrameworkCore();
+        var provider = services.BuildServiceProvider();
+
+        var countryFactory = provider.GetRequiredService<ICountryFactory>();
+
+        var countries = CultureInfo.GetCultures(CultureTypes.SpecificCultures)
+            .Select(x => Tuple(x, new RegionInfo(x.Name)))
+            .Select(x => Tuple(x.Item1, x.Item2,
+                countryFactory.TryCreate(x.Item1.Name, out var country) ? Some(country) : None))
+            .Select(x => x.Item3.Map(country => Tuple(x.Item1, x.Item2, country)))
+            .Choose(x => x)
+            .Where(c => c.Item3.Regions.Count > 1)
+            .OrderBy(c => c.Item2.Name)
+            .ThenBy(c => c.Item1.Name)
+            .ToList();
+
+        return [.. countries.Select(x => new TheoryDataRow<string>(x.Item1.Name))];
+    }
+
     [Fact]
     public void GivenAggregateRegion_WhenCountryCreated_ThenItShouldThrow()
     {
@@ -100,7 +124,6 @@ public class CountryFactoryTests
         // Assert
 
         country.Name.ShouldBe(expectedCountryName);
-        country.TwoLetterISORegionName.ShouldBe(expectedCountryName);
         country.PrincipalRegion.TwoLetterISORegionName.ShouldBe(expectedCountryName);
         country.Regions.Count.ShouldBe(expectedRegionCount);
         country.ContainsRegion(country.PrincipalRegion).ShouldBeTrue();
@@ -385,6 +408,66 @@ public class CountryFactoryTests
         country.Name.ShouldBe("AQ");
         country.PrincipalRegion.TwoLetterISORegionName.ShouldBe("AQ");
         country.Regions.Single().TwoLetterISORegionName.ShouldBe("AQ");
+    }
+
+    [Theory]
+    [MemberData(nameof(GetMultiRegionCountryCultureNames))]
+    public void GivenMultiRegionCountryCulture_WhenCountryCreated_ThenNameShouldMatchPrincipalRegion(string cultureName)
+    {
+        // Arrange
+
+        var countryFactory = CreateCountryFactory();
+
+        // Act
+        var country = countryFactory.Create(cultureName);
+        TestContext.Current.TestOutputHelper.WriteLine($"Culture: {cultureName}");
+        TestContext.Current.TestOutputHelper.WriteLine($"Country: {country}");
+        TestContext.Current.TestOutputHelper.WriteLine($"Country Name: {country.Name}");
+        TestContext.Current.TestOutputHelper.WriteLine(
+            $"Country Principal Region Name: {country.PrincipalRegion.Name}");
+        TestContext.Current.TestOutputHelper.WriteLine(
+            $"Country Principal Region Two-Letter ISO Name: {country.PrincipalRegion.TwoLetterISORegionName}");
+        TestContext.Current.TestOutputHelper.WriteLine(
+            $"Country Principal Region Three-Letter ISO Name: {country.PrincipalRegion.ThreeLetterISORegionName}");
+        TestContext.Current.TestOutputHelper.WriteLine(
+            $"Country Principal Region Three-Letter Windows Name: {country.PrincipalRegion.ThreeLetterWindowsRegionName}");
+        TestContext.Current.TestOutputHelper.WriteLine(
+            $"Country Principal Region English Name: {country.PrincipalRegion.EnglishName}");
+        TestContext.Current.TestOutputHelper.WriteLine(
+            $"Country Principal Region Native Name: {country.PrincipalRegion.NativeName}");
+        TestContext.Current.TestOutputHelper.WriteLine(
+            $"Country Principal Region ISO Currency Symbol: {country.PrincipalRegion.ISOCurrencySymbol}");
+        TestContext.Current.TestOutputHelper.WriteLine(
+            $"Country Principal Region Currency English Name: {country.PrincipalRegion.CurrencyEnglishName}");
+        TestContext.Current.TestOutputHelper.WriteLine(
+            $"Country Principal Region Currency Native Name: {country.PrincipalRegion.CurrencyNativeName}");
+        TestContext.Current.TestOutputHelper.WriteLine(
+            $"Country Regions: {string.Join(", ", country.Regions.Select(r => r.Name))}");
+
+        foreach (var (i, region) in country.Regions.Index())
+        {
+            TestContext.Current.TestOutputHelper.WriteLine($"Country Region {i + 1} Name: {region.Name}");
+            TestContext.Current.TestOutputHelper.WriteLine(
+                $"Country Region {i + 1} Two-Letter ISO Name: {region.TwoLetterISORegionName}");
+            TestContext.Current.TestOutputHelper.WriteLine(
+                $"Country Region {i + 1} Three-Letter ISO Name: {region.ThreeLetterISORegionName}");
+            TestContext.Current.TestOutputHelper.WriteLine(
+                $"Country Region {i + 1} Three-Letter Windows Name: {region.ThreeLetterWindowsRegionName}");
+            TestContext.Current.TestOutputHelper.WriteLine(
+                $"Country Region {i + 1} English Name: {region.EnglishName}");
+            TestContext.Current.TestOutputHelper.WriteLine($"Country Region {i + 1} Native Name: {region.NativeName}");
+            TestContext.Current.TestOutputHelper.WriteLine(
+                $"Country Region {i + 1} ISO Currency Symbol: {region.ISOCurrencySymbol}");
+            TestContext.Current.TestOutputHelper.WriteLine(
+                $"Country Region {i + 1} Currency English Name: {region.CurrencyEnglishName}");
+            TestContext.Current.TestOutputHelper.WriteLine(
+                $"Country Region {i + 1} Currency Native Name: {region.CurrencyNativeName}");
+        }
+
+        // Assert
+        country.Name.Length.ShouldBe(2);
+        country.ToString().ShouldBe(country.Name);
+        country.Name.ShouldBe(country.PrincipalRegion.Name);
     }
 
     [Theory]
