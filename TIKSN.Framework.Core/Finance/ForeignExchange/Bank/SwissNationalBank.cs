@@ -1,17 +1,25 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Xml.Linq;
+using NodaTime;
+using NodaTime.Extensions;
 using TIKSN.Globalization;
 
 namespace TIKSN.Finance.ForeignExchange.Bank;
 
 public class SwissNationalBank : ISwissNationalBank
 {
-    private const string RSSURL = "https://www.snb.ch/selector/en/mmr/exfeed/rss";
+    private const string RSSURL = "https://www.snb.ch/public/rss/en/exchangeRates";
+
+    private static readonly XNamespace CentralBankNamespace =
+        "http://www.cbwiki.net/wiki/index.php/Specification_1.2/";
+
     private static readonly Dictionary<(Uri RssUrl, DateOnly RequestDate), XDocument> ExchangeRateDocumentCache = [];
     private static readonly SemaphoreSlim ExchangeRateDocumentSemaphore = new(initialCount: 1, maxCount: 1);
     private static readonly CurrencyInfo SwissFranc = new(new RegionInfo("de-CH"));
     private static readonly Uri RssUrl = new(RSSURL);
+
+    private static readonly DateTimeZone ZurichTimeZone = DateTimeZoneProviders.Tzdb["Europe/Zurich"];
 
 
     private readonly ICurrencyFactory currencyFactory;
@@ -90,41 +98,76 @@ public class SwissNationalBank : ISwissNationalBank
         {
             foreach (var itemElement in xdoc?.Element("rss")?.Element("channel")?.Elements("item") ?? [])
             {
-                var dateElement = itemElement.Element("{http://purl.org/dc/elements/1.1/}date");
                 var exchangeRateElement = itemElement
-                    ?.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}statistics")
-                    ?.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}exchangeRate");
+                    ?.Element(CentralBankNamespace + "statistics")
+                    ?.Element(CentralBankNamespace + "exchangeRate");
                 var valueElement = exchangeRateElement
-                    ?.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}observation")
-                    ?.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}value");
+                    ?.Element(CentralBankNamespace + "observation")
+                    ?.Element(CentralBankNamespace + "value");
+                var unitElement = exchangeRateElement
+                    ?.Element(CentralBankNamespace + "observation")
+                    ?.Element(CentralBankNamespace + "unit");
+                var unitMultiplierElement = exchangeRateElement
+                    ?.Element(CentralBankNamespace + "observation")
+                    ?.Element(CentralBankNamespace + "unit_mult");
                 var targetCurrencyElement =
-                    exchangeRateElement?.Element(
-                        "{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}targetCurrency");
+                    exchangeRateElement?.Element(CentralBankNamespace + "targetCurrency");
+                var periodElement = exchangeRateElement
+                    ?.Element(CentralBankNamespace + "observationPeriod")
+                    ?.Element(CentralBankNamespace + "period");
 
-                var date = DateTimeOffset.Parse(dateElement?.Value ?? string.Empty, CultureInfo.InvariantCulture);
+                var period = DateOnly.Parse(periodElement?.Value ?? string.Empty, CultureInfo.InvariantCulture);
+                var date = period
+                    .ToLocalDate()
+                    .At(new LocalTime(hour: 11, minute: 0))
+                    .InZoneLeniently(ZurichTimeZone)
+                    .ToDateTimeOffset();
                 var currencyCode = targetCurrencyElement?.Value ?? string.Empty;
                 var rate = decimal.Parse(valueElement?.Value ?? string.Empty, CultureInfo.InvariantCulture);
+                var unitMultiplier = int.Parse(unitMultiplierElement?.Value ?? string.Empty,
+                    CultureInfo.InvariantCulture);
 
                 var currency = this.currencyFactory.Create(currencyCode);
 
-                Debug.Assert(string.Equals(exchangeRateElement
-                        ?.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}observation")
-                        ?.Element("{http://www.cbwiki.net/wiki/index.php/Specification_1.2/}unit")?.Value,
+                Debug.Assert(string.Equals(unitElement?.Value,
                     "CHF",
                     StringComparison.Ordinal));
 
-                this.foreignRates[currency] = new Tuple<DateTimeOffset, decimal>(date, rate);
-                result.Add(new ExchangeRate(this.currencyPairFactory.Create(currency, SwissFranc), date, rate));
+                var normalizedRate = NormalizeRate(rate, unitMultiplier);
+
+                if (!this.foreignRates.TryGetValue(currency, out var existingRate) ||
+                    existingRate.Item1 < date)
+                {
+                    this.foreignRates[currency] = new Tuple<DateTimeOffset, decimal>(date, normalizedRate);
+                }
+
+                result.Add(
+                    new ExchangeRate(this.currencyPairFactory.Create(currency, SwissFranc), date, normalizedRate));
             }
         }
 
         return result;
     }
 
+    private static decimal NormalizeRate(decimal rate, int unitMultiplier)
+    {
+        if (unitMultiplier >= 0)
+        {
+            return rate;
+        }
+
+        for (var i = 0; i < -unitMultiplier; i++)
+        {
+            rate /= 10m;
+        }
+
+        return rate;
+    }
+
     private async Task FetchOnDemandAsync(CancellationToken cancellationToken)
     {
         if (this.foreignRates.Count == 0 ||
-            this.foreignRates.Any(r => r.Value.Item1.Date == this.timeProvider.GetUtcNow().Date))
+            !this.foreignRates.Any(r => r.Value.Item1.Date == this.timeProvider.GetUtcNow().Date))
         {
             _ = await this.GetExchangeRatesAsync(this.timeProvider.GetUtcNow(), cancellationToken)
                 .ConfigureAwait(false);
