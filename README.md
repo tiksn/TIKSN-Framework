@@ -136,8 +136,8 @@ Useful direct commands:
 
 ```powershell
 dotnet restore "TIKSN Framework.slnx"
-dotnet test TIKSN.Framework.Core.Tests/TIKSN.Framework.Core.Tests.csproj
-dotnet test TIKSN.Framework.IntegrationTests/TIKSN.Framework.IntegrationTests.csproj
+dotnet test --project ./TIKSN.Framework.Core.Tests/TIKSN.Framework.Core.Tests.csproj
+dotnet test --project ./TIKSN.Framework.IntegrationTests/TIKSN.Framework.IntegrationTests.csproj
 ```
 
 Integration tests use Testcontainers to start required services such as MongoDB and RavenDB automatically. Ensure Docker is running before executing the integration test project.

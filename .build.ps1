@@ -374,12 +374,16 @@ Task Test UnitTest, IntegrationTest
 
 # Synopsis: Integration Test
 Task IntegrationTest Build, {
-    Exec { dotnet test '.\TIKSN.Framework.IntegrationTests\TIKSN.Framework.IntegrationTests.csproj' }
+    $project = Resolve-Path -Path './TIKSN.Framework.IntegrationTests/TIKSN.Framework.IntegrationTests.csproj'
+
+    Exec { dotnet test --project $project }
 }
 
 # Synopsis: Unit Test
 Task UnitTest Build, {
-    Exec { dotnet test '.\TIKSN.Framework.Core.Tests\TIKSN.Framework.Core.Tests.csproj' }
+    $project = Resolve-Path -Path './TIKSN.Framework.Core.Tests/TIKSN.Framework.Core.Tests.csproj'
+
+    Exec { dotnet test --project $project }
 }
 
 # Synopsis: Pack NuGet package
