@@ -1,10 +1,13 @@
 <Solution>
   <Project Path="AntimalwareScanning/AntimalwareScanning.csproj" />
+  <Project Path="CachingExample/CachingExample.csproj" />
+  <Project Path="DataAccessExample/DataAccessExample.csproj" />
   <Project Path="ForeignExchange/ForeignExchange.csproj" />
+  <Project Path="MappingExample/MappingExample.csproj" />
+  <Project Path="NumberingExample/NumberingExample.csproj" />
+  <Project Path="RestApiExample/RestApiExample.csproj" />
+  <Project Path="SerializationExample/SerializationExample.csproj" />
+  <Project Path="SettingsExample/SettingsExample.csproj" />
   <Project Path="ShellCommands/ShellCommands.csproj" />
   <Project Path="TimeAbstractions/TimeAbstractions.csproj" />
-  <Project Path="DataAccessExample/DataAccessExample.csproj" />
-  <Project Path="RestApiExample/RestApiExample.csproj" />
-  <Project Path="SettingsExample/SettingsExample.csproj" />
-  <Project Path="CachingExample/CachingExample.csproj" />
 </Solution>
