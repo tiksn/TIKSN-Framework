@@ -364,9 +364,11 @@ Task BuildMaui EstimateVersion, {
 Task Build Format, DownloadCurrencyCodes, BuildLanguageLocalization, BuildRegionLocalization, BuildCore, BuildMaui, {
     $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
     $solution = Resolve-Path -Path 'TIKSN Framework.slnx'
+    $examplesSolution = Resolve-Path -Path '.\examples\Examples.slnx'
     $nextVersion = $state.NextVersion
 
     Exec { dotnet build $solution /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:TreatWarningsAsErrors=true }
+    Exec { dotnet build $examplesSolution /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:TreatWarningsAsErrors=true }
 }
 
 # Synopsis: Test
