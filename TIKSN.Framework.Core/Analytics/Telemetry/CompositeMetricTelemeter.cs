@@ -1,24 +1,24 @@
 using System.Diagnostics;
-using TIKSN.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace TIKSN.Analytics.Telemetry;
 
 public class CompositeMetricTelemeter : IMetricTelemeter
 {
-    private readonly IPartialConfiguration<CommonTelemetryOptions> commonConfiguration;
+    private readonly IOptions<CommonTelemetryOptions> commonOptions;
     private readonly IEnumerable<IMetricTelemeter> metricTelemeters;
 
     public CompositeMetricTelemeter(
-        IPartialConfiguration<CommonTelemetryOptions> commonConfiguration,
+        IOptions<CommonTelemetryOptions> commonOptions,
         IEnumerable<IMetricTelemeter> metricTelemeters)
     {
-        this.commonConfiguration = commonConfiguration ?? throw new ArgumentNullException(nameof(commonConfiguration));
+        this.commonOptions = commonOptions ?? throw new ArgumentNullException(nameof(commonOptions));
         this.metricTelemeters = metricTelemeters ?? throw new ArgumentNullException(nameof(metricTelemeters));
     }
 
     public async Task TrackMetricAsync(string metricName, decimal metricValue)
     {
-        if (this.commonConfiguration.GetConfiguration().IsMetricTrackingEnabled)
+        if (this.commonOptions.Value.IsMetricTrackingEnabled)
         {
             foreach (var metricTelemeter in this.metricTelemeters)
             {

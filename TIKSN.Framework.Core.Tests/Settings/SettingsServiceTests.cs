@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Shouldly;
 using TIKSN.DependencyInjection;
 using TIKSN.FileSystem;
@@ -233,7 +234,11 @@ public class SettingsServiceTests
 
         configurationRoot["RelativePath"] = "settings.db";
 
-        _ = this.services.ConfigurePartial<FileSettingsServiceOptions, FileSettingsServiceOptionsValidator>(
-            configurationRoot);
+        _ = this.services
+            .AddOptions<FileSettingsServiceOptions>()
+            .Bind(configurationRoot)
+            .ValidateOnStart();
+        _ = this.services
+            .AddSingleton<IValidateOptions<FileSettingsServiceOptions>, FileSettingsServiceOptionsValidator>();
     }
 }

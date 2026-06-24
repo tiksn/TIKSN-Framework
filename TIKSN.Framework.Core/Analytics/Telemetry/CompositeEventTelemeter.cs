@@ -1,24 +1,24 @@
 using System.Diagnostics;
-using TIKSN.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace TIKSN.Analytics.Telemetry;
 
 public class CompositeEventTelemeter : IEventTelemeter
 {
-    private readonly IPartialConfiguration<CommonTelemetryOptions> commonConfiguration;
+    private readonly IOptions<CommonTelemetryOptions> commonOptions;
     private readonly IEnumerable<IEventTelemeter> eventTelemeters;
 
     public CompositeEventTelemeter(
-        IPartialConfiguration<CommonTelemetryOptions> commonConfiguration,
+        IOptions<CommonTelemetryOptions> commonOptions,
         IEnumerable<IEventTelemeter> eventTelemeters)
     {
-        this.commonConfiguration = commonConfiguration ?? throw new ArgumentNullException(nameof(commonConfiguration));
+        this.commonOptions = commonOptions ?? throw new ArgumentNullException(nameof(commonOptions));
         this.eventTelemeters = eventTelemeters ?? throw new ArgumentNullException(nameof(eventTelemeters));
     }
 
     public async Task TrackEventAsync(string name)
     {
-        if (this.commonConfiguration.GetConfiguration().IsEventTrackingEnabled)
+        if (this.commonOptions.Value.IsEventTrackingEnabled)
         {
             foreach (var eventTelemeter in this.eventTelemeters)
             {
@@ -38,7 +38,7 @@ public class CompositeEventTelemeter : IEventTelemeter
 
     public async Task TrackEventAsync(string name, IReadOnlyDictionary<string, string> properties)
     {
-        if (this.commonConfiguration.GetConfiguration().IsEventTrackingEnabled)
+        if (this.commonOptions.Value.IsEventTrackingEnabled)
         {
             foreach (var eventTelemeter in this.eventTelemeters)
             {
