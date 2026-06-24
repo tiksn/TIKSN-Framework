@@ -1,24 +1,24 @@
 using System.Diagnostics;
-using TIKSN.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace TIKSN.Analytics.Telemetry;
 
 public class CompositeTraceTelemeter : ITraceTelemeter
 {
-    private readonly IPartialConfiguration<CommonTelemetryOptions> commonConfiguration;
+    private readonly IOptions<CommonTelemetryOptions> commonOptions;
     private readonly IEnumerable<ITraceTelemeter> traceTelemeters;
 
     public CompositeTraceTelemeter(
-        IPartialConfiguration<CommonTelemetryOptions> commonConfiguration,
+        IOptions<CommonTelemetryOptions> commonOptions,
         IEnumerable<ITraceTelemeter> traceTelemeters)
     {
-        this.commonConfiguration = commonConfiguration ?? throw new ArgumentNullException(nameof(commonConfiguration));
+        this.commonOptions = commonOptions ?? throw new ArgumentNullException(nameof(commonOptions));
         this.traceTelemeters = traceTelemeters ?? throw new ArgumentNullException(nameof(traceTelemeters));
     }
 
     public async Task TrackTraceAsync(string message)
     {
-        if (this.commonConfiguration.GetConfiguration().IsTraceTrackingEnabled)
+        if (this.commonOptions.Value.IsTraceTrackingEnabled)
         {
             foreach (var traceTelemeter in this.traceTelemeters)
             {
@@ -38,7 +38,7 @@ public class CompositeTraceTelemeter : ITraceTelemeter
 
     public async Task TrackTraceAsync(string message, TelemetrySeverityLevel severityLevel)
     {
-        if (this.commonConfiguration.GetConfiguration().IsTraceTrackingEnabled)
+        if (this.commonOptions.Value.IsTraceTrackingEnabled)
         {
             foreach (var traceTelemeter in this.traceTelemeters)
             {

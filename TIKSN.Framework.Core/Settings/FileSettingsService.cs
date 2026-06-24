@@ -1,7 +1,7 @@
 using LanguageExt;
 using LiteDB;
 using Microsoft.Extensions.FileProviders;
-using TIKSN.Configuration;
+using Microsoft.Extensions.Options;
 using TIKSN.FileSystem;
 using static LanguageExt.Prelude;
 
@@ -11,14 +11,14 @@ namespace TIKSN.Settings;
 
 public class FileSettingsService : ISettingsService
 {
-    private readonly IPartialConfiguration<FileSettingsServiceOptions> configuration;
     private readonly IKnownFolders knownFolders;
+    private readonly IOptions<FileSettingsServiceOptions> options;
 
     public FileSettingsService(IKnownFolders knownFolders,
-        IPartialConfiguration<FileSettingsServiceOptions> configuration)
+        IOptions<FileSettingsServiceOptions> options)
     {
         this.knownFolders = knownFolders ?? throw new ArgumentNullException(nameof(knownFolders));
-        this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        this.options = options ?? throw new ArgumentNullException(nameof(options));
     }
 
     public T GetLocalSetting<T>(string name, T defaultValue) =>
@@ -304,7 +304,7 @@ public class FileSettingsService : ISettingsService
         out ILiteCollection<BsonDocument> settingsCollection,
         out BsonDocument bsonDocument)
     {
-        var fileInfo = fileProvider.GetFileInfo(this.configuration.GetConfiguration().RelativePath ?? string.Empty);
+        var fileInfo = fileProvider.GetFileInfo(this.options.Value.RelativePath ?? string.Empty);
 
         var connectionString = new ConnectionString { Filename = fileInfo.PhysicalPath };
 

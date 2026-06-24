@@ -1,24 +1,24 @@
 using System.Diagnostics;
-using TIKSN.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace TIKSN.Analytics.Telemetry;
 
 public class CompositeExceptionTelemeter : IExceptionTelemeter
 {
-    private readonly IPartialConfiguration<CommonTelemetryOptions> commonConfiguration;
+    private readonly IOptions<CommonTelemetryOptions> commonOptions;
     private readonly IEnumerable<IExceptionTelemeter> exceptionTelemeters;
 
     public CompositeExceptionTelemeter(
-        IPartialConfiguration<CommonTelemetryOptions> commonConfiguration,
+        IOptions<CommonTelemetryOptions> commonOptions,
         IEnumerable<IExceptionTelemeter> exceptionTelemeters)
     {
-        this.commonConfiguration = commonConfiguration ?? throw new ArgumentNullException(nameof(commonConfiguration));
+        this.commonOptions = commonOptions ?? throw new ArgumentNullException(nameof(commonOptions));
         this.exceptionTelemeters = exceptionTelemeters ?? throw new ArgumentNullException(nameof(exceptionTelemeters));
     }
 
     public async Task TrackExceptionAsync(Exception exception)
     {
-        if (this.commonConfiguration.GetConfiguration().IsExceptionTrackingEnabled)
+        if (this.commonOptions.Value.IsExceptionTrackingEnabled)
         {
             foreach (var exceptionTelemeter in this.exceptionTelemeters)
             {
@@ -38,7 +38,7 @@ public class CompositeExceptionTelemeter : IExceptionTelemeter
 
     public async Task TrackExceptionAsync(Exception exception, TelemetrySeverityLevel severityLevel)
     {
-        if (this.commonConfiguration.GetConfiguration().IsExceptionTrackingEnabled)
+        if (this.commonOptions.Value.IsExceptionTrackingEnabled)
         {
             foreach (var exceptionTelemeter in this.exceptionTelemeters)
             {

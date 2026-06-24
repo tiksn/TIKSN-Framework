@@ -22,7 +22,10 @@ configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
 });
 var configuration = configurationBuilder.Build();
 
-services.ConfigurePartial<FileSettingsServiceOptions, FileSettingsServiceOptionsValidator>(configuration.GetSection("Settings"));
+services
+    .AddOptions<FileSettingsServiceOptions>()
+    .Bind(configuration.GetSection("Settings"))
+    .ValidateOnStart();
 
 services.AddSingleton(new KnownFoldersConfiguration(System.Reflection.Assembly.GetExecutingAssembly(), KnownFolderVersionConsideration.None));
 
