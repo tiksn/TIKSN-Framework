@@ -44,7 +44,7 @@
     <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.71" />
     <PackageVersion Include="Microsoft.PowerShell.SDK" Version="7.6.4" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.300" />
-    <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.14.15" />
+    <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="18.7.23" />
     <PackageVersion Include="MongoDB.Driver" Version="3.9.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="NodaTime" Version="3.3.2" />
