@@ -212,7 +212,7 @@ public class EuropeanCentralBank : IEuropeanCentralBank
 
         await using (responseStream.ConfigureAwait(false))
         {
-            return XDocument.Load(responseStream);
+            return await XDocument.LoadAsync(responseStream, LoadOptions.None, cancellationToken).ConfigureAwait(false);
         }
     }
 

@@ -240,7 +240,7 @@ public class SwissNationalBank : ISwissNationalBank
 
         await using (responseStream.ConfigureAwait(false))
         {
-            return XDocument.Load(responseStream);
+            return await XDocument.LoadAsync(responseStream, LoadOptions.None, cancellationToken).ConfigureAwait(false);
         }
     }
 
