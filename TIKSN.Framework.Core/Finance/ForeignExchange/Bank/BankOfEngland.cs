@@ -294,7 +294,7 @@ public class BankOfEngland : IBankOfEngland
         XDocument xdoc;
         await using (responseStream.ConfigureAwait(false))
         {
-            xdoc = XDocument.Load(responseStream);
+            xdoc = await XDocument.LoadAsync(responseStream, LoadOptions.None, cancellationToken).ConfigureAwait(false);
         }
 
         List<ExchangeRate> rates = [];
