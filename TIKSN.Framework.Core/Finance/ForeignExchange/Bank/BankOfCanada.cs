@@ -22,6 +22,7 @@ public class BankOfCanada : IBankOfCanada
     private readonly ICurrencyPairFactory currencyPairFactory;
     private readonly HttpClient httpClient;
     private readonly Dictionary<DateOnly, Dictionary<CurrencyInfo, decimal>> rates;
+    private readonly Lock ratesLock = new();
     private readonly TimeProvider timeProvider;
     private DateTimeOffset lastFetchDate;
 
@@ -123,7 +124,7 @@ public class BankOfCanada : IBankOfCanada
             ratesList.Add(new Tuple<CurrencyInfo, DateOnly, decimal>(currency, rawItem.Item2, rawItem.Item3));
         }
 
-        lock (this.rates)
+        lock (this.ratesLock)
         {
             this.rates.Clear();
 
@@ -245,7 +246,18 @@ public class BankOfCanada : IBankOfCanada
             return otherwiseValueAtYesterday;
         }
 
-        return this.rates[date]; // Exception will be thrown
+        if (this.rates.Count > 0)
+        {
+            var closest = this.rates.Keys
+                .OrderBy(k => Math.Abs(k.DayNumber - date.DayNumber))
+                .First();
+
+            throw new KeyNotFoundException(
+                $"Exchange rates for date '{date:yyyy-MM-dd} ({date.DayOfWeek})' not found. Closest available date: '{closest:yyyy-MM-dd} ({closest.DayOfWeek})'.");
+        }
+
+        throw new KeyNotFoundException(
+            $"Exchange rates for date '{date:yyyy-MM-dd} ({date.DayOfWeek})' not found. No rates are available.");
     }
 
     private bool IsHomeCurrencyPair(CurrencyPair pair, DateTimeOffset asOn)
