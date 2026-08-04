@@ -47,6 +47,21 @@ public class CalendarYearTests
         containsZonedDateTime.ShouldBe(expectedContains);
     }
 
+    [Theory]
+    [InlineData(2023, "D5", "02023")]
+    public void GivenFormat_WhenToString_ThenResultShouldMatch(
+        int year, string format, string expected)
+    {
+        // Arrange
+        var calendarYear = new CalendarYear(year);
+
+        // Act
+        var actual = calendarYear.ToString(format, System.Globalization.CultureInfo.InvariantCulture);
+
+        // Assert
+        actual.ShouldBe(expected);
+    }
+
     [Fact]
     public void GivenYearBeforeCommonEra_WhenNextWouldBeZero_ThenNoneShouldBeReturned()
     {

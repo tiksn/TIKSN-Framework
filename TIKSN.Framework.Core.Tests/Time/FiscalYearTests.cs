@@ -47,6 +47,21 @@ public class FiscalYearTests
         containsZonedDateTime.ShouldBe(expectedContains);
     }
 
+    [Theory]
+    [InlineData(2023, "D5", "02023/02024")]
+    public void GivenFormat_WhenToString_ThenResultShouldMatch(
+        int year, string format, string expected)
+    {
+        // Arrange
+        var fiscalYear = new FiscalYear(year, new AnnualDate(month: 10, day: 1));
+
+        // Act
+        var actual = fiscalYear.ToString(format, System.Globalization.CultureInfo.InvariantCulture);
+
+        // Assert
+        actual.ShouldBe(expected);
+    }
+
     [Fact]
     public void GivenYearBeforeCommonEra_WhenNextWouldBeZero_ThenNoneShouldBeReturned()
     {

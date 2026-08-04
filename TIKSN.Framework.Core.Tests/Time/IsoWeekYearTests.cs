@@ -46,6 +46,21 @@ public class IsoWeekYearTests
         containsZonedDateTime.ShouldBe(expectedContains);
     }
 
+    [Theory]
+    [InlineData(2023, "D5", "02023")]
+    public void GivenFormat_WhenToString_ThenResultShouldMatch(
+        int year, string format, string expected)
+    {
+        // Arrange
+        var isoWeekYear = new IsoWeekYear(year);
+
+        // Act
+        var actual = isoWeekYear.ToString(format, System.Globalization.CultureInfo.InvariantCulture);
+
+        // Assert
+        actual.ShouldBe(expected);
+    }
+
     [Fact]
     public void GivenYearBeforeCommonEra_WhenNextWouldBeZero_ThenNoneShouldBeReturned()
     {

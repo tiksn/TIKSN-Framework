@@ -71,7 +71,7 @@ public class AcademicDayTests
 
         (firstDay < secondDay).ShouldBeTrue();
         firstDay.Equals(new AcademicDay(new AcademicYear(2023), 1)).ShouldBeTrue();
-        firstDay.ToString().ShouldBe("2023/2024-01");
+        firstDay.ToString().ShouldBe("2023/2024-001");
     }
 
     [Fact]

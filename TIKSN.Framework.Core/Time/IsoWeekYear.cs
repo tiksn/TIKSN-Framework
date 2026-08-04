@@ -119,7 +119,7 @@ public readonly struct IsoWeekYear : IYear<IsoWeekYear>
         => this.ToString(string.Empty, CultureInfo.InvariantCulture);
 
     public string ToString(string? format, IFormatProvider? formatProvider)
-        => this.weekYear.ToString(formatProvider);
+        => this.weekYear.ToString(format, formatProvider);
 
     public bool TryFormat(
         Span<char> destination,

@@ -72,7 +72,7 @@ public class FiscalDayTests
 
         (firstDay < secondDay).ShouldBeTrue();
         firstDay.Equals(new FiscalDay(new FiscalYear(2023, new AnnualDate(month: 10, day: 1)), 1)).ShouldBeTrue();
-        firstDay.ToString().ShouldBe("2023/2024-01");
+        firstDay.ToString().ShouldBe("2023/2024-001");
     }
 
     [Fact]
