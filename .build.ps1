@@ -136,6 +136,11 @@ Task RestorePackages Clean, EnsureCentralPackageVersions, {
 # Synopsis: Restore
 Task Restore RestoreWorkloads, RestoreTools, RestorePackages, DownloadCurrencyCodes
 
+# Synopsis: Check for outdated NuGet packages
+Task CheckUpdates Restore, {
+    Exec { dotnet outdated }
+}
+
 # Synopsis: Download Currency Codes
 Task DownloadCurrencyCodes Clean, {
     Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml' -OutFile 'TIKSN.Framework.Core/Finance/Resources/TableA1.xml'
@@ -361,7 +366,7 @@ Task BuildMaui EstimateVersion, {
 }
 
 # Synopsis: Build
-Task Build Format, DownloadCurrencyCodes, BuildLanguageLocalization, BuildRegionLocalization, BuildCore, BuildMaui, {
+Task Build Format, DownloadCurrencyCodes, CheckUpdates, BuildLanguageLocalization, BuildRegionLocalization, BuildCore, BuildMaui, {
     $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
     $solution = Resolve-Path -Path 'TIKSN Framework.slnx'
     $examplesSolution = Resolve-Path -Path '.\examples\Examples.slnx'
