@@ -133,8 +133,15 @@ Task RestorePackages Clean, EnsureCentralPackageVersions, {
     Exec { dotnet restore $solution }
 }
 
+# Synopsis: Restore PowerShell modules
+Task RestorePowerShellModules Clean, {
+    if (-not (Get-Module -ListAvailable -Name PSScriptAnalyzer)) {
+        Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
+    }
+}
+
 # Synopsis: Restore
-Task Restore RestoreWorkloads, RestoreTools, RestorePackages, DownloadCurrencyCodes
+Task Restore RestoreWorkloads, RestoreTools, RestorePowerShellModules, RestorePackages, DownloadCurrencyCodes
 
 # Synopsis: Check for outdated NuGet packages
 Task CheckUpdates Restore, {
@@ -167,7 +174,7 @@ Task FormatXmlFiles Clean, CleanupCode, {
     Get-ChildItem -Include *.xml, *.config, *.props, *.targets, *.nuspec, *.resx, *.ruleset, *.vsixmanifest, *.vsct, *.xlf, *.csproj, *.fsproj, *.vbproj, *.slnx -Recurse -File
     | Where-Object { -not (git check-ignore $PSItem) }
     | ForEach-Object {
-        Write-Output "Formatting XML File: $PSItem"
+        print Cyan "Formatting XML File: $PSItem"
         $content = Get-Content -Path $PSItem -Raw
         $xml = [xml]$content
         $xml.Save($PSItem)
@@ -254,8 +261,22 @@ Task FormatStyleSolution Restore, {
 # Synopsis: Format Style
 Task FormatStyle Restore, FormatStyleLanguageLocalization, FormatStyleRegionLocalization, FormatStyleCore, FormatStyleMaui, FormatStyleSolution, CleanupCode
 
+# Synopsis: Format PowerShell Files
+Task FormatPowerShellFiles RestorePowerShellModules, {
+    Get-ChildItem -Include *.ps1, *.psm1, *.psd1 -Recurse -File
+    | Where-Object { -not (git check-ignore $PSItem) }
+    | ForEach-Object {
+        print Cyan "Formatting PowerShell File: $PSItem"
+        $content = Get-Content -Path $PSItem -Raw
+        $formatted = Invoke-Formatter -ScriptDefinition $content
+        if ($null -ne $formatted -and $content -ne $formatted) {
+            Set-Content -Path $PSItem.FullName -Value $formatted -NoNewline
+        }
+    }
+}
+
 # Synopsis: Format
-Task Format Restore, FormatXmlFiles, FormatWhitespace, FormatStyle, FormatAnalyzers, CleanupCode
+Task Format Restore, FormatPowerShellFiles, FormatXmlFiles, FormatWhitespace, FormatStyle, FormatAnalyzers, CleanupCode
 
 # Synopsis: Estimate Next Version
 Task EstimateVersion Restore, {
