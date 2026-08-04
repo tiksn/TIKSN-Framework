@@ -120,7 +120,7 @@ public readonly struct CalendarYear : IYear<CalendarYear>
         => this.ToString(string.Empty, CultureInfo.InvariantCulture);
 
     public string ToString(string? format, IFormatProvider? formatProvider)
-        => this.absoluteYear.ToString(formatProvider);
+        => this.absoluteYear.ToString(format, formatProvider);
 
     public bool TryFormat(
         Span<char> destination,

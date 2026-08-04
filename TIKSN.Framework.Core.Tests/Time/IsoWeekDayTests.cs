@@ -114,6 +114,21 @@ public class IsoWeekDayTests
     }
 
     [Theory]
+    [InlineData(2020, 1, IsoDayOfWeek.Monday, "D5", "02020-W01-1")]
+    public void GivenFormat_WhenToString_ThenResultShouldMatch(
+        int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek, string format, string expected)
+    {
+        // Arrange
+        var isoWeekDay = new IsoWeekDay(weekYear, weekOfWeekYear, dayOfWeek);
+
+        // Act
+        var actual = isoWeekDay.ToString(format, System.Globalization.CultureInfo.InvariantCulture);
+
+        // Assert
+        actual.ShouldBe(expected);
+    }
+
+    [Theory]
     [InlineData(0, 1, IsoDayOfWeek.Monday)]
     [InlineData(2021, 53, IsoDayOfWeek.Monday)]
     [InlineData(2020, 1, (IsoDayOfWeek)0)]

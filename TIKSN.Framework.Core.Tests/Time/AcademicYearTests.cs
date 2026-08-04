@@ -47,6 +47,21 @@ public class AcademicYearTests
         containsZonedDateTime.ShouldBe(expectedContains);
     }
 
+    [Theory]
+    [InlineData(2023, "D5", "02023/02024")]
+    public void GivenFormat_WhenToString_ThenResultShouldMatch(
+        int year, string format, string expected)
+    {
+        // Arrange
+        var academicYear = new AcademicYear(year);
+
+        // Act
+        var actual = academicYear.ToString(format, System.Globalization.CultureInfo.InvariantCulture);
+
+        // Assert
+        actual.ShouldBe(expected);
+    }
+
     [Fact]
     public void GivenYearBeforeCommonEra_WhenNextWouldBeZero_ThenNoneShouldBeReturned()
     {
