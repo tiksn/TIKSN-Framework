@@ -68,7 +68,7 @@ Task Init {
     }
 
     $state | Export-Clixml -Path ".\.trash\$Instance\state.clixml"
-    Write-Output $state
+    print White ($state | Out-String)
 }
 
 # Synopsis: Clean previous build leftovers
@@ -174,7 +174,7 @@ Task FormatXmlFiles Clean, CleanupCode, {
     Get-ChildItem -Include *.xml, *.config, *.props, *.targets, *.nuspec, *.resx, *.ruleset, *.vsixmanifest, *.vsct, *.xlf, *.csproj, *.fsproj, *.vbproj, *.slnx -Recurse -File
     | Where-Object { -not (git check-ignore $PSItem) }
     | ForEach-Object {
-        print Cyan "Formatting XML File: $PSItem"
+        print White "Formatting XML File: $PSItem"
         $content = Get-Content -Path $PSItem -Raw
         $xml = [xml]$content
         $xml.Save($PSItem)
@@ -266,7 +266,7 @@ Task FormatPowerShellFiles RestorePowerShellModules, {
     Get-ChildItem -Include *.ps1, *.psm1, *.psd1 -Recurse -File
     | Where-Object { -not (git check-ignore $PSItem) }
     | ForEach-Object {
-        print Cyan "Formatting PowerShell File: $PSItem"
+        print White "Formatting PowerShell File: $PSItem"
         $content = Get-Content -Path $PSItem -Raw
         $formatted = Invoke-Formatter -ScriptDefinition $content
         if ($null -ne $formatted -and $content -ne $formatted) {
@@ -316,10 +316,9 @@ Task EstimateVersion Restore, {
         }
     }
 
-    $state.NextVersion
     $state | Export-Clixml -Path ".\.trash\$Instance\state.clixml"
-    Write-Output "Next version estimated to be $($state.NextVersion)"
-    Write-Output $state
+    print White "Next version estimated to be $($state.NextVersion)"
+    print White ($state | Out-String)
 }
 
 # Synopsis: Validate Next Version
