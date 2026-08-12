@@ -59,5 +59,5 @@ public partial class CompositeAssemblyStringLocalizerTests
             "Duplicate Localization Key `{LocalizationKey}` Name `{LocalizationName}` Value `{LocalizationValue}` SearchedLocation `{LocalizationSearchedLocation}`")]
     private static partial void LogDuplicateItem(
         ILogger logger, string localizationKey, string localizationName, string localizationValue,
-        string localizationSearchedLocation);
+        string? localizationSearchedLocation);
 }

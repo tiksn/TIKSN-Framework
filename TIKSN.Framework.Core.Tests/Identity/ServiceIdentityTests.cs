@@ -12,14 +12,16 @@ public class ServiceIdentityTests
     public void Constructor_ApplicationNameIsNullOrWhiteSpace_ThrowsArgumentException()
     {
         // Arrange
-        string applicationName1 = null;
+        string? applicationName1 = null;
         var applicationName2 = "";
         var applicationName3 = " ";
         var componentNames = toSeq(["ServiceA",]);
         var instanceId = ServiceInstanceId.Parse(Guid.NewGuid().ToString());
 
         // Act & Assert
+#pragma warning disable CS8604 // Possible null reference argument.
         _ = Assert.Throws<ArgumentException>(() => new ServiceIdentity(applicationName1, componentNames, instanceId));
+#pragma warning restore CS8604 // Possible null reference argument.
         _ = Assert.Throws<ArgumentException>(() => new ServiceIdentity(applicationName2, componentNames, instanceId));
         _ = Assert.Throws<ArgumentException>(() => new ServiceIdentity(applicationName3, componentNames, instanceId));
     }
@@ -44,11 +46,13 @@ public class ServiceIdentityTests
     {
         // Arrange
         var applicationName = "MyApp";
-        IEnumerable<string> componentNames = null;
+        IEnumerable<string>? componentNames = null;
         var instanceId = ServiceInstanceId.Parse(Guid.NewGuid().ToString());
 
         // Act
+#pragma warning disable CS8604 // Possible null reference argument.
         var serviceIdentity = new ServiceIdentity(applicationName, componentNames, instanceId);
+#pragma warning restore CS8604 // Possible null reference argument.
 
         // Assert
         Assert.True(serviceIdentity.ComponentPath.IsNone);

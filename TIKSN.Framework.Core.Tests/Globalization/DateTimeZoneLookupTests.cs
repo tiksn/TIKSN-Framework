@@ -115,18 +115,20 @@ public class DateTimeZoneLookupTests
         // Arrange
 
         var lookup = CreateServiceProvider().GetRequiredService<IDateTimeZoneLookup>();
-        RegionInfo nullRegion = null;
-        CountryInfo nullCountry = null;
-        DateTimeZone nullTimeZone = null;
+        RegionInfo? nullRegion = null;
+        CountryInfo? nullCountry = null;
+        DateTimeZone? nullTimeZone = null;
 
         // Act & Assert
 
+#pragma warning disable CS8604 // Possible null reference argument.
         _ = Should.Throw<ArgumentNullException>(() => lookup.ListRegionalTimeZones(nullRegion));
         _ = Should.Throw<ArgumentNullException>(() => lookup.ListCountryTimeZones(nullCountry));
         _ = Should.Throw<ArgumentNullException>(() => lookup.ResolveTimeZoneRegion(nullTimeZone));
         _ = Should.Throw<ArgumentNullException>(() => lookup.ResolveTimeZoneCountry(nullTimeZone));
         _ = Should.Throw<ArgumentNullException>(() => lookup.TryResolveTimeZoneRegion(nullTimeZone, out _));
         _ = Should.Throw<ArgumentNullException>(() => lookup.TryResolveTimeZoneCountry(nullTimeZone, out _));
+#pragma warning restore CS8604 // Possible null reference argument.
     }
 
     [Fact]

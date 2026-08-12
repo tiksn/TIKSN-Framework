@@ -972,7 +972,7 @@ public class MoneyTests
     [InlineData("GB", "66.32", "sv-SE", null, "66,32 £")]
     [InlineData("AM", "2500", "en-US", "I", "AMD2,500.00")]
     [InlineData("AM", "2500.2", "en-GB", "I3", "AMD2,500.200")]
-    public void ToStringWithFormat(string countryCode, string amount, string culture, string format, string expected)
+    public void ToStringWithFormat(string countryCode, string amount, string culture, string? format, string expected)
     {
         var country = new RegionInfo(countryCode);
         var currency = new CurrencyInfo(country);

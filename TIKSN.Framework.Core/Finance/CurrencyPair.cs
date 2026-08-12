@@ -19,9 +19,9 @@ public sealed class CurrencyPair : IEquatable<CurrencyPair>
 
     public CurrencyInfo CounterCurrency { get; }
 
-    public static bool operator ==(CurrencyPair pair1, CurrencyPair pair2) => Equals(pair1, pair2);
+    public static bool operator ==(CurrencyPair? pair1, CurrencyPair? pair2) => Equals(pair1, pair2);
 
-    public static bool operator !=(CurrencyPair pair1, CurrencyPair pair2) => !Equals(pair1, pair2);
+    public static bool operator !=(CurrencyPair? pair1, CurrencyPair? pair2) => !Equals(pair1, pair2);
 
     public bool Equals(CurrencyPair? other)
     {
@@ -64,7 +64,7 @@ public sealed class CurrencyPair : IEquatable<CurrencyPair>
 
     public override string ToString() => $"{this.BaseCurrency}/{this.CounterCurrency}";
 
-    private static bool Equals(CurrencyPair pair1, CurrencyPair pair2)
+    private static bool Equals(CurrencyPair? pair1, CurrencyPair? pair2)
     {
         if (pair1 is null)
         {

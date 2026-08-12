@@ -79,7 +79,7 @@ public class ServiceProviderFixture : IDisposable, IAsyncLifetime
 
         this.hosts.Add(key, host);
 
-        Dictionary<string, string> GetInMemoryConfiguration() => new()
+        Dictionary<string, string?> GetInMemoryConfiguration() => new()
         {
             { "ConnectionStrings:Mongo", this.GetMongoConnectionString() },
             {

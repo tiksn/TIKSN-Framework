@@ -43,7 +43,9 @@ public class OneTimePricingTests
     {
         // Act
 
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
         Action action = () => _ = new OneTimePricing(null);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
         // Assert
 

@@ -28,7 +28,7 @@ public class CountryInfoTests
         // Arrange
 
         var country = CreateCountryFactory().Create("US");
-        CountryInfo nullCountry = null;
+        CountryInfo? nullCountry = null;
 
         // Act & Assert
 

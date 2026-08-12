@@ -94,11 +94,13 @@ public class EnvironmentNameTests
 
         var environmentName1 = EnvironmentName
             .Parse(name1, asciiOnly: true, CultureInfo.InvariantCulture)
-            .Match(s => s, () => null);
+            .Match(s => s,
+                () => throw new System.InvalidOperationException("Invalid environment name"));
 
         var environmentName2 = EnvironmentName
             .Parse(name2, asciiOnly: true, CultureInfo.InvariantCulture)
-            .Match(s => s, () => null);
+            .Match(s => s,
+                () => throw new System.InvalidOperationException("Invalid environment name"));
 
         // Act
 
@@ -132,11 +134,13 @@ public class EnvironmentNameTests
 
         var environmentName1 = EnvironmentName
             .Parse(name1, asciiOnly: true, CultureInfo.InvariantCulture)
-            .Match(s => s, () => null);
+            .Match(s => s,
+                () => throw new System.InvalidOperationException("Invalid environment name"));
 
         var environmentName2 = EnvironmentName
             .Parse(name2, asciiOnly: true, CultureInfo.InvariantCulture)
-            .Match(s => s, () => null);
+            .Match(s => s,
+                () => throw new System.InvalidOperationException("Invalid environment name"));
 
         // Act
 

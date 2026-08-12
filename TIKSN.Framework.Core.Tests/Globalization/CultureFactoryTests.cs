@@ -31,11 +31,13 @@ public class CultureFactoryTests
         // Arrange
 
         var cultureFactory = CreateCultureFactory();
-        string name = null;
+        string? name = null;
 
         // Act
 
+#pragma warning disable CS8604 // Possible null reference argument.
         var created = cultureFactory.TryCreate(name, out var culture);
+#pragma warning restore CS8604 // Possible null reference argument.
 
         // Assert
 

@@ -117,10 +117,10 @@ public class TestEntitlementsConverter : IEntitlementsConverter<TestEntitlements
         }
 
         return new TestEntitlements(
-            entitlementsData.Name,
-            entitlementsData.Quantity,
-            entitlementsData.Salt.ToSeq(),
-            entitlementsData.CompanyId,
-            entitlementsData.EmployeeId);
+            entitlementsData?.Name ?? "",
+            entitlementsData?.Quantity ?? 0,
+            entitlementsData?.Salt?.ToSeq() ?? Seq<byte>.Empty,
+            entitlementsData?.CompanyId ?? 0,
+            entitlementsData?.EmployeeId ?? 0);
     }
 }

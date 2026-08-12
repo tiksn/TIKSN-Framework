@@ -96,9 +96,11 @@ public class CurrencyPairFactoryTests
     public void GivenNullCurrency_WhenTryCreateCalled_ThenItShouldReturnFalse()
     {
         var currencyPairFactory = CreateCurrencyPairFactory();
-        CurrencyInfo currency = null;
+        CurrencyInfo? currency = null;
 
+#pragma warning disable CS8604 // Possible null reference argument.
         var created = currencyPairFactory.TryCreate(currency, new CurrencyInfo("EUR"), out var pair);
+#pragma warning restore CS8604 // Possible null reference argument.
 
         created.ShouldBeFalse();
         pair.ShouldBeNull();

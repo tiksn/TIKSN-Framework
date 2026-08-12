@@ -51,7 +51,7 @@ public class DistributedCacheDecoratorBaseTests
         _ = containerBuilder.RegisterType<RealTestService>().As<ITestService>();
         containerBuilder.RegisterDecorator<TestServiceMemoryCacheDecorator, ITestService>();
         var serviceProvider = new AutofacServiceProvider(containerBuilder.Build());
-        this.testService = serviceProvider.GetService<ITestService>();
+        this.testService = serviceProvider.GetRequiredService<ITestService>();
     }
 
     [Fact]

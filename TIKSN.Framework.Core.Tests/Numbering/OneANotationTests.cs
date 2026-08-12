@@ -31,16 +31,20 @@ public class OneANotationTests
     [InlineData("0A")]
     [InlineData("0-A")]
     [InlineData("65536A")]
-    public void GivenInvalidString_WhenParse_ThenResultShouldBeNone(string input)
+    public void GivenInvalidString_WhenParse_ThenResultShouldBeNone(string? input)
     {
+#pragma warning disable CS8604 // Possible null reference argument.
         var result = OneANotation<ushort>.Parse(input, asciiOnly: false, CultureInfo.InvariantCulture);
+#pragma warning restore CS8604 // Possible null reference argument.
 
         result.IsNone.ShouldBeTrue();
     }
 
     [Fact]
     public void GivenOneANotation_WhenConstructedWithNullSerial_ThenThrowsArgumentNullException() =>
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
         Should.Throw<ArgumentNullException>(() => new OneANotation<ushort>(number: 1, serial: null));
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
     [Fact]
     public void GivenOneANotation_WhenConstructedWithValidParameters_ThenPropertiesSet()
@@ -77,7 +81,7 @@ public class OneANotationTests
     [InlineData("1AA", "2AA", null)]
     [InlineData("65535AA", null, "65534AA")]
     public void GivenOneANotation_WhenGetNextAndPrevious_ThenResultShouldBe(
-        string input, string expectedNext, string expectedPrevious)
+        string input, string? expectedNext, string? expectedPrevious)
     {
         var oneANotation = OneANotation<ushort>.Parse(input, asciiOnly: false, CultureInfo.InvariantCulture)
             .Match(x => x, () => throw new InvalidOperationException());
@@ -107,7 +111,7 @@ public class OneANotationTests
     [InlineData("G", "1A")]
     [InlineData("N", "1A")]
     [InlineData("H", "1-A")]
-    public void GivenOneANotation_WhenToStringWithFormat_ThenResultShouldBe(string format, string expected)
+    public void GivenOneANotation_WhenToStringWithFormat_ThenResultShouldBe(string? format, string expected)
     {
         var oneANotation = OneANotation<ushort>.Parse("1A", asciiOnly: false, CultureInfo.InvariantCulture)
             .Match(x => x, () => throw new InvalidOperationException());
@@ -182,9 +186,11 @@ public class OneANotationTests
     [InlineData("", false)]
     [InlineData("A", false)]
     [InlineData("0A", false)]
-    public void GivenString_WhenTryParse_ThenResultShouldBe(string input, bool expectedSuccess)
+    public void GivenString_WhenTryParse_ThenResultShouldBe(string? input, bool expectedSuccess)
     {
+#pragma warning disable CS8604 // Possible null reference argument.
         var success = OneANotation<ushort>.TryParse(input, CultureInfo.InvariantCulture, out var result);
+#pragma warning restore CS8604 // Possible null reference argument.
 
         success.ShouldBe(expectedSuccess);
         if (expectedSuccess)

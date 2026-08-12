@@ -31,11 +31,13 @@ public class RegionFactoryTests
         // Arrange
 
         var regionFactory = CreateRegionFactory();
-        string name = null;
+        string? name = null;
 
         // Act
 
+#pragma warning disable CS8604 // Possible null reference argument.
         var created = regionFactory.TryCreate(name, out var region);
+#pragma warning restore CS8604 // Possible null reference argument.
 
         // Assert
 
