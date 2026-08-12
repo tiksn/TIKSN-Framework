@@ -107,9 +107,9 @@ public class CurrencyPairTests
         var poundSterling = new CurrencyInfo(unitedKingdom);
 
         var pair1 = new CurrencyPair(poundSterling, usDollar);
-        CurrencyPair pair2 = null;
-        object pair3 = null;
-        CurrencyPair pair4 = null;
+        CurrencyPair? pair2 = null;
+        object? pair3 = null;
+        CurrencyPair? pair4 = null;
 
         pair1.Equals(pair2).ShouldBeFalse();
         pair1.Equals(pair3).ShouldBeFalse();

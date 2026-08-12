@@ -25,7 +25,7 @@ public class CurrencyFactoryTests
         // Arrange
 
         var configurationRoot = new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string>
+            .AddInMemoryCollection(new Dictionary<string, string?>
             {
                 { "CurrencyUnionRedirections:XZZ", "uk-UA" },
             })
@@ -58,7 +58,7 @@ public class CurrencyFactoryTests
         // Arrange
 
         var configurationRoot = new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string>
+            .AddInMemoryCollection(new Dictionary<string, string?>
             {
                 { "RegionalCurrencyRedirections:XK", "uk-UA" },
             })
@@ -228,11 +228,13 @@ public class CurrencyFactoryTests
         _ = services.AddFrameworkCore();
         var serviceProvider = services.BuildServiceProvider();
         var currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
-        CountryInfo country = null;
+        CountryInfo? country = null;
 
         // Act
 
+#pragma warning disable CS8604 // Possible null reference argument.
         var created = currencyFactory.TryCreateAll(country, out var currencies);
+#pragma warning restore CS8604 // Possible null reference argument.
 
         // Assert
 
@@ -249,11 +251,13 @@ public class CurrencyFactoryTests
         _ = services.AddFrameworkCore();
         var serviceProvider = services.BuildServiceProvider();
         var currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
-        CountryInfo country = null;
+        CountryInfo? country = null;
 
         // Act
 
+#pragma warning disable CS8604 // Possible null reference argument.
         var created = currencyFactory.TryCreate(country, out var currency);
+#pragma warning restore CS8604 // Possible null reference argument.
 
         // Assert
 
@@ -270,11 +274,13 @@ public class CurrencyFactoryTests
         _ = services.AddFrameworkCore();
         var serviceProvider = services.BuildServiceProvider();
         var currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
-        string isoCurrencySymbol = null;
+        string? isoCurrencySymbol = null;
 
         // Act
 
+#pragma warning disable CS8604 // Possible null reference argument.
         var created = currencyFactory.TryCreate(isoCurrencySymbol, out var currency);
+#pragma warning restore CS8604 // Possible null reference argument.
 
         // Assert
 
@@ -291,11 +297,13 @@ public class CurrencyFactoryTests
         _ = services.AddFrameworkCore();
         var serviceProvider = services.BuildServiceProvider();
         var currencyFactory = serviceProvider.GetRequiredService<ICurrencyFactory>();
-        RegionInfo region = null;
+        RegionInfo? region = null;
 
         // Act
 
+#pragma warning disable CS8604 // Possible null reference argument.
         var created = currencyFactory.TryCreate(region, out var currency);
+#pragma warning restore CS8604 // Possible null reference argument.
 
         // Assert
 

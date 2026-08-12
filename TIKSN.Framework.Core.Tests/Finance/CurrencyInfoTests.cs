@@ -247,9 +247,9 @@ public class CurrencyInfoTests
         var unitedStates = new RegionInfo("US");
         var usDollar1 = new CurrencyInfo(unitedStates);
         var usDollar2 = usDollar1;
-        CurrencyInfo someCurrency1 = null;
+        CurrencyInfo? someCurrency1 = null;
         var something1 = new object();
-        object something2 = null;
+        object? something2 = null;
         object usDollar3 = usDollar1;
         object usDollar4 = new CurrencyInfo(unitedStates);
 
@@ -267,7 +267,7 @@ public class CurrencyInfoTests
     {
         var unitedStates = new RegionInfo("US");
         var usDollar1 = new CurrencyInfo(unitedStates);
-        CurrencyInfo usDollar2 = null;
+        CurrencyInfo? usDollar2 = null;
 
         (usDollar1 != usDollar2).ShouldBeTrue();
         (usDollar1 == usDollar2).ShouldBeFalse();

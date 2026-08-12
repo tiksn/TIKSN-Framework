@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using LanguageExt;
 using NuGet.Versioning;
@@ -107,11 +108,11 @@ public sealed class VersionSeries : IEquatable<VersionSeries>
         throw new InvalidFormatException("Unable to parse string to VersionSeries");
     }
 
-    public static bool TryParse(string? input, out VersionSeries result)
+    public static bool TryParse(string? input, [MaybeNullWhen(false)] out VersionSeries result)
     {
         if (input is null)
         {
-            result = null!;
+            result = null;
             return false;
         }
 
@@ -127,7 +128,7 @@ public sealed class VersionSeries : IEquatable<VersionSeries>
             return true;
         }
 
-        result = null!;
+        result = null;
         return false;
     }
 

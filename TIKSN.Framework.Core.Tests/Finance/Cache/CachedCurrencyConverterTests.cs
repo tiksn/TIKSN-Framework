@@ -79,11 +79,13 @@ public class CachedCurrencyConverterTests
         var interval = TimeSpan.FromDays(10);
         var capacity = 20;
 
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
         _ = new Func<object>(() =>
                 new CachedCurrencyConverter(null, Helper.CurrencyPairFactory, fakeTimeProvider, interval, interval,
                     capacity,
                     capacity))
             .ShouldThrow<ArgumentNullException>();
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
     }
 
     [Fact]

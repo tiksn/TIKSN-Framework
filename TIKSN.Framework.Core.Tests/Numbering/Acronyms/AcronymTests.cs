@@ -30,12 +30,14 @@ public class AcronymTests
     [InlineData("cbc", true, "CBC")]
     [InlineData("TLDR", false, null)]
     [InlineData("TLDR", true, null)]
-    public void GivenTLA_WhenParsed_ThenValueShouldBe(string input, bool asciiOnly, string expectedValue)
+    public void GivenTLA_WhenParsed_ThenValueShouldBe(string? input, bool asciiOnly, string? expectedValue)
     {
         // Arrange
 
         // Act
+#pragma warning disable CS8604 // Possible null reference argument.
         var actual = TLA.Parse(input, asciiOnly, CultureInfo.InvariantCulture);
+#pragma warning restore CS8604 // Possible null reference argument.
         var actualValue = actual.Map(x => x.ToString()).MatchUnsafe(x => x, () => null);
 
         // Assert
@@ -49,13 +51,15 @@ public class AcronymTests
     [InlineData("ABCD", "ABCD")]
     [InlineData("ABCDE", null)]
     public void GivenVariableLengthAcronym_WhenParsed_ThenValueShouldRespectLengthRange(
-        string input,
-        string expectedValue)
+        string? input,
+        string? expectedValue)
     {
         // Arrange
 
         // Act
+#pragma warning disable CS8604 // Possible null reference argument.
         var actual = VariableLengthAcronym.Parse(input, asciiOnly: true, CultureInfo.InvariantCulture);
+#pragma warning restore CS8604 // Possible null reference argument.
         var actualValue = actual.Map(x => x.ToString()).MatchUnsafe(x => x, () => null);
 
         // Assert

@@ -14,7 +14,7 @@ public class SimpleSerialNumberTests
     [InlineData("", "ABC-123")]
     [InlineData("G", "ABC-123")]
     [InlineData("N", "ABC123")]
-    public void GivenSerialNumber_WhenFormatted_ThenValueShouldBe(string format, string expected)
+    public void GivenSerialNumber_WhenFormatted_ThenValueShouldBe(string? format, string expected)
     {
         // Arrange
         var simpleSerialNumber = SimpleSerialNumber<TLA, ushort>
@@ -33,7 +33,7 @@ public class SimpleSerialNumberTests
     [InlineData("ABC-0", null, "ABC-1")]
     [InlineData("ABC-65535", "ABC-65534", null)]
     public void GivenSerialNumber_WhenNextAndPreviousRequested_ThenValueShouldBe(
-        string serialNumber, string previous, string next)
+        string serialNumber, string? previous, string? next)
     {
         // Arrange
         var simpleSerialNumber = SimpleSerialNumber<TLA, ushort>
@@ -96,12 +96,14 @@ public class SimpleSerialNumberTests
     [InlineData("TLDR-123", true, null)]
     [InlineData("TLDR123", false, null)]
     [InlineData("TLDR123", true, null)]
-    public void GivenSerialNumber_WhenParsed_ThenValueShouldBe(string input, bool asciiOnly, string expectedValue)
+    public void GivenSerialNumber_WhenParsed_ThenValueShouldBe(string? input, bool asciiOnly, string? expectedValue)
     {
         // Arrange
 
         // Act
+#pragma warning disable CS8604 // Possible null reference argument.
         var actual = SimpleSerialNumber<TLA, ushort>.Parse(input, asciiOnly, CultureInfo.InvariantCulture);
+#pragma warning restore CS8604 // Possible null reference argument.
         var actualValue = actual.Map(x => x.ToString()).MatchUnsafe(x => x, () => null);
 
         // Assert

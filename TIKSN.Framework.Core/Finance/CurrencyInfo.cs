@@ -34,9 +34,9 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
 
     public bool IsFund { get; }
 
-    public static bool operator ==(CurrencyInfo first, CurrencyInfo second) => Equals(first, second);
+    public static bool operator ==(CurrencyInfo? first, CurrencyInfo? second) => Equals(first, second);
 
-    public static bool operator !=(CurrencyInfo first, CurrencyInfo second) => !Equals(first, second);
+    public static bool operator !=(CurrencyInfo? first, CurrencyInfo? second) => !Equals(first, second);
 
     public bool Equals(CurrencyInfo? other)
     {
@@ -72,21 +72,16 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
 
     public override string ToString() => this.ISOCurrencySymbol;
 
-    private static bool Equals(CurrencyInfo first, CurrencyInfo second)
+    private static bool Equals(CurrencyInfo? first, CurrencyInfo? second)
     {
+        if (first is null)
+        {
+            return second is null;
+        }
+
         if (ReferenceEquals(first, second))
         {
             return true;
-        }
-
-        if (first is null)
-        {
-            return false;
-        }
-
-        if (second is null)
-        {
-            return false;
         }
 
         return first.Equals(second);

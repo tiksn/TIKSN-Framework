@@ -420,6 +420,7 @@ public class CountryFactoryTests
 
         // Act
         var country = countryFactory.Create(cultureName);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         TestContext.Current.TestOutputHelper.WriteLine($"Culture: {cultureName}");
         TestContext.Current.TestOutputHelper.WriteLine($"Country: {country}");
         TestContext.Current.TestOutputHelper.WriteLine($"Country Name: {country.Name}");
@@ -463,6 +464,7 @@ public class CountryFactoryTests
             TestContext.Current.TestOutputHelper.WriteLine(
                 $"Country Region {i + 1} Currency Native Name: {region.CurrencyNativeName}");
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         // Assert
         country.Name.Length.ShouldBe(2);
@@ -532,7 +534,7 @@ public class CountryFactoryTests
         fromCulture.ShouldBeSameAs(fromCountry);
     }
 
-    private static ICountryFactory CreateCountryFactory(Action<CountryInfoOptions> configure = null)
+    private static ICountryFactory CreateCountryFactory(Action<CountryInfoOptions>? configure = null)
     {
         var services = new ServiceCollection();
         _ = services.AddFrameworkCore();

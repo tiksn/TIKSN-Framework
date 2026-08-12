@@ -10,6 +10,7 @@
     <Product>TIKSN Framework Tests</Product>
     <Authors>TIKSN Development</Authors>
     <RootNamespace>TIKSN.Tests</RootNamespace>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Grpc.Tools">

@@ -28,7 +28,7 @@ public class MongoUnitOfWorkTests
             Value = Guid.NewGuid(),
             Version = 1,
         };
-        TestMongoEntity retrievedEntity = null;
+        TestMongoEntity? retrievedEntity = null;
 
         var mongoUnitOfWorkFactory =
             this.serviceProviderFixture.GetServiceProvider("MongoDB").GetRequiredService<IUnitOfWorkFactory>();
@@ -59,6 +59,7 @@ public class MongoUnitOfWorkTests
             await mongoUnitOfWork.CompleteAsync(TestContext.Current.CancellationToken);
         }
 
+        Assert.NotNull(retrievedEntity);
         retrievedEntity.Version.ShouldBe(4);
 
         static Task UpdateEntityWithRetry(IUnitOfWorkFactory mongoUnitOfWorkFactory, Guid testEntityId) => Policy
@@ -92,7 +93,7 @@ public class MongoUnitOfWorkTests
             ID = testEntityId,
             Value = Guid.NewGuid(),
         };
-        TestMongoEntity retrievedEntity = null;
+        TestMongoEntity? retrievedEntity = null;
 
         var mongoUnitOfWorkFactory =
             this.serviceProviderFixture.GetServiceProvider("MongoDB").GetRequiredService<IUnitOfWorkFactory>();
@@ -118,6 +119,7 @@ public class MongoUnitOfWorkTests
             await mongoUnitOfWork.CompleteAsync(TestContext.Current.CancellationToken);
         }
 
+        Assert.NotNull(retrievedEntity);
         retrievedEntity.Value.ShouldBe(testEntity.Value);
     }
 }

@@ -13,7 +13,7 @@ public class SitemapPageTests
     {
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
             priority: 0.5);
-        SitemapPage p2 = null;
+        SitemapPage? p2 = null;
 
         (null == p1).ShouldBeFalse();
         (null == p2).ShouldBeTrue();
@@ -200,7 +200,7 @@ public class SitemapPageTests
     {
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
             priority: 0.5);
-        object p2 = null;
+        object? p2 = null;
 
         p1.Equals(p2).ShouldBeFalse();
     }
@@ -251,7 +251,7 @@ public class SitemapPageTests
     {
         var p1 = new SitemapPage(new Uri("https://www.microsoft.com/"), DateTime.Now, SitemapPage.Frequency.Always,
             priority: 0.5);
-        SitemapPage p2 = null;
+        SitemapPage? p2 = null;
 
         (null != p1).ShouldBeTrue();
         (null != p2).ShouldBeFalse();
@@ -259,14 +259,18 @@ public class SitemapPageTests
 
     [Fact]
     public void Page001() =>
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
         new Func<object>(() =>
                 new SitemapPage(address: null, lastModified: null, changeFrequency: null, priority: null))
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
             .ShouldThrow<ArgumentNullException>();
 
     [Fact]
     public void Page002() =>
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
         new Func<object>(() =>
                 new SitemapPage(address: null, DateTime.Now, SitemapPage.Frequency.Always, priority: 0.5))
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
             .ShouldThrow<ArgumentNullException>();
 
     [Fact]

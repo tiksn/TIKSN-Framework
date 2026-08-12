@@ -4,5 +4,5 @@ namespace TIKSN.Tests.DependencyInjection;
 
 public class TestOptions
 {
-    public Uri Address { get; set; }
+    public Uri? Address { get; set; }
 }

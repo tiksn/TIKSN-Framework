@@ -28,7 +28,9 @@ public class A1NotationTests
 
     [Fact]
     public void GivenA1Notation_WhenConstructedWithNullSerial_ThenThrowsArgumentNullException() =>
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
         Should.Throw<ArgumentNullException>(() => new A1Notation<ushort>(serial: null, number: 1));
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
     [Fact]
     public void GivenA1Notation_WhenConstructedWithValidParameters_ThenPropertiesSet()
@@ -61,7 +63,7 @@ public class A1NotationTests
     [InlineData("AA1", "AA2", null)]
     [InlineData("AA65535", null, "AA65534")]
     public void GivenA1Notation_WhenGetNextAndPrevious_ThenResultShouldBe(
-        string input, string expectedNext, string expectedPrevious)
+        string input, string? expectedNext, string? expectedPrevious)
     {
         var a1Notation = A1Notation<ushort>.Parse(input, asciiOnly: false, CultureInfo.InvariantCulture)
             .Match(x => x, () => throw new InvalidOperationException());
@@ -149,9 +151,11 @@ public class A1NotationTests
     [InlineData("A0")]
     [InlineData("a0")]
     [InlineData("A65536")]
-    public void GivenInvalidString_WhenParse_ThenResultShouldBeNone(string input)
+    public void GivenInvalidString_WhenParse_ThenResultShouldBeNone(string? input)
     {
+#pragma warning disable CS8604 // Possible null reference argument.
         var result = A1Notation<ushort>.Parse(input, asciiOnly: false, CultureInfo.InvariantCulture);
+#pragma warning restore CS8604 // Possible null reference argument.
 
         result.IsNone.ShouldBeTrue();
     }
@@ -163,9 +167,11 @@ public class A1NotationTests
     [InlineData(null, false)]
     [InlineData("", false)]
     [InlineData("A", false)]
-    public void GivenString_WhenTryParse_ThenResultShouldBe(string input, bool expectedSuccess)
+    public void GivenString_WhenTryParse_ThenResultShouldBe(string? input, bool expectedSuccess)
     {
+#pragma warning disable CS8604 // Possible null reference argument.
         var success = A1Notation<ushort>.TryParse(input, CultureInfo.InvariantCulture, out var result);
+#pragma warning restore CS8604 // Possible null reference argument.
 
         success.ShouldBe(expectedSuccess);
         if (expectedSuccess)
