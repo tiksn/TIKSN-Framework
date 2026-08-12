@@ -7,6 +7,7 @@
     <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
     <UserSecretsId>TIKSN-Framework-tests-bee60aa7-e44d-4baf-9587-a0a3d5800585</UserSecretsId>
     <RootNamespace>TIKSN.IntegrationTests</RootNamespace>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" />
