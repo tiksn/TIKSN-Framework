@@ -5,6 +5,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="System.Security.Cryptography.Xml" Version="10.0.10" />
-    <PackageVersion Include="TIKSN-Framework" Version="5.7.3" />
+    <PackageVersion Include="TIKSN-Framework" Version="5.7.4" />
   </ItemGroup>
 </Project>
