@@ -171,7 +171,7 @@ Task CleanupCode Restore, {
 
 # Synopsis: Format XML Files
 Task FormatXmlFiles Clean, CleanupCode, {
-    Get-ChildItem -Include *.xml, *.config, *.props, *.targets, *.nuspec, *.resx, *.ruleset, *.vsixmanifest, *.vsct, *.xlf, *.csproj, *.fsproj, *.vbproj, *.slnx -Recurse -File
+    Get-ChildItem -Include *.xml, *.config, *.props, *.targets, *.nuspec, *.resx, *.ruleset, *.vsixmanifest, *.vsct, *.xlf, *.csproj, *.fsproj, *.vbproj, *.slnx, *.DotSettings -Recurse -File
     | Where-Object { -not (git check-ignore $PSItem) }
     | ForEach-Object {
         print White "Formatting XML File: $PSItem"
