@@ -10,27 +10,37 @@ change-template: "- $TITLE by @$AUTHOR (#$NUMBER)"
 no-changes-template: "- No changes"
 categories:
   - title: "📚 Documentation"
-    labels:
-      - "documentation"
+    when:
+      labels:
+        - "documentation"
   - title: "🚀 New Features"
-    labels:
-      - "enhancement"
+    when:
+      labels:
+        - "enhancement"
   - title: "🐛 Bug Fixes"
-    labels:
-      - "bug"
+    when:
+      labels:
+        - "bug"
   - title: "🧰 Maintenance"
-    labels:
-      - "maintenance"
+    when:
+      labels:
+        - "maintenance"
+  - type: version-resolver
+    semver-increment: major
+    when:
+      labels:
+        - "major"
+  - type: version-resolver
+    semver-increment: minor
+    when:
+      labels:
+        - "minor"
+  - type: version-resolver
+    semver-increment: patch
+    when:
+      labels:
+        - "patch"
 version-resolver:
-  major:
-    labels:
-      - "major"
-  minor:
-    labels:
-      - "minor"
-  patch:
-    labels:
-      - "patch"
   default: patch
 template: |
   $CHANGES
