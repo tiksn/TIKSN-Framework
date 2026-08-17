@@ -283,7 +283,7 @@ public static class LocalizationKeys
 
     /// <summary>
     /// Key: 308178739
-    /// Original Value: Windows CE/Mobule application development
+    /// Original Value: Windows CE/Mobile application development
     /// </summary>
     public static string Key308178739 => "308178739";
 
