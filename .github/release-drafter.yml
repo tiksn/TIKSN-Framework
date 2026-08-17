@@ -54,9 +54,14 @@ autolabeler:
       - "**/*.md"
   - label: "enhancement"
     files:
-      - "Source/**/*"
+      - "TIKSN.Framework.Core/**/*"
+      - "TIKSN.Framework.Maui/**/*"
+      - "TIKSN.LanguageLocalization/**/*"
+      - "TIKSN.RegionLocalization/**/*"
   - label: "maintenance"
     files:
       - ".github/**/*"
-      - "Images/**/*"
-      - "Tests/**/*"
+      - "TIKSN.Framework.Core.Tests/**/*"
+      - "TIKSN.Framework.IntegrationTests/**/*"
+      - "examples/**/*"
+      - "*.ps1"

@@ -1,3 +1,4 @@
+# zizmor: ignore[dangerous-triggers]
 name: Release Drafter
 
 on:
