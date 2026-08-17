@@ -54,7 +54,7 @@
     <PackageVersion Include="RavenDB.Client" Version="7.2.5" />
     <PackageVersion Include="ReactiveUI" Version="24.1.0" />
     <PackageVersion Include="ReactiveUI.Maui" Version="24.1.0" />
-    <PackageVersion Include="Roslynator.Analyzers" Version="4.16.0" />
+    <PackageVersion Include="Roslynator.Analyzers" Version="4.16.1" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.32.0.713" />
     <PackageVersion Include="Spectre.Console" Version="0.57.2" />
