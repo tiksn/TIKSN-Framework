@@ -262,5 +262,4 @@ public class FixedRateCurrencyConverterTests
 #pragma warning disable CS8604 // Possible null reference argument.
         new(pair, rate, Helper.CurrencyPairFactory);
 #pragma warning restore CS8604 // Possible null reference argument.
-
 }

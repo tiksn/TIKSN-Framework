@@ -1,3 +1,4 @@
+# zizmor: ignore[dangerous-triggers]
 name: Release Drafter
 
 on:
@@ -22,6 +23,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Draft Release"
-        uses: release-drafter/release-drafter@v7.7.0
+        uses: release-drafter/release-drafter@34d80673e067bdc0c24568d3af899c216adcfaa9 # v7.7.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
