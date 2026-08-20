@@ -449,6 +449,18 @@ Task Pack Build, Test, {
         $project = [xml](Get-Content -Path $projectMapEntry.ProjectFile -Raw)
 
         foreach ($packageReference in $project.SelectNodes('//PackageReference')) {
+            $isPrivate = $false
+            if ($packageReference.HasAttribute('PrivateAssets') -and $packageReference.GetAttribute('PrivateAssets') -match '(?i)all') {
+                $isPrivate = $true
+            }
+            $privateAssetsNode = $packageReference.SelectSingleNode('*[local-name()=''PrivateAssets'']')
+            if ($null -ne $privateAssetsNode -and $privateAssetsNode.InnerText -match '(?i)all') {
+                $isPrivate = $true
+            }
+            if ($isPrivate) {
+                continue
+            }
+
             $packageId = $packageReference.Include
             $packageVersion = $centralPackages[$packageId]
 
