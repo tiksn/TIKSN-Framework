@@ -2,3 +2,4 @@
 check-hidden =
 skip = */package-lock.json,*/go.mod,*/go.sum,*.log,.git,*.gitignore,.gitignore,*/TableA1.xml,*/TableA3.xml
 ignore-words-list = shouldbe
+ignore-regex = \b[A-Z]{2,3}\b
