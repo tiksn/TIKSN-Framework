@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Reflection;
 using LanguageExt;
+using LanguageExt.TypeClasses;
 using static LanguageExt.Parsec.Char;
 using static LanguageExt.Parsec.Prim;
 using static LanguageExt.Prelude;
@@ -8,11 +9,12 @@ using static LanguageExt.Prelude;
 namespace TIKSN.Numbering.Acronyms;
 
 #pragma warning disable CA1000 // Do not declare static members on generic types
-#pragma warning disable MA0018 // Do not declare static members on generic types (deprecated; use CA1000 instead)
 #pragma warning disable S4035 // Classes implementing "IEquatable<T>" should be sealed
-public abstract class Acronym<TSelf> : ISerial<TSelf>
+public class Acronym<TSelf, TMinLength, TMaxLength> : ISerial<TSelf>
 #pragma warning restore S4035 // Classes implementing "IEquatable<T>" should be sealed
-    where TSelf : Acronym<TSelf>, IAcronymLength
+    where TSelf : Acronym<TSelf, TMinLength, TMaxLength>
+    where TMinLength : struct, Const<int>
+    where TMaxLength : struct, Const<int>
 {
     private readonly string value;
 
@@ -47,7 +49,7 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
 
         var lettersParser =
             from letters in many(letterParser.Map(x => char.ToUpper(x, culture)))
-            where letters.Length >= TSelf.MinimumLetterCount && letters.Length <= TSelf.MaximumLetterCount
+            where letters.Length >= default(TMinLength).Value && letters.Length <= default(TMaxLength).Value
             from _ in eof
             select letters;
 
@@ -80,9 +82,11 @@ public abstract class Acronym<TSelf> : ISerial<TSelf>
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out TSelf result)
         => TryParse(s.ToString(), provider, out result);
 
-    public static bool operator ==(Acronym<TSelf> left, Acronym<TSelf> right) => Equals(left, right);
+    public static bool operator ==(Acronym<TSelf, TMinLength, TMaxLength> left,
+        Acronym<TSelf, TMinLength, TMaxLength> right) => Equals(left, right);
 
-    public static bool operator !=(Acronym<TSelf> left, Acronym<TSelf> right) => !Equals(left, right);
+    public static bool operator !=(Acronym<TSelf, TMinLength, TMaxLength> left,
+        Acronym<TSelf, TMinLength, TMaxLength> right) => !Equals(left, right);
 
     public bool Equals(TSelf? other)
     {
