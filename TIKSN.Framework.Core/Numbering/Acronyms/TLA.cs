@@ -1,20 +1,16 @@
+using LanguageExt.ClassInstances.Const;
+
 namespace TIKSN.Numbering.Acronyms;
 
 #pragma warning disable S101 // Types should be named in PascalCase
 #pragma warning disable MA0095 // A class that implements IEquatable<T> should override Equals(object)
+#pragma warning disable S3453 // Classes should not have only private constructors
 
-public sealed class TLA : Acronym<TLA>, IAcronymLength
+public sealed class TLA : Acronym<TLA, I3, I3>
 #pragma warning restore MA0095 // A class that implements IEquatable<T> should override Equals(object)
 #pragma warning restore S101 // Types should be named in PascalCase
 {
 #pragma warning disable IDE0051 // Remove unused private members
-
-    private TLA(string value) : base(value)
+    private TLA(string value) : base(value) { }
 #pragma warning restore IDE0051 // Remove unused private members
-    {
-    }
-
-    public static int MaximumLetterCount => 3;
-
-    public static int MinimumLetterCount => 3;
 }

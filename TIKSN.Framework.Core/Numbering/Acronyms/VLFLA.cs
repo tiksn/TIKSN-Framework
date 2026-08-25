@@ -1,20 +1,16 @@
+using LanguageExt.ClassInstances.Const;
+
 namespace TIKSN.Numbering.Acronyms;
 
 #pragma warning disable S101 // Types should be named in PascalCase
 #pragma warning disable MA0095 // A class that implements IEquatable<T> should override Equals(object)
+#pragma warning disable S3453 // Classes should not have only private constructors
 
-public sealed class VLFLA : Acronym<VLFLA>, IAcronymLength
+public sealed class VLFLA : Acronym<VLFLA, I5, I5>
 #pragma warning restore MA0095 // A class that implements IEquatable<T> should override Equals(object)
 #pragma warning restore S101 // Types should be named in PascalCase
 {
 #pragma warning disable IDE0051 // Remove unused private members
-
-    private VLFLA(string value) : base(value)
+    private VLFLA(string value) : base(value) { }
 #pragma warning restore IDE0051 // Remove unused private members
-    {
-    }
-
-    public static int MaximumLetterCount => 5;
-
-    public static int MinimumLetterCount => 5;
 }

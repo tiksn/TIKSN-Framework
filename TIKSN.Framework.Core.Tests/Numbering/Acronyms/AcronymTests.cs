@@ -1,4 +1,5 @@
 using System.Globalization;
+using LanguageExt.ClassInstances.Const;
 using Shouldly;
 using TIKSN.Numbering.Acronyms;
 using Xunit;
@@ -66,7 +67,7 @@ public class AcronymTests
         actualValue.ShouldBe(expectedValue);
     }
 
-    private sealed class VariableLengthAcronym : Acronym<VariableLengthAcronym>, IAcronymLength
+    private sealed class VariableLengthAcronym : Acronym<VariableLengthAcronym, I2, I4>
     {
 #pragma warning disable IDE0051 // Remove unused private members
 
@@ -74,9 +75,5 @@ public class AcronymTests
 #pragma warning restore IDE0051 // Remove unused private members
         {
         }
-
-        public static int MaximumLetterCount => 4;
-
-        public static int MinimumLetterCount => 2;
     }
 }
