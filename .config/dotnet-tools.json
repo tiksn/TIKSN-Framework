@@ -4,27 +4,37 @@
   "tools": {
     "snitch": {
       "version": "2.0.0",
-      "commands": ["snitch"],
+      "commands": [
+        "snitch"
+      ],
       "rollForward": false
     },
     "dotnet-example": {
       "version": "5.0.0",
-      "commands": ["dotnet-example"],
+      "commands": [
+        "dotnet-example"
+      ],
       "rollForward": false
     },
     "microsoft.cst.devskim.cli": {
       "version": "1.0.90",
-      "commands": ["devskim"],
+      "commands": [
+        "devskim"
+      ],
       "rollForward": false
     },
     "dotnet-outdated-tool": {
       "version": "4.8.1",
-      "commands": ["dotnet-outdated"],
+      "commands": [
+        "dotnet-outdated"
+      ],
       "rollForward": false
     },
     "jetbrains.resharper.globaltools": {
-      "version": "2026.2.0.2",
-      "commands": ["jb"],
+      "version": "2026.2.1",
+      "commands": [
+        "jb"
+      ],
       "rollForward": false
     }
   }
