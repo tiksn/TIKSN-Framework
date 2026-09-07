@@ -22,6 +22,7 @@
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="NSubstitute" />
     <PackageReference Include="ReactiveUI" />
+    <PackageReference Include="ReactiveUI.Testing" />
     <PackageReference Include="Shouldly" />
     <PackageReference Include="Spectre.Console.Testing" />
     <PackageReference Include="System.Reactive" />
