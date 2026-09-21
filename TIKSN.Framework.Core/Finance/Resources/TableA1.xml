@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ISO_4217 Pblshd="2026-01-01">
+<ISO_4217 Pblshd="2026-09-17">
   <CcyTbl>
     <CcyNtry>
       <CtryNm>AFGHANISTAN</CtryNm>
@@ -70,7 +70,7 @@
     </CcyNtry>
     <CcyNtry>
       <CtryNm>ARAB MONETARY FUND</CtryNm>
-      <CcyNm>Arab Accounting Dinar</CcyNm>
+      <CcyNm IsFund="true">Arab Accounting Dinar</CcyNm>
       <Ccy>XAD</Ccy>
       <CcyNbr>396</CcyNbr>
       <CcyMnrUnts>2</CcyMnrUnts>
@@ -1793,7 +1793,7 @@
     </CcyNtry>
     <CcyNtry>
       <CtryNm>URUGUAY</CtryNm>
-      <CcyNm>Unidad Previsional</CcyNm>
+      <CcyNm IsFund="true">Unidad Previsional</CcyNm>
       <Ccy>UYW</Ccy>
       <CcyNbr>927</CcyNbr>
       <CcyMnrUnts>4</CcyMnrUnts>
