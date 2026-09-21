@@ -40,7 +40,7 @@ public class ViewModelBaseTests
         var emptySegments = Seq<string>.Empty;
 
         // Act & Assert
-        Should.Throw<ArgumentOutOfRangeException>(() =>
+        _ = Should.Throw<ArgumentOutOfRangeException>(() =>
             new TestViewModel(this._sequencers, this._eventAggregator, this._hostScreen, emptySegments));
     }
 
@@ -65,7 +65,7 @@ public class ViewModelBaseTests
         var viewModel = new TestViewModel(this._sequencers, this._eventAggregator, this._hostScreen, segments);
         var isBusyChanges = new System.Collections.Generic.List<bool>();
 
-        viewModel.WhenAnyValue(x => x.IsBusy)
+        _ = viewModel.WhenAnyValue(x => x.IsBusy)
             .Subscribe(isBusyChanges.Add);
 
         // Act
