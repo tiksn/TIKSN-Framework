@@ -55,5 +55,31 @@ public static class DialogInteractionHandlers
                 .PickAsync(interaction.Input.Title, default).ConfigureAwait(false);
             interaction.SetOutput(result.IsSuccessful ? result.Folder.Path : null);
         });
+
+        _ = service.Toast.RegisterHandler(async interaction =>
+        {
+            var toast = CommunityToolkit.Maui.Alerts.Toast.Make(interaction.Input.Message);
+            await toast.Show().ConfigureAwait(false);
+            interaction.SetOutput(Unit.Default);
+        });
+
+        _ = service.Snackbar.RegisterHandler(async interaction =>
+        {
+            var isActionClicked = false;
+            var snackbar = CommunityToolkit.Maui.Alerts.Snackbar.Make(
+                interaction.Input.Message,
+                action: () => isActionClicked = true,
+                actionButtonText: interaction.Input.ActionButtonText ?? "OK");
+
+            await snackbar.Show().ConfigureAwait(false);
+            interaction.SetOutput(isActionClicked);
+        });
+
+        _ = service.SaveFile.RegisterHandler(async interaction =>
+        {
+            var result = await CommunityToolkit.Maui.Storage.FileSaver.Default.SaveAsync(
+                interaction.Input.FileName, interaction.Input.Stream, default).ConfigureAwait(false);
+            interaction.SetOutput(result.IsSuccessful ? result.FilePath : null);
+        });
     }
 }

@@ -17,4 +17,10 @@ public interface IDialogInteractionService
     public Interaction<PromptViewModel, string?> Prompt { get; }
 
     public Interaction<AlertViewModel, Unit> ShowAlert { get; }
+
+    public Interaction<ToastViewModel, Unit> Toast { get; }
+
+    public Interaction<SnackbarViewModel, bool> Snackbar { get; }
+
+    public Interaction<FileSaverViewModel, string?> SaveFile { get; }
 }

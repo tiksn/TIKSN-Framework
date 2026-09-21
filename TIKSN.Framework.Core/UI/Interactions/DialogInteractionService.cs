@@ -17,6 +17,9 @@ public class DialogInteractionService : IDialogInteractionService
         this.PickFile = new Interaction<FilePickerViewModel, string?>(sequencers.MainThreadSequencer);
         this.PickFiles = new Interaction<FilePickerViewModel, IReadOnlyList<string>>(sequencers.MainThreadSequencer);
         this.PickFolder = new Interaction<FolderPickerViewModel, string?>(sequencers.MainThreadSequencer);
+        this.Toast = new Interaction<ToastViewModel, Unit>(sequencers.MainThreadSequencer);
+        this.Snackbar = new Interaction<SnackbarViewModel, bool>(sequencers.MainThreadSequencer);
+        this.SaveFile = new Interaction<FileSaverViewModel, string?>(sequencers.MainThreadSequencer);
     }
 
     public Interaction<ConfirmationViewModel, bool> Confirm { get; }
@@ -29,5 +32,11 @@ public class DialogInteractionService : IDialogInteractionService
 
     public Interaction<PromptViewModel, string?> Prompt { get; }
 
+    public Interaction<FileSaverViewModel, string?> SaveFile { get; }
+
     public Interaction<AlertViewModel, Unit> ShowAlert { get; }
+
+    public Interaction<SnackbarViewModel, bool> Snackbar { get; }
+
+    public Interaction<ToastViewModel, Unit> Toast { get; }
 }
