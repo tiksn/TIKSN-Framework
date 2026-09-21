@@ -6,10 +6,7 @@ namespace TIKSN.Tests;
 public static class ModuleInitializer
 {
     [ModuleInitializer]
-    public static void Initialize()
-    {
-        RxAppBuilder.CreateReactiveUIBuilder()
-            .WithCoreServices()
-            .BuildApp();
-    }
+    public static void Initialize() => RxAppBuilder.CreateReactiveUIBuilder()
+        .WithCoreServices()
+        .BuildApp();
 }

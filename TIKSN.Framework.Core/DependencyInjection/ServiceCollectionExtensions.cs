@@ -19,6 +19,9 @@ using TIKSN.Serialization;
 using TIKSN.Serialization.MessagePack;
 using TIKSN.Serialization.Numerics;
 using TIKSN.Shell;
+using TIKSN.UI.Events;
+using TIKSN.UI.Interactions;
+using TIKSN.UI.Navigation;
 using TIKSN.Web.Rest;
 using MessagePackSerializer = TIKSN.Serialization.MessagePack.MessagePackSerializer;
 
@@ -65,6 +68,9 @@ public static class ServiceCollectionExtensions
         services.TryAddScoped<IShellCommandContext, ShellCommandContext>();
         services.TryAddSingleton(MessageBus.Current);
         services.TryAddSingleton(AnsiConsole.Console);
+        services.TryAddSingleton<IReactiveEventAggregator, ReactiveEventAggregator>();
+        services.TryAddSingleton<IDialogInteractionService, DialogInteractionService>();
+        services.TryAddSingleton<INavigationService, NavigationService>();
         services.TryAddSingleton<ISequencers>(_ =>
             new Sequencers(RxSchedulers.MainThreadScheduler, RxSchedulers.TaskpoolScheduler));
         services.TryAddKeyedSingleton<ICertificateSignatureService, RSACertificateSignatureService>(

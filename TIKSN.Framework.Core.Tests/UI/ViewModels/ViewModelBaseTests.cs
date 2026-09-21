@@ -5,6 +5,7 @@ using NSubstitute;
 using ReactiveUI;
 using Shouldly;
 using TIKSN.Concurrency;
+using TIKSN.UI.Events;
 using TIKSN.UI.ViewModels;
 using Xunit;
 
@@ -19,16 +20,17 @@ public class ViewModelBaseTests
         false
     ];
 
+    private readonly IReactiveEventAggregator _eventAggregator;
+
     private readonly IScreen _hostScreen;
-    private readonly IMessageBus _messageBus;
 
     private readonly ISequencers _sequencers;
 
     public ViewModelBaseTests()
     {
-        _sequencers = Substitute.For<ISequencers>();
-        _messageBus = Substitute.For<IMessageBus>();
-        _hostScreen = Substitute.For<IScreen>();
+        this._sequencers = Substitute.For<ISequencers>();
+        this._eventAggregator = Substitute.For<IReactiveEventAggregator>();
+        this._hostScreen = Substitute.For<IScreen>();
     }
 
     [Fact]
@@ -39,7 +41,7 @@ public class ViewModelBaseTests
 
         // Act & Assert
         Should.Throw<ArgumentOutOfRangeException>(() =>
-            new TestViewModel(_sequencers, _messageBus, _hostScreen, emptySegments));
+            new TestViewModel(this._sequencers, this._eventAggregator, this._hostScreen, emptySegments));
     }
 
     [Fact]
@@ -49,7 +51,7 @@ public class ViewModelBaseTests
         var segments = Seq.create("home", "dashboard");
 
         // Act
-        var viewModel = new TestViewModel(_sequencers, _messageBus, _hostScreen, segments);
+        var viewModel = new TestViewModel(this._sequencers, this._eventAggregator, this._hostScreen, segments);
 
         // Assert
         viewModel.UrlPathSegment.ShouldBe("home/dashboard");
@@ -60,7 +62,7 @@ public class ViewModelBaseTests
     {
         // Arrange
         var segments = Seq.create("home");
-        var viewModel = new TestViewModel(_sequencers, _messageBus, _hostScreen, segments);
+        var viewModel = new TestViewModel(this._sequencers, this._eventAggregator, this._hostScreen, segments);
         var isBusyChanges = new System.Collections.Generic.List<bool>();
 
         viewModel.WhenAnyValue(x => x.IsBusy)
@@ -82,10 +84,10 @@ public class ViewModelBaseTests
     {
         public TestViewModel(
             ISequencers sequencers,
-            IMessageBus messageBus,
+            IReactiveEventAggregator eventAggregator,
             IScreen hostScreen,
             Seq<string> urlPathSegments)
-            : base(sequencers, messageBus, hostScreen, urlPathSegments)
+            : base(sequencers, eventAggregator, hostScreen, urlPathSegments)
         {
         }
     }
