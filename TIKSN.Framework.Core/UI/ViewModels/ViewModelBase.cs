@@ -3,6 +3,7 @@ using LanguageExt;
 using ReactiveUI;
 using ReactiveUI.Primitives;
 using TIKSN.Concurrency;
+using TIKSN.UI.Events;
 
 namespace TIKSN.UI.ViewModels;
 
@@ -12,12 +13,12 @@ public abstract class ViewModelBase : ReactiveObject, IRoutableViewModel, IActiv
 
     protected ViewModelBase(
         ISequencers sequencers,
-        IMessageBus messageBus,
+        IReactiveEventAggregator eventAggregator,
         IScreen hostScreen,
         Seq<string> urlPathSegments)
     {
         ArgumentNullException.ThrowIfNull(sequencers);
-        ArgumentNullException.ThrowIfNull(messageBus);
+        ArgumentNullException.ThrowIfNull(eventAggregator);
         ArgumentNullException.ThrowIfNull(hostScreen);
 
         if (urlPathSegments.IsEmpty)
@@ -26,15 +27,12 @@ public abstract class ViewModelBase : ReactiveObject, IRoutableViewModel, IActiv
         }
 
         this.Sequencers = sequencers;
-        this.MessageBus = messageBus;
+        this.EventAggregator = eventAggregator;
         this.HostScreen = hostScreen;
 
         this.UrlPathSegment = string.Join('/', urlPathSegments);
 
         this.Activator = new ViewModelActivator();
-
-        this.ShowAlert = new Interaction<AlertViewModel, RxVoid>(sequencers.MainThreadSequencer);
-        this.OpenBrowser = new Interaction<Uri, RxVoid>(sequencers.MainThreadSequencer);
     }
 
     public ViewModelActivator Activator { get; }
@@ -45,6 +43,8 @@ public abstract class ViewModelBase : ReactiveObject, IRoutableViewModel, IActiv
         protected set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
+    public IReactiveEventAggregator EventAggregator { get; }
+
     public IScreen HostScreen { get; }
 
     public bool IsBusy
@@ -52,12 +52,6 @@ public abstract class ViewModelBase : ReactiveObject, IRoutableViewModel, IActiv
         get;
         protected set => this.RaiseAndSetIfChanged(ref field, value);
     }
-
-    public IMessageBus MessageBus { get; }
-
-    public Interaction<Uri, RxVoid> OpenBrowser { get; }
-
-    public Interaction<AlertViewModel, RxVoid> ShowAlert { get; }
 
     public string UrlPathSegment { get; }
 
