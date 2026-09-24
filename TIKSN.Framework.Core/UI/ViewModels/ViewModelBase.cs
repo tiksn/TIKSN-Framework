@@ -2,12 +2,13 @@ using System.Reactive.Linq;
 using LanguageExt;
 using ReactiveUI;
 using ReactiveUI.Primitives;
+using ReactiveUI.SourceGenerators;
 using TIKSN.Concurrency;
 using TIKSN.UI.Events;
 
 namespace TIKSN.UI.ViewModels;
 
-public abstract class ViewModelBase : ReactiveObject, IRoutableViewModel, IActivatableViewModel
+public abstract partial class ViewModelBase : ReactiveObject, IRoutableViewModel, IActivatableViewModel
 {
     private int _busyOperationCount;
 
@@ -37,21 +38,15 @@ public abstract class ViewModelBase : ReactiveObject, IRoutableViewModel, IActiv
 
     public ViewModelActivator Activator { get; }
 
-    public string? ErrorMessage
-    {
-        get;
-        protected set => this.RaiseAndSetIfChanged(ref field, value);
-    }
+    [Reactive]
+    public partial string? ErrorMessage { get; protected set; }
 
     public IReactiveEventAggregator EventAggregator { get; }
 
     public IScreen HostScreen { get; }
 
-    public bool IsBusy
-    {
-        get;
-        protected set => this.RaiseAndSetIfChanged(ref field, value);
-    }
+    [Reactive]
+    public partial bool IsBusy { get; protected set; }
 
     public string UrlPathSegment { get; }
 
