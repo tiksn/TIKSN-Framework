@@ -16,7 +16,7 @@ public class ValidationBehaviorTests
     {
         // Arrange
         var services = new ServiceCollection();
-        services.AddSingleton<IValidator<TestRequest>, TestRequestValidator>();
+        _ = services.AddSingleton<IValidator<TestRequest>, TestRequestValidator>();
         var serviceProvider = services.BuildServiceProvider();
 
         var behavior = new ValidationBehavior<TestRequest, TestResponse>(serviceProvider);
@@ -35,8 +35,8 @@ public class ValidationBehaviorTests
     {
         // Arrange
         var services = new ServiceCollection();
-        services.AddSingleton<IValidator<TestRequest>, TestRequestValidator>();
-        services.AddSingleton<IValidator<TestResponse>, TestResponseValidator>();
+        _ = services.AddSingleton<IValidator<TestRequest>, TestRequestValidator>();
+        _ = services.AddSingleton<IValidator<TestResponse>, TestResponseValidator>();
         var serviceProvider = services.BuildServiceProvider();
 
         var behavior = new ValidationBehavior<TestRequest, TestResponse>(serviceProvider);
@@ -57,8 +57,8 @@ public class ValidationBehaviorTests
     {
         // Arrange
         var services = new ServiceCollection();
-        services.AddSingleton<IValidator<TestRequest>, TestRequestValidator>();
-        services.AddSingleton<IValidator<TestResponse>, TestResponseValidator>();
+        _ = services.AddSingleton<IValidator<TestRequest>, TestRequestValidator>();
+        _ = services.AddSingleton<IValidator<TestResponse>, TestResponseValidator>();
         var serviceProvider = services.BuildServiceProvider();
 
         var behavior = new ValidationBehavior<TestRequest, TestResponse>(serviceProvider);

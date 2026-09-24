@@ -14,7 +14,8 @@ public class PagingQueryBehavior<TRequest, TResponse>
 {
     private readonly IOptions<PagingQueryOptions> _options;
 
-    public PagingQueryBehavior(IOptions<PagingQueryOptions> options) => this._options = options ?? throw new ArgumentNullException(nameof(options));
+    public PagingQueryBehavior(IOptions<PagingQueryOptions> options) =>
+        this._options = options ?? throw new ArgumentNullException(nameof(options));
 
     public async Task<TResponse> Handle(
         TRequest request,

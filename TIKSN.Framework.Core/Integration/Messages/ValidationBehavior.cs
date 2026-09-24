@@ -14,7 +14,8 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
     private readonly IServiceProvider _serviceProvider;
 
     public ValidationBehavior(
-        IServiceProvider serviceProvider) => this._serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+        IServiceProvider serviceProvider) => this._serviceProvider =
+        serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
     public async Task<TResponse> Handle(
         TRequest request,
