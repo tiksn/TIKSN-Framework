@@ -25,7 +25,6 @@ public class BankOfJapan : IBankOfJapan
     private static readonly Dictionary<Uri, IReadOnlyCollection<RawExchangeRate>> RawRatesCache = [];
     private static readonly SemaphoreSlim RawRatesSemaphore = new(initialCount: 1, maxCount: 1);
 
-
 #pragma warning disable S1075
     private static readonly CompositeFormat RequestUrlCompositeString = CompositeFormat.Parse(
         "https://www.stat-search.boj.or.jp/api/v1/getDataCode?format=json&lang=en&db=FM08&startDate={0}&endDate={0}&code={1}");
