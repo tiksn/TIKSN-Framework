@@ -16,7 +16,8 @@ public class ClaimNotFoundException : Exception
 
     public ClaimNotFoundException(string message, string claimType) : base(message) => this.ClaimType = claimType;
 
-    public ClaimNotFoundException(string message, string claimType, Exception inner) : base(message, inner) => this.ClaimType = claimType;
+    public ClaimNotFoundException(string message, string claimType, Exception inner) : base(message, inner) =>
+        this.ClaimType = claimType;
 
     public string? ClaimType { get; }
 }

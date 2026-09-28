@@ -152,8 +152,8 @@ public readonly struct AcademicYear : IYear<AcademicYear>
     public override string ToString()
         => this.ToString(string.Empty, CultureInfo.InvariantCulture);
 
-    public string ToString(string? format, IFormatProvider? formatProvider)
-        => $"{this.absoluteStartYear.ToString(format, formatProvider)}/{(this.absoluteStartYear + 1).ToString(format, formatProvider)}";
+    public string ToString(string? format, IFormatProvider? formatProvider) =>
+        $"{this.absoluteStartYear.ToString(format, formatProvider)}/{(this.absoluteStartYear + 1).ToString(format, formatProvider)}";
 
     public bool TryFormat(
         Span<char> destination,

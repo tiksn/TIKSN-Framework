@@ -17,6 +17,7 @@ public class SwissNationalBank : ISwissNationalBank
     private static readonly SemaphoreSlim ExchangeRateDocumentSemaphore = new(initialCount: 1, maxCount: 1);
     private static readonly CurrencyInfo SwissFranc = new(new RegionInfo("de-CH"));
     private static readonly Uri RssUrl = new(RSSURL);
+
     private static readonly DateTimeZone ZurichTimeZone = DateTimeZoneProviders.Tzdb["Europe/Zurich"];
 
     private readonly ICurrencyFactory currencyFactory;

@@ -83,11 +83,13 @@ public class ClaimsProviderBaseTests
 
         public TestClaimsProvider(Option<ClaimsPrincipal> principal) => this._principal = principal;
 
-        public Option<Guid> FindTenantId() => this.FindFirstClaimValue("http://schemas.microsoft.com/identity/claims/tenantid", Guid.Parse);
+        public Option<Guid> FindTenantId() =>
+            this.FindFirstClaimValue("http://schemas.microsoft.com/identity/claims/tenantid", Guid.Parse);
 
         public Option<int> FindUserId() => this.FindFirstClaimValue(ClaimTypes.NameIdentifier, int.Parse);
 
-        public Guid GetTenantId() => GetFound(this.FindTenantId(), "http://schemas.microsoft.com/identity/claims/tenantid");
+        public Guid GetTenantId() =>
+            GetFound(this.FindTenantId(), "http://schemas.microsoft.com/identity/claims/tenantid");
 
         public int GetUserId() => GetFound(this.FindUserId(), ClaimTypes.NameIdentifier);
 
