@@ -9,6 +9,96 @@ namespace TIKSN.Tests.Deployment;
 public class HostEnvironmentExtensionsTests
 {
     [Theory]
+    [InlineData("Development", true)]
+    [InlineData("development", true)]
+    [InlineData("Production", false)]
+    public void GivenEnvironment_WhenMatchesDevelopment_ThenMustMatch(
+        string hostEnvironmentName, bool matchesExpected)
+    {
+        var hostEnvironment = Substitute.For<IHostEnvironment>();
+        _ = hostEnvironment.EnvironmentName.Returns(hostEnvironmentName);
+
+        var matchesActual = hostEnvironment.MatchesDevelopment();
+
+        matchesActual.ShouldBe(matchesExpected);
+    }
+
+    [Theory]
+    [InlineData("Integration", true)]
+    [InlineData("integration", true)]
+    [InlineData("Development", false)]
+    public void GivenEnvironment_WhenMatchesIntegration_ThenMustMatch(
+        string hostEnvironmentName, bool matchesExpected)
+    {
+        var hostEnvironment = Substitute.For<IHostEnvironment>();
+        _ = hostEnvironment.EnvironmentName.Returns(hostEnvironmentName);
+
+        var matchesActual = hostEnvironment.MatchesIntegration();
+
+        matchesActual.ShouldBe(matchesExpected);
+    }
+
+    [Theory]
+    [InlineData("Production", true)]
+    [InlineData("production", true)]
+    [InlineData("Development", false)]
+    public void GivenEnvironment_WhenMatchesProduction_ThenMustMatch(
+        string hostEnvironmentName, bool matchesExpected)
+    {
+        var hostEnvironment = Substitute.For<IHostEnvironment>();
+        _ = hostEnvironment.EnvironmentName.Returns(hostEnvironmentName);
+
+        var matchesActual = hostEnvironment.MatchesProduction();
+
+        matchesActual.ShouldBe(matchesExpected);
+    }
+
+    [Theory]
+    [InlineData("Recovery", true)]
+    [InlineData("recovery", true)]
+    [InlineData("Development", false)]
+    public void GivenEnvironment_WhenMatchesRecovery_ThenMustMatch(
+        string hostEnvironmentName, bool matchesExpected)
+    {
+        var hostEnvironment = Substitute.For<IHostEnvironment>();
+        _ = hostEnvironment.EnvironmentName.Returns(hostEnvironmentName);
+
+        var matchesActual = hostEnvironment.MatchesRecovery();
+
+        matchesActual.ShouldBe(matchesExpected);
+    }
+
+    [Theory]
+    [InlineData("Staging", true)]
+    [InlineData("staging", true)]
+    [InlineData("Production", false)]
+    public void GivenEnvironment_WhenMatchesStaging_ThenMustMatch(
+        string hostEnvironmentName, bool matchesExpected)
+    {
+        var hostEnvironment = Substitute.For<IHostEnvironment>();
+        _ = hostEnvironment.EnvironmentName.Returns(hostEnvironmentName);
+
+        var matchesActual = hostEnvironment.MatchesStaging();
+
+        matchesActual.ShouldBe(matchesExpected);
+    }
+
+    [Theory]
+    [InlineData("Testing", true)]
+    [InlineData("testing", true)]
+    [InlineData("Development", false)]
+    public void GivenEnvironment_WhenMatchesTesting_ThenMustMatch(
+        string hostEnvironmentName, bool matchesExpected)
+    {
+        var hostEnvironment = Substitute.For<IHostEnvironment>();
+        _ = hostEnvironment.EnvironmentName.Returns(hostEnvironmentName);
+
+        var matchesActual = hostEnvironment.MatchesTesting();
+
+        matchesActual.ShouldBe(matchesExpected);
+    }
+
+    [Theory]
     [InlineData("Development", "Development", true)]
     [InlineData("development", "Development", true)]
     [InlineData("Development", "development", true)]
