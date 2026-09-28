@@ -30,6 +30,8 @@ param(
 
 Set-StrictMode -Version Latest
 
+$BuildParameters = Import-PowerShellDataFile -Path (Join-Path -Path $PSScriptRoot -ChildPath '.build.psd1')
+
 # Synopsis: Initialize folders and variables
 Task Init {
     $trashFolder = Join-Path -Path . -ChildPath '.trash'
@@ -56,7 +58,7 @@ Task Init {
     New-Item -Path $anyWindowsBuildArtifactsFolder -ItemType Directory | Out-Null
 
     $state = [PSCustomObject]@{
-        PackageId                          = 'TIKSN-Framework'
+        PackageId                          = $BuildParameters.PackageId
         NextVersion                        = $null
         TrashFolder                        = $trashFolder
         BuildArtifactsFolder               = $buildArtifactsFolder
@@ -129,7 +131,7 @@ Task RestoreTools Clean, {
 
 # Synopsis: Restore packages
 Task RestorePackages Clean, EnsureCentralPackageVersions, {
-    $solution = Resolve-Path -Path 'TIKSN Framework.slnx'
+    $solution = Resolve-Path -Path $BuildParameters.Solution
     Exec { dotnet restore $solution }
 }
 
@@ -150,8 +152,8 @@ Task CheckUpdates Restore, {
 
 # Synopsis: Download Currency Codes
 Task DownloadCurrencyCodes Clean, {
-    Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml' -OutFile 'TIKSN.Framework.Core/Finance/Resources/TableA1.xml'
-    Invoke-WebRequest -Uri 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-three.xml' -OutFile 'TIKSN.Framework.Core/Finance/Resources/TableA3.xml'
+    Invoke-WebRequest -Uri $BuildParameters.CurrencyCodesUrl1 -OutFile $BuildParameters.CurrencyCodesOutFile1
+    Invoke-WebRequest -Uri $BuildParameters.CurrencyCodesUrl2 -OutFile $BuildParameters.CurrencyCodesOutFile2
 }
 
 # Synopsis: Scan with DevSkim for security issues
@@ -165,8 +167,8 @@ Task DevSkim Restore, {
 
 # Synopsis: Cleanup Code
 Task CleanupCode Restore, {
-    $solution = Resolve-Path -Path 'TIKSN Framework.slnx'
-    Exec { dotnet jb cleanupcode '--profile=TIKSN Cleanup' $solution }
+    $solution = Resolve-Path -Path $BuildParameters.Solution
+    Exec { dotnet jb cleanupcode "--profile=$($BuildParameters.CleanupCodeProfile)" $solution }
 }
 
 # Synopsis: Format XML Files
@@ -183,41 +185,41 @@ Task FormatXmlFiles Clean, CleanupCode, {
 
 # Synopsis: Format Whitespace
 Task FormatWhitespace Restore, {
-    $solution = Resolve-Path -Path 'TIKSN Framework.slnx'
+    $solution = Resolve-Path -Path $BuildParameters.Solution
     Exec { dotnet format whitespace --verbosity diagnostic $solution }
 }
 
 # Synopsis: Format Analyzers Language Localization
 Task FormatAnalyzersLanguageLocalization Restore, {
-    $project = Resolve-Path -Path 'TIKSN.LanguageLocalization/TIKSN.LanguageLocalization.csproj'
+    $project = Resolve-Path -Path $BuildParameters.Projects.LanguageLocalization
 
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
 }
 
 # Synopsis: Format Analyzers Region Localization
 Task FormatAnalyzersRegionLocalization Restore, {
-    $project = Resolve-Path -Path 'TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj'
+    $project = Resolve-Path -Path $BuildParameters.Projects.RegionLocalization
 
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
 }
 
 # Synopsis: Format Analyzers Core
 Task FormatAnalyzersCore Restore, {
-    $project = Resolve-Path -Path 'TIKSN.Framework.Core/TIKSN.Framework.Core.csproj'
+    $project = Resolve-Path -Path $BuildParameters.Projects.Core
 
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
 }
 
 # Synopsis: Format Analyzers MAUI
 Task FormatAnalyzersMaui Restore, {
-    $project = Resolve-Path -Path 'TIKSN.Framework.Maui/TIKSN.Framework.Maui.csproj'
+    $project = Resolve-Path -Path $BuildParameters.Projects.Maui
 
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
 }
 
 # Synopsis: Format Analyzers Solution
 Task FormatAnalyzersSolution Restore, {
-    $solution = Resolve-Path -Path 'TIKSN Framework.slnx'
+    $solution = Resolve-Path -Path $BuildParameters.Solution
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $solution }
 }
 
@@ -226,35 +228,35 @@ Task FormatAnalyzers Restore, FormatAnalyzersLanguageLocalization, FormatAnalyze
 
 # Synopsis: Format Style Language Localization
 Task FormatStyleLanguageLocalization Restore, {
-    $project = Resolve-Path -Path 'TIKSN.LanguageLocalization/TIKSN.LanguageLocalization.csproj'
+    $project = Resolve-Path -Path $BuildParameters.Projects.LanguageLocalization
 
     Exec { dotnet format style --severity info --verbosity diagnostic $project }
 }
 
 # Synopsis: Format Style Region Localization
 Task FormatStyleRegionLocalization Restore, {
-    $project = Resolve-Path -Path 'TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj'
+    $project = Resolve-Path -Path $BuildParameters.Projects.RegionLocalization
 
     Exec { dotnet format style --severity info --verbosity diagnostic $project }
 }
 
 # Synopsis: Format Style Core
 Task FormatStyleCore Restore, {
-    $project = Resolve-Path -Path 'TIKSN.Framework.Core/TIKSN.Framework.Core.csproj'
+    $project = Resolve-Path -Path $BuildParameters.Projects.Core
 
     Exec { dotnet format style --severity info --verbosity diagnostic $project }
 }
 
 # Synopsis: Format Style MAUI
 Task FormatStyleMaui Restore, {
-    $project = Resolve-Path -Path 'TIKSN.Framework.Maui/TIKSN.Framework.Maui.csproj'
+    $project = Resolve-Path -Path $BuildParameters.Projects.Maui
 
     Exec { dotnet format style --severity info --verbosity diagnostic $project }
 }
 
 # Synopsis: Format Style Solution
 Task FormatStyleSolution Restore, {
-    $solution = Resolve-Path -Path 'TIKSN Framework.slnx'
+    $solution = Resolve-Path -Path $BuildParameters.Solution
     Exec { dotnet format style --severity info --verbosity diagnostic $solution }
 }
 
@@ -340,7 +342,7 @@ Task ValidateVersion EstimateVersion, {
 Task BuildLanguageLocalization EstimateVersion, {
     $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
     $anyBuildArtifactsFolder = $state.AnyBuildArtifactsFolder
-    $project = Resolve-Path -Path 'TIKSN.LanguageLocalization/TIKSN.LanguageLocalization.csproj'
+    $project = Resolve-Path -Path $BuildParameters.Projects.LanguageLocalization
     $nextVersion = $state.NextVersion
 
     Exec { dotnet build $project /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
@@ -350,7 +352,7 @@ Task BuildLanguageLocalization EstimateVersion, {
 Task BuildRegionLocalization EstimateVersion, {
     $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
     $anyBuildArtifactsFolder = $state.AnyBuildArtifactsFolder
-    $project = Resolve-Path -Path 'TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj'
+    $project = Resolve-Path -Path $BuildParameters.Projects.RegionLocalization
     $nextVersion = $state.NextVersion
 
     Exec { dotnet build $project /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
@@ -360,7 +362,7 @@ Task BuildRegionLocalization EstimateVersion, {
 Task BuildCore EstimateVersion, DownloadCurrencyCodes, {
     $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
     $anyBuildArtifactsFolder = $state.AnyBuildArtifactsFolder
-    $project = Resolve-Path -Path 'TIKSN.Framework.Core/TIKSN.Framework.Core.csproj'
+    $project = Resolve-Path -Path $BuildParameters.Projects.Core
     $nextVersion = $state.NextVersion
 
     Exec { dotnet build $project /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
@@ -374,22 +376,22 @@ Task BuildMaui EstimateVersion, {
     $anyMaccatalystBuildArtifactsFolder = $state.AnyMaccatalystBuildArtifactsFolder
     $anyAndroidBuildArtifactsFolder = $state.AnyAndroidBuildArtifactsFolder
     $anyWindowsBuildArtifactsFolder = $state.AnyWindowsBuildArtifactsFolder
-    $project = Resolve-Path -Path 'TIKSN.Framework.Maui/TIKSN.Framework.Maui.csproj'
+    $project = Resolve-Path -Path $BuildParameters.Projects.Maui
     $nextVersion = $state.NextVersion
 
     Exec { dotnet build $project /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
 
-    Exec { dotnet build $project --framework net10.0-ios /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyIosBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
-    Exec { dotnet build $project --framework net10.0-maccatalyst /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyMaccatalystBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
-    Exec { dotnet build $project --framework net10.0-android /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyAndroidBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
-    Exec { dotnet build $project --framework net10.0-windows10.0.19041.0 /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyWindowsBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
+    Exec { dotnet build $project --framework $BuildParameters.MauiBuildFrameworks.Ios /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyIosBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
+    Exec { dotnet build $project --framework $BuildParameters.MauiBuildFrameworks.MacCatalyst /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyMaccatalystBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
+    Exec { dotnet build $project --framework $BuildParameters.MauiBuildFrameworks.Android /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyAndroidBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
+    Exec { dotnet build $project --framework $BuildParameters.MauiBuildFrameworks.Windows /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyWindowsBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
 }
 
 # Synopsis: Build
 Task Build Format, DownloadCurrencyCodes, CheckUpdates, BuildLanguageLocalization, BuildRegionLocalization, BuildCore, BuildMaui, {
     $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
-    $solution = Resolve-Path -Path 'TIKSN Framework.slnx'
-    $examplesSolution = Resolve-Path -Path '.\examples\Examples.slnx'
+    $solution = Resolve-Path -Path $BuildParameters.Solution
+    $examplesSolution = Resolve-Path -Path $BuildParameters.ExamplesSolution
     $nextVersion = $state.NextVersion
 
     Exec { dotnet build $solution /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:TreatWarningsAsErrors=true }
@@ -401,14 +403,14 @@ Task Test UnitTest, IntegrationTest
 
 # Synopsis: Integration Test
 Task IntegrationTest Build, {
-    $project = Resolve-Path -Path './TIKSN.Framework.IntegrationTests/TIKSN.Framework.IntegrationTests.csproj'
+    $project = Resolve-Path -Path $BuildParameters.Projects.IntegrationTests
 
     Exec { dotnet test --project $project }
 }
 
 # Synopsis: Unit Test
 Task UnitTest Build, {
-    $project = Resolve-Path -Path './TIKSN.Framework.Core.Tests/TIKSN.Framework.Core.Tests.csproj'
+    $project = Resolve-Path -Path $BuildParameters.Projects.CoreTests
 
     Exec { dotnet test --project $project }
 }
@@ -418,16 +420,16 @@ Task Pack Build, Test, {
     $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
     $trashFolder = $state.TrashFolder
     $buildArtifactsFolder = $state.BuildArtifactsFolder
-    $temporaryNuspec = Join-Path -Path $trashFolder -ChildPath '.\TIKSN-Framework.nuspec'
+    $temporaryNuspec = Join-Path -Path $trashFolder -ChildPath $BuildParameters.NuspecFile
 
-    $directoryPackagesFile = '.\Directory.Packages.props'
+    $directoryPackagesFile = $BuildParameters.DirectoryPackagesFile
     $directoryPackages = [xml](Get-Content -Path $directoryPackagesFile -Raw)
     $centralPackages = @{}
     foreach ($packageVersion in $directoryPackages.SelectNodes('//PackageVersion')) {
         $centralPackages.Add($packageVersion.Include, $packageVersion.Version)
     }
 
-    Copy-Item -Path '.\TIKSN-Framework.nuspec' -Destination $temporaryNuspec
+    Copy-Item -Path $BuildParameters.NuspecFile -Destination $temporaryNuspec
 
     $packages = @{
         Core        = New-Object System.Collections.Specialized.OrderedDictionary
@@ -438,11 +440,11 @@ Task Pack Build, Test, {
     }
 
     $projectMap = @(
-        @{PackageGroups = @($packages.Core, $packages.Android, $packages.IOS, $packages.MacCatalyst, $packages.Windows); ProjectFile = '.\TIKSN.Framework.Core\TIKSN.Framework.Core.csproj' }
-        @{PackageGroups = @($packages.Android); ProjectFile = '.\TIKSN.Framework.Maui\TIKSN.Framework.Maui.csproj' }
-        @{PackageGroups = @($packages.IOS); ProjectFile = '.\TIKSN.Framework.Maui\TIKSN.Framework.Maui.csproj' }
-        @{PackageGroups = @($packages.MacCatalyst); ProjectFile = '.\TIKSN.Framework.Maui\TIKSN.Framework.Maui.csproj' }
-        @{PackageGroups = @($packages.Windows); ProjectFile = '.\TIKSN.Framework.Maui\TIKSN.Framework.Maui.csproj' }
+        @{PackageGroups = @($packages.Core, $packages.Android, $packages.IOS, $packages.MacCatalyst, $packages.Windows); ProjectFile = $BuildParameters.Projects.Core }
+        @{PackageGroups = @($packages.Android); ProjectFile = $BuildParameters.Projects.Maui }
+        @{PackageGroups = @($packages.IOS); ProjectFile = $BuildParameters.Projects.Maui }
+        @{PackageGroups = @($packages.MacCatalyst); ProjectFile = $BuildParameters.Projects.Maui }
+        @{PackageGroups = @($packages.Windows); ProjectFile = $BuildParameters.Projects.Maui }
     )
 
     foreach ($projectMapEntry in $projectMap) {
@@ -482,11 +484,11 @@ Task Pack Build, Test, {
     }
 
     $dependencyGroups = @(
-        @{Packages = $packages.Core; TargetFramework = 'net10.0' },
-        @{Packages = $packages.Android; TargetFramework = 'net10.0-android21.0' }
-        @{Packages = $packages.IOS; TargetFramework = 'net10.0-ios14.2' }
-        @{Packages = $packages.MacCatalyst; TargetFramework = 'net10.0-maccatalyst14.0' }
-        @{Packages = $packages.Windows; TargetFramework = 'net10.0-windows10.0.19041.0' }
+        @{Packages = $packages.Core; TargetFramework = $BuildParameters.DependencyTargetFrameworks.Core },
+        @{Packages = $packages.Android; TargetFramework = $BuildParameters.DependencyTargetFrameworks.Android }
+        @{Packages = $packages.IOS; TargetFramework = $BuildParameters.DependencyTargetFrameworks.Ios }
+        @{Packages = $packages.MacCatalyst; TargetFramework = $BuildParameters.DependencyTargetFrameworks.MacCatalyst }
+        @{Packages = $packages.Windows; TargetFramework = $BuildParameters.DependencyTargetFrameworks.Windows }
     )
 
     $nuspec = [xml](Get-Content -Path $temporaryNuspec -Raw)
@@ -550,7 +552,7 @@ Task Publish Pack, ValidateVersion, {
 
     if ($null -eq $env:NUGET_API_KEY) {
         Import-Module -Name Microsoft.PowerShell.SecretManagement
-        $apiKey = Get-Secret -Name 'TIKSN-Framework-ApiKey' -AsPlainText
+        $apiKey = Get-Secret -Name $BuildParameters.NugetApiKeySecretName -AsPlainText
     }
     else {
         $apiKey = $env:NUGET_API_KEY
