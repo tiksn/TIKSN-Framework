@@ -104,7 +104,6 @@ public class ConfigurationValidationException : Exception
         return this;
     }
 
-
     public ConfigurationValidationException WithConfigurationSection<TValue>(IConfigurationSection configurationSection,
         string configurationKey, TValue? configurationValue)
     {
@@ -132,7 +131,6 @@ public class ConfigurationValidationException : Exception
         this.Errors = this.Errors.Add(new ConfigurationError(None, path, configurationKey, Left(unit)));
         return this;
     }
-
 
     public ConfigurationValidationException WithOptions<T, TValue>(IOptions<T> options, string configurationKey,
         TValue? configurationValue) where T : class
