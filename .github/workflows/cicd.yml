@@ -63,8 +63,6 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          lfs: true
-          fetch-depth: 0
           persist-credentials: false
       - name: "Install .NET Core SDK"
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
@@ -94,13 +92,7 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          lfs: true
-          fetch-depth: 0
           persist-credentials: false
-      - name: "Install .NET Core SDK"
-        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
-      - name: Install .NET MAUI
-        run: dotnet workload install maui
       - name: "Install InvokeBuild Module"
         shell: pwsh
         run: Install-Module -Name InvokeBuild -Force
