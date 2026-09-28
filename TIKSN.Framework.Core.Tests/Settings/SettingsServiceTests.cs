@@ -232,7 +232,7 @@ public class SettingsServiceTests
             .AddInMemoryCollection()
             .Build();
 
-        configurationRoot["RelativePath"] = "settings.db";
+        configurationRoot["RelativePath"] = $"settings_{Guid.NewGuid():N}.db";
 
         _ = this.services
             .AddOptions<FileSettingsServiceOptions>()
