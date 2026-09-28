@@ -9,12 +9,14 @@ namespace TIKSN.Validation;
 
 public static class ValidationExtensions
 {
-    public static T GetOrThrow<T>(this Validation<Error, T> validation) => validation.Match(s => s, f => throw CreateValidationException(f));
+    public static T GetOrThrow<T>(this Validation<Error, T> validation) =>
+        validation.Match(s => s, f => throw CreateValidationException(f));
 
-    private static ValidationException CreateValidationException(Seq<Error> errors) => new(CreateValidationFailures(errors));
+    private static ValidationException CreateValidationException(Seq<Error> errors) =>
+        new(CreateValidationFailures(errors));
 
     private static IEnumerable<ValidationFailure> CreateValidationFailures(Seq<Error> errors) => errors
-            .SelectMany(error => CreateValidationFailures(error, None));
+        .SelectMany(error => CreateValidationFailures(error, None));
 
     private static IEnumerable<ValidationFailure> CreateValidationFailures(Error error,
         Option<string> parentPropertyName)

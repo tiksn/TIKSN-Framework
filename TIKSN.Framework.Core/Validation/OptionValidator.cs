@@ -10,7 +10,8 @@ public class OptionValidator<T, TProperty> : PropertyValidator<T, Option<TProper
 {
     private readonly IValidator<TProperty> _validator;
 
-    public OptionValidator(IValidator<TProperty> validator) => this._validator = validator ?? throw new ArgumentNullException(nameof(validator));
+    public OptionValidator(IValidator<TProperty> validator) =>
+        this._validator = validator ?? throw new ArgumentNullException(nameof(validator));
 
     public override string Name => "OptionValidator";
 
