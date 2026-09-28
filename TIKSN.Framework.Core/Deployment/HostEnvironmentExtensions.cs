@@ -61,6 +61,17 @@ public static class HostEnvironmentExtensions
     }
 
     /// <summary>
+    /// Checks if the current host environment name is Integration.
+    /// </summary>
+    /// <param name="hostEnvironment">An instance of <see cref="IHostEnvironment" /></param>
+    /// <returns>
+    /// True if the environment name matches to Integration,
+    /// otherwise false.
+    /// </returns>
+    public static bool MatchesIntegration(this IHostEnvironment hostEnvironment)
+        => hostEnvironment.MatchesEnvironment("Integration");
+
+    /// <summary>
     /// Checks if the current host environment name is <see cref="Environments.Production" />.
     /// </summary>
     /// <param name="hostEnvironment">An instance of <see cref="IHostEnvironment" /></param>
@@ -72,6 +83,17 @@ public static class HostEnvironmentExtensions
         => hostEnvironment.MatchesEnvironment(Environments.Production);
 
     /// <summary>
+    /// Checks if the current host environment name is Recovery.
+    /// </summary>
+    /// <param name="hostEnvironment">An instance of <see cref="IHostEnvironment" /></param>
+    /// <returns>
+    /// True if the environment name matches to Recovery,
+    /// otherwise false.
+    /// </returns>
+    public static bool MatchesRecovery(this IHostEnvironment hostEnvironment)
+        => hostEnvironment.MatchesEnvironment("Recovery");
+
+    /// <summary>
     /// Checks if the current host environment name is <see cref="Environments.Staging" />.
     /// </summary>
     /// <param name="hostEnvironment">An instance of <see cref="IHostEnvironment" /></param>
@@ -81,4 +103,15 @@ public static class HostEnvironmentExtensions
     /// </returns>
     public static bool MatchesStaging(this IHostEnvironment hostEnvironment)
         => hostEnvironment.MatchesEnvironment(Environments.Staging);
+
+    /// <summary>
+    /// Checks if the current host environment name is Testing.
+    /// </summary>
+    /// <param name="hostEnvironment">An instance of <see cref="IHostEnvironment" /></param>
+    /// <returns>
+    /// True if the environment name matches to Testing,
+    /// otherwise false.
+    /// </returns>
+    public static bool MatchesTesting(this IHostEnvironment hostEnvironment)
+        => hostEnvironment.MatchesEnvironment("Testing");
 }
