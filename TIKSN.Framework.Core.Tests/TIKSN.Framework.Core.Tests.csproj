@@ -21,6 +21,7 @@
     <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="NSubstitute" />
+    <PackageReference Include="OpenTelemetry.Exporter.InMemory" />
     <PackageReference Include="ReactiveUI" />
     <PackageReference Include="ReactiveUI.Testing" />
     <PackageReference Include="Shouldly" />
