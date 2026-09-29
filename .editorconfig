@@ -35,7 +35,7 @@ indent_style = tab
 indent_size = 2
 
 # XML Configuration Files
-[*.{xml,config,props,targets,nuspec,resx,ruleset,vsixmanifest,vsct,xlf}]
+[*.{xml,config,props,targets,nuspec,resx,ruleset,vsixmanifest,vsct}]
 indent_size = 2
 insert_final_newline = false
 

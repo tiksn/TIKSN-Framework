@@ -173,7 +173,7 @@ Task CleanupCode Restore, {
 
 # Synopsis: Format XML Files
 Task FormatXmlFiles Clean, CleanupCode, {
-    Get-ChildItem -Include *.xml, *.config, *.props, *.targets, *.nuspec, *.resx, *.ruleset, *.vsixmanifest, *.vsct, *.xlf, *.csproj, *.fsproj, *.vbproj, *.slnx, *.DotSettings -Recurse -File
+    Get-ChildItem -Include *.xml, *.config, *.props, *.targets, *.nuspec, *.resx, *.ruleset, *.vsixmanifest, *.vsct, *.csproj, *.fsproj, *.vbproj, *.slnx, *.DotSettings -Recurse -File
     | Where-Object { -not (git check-ignore $PSItem) }
     | ForEach-Object {
         print White "Formatting XML File: $PSItem"
@@ -508,15 +508,14 @@ Task Pack Build, Test, {
         $nuspec.package.metadata.dependencies.AppendChild($group) | Out-Null
     }
 
-    $multilingualResourcesFolders = Get-ChildItem -Path 'MultilingualResources' -Recurse -Directory
-    foreach ($multilingualResourcesFolder in $multilingualResourcesFolders) {
+    $localizationProjects = @('TIKSN.LanguageLocalization', 'TIKSN.RegionLocalization')
+    $anyBuildArtifactsFolder = $state.AnyBuildArtifactsFolder
 
-        $projectName = $multilingualResourcesFolder.Parent.Name
+    foreach ($projectName in $localizationProjects) {
         $projectComment = $nuspec.CreateComment($projectName)
         $nuspec.package.files.AppendChild($projectComment) | Out-Null
 
         foreach ($dependencyGroup in $dependencyGroups) {
-
             foreach ($mainFileExtension in ('dll', 'xml', 'pdb')) {
                 $file = $nuspec.CreateElement('file', $nuspec.DocumentElement.NamespaceURI)
                 $file.SetAttribute('src', "any\$projectName.$mainFileExtension")
@@ -524,15 +523,16 @@ Task Pack Build, Test, {
                 $nuspec.package.files.AppendChild($file) | Out-Null
             }
 
-            $multilingualResourcesFiles = Get-ChildItem -Path $multilingualResourcesFolder
-            foreach ($multilingualResourcesFile in $multilingualResourcesFiles) {
-                $nameParts = $multilingualResourcesFile.Name -split '\.'
-                $code = $nameParts[-2]
-
-                $file = $nuspec.CreateElement('file', $nuspec.DocumentElement.NamespaceURI)
-                $file.SetAttribute('src', "any\$code\$projectName.resources.dll")
-                $file.SetAttribute('target', "lib\$($dependencyGroup.TargetFramework)\$code")
-                $nuspec.package.files.AppendChild($file) | Out-Null
+            $cultureFolders = Get-ChildItem -Path $anyBuildArtifactsFolder -Directory
+            foreach ($cultureFolder in $cultureFolders) {
+                $code = $cultureFolder.Name
+                $resourceFile = Join-Path -Path $cultureFolder.FullName -ChildPath "$projectName.resources.dll"
+                if (Test-Path -Path $resourceFile) {
+                    $file = $nuspec.CreateElement('file', $nuspec.DocumentElement.NamespaceURI)
+                    $file.SetAttribute('src', "any\$code\$projectName.resources.dll")
+                    $file.SetAttribute('target', "lib\$($dependencyGroup.TargetFramework)\$code")
+                    $nuspec.package.files.AppendChild($file) | Out-Null
+                }
             }
         }
     }
