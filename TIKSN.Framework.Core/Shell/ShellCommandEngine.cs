@@ -107,10 +107,8 @@ public partial class ShellCommandEngine : IShellCommandEngine
                 type, commandAttribute, constructors.Single(), properties.OrderBy(x => x.Item1.Position).ToSeq()));
     }
 
-#pragma warning disable MA0051 // Method is too long
 
     public async Task RunAsync()
-#pragma warning restore MA0051 // Method is too long
     {
         while (true)
         {
@@ -340,9 +338,7 @@ public partial class ShellCommandEngine : IShellCommandEngine
                     args.Add(commandScope.ServiceProvider.GetRequiredService(parameterInfo.ParameterType));
                 }
 
-#pragma warning disable IDE0305 // Simplify collection initialization
                 var obj = Activator.CreateInstance(commandInfo.Item1, args.ToArray());
-#pragma warning restore IDE0305 // Simplify collection initialization
 
                 foreach (var property in commandInfo.Item4)
                 {

@@ -7,7 +7,6 @@ using static LanguageExt.Prelude;
 
 namespace TIKSN.Settings;
 
-#pragma warning disable MA0051 // Method is too long
 
 public class FileSettingsService : ISettingsService
 {
@@ -331,4 +330,3 @@ public class FileSettingsService : ISettingsService
     }
 }
 
-#pragma warning restore MA0051 // Method is too long

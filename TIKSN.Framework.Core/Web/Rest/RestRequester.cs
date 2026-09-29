@@ -28,12 +28,10 @@ public class RestRequester : IRestRequester
                 nameof(restAuthenticationTokenProvider));
     }
 
-#pragma warning disable MA0051 // Method is too long
 
     public async Task<TResult?> RequestAsync<TResult, TRequest>(
         TRequest request,
         CancellationToken cancellationToken)
-#pragma warning restore MA0051 // Method is too long
     {
         ArgumentNullException.ThrowIfNull(request);
 

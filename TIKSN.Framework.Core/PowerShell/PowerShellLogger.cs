@@ -84,14 +84,12 @@ public class PowerShellLogger : ILogger, IDisposable
         _ => throw new ArgumentOutOfRangeException(nameof(logLevel)),
     };
 
-#pragma warning disable MA0051 // Method is too long
 
     private void WriteMessage(
         LogLevel logLevel,
         EventId eventId,
         string message,
         Exception? exception)
-#pragma warning restore MA0051 // Method is too long
     {
         var logBuilder = new StringBuilder();
 

@@ -150,5 +150,4 @@ public class Acronym<TSelf, TMinLength, TMaxLength> : ISerial<TSelf>
 
 #pragma warning restore S3011 // Reflection should not be used to increase accessibility of classes, methods, or fields
 }
-#pragma warning restore MA0018 // Do not declare static members on generic types (deprecated; use CA1000 instead)
 #pragma warning restore CA1000 // Do not declare static members on generic types
