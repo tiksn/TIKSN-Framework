@@ -106,10 +106,8 @@ public class FixedRateCurrencyConverterTests
     [Fact]
     public Task FixedRateCurrencyConverter001()
     {
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
         _ = new Func<object>(() => CreateFixedRateCurrencyConverter(pair: null, rate: 0.5m))
             .ShouldThrow<ArgumentNullException>();
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
         return Task.CompletedTask;
     }
 

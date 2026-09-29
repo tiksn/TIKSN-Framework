@@ -95,12 +95,10 @@ public class FederalReserveSystem : IFederalReserveSystem
         throw new ArgumentException($"Currency pair '{pair}' not supported.", nameof(pair));
     }
 
-#pragma warning disable MA0051 // Method is too long
 
     public async Task<IReadOnlyCollection<ExchangeRate>> GetExchangeRatesAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
-#pragma warning restore MA0051 // Method is too long
     {
         var requestedDate = TimeZoneInfo.ConvertTime(asOn, FederalReserveTimeZone);
         var dataUrl = new Uri(string.Format(EnglishUnitedStates, DataUrlFormat,

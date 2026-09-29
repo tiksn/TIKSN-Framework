@@ -188,9 +188,7 @@ public class OneANotationTests
     [InlineData("0A", false)]
     public void GivenString_WhenTryParse_ThenResultShouldBe(string? input, bool expectedSuccess)
     {
-#pragma warning disable CS8604 // Possible null reference argument.
         var success = OneANotation<ushort>.TryParse(input, CultureInfo.InvariantCulture, out var result);
-#pragma warning restore CS8604 // Possible null reference argument.
 
         success.ShouldBe(expectedSuccess);
         if (expectedSuccess)
