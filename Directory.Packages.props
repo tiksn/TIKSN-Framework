@@ -50,6 +50,8 @@
     <PackageVersion Include="NodaTime" Version="3.3.4" />
     <PackageVersion Include="NSubstitute" Version="6.2.0" />
     <PackageVersion Include="NuGet.Versioning" Version="7.9.0" />
+    <PackageVersion Include="OpenTelemetry" Version="1.19.1" />
+    <PackageVersion Include="OpenTelemetry.Exporter.InMemory" Version="1.19.1" />
     <PackageVersion Include="CommunityToolkit.Maui" Version="15.0.1" />
     <PackageVersion Include="Polly" Version="8.8.0" />
     <PackageVersion Include="RavenDB.Client" Version="7.2.6" />
