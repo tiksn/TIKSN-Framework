@@ -16,7 +16,6 @@
 #requires -Version 7.4
 #requires -PSEdition Core
 
-[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Parameter is used actually.')]
 param(
     # Build Version
     [Parameter()]

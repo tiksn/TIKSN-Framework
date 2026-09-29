@@ -3,7 +3,7 @@ using MongoDB.Driver;
 
 namespace TIKSN.Data.Mongo;
 
-public class MongoUnitOfWork : UnitOfWorkBase
+public sealed class MongoUnitOfWork : UnitOfWorkBase
 {
     private readonly IClientSessionHandle clientSessionHandle;
     private readonly AsyncServiceScope serviceScope;
@@ -29,9 +29,6 @@ public class MongoUnitOfWork : UnitOfWorkBase
     {
         await base.DisposeAsync().ConfigureAwait(false);
         await this.serviceScope.DisposeAsync().ConfigureAwait(false);
-#pragma warning disable S3971 // "GC.SuppressFinalize" should not be called
-        GC.SuppressFinalize(this);
-#pragma warning restore S3971 // "GC.SuppressFinalize" should not be called
     }
 
     protected override bool IsDirty() => this.clientSessionHandle.WrappedCoreSession.IsDirty;
