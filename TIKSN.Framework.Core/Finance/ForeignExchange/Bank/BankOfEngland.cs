@@ -156,7 +156,6 @@ public class BankOfEngland : IBankOfEngland
         codes.Add((pair, serieCode));
     }
 
-
     private static (Dictionary<CurrencyPair, string>, Dictionary<string, CurrencyPair>) CreateSeriesCodesMaps(
         ICurrencyPairFactory currencyPairFactory)
     {

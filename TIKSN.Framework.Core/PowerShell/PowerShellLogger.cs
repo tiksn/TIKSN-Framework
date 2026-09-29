@@ -84,7 +84,6 @@ public class PowerShellLogger : ILogger, IDisposable
         _ => throw new ArgumentOutOfRangeException(nameof(logLevel)),
     };
 
-
     private void WriteMessage(
         LogLevel logLevel,
         EventId eventId,

@@ -5,9 +5,7 @@ namespace TIKSN.Numbering;
 public interface ISerial<TSelf> : ISpanParsable<TSelf>, ISpanFormattable, IEquatable<TSelf>
     where TSelf : ISerial<TSelf>
 {
-
     public static abstract Option<TSelf> Parse(string s, bool asciiOnly, IFormatProvider? provider);
 
     public static abstract Option<TSelf> Parse(ReadOnlySpan<char> s, bool asciiOnly, IFormatProvider? provider);
-
 }

@@ -28,7 +28,6 @@ public class RestRequester : IRestRequester
                 nameof(restAuthenticationTokenProvider));
     }
 
-
     public async Task<TResult?> RequestAsync<TResult, TRequest>(
         TRequest request,
         CancellationToken cancellationToken)

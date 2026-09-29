@@ -29,7 +29,6 @@ namespace TIKSN.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
-
     public static IServiceCollection AddFrameworkCore(this IServiceCollection services)
     {
         _ = services.AddLocalization();

@@ -107,7 +107,6 @@ public partial class ShellCommandEngine : IShellCommandEngine
                 type, commandAttribute, constructors.Single(), properties.OrderBy(x => x.Item1.Position).ToSeq()));
     }
 
-
     public async Task RunAsync()
     {
         while (true)
@@ -338,7 +337,7 @@ public partial class ShellCommandEngine : IShellCommandEngine
                     args.Add(commandScope.ServiceProvider.GetRequiredService(parameterInfo.ParameterType));
                 }
 
-                var obj = Activator.CreateInstance(commandInfo.Item1, args.ToArray());
+                var obj = Activator.CreateInstance(commandInfo.Item1, [.. args]);
 
                 foreach (var property in commandInfo.Item4)
                 {

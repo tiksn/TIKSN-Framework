@@ -16,8 +16,8 @@ public class EnrichLogRecordWithEventIdProcessorTests
         var exportedItems = new List<LogRecord>();
         using var loggerFactory = LoggerFactory.Create(builder => builder.AddOpenTelemetry(options =>
         {
-            options.AddEventIdEnrichment();
-            options.AddInMemoryExporter(exportedItems);
+            _ = options.AddEventIdEnrichment();
+            _ = options.AddInMemoryExporter(exportedItems);
         }));
 
         var logger = loggerFactory.CreateLogger<EnrichLogRecordWithEventIdProcessorTests>();
@@ -48,8 +48,8 @@ public class EnrichLogRecordWithEventIdProcessorTests
         var exportedItems = new List<LogRecord>();
         using var loggerFactory = LoggerFactory.Create(builder => builder.AddOpenTelemetry(options =>
         {
-            options.AddEventIdEnrichment();
-            options.AddInMemoryExporter(exportedItems);
+            _ = options.AddEventIdEnrichment();
+            _ = options.AddInMemoryExporter(exportedItems);
         }));
 
         var logger = loggerFactory.CreateLogger<EnrichLogRecordWithEventIdProcessorTests>();
