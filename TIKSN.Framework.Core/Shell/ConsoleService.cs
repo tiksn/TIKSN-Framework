@@ -59,21 +59,21 @@ public class ConsoleService : IConsoleService
                 nameof(options));
         }
 
-        while (true)
+        var prompt = new SelectionPrompt<string>()
+            .Title(message)
+            .AddChoices(options);
+
+        var answer = this.ansiConsole.Prompt(prompt);
+
+        for (var i = 0; i < options.Length; i++)
         {
-            this.ConsoleWrite(
-                $"{message} [{string.Join('/', options)}]{this.stringLocalizer.GetRequiredString(LocalizationKeys.Key444677337)}");
-
-            var answer = Console.ReadLine();
-
-            for (var i = 0; i < options.Length; i++)
+            if (string.Equals(options[i], answer, StringComparison.OrdinalIgnoreCase))
             {
-                if (string.Equals(options[i], answer, StringComparison.OrdinalIgnoreCase))
-                {
-                    return i;
-                }
+                return i;
             }
         }
+
+        return -1;
     }
 
     public void WriteError(string errorMessage) => this.ConsoleWriteLine(errorMessage, ConsoleColor.Red);
@@ -90,8 +90,6 @@ public class ConsoleService : IConsoleService
 
         this.WriteObjects(values, title: null);
     }
-
-    private void ConsoleWrite(string message) => this.ansiConsole.Write(message);
 
     private void ConsoleWrite(string message, ConsoleColor foreground)
         => this.ansiConsole.Write(new Text(message.EscapeMarkup(), new Style(foreground)));
