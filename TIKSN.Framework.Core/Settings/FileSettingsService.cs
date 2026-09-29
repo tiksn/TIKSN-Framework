@@ -7,7 +7,6 @@ using static LanguageExt.Prelude;
 
 namespace TIKSN.Settings;
 
-
 public class FileSettingsService : ISettingsService
 {
     private readonly IKnownFolders knownFolders;
@@ -329,4 +328,3 @@ public class FileSettingsService : ISettingsService
         return [.. bsonDocument.Keys.Where(n => !string.Equals(n, "_id", StringComparison.OrdinalIgnoreCase))];
     }
 }
-

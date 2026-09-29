@@ -95,7 +95,6 @@ public class FederalReserveSystem : IFederalReserveSystem
         throw new ArgumentException($"Currency pair '{pair}' not supported.", nameof(pair));
     }
 
-
     public async Task<IReadOnlyCollection<ExchangeRate>> GetExchangeRatesAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
