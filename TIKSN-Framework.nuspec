@@ -22,7 +22,7 @@
       conversion, central-bank foreign exchange providers, globalization, language and region
       localization resources, JSON, XML, MessagePack, custom binary serialization, Protocol
       Buffers-backed licensing schema support, license generation and signature services, shell
-      and PowerShell application infrastructure, telemetry abstractions, correlation IDs, settings,
+      PowerShell, and AI-assisted shell-command discovery using Microsoft.Extensions.AI, telemetry abstractions, correlation IDs, settings,
       known folders, network connectivity, antimalware abstractions, versioning, numbering, time
       period types, REST helpers, sitemap models, and platform-specific MAUI registrations.
     </description>
@@ -36,7 +36,7 @@
       hybrid-cache distributed-cache finance money currency pricing foreign-exchange central-bank
       globalization localization language-localization region-localization serialization json xml
       messagepack protobuf licensing shell powershell telemetry correlation versioning numbering rest
-      sitemap antimalware settings known-folders
+      sitemap antimalware settings known-folders microsoft-extensions-ai
     </tags>
     <dependencies>
       <!-- will be propagated by build script-->

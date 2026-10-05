@@ -8,5 +8,7 @@ public interface IShellCommandEngine
 
     public void AddType(Type type);
 
+    public IReadOnlyList<ShellCommandHelpItem> GetHelpItems();
+
     public Task RunAsync();
 }

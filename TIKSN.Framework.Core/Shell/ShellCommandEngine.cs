@@ -107,6 +107,25 @@ public partial class ShellCommandEngine : IShellCommandEngine
                 type, commandAttribute, constructors.Single(), properties.OrderBy(x => x.Item1.Position).ToSeq()));
     }
 
+    public IReadOnlyList<ShellCommandHelpItem> GetHelpItems()
+    {
+        var helpItems = new List<ShellCommandHelpItem>
+        {
+            new(
+                NormalizeCommandName(this.stringLocalizer.GetRequiredString(LocalizationKeys.Key785393579)),
+                []),
+            new(
+                NormalizeCommandName(this.stringLocalizer.GetRequiredString(LocalizationKeys.Key427524976)),
+                []),
+        };
+
+        helpItems.AddRange(this.commands.Select(command => new ShellCommandHelpItem(
+            NormalizeCommandName(command.Item2.GetName(this.stringLocalizer)),
+            command.Item4.Select(parameter => parameter.Item1.GetName(this.stringLocalizer)))));
+
+        return [.. helpItems.OrderBy(item => item.CommandName, StringComparer.Ordinal)];
+    }
+
     public async Task RunAsync()
     {
         while (true)
@@ -130,28 +149,7 @@ public partial class ShellCommandEngine : IShellCommandEngine
             if (string.Equals(command, this.stringLocalizer.GetRequiredString(LocalizationKeys.Key427524976),
                     StringComparison.OrdinalIgnoreCase))
             {
-                var helpItems = new List<ShellCommandHelpItem>
-                {
-                    new(
-                        NormalizeCommandName(
-                            this.stringLocalizer.GetRequiredString(LocalizationKeys.Key785393579)),
-                        []),
-                    new(
-                        NormalizeCommandName(
-                            this.stringLocalizer.GetRequiredString(LocalizationKeys.Key427524976)),
-                        []),
-                };
-
-                foreach (var commandItem in this.commands)
-                {
-                    helpItems.Add(new ShellCommandHelpItem(
-                        NormalizeCommandName(commandItem.Item2.GetName(this.stringLocalizer)),
-                        commandItem.Item4.Select(item => item.Item1.GetName(this.stringLocalizer))));
-                }
-
-                helpItems = [.. helpItems.OrderBy(i => i.CommandName, StringComparer.Ordinal)];
-
-                this.consoleService.WriteObjects(helpItems);
+                this.consoleService.WriteObjects(this.GetHelpItems());
             }
             else
             {
