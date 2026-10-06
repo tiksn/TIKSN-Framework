@@ -17,6 +17,37 @@ namespace TIKSN.Tests.Shell;
 public class ShellCommandSuggestionServiceTests
 {
     [Fact]
+    public async Task GivenMalformedResponse_WhenSuggesting_ThenThrowsJsonException()
+    {
+        var shellCommandEngine = Substitute.For<IShellCommandEngine>();
+        _ = shellCommandEngine.GetHelpItems().Returns(
+        [
+            new ShellCommandHelpItem("Known command", []),
+        ]);
+        var service = new ShellCommandSuggestionService(CreateChatClient("not JSON"), shellCommandEngine);
+
+        _ = await Should.ThrowAsync<System.Text.Json.JsonException>(() =>
+            service.SuggestAsync("Find a command", TestContext.Current.CancellationToken));
+    }
+
+    [Fact]
+    public async Task GivenNoRegisteredCommands_WhenSuggesting_ThenReturnsNoSuggestionsWithoutCallingAi()
+    {
+        var shellCommandEngine = Substitute.For<IShellCommandEngine>();
+        _ = shellCommandEngine.GetHelpItems().Returns([]);
+        var chatClient = Substitute.For<IChatClient>();
+        var service = new ShellCommandSuggestionService(chatClient, shellCommandEngine);
+
+        var suggestions = await service.SuggestAsync("Find a command", TestContext.Current.CancellationToken);
+
+        suggestions.ShouldBeEmpty();
+        _ = chatClient.DidNotReceive().GetResponseAsync(
+            Arg.Any<IEnumerable<ChatMessage>>(),
+            Arg.Any<ChatOptions>(),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
     public void GivenRegisteredCommand_WhenReadingHelpItems_ThenIncludesLocalizedNameAndParameters()
     {
         var localizer = Substitute.For<IStringLocalizer>();
@@ -39,6 +70,33 @@ public class ShellCommandSuggestionServiceTests
     }
 
     [Fact]
+    public async Task GivenUnknownParameter_WhenSuggesting_ThenDiscardsSuggestion()
+    {
+        var shellCommandEngine = Substitute.For<IShellCommandEngine>();
+        _ = shellCommandEngine.GetHelpItems().Returns(
+        [
+            new ShellCommandHelpItem("Known command", []),
+        ]);
+        var service = new ShellCommandSuggestionService(
+            CreateChatClient(
+                /*lang=json,strict*/
+                """
+                [
+                  {
+                    "commandName": "Known command",
+                    "reason": "It might help.",
+                    "parameters": { "Unexpected": "value" }
+                  }
+                ]
+                """),
+            shellCommandEngine);
+
+        var suggestions = await service.SuggestAsync("Do the task", TestContext.Current.CancellationToken);
+
+        suggestions.ShouldBeEmpty();
+    }
+
+    [Fact]
     public async Task GivenValidAndUnknownCommands_WhenSuggesting_ThenReturnsOnlyKnownCommandsAndParameters()
     {
         var shellCommandEngine = Substitute.For<IShellCommandEngine>();
@@ -47,6 +105,7 @@ public class ShellCommandSuggestionServiceTests
             new ShellCommandHelpItem("Convert currency", ["Amount", "Target"]),
         ]);
         var chatClient = CreateChatClient(
+            /*lang=json,strict*/
             """
             [
               {
@@ -70,67 +129,10 @@ public class ShellCommandSuggestionServiceTests
             "Convert 25 dollars to euros",
             TestContext.Current.CancellationToken);
 
-        suggestions.ShouldHaveSingleItem();
+        _ = suggestions.ShouldHaveSingleItem();
         suggestions[0].CommandName.ShouldBe("Convert currency");
         suggestions[0].Parameters["Amount"].ShouldBe("25");
         suggestions[0].Parameters["Target"].ShouldBe("EUR");
-    }
-
-    [Fact]
-    public async Task GivenUnknownParameter_WhenSuggesting_ThenDiscardsSuggestion()
-    {
-        var shellCommandEngine = Substitute.For<IShellCommandEngine>();
-        _ = shellCommandEngine.GetHelpItems().Returns(
-        [
-            new ShellCommandHelpItem("Known command", []),
-        ]);
-        var service = new ShellCommandSuggestionService(
-            CreateChatClient(
-                """
-                [
-                  {
-                    "commandName": "Known command",
-                    "reason": "It might help.",
-                    "parameters": { "Unexpected": "value" }
-                  }
-                ]
-                """),
-            shellCommandEngine);
-
-        var suggestions = await service.SuggestAsync("Do the task", TestContext.Current.CancellationToken);
-
-        suggestions.ShouldBeEmpty();
-    }
-
-    [Fact]
-    public async Task GivenNoRegisteredCommands_WhenSuggesting_ThenReturnsNoSuggestionsWithoutCallingAi()
-    {
-        var shellCommandEngine = Substitute.For<IShellCommandEngine>();
-        _ = shellCommandEngine.GetHelpItems().Returns([]);
-        var chatClient = Substitute.For<IChatClient>();
-        var service = new ShellCommandSuggestionService(chatClient, shellCommandEngine);
-
-        var suggestions = await service.SuggestAsync("Find a command", TestContext.Current.CancellationToken);
-
-        suggestions.ShouldBeEmpty();
-        _ = chatClient.DidNotReceive().GetResponseAsync(
-            Arg.Any<IEnumerable<ChatMessage>>(),
-            Arg.Any<ChatOptions>(),
-            Arg.Any<CancellationToken>());
-    }
-
-    [Fact]
-    public async Task GivenMalformedResponse_WhenSuggesting_ThenThrowsJsonException()
-    {
-        var shellCommandEngine = Substitute.For<IShellCommandEngine>();
-        _ = shellCommandEngine.GetHelpItems().Returns(
-        [
-            new ShellCommandHelpItem("Known command", []),
-        ]);
-        var service = new ShellCommandSuggestionService(CreateChatClient("not JSON"), shellCommandEngine);
-
-        await Should.ThrowAsync<System.Text.Json.JsonException>(
-            () => service.SuggestAsync("Find a command", TestContext.Current.CancellationToken));
     }
 
     private static IChatClient CreateChatClient(string responseText)

@@ -30,15 +30,6 @@ namespace TIKSN.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddFrameworkShellCommandSuggestions(this IServiceCollection services)
-    {
-        ArgumentNullException.ThrowIfNull(services);
-
-        services.TryAddScoped<IShellCommandSuggestionService, ShellCommandSuggestionService>();
-
-        return services;
-    }
-
     public static IServiceCollection AddFrameworkCore(this IServiceCollection services)
     {
         _ = services.AddLocalization();
@@ -103,6 +94,15 @@ public static class ServiceCollectionExtensions
         _ = services.AddHttpClient<INationalBankOfUkraine, NationalBankOfUkraine>();
         _ = services.AddHttpClient<IReserveBankOfAustralia, ReserveBankOfAustralia>();
         _ = services.AddHttpClient<ISwissNationalBank, SwissNationalBank>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddFrameworkShellCommandSuggestions(this IServiceCollection services)
+    {
+        ArgumentNullException.ThrowIfNull(services);
+
+        services.TryAddScoped<IShellCommandSuggestionService, ShellCommandSuggestionService>();
 
         return services;
     }
