@@ -19,6 +19,7 @@ using TIKSN.Serialization;
 using TIKSN.Serialization.MessagePack;
 using TIKSN.Serialization.Numerics;
 using TIKSN.Shell;
+using TIKSN.Shell.AI;
 using TIKSN.UI.Events;
 using TIKSN.UI.Interactions;
 using TIKSN.UI.Navigation;
@@ -29,6 +30,15 @@ namespace TIKSN.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
+    public static IServiceCollection AddFrameworkShellCommandSuggestions(this IServiceCollection services)
+    {
+        ArgumentNullException.ThrowIfNull(services);
+
+        services.TryAddScoped<IShellCommandSuggestionService, ShellCommandSuggestionService>();
+
+        return services;
+    }
+
     public static IServiceCollection AddFrameworkCore(this IServiceCollection services)
     {
         _ = services.AddLocalization();

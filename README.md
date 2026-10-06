@@ -21,6 +21,9 @@ The package includes:
 - `TIKSN.Framework.Maui` for Android, iOS, Mac Catalyst, and Windows MAUI targets.
 - `TIKSN.LanguageLocalization` and `TIKSN.RegionLocalization` satellite resources.
 
+AI-assisted shell-command discovery is included in `TIKSN-Framework`. It uses
+`Microsoft.Extensions.AI`, but does not configure an AI provider or execute suggested commands.
+
 Supported package target frameworks:
 
 - `net10.0`
@@ -42,6 +45,7 @@ The repository uses the .NET SDK pinned in `global.json` (`10.0.100`, rolling fo
 - Serialization: JSON, XML, MessagePack, custom serializer/deserializer abstractions, unsigned `BigInteger` binary serialization, and Protocol Buffers schema support used by licensing.
 - Licensing: license descriptors, license generation, entitlement conversion hooks, and RSA, DSA, and Ed25519 certificate signature services.
 - Shell and PowerShell: shell command engine, command attributes, console services, progress reporting, user confirmation, and PowerShell logging/progress helpers.
+- AI integration: provider-neutral, non-executing shell command suggestions through `Microsoft.Extensions.AI`.
 - Integration: command/event/query marker interfaces and correlation ID services backed by GUID, ULID, CUID, and Base62 implementations.
 - Application services: telemetry abstractions, configuration validation, settings, known folders, network connectivity, antimalware scanning abstractions, identity generation, mapping, numbering, versioning, time period types, web REST helpers, and sitemap models.
 - MAUI platform support: platform modules and service collection extensions, plus Windows registry configuration/settings and Windows antimalware scanner integration.
@@ -108,6 +112,54 @@ var host = Host.CreateDefaultBuilder(args)
 
 await host.RunAsync().ConfigureAwait(false);
 ```
+
+## AI-Assisted Shell Command Discovery
+
+AI-assisted shell command discovery suggests available shell commands from a natural-language
+request:
+
+```csharp
+[ShellCommand("Currency.Convert")]
+public sealed class ConvertCurrencyCommand : ShellCommandBase
+{
+    public ConvertCurrencyCommand(IConsoleService consoleService) : base(consoleService)
+    {
+    }
+
+    [ShellCommandParameter("Currency.Amount", Mandatory = true)]
+    public decimal Amount { get; set; }
+
+    [ShellCommandParameter("Currency.Source", Mandatory = true)]
+    public string Source { get; set; } = string.Empty;
+
+    [ShellCommandParameter("Currency.Target", Mandatory = true)]
+    public string Target { get; set; } = string.Empty;
+
+    public override Task ExecuteAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+}
+```
+
+Register the framework and suggestion service in the host. The host supplies an `IChatClient` from
+its chosen provider and decides how to present suggestions:
+
+```csharp
+services.AddLogging();
+services.AddFrameworkCore();
+services.AddFrameworkShellCommandSuggestions();
+// Register an IChatClient from the provider chosen by the consuming application.
+
+using var serviceProvider = services.BuildServiceProvider();
+var shell = serviceProvider.GetRequiredService<IShellCommandEngine>();
+shell.AddAssembly(typeof(ConvertCurrencyCommand).Assembly);
+
+var suggestions = await serviceProvider
+    .GetRequiredService<IShellCommandSuggestionService>()
+    .SuggestAsync("Convert 25 US dollars to euros", CancellationToken.None);
+```
+
+Suggestions contain known command names, reasons, and recognized parameter values only. They are not
+executed; applications remain responsible for presenting suggestions and explicitly invoking commands.
+The request and registered command metadata are sent to the provider configured behind `IChatClient`.
 
 ## Setup for .NET MAUI
 
