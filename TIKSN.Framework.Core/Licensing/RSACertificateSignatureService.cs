@@ -17,7 +17,7 @@ public class RSACertificateSignatureService : ICertificateSignatureService
             ?? throw new InvalidOperationException("Public Certificate is missing");
 
         return privateKey.SignData(
-            data, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            data, HashAlgorithmName.SHA256, RSASignaturePadding.Pss);
     }
 
     public bool Verify(
@@ -29,6 +29,6 @@ public class RSACertificateSignatureService : ICertificateSignatureService
             publicCertificate.GetRSAPublicKey()
             ?? throw new InvalidOperationException("Public Certificate is missing");
 
-        return publicKey.VerifyData(data, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+        return publicKey.VerifyData(data, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pss);
     }
 }
