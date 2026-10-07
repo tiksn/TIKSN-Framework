@@ -1,5 +1,4 @@
 using System.Reactive;
-using ReactiveUI;
 using TIKSN.Concurrency;
 using TIKSN.UI.ViewModels;
 

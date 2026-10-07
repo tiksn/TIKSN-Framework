@@ -1,5 +1,4 @@
 using System.Reactive;
-using ReactiveUI;
 using TIKSN.UI.ViewModels;
 
 namespace TIKSN.UI.Interactions;
