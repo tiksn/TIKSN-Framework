@@ -80,7 +80,7 @@ public class ViewModelBaseTests
         isBusyChanges.ShouldBe(ExpectedBusyStates);
     }
 
-    private sealed class TestViewModel : ViewModelBase
+    public sealed class TestViewModel : ViewModelBase
     {
         public TestViewModel(
             ISequencers sequencers,
