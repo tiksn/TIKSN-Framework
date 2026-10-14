@@ -49,7 +49,7 @@ jobs:
         shell: pwsh
         run: .\build.ps1 -Instance ${{github.run_id}}
       - name: "Publish Artefacts"
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: build-artifact
           path: ".trash"
@@ -78,7 +78,7 @@ jobs:
         shell: pwsh
         run: .\test.ps1 -Instance ${{github.run_id}}
       - name: "Publish Test Artefacts"
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: test-artifact
           path: ".trash"
@@ -105,7 +105,7 @@ jobs:
         shell: pwsh
         run: .\pack.ps1 -Instance ${{github.run_id}}
       - name: "Publish Artefacts"
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: pack-artifact
           path: ".trash"
