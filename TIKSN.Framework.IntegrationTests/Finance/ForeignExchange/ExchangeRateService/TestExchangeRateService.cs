@@ -7,7 +7,7 @@ using TIKSN.Finance;
 using TIKSN.Finance.ForeignExchange;
 using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Globalization;
-using TIKSN.Localization;
+using LocalizationKeys = TIKSN.Localization.LocalizationKeys;
 
 namespace TIKSN.IntegrationTests.Finance.ForeignExchange.ExchangeRateService;
 

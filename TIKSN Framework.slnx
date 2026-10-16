@@ -8,6 +8,7 @@
   <Folder Name="/Framework/">
     <Project Path="TIKSN.Framework.Core/TIKSN.Framework.Core.csproj" />
     <Project Path="TIKSN.Framework.Maui/TIKSN.Framework.Maui.csproj" />
+    <Project Path="TIKSN.Framework.SourceGenerators/TIKSN.Framework.SourceGenerators.csproj" />
     <Project Path="TIKSN.LanguageLocalization/TIKSN.LanguageLocalization.csproj" />
     <Project Path="TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj" />
   </Folder>

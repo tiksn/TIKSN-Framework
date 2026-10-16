@@ -14,6 +14,7 @@
     DirectoryPackagesFile      = '.\Directory.Packages.props'
 
     Projects                   = @{
+        SourceGenerators     = 'TIKSN.Framework.SourceGenerators/TIKSN.Framework.SourceGenerators.csproj'
         LanguageLocalization = 'TIKSN.LanguageLocalization/TIKSN.LanguageLocalization.csproj'
         RegionLocalization   = 'TIKSN.RegionLocalization/TIKSN.RegionLocalization.csproj'
         Core                 = 'TIKSN.Framework.Core/TIKSN.Framework.Core.csproj'

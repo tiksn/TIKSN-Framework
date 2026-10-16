@@ -165,8 +165,15 @@ Task DevSkim Restore, {
     Exec { dotnet tool run devskim fix --source-code . --sarif-result $sarifFile --all }
 }
 
+# Synopsis: Build Source Generators
+Task BuildSourceGenerators Restore, {
+    $project = Resolve-Path -Path $BuildParameters.Projects.SourceGenerators
+
+    Exec { dotnet build $project /v:m -warnaserror /p:TreatWarningsAsErrors=true }
+}
+
 # Synopsis: Cleanup Code
-Task CleanupCode Restore, {
+Task CleanupCode Restore, BuildSourceGenerators, {
     $solution = Resolve-Path -Path $BuildParameters.Solution
     Exec { dotnet jb cleanupcode "--profile=$($BuildParameters.CleanupCodeProfile)" $solution }
 }
@@ -189,6 +196,13 @@ Task FormatWhitespace Restore, {
     Exec { dotnet format whitespace --verbosity diagnostic $solution }
 }
 
+# Synopsis: Format Analyzers Source Generators
+Task FormatAnalyzersSourceGenerators Restore, {
+    $project = Resolve-Path -Path $BuildParameters.Projects.SourceGenerators
+
+    Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
+}
+
 # Synopsis: Format Analyzers Language Localization
 Task FormatAnalyzersLanguageLocalization Restore, {
     $project = Resolve-Path -Path $BuildParameters.Projects.LanguageLocalization
@@ -204,27 +218,34 @@ Task FormatAnalyzersRegionLocalization Restore, {
 }
 
 # Synopsis: Format Analyzers Core
-Task FormatAnalyzersCore Restore, {
+Task FormatAnalyzersCore Restore, BuildSourceGenerators, {
     $project = Resolve-Path -Path $BuildParameters.Projects.Core
 
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
 }
 
 # Synopsis: Format Analyzers MAUI
-Task FormatAnalyzersMaui Restore, {
+Task FormatAnalyzersMaui Restore, BuildSourceGenerators, {
     $project = Resolve-Path -Path $BuildParameters.Projects.Maui
 
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $project }
 }
 
 # Synopsis: Format Analyzers Solution
-Task FormatAnalyzersSolution Restore, {
+Task FormatAnalyzersSolution Restore, BuildSourceGenerators, {
     $solution = Resolve-Path -Path $BuildParameters.Solution
     Exec { dotnet format analyzers --severity info --verbosity diagnostic $solution }
 }
 
 # Synopsis: Format Analyzers
-Task FormatAnalyzers Restore, FormatAnalyzersLanguageLocalization, FormatAnalyzersRegionLocalization, FormatAnalyzersCore, FormatAnalyzersMaui, FormatAnalyzersSolution, CleanupCode
+Task FormatAnalyzers Restore, FormatAnalyzersSourceGenerators, FormatAnalyzersLanguageLocalization, FormatAnalyzersRegionLocalization, FormatAnalyzersCore, FormatAnalyzersMaui, FormatAnalyzersSolution, CleanupCode
+
+# Synopsis: Format Style Source Generators
+Task FormatStyleSourceGenerators Restore, {
+    $project = Resolve-Path -Path $BuildParameters.Projects.SourceGenerators
+
+    Exec { dotnet format style --severity info --verbosity diagnostic $project }
+}
 
 # Synopsis: Format Style Language Localization
 Task FormatStyleLanguageLocalization Restore, {
@@ -241,27 +262,27 @@ Task FormatStyleRegionLocalization Restore, {
 }
 
 # Synopsis: Format Style Core
-Task FormatStyleCore Restore, {
+Task FormatStyleCore Restore, BuildSourceGenerators, {
     $project = Resolve-Path -Path $BuildParameters.Projects.Core
 
     Exec { dotnet format style --severity info --verbosity diagnostic $project }
 }
 
 # Synopsis: Format Style MAUI
-Task FormatStyleMaui Restore, {
+Task FormatStyleMaui Restore, BuildSourceGenerators, {
     $project = Resolve-Path -Path $BuildParameters.Projects.Maui
 
     Exec { dotnet format style --severity info --verbosity diagnostic $project }
 }
 
 # Synopsis: Format Style Solution
-Task FormatStyleSolution Restore, {
+Task FormatStyleSolution Restore, BuildSourceGenerators, {
     $solution = Resolve-Path -Path $BuildParameters.Solution
     Exec { dotnet format style --severity info --verbosity diagnostic $solution }
 }
 
 # Synopsis: Format Style
-Task FormatStyle Restore, FormatStyleLanguageLocalization, FormatStyleRegionLocalization, FormatStyleCore, FormatStyleMaui, FormatStyleSolution, CleanupCode
+Task FormatStyle Restore, FormatStyleSourceGenerators, FormatStyleLanguageLocalization, FormatStyleRegionLocalization, FormatStyleCore, FormatStyleMaui, FormatStyleSolution, CleanupCode
 
 # Synopsis: Format PowerShell Files
 Task FormatPowerShellFiles RestorePowerShellModules, {
