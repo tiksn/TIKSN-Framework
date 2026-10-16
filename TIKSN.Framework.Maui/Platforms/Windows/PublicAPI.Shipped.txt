@@ -1,0 +1,45 @@
+#nullable enable
+override TIKSN.Configuration.WindowsRegistryConfigurationProvider.Load() -> void
+override TIKSN.DependencyInjection.PlatformModule.Load(Autofac.ContainerBuilder! builder) -> void
+static TIKSN.Configuration.RegistryConfigurationManager.ReadObject<T>(string! rootKey) -> T
+static TIKSN.Configuration.WindowsRegistryConfigurationExtensions.AddWindowsRegistry(this Microsoft.Extensions.Configuration.IConfigurationBuilder! configurationBuilder, string! rootKey, Microsoft.Win32.RegistryView registryView = Microsoft.Win32.RegistryView.Default) -> Microsoft.Extensions.Configuration.IConfigurationBuilder!
+static TIKSN.Security.Antimalware.AntimalwareScanner.EnsureSuccess(int result) -> void
+TIKSN.Configuration.RegistryConfigurationManager
+TIKSN.Configuration.WindowsRegistryConfigurationExtensions
+TIKSN.Configuration.WindowsRegistryConfigurationProvider
+TIKSN.Configuration.WindowsRegistryConfigurationProvider.WindowsRegistryConfigurationProvider(string! rootKey, Microsoft.Win32.RegistryView registryView) -> void
+TIKSN.Configuration.WindowsRegistryConfigurationSource
+TIKSN.Configuration.WindowsRegistryConfigurationSource.Build(Microsoft.Extensions.Configuration.IConfigurationBuilder! builder) -> Microsoft.Extensions.Configuration.IConfigurationProvider!
+TIKSN.Configuration.WindowsRegistryConfigurationSource.RegistryView.get -> Microsoft.Win32.RegistryView
+TIKSN.Configuration.WindowsRegistryConfigurationSource.RegistryView.set -> void
+TIKSN.Configuration.WindowsRegistryConfigurationSource.RootKey.get -> string!
+TIKSN.Configuration.WindowsRegistryConfigurationSource.RootKey.set -> void
+TIKSN.Configuration.WindowsRegistryConfigurationSource.WindowsRegistryConfigurationSource() -> void
+TIKSN.Security.Antimalware.AntimalwareScanner
+TIKSN.Security.Antimalware.AntimalwareScanner.AntimalwareScanner(Microsoft.Extensions.Options.IOptions<TIKSN.Security.Antimalware.AntimalwareScannerOptions!>! antimalwareScannerOptions) -> void
+TIKSN.Security.Antimalware.AntimalwareScanner.Dispose() -> void
+TIKSN.Security.Antimalware.AntimalwareScanner.EnsureInitialized() -> void
+TIKSN.Security.Antimalware.AntimalwareScanner.Initialize() -> void
+TIKSN.Security.Antimalware.AntimalwareScanner.OpenSession(out nint session) -> System.IDisposable!
+TIKSN.Security.Antimalware.AntimalwareScanner.ScanBinaryArray(byte[]! binary, string! contentName) -> TIKSN.Security.Antimalware.AntimalwareScanResult
+TIKSN.Security.Antimalware.AntimalwareScanner.ScanString(string! stringValue, string! contentName) -> TIKSN.Security.Antimalware.AntimalwareScanResult
+TIKSN.Security.Antimalware.AntimalwareScanner.Uninitialize() -> void
+TIKSN.Settings.WindowsRegistrySettingsService
+TIKSN.Settings.WindowsRegistrySettingsService.GetLocalSetting<T>(string! name) -> LanguageExt.Option<T>
+TIKSN.Settings.WindowsRegistrySettingsService.GetLocalSetting<T>(string! name, T defaultValue) -> T
+TIKSN.Settings.WindowsRegistrySettingsService.GetRoamingSetting<T>(string! name) -> LanguageExt.Option<T>
+TIKSN.Settings.WindowsRegistrySettingsService.GetRoamingSetting<T>(string! name, T defaultValue) -> T
+TIKSN.Settings.WindowsRegistrySettingsService.ListLocalSetting() -> System.Collections.Generic.IReadOnlyCollection<string!>!
+TIKSN.Settings.WindowsRegistrySettingsService.ListRoamingSetting() -> System.Collections.Generic.IReadOnlyCollection<string!>!
+TIKSN.Settings.WindowsRegistrySettingsService.RemoveLocalSetting(string! name) -> void
+TIKSN.Settings.WindowsRegistrySettingsService.RemoveRoamingSetting(string! name) -> void
+TIKSN.Settings.WindowsRegistrySettingsService.SetLocalSetting<T>(string! name, T value) -> void
+TIKSN.Settings.WindowsRegistrySettingsService.SetRoamingSetting<T>(string! name, T value) -> void
+TIKSN.Settings.WindowsRegistrySettingsService.WindowsRegistrySettingsService(Microsoft.Extensions.Options.IOptions<TIKSN.Settings.WindowsRegistrySettingsServiceOptions!>! options) -> void
+TIKSN.Settings.WindowsRegistrySettingsServiceOptions
+TIKSN.Settings.WindowsRegistrySettingsServiceOptions.RegistryView.get -> Microsoft.Win32.RegistryView
+TIKSN.Settings.WindowsRegistrySettingsServiceOptions.RegistryView.set -> void
+TIKSN.Settings.WindowsRegistrySettingsServiceOptions.SubKey.get -> string!
+TIKSN.Settings.WindowsRegistrySettingsServiceOptions.SubKey.set -> void
+TIKSN.Settings.WindowsRegistrySettingsServiceOptions.WindowsRegistrySettingsServiceOptions() -> void
+virtual TIKSN.Security.Antimalware.AntimalwareScanner.Dispose(bool disposing) -> void

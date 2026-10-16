@@ -1,0 +1,9 @@
+#nullable enable
+static TIKSN.DependencyInjection.ServiceCollectionExtensions.AddFrameworkPlatform(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+static TIKSN.UI.DialogInteractionHandlers.RegisterDialogHandlers(this TIKSN.UI.Interactions.IDialogInteractionService! service, Microsoft.Maui.Controls.Page! mainPage) -> void
+TIKSN.DependencyInjection.PlatformModule
+TIKSN.DependencyInjection.PlatformModule.PlatformModule() -> void
+TIKSN.DependencyInjection.PlatformModuleBase
+TIKSN.DependencyInjection.PlatformModuleBase.PlatformModuleBase() -> void
+TIKSN.DependencyInjection.ServiceCollectionExtensions
+TIKSN.UI.DialogInteractionHandlers

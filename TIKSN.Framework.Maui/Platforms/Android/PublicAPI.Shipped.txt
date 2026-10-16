@@ -1,0 +1,3 @@
+#nullable enable
+TIKSN.Resource
+TIKSN.Resource.Resource() -> void
