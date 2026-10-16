@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
@@ -50,6 +51,27 @@ public partial class CompositeAssemblyStringLocalizerTests
         }
 
         duplicatesCount.ShouldBe(0);
+    }
+
+    [Fact]
+    public void KeysGenerated()
+    {
+        var resourceNamesCache = new ResourceNamesCache();
+        var testStringLocalizer = new TestStringLocalizer(resourceNamesCache,
+            this.serviceProvider.GetRequiredService<ILogger<TestStringLocalizer>>());
+        var expectedKeys = testStringLocalizer
+            .GetAllStrings()
+            .Select(item => item.Name)
+            .OrderBy(x => x, StringComparer.Ordinal)
+            .ToArray();
+
+        var actualKeys = typeof(TIKSN.Localization.LocalizationKeys)
+            .GetProperties(BindingFlags.Public | BindingFlags.Static)
+            .Select(property => (string?)property.GetValue(null))
+            .OrderBy(x => x, StringComparer.Ordinal)
+            .ToArray();
+
+        actualKeys.ShouldBe(expectedKeys);
     }
 
     [LoggerMessage(
