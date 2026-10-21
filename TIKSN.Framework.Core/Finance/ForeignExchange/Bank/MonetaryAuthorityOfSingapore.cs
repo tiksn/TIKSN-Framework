@@ -107,10 +107,10 @@ public class MonetaryAuthorityOfSingapore : IMonetaryAuthorityOfSingapore
         throw new ArgumentException($"Currency pair '{pair}' not supported.", nameof(pair));
     }
 
-    public async Task<IReadOnlyCollection<ExchangeRate>> GetExchangeRatesAsync(
+    public Task<IReadOnlyCollection<ExchangeRate>> GetExchangeRatesAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
-        => await this.GetRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
+        => this.GetRatesAsync(asOn, cancellationToken);
 
     private static DateTimeOffset CreateSingaporeDateTimeOffset(DateOnly date)
     {

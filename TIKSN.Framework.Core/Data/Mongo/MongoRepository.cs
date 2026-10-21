@@ -68,26 +68,31 @@ public abstract class MongoRepository<TDocument, TIdentity> :
 
     public Task<bool> ExistsAsync(TIdentity id, CancellationToken cancellationToken)
     {
+#pragma warning disable VSTHRD103 // Call async methods when in an async method
         Task<bool> NoneAsync() => this.Collection.Find(GetIdentityFilter(id)).AnyAsync(cancellationToken);
 
         Task<bool> SomeAsync(IClientSessionHandle clientSessionHandle) => this.Collection
             .Find(clientSessionHandle, GetIdentityFilter(id)).AnyAsync(cancellationToken);
+#pragma warning restore VSTHRD103 // Call async methods when in an async method
 
         return this.MongoClientSessionProvider.GetClientSessionHandle().Match(SomeAsync, NoneAsync);
     }
 
     public Task<TDocument> GetAsync(TIdentity id, CancellationToken cancellationToken)
     {
+#pragma warning disable VSTHRD103 // Call async methods when in an async method
         Task<TDocument> NoneAsync() => this.Collection.Find(GetIdentityFilter(id)).SingleAsync(cancellationToken);
 
         Task<TDocument> SomeAsync(IClientSessionHandle clientSessionHandle) => this.Collection
             .Find(clientSessionHandle, GetIdentityFilter(id)).SingleAsync(cancellationToken);
+#pragma warning restore VSTHRD103 // Call async methods when in an async method
 
         return this.MongoClientSessionProvider.GetClientSessionHandle().Match(SomeAsync, NoneAsync);
     }
 
     public Task<TDocument?> GetOrDefaultAsync(TIdentity id, CancellationToken cancellationToken)
     {
+#pragma warning disable VSTHRD103 // Call async methods when in an async method
         async Task<TDocument?> NoneAsync()
             => await this.Collection.Find(GetIdentityFilter(id))
                 .SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false);
@@ -95,23 +100,25 @@ public abstract class MongoRepository<TDocument, TIdentity> :
         async Task<TDocument?> SomeAsync(IClientSessionHandle clientSessionHandle)
             => await this.Collection.Find(clientSessionHandle, GetIdentityFilter(id))
                 .SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false);
+#pragma warning restore VSTHRD103 // Call async methods when in an async method
 
         return this.MongoClientSessionProvider.GetClientSessionHandle().Match(SomeAsync, NoneAsync);
     }
 
-    public async Task<IReadOnlyList<TDocument>> ListAsync(
+    public Task<IReadOnlyList<TDocument>> ListAsync(
         IEnumerable<TIdentity> ids,
         CancellationToken cancellationToken)
     {
+#pragma warning disable VSTHRD103 // Call async methods when in an async method
         async Task<IReadOnlyList<TDocument>> NoneAsync() => await this.Collection.Find(GetIdentitiesFilter(ids))
             .ToListAsync(cancellationToken).ConfigureAwait(false);
 
         async Task<IReadOnlyList<TDocument>> SomeAsync(IClientSessionHandle clientSessionHandle) => await this
             .Collection.Find(clientSessionHandle, GetIdentitiesFilter(ids))
             .ToListAsync(cancellationToken).ConfigureAwait(false);
+#pragma warning restore VSTHRD103 // Call async methods when in an async method
 
-        return await this.MongoClientSessionProvider.GetClientSessionHandle().Match(SomeAsync, NoneAsync)
-            .ConfigureAwait(false);
+        return this.MongoClientSessionProvider.GetClientSessionHandle().Match(SomeAsync, NoneAsync);
     }
 
     public Task<PageResult<TDocument>> PageAsync(
@@ -157,6 +164,7 @@ public abstract class MongoRepository<TDocument, TIdentity> :
     public async IAsyncEnumerable<TDocument> StreamAllAsync(
         [EnumeratorCancellation] CancellationToken cancellationToken)
     {
+#pragma warning disable VSTHRD103 // Call async methods when in an async method
         Task<IAsyncCursor<TDocument>> NoneAsync() =>
             this.Collection.Find(FilterDefinition<TDocument>.Empty)
                 .Sort(this.PageSortDefinition)
@@ -166,6 +174,7 @@ public abstract class MongoRepository<TDocument, TIdentity> :
             .Find(clientSessionHandle, FilterDefinition<TDocument>.Empty)
             .Sort(this.PageSortDefinition)
             .ToCursorAsync(cancellationToken);
+#pragma warning restore VSTHRD103 // Call async methods when in an async method
 
         var cursor = await this.MongoClientSessionProvider.GetClientSessionHandle().Match(SomeAsync, NoneAsync)
             .ConfigureAwait(false);
@@ -204,12 +213,14 @@ public abstract class MongoRepository<TDocument, TIdentity> :
         FilterDefinition<TDocument> filter,
         CancellationToken cancellationToken)
     {
+#pragma warning disable VSTHRD103 // Call async methods when in an async method
         Task<TDocument> NoneAsync() => this.Collection.Find(filter)
             .FirstOrDefaultAsync(cancellationToken);
 
         Task<TDocument> SomeAsync(IClientSessionHandle clientSessionHandle) => this.Collection
             .Find(clientSessionHandle, filter)
             .FirstOrDefaultAsync(cancellationToken);
+#pragma warning restore VSTHRD103 // Call async methods when in an async method
 
         return this.MongoClientSessionProvider.GetClientSessionHandle().Match(SomeAsync, NoneAsync);
     }
@@ -223,6 +234,7 @@ public abstract class MongoRepository<TDocument, TIdentity> :
 
         ArgumentNullException.ThrowIfNull(pageQuery);
 
+#pragma warning disable VSTHRD103 // Call async methods when in an async method
         Task<List<TDocument>> ItemsNoneAsync() => this.Collection.Find(filter)
             .Sort(this.PageSortDefinition)
             .Skip(pageQuery.Page.Index * pageQuery.Page.Size)
@@ -242,6 +254,7 @@ public abstract class MongoRepository<TDocument, TIdentity> :
         Task<long> CountSomeAsync(IClientSessionHandle clientSessionHandle) => this.Collection
             .Find(clientSessionHandle, filter)
             .CountDocumentsAsync(cancellationToken);
+#pragma warning restore VSTHRD103 // Call async methods when in an async method
 
         var items = await this.MongoClientSessionProvider.GetClientSessionHandle().Match(ItemsSomeAsync, ItemsNoneAsync)
             .ConfigureAwait(false);
@@ -258,12 +271,14 @@ public abstract class MongoRepository<TDocument, TIdentity> :
         FilterDefinition<TDocument> filter,
         CancellationToken cancellationToken)
     {
+#pragma warning disable VSTHRD103 // Call async methods when in an async method
         Task<List<TDocument>> NoneAsync() => this.Collection.Find(filter)
             .ToListAsync(cancellationToken);
 
         Task<List<TDocument>> SomeAsync(IClientSessionHandle clientSessionHandle) => this.Collection
             .Find(clientSessionHandle, filter)
             .ToListAsync(cancellationToken);
+#pragma warning restore VSTHRD103 // Call async methods when in an async method
 
         return await this.MongoClientSessionProvider.GetClientSessionHandle().Match(SomeAsync, NoneAsync)
             .ConfigureAwait(false);
@@ -273,12 +288,14 @@ public abstract class MongoRepository<TDocument, TIdentity> :
         FilterDefinition<TDocument> filter,
         CancellationToken cancellationToken)
     {
+#pragma warning disable VSTHRD103 // Call async methods when in an async method
         Task<TDocument> NoneAsync() => this.Collection.Find(filter)
             .SingleOrDefaultAsync(cancellationToken);
 
         Task<TDocument> SomeAsync(IClientSessionHandle clientSessionHandle) => this.Collection
             .Find(clientSessionHandle, filter)
             .SingleOrDefaultAsync(cancellationToken);
+#pragma warning restore VSTHRD103 // Call async methods when in an async method
 
         return this.MongoClientSessionProvider.GetClientSessionHandle().Match(SomeAsync, NoneAsync);
     }

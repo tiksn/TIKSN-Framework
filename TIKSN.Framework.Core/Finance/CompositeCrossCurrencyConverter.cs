@@ -7,10 +7,10 @@ public class CompositeCrossCurrencyConverter : CompositeCurrencyConverter
     {
     }
 
-    public override async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
+    public override Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency,
         DateTimeOffset asOn, CancellationToken cancellationToken) =>
-        await this.CompositionStrategy.ConvertCurrencyAsync(baseMoney, this.Converters, counterCurrency, asOn,
-            cancellationToken).ConfigureAwait(false);
+        this.CompositionStrategy.ConvertCurrencyAsync(baseMoney, this.Converters, counterCurrency, asOn,
+            cancellationToken);
 
     public override async Task<IReadOnlyCollection<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn,
         CancellationToken cancellationToken)
@@ -30,8 +30,7 @@ public class CompositeCrossCurrencyConverter : CompositeCurrencyConverter
         return pairs;
     }
 
-    public override async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
+    public override Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn,
         CancellationToken cancellationToken) =>
-        await this.CompositionStrategy.GetExchangeRateAsync(this.Converters, pair, asOn, cancellationToken)
-            .ConfigureAwait(false);
+        this.CompositionStrategy.GetExchangeRateAsync(this.Converters, pair, asOn, cancellationToken);
 }

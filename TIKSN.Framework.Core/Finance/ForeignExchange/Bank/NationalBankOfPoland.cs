@@ -93,10 +93,10 @@ public class NationalBankOfPoland : INationalBankOfPoland
         return exchangeRate.Rate;
     }
 
-    public async Task<IReadOnlyCollection<ExchangeRate>> GetExchangeRatesAsync(
+    public Task<IReadOnlyCollection<ExchangeRate>> GetExchangeRatesAsync(
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
-        => await this.GetRatesAsync(asOn, cancellationToken).ConfigureAwait(false);
+        => this.GetRatesAsync(asOn, cancellationToken);
 
     private static IReadOnlyList<ValueTuple<DateTimeOffset, Rate>> CreateDatesAndRates(
         RateTable source)

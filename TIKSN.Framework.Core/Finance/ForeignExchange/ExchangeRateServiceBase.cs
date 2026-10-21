@@ -52,7 +52,9 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
         var rate = await this.GetExchangeRateAsync(
             pair, asOn, cancellationToken).ConfigureAwait(false);
 
+#pragma warning disable VSTHRD103 // Call async methods when in an async method
         return rate.Map(r => new Money(counterCurrency, baseMoney.Amount * r));
+#pragma warning restore VSTHRD103 // Call async methods when in an async method
     }
 
     public async Task<Option<Money>> ConvertCurrencyAsync(
@@ -71,7 +73,9 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
         var rate = await this.GetExchangeRateAsync(
             pair, asOn, intermediaryCurrency, cancellationToken).ConfigureAwait(false);
 
+#pragma warning disable VSTHRD103 // Call async methods when in an async method
         return rate.Map(r => new Money(counterCurrency, baseMoney.Amount * r));
+#pragma warning restore VSTHRD103 // Call async methods when in an async method
     }
 
     public async Task<Option<decimal>> GetExchangeRateAsync(
@@ -108,7 +112,9 @@ public abstract partial class ExchangeRateServiceBase : IExchangeRateService
                 s => LogExchangeRateByForeignExchange(this.Logger, pair, s.ForeignExchangeID),
                 () => LogExchangeRateNotFound(this.Logger, pair));
 
+#pragma warning disable VSTHRD103 // Call async methods when in an async method
             return exchangeRateEntity.Map(x => x.Rate);
+#pragma warning restore VSTHRD103 // Call async methods when in an async method
         }
     }
 
