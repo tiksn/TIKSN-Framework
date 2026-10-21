@@ -17,7 +17,7 @@ public class PagingQueryBehavior<TRequest, TResponse>
     public PagingQueryBehavior(IOptions<PagingQueryOptions> options) =>
         this._options = options ?? throw new ArgumentNullException(nameof(options));
 
-    public async Task<TResponse> Handle(
+    public Task<TResponse> Handle(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
@@ -43,6 +43,6 @@ public class PagingQueryBehavior<TRequest, TResponse>
                 },
                 () => throw new ConfigurationValidationException("Maximum Page Size for Paging Query is missing"));
 
-        return await next(cancellationToken).ConfigureAwait(false);
+        return next(cancellationToken);
     }
 }

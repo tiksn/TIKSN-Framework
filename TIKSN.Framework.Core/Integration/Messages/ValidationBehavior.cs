@@ -51,7 +51,7 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
         return response;
     }
 
-    private static async Task EnsureValidityAsync<TR>(
+    private static Task EnsureValidityAsync<TR>(
         TR instanceToValidate,
         Type interfaceType,
         IServiceProvider serviceProvider,
@@ -69,12 +69,12 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
 
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-        await ((Task)genericEnsureValidityMethod.Invoke(null,
+        return (Task)genericEnsureValidityMethod.Invoke(null,
         [
             instanceToValidate,
             serviceProvider,
             cancellationToken
-        ])).ConfigureAwait(false);
+        ])!;
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
     }

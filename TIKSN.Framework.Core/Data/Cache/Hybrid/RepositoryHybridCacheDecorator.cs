@@ -67,8 +67,8 @@ public class RepositoryHybridCacheDecorator<TEntity, TIdentity>
         await this.HybridCache.RemoveAsync(cacheKey, cancellationToken).ConfigureAwait(false);
     }
 
-    protected virtual async Task InvalidateCacheItemAsync(TEntity entity, CancellationToken cancellationToken)
-        => await this.InvalidateCacheEntityAsync(entity, cancellationToken).ConfigureAwait(false);
+    protected virtual Task InvalidateCacheItemAsync(TEntity entity, CancellationToken cancellationToken)
+        => this.InvalidateCacheEntityAsync(entity, cancellationToken);
 
     protected virtual async Task InvalidateCacheItemsAsync(
         IEnumerable<TEntity> entities,

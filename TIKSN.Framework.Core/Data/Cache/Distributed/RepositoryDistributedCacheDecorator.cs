@@ -62,15 +62,15 @@ public class RepositoryDistributedCacheDecorator<TEntity, TIdentity>
         await this.InvalidateCacheItemsAsync(entities, cancellationToken).ConfigureAwait(false);
     }
 
-    protected virtual async Task InvalidateCacheEntityAsync(TEntity entity, CancellationToken cancellationToken)
+    protected virtual Task InvalidateCacheEntityAsync(TEntity entity, CancellationToken cancellationToken)
     {
         var cacheKey = Tuple.Create(EntityType, CacheKeyKind.Entity, entity.ID).ToString();
 
-        await this.DistributedCache.RemoveAsync(cacheKey, cancellationToken).ConfigureAwait(false);
+        return this.DistributedCache.RemoveAsync(cacheKey, cancellationToken);
     }
 
-    protected virtual async Task InvalidateCacheItemAsync(TEntity entity, CancellationToken cancellationToken)
-        => await this.InvalidateCacheEntityAsync(entity, cancellationToken).ConfigureAwait(false);
+    protected virtual Task InvalidateCacheItemAsync(TEntity entity, CancellationToken cancellationToken)
+        => this.InvalidateCacheEntityAsync(entity, cancellationToken);
 
     protected virtual async Task InvalidateCacheItemsAsync(
         IEnumerable<TEntity> entities,
