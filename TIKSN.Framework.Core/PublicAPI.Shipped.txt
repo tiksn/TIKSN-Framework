@@ -789,63 +789,6 @@ TIKSN.Advertising.IAdUnitFactory
 TIKSN.Advertising.IAdUnitFactory.Create(string! key) -> TIKSN.Advertising.AdUnit!
 TIKSN.Advertising.IAdUnitSelector
 TIKSN.Advertising.IAdUnitSelector.SelectAdUnit(TIKSN.Advertising.AdUnitBundle! adUnitBundle) -> TIKSN.Advertising.AdUnit!
-TIKSN.Analytics.Telemetry.CommonTelemetryOptions
-TIKSN.Analytics.Telemetry.CommonTelemetryOptions.CommonTelemetryOptions() -> void
-TIKSN.Analytics.Telemetry.CommonTelemetryOptions.IsEventTrackingEnabled.get -> bool
-TIKSN.Analytics.Telemetry.CommonTelemetryOptions.IsEventTrackingEnabled.set -> void
-TIKSN.Analytics.Telemetry.CommonTelemetryOptions.IsExceptionTrackingEnabled.get -> bool
-TIKSN.Analytics.Telemetry.CommonTelemetryOptions.IsExceptionTrackingEnabled.set -> void
-TIKSN.Analytics.Telemetry.CommonTelemetryOptions.IsMetricTrackingEnabled.get -> bool
-TIKSN.Analytics.Telemetry.CommonTelemetryOptions.IsMetricTrackingEnabled.set -> void
-TIKSN.Analytics.Telemetry.CommonTelemetryOptions.IsTraceTrackingEnabled.get -> bool
-TIKSN.Analytics.Telemetry.CommonTelemetryOptions.IsTraceTrackingEnabled.set -> void
-TIKSN.Analytics.Telemetry.CompositeEventTelemeter
-TIKSN.Analytics.Telemetry.CompositeEventTelemeter.CompositeEventTelemeter(Microsoft.Extensions.Options.IOptions<TIKSN.Analytics.Telemetry.CommonTelemetryOptions!>! commonOptions, System.Collections.Generic.IEnumerable<TIKSN.Analytics.Telemetry.IEventTelemeter!>! eventTelemeters) -> void
-TIKSN.Analytics.Telemetry.CompositeEventTelemeter.TrackEventAsync(string! name, System.Collections.Generic.IReadOnlyDictionary<string!, string!>! properties) -> System.Threading.Tasks.Task!
-TIKSN.Analytics.Telemetry.CompositeEventTelemeter.TrackEventAsync(string! name) -> System.Threading.Tasks.Task!
-TIKSN.Analytics.Telemetry.CompositeExceptionTelemeter
-TIKSN.Analytics.Telemetry.CompositeExceptionTelemeter.CompositeExceptionTelemeter(Microsoft.Extensions.Options.IOptions<TIKSN.Analytics.Telemetry.CommonTelemetryOptions!>! commonOptions, System.Collections.Generic.IEnumerable<TIKSN.Analytics.Telemetry.IExceptionTelemeter!>! exceptionTelemeters) -> void
-TIKSN.Analytics.Telemetry.CompositeExceptionTelemeter.TrackExceptionAsync(System.Exception! exception, TIKSN.Analytics.Telemetry.TelemetrySeverityLevel severityLevel) -> System.Threading.Tasks.Task!
-TIKSN.Analytics.Telemetry.CompositeExceptionTelemeter.TrackExceptionAsync(System.Exception! exception) -> System.Threading.Tasks.Task!
-TIKSN.Analytics.Telemetry.CompositeMetricTelemeter
-TIKSN.Analytics.Telemetry.CompositeMetricTelemeter.CompositeMetricTelemeter(Microsoft.Extensions.Options.IOptions<TIKSN.Analytics.Telemetry.CommonTelemetryOptions!>! commonOptions, System.Collections.Generic.IEnumerable<TIKSN.Analytics.Telemetry.IMetricTelemeter!>! metricTelemeters) -> void
-TIKSN.Analytics.Telemetry.CompositeMetricTelemeter.TrackMetricAsync(string! metricName, decimal metricValue) -> System.Threading.Tasks.Task!
-TIKSN.Analytics.Telemetry.CompositeTraceTelemeter
-TIKSN.Analytics.Telemetry.CompositeTraceTelemeter.CompositeTraceTelemeter(Microsoft.Extensions.Options.IOptions<TIKSN.Analytics.Telemetry.CommonTelemetryOptions!>! commonOptions, System.Collections.Generic.IEnumerable<TIKSN.Analytics.Telemetry.ITraceTelemeter!>! traceTelemeters) -> void
-TIKSN.Analytics.Telemetry.CompositeTraceTelemeter.TrackTraceAsync(string! message, TIKSN.Analytics.Telemetry.TelemetrySeverityLevel severityLevel) -> System.Threading.Tasks.Task!
-TIKSN.Analytics.Telemetry.CompositeTraceTelemeter.TrackTraceAsync(string! message) -> System.Threading.Tasks.Task!
-TIKSN.Analytics.Telemetry.IEventTelemeter
-TIKSN.Analytics.Telemetry.IEventTelemeter.TrackEventAsync(string! name, System.Collections.Generic.IReadOnlyDictionary<string!, string!>! properties) -> System.Threading.Tasks.Task!
-TIKSN.Analytics.Telemetry.IEventTelemeter.TrackEventAsync(string! name) -> System.Threading.Tasks.Task!
-TIKSN.Analytics.Telemetry.IExceptionTelemeter
-TIKSN.Analytics.Telemetry.IExceptionTelemeter.TrackExceptionAsync(System.Exception! exception, TIKSN.Analytics.Telemetry.TelemetrySeverityLevel severityLevel) -> System.Threading.Tasks.Task!
-TIKSN.Analytics.Telemetry.IExceptionTelemeter.TrackExceptionAsync(System.Exception! exception) -> System.Threading.Tasks.Task!
-TIKSN.Analytics.Telemetry.IMetricTelemeter
-TIKSN.Analytics.Telemetry.IMetricTelemeter.TrackMetricAsync(string! metricName, decimal metricValue) -> System.Threading.Tasks.Task!
-TIKSN.Analytics.Telemetry.ITraceTelemeter
-TIKSN.Analytics.Telemetry.ITraceTelemeter.TrackTraceAsync(string! message, TIKSN.Analytics.Telemetry.TelemetrySeverityLevel severityLevel) -> System.Threading.Tasks.Task!
-TIKSN.Analytics.Telemetry.ITraceTelemeter.TrackTraceAsync(string! message) -> System.Threading.Tasks.Task!
-TIKSN.Analytics.Telemetry.PowerShellEventTelemeter
-TIKSN.Analytics.Telemetry.PowerShellEventTelemeter.PowerShellEventTelemeter(System.Management.Automation.Cmdlet! cmdlet) -> void
-TIKSN.Analytics.Telemetry.PowerShellEventTelemeter.TrackEventAsync(string! name, System.Collections.Generic.IReadOnlyDictionary<string!, string!>! properties) -> System.Threading.Tasks.Task!
-TIKSN.Analytics.Telemetry.PowerShellEventTelemeter.TrackEventAsync(string! name) -> System.Threading.Tasks.Task!
-TIKSN.Analytics.Telemetry.PowerShellExceptionTelemeter
-TIKSN.Analytics.Telemetry.PowerShellExceptionTelemeter.PowerShellExceptionTelemeter(System.Management.Automation.Cmdlet! cmdlet) -> void
-TIKSN.Analytics.Telemetry.PowerShellExceptionTelemeter.TrackExceptionAsync(System.Exception! exception, TIKSN.Analytics.Telemetry.TelemetrySeverityLevel severityLevel) -> System.Threading.Tasks.Task!
-TIKSN.Analytics.Telemetry.PowerShellExceptionTelemeter.TrackExceptionAsync(System.Exception! exception) -> System.Threading.Tasks.Task!
-TIKSN.Analytics.Telemetry.PowerShellMetricTelemeter
-TIKSN.Analytics.Telemetry.PowerShellMetricTelemeter.PowerShellMetricTelemeter(System.Management.Automation.Cmdlet! cmdlet) -> void
-TIKSN.Analytics.Telemetry.PowerShellMetricTelemeter.TrackMetricAsync(string! metricName, decimal metricValue) -> System.Threading.Tasks.Task!
-TIKSN.Analytics.Telemetry.PowerShellTraceTelemeter
-TIKSN.Analytics.Telemetry.PowerShellTraceTelemeter.PowerShellTraceTelemeter(System.Management.Automation.Cmdlet! cmdlet) -> void
-TIKSN.Analytics.Telemetry.PowerShellTraceTelemeter.TrackTraceAsync(string! message, TIKSN.Analytics.Telemetry.TelemetrySeverityLevel severityLevel) -> System.Threading.Tasks.Task!
-TIKSN.Analytics.Telemetry.PowerShellTraceTelemeter.TrackTraceAsync(string! message) -> System.Threading.Tasks.Task!
-TIKSN.Analytics.Telemetry.TelemetrySeverityLevel
-TIKSN.Analytics.Telemetry.TelemetrySeverityLevel.Critical = 4 -> TIKSN.Analytics.Telemetry.TelemetrySeverityLevel
-TIKSN.Analytics.Telemetry.TelemetrySeverityLevel.Error = 3 -> TIKSN.Analytics.Telemetry.TelemetrySeverityLevel
-TIKSN.Analytics.Telemetry.TelemetrySeverityLevel.Information = 1 -> TIKSN.Analytics.Telemetry.TelemetrySeverityLevel
-TIKSN.Analytics.Telemetry.TelemetrySeverityLevel.Verbose = 0 -> TIKSN.Analytics.Telemetry.TelemetrySeverityLevel
-TIKSN.Analytics.Telemetry.TelemetrySeverityLevel.Warning = 2 -> TIKSN.Analytics.Telemetry.TelemetrySeverityLevel
 TIKSN.Collections.Dyad<T>
 TIKSN.Collections.Dyad<T>.Dyad(T item1, T item2) -> void
 TIKSN.Collections.Heptad<T>
