@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
 using NodaTime;
+using OpenFeature;
+using OpenFeature.Model;
 using ReactiveUI;
 using Spectre.Console;
 using TIKSN.Concurrency;
@@ -36,6 +38,11 @@ public static class ServiceCollectionExtensions
         _ = services.AddMemoryCache();
         _ = services.AddHttpClient();
         _ = services.AddOptions();
+
+        var transactionContextPropagator = new AsyncLocalTransactionContextPropagator();
+        Api.Instance.SetTransactionContextPropagator(transactionContextPropagator);
+        services.TryAddSingleton<ITransactionContextPropagator>(transactionContextPropagator);
+        _ = services.AddOpenFeature(static _ => { });
 
         services.TryAddSingleton<ICultureFactory, CultureFactory>();
         services.TryAddSingleton<ICountryFactory, CountryFactory>();

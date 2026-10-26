@@ -3,6 +3,8 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OpenFeature;
+using OpenFeature.Model;
 using Shouldly;
 using TIKSN.DependencyInjection;
 using TIKSN.Finance;
@@ -44,11 +46,30 @@ public class RegistrationsTests : IDisposable
     [InlineData(typeof(ICurrencyPairFactory))]
     [InlineData(typeof(IDateTimeZoneLookup))]
     [InlineData(typeof(ITimeZoneInfoLookup))]
+    [InlineData(typeof(IFeatureClient))]
+    [InlineData(typeof(ITransactionContextPropagator))]
     public void GivenHost_WhenServiceResolved_ThenItShouldNotBeNull(Type serviceType)
     {
         var service = this.host.Services.GetRequiredService(serviceType);
 
         _ = service.ShouldNotBeNull();
+    }
+
+    [Fact]
+    public void GivenHost_WhenTransactionContextSetViaPropagator_ThenPropagatorReturnsContext()
+    {
+        var propagator = this.host.Services.GetRequiredService<ITransactionContextPropagator>();
+        var context = EvaluationContext.Builder().Set("test-key", "test-value").Build();
+
+        propagator.SetTransactionContext(context);
+        try
+        {
+            propagator.GetTransactionContext().GetValue("test-key").AsString.ShouldBe("test-value");
+        }
+        finally
+        {
+            propagator.SetTransactionContext(EvaluationContext.Empty);
+        }
     }
 
     protected virtual void Dispose(bool disposing)
