@@ -1,4 +1,5 @@
 #nullable enable
+abstract TIKSN.FeatureManagement.LicenseEntitlementsFeatureProviderBase<TEntitlements>.ResolveLicenseAsync(OpenFeature.Model.EvaluationContext? context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<LanguageExt.Option<TIKSN.Licensing.License<TEntitlements>!>>!
 const TIKSN.FeatureManagement.ConfigurationFeatureProviderOptions.DefaultSectionName = "FeatureFlags" -> string!
 const TIKSN.FeatureManagement.FeatureEvaluationContextKeys.CultureName = "culture.name" -> string!
 const TIKSN.FeatureManagement.FeatureEvaluationContextKeys.DeploymentEnvironment = "deployment.environment" -> string!
@@ -19,6 +20,11 @@ override TIKSN.FeatureManagement.ConfigurationFeatureProvider.ResolveStringValue
 override TIKSN.FeatureManagement.ConfigurationFeatureProvider.ResolveStructureValueAsync(string! flagKey, OpenFeature.Model.Value! defaultValue, OpenFeature.Model.EvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenFeature.Model.ResolutionDetails<OpenFeature.Model.Value!>!>!
 override TIKSN.FeatureManagement.GlobalizationContextHook.BeforeAsync<T>(OpenFeature.Model.HookContext<T>! context, System.Collections.Generic.IReadOnlyDictionary<string!, object!>? hints = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<OpenFeature.Model.EvaluationContext!>
 override TIKSN.FeatureManagement.HostEnvironmentContextHook.BeforeAsync<T>(OpenFeature.Model.HookContext<T>! context, System.Collections.Generic.IReadOnlyDictionary<string!, object!>? hints = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<OpenFeature.Model.EvaluationContext!>
+override TIKSN.FeatureManagement.LicenseEntitlementsFeatureProviderBase<TEntitlements>.ResolveBooleanValueAsync(string! flagKey, bool defaultValue, OpenFeature.Model.EvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenFeature.Model.ResolutionDetails<bool>!>!
+override TIKSN.FeatureManagement.LicenseEntitlementsFeatureProviderBase<TEntitlements>.ResolveDoubleValueAsync(string! flagKey, double defaultValue, OpenFeature.Model.EvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenFeature.Model.ResolutionDetails<double>!>!
+override TIKSN.FeatureManagement.LicenseEntitlementsFeatureProviderBase<TEntitlements>.ResolveIntegerValueAsync(string! flagKey, int defaultValue, OpenFeature.Model.EvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenFeature.Model.ResolutionDetails<int>!>!
+override TIKSN.FeatureManagement.LicenseEntitlementsFeatureProviderBase<TEntitlements>.ResolveStringValueAsync(string! flagKey, string! defaultValue, OpenFeature.Model.EvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenFeature.Model.ResolutionDetails<string!>!>!
+override TIKSN.FeatureManagement.LicenseEntitlementsFeatureProviderBase<TEntitlements>.ResolveStructureValueAsync(string! flagKey, OpenFeature.Model.Value! defaultValue, OpenFeature.Model.EvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenFeature.Model.ResolutionDetails<OpenFeature.Model.Value!>!>!
 override TIKSN.FeatureManagement.ServiceIdentityContextHook.BeforeAsync<T>(OpenFeature.Model.HookContext<T>! context, System.Collections.Generic.IReadOnlyDictionary<string!, object!>? hints = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<OpenFeature.Model.EvaluationContext!>
 override TIKSN.FeatureManagement.SettingsFeatureProvider.GetMetadata() -> OpenFeature.Model.Metadata!
 override TIKSN.FeatureManagement.SettingsFeatureProvider.ResolveBooleanValueAsync(string! flagKey, bool defaultValue, OpenFeature.Model.EvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenFeature.Model.ResolutionDetails<bool>!>!
@@ -26,8 +32,11 @@ override TIKSN.FeatureManagement.SettingsFeatureProvider.ResolveDoubleValueAsync
 override TIKSN.FeatureManagement.SettingsFeatureProvider.ResolveIntegerValueAsync(string! flagKey, int defaultValue, OpenFeature.Model.EvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenFeature.Model.ResolutionDetails<int>!>!
 override TIKSN.FeatureManagement.SettingsFeatureProvider.ResolveStringValueAsync(string! flagKey, string! defaultValue, OpenFeature.Model.EvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenFeature.Model.ResolutionDetails<string!>!>!
 override TIKSN.FeatureManagement.SettingsFeatureProvider.ResolveStructureValueAsync(string! flagKey, OpenFeature.Model.Value! defaultValue, OpenFeature.Model.EvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenFeature.Model.ResolutionDetails<OpenFeature.Model.Value!>!>!
+override TIKSN.FeatureManagement.SystemLicenseEntitlementsFeatureProvider<TEntitlements>.GetMetadata() -> OpenFeature.Model.Metadata!
 override TIKSN.FeatureManagement.TenantContextHook<TTenantIdentity>.BeforeAsync<T>(OpenFeature.Model.HookContext<T>! context, System.Collections.Generic.IReadOnlyDictionary<string!, object!>? hints = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<OpenFeature.Model.EvaluationContext!>
+override TIKSN.FeatureManagement.TenantLicenseEntitlementsFeatureProvider<TTenantIdentity, TEntitlements>.GetMetadata() -> OpenFeature.Model.Metadata!
 override TIKSN.FeatureManagement.UserContextHook<TUserIdentity>.BeforeAsync<T>(OpenFeature.Model.HookContext<T>! context, System.Collections.Generic.IReadOnlyDictionary<string!, object!>? hints = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<OpenFeature.Model.EvaluationContext!>
+override TIKSN.FeatureManagement.UserLicenseEntitlementsFeatureProvider<TUserIdentity, TEntitlements>.GetMetadata() -> OpenFeature.Model.Metadata!
 static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddConfigurationProvider(this OpenFeature.Hosting.OpenFeatureBuilder! builder, string! domain, System.Action<TIKSN.FeatureManagement.ConfigurationFeatureProviderOptions!>? configureOptions) -> OpenFeature.Hosting.OpenFeatureBuilder!
 static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddConfigurationProvider(this OpenFeature.Hosting.OpenFeatureBuilder! builder, string! domain) -> OpenFeature.Hosting.OpenFeatureBuilder!
 static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddConfigurationProvider(this OpenFeature.Hosting.OpenFeatureBuilder! builder, System.Action<TIKSN.FeatureManagement.ConfigurationFeatureProviderOptions!>? configureOptions) -> OpenFeature.Hosting.OpenFeatureBuilder!
@@ -40,8 +49,15 @@ static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddSettingsProvide
 static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddSettingsProvider(this OpenFeature.Hosting.OpenFeatureBuilder! builder, string! domain) -> OpenFeature.Hosting.OpenFeatureBuilder!
 static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddSettingsProvider(this OpenFeature.Hosting.OpenFeatureBuilder! builder, System.Action<TIKSN.FeatureManagement.SettingsFeatureProviderOptions!>? configureOptions) -> OpenFeature.Hosting.OpenFeatureBuilder!
 static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddSettingsProvider(this OpenFeature.Hosting.OpenFeatureBuilder! builder) -> OpenFeature.Hosting.OpenFeatureBuilder!
+static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddSystemLicenseEntitlementsProvider<TEntitlements>(this OpenFeature.Hosting.OpenFeatureBuilder! builder, string! domain) -> OpenFeature.Hosting.OpenFeatureBuilder!
+static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddSystemLicenseEntitlementsProvider<TEntitlements>(this OpenFeature.Hosting.OpenFeatureBuilder! builder) -> OpenFeature.Hosting.OpenFeatureBuilder!
 static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddTenantContextHook<TTenantIdentity>(this OpenFeature.Hosting.OpenFeatureBuilder! builder) -> OpenFeature.Hosting.OpenFeatureBuilder!
+static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddTenantLicenseEntitlementsProvider<TTenantIdentity, TEntitlements>(this OpenFeature.Hosting.OpenFeatureBuilder! builder, string! domain) -> OpenFeature.Hosting.OpenFeatureBuilder!
+static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddTenantLicenseEntitlementsProvider<TTenantIdentity, TEntitlements>(this OpenFeature.Hosting.OpenFeatureBuilder! builder) -> OpenFeature.Hosting.OpenFeatureBuilder!
 static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddUserContextHook<TUserIdentity>(this OpenFeature.Hosting.OpenFeatureBuilder! builder) -> OpenFeature.Hosting.OpenFeatureBuilder!
+static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddUserLicenseEntitlementsProvider<TUserIdentity, TEntitlements>(this OpenFeature.Hosting.OpenFeatureBuilder! builder, string! domain) -> OpenFeature.Hosting.OpenFeatureBuilder!
+static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddUserLicenseEntitlementsProvider<TUserIdentity, TEntitlements>(this OpenFeature.Hosting.OpenFeatureBuilder! builder) -> OpenFeature.Hosting.OpenFeatureBuilder!
+static TIKSN.FeatureManagement.LicenseEntitlementsFeatureProviderBase<TEntitlements>.TryExtractIdentityFromContext<TIdentity>(OpenFeature.Model.EvaluationContext? context, string! contextKey) -> LanguageExt.Option<TIdentity>
 TIKSN.DependencyInjection.OpenFeatureBuilderExtensions
 TIKSN.FeatureManagement.ConfigurationFeatureProvider
 TIKSN.FeatureManagement.ConfigurationFeatureProvider.ConfigurationFeatureProvider(Microsoft.Extensions.Configuration.IConfiguration! configuration, Microsoft.Extensions.Options.IOptions<TIKSN.FeatureManagement.ConfigurationFeatureProviderOptions!>! options) -> void
@@ -54,6 +70,14 @@ TIKSN.FeatureManagement.GlobalizationContextHook
 TIKSN.FeatureManagement.GlobalizationContextHook.GlobalizationContextHook() -> void
 TIKSN.FeatureManagement.HostEnvironmentContextHook
 TIKSN.FeatureManagement.HostEnvironmentContextHook.HostEnvironmentContextHook(Microsoft.Extensions.Hosting.IHostEnvironment? hostEnvironment = null) -> void
+TIKSN.FeatureManagement.ILicenseFeatureResolver<TEntitlements>
+TIKSN.FeatureManagement.ILicenseFeatureResolver<TEntitlements>.ResolveBoolean(TEntitlements entitlements, string! flagKey) -> LanguageExt.Option<bool>
+TIKSN.FeatureManagement.ILicenseFeatureResolver<TEntitlements>.ResolveDouble(TEntitlements entitlements, string! flagKey) -> LanguageExt.Option<double>
+TIKSN.FeatureManagement.ILicenseFeatureResolver<TEntitlements>.ResolveInteger(TEntitlements entitlements, string! flagKey) -> LanguageExt.Option<int>
+TIKSN.FeatureManagement.ILicenseFeatureResolver<TEntitlements>.ResolveString(TEntitlements entitlements, string! flagKey) -> LanguageExt.Option<string!>
+TIKSN.FeatureManagement.ILicenseFeatureResolver<TEntitlements>.ResolveStructure(TEntitlements entitlements, string! flagKey) -> LanguageExt.Option<OpenFeature.Model.Value!>
+TIKSN.FeatureManagement.LicenseEntitlementsFeatureProviderBase<TEntitlements>
+TIKSN.FeatureManagement.LicenseEntitlementsFeatureProviderBase<TEntitlements>.LicenseEntitlementsFeatureProviderBase(TIKSN.FeatureManagement.ILicenseFeatureResolver<TEntitlements>! licenseFeatureResolver, System.TimeProvider! timeProvider) -> void
 TIKSN.FeatureManagement.ServiceIdentityContextHook
 TIKSN.FeatureManagement.ServiceIdentityContextHook.ServiceIdentityContextHook(TIKSN.Identity.ServiceIdentity? serviceIdentity = null) -> void
 TIKSN.FeatureManagement.SettingsFeatureProvider
@@ -69,7 +93,19 @@ TIKSN.FeatureManagement.SettingsLookupScope.LocalOnly = 0 -> TIKSN.FeatureManage
 TIKSN.FeatureManagement.SettingsLookupScope.LocalThenRoaming = 2 -> TIKSN.FeatureManagement.SettingsLookupScope
 TIKSN.FeatureManagement.SettingsLookupScope.RoamingOnly = 1 -> TIKSN.FeatureManagement.SettingsLookupScope
 TIKSN.FeatureManagement.SettingsLookupScope.RoamingThenLocal = 3 -> TIKSN.FeatureManagement.SettingsLookupScope
+TIKSN.FeatureManagement.SystemLicenseEntitlementsFeatureProvider<TEntitlements>
+TIKSN.FeatureManagement.SystemLicenseEntitlementsFeatureProvider<TEntitlements>.SystemLicenseEntitlementsFeatureProvider(TIKSN.Licensing.ISystemLicenseProvider<TEntitlements>! systemLicenseProvider, TIKSN.FeatureManagement.ILicenseFeatureResolver<TEntitlements>! licenseFeatureResolver, System.TimeProvider! timeProvider) -> void
 TIKSN.FeatureManagement.TenantContextHook<TTenantIdentity>
 TIKSN.FeatureManagement.TenantContextHook<TTenantIdentity>.TenantContextHook(TIKSN.Identity.ITenantIdProvider<TTenantIdentity>! tenantIdProvider) -> void
+TIKSN.FeatureManagement.TenantLicenseEntitlementsFeatureProvider<TTenantIdentity, TEntitlements>
+TIKSN.FeatureManagement.TenantLicenseEntitlementsFeatureProvider<TTenantIdentity, TEntitlements>.TenantLicenseEntitlementsFeatureProvider(TIKSN.Licensing.ITenantLicenseProvider<TTenantIdentity, TEntitlements>! tenantLicenseProvider, TIKSN.Identity.ITenantIdProvider<TTenantIdentity>! tenantIdProvider, TIKSN.FeatureManagement.ILicenseFeatureResolver<TEntitlements>! licenseFeatureResolver, System.TimeProvider! timeProvider) -> void
 TIKSN.FeatureManagement.UserContextHook<TUserIdentity>
 TIKSN.FeatureManagement.UserContextHook<TUserIdentity>.UserContextHook(TIKSN.Identity.IUserIdProvider<TUserIdentity>! userIdProvider) -> void
+TIKSN.FeatureManagement.UserLicenseEntitlementsFeatureProvider<TUserIdentity, TEntitlements>
+TIKSN.FeatureManagement.UserLicenseEntitlementsFeatureProvider<TUserIdentity, TEntitlements>.UserLicenseEntitlementsFeatureProvider(TIKSN.Licensing.IUserLicenseProvider<TUserIdentity, TEntitlements>! userLicenseProvider, TIKSN.Identity.IUserIdProvider<TUserIdentity>! userIdProvider, TIKSN.FeatureManagement.ILicenseFeatureResolver<TEntitlements>! licenseFeatureResolver, System.TimeProvider! timeProvider) -> void
+TIKSN.Licensing.ISystemLicenseProvider<TEntitlements>
+TIKSN.Licensing.ISystemLicenseProvider<TEntitlements>.GetLicenseAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<LanguageExt.Option<TIKSN.Licensing.License<TEntitlements>!>>!
+TIKSN.Licensing.ITenantLicenseProvider<TTenantIdentity, TEntitlements>
+TIKSN.Licensing.ITenantLicenseProvider<TTenantIdentity, TEntitlements>.GetLicenseAsync(TTenantIdentity tenantId, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<LanguageExt.Option<TIKSN.Licensing.License<TEntitlements>!>>!
+TIKSN.Licensing.IUserLicenseProvider<TUserIdentity, TEntitlements>
+TIKSN.Licensing.IUserLicenseProvider<TUserIdentity, TEntitlements>.GetLicenseAsync(TUserIdentity userId, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<LanguageExt.Option<TIKSN.Licensing.License<TEntitlements>!>>!

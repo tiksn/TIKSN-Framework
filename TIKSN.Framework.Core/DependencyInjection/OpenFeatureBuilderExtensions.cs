@@ -6,6 +6,7 @@ using OpenFeature;
 using OpenFeature.Hosting;
 using TIKSN.FeatureManagement;
 using TIKSN.Identity;
+using TIKSN.Licensing;
 using TIKSN.Settings;
 
 namespace TIKSN.DependencyInjection;
@@ -129,6 +130,30 @@ public static class OpenFeatureBuilderExtensions
             sp.GetRequiredService<IOptions<SettingsFeatureProviderOptions>>()));
     }
 
+    public static OpenFeatureBuilder AddSystemLicenseEntitlementsProvider<TEntitlements>(
+        this OpenFeatureBuilder builder)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+
+        return builder.AddProvider(sp => new SystemLicenseEntitlementsFeatureProvider<TEntitlements>(
+            sp.GetRequiredService<ISystemLicenseProvider<TEntitlements>>(),
+            sp.GetRequiredService<ILicenseFeatureResolver<TEntitlements>>(),
+            sp.GetRequiredService<TimeProvider>()));
+    }
+
+    public static OpenFeatureBuilder AddSystemLicenseEntitlementsProvider<TEntitlements>(
+        this OpenFeatureBuilder builder,
+        string domain)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentException.ThrowIfNullOrWhiteSpace(domain);
+
+        return builder.AddProvider(domain, (sp, _) => new SystemLicenseEntitlementsFeatureProvider<TEntitlements>(
+            sp.GetRequiredService<ISystemLicenseProvider<TEntitlements>>(),
+            sp.GetRequiredService<ILicenseFeatureResolver<TEntitlements>>(),
+            sp.GetRequiredService<TimeProvider>()));
+    }
+
     public static OpenFeatureBuilder AddTenantContextHook<TTenantIdentity>(this OpenFeatureBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -137,11 +162,67 @@ public static class OpenFeatureBuilderExtensions
             new TenantContextHook<TTenantIdentity>(sp.GetRequiredService<ITenantIdProvider<TTenantIdentity>>()));
     }
 
+    public static OpenFeatureBuilder AddTenantLicenseEntitlementsProvider<TTenantIdentity, TEntitlements>(
+        this OpenFeatureBuilder builder)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+
+        return builder.AddProvider(sp => new TenantLicenseEntitlementsFeatureProvider<TTenantIdentity, TEntitlements>(
+            sp.GetRequiredService<ITenantLicenseProvider<TTenantIdentity, TEntitlements>>(),
+            sp.GetRequiredService<ITenantIdProvider<TTenantIdentity>>(),
+            sp.GetRequiredService<ILicenseFeatureResolver<TEntitlements>>(),
+            sp.GetRequiredService<TimeProvider>()));
+    }
+
+    public static OpenFeatureBuilder AddTenantLicenseEntitlementsProvider<TTenantIdentity, TEntitlements>(
+        this OpenFeatureBuilder builder,
+        string domain)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentException.ThrowIfNullOrWhiteSpace(domain);
+
+        return builder.AddProvider(
+            domain,
+            (sp, _) => new TenantLicenseEntitlementsFeatureProvider<TTenantIdentity, TEntitlements>(
+                sp.GetRequiredService<ITenantLicenseProvider<TTenantIdentity, TEntitlements>>(),
+                sp.GetRequiredService<ITenantIdProvider<TTenantIdentity>>(),
+                sp.GetRequiredService<ILicenseFeatureResolver<TEntitlements>>(),
+                sp.GetRequiredService<TimeProvider>()));
+    }
+
     public static OpenFeatureBuilder AddUserContextHook<TUserIdentity>(this OpenFeatureBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
 
         return builder.AddHook(sp =>
             new UserContextHook<TUserIdentity>(sp.GetRequiredService<IUserIdProvider<TUserIdentity>>()));
+    }
+
+    public static OpenFeatureBuilder AddUserLicenseEntitlementsProvider<TUserIdentity, TEntitlements>(
+        this OpenFeatureBuilder builder)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+
+        return builder.AddProvider(sp => new UserLicenseEntitlementsFeatureProvider<TUserIdentity, TEntitlements>(
+            sp.GetRequiredService<IUserLicenseProvider<TUserIdentity, TEntitlements>>(),
+            sp.GetRequiredService<IUserIdProvider<TUserIdentity>>(),
+            sp.GetRequiredService<ILicenseFeatureResolver<TEntitlements>>(),
+            sp.GetRequiredService<TimeProvider>()));
+    }
+
+    public static OpenFeatureBuilder AddUserLicenseEntitlementsProvider<TUserIdentity, TEntitlements>(
+        this OpenFeatureBuilder builder,
+        string domain)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentException.ThrowIfNullOrWhiteSpace(domain);
+
+        return builder.AddProvider(
+            domain,
+            (sp, _) => new UserLicenseEntitlementsFeatureProvider<TUserIdentity, TEntitlements>(
+                sp.GetRequiredService<IUserLicenseProvider<TUserIdentity, TEntitlements>>(),
+                sp.GetRequiredService<IUserIdProvider<TUserIdentity>>(),
+                sp.GetRequiredService<ILicenseFeatureResolver<TEntitlements>>(),
+                sp.GetRequiredService<TimeProvider>()));
     }
 }
