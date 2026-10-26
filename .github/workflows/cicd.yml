@@ -31,8 +31,38 @@ jobs:
           persist-credentials: false
       - name: "Install .NET Core SDK"
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
-      - name: Install .NET MAUI
-        run: dotnet workload install maui
+      - name: "Configure File-Based .NET Workloads"
+        if: github.event_name != 'release'
+        shell: pwsh
+        run: |
+          $dotnetRoot = Split-Path (Get-Command dotnet).Source
+          Get-ChildItem -Path "$dotnetRoot\metadata\workloads" -Recurse -Filter "msi" -ErrorAction SilentlyContinue | Remove-Item -Force
+          $sdkVersion = (dotnet --version).Split('-')[0]
+          $ver = [Version]$sdkVersion
+          $featureBand = "$($ver.Major).$($ver.Minor).$([Math]::Floor($ver.Build / 100) * 100)"
+          $workloadMetadataDir = Join-Path $dotnetRoot "metadata\workloads\$featureBand"
+          New-Item -Path $workloadMetadataDir -ItemType Directory -Force | Out-Null
+          New-Item -Path (Join-Path $workloadMetadataDir "userlocal") -ItemType File -Force | Out-Null
+      - name: "Cache .NET MAUI Workloads"
+        if: github.event_name != 'release'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0 # zizmor: ignore[cache-poisoning]
+        with:
+          path: |
+            ~/.dotnet/metadata/workloads
+            ~/.dotnet/packs
+            ~/.dotnet/sdk-advertising
+            ~/.dotnet/sdk-manifests
+            ~/.dotnet/template-packs
+          key: ${{ runner.os }}-dotnet-workloads-${{ hashFiles('global.json', 'TIKSN.Framework.Maui/TIKSN.Framework.Maui.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-dotnet-workloads-
+      - name: "Install .NET MAUI"
+        shell: pwsh
+        run: |
+          $installed = dotnet workload list | Out-String
+          if ($installed -notmatch '\bmaui\b') {
+            dotnet workload install maui
+          }
       - name: "Cache PowerShell Modules"
         if: github.event_name != 'release'
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0 # zizmor: ignore[cache-poisoning]
