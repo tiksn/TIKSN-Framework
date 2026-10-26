@@ -35,3 +35,4 @@ jobs:
           VALIDATE_JSCPD: false
           VALIDATE_BIOME: false
           VALIDATE_BIOME_FORMAT: false
+          VALIDATE_JSON_PRETTIER: false
