@@ -55,6 +55,23 @@ public class RegistrationsTests : IDisposable
         _ = service.ShouldNotBeNull();
     }
 
+    [Fact]
+    public void GivenHost_WhenTransactionContextSetViaPropagator_ThenPropagatorReturnsContext()
+    {
+        var propagator = this.host.Services.GetRequiredService<ITransactionContextPropagator>();
+        var context = EvaluationContext.Builder().Set("test-key", "test-value").Build();
+
+        propagator.SetTransactionContext(context);
+        try
+        {
+            propagator.GetTransactionContext().GetValue("test-key").AsString.ShouldBe("test-value");
+        }
+        finally
+        {
+            propagator.SetTransactionContext(EvaluationContext.Empty);
+        }
+    }
+
     protected virtual void Dispose(bool disposing)
     {
         if (!this.disposedValue)
