@@ -109,6 +109,8 @@
     <PackageReference Include="MongoDB.Driver" />
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="NuGet.Versioning" />
+    <PackageReference Include="OpenFeature" />
+    <PackageReference Include="OpenFeature.Hosting" />
     <PackageReference Include="ReactiveUI" />
     <PackageReference Include="ReactiveUI.SourceGenerators">
       <PrivateAssets>all</PrivateAssets>

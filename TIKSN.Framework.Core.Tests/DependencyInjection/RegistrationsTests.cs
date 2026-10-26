@@ -3,6 +3,8 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OpenFeature;
+using OpenFeature.Model;
 using Shouldly;
 using TIKSN.DependencyInjection;
 using TIKSN.Finance;
@@ -44,6 +46,8 @@ public class RegistrationsTests : IDisposable
     [InlineData(typeof(ICurrencyPairFactory))]
     [InlineData(typeof(IDateTimeZoneLookup))]
     [InlineData(typeof(ITimeZoneInfoLookup))]
+    [InlineData(typeof(IFeatureClient))]
+    [InlineData(typeof(ITransactionContextPropagator))]
     public void GivenHost_WhenServiceResolved_ThenItShouldNotBeNull(Type serviceType)
     {
         var service = this.host.Services.GetRequiredService(serviceType);
