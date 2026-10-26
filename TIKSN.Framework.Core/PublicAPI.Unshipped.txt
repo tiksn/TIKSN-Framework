@@ -10,6 +10,7 @@ const TIKSN.FeatureManagement.FeatureEvaluationContextKeys.ServicePath = "servic
 const TIKSN.FeatureManagement.FeatureEvaluationContextKeys.TenantId = "tenant_id" -> string!
 const TIKSN.FeatureManagement.FeatureEvaluationContextKeys.UiCultureName = "ui_culture.name" -> string!
 const TIKSN.FeatureManagement.FeatureEvaluationContextKeys.UserId = "user_id" -> string!
+const TIKSN.FeatureManagement.SettingsFeatureProviderOptions.DefaultKeyPrefix = "FeatureFlags:" -> string!
 override TIKSN.FeatureManagement.ConfigurationFeatureProvider.GetMetadata() -> OpenFeature.Model.Metadata!
 override TIKSN.FeatureManagement.ConfigurationFeatureProvider.ResolveBooleanValueAsync(string! flagKey, bool defaultValue, OpenFeature.Model.EvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenFeature.Model.ResolutionDetails<bool>!>!
 override TIKSN.FeatureManagement.ConfigurationFeatureProvider.ResolveDoubleValueAsync(string! flagKey, double defaultValue, OpenFeature.Model.EvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenFeature.Model.ResolutionDetails<double>!>!
@@ -19,6 +20,12 @@ override TIKSN.FeatureManagement.ConfigurationFeatureProvider.ResolveStructureVa
 override TIKSN.FeatureManagement.GlobalizationContextHook.BeforeAsync<T>(OpenFeature.Model.HookContext<T>! context, System.Collections.Generic.IReadOnlyDictionary<string!, object!>? hints = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<OpenFeature.Model.EvaluationContext!>
 override TIKSN.FeatureManagement.HostEnvironmentContextHook.BeforeAsync<T>(OpenFeature.Model.HookContext<T>! context, System.Collections.Generic.IReadOnlyDictionary<string!, object!>? hints = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<OpenFeature.Model.EvaluationContext!>
 override TIKSN.FeatureManagement.ServiceIdentityContextHook.BeforeAsync<T>(OpenFeature.Model.HookContext<T>! context, System.Collections.Generic.IReadOnlyDictionary<string!, object!>? hints = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<OpenFeature.Model.EvaluationContext!>
+override TIKSN.FeatureManagement.SettingsFeatureProvider.GetMetadata() -> OpenFeature.Model.Metadata!
+override TIKSN.FeatureManagement.SettingsFeatureProvider.ResolveBooleanValueAsync(string! flagKey, bool defaultValue, OpenFeature.Model.EvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenFeature.Model.ResolutionDetails<bool>!>!
+override TIKSN.FeatureManagement.SettingsFeatureProvider.ResolveDoubleValueAsync(string! flagKey, double defaultValue, OpenFeature.Model.EvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenFeature.Model.ResolutionDetails<double>!>!
+override TIKSN.FeatureManagement.SettingsFeatureProvider.ResolveIntegerValueAsync(string! flagKey, int defaultValue, OpenFeature.Model.EvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenFeature.Model.ResolutionDetails<int>!>!
+override TIKSN.FeatureManagement.SettingsFeatureProvider.ResolveStringValueAsync(string! flagKey, string! defaultValue, OpenFeature.Model.EvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenFeature.Model.ResolutionDetails<string!>!>!
+override TIKSN.FeatureManagement.SettingsFeatureProvider.ResolveStructureValueAsync(string! flagKey, OpenFeature.Model.Value! defaultValue, OpenFeature.Model.EvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenFeature.Model.ResolutionDetails<OpenFeature.Model.Value!>!>!
 override TIKSN.FeatureManagement.TenantContextHook<TTenantIdentity>.BeforeAsync<T>(OpenFeature.Model.HookContext<T>! context, System.Collections.Generic.IReadOnlyDictionary<string!, object!>? hints = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<OpenFeature.Model.EvaluationContext!>
 override TIKSN.FeatureManagement.UserContextHook<TUserIdentity>.BeforeAsync<T>(OpenFeature.Model.HookContext<T>! context, System.Collections.Generic.IReadOnlyDictionary<string!, object!>? hints = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<OpenFeature.Model.EvaluationContext!>
 static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddConfigurationProvider(this OpenFeature.Hosting.OpenFeatureBuilder! builder, string! domain, System.Action<TIKSN.FeatureManagement.ConfigurationFeatureProviderOptions!>? configureOptions) -> OpenFeature.Hosting.OpenFeatureBuilder!
@@ -29,6 +36,10 @@ static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddFrameworkContex
 static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddGlobalizationContextHook(this OpenFeature.Hosting.OpenFeatureBuilder! builder) -> OpenFeature.Hosting.OpenFeatureBuilder!
 static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddHostEnvironmentContextHook(this OpenFeature.Hosting.OpenFeatureBuilder! builder) -> OpenFeature.Hosting.OpenFeatureBuilder!
 static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddServiceIdentityContextHook(this OpenFeature.Hosting.OpenFeatureBuilder! builder) -> OpenFeature.Hosting.OpenFeatureBuilder!
+static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddSettingsProvider(this OpenFeature.Hosting.OpenFeatureBuilder! builder, string! domain, System.Action<TIKSN.FeatureManagement.SettingsFeatureProviderOptions!>? configureOptions) -> OpenFeature.Hosting.OpenFeatureBuilder!
+static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddSettingsProvider(this OpenFeature.Hosting.OpenFeatureBuilder! builder, string! domain) -> OpenFeature.Hosting.OpenFeatureBuilder!
+static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddSettingsProvider(this OpenFeature.Hosting.OpenFeatureBuilder! builder, System.Action<TIKSN.FeatureManagement.SettingsFeatureProviderOptions!>? configureOptions) -> OpenFeature.Hosting.OpenFeatureBuilder!
+static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddSettingsProvider(this OpenFeature.Hosting.OpenFeatureBuilder! builder) -> OpenFeature.Hosting.OpenFeatureBuilder!
 static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddTenantContextHook<TTenantIdentity>(this OpenFeature.Hosting.OpenFeatureBuilder! builder) -> OpenFeature.Hosting.OpenFeatureBuilder!
 static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddUserContextHook<TUserIdentity>(this OpenFeature.Hosting.OpenFeatureBuilder! builder) -> OpenFeature.Hosting.OpenFeatureBuilder!
 TIKSN.DependencyInjection.OpenFeatureBuilderExtensions
@@ -45,6 +56,19 @@ TIKSN.FeatureManagement.HostEnvironmentContextHook
 TIKSN.FeatureManagement.HostEnvironmentContextHook.HostEnvironmentContextHook(Microsoft.Extensions.Hosting.IHostEnvironment? hostEnvironment = null) -> void
 TIKSN.FeatureManagement.ServiceIdentityContextHook
 TIKSN.FeatureManagement.ServiceIdentityContextHook.ServiceIdentityContextHook(TIKSN.Identity.ServiceIdentity? serviceIdentity = null) -> void
+TIKSN.FeatureManagement.SettingsFeatureProvider
+TIKSN.FeatureManagement.SettingsFeatureProvider.SettingsFeatureProvider(TIKSN.Settings.ISettingsService! settingsService, Microsoft.Extensions.Options.IOptions<TIKSN.FeatureManagement.SettingsFeatureProviderOptions!>! options) -> void
+TIKSN.FeatureManagement.SettingsFeatureProviderOptions
+TIKSN.FeatureManagement.SettingsFeatureProviderOptions.KeyPrefix.get -> string!
+TIKSN.FeatureManagement.SettingsFeatureProviderOptions.KeyPrefix.set -> void
+TIKSN.FeatureManagement.SettingsFeatureProviderOptions.LookupScope.get -> TIKSN.FeatureManagement.SettingsLookupScope
+TIKSN.FeatureManagement.SettingsFeatureProviderOptions.LookupScope.set -> void
+TIKSN.FeatureManagement.SettingsFeatureProviderOptions.SettingsFeatureProviderOptions() -> void
+TIKSN.FeatureManagement.SettingsLookupScope
+TIKSN.FeatureManagement.SettingsLookupScope.LocalOnly = 0 -> TIKSN.FeatureManagement.SettingsLookupScope
+TIKSN.FeatureManagement.SettingsLookupScope.LocalThenRoaming = 2 -> TIKSN.FeatureManagement.SettingsLookupScope
+TIKSN.FeatureManagement.SettingsLookupScope.RoamingOnly = 1 -> TIKSN.FeatureManagement.SettingsLookupScope
+TIKSN.FeatureManagement.SettingsLookupScope.RoamingThenLocal = 3 -> TIKSN.FeatureManagement.SettingsLookupScope
 TIKSN.FeatureManagement.TenantContextHook<TTenantIdentity>
 TIKSN.FeatureManagement.TenantContextHook<TTenantIdentity>.TenantContextHook(TIKSN.Identity.ITenantIdProvider<TTenantIdentity>! tenantIdProvider) -> void
 TIKSN.FeatureManagement.UserContextHook<TUserIdentity>
