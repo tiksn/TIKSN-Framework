@@ -190,6 +190,23 @@ Task FormatXmlFiles Clean, CleanupCode, {
     }
 }
 
+# Synopsis: Format JSON Files
+Task FormatJsonFiles Clean, CleanupCode, {
+    $serOptions = [System.Text.Json.JsonSerializerOptions]@{
+        WriteIndented = $true
+    }
+
+    Get-ChildItem -Include *.json, *.json5, *.webmanifest -Recurse -File
+    | Where-Object { -not (git check-ignore $PSItem) }
+    | ForEach-Object {
+        print White "Formatting JSON File: $PSItem"
+        $content = Get-Content -Path $PSItem -Raw
+        $json = [System.Text.Json.Nodes.JsonNode]::Parse($content)
+        $formatted = $json.ToJsonString($serOptions)
+        Set-Content -Path $PSItem.FullName -Value $formatted
+    }
+}
+
 # Synopsis: Format Whitespace
 Task FormatWhitespace Restore, {
     $solution = Resolve-Path -Path $BuildParameters.Solution
@@ -299,7 +316,7 @@ Task FormatPowerShellFiles RestorePowerShellModules, {
 }
 
 # Synopsis: Format
-Task Format Restore, FormatPowerShellFiles, FormatXmlFiles, FormatWhitespace, FormatStyle, FormatAnalyzers, CleanupCode
+Task Format Restore, FormatPowerShellFiles, FormatXmlFiles, FormatJsonFiles, FormatWhitespace, FormatStyle, FormatAnalyzers, CleanupCode
 
 # Synopsis: Estimate Next Version
 Task EstimateVersion Restore, {
