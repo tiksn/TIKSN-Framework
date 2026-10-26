@@ -1,5 +1,7 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using OpenFeature;
 using OpenFeature.Hosting;
 using TIKSN.FeatureManagement;
@@ -9,6 +11,49 @@ namespace TIKSN.DependencyInjection;
 
 public static class OpenFeatureBuilderExtensions
 {
+    public static OpenFeatureBuilder AddConfigurationProvider(
+        this OpenFeatureBuilder builder) =>
+        AddConfigurationProvider(builder, configureOptions: null);
+
+    public static OpenFeatureBuilder AddConfigurationProvider(
+        this OpenFeatureBuilder builder,
+        Action<ConfigurationFeatureProviderOptions>? configureOptions)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+
+        if (configureOptions is not null)
+        {
+            _ = builder.Services.Configure(configureOptions);
+        }
+
+        return builder.AddProvider(sp => new ConfigurationFeatureProvider(
+            sp.GetRequiredService<IConfiguration>(),
+            sp.GetRequiredService<IOptions<ConfigurationFeatureProviderOptions>>()));
+    }
+
+    public static OpenFeatureBuilder AddConfigurationProvider(
+        this OpenFeatureBuilder builder,
+        string domain) =>
+        AddConfigurationProvider(builder, domain, configureOptions: null);
+
+    public static OpenFeatureBuilder AddConfigurationProvider(
+        this OpenFeatureBuilder builder,
+        string domain,
+        Action<ConfigurationFeatureProviderOptions>? configureOptions)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentException.ThrowIfNullOrWhiteSpace(domain);
+
+        if (configureOptions is not null)
+        {
+            _ = builder.Services.Configure(configureOptions);
+        }
+
+        return builder.AddProvider(domain, (sp, _) => new ConfigurationFeatureProvider(
+            sp.GetRequiredService<IConfiguration>(),
+            sp.GetRequiredService<IOptions<ConfigurationFeatureProviderOptions>>()));
+    }
+
     public static OpenFeatureBuilder AddFrameworkContextHooks(this OpenFeatureBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
