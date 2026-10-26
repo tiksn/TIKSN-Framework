@@ -37,6 +37,10 @@ override TIKSN.FeatureManagement.TenantContextHook<TTenantIdentity>.BeforeAsync<
 override TIKSN.FeatureManagement.TenantLicenseEntitlementsFeatureProvider<TTenantIdentity, TEntitlements>.GetMetadata() -> OpenFeature.Model.Metadata!
 override TIKSN.FeatureManagement.UserContextHook<TUserIdentity>.BeforeAsync<T>(OpenFeature.Model.HookContext<T>! context, System.Collections.Generic.IReadOnlyDictionary<string!, object!>? hints = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<OpenFeature.Model.EvaluationContext!>
 override TIKSN.FeatureManagement.UserLicenseEntitlementsFeatureProvider<TUserIdentity, TEntitlements>.GetMetadata() -> OpenFeature.Model.Metadata!
+static TIKSN.DependencyInjection.MediatRServiceConfigurationExtensions.AddFeatureFlagPipelineBehavior(this Microsoft.Extensions.DependencyInjection.MediatRServiceConfiguration! configuration) -> Microsoft.Extensions.DependencyInjection.MediatRServiceConfiguration!
+static TIKSN.DependencyInjection.MediatRServiceConfigurationExtensions.AddFeatureTransactionContextPipelineBehavior(this Microsoft.Extensions.DependencyInjection.MediatRServiceConfiguration! configuration) -> Microsoft.Extensions.DependencyInjection.MediatRServiceConfiguration!
+static TIKSN.DependencyInjection.MediatRServiceConfigurationExtensions.AddTenantFeatureTransactionContextPipelineBehavior(this Microsoft.Extensions.DependencyInjection.MediatRServiceConfiguration! configuration) -> Microsoft.Extensions.DependencyInjection.MediatRServiceConfiguration!
+static TIKSN.DependencyInjection.MediatRServiceConfigurationExtensions.AddUserFeatureTransactionContextPipelineBehavior(this Microsoft.Extensions.DependencyInjection.MediatRServiceConfiguration! configuration) -> Microsoft.Extensions.DependencyInjection.MediatRServiceConfiguration!
 static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddConfigurationProvider(this OpenFeature.Hosting.OpenFeatureBuilder! builder, string! domain, System.Action<TIKSN.FeatureManagement.ConfigurationFeatureProviderOptions!>? configureOptions) -> OpenFeature.Hosting.OpenFeatureBuilder!
 static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddConfigurationProvider(this OpenFeature.Hosting.OpenFeatureBuilder! builder, string! domain) -> OpenFeature.Hosting.OpenFeatureBuilder!
 static TIKSN.DependencyInjection.OpenFeatureBuilderExtensions.AddConfigurationProvider(this OpenFeature.Hosting.OpenFeatureBuilder! builder, System.Action<TIKSN.FeatureManagement.ConfigurationFeatureProviderOptions!>? configureOptions) -> OpenFeature.Hosting.OpenFeatureBuilder!
@@ -65,6 +69,13 @@ TIKSN.FeatureManagement.ConfigurationFeatureProviderOptions
 TIKSN.FeatureManagement.ConfigurationFeatureProviderOptions.ConfigurationFeatureProviderOptions() -> void
 TIKSN.FeatureManagement.ConfigurationFeatureProviderOptions.SectionName.get -> string!
 TIKSN.FeatureManagement.ConfigurationFeatureProviderOptions.SectionName.set -> void
+TIKSN.FeatureManagement.FeatureDisabledException
+TIKSN.FeatureManagement.FeatureDisabledException.DisabledFeatures.get -> LanguageExt.Seq<string!>
+TIKSN.FeatureManagement.FeatureDisabledException.FeatureDisabledException() -> void
+TIKSN.FeatureManagement.FeatureDisabledException.FeatureDisabledException(string! message, LanguageExt.Seq<string!> disabledFeatures, System.Exception! innerException) -> void
+TIKSN.FeatureManagement.FeatureDisabledException.FeatureDisabledException(string! message, LanguageExt.Seq<string!> disabledFeatures) -> void
+TIKSN.FeatureManagement.FeatureDisabledException.FeatureDisabledException(string! message, System.Exception! innerException) -> void
+TIKSN.FeatureManagement.FeatureDisabledException.FeatureDisabledException(string! message) -> void
 TIKSN.FeatureManagement.FeatureEvaluationContextKeys
 TIKSN.FeatureManagement.GlobalizationContextHook
 TIKSN.FeatureManagement.GlobalizationContextHook.GlobalizationContextHook() -> void
@@ -103,6 +114,21 @@ TIKSN.FeatureManagement.UserContextHook<TUserIdentity>
 TIKSN.FeatureManagement.UserContextHook<TUserIdentity>.UserContextHook(TIKSN.Identity.IUserIdProvider<TUserIdentity>! userIdProvider) -> void
 TIKSN.FeatureManagement.UserLicenseEntitlementsFeatureProvider<TUserIdentity, TEntitlements>
 TIKSN.FeatureManagement.UserLicenseEntitlementsFeatureProvider<TUserIdentity, TEntitlements>.UserLicenseEntitlementsFeatureProvider(TIKSN.Licensing.IUserLicenseProvider<TUserIdentity, TEntitlements>! userLicenseProvider, TIKSN.Identity.IUserIdProvider<TUserIdentity>! userIdProvider, TIKSN.FeatureManagement.ILicenseFeatureResolver<TEntitlements>! licenseFeatureResolver, System.TimeProvider! timeProvider) -> void
+TIKSN.Integration.Messages.FeatureFlagBehavior<TRequest, TResponse>
+TIKSN.Integration.Messages.FeatureFlagBehavior<TRequest, TResponse>.FeatureFlagBehavior(OpenFeature.IFeatureClient! featureClient) -> void
+TIKSN.Integration.Messages.FeatureFlagBehavior<TRequest, TResponse>.Handle(TRequest request, MediatR.RequestHandlerDelegate<TResponse>! next, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<TResponse>!
+TIKSN.Integration.Messages.FeatureTransactionContextBehavior<TTenantIdentity, TUserIdentity, TRequest, TResponse>
+TIKSN.Integration.Messages.FeatureTransactionContextBehavior<TTenantIdentity, TUserIdentity, TRequest, TResponse>.FeatureTransactionContextBehavior(OpenFeature.Model.ITransactionContextPropagator! transactionContextPropagator) -> void
+TIKSN.Integration.Messages.FeatureTransactionContextBehavior<TTenantIdentity, TUserIdentity, TRequest, TResponse>.Handle(TRequest request, MediatR.RequestHandlerDelegate<TResponse>! next, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<TResponse>!
+TIKSN.Integration.Messages.IFeatureGatedRequest
+TIKSN.Integration.Messages.IFeatureGatedRequest.Features.get -> LanguageExt.Seq<string!>
+TIKSN.Integration.Messages.IFeatureGatedRequest.RequireAllFeatures.get -> bool
+TIKSN.Integration.Messages.TenantFeatureTransactionContextBehavior<TTenantIdentity, TRequest, TResponse>
+TIKSN.Integration.Messages.TenantFeatureTransactionContextBehavior<TTenantIdentity, TRequest, TResponse>.Handle(TRequest request, MediatR.RequestHandlerDelegate<TResponse>! next, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<TResponse>!
+TIKSN.Integration.Messages.TenantFeatureTransactionContextBehavior<TTenantIdentity, TRequest, TResponse>.TenantFeatureTransactionContextBehavior(OpenFeature.Model.ITransactionContextPropagator! transactionContextPropagator) -> void
+TIKSN.Integration.Messages.UserFeatureTransactionContextBehavior<TUserIdentity, TRequest, TResponse>
+TIKSN.Integration.Messages.UserFeatureTransactionContextBehavior<TUserIdentity, TRequest, TResponse>.Handle(TRequest request, MediatR.RequestHandlerDelegate<TResponse>! next, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<TResponse>!
+TIKSN.Integration.Messages.UserFeatureTransactionContextBehavior<TUserIdentity, TRequest, TResponse>.UserFeatureTransactionContextBehavior(OpenFeature.Model.ITransactionContextPropagator! transactionContextPropagator) -> void
 TIKSN.Licensing.ISystemLicenseProvider<TEntitlements>
 TIKSN.Licensing.ISystemLicenseProvider<TEntitlements>.GetLicenseAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<LanguageExt.Option<TIKSN.Licensing.License<TEntitlements>!>>!
 TIKSN.Licensing.ITenantLicenseProvider<TTenantIdentity, TEntitlements>
