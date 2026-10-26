@@ -6,6 +6,7 @@ using OpenFeature;
 using OpenFeature.Hosting;
 using TIKSN.FeatureManagement;
 using TIKSN.Identity;
+using TIKSN.Settings;
 
 namespace TIKSN.DependencyInjection;
 
@@ -83,6 +84,49 @@ public static class OpenFeatureBuilderExtensions
         ArgumentNullException.ThrowIfNull(builder);
 
         return builder.AddHook(sp => new ServiceIdentityContextHook(sp.GetService<ServiceIdentity>()));
+    }
+
+    public static OpenFeatureBuilder AddSettingsProvider(
+        this OpenFeatureBuilder builder) =>
+        AddSettingsProvider(builder, configureOptions: null);
+
+    public static OpenFeatureBuilder AddSettingsProvider(
+        this OpenFeatureBuilder builder,
+        Action<SettingsFeatureProviderOptions>? configureOptions)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+
+        if (configureOptions is not null)
+        {
+            _ = builder.Services.Configure(configureOptions);
+        }
+
+        return builder.AddProvider(sp => new SettingsFeatureProvider(
+            sp.GetRequiredService<ISettingsService>(),
+            sp.GetRequiredService<IOptions<SettingsFeatureProviderOptions>>()));
+    }
+
+    public static OpenFeatureBuilder AddSettingsProvider(
+        this OpenFeatureBuilder builder,
+        string domain) =>
+        AddSettingsProvider(builder, domain, configureOptions: null);
+
+    public static OpenFeatureBuilder AddSettingsProvider(
+        this OpenFeatureBuilder builder,
+        string domain,
+        Action<SettingsFeatureProviderOptions>? configureOptions)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentException.ThrowIfNullOrWhiteSpace(domain);
+
+        if (configureOptions is not null)
+        {
+            _ = builder.Services.Configure(configureOptions);
+        }
+
+        return builder.AddProvider(domain, (sp, _) => new SettingsFeatureProvider(
+            sp.GetRequiredService<ISettingsService>(),
+            sp.GetRequiredService<IOptions<SettingsFeatureProviderOptions>>()));
     }
 
     public static OpenFeatureBuilder AddTenantContextHook<TTenantIdentity>(this OpenFeatureBuilder builder)
