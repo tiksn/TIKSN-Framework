@@ -42,7 +42,7 @@ public static class ServiceCollectionExtensions
         var transactionContextPropagator = new AsyncLocalTransactionContextPropagator();
         Api.Instance.SetTransactionContextPropagator(transactionContextPropagator);
         services.TryAddSingleton<ITransactionContextPropagator>(transactionContextPropagator);
-        _ = services.AddOpenFeature(static _ => { });
+        _ = services.AddOpenFeature(builder => builder.AddFrameworkContextHooks());
 
         services.TryAddSingleton<ICultureFactory, CultureFactory>();
         services.TryAddSingleton<ICountryFactory, CountryFactory>();
