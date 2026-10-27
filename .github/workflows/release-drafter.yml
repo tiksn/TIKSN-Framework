@@ -1,10 +1,10 @@
-# zizmor: ignore[dangerous-triggers]
 name: Release Drafter
 
 on:
   push:
     branches:
       - main
+  # zizmor: ignore[dangerous-triggers]
   pull_request_target:
     types:
       - edited
