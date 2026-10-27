@@ -135,3 +135,11 @@ TIKSN.Licensing.ITenantLicenseProvider<TTenantIdentity, TEntitlements>
 TIKSN.Licensing.ITenantLicenseProvider<TTenantIdentity, TEntitlements>.GetLicenseAsync(TTenantIdentity tenantId, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<LanguageExt.Option<TIKSN.Licensing.License<TEntitlements>!>>!
 TIKSN.Licensing.IUserLicenseProvider<TUserIdentity, TEntitlements>
 TIKSN.Licensing.IUserLicenseProvider<TUserIdentity, TEntitlements>.GetLicenseAsync(TUserIdentity userId, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<LanguageExt.Option<TIKSN.Licensing.License<TEntitlements>!>>!
+static TIKSN.Localization.LocalizationKeys.Key661748192.get -> string!
+TIKSN.Finance.ForeignExchange.Bank.IReserveBankOfNewZealand
+TIKSN.Finance.ForeignExchange.Bank.ReserveBankOfNewZealand
+TIKSN.Finance.ForeignExchange.Bank.ReserveBankOfNewZealand.ConvertCurrencyAsync(TIKSN.Finance.Money! baseMoney, TIKSN.Finance.CurrencyInfo! counterCurrency, System.DateTimeOffset asOn, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<TIKSN.Finance.Money!>!
+TIKSN.Finance.ForeignExchange.Bank.ReserveBankOfNewZealand.GetCurrencyPairsAsync(System.DateTimeOffset asOn, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyCollection<TIKSN.Finance.CurrencyPair!>!>!
+TIKSN.Finance.ForeignExchange.Bank.ReserveBankOfNewZealand.GetExchangeRateAsync(TIKSN.Finance.CurrencyPair! pair, System.DateTimeOffset asOn, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<decimal>!
+TIKSN.Finance.ForeignExchange.Bank.ReserveBankOfNewZealand.GetExchangeRatesAsync(System.DateTimeOffset asOn, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyCollection<TIKSN.Finance.ForeignExchange.ExchangeRate!>!>!
+TIKSN.Finance.ForeignExchange.Bank.ReserveBankOfNewZealand.ReserveBankOfNewZealand(System.Net.Http.HttpClient! httpClient, TIKSN.Globalization.ICurrencyFactory! currencyFactory, TIKSN.Finance.ICurrencyPairFactory! currencyPairFactory, System.TimeProvider! timeProvider) -> void

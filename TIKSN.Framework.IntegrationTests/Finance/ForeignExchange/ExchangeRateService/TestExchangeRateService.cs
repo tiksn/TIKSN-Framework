@@ -26,6 +26,7 @@ public sealed class TestExchangeRateService : ExchangeRateServiceBase
         INationalBankOfPoland nationalBankOfPoland,
         INationalBankOfUkraine nationalBankOfUkraine,
         IReserveBankOfAustralia reserveBankOfAustralia,
+        IReserveBankOfNewZealand reserveBankOfNewZealand,
         ISwissNationalBank swissNationalBank,
         ILogger<TestExchangeRateService> logger,
         ICurrencyPairFactory currencyPairFactory,
@@ -112,6 +113,14 @@ public sealed class TestExchangeRateService : ExchangeRateServiceBase
             LocalizationKeys.Key645369586,
             LocalizationKeys.Key645369586,
             "AU",
+            TimeSpan.FromHours(24));
+
+        this.AddBatchProvider(
+            Guid.Parse("70ff6ccb-e8f3-4f31-91ca-9330c7f711bd"),
+            reserveBankOfNewZealand,
+            LocalizationKeys.Key661748192,
+            LocalizationKeys.Key661748192,
+            "NZ",
             TimeSpan.FromHours(24));
 
         this.AddBatchProvider(

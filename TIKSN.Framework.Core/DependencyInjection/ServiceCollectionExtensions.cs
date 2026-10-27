@@ -100,6 +100,7 @@ public static class ServiceCollectionExtensions
         _ = services.AddHttpClient<INationalBankOfPoland, NationalBankOfPoland>();
         _ = services.AddHttpClient<INationalBankOfUkraine, NationalBankOfUkraine>();
         _ = services.AddHttpClient<IReserveBankOfAustralia, ReserveBankOfAustralia>();
+        _ = services.AddHttpClient<IReserveBankOfNewZealand, ReserveBankOfNewZealand>();
         _ = services.AddHttpClient<ISwissNationalBank, SwissNationalBank>();
 
         return services;
