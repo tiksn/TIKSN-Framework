@@ -143,3 +143,8 @@ TIKSN.Finance.ForeignExchange.Bank.ReserveBankOfNewZealand.GetCurrencyPairsAsync
 TIKSN.Finance.ForeignExchange.Bank.ReserveBankOfNewZealand.GetExchangeRateAsync(TIKSN.Finance.CurrencyPair! pair, System.DateTimeOffset asOn, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<decimal>!
 TIKSN.Finance.ForeignExchange.Bank.ReserveBankOfNewZealand.GetExchangeRatesAsync(System.DateTimeOffset asOn, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyCollection<TIKSN.Finance.ForeignExchange.ExchangeRate!>!>!
 TIKSN.Finance.ForeignExchange.Bank.ReserveBankOfNewZealand.ReserveBankOfNewZealand(System.Net.Http.HttpClient! httpClient, TIKSN.Globalization.ICurrencyFactory! currencyFactory, TIKSN.Finance.ICurrencyPairFactory! currencyPairFactory, System.TimeProvider! timeProvider) -> void
+*REMOVED*TIKSN.Data.ITenantIdProvider<T>
+*REMOVED*TIKSN.Data.ITenantIdProvider<T>.FindTenantId() -> LanguageExt.Option<T>
+*REMOVED*TIKSN.Data.ITenantIdProvider<T>.GetTenantId() -> T
+*REMOVED*TIKSN.Integration.Messages.TenantRequestBehavior<TEntityIdentity, TTenantIdentity, TRequest, TResponse>.TenantRequestBehavior(TIKSN.Data.ITenantIdProvider<TTenantIdentity>! tenantIdProvider, System.IServiceProvider! serviceProvider) -> void
+TIKSN.Integration.Messages.TenantRequestBehavior<TEntityIdentity, TTenantIdentity, TRequest, TResponse>.TenantRequestBehavior(TIKSN.Identity.ITenantIdProvider<TTenantIdentity>! tenantIdProvider, System.IServiceProvider! serviceProvider) -> void

@@ -7,6 +7,7 @@ using NSubstitute;
 using Shouldly;
 using TIKSN.Data;
 using TIKSN.Data.BareEntityResolvers;
+using TIKSN.Identity;
 using TIKSN.Integration.Messages;
 using TIKSN.Integration.Messages.Commands;
 using TIKSN.Integration.Messages.Queries;

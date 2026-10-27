@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using TIKSN.Data;
 using TIKSN.Data.BareEntityResolvers;
+using TIKSN.Identity;
 using TIKSN.Integration.Messages.Commands;
 using TIKSN.Integration.Messages.Queries;
 
