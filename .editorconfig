@@ -30,9 +30,26 @@ vsspell_ignored_keywords_76c94d6a244544a4afc9ef87b4e38ae4 = Antimalware|App|Bson
 [*.sln]
 indent_style = tab
 
+[*.slnx]
+indent_size = 2
+
+# Public API files (Roslyn symbol definitions are long single-line signatures)
+[*{PublicAPI.Shipped.txt,PublicAPI.Unshipped.txt}]
+max_line_length = unset
+
+# Auto-generated and designer files
+[*.Designer.cs]
+generated_code = true
+max_line_length = unset
+
+# Protocol Buffers
+[*.proto]
+indent_size = 2
+
 # Visual Studio XML Project Files
 [*.{csproj,vbproj,vcxproj.filters,proj,projitems,shproj}]
 indent_size = 2
+insert_final_newline = false
 
 # XML Configuration Files
 [*.{xml,config,props,targets,nuspec,resx,ruleset,vsixmanifest,vsct}]
