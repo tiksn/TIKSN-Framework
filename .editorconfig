@@ -58,9 +58,10 @@ indent_size = 2
 [*.{csproj,vbproj,vcxproj.filters,proj,projitems,shproj}]
 indent_size = 2
 insert_final_newline = false
+max_line_length = unset
 
 # XML Configuration Files
-[*.{xml,config,props,targets,nuspec,resx,ruleset,vsixmanifest,vsct}]
+[*.{xml,config,props,targets,nuspec,resx,ruleset,vsixmanifest,vsct,slnx,DotSettings}]
 indent_size = 2
 insert_final_newline = false
 
@@ -88,6 +89,10 @@ end_of_line = crlf
 # Bash Files
 [*.sh]
 end_of_line = lf
+
+# PowerShell Data Files
+[*.psd1]
+max_line_length = unset
 
 # Makefiles
 [Makefile]
@@ -138,6 +143,15 @@ resharper_redundant_explicit_argument_name_specification_highlighting = none
 # Prevent alignment spaces on multiline binary expressions like `?? throw`
 resharper_align_multiline_binary_expressions_chain = false
 resharper_csharp_align_multiline_binary_expressions_chain = false
+resharper_align_multiline_argument = false
+resharper_csharp_align_multiline_argument = false
+resharper_align_multiline_parameter = false
+resharper_csharp_align_multiline_parameter = false
+resharper_align_multiline_expression = false
+resharper_csharp_align_multiline_expression = false
+resharper_align_multiline_calls_chain = false
+resharper_csharp_align_multiline_calls_chain = false
+resharper_csharp_align_multiline_for_stmt = false
 
 # Prevent ReSharper from injecting extra spaces into XML documentation comments
 xmldoc_indent_text = do_not_touch
