@@ -61,7 +61,7 @@
     <PackageVersion Include="OpenTelemetry.Exporter.InMemory" Version="1.20.0" />
     <PackageVersion Include="CommunityToolkit.Maui" Version="15.0.1" />
     <PackageVersion Include="Polly" Version="8.8.0" />
-    <PackageVersion Include="RavenDB.Client" Version="7.2.6" />
+    <PackageVersion Include="RavenDB.Client" Version="7.2.7" />
     <PackageVersion Include="ReactiveUI" Version="26.0.1" />
     <PackageVersion Include="ReactiveUI.Maui" Version="26.0.1" />
     <PackageVersion Include="ReactiveUI.SourceGenerators" Version="4.2.0" />
