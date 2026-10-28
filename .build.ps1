@@ -273,9 +273,9 @@ Task FormatAnalyzersSolution Restore, BuildSourceGenerators, {
 
 # Synopsis: Format Analyzers
 Task FormatAnalyzers Restore,
-    FormatAnalyzersSourceGenerators, FormatAnalyzersLanguageLocalization,
-    FormatAnalyzersRegionLocalization, FormatAnalyzersCore, FormatAnalyzersMaui,
-    FormatAnalyzersSolution, CleanupCode
+FormatAnalyzersSourceGenerators, FormatAnalyzersLanguageLocalization,
+FormatAnalyzersRegionLocalization, FormatAnalyzersCore, FormatAnalyzersMaui,
+FormatAnalyzersSolution, CleanupCode
 
 # Synopsis: Format Style Source Generators
 Task FormatStyleSourceGenerators Restore, {
@@ -320,9 +320,9 @@ Task FormatStyleSolution Restore, BuildSourceGenerators, {
 
 # Synopsis: Format Style
 Task FormatStyle Restore,
-    FormatStyleSourceGenerators, FormatStyleLanguageLocalization,
-    FormatStyleRegionLocalization, FormatStyleCore, FormatStyleMaui,
-    FormatStyleSolution, CleanupCode
+FormatStyleSourceGenerators, FormatStyleLanguageLocalization,
+FormatStyleRegionLocalization, FormatStyleCore, FormatStyleMaui,
+FormatStyleSolution, CleanupCode
 
 # Synopsis: Format PowerShell Files
 Task FormatPowerShellFiles RestorePowerShellModules, {
@@ -340,8 +340,8 @@ Task FormatPowerShellFiles RestorePowerShellModules, {
 
 # Synopsis: Format
 Task Format Restore,
-    FormatPowerShellFiles, FormatXmlFiles, FormatJsonFiles,
-    FormatWhitespace, FormatStyle, FormatAnalyzers, CleanupCode
+FormatPowerShellFiles, FormatXmlFiles, FormatJsonFiles,
+FormatWhitespace, FormatStyle, FormatAnalyzers, CleanupCode
 
 # Synopsis: Estimate Next Version
 Task EstimateVersion Restore, {
@@ -379,7 +379,7 @@ Task EstimateVersion Restore, {
             }
             else {
                 $nextPreReleaseLabel = $latestPackageVersion.PreReleaseLabel.Split('.')[0] + '.' +
-                    (([int]$latestPackageVersion.PreReleaseLabel.Split('.')[1]) + 1)
+                (([int]$latestPackageVersion.PreReleaseLabel.Split('.')[1]) + 1)
 
                 $state.NextVersion = [System.Management.Automation.SemanticVersion]::New(
                     $latestPackageVersion.Major, $latestPackageVersion.Minor,
@@ -412,7 +412,7 @@ Task ValidateVersion EstimateVersion, {
 
     if ($nextVersion -lt $latestTagVersion) {
         $msg = "Next Release version '$nextVersion' should be greater than " +
-            "or equal to latest tag version '$latestTagVersion'"
+        "or equal to latest tag version '$latestTagVersion'"
         throw $msg
     }
 }
@@ -573,7 +573,7 @@ Task Pack Build, Test, {
         foreach ($packageReference in $project.SelectNodes('//PackageReference')) {
             $isPrivate = $false
             $isPrivateAll = $packageReference.HasAttribute('PrivateAssets') -and
-                ($packageReference.GetAttribute('PrivateAssets') -match '(?i)all')
+            ($packageReference.GetAttribute('PrivateAssets') -match '(?i)all')
             if ($isPrivateAll) {
                 $isPrivate = $true
             }
