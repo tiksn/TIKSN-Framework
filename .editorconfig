@@ -26,12 +26,20 @@ max_line_length = 120
 vsspell_section_id = 76c94d6a244544a4afc9ef87b4e38ae4
 vsspell_ignored_keywords_76c94d6a244544a4afc9ef87b4e38ae4 = Antimalware|App|Bson|cmdlet|Cuid|Currencylayer|Deserialize|Deserialized|Deserializer|json|LFLA|Metadata|Mongo|Serializer|Serilog|Sitemap|Sitemaps|TIKSN|TLA|Ulid|Uninitialize|Validator|VLFLA
 
+# EditorConfig Configuration File
+[.editorconfig]
+max_line_length = unset
+
 # Visual Studio Solution Files
 [*.sln]
 indent_style = tab
 
 [*.slnx]
 indent_size = 2
+
+# ReSharper / Rider Settings Files
+[*.DotSettings]
+max_line_length = unset
 
 # Public API files (Roslyn symbol definitions are long single-line signatures)
 [*{PublicAPI.Shipped.txt,PublicAPI.Unshipped.txt}]
@@ -67,6 +75,7 @@ indent_size = 2
 # Markdown Files
 [*.md]
 trim_trailing_whitespace = false
+max_line_length = unset
 
 # Web Files
 [*.{htm,html,js,jsm,ts,tsx,css,sass,scss,less,pcss,svg,vue}]
@@ -84,6 +93,10 @@ end_of_line = lf
 [Makefile]
 indent_style = tab
 
+# Resource Files
+[*.resx]
+max_line_length = unset
+
 # Binary Data Files
 [*.{dat,db}]
 charset = unset
@@ -92,6 +105,7 @@ insert_final_newline = unset
 trim_trailing_whitespace = unset
 indent_style = unset
 indent_size = unset
+max_line_length = unset
 
 ##########################################
 # Default .NET Code Style Severities
