@@ -55,7 +55,8 @@ jobs:
             ~/.dotnet/sdk-manifests
             ~/.dotnet/template-packs
           key: >-
-            ${{ runner.os }}-dotnet-workloads-${{ hashFiles('global.json', 'TIKSN.Framework.Maui/TIKSN.Framework.Maui.csproj') }}
+            ${{ format('{0}-dotnet-workloads-{1}', runner.os,
+            hashFiles('global.json', 'TIKSN.Framework.Maui/TIKSN.Framework.Maui.csproj')) }}
           restore-keys: |
             ${{ runner.os }}-dotnet-workloads-
       - name: "Install .NET MAUI"

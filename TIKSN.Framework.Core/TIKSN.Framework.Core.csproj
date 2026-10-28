@@ -52,15 +52,22 @@
     <PackageReference Include="Spectre.Console.Cli" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TIKSN.Framework.SourceGenerators\TIKSN.Framework.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference
+      Include="..\TIKSN.Framework.SourceGenerators\TIKSN.Framework.SourceGenerators.csproj"
+      OutputItemType="Analyzer"
+      ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\TIKSN.LanguageLocalization\TIKSN.LanguageLocalization.csproj" />
     <ProjectReference Include="..\TIKSN.RegionLocalization\TIKSN.RegionLocalization.csproj" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="Localization\EnglishOnly.resx" />
     <AdditionalFiles Include="Shell\ShellCommand.resx" />
-    <AdditionalFiles Include="..\TIKSN.LanguageLocalization\Strings.resx" Link="Localization\LanguageLocalizationStrings.resx" />
-    <AdditionalFiles Include="..\TIKSN.RegionLocalization\Strings.resx" Link="Localization\RegionLocalizationStrings.resx" />
+    <AdditionalFiles
+      Include="..\TIKSN.LanguageLocalization\Strings.resx"
+      Link="Localization\LanguageLocalizationStrings.resx" />
+    <AdditionalFiles
+      Include="..\TIKSN.RegionLocalization\Strings.resx"
+      Link="Localization\RegionLocalizationStrings.resx" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Finance\Resources\TableA1.xml" />

@@ -272,9 +272,9 @@ Task FormatAnalyzersSolution Restore, BuildSourceGenerators, {
 }
 
 # Synopsis: Format Analyzers
-Task FormatAnalyzers 
-    Restore, FormatAnalyzersSourceGenerators, FormatAnalyzersLanguageLocalization, 
-    FormatAnalyzersRegionLocalization, FormatAnalyzersCore, FormatAnalyzersMaui, 
+Task FormatAnalyzers
+    Restore, FormatAnalyzersSourceGenerators, FormatAnalyzersLanguageLocalization,
+    FormatAnalyzersRegionLocalization, FormatAnalyzersCore, FormatAnalyzersMaui,
     FormatAnalyzersSolution, CleanupCode
 
 # Synopsis: Format Style Source Generators
@@ -319,9 +319,9 @@ Task FormatStyleSolution Restore, BuildSourceGenerators, {
 }
 
 # Synopsis: Format Style
-Task FormatStyle 
-    Restore, FormatStyleSourceGenerators, FormatStyleLanguageLocalization, 
-    FormatStyleRegionLocalization, FormatStyleCore, FormatStyleMaui, 
+Task FormatStyle
+    Restore, FormatStyleSourceGenerators, FormatStyleLanguageLocalization,
+    FormatStyleRegionLocalization, FormatStyleCore, FormatStyleMaui,
     FormatStyleSolution, CleanupCode
 
 # Synopsis: Format PowerShell Files
@@ -339,8 +339,8 @@ Task FormatPowerShellFiles RestorePowerShellModules, {
 }
 
 # Synopsis: Format
-Task Format 
-    Restore, FormatPowerShellFiles, FormatXmlFiles, FormatJsonFiles, 
+Task Format
+    Restore, FormatPowerShellFiles, FormatXmlFiles, FormatJsonFiles,
     FormatWhitespace, FormatStyle, FormatAnalyzers, CleanupCode
 
 # Synopsis: Estimate Next Version
