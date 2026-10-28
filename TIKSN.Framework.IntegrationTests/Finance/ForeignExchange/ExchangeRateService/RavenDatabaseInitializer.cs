@@ -23,10 +23,10 @@ public class RavenDatabaseInitializer : IDatabaseInitializer
     {
         var store =
             new DocumentStore
-            {
-                Urls = [.. this.options.Value.Urls,],
-                Database = this.options.Value.Database,
-            }
+                {
+                    Urls = [.. this.options.Value.Urls,],
+                    Database = this.options.Value.Database,
+                }
                 .Initialize();
 
         _ = store.Operations.ForDatabase(this.options.Value.Database);

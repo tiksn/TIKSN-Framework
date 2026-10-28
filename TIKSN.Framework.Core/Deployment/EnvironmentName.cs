@@ -147,12 +147,12 @@ public sealed class EnvironmentName : ISpanFormattable, ISpanParsable<Environmen
 
         static Seq<string> GetProperCaseSegments(
             Seq<string> segments, string? format, CultureInfo culture) => format switch
-            {
-                "U" or "u" => segments.Map(culture.TextInfo.ToUpper),
-                "L" or "l" => segments.Map(culture.TextInfo.ToLower),
-                "T" or "t" => segments.Map(x => culture.TextInfo.ToTitleCase(culture.TextInfo.ToLower(x))),
-                _ => segments,
-            };
+        {
+            "U" or "u" => segments.Map(culture.TextInfo.ToUpper),
+            "L" or "l" => segments.Map(culture.TextInfo.ToLower),
+            "T" or "t" => segments.Map(x => culture.TextInfo.ToTitleCase(culture.TextInfo.ToLower(x))),
+            _ => segments,
+        };
     }
 
     public bool TryFormat(
