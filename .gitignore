@@ -1,5 +1,7 @@
-# Created by https://www.toptal.com/developers/gitignore/api/visualstudio,visualstudiocode,fsharp,powershell,macos,intellij+all
-# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudio,visualstudiocode,fsharp,powershell,macos,intellij+all
+# Created by https://www.toptal.com/developers/gitignore/api/
+#   visualstudio,visualstudiocode,fsharp,powershell,macos,intellij+all
+# Edit at https://www.toptal.com/developers/gitignore?templates=
+#   visualstudio,visualstudiocode,fsharp,powershell,macos,intellij+all
 
 ### fsharp ###
 lib/debug
@@ -553,6 +555,7 @@ FodyWeavers.xsd
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
 
-# End of https://www.toptal.com/developers/gitignore/api/visualstudio,visualstudiocode,fsharp,powershell,macos,intellij+all
+# End of https://www.toptal.com/developers/gitignore/api/
+#   visualstudio,visualstudiocode,fsharp,powershell,macos,intellij+all
 
 .trash

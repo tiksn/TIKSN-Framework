@@ -16,7 +16,8 @@
 #requires -Version 7.4
 #requires -PSEdition Core
 
-[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Parameter is used actually.')]
+[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+    'PSReviewUnusedParameter', '', Justification = 'Parameter is used actually.')]
 param(
     # Build Version
     [Parameter()]
@@ -271,7 +272,10 @@ Task FormatAnalyzersSolution Restore, BuildSourceGenerators, {
 }
 
 # Synopsis: Format Analyzers
-Task FormatAnalyzers Restore, FormatAnalyzersSourceGenerators, FormatAnalyzersLanguageLocalization, FormatAnalyzersRegionLocalization, FormatAnalyzersCore, FormatAnalyzersMaui, FormatAnalyzersSolution, CleanupCode
+Task FormatAnalyzers 
+    Restore, FormatAnalyzersSourceGenerators, FormatAnalyzersLanguageLocalization, 
+    FormatAnalyzersRegionLocalization, FormatAnalyzersCore, FormatAnalyzersMaui, 
+    FormatAnalyzersSolution, CleanupCode
 
 # Synopsis: Format Style Source Generators
 Task FormatStyleSourceGenerators Restore, {
@@ -315,7 +319,10 @@ Task FormatStyleSolution Restore, BuildSourceGenerators, {
 }
 
 # Synopsis: Format Style
-Task FormatStyle Restore, FormatStyleSourceGenerators, FormatStyleLanguageLocalization, FormatStyleRegionLocalization, FormatStyleCore, FormatStyleMaui, FormatStyleSolution, CleanupCode
+Task FormatStyle 
+    Restore, FormatStyleSourceGenerators, FormatStyleLanguageLocalization, 
+    FormatStyleRegionLocalization, FormatStyleCore, FormatStyleMaui, 
+    FormatStyleSolution, CleanupCode
 
 # Synopsis: Format PowerShell Files
 Task FormatPowerShellFiles RestorePowerShellModules, {
@@ -332,7 +339,9 @@ Task FormatPowerShellFiles RestorePowerShellModules, {
 }
 
 # Synopsis: Format
-Task Format Restore, FormatPowerShellFiles, FormatXmlFiles, FormatJsonFiles, FormatWhitespace, FormatStyle, FormatAnalyzers, CleanupCode
+Task Format 
+    Restore, FormatPowerShellFiles, FormatXmlFiles, FormatJsonFiles, 
+    FormatWhitespace, FormatStyle, FormatAnalyzers, CleanupCode
 
 # Synopsis: Estimate Next Version
 Task EstimateVersion Restore, {
@@ -345,30 +354,42 @@ Task EstimateVersion Restore, {
         [System.Management.Automation.SemanticVersion]$headTagVersion = git tag --points-at HEAD
 
         if ($null -eq $headTagVersion) {
-            $foundPackages = Find-Package -Name $state.PackageId -AllVersions -AllowPrereleaseVersions -ProviderName NuGet -Source nuget.org
+            $foundPackages = Find-Package -Name $state.PackageId -AllVersions `
+                -AllowPrereleaseVersions -ProviderName NuGet -Source nuget.org
 
             $foundPackages = $foundPackages | Where-Object { $_.Name -eq $state.PackageId }
 
             $value = [System.Management.Automation.SemanticVersion]::New(0)
             $foundPackageVersions = $foundPackages | Select-Object -ExpandProperty Version
-            $foundPackageVersions = $foundPackageVersions | Where-Object { [System.Management.Automation.SemanticVersion]::TryParse($_, [ref][System.Management.Automation.SemanticVersion]$value) }
-            $foundPackageVersions = $foundPackageVersions | ForEach-Object { [System.Management.Automation.SemanticVersion]$_ }
+            $foundPackageVersions = $foundPackageVersions | Where-Object {
+                $semVerType = [System.Management.Automation.SemanticVersion]
+                $semVerType::TryParse($_, [ref][System.Management.Automation.SemanticVersion]$value)
+            }
+            $foundPackageVersions = $foundPackageVersions |
+                ForEach-Object { [System.Management.Automation.SemanticVersion]$_ }
             $foundPackageVersions = $foundPackageVersions | Sort-Object -Descending
             $latestPackageVersion = $foundPackageVersions | Select-Object -First 1
 
             if ($null -eq $latestPackageVersion.PreReleaseLabel) {
                 $nextPreReleaseLabel = 'alpha.1'
 
-                $state.NextVersion = [System.Management.Automation.SemanticVersion]::New($latestPackageVersion.Major, $latestPackageVersion.Minor, $latestPackageVersion.Patch + 1, $nextPreReleaseLabel, $currentCommit)
+                $state.NextVersion = [System.Management.Automation.SemanticVersion]::New(
+                    $latestPackageVersion.Major, $latestPackageVersion.Minor,
+                    $latestPackageVersion.Patch + 1, $nextPreReleaseLabel, $currentCommit)
             }
             else {
-                $nextPreReleaseLabel = $latestPackageVersion.PreReleaseLabel.Split('.')[0] + '.' + (([int]$latestPackageVersion.PreReleaseLabel.Split('.')[1]) + 1)
+                $nextPreReleaseLabel = $latestPackageVersion.PreReleaseLabel.Split('.')[0] + '.' +
+                    (([int]$latestPackageVersion.PreReleaseLabel.Split('.')[1]) + 1)
 
-                $state.NextVersion = [System.Management.Automation.SemanticVersion]::New($latestPackageVersion.Major, $latestPackageVersion.Minor, $latestPackageVersion.Patch, $nextPreReleaseLabel, $currentCommit)
+                $state.NextVersion = [System.Management.Automation.SemanticVersion]::New(
+                    $latestPackageVersion.Major, $latestPackageVersion.Minor,
+                    $latestPackageVersion.Patch, $nextPreReleaseLabel, $currentCommit)
             }
         }
         else {
-            $state.NextVersion = [System.Management.Automation.SemanticVersion]::New($headTagVersion.Major, $headTagVersion.Minor, $headTagVersion.Patch, $headTagVersion.PreReleaseLabel, $currentCommit)
+            $state.NextVersion = [System.Management.Automation.SemanticVersion]::New(
+                $headTagVersion.Major, $headTagVersion.Minor,
+                $headTagVersion.Patch, $headTagVersion.PreReleaseLabel, $currentCommit)
         }
     }
 
@@ -380,7 +401,9 @@ Task EstimateVersion Restore, {
 # Synopsis: Validate Next Version
 Task ValidateVersion EstimateVersion, {
     $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
-    $nextVersion = [System.Management.Automation.SemanticVersion]::New($state.NextVersion.Major, $state.NextVersion.Minor, $state.NextVersion.Patch, $state.NextVersion.PreReleaseLabel)
+    $nextVersion = [System.Management.Automation.SemanticVersion]::New(
+        $state.NextVersion.Major, $state.NextVersion.Minor,
+        $state.NextVersion.Patch, $state.NextVersion.PreReleaseLabel)
 
     $gitTags = git tag
     $gitTagVersions = $gitTags | ForEach-Object { [System.Management.Automation.SemanticVersion]::Parse($_) }
@@ -388,7 +411,9 @@ Task ValidateVersion EstimateVersion, {
     $latestTagVersion = $gitTagVersions | Select-Object -First 1
 
     if ($nextVersion -lt $latestTagVersion) {
-        throw "Next Release version '$nextVersion' should be greater than or equal to latest tag version '$latestTagVersion'"
+        $msg = "Next Release version '$nextVersion' should be greater than " +
+            "or equal to latest tag version '$latestTagVersion'"
+        throw $msg
     }
 }
 
@@ -399,7 +424,10 @@ Task BuildLanguageLocalization EstimateVersion, {
     $project = Resolve-Path -Path $BuildParameters.Projects.LanguageLocalization
     $nextVersion = $state.NextVersion
 
-    Exec { dotnet build $project /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
+    Exec {
+        dotnet build $project /v:m -warnaserror /p:Configuration=Release `
+            /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder /p:TreatWarningsAsErrors=true
+    }
 }
 
 # Synopsis: Build Region Localization
@@ -409,7 +437,10 @@ Task BuildRegionLocalization EstimateVersion, {
     $project = Resolve-Path -Path $BuildParameters.Projects.RegionLocalization
     $nextVersion = $state.NextVersion
 
-    Exec { dotnet build $project /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
+    Exec {
+        dotnet build $project /v:m -warnaserror /p:Configuration=Release `
+            /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder /p:TreatWarningsAsErrors=true
+    }
 }
 
 # Synopsis: Build Core
@@ -419,7 +450,10 @@ Task BuildCore EstimateVersion, DownloadCurrencyCodes, {
     $project = Resolve-Path -Path $BuildParameters.Projects.Core
     $nextVersion = $state.NextVersion
 
-    Exec { dotnet build $project /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
+    Exec {
+        dotnet build $project /v:m -warnaserror /p:Configuration=Release `
+            /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder /p:TreatWarningsAsErrors=true
+    }
 }
 
 # Synopsis: Build MAUI
@@ -433,23 +467,50 @@ Task BuildMaui EstimateVersion, {
     $project = Resolve-Path -Path $BuildParameters.Projects.Maui
     $nextVersion = $state.NextVersion
 
-    Exec { dotnet build $project /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
+    Exec {
+        dotnet build $project /v:m -warnaserror /p:Configuration=Release `
+            /p:version=$nextVersion /p:OutDir=$anyBuildArtifactsFolder /p:TreatWarningsAsErrors=true
+    }
 
-    Exec { dotnet build $project --framework $BuildParameters.MauiBuildFrameworks.Ios /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyIosBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
-    Exec { dotnet build $project --framework $BuildParameters.MauiBuildFrameworks.MacCatalyst /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyMaccatalystBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
-    Exec { dotnet build $project --framework $BuildParameters.MauiBuildFrameworks.Android /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyAndroidBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
-    Exec { dotnet build $project --framework $BuildParameters.MauiBuildFrameworks.Windows /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyWindowsBuildArtifactsFolder /p:TreatWarningsAsErrors=true }
+    Exec {
+        dotnet build $project --framework $BuildParameters.MauiBuildFrameworks.Ios /v:m -warnaserror `
+            /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyIosBuildArtifactsFolder `
+            /p:TreatWarningsAsErrors=true
+    }
+    Exec {
+        dotnet build $project --framework $BuildParameters.MauiBuildFrameworks.MacCatalyst /v:m -warnaserror `
+            /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyMaccatalystBuildArtifactsFolder `
+            /p:TreatWarningsAsErrors=true
+    }
+    Exec {
+        dotnet build $project --framework $BuildParameters.MauiBuildFrameworks.Android /v:m -warnaserror `
+            /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyAndroidBuildArtifactsFolder `
+            /p:TreatWarningsAsErrors=true
+    }
+    Exec {
+        dotnet build $project --framework $BuildParameters.MauiBuildFrameworks.Windows /v:m -warnaserror `
+            /p:Configuration=Release /p:version=$nextVersion /p:OutDir=$anyWindowsBuildArtifactsFolder `
+            /p:TreatWarningsAsErrors=true
+    }
 }
 
 # Synopsis: Build
-Task Build Format, DownloadCurrencyCodes, CheckUpdates, BuildLanguageLocalization, BuildRegionLocalization, BuildCore, BuildMaui, {
+Task Build `
+    Format, DownloadCurrencyCodes, CheckUpdates, `
+    BuildLanguageLocalization, BuildRegionLocalization, BuildCore, BuildMaui, {
     $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
     $solution = Resolve-Path -Path $BuildParameters.Solution
     $examplesSolution = Resolve-Path -Path $BuildParameters.ExamplesSolution
     $nextVersion = $state.NextVersion
 
-    Exec { dotnet build $solution /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:TreatWarningsAsErrors=true }
-    Exec { dotnet build $examplesSolution /v:m -warnaserror /p:Configuration=Release /p:version=$nextVersion /p:TreatWarningsAsErrors=true }
+    Exec {
+        dotnet build $solution /v:m -warnaserror `
+            /p:Configuration=Release /p:version=$nextVersion /p:TreatWarningsAsErrors=true
+    }
+    Exec {
+        dotnet build $examplesSolution /v:m -warnaserror `
+            /p:Configuration=Release /p:version=$nextVersion /p:TreatWarningsAsErrors=true
+    }
 }
 
 # Synopsis: Test
@@ -494,7 +555,12 @@ Task Pack Build, Test, {
     }
 
     $projectMap = @(
-        @{PackageGroups = @($packages.Core, $packages.Android, $packages.IOS, $packages.MacCatalyst, $packages.Windows); ProjectFile = $BuildParameters.Projects.Core }
+        @{
+            PackageGroups = @(
+                $packages.Core, $packages.Android, $packages.IOS,
+                $packages.MacCatalyst, $packages.Windows)
+            ProjectFile   = $BuildParameters.Projects.Core
+        }
         @{PackageGroups = @($packages.Android); ProjectFile = $BuildParameters.Projects.Maui }
         @{PackageGroups = @($packages.IOS); ProjectFile = $BuildParameters.Projects.Maui }
         @{PackageGroups = @($packages.MacCatalyst); ProjectFile = $BuildParameters.Projects.Maui }
@@ -506,7 +572,9 @@ Task Pack Build, Test, {
 
         foreach ($packageReference in $project.SelectNodes('//PackageReference')) {
             $isPrivate = $false
-            if ($packageReference.HasAttribute('PrivateAssets') -and $packageReference.GetAttribute('PrivateAssets') -match '(?i)all') {
+            $isPrivateAll = $packageReference.HasAttribute('PrivateAssets') -and
+                ($packageReference.GetAttribute('PrivateAssets') -match '(?i)all')
+            if ($isPrivateAll) {
                 $isPrivate = $true
             }
             $privateAssetsNode = $packageReference.SelectSingleNode('*[local-name()=''PrivateAssets'']')
@@ -595,7 +663,11 @@ Task Pack Build, Test, {
 
     Copy-Item -Path 'icon.png' -Destination $buildArtifactsFolder
     Copy-Item -Path 'README.md' -Destination $buildArtifactsFolder
-    Exec { nuget pack $temporaryNuspec -Version $state.NextVersion -BasePath $buildArtifactsFolder -OutputDirectory $trashFolder -OutputFileNamesWithoutVersion -Verbosity detailed }
+    Exec {
+        nuget pack $temporaryNuspec -Version $state.NextVersion `
+            -BasePath $buildArtifactsFolder -OutputDirectory $trashFolder `
+            -OutputFileNamesWithoutVersion -Verbosity detailed
+    }
 }
 
 # Synopsis: Publish NuGet package

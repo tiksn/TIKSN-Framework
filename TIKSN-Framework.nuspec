@@ -22,7 +22,8 @@
       conversion, central-bank foreign exchange providers, globalization, language and region
       localization resources, JSON, XML, MessagePack, custom binary serialization, Protocol
       Buffers-backed licensing schema support, license generation and signature services, shell
-      PowerShell, and AI-assisted shell-command discovery using Microsoft.Extensions.AI, telemetry abstractions, correlation IDs, settings,
+      PowerShell, and AI-assisted shell-command discovery using Microsoft.Extensions.AI,
+      telemetry abstractions, correlation IDs, settings,
       known folders, network connectivity, antimalware abstractions, versioning, numbering, time
       period types, REST helpers, sitemap models, and platform-specific MAUI registrations.
     </description>

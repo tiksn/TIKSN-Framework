@@ -117,7 +117,7 @@ namespace TIKSN.Tests.Licensing {
                 return ((byte[])(obj));
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
@@ -127,7 +127,7 @@ namespace TIKSN.Tests.Licensing {
                 return ((byte[])(obj));
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to qVTNVntZpdWa5lE8P2f7.
         /// </summary>
@@ -136,7 +136,7 @@ namespace TIKSN.Tests.Licensing {
                 return ResourceManager.GetString("LicensingTest3PrivatePassword", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
