@@ -105,10 +105,12 @@ public class CentralBankOfArmenia : ICentralBankOfArmenia
 
         lock (this.oneWayRates)
         {
-            foreach (var item in xdoc
+            var items = xdoc
                 ?.Element("rss")
                 ?.Element("channel")
-                ?.Elements("item") ?? [])
+                ?.Elements("item") ?? [];
+
+            foreach (var item in items)
             {
                 var title = item.Element("title");
                 var pubDate = item.Element("pubDate");

@@ -259,7 +259,8 @@ public class SwissNationalBank : ISwissNationalBank
                 return decimal.One / counterRate;
             }
         }
-        else if (counterCurrency == SwissFranc &&
+        else if (
+            counterCurrency == SwissFranc &&
             filtered.TryGetValue(baseCurrency, out var rate))
         {
             return rate;

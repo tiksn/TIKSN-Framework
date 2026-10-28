@@ -25,8 +25,8 @@ public class BankOfCanadaTests
     [Fact]
     public async Task Calculate001()
     {
-        foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(),
-            cancellationToken: TestContext.Current.CancellationToken))
+        var cancellationToken = TestContext.Current.CancellationToken;
+        foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), cancellationToken))
         {
             var before = new Money(pair.BaseCurrency, amount: 10m);
             var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(),

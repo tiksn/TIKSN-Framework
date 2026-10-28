@@ -34,12 +34,14 @@ public abstract class CompositeAssemblyStringLocalizer : CompositeStringLocalize
     private List<IStringLocalizer> CreateLocalizers()
     {
         var result = new List<IStringLocalizer>();
-        foreach (var (assembly, manifestResourceName) in this.GetAssemblies()
+        var resources = this.GetAssemblies()
             .Where(assembly => assembly is not null)
             .SelectMany(assembly => assembly.GetManifestResourceNames()
                 .Where(manifestResourceName =>
                     manifestResourceName.EndsWith(".resources", StringComparison.OrdinalIgnoreCase))
-                .Select(manifestResourceName => (assembly, manifestResourceName))))
+                .Select(manifestResourceName => (assembly, manifestResourceName)));
+
+        foreach (var (assembly, manifestResourceName) in resources)
         {
             var resourceName = manifestResourceName[..^10];
             var resourceManager = new ResourceManager(resourceName, assembly);

@@ -178,9 +178,11 @@ public class NationalBankOfUkraine : INationalBankOfUkraine
         var xdocument = XDocument.Parse(response);
         var result = new HashSet<ExchangeRate>();
 
-        foreach (var currencyElement in xdocument
+        var currencyElements = xdocument
             ?.Element("exchange")
-            ?.Elements("currency") ?? [])
+            ?.Elements("currency") ?? [];
+
+        foreach (var currencyElement in currencyElements)
         {
             var currencyCode = currencyElement?.Element("cc")?.Value;
 

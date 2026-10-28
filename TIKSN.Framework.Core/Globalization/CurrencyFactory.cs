@@ -57,8 +57,9 @@ public class CurrencyFactory : MemoryCacheDecoratorBase<CurrencyInfo>, ICurrency
         {
             region = this.regionFactory.Create(regionByName);
         }
-        else if (this.regionalCurrencyRedirectionOptions.Value.RegionalCurrencyRedirections.TryGetValue(
-            region.TwoLetterISORegionName, out var regionByISOName))
+        else if (
+            this.regionalCurrencyRedirectionOptions.Value.RegionalCurrencyRedirections.TryGetValue(
+                region.TwoLetterISORegionName, out var regionByISOName))
         {
             region = this.regionFactory.Create(regionByISOName);
         }

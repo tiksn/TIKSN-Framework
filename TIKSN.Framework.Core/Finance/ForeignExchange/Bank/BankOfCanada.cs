@@ -203,8 +203,9 @@ public class BankOfCanada : IBankOfCanada
         {
             var d = observation.GetProperty("d");
             var asOn = DateOnly.ParseExact(d.GetString() ?? string.Empty, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-            foreach (var fxElement in observation.EnumerateObject()
-                .Where(x => x.Name.StartsWith("FX", StringComparison.OrdinalIgnoreCase)))
+            var fxElements = observation.EnumerateObject()
+                .Where(x => x.Name.StartsWith("FX", StringComparison.OrdinalIgnoreCase));
+            foreach (var fxElement in fxElements)
             {
                 Debug.Assert(fxElement.Name.EndsWith("CAD", StringComparison.Ordinal));
                 var targetCurrencyCode = fxElement.Name.Substring(startIndex: 2, length: 3);
@@ -270,7 +271,8 @@ public class BankOfCanada : IBankOfCanada
                 return true;
             }
         }
-        else if (pair.CounterCurrency == CanadianDollar &&
+        else if (
+            pair.CounterCurrency == CanadianDollar &&
             this.GetRatesByDate(asOn).Any(r => r.Key == pair.BaseCurrency))
         {
             return false;

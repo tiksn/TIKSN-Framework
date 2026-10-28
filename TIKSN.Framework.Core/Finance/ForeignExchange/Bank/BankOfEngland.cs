@@ -297,9 +297,11 @@ public class BankOfEngland : IBankOfEngland
 
         List<ExchangeRate> rates = [];
 
-        foreach (var item in xdoc
+        var items = xdoc
             .Descendants()
-            .Where(x => x.Name.LocalName == "Cube" && x.Attribute("TIME") is not null))
+            .Where(x => x.Name.LocalName == "Cube" && x.Attribute("TIME") is not null);
+
+        foreach (var item in items)
         {
             var time = item.Attribute("TIME");
             if (time is not null)

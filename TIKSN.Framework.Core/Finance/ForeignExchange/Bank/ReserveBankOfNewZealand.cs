@@ -120,7 +120,8 @@ public class ReserveBankOfNewZealand : IReserveBankOfNewZealand
                 return rate;
             }
         }
-        else if (pair.CounterCurrency == NewZealandDollar
+        else if (
+            pair.CounterCurrency == NewZealandDollar
             && this.GetRatesByDate(asOn).TryGetValue(pair.BaseCurrency, out var counterRate))
         {
             return decimal.One / counterRate;

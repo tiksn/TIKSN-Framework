@@ -33,8 +33,8 @@ public class MongoUnitOfWorkTests
         var mongoUnitOfWorkFactory =
             this.serviceProviderFixture.GetServiceProvider("MongoDB").GetRequiredService<IUnitOfWorkFactory>();
 
-        await using (var mongoUnitOfWork =
-            await mongoUnitOfWorkFactory.CreateAsync(TestContext.Current.CancellationToken))
+        var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(TestContext.Current.CancellationToken);
+        await using (mongoUnitOfWork)
         {
             var testRepository = mongoUnitOfWork.Services.GetRequiredService<ITestMongoRepository>();
 
@@ -48,8 +48,8 @@ public class MongoUnitOfWorkTests
             .ToArray();
         await Task.WhenAll(tasks);
 
-        await using (var mongoUnitOfWork =
-            await mongoUnitOfWorkFactory.CreateAsync(TestContext.Current.CancellationToken))
+        mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(TestContext.Current.CancellationToken);
+        await using (mongoUnitOfWork)
         {
             var testRepository = mongoUnitOfWork.Services.GetRequiredService<ITestMongoRepository>();
 
@@ -98,8 +98,8 @@ public class MongoUnitOfWorkTests
         var mongoUnitOfWorkFactory =
             this.serviceProviderFixture.GetServiceProvider("MongoDB").GetRequiredService<IUnitOfWorkFactory>();
 
-        await using (var mongoUnitOfWork =
-            await mongoUnitOfWorkFactory.CreateAsync(TestContext.Current.CancellationToken))
+        var mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(TestContext.Current.CancellationToken);
+        await using (mongoUnitOfWork)
         {
             var testRepository = mongoUnitOfWork.Services.GetRequiredService<ITestMongoRepository>();
 
@@ -108,8 +108,8 @@ public class MongoUnitOfWorkTests
             await mongoUnitOfWork.CompleteAsync(TestContext.Current.CancellationToken);
         }
 
-        await using (var mongoUnitOfWork =
-            await mongoUnitOfWorkFactory.CreateAsync(TestContext.Current.CancellationToken))
+        mongoUnitOfWork = await mongoUnitOfWorkFactory.CreateAsync(TestContext.Current.CancellationToken);
+        await using (mongoUnitOfWork)
         {
             var testRepository = mongoUnitOfWork.Services.GetRequiredService<ITestMongoRepository>();
 
