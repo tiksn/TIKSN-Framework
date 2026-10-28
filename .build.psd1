@@ -3,13 +3,9 @@
     Solution                   = 'TIKSN Framework.slnx'
     ExamplesSolution           = '.\examples\Examples.slnx'
 
-    CurrencyCodesUrl1          = (
-        'https://www.six-group.com/dam/download/financial-information/' +
-        'data-center/iso-currrency/lists/list-one.xml')
+    CurrencyCodesUrl1          = 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml'
     CurrencyCodesOutFile1      = 'TIKSN.Framework.Core/Finance/Resources/TableA1.xml'
-    CurrencyCodesUrl2          = (
-        'https://www.six-group.com/dam/download/financial-information/' +
-        'data-center/iso-currrency/lists/list-three.xml')
+    CurrencyCodesUrl2          = 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-three.xml'
     CurrencyCodesOutFile2      = 'TIKSN.Framework.Core/Finance/Resources/TableA3.xml'
 
     CleanupCodeProfile         = 'TIKSN Cleanup'
