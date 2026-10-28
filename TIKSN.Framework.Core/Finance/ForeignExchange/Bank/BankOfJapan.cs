@@ -27,7 +27,8 @@ public class BankOfJapan : IBankOfJapan
 
 #pragma warning disable S1075
     private static readonly CompositeFormat RequestUrlCompositeString = CompositeFormat.Parse(
-        "https://www.stat-search.boj.or.jp/api/v1/getDataCode?format=json&lang=en&db=FM08&startDate={0}&endDate={0}&code={1}");
+        "https://www.stat-search.boj.or.jp/api/v1/getDataCode?format=json&lang=en&db=FM08&startDate={0}&" +
+        "endDate={0}&code={1}");
 #pragma warning restore S1075
 
     private static readonly DateTimeZone TokyoTimeZone = DateTimeZoneProviders.Tzdb["Asia/Tokyo"];

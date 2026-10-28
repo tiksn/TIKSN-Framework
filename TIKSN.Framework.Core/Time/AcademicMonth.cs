@@ -108,7 +108,8 @@ public readonly struct AcademicMonth : IMonth<AcademicMonth>
 
     public string ToString(string? format, IFormatProvider? formatProvider)
         =>
-            $"{this.academicYear.ToString(format, formatProvider)}-{this.monthOfAcademicYear.ToString("00", formatProvider)}";
+            $"{this.academicYear.ToString(format, formatProvider)}-" +
+            $"{this.monthOfAcademicYear.ToString("00", formatProvider)}";
 
     public bool TryFormat(
         Span<char> destination,

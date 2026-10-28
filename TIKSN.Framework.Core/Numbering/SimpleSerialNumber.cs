@@ -167,7 +167,8 @@ public sealed class SimpleSerialNumber<TSerial, TNumber> : ISerialNumber<SimpleS
     /// <summary>
     /// Formats the serial number using the specified format.
     /// </summary>
-    /// <param name="format">Format specifier: null, empty, or "G" for "Serial-Number" (with hyphen); "N" for "SerialNumber" (no hyphen).</param>
+    /// <param name="format">Format specifier: null, empty, or "G" for "Serial-Number" (with hyphen);
+    /// "N" for "SerialNumber" (no hyphen).</param>
     /// <param name="formatProvider">Format provider.</param>
     /// <returns>Formatted serial number string.</returns>
     public string ToString(string? format, IFormatProvider? formatProvider)

@@ -253,7 +253,8 @@ public class BankOfCanada : IBankOfCanada
                 .First();
 
             throw new KeyNotFoundException(
-                $"Exchange rates for date '{date:yyyy-MM-dd} ({date.DayOfWeek})' not found. Closest available date: '{closest:yyyy-MM-dd} ({closest.DayOfWeek})'.");
+                $"Exchange rates for date '{date:yyyy-MM-dd} ({date.DayOfWeek})' not found. " +
+                $"Closest available date: '{closest:yyyy-MM-dd} ({closest.DayOfWeek})'.");
         }
 
         throw new KeyNotFoundException(

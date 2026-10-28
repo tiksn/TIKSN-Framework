@@ -134,7 +134,8 @@ public readonly struct AcademicDay : IDay<AcademicDay>
 
     public string ToString(string? format, IFormatProvider? formatProvider)
         =>
-            $"{this.academicYear.ToString(format, formatProvider)}-{this.dayOfAcademicYear.ToString("000", formatProvider)}";
+            $"{this.academicYear.ToString(format, formatProvider)}-" +
+            $"{this.dayOfAcademicYear.ToString("000", formatProvider)}";
 
     public bool TryFormat(
         Span<char> destination,

@@ -25,7 +25,11 @@ public class ConfigurationValidationExceptionTests
         ex.Errors.Count.ShouldBe(2);
 
         ex.Message.ShouldBe(
-            "Test error [Options Type: 'TIKSN.Tests.Configuration.ConfigurationValidationExceptionTests+TestOptions', Key: 'Min', Value: '10'] [Options Type: 'TIKSN.Tests.Configuration.ConfigurationValidationExceptionTests+TestOptions', Key: 'Max', Value: '5']");
+            "Test error " +
+            "[Options Type: 'TIKSN.Tests.Configuration.ConfigurationValidationExceptionTests+TestOptions', " +
+            "Key: 'Min', Value: '10'] " +
+            "[Options Type: 'TIKSN.Tests.Configuration.ConfigurationValidationExceptionTests+TestOptions', " +
+            "Key: 'Max', Value: '5']");
     }
 
     [Fact]
@@ -166,7 +170,9 @@ public class ConfigurationValidationExceptionTests
         _ = error.ConfigurationValue.IfLeft(l => l.ShouldBe(unit));
 
         ex.Message.ShouldBe(
-            "Test error [Options Type: 'TIKSN.Tests.Configuration.ConfigurationValidationExceptionTests+TestOptions', Key: 'Password', Value is *** SENSITIVE ***]");
+            "Test error " +
+            "[Options Type: 'TIKSN.Tests.Configuration.ConfigurationValidationExceptionTests+TestOptions', " +
+            "Key: 'Password', Value is *** SENSITIVE ***]");
     }
 
     [Fact]
@@ -188,7 +194,9 @@ public class ConfigurationValidationExceptionTests
         _ = error.ConfigurationValue.IfRight(r => r.IfSome(v => v.ShouldBe(42)));
 
         ex.Message.ShouldBe(
-            "Test error [Options Type: 'TIKSN.Tests.Configuration.ConfigurationValidationExceptionTests+TestOptions', Key: 'Size', Value: '42']");
+            "Test error " +
+            "[Options Type: 'TIKSN.Tests.Configuration.ConfigurationValidationExceptionTests+TestOptions', " +
+            "Key: 'Size', Value: '42']");
     }
 
     [Fact]
@@ -208,7 +216,9 @@ public class ConfigurationValidationExceptionTests
         _ = error.ConfigurationValue.IfRight(r => r.IsNone.ShouldBeTrue());
 
         ex.Message.ShouldBe(
-            "Test error [Options Type: 'TIKSN.Tests.Configuration.ConfigurationValidationExceptionTests+TestOptions', Key: 'Size', Value is null]");
+            "Test error " +
+            "[Options Type: 'TIKSN.Tests.Configuration.ConfigurationValidationExceptionTests+TestOptions', " +
+            "Key: 'Size', Value is null]");
     }
 
     [Fact]
@@ -228,7 +238,9 @@ public class ConfigurationValidationExceptionTests
         _ = error.ConfigurationValue.IfRight(r => r.IfSome(v => v.ShouldBe("10")));
 
         ex.Message.ShouldBe(
-            "Test error [Options Type: 'TIKSN.Tests.Configuration.ConfigurationValidationExceptionTests+TestOptions', Key: 'Size', Value: '10']");
+            "Test error " +
+            "[Options Type: 'TIKSN.Tests.Configuration.ConfigurationValidationExceptionTests+TestOptions', " +
+            "Key: 'Size', Value: '10']");
     }
 
     private sealed class TestOptions

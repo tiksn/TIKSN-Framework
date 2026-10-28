@@ -79,6 +79,7 @@ public sealed class FrameworkCoreServiceProviderFixture : IDisposable
         httpClient.DefaultRequestHeaders.Add("Sec-Fetch-User", "?1");
         httpClient.DefaultRequestHeaders.Add("Upgrade-Insecure-Requests", "1");
         httpClient.DefaultRequestHeaders.Referrer = new Uri(
-            "https://www.rbnz.govt.nz/statistics/series/exchange-and-interest-rates/exchange-rates-and-the-trade-weighted-index");
+            "https://www.rbnz.govt.nz/statistics/series/exchange-and-interest-rates/" +
+            "exchange-rates-and-the-trade-weighted-index");
     }
 }

@@ -174,7 +174,8 @@ public sealed class NumberFirstSerialNumber<TNumber, TSerial> :
     /// <summary>
     /// Formats the serial number using the specified format.
     /// </summary>
-    /// <param name="format">Format specifier: null, empty, "G", or "N" for "NumberSerial" (no hyphen); "H" for "Number-Serial" (with hyphen).</param>
+    /// <param name="format">Format specifier: null, empty, "G", or "N" for "NumberSerial" (no hyphen);
+    /// "H" for "Number-Serial" (with hyphen).</param>
     /// <param name="formatProvider">Format provider.</param>
     /// <returns>Formatted serial number string.</returns>
     public string ToString(string? format, IFormatProvider? formatProvider)

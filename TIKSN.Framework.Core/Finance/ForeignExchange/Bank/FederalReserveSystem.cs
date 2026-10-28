@@ -9,7 +9,9 @@ public class FederalReserveSystem : IFederalReserveSystem
 {
     private static readonly CompositeFormat DataUrlFormat =
         CompositeFormat.Parse(
-            "https://www.federalreserve.gov/datadownload/Output.aspx?rel=H10&series=60f32914ab61dfab590e0e470153e3ae&lastObs=&from={0}&to={1}&filetype=sdmx&label=include&layout=seriescolumn");
+            "https://www.federalreserve.gov/datadownload/Output.aspx?rel=H10&" +
+            "series=60f32914ab61dfab590e0e470153e3ae&lastObs=&from={0}&to={1}&filetype=sdmx&label=include&" +
+            "layout=seriescolumn");
 
     private static readonly CultureInfo EnglishUnitedStates = new("en-US");
     private static readonly Dictionary<Uri, IReadOnlyCollection<ExchangeRate>> ExchangeRatesCache = [];

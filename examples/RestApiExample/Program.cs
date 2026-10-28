@@ -26,7 +26,8 @@ services.Configure<RestRepositoryOptions<UserEntity>>(options =>
 });
 
 #pragma warning disable S1075 // URIs should not be hardcoded
-services.AddHttpClient("JsonPlaceholder", client => client.BaseAddress = new Uri("https://jsonplaceholder.typicode.com/"));
+services.AddHttpClient("JsonPlaceholder", client =>
+    client.BaseAddress = new Uri("https://jsonplaceholder.typicode.com/"));
 #pragma warning restore S1075 // URIs should not be hardcoded
 
 // Register dummy token provider (not used since Authentication = None)
@@ -92,7 +93,13 @@ public class UserRepository : RestRepository<UserEntity, int>, IUserRepository
         IRestAuthenticationTokenProvider restAuthenticationTokenProvider,
         IOptions<RestRepositoryOptions<UserEntity>> options,
         ILogger<UserRepository> logger)
-        : base(httpClientFactory, serializerRestFactory, deserializerRestFactory, restAuthenticationTokenProvider, options, logger)
+        : base(
+        httpClientFactory,
+        serializerRestFactory,
+        deserializerRestFactory,
+        restAuthenticationTokenProvider,
+        options,
+        logger)
     {
     }
 }

@@ -108,7 +108,8 @@ public readonly struct FiscalMonth : IMonth<FiscalMonth>
 
     public string ToString(string? format, IFormatProvider? formatProvider)
         =>
-            $"{this.fiscalYear.ToString(format, formatProvider)}-{this.monthOfFiscalYear.ToString("00", formatProvider)}";
+            $"{this.fiscalYear.ToString(format, formatProvider)}-" +
+            $"{this.monthOfFiscalYear.ToString("00", formatProvider)}";
 
     public bool TryFormat(
         Span<char> destination,

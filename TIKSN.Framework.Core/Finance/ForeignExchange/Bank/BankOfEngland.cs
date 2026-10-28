@@ -11,7 +11,8 @@ public class BankOfEngland : IBankOfEngland
 
     private static readonly CompositeFormat UrlFormat =
         CompositeFormat.Parse(
-            "https://www.bankofengland.co.uk/boeapps/database/_iadb-fromshowcolumns.asp?CodeVer=new&xml.x=yes&Datefrom={0}&Dateto={1}&SeriesCodes={2}&VPD=Y&VFD=N");
+            "https://www.bankofengland.co.uk/boeapps/database/_iadb-fromshowcolumns.asp?" +
+            "CodeVer=new&xml.x=yes&Datefrom={0}&Dateto={1}&SeriesCodes={2}&VPD=Y&VFD=N");
 
     private readonly ICurrencyPairFactory currencyPairFactory;
     private readonly HttpClient httpClient;

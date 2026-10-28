@@ -184,7 +184,8 @@ public sealed class
     /// <summary>
     /// Formats the serial number using the specified format.
     /// </summary>
-    /// <param name="format">Format specifier: null, empty, or "G" for "Serial-NumberVariant" (with hyphen); "N" for "SerialNumberVariant" (no hyphen).</param>
+    /// <param name="format">Format specifier: null, empty, or "G" for "Serial-NumberVariant" (with hyphen);
+    /// "N" for "SerialNumberVariant" (no hyphen).</param>
     /// <param name="formatProvider">Format provider.</param>
     /// <returns>Formatted serial number string.</returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
