@@ -180,13 +180,29 @@ Task CleanupCode Restore, BuildSourceGenerators, {
 
 # Synopsis: Format XML Files
 Task FormatXmlFiles Clean, CleanupCode, {
-    Get-ChildItem -Include *.xml, *.config, *.props, *.targets, *.nuspec, *.resx, *.ruleset, *.vsixmanifest, *.vsct, *.csproj, *.fsproj, *.vbproj, *.slnx, *.DotSettings -Recurse -File
+    $xmlIncludes = @(
+        '*.xml', '*.config', '*.props', '*.targets', '*.nuspec',
+        '*.resx', '*.ruleset', '*.vsixmanifest', '*.vsct',
+        '*.csproj', '*.fsproj', '*.vbproj', '*.slnx', '*.DotSettings'
+    )
+    Get-ChildItem -Include $xmlIncludes -Recurse -File
     | Where-Object { -not (git check-ignore $PSItem) }
     | ForEach-Object {
         print White "Formatting XML File: $PSItem"
         $content = Get-Content -Path $PSItem -Raw
         $xml = [xml]$content
-        $xml.Save($PSItem)
+        $xmlSettings = New-Object System.Xml.XmlWriterSettings
+        $xmlSettings.Encoding = [System.Text.UTF8Encoding]::new($false)
+        $xmlSettings.Indent = $true
+        $xmlSettings.IndentChars = "  "
+        $xmlSettings.OmitXmlDeclaration = ($xml.FirstChild.NodeType -ne [System.Xml.XmlNodeType]::XmlDeclaration)
+        $writer = [System.Xml.XmlWriter]::Create((Convert-Path $PSItem), $xmlSettings)
+        try {
+            $xml.Save($writer)
+        }
+        finally {
+            $writer.Dispose()
+        }
     }
 }
 
