@@ -36,16 +36,16 @@ public static class ValidationExtensions
             if (error is ManyErrors manyErrors)
             {
                 foreach (var oneValidationFailure in manyErrors.Errors
-                             .Map(e => CreateValidationFailures(e, Some(errorCodePath)))
-                             .SelectMany(x => x))
+                    .Map(e => CreateValidationFailures(e, Some(errorCodePath)))
+                    .SelectMany(x => x))
                 {
                     yield return oneValidationFailure;
                 }
             }
 
             foreach (var innerValidationFailure in error.Inner
-                         .Map(e => CreateValidationFailures(e, Some(errorCodePath)))
-                         .SelectMany(x => x))
+                .Map(e => CreateValidationFailures(e, Some(errorCodePath)))
+                .SelectMany(x => x))
             {
                 yield return innerValidationFailure;
             }

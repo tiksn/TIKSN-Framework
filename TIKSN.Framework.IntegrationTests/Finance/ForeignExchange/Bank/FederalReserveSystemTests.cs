@@ -60,7 +60,7 @@ public class FederalReserveSystemTests
     public async Task ConvertCurrency001()
     {
         foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(),
-                     cancellationToken: TestContext.Current.CancellationToken))
+            cancellationToken: TestContext.Current.CancellationToken))
         {
             var before = new Money(pair.BaseCurrency, amount: 10m);
             var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency,
@@ -77,7 +77,7 @@ public class FederalReserveSystemTests
         var lastYear = this.timeProvider.GetUtcNow().AddYears(-1);
 
         foreach (var pair in await this.bank.GetCurrencyPairsAsync(lastYear,
-                     cancellationToken: TestContext.Current.CancellationToken))
+            cancellationToken: TestContext.Current.CancellationToken))
         {
             var before = new Money(pair.BaseCurrency, amount: 10m);
             var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, lastYear,
@@ -92,7 +92,7 @@ public class FederalReserveSystemTests
     public async Task ConvertCurrency003()
     {
         foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(),
-                     cancellationToken: TestContext.Current.CancellationToken))
+            cancellationToken: TestContext.Current.CancellationToken))
         {
             var before = new Money(pair.BaseCurrency, amount: 10m);
 
@@ -213,7 +213,7 @@ public class FederalReserveSystemTests
     public async Task GetExchangeRate001()
     {
         foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(),
-                     cancellationToken: TestContext.Current.CancellationToken))
+            cancellationToken: TestContext.Current.CancellationToken))
         {
             var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(),
                 cancellationToken: TestContext.Current.CancellationToken);
@@ -228,7 +228,7 @@ public class FederalReserveSystemTests
         var lastYear = this.timeProvider.GetUtcNow().AddYears(-1);
 
         foreach (var pair in await this.bank.GetCurrencyPairsAsync(lastYear,
-                     cancellationToken: TestContext.Current.CancellationToken))
+            cancellationToken: TestContext.Current.CancellationToken))
         {
             var rate = await this.bank.GetExchangeRateAsync(pair, lastYear,
                 cancellationToken: TestContext.Current.CancellationToken);
@@ -241,7 +241,7 @@ public class FederalReserveSystemTests
     public async Task GetExchangeRate003()
     {
         foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(),
-                     cancellationToken: TestContext.Current.CancellationToken))
+            cancellationToken: TestContext.Current.CancellationToken))
         {
             _ = await new Func<Task>(async () =>
                     await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow().AddMinutes(1d),

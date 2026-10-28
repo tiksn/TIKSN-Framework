@@ -142,7 +142,7 @@ public class CentralBankOfArmeniaTests
         var pairs = new HashSet<CurrencyPair>();
 
         foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(),
-                     cancellationToken: TestContext.Current.CancellationToken))
+            cancellationToken: TestContext.Current.CancellationToken))
         {
             _ = pairs.Add(pair);
         }

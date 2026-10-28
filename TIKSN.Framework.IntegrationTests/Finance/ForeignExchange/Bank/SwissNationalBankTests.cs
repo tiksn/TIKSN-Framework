@@ -28,7 +28,7 @@ public class SwissNationalBankTests
         var atTheMoment = this.timeProvider.GetUtcNow();
 
         foreach (var pair in await this.bank.GetCurrencyPairsAsync(atTheMoment,
-                     cancellationToken: TestContext.Current.CancellationToken))
+            cancellationToken: TestContext.Current.CancellationToken))
         {
             var before = new Money(pair.BaseCurrency, amount: 100m);
 
@@ -49,7 +49,7 @@ public class SwissNationalBankTests
         var atTheMoment = this.timeProvider.GetUtcNow();
 
         foreach (var pair in await this.bank.GetCurrencyPairsAsync(atTheMoment,
-                     cancellationToken: TestContext.Current.CancellationToken))
+            cancellationToken: TestContext.Current.CancellationToken))
         {
             var before = new Money(pair.BaseCurrency, amount: 100m);
             var after = await this.bank.ConvertCurrencyAsync(before, pair.CounterCurrency, atTheMoment,
@@ -66,7 +66,7 @@ public class SwissNationalBankTests
         var moment = this.timeProvider.GetUtcNow().AddMinutes(10d);
 
         foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(),
-                     cancellationToken: TestContext.Current.CancellationToken))
+            cancellationToken: TestContext.Current.CancellationToken))
         {
             var before = new Money(pair.BaseCurrency, amount: 100m);
 
@@ -84,7 +84,7 @@ public class SwissNationalBankTests
         var moment = this.timeProvider.GetUtcNow().AddDays(-10d);
 
         foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(),
-                     cancellationToken: TestContext.Current.CancellationToken))
+            cancellationToken: TestContext.Current.CancellationToken))
         {
             var before = new Money(pair.BaseCurrency, amount: 100m);
 
@@ -183,7 +183,7 @@ public class SwissNationalBankTests
         var atTheMoment = this.timeProvider.GetUtcNow();
 
         foreach (var pair in await this.bank.GetCurrencyPairsAsync(atTheMoment,
-                     cancellationToken: TestContext.Current.CancellationToken))
+            cancellationToken: TestContext.Current.CancellationToken))
         {
             var rate = await this.bank.GetExchangeRateAsync(pair, atTheMoment,
                 cancellationToken: TestContext.Current.CancellationToken);
@@ -198,7 +198,7 @@ public class SwissNationalBankTests
         var moment = this.timeProvider.GetUtcNow().AddMinutes(10d);
 
         foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(),
-                     cancellationToken: TestContext.Current.CancellationToken))
+            cancellationToken: TestContext.Current.CancellationToken))
         {
             _ = await new Func<Task>(async () =>
                     await this.bank.GetExchangeRateAsync(pair, moment,
@@ -230,7 +230,7 @@ public class SwissNationalBankTests
         var moment = this.timeProvider.GetUtcNow().AddDays(-10d);
 
         foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(),
-                     cancellationToken: TestContext.Current.CancellationToken))
+            cancellationToken: TestContext.Current.CancellationToken))
         {
             _ = await new Func<Task>(async () =>
                     await this.bank.GetExchangeRateAsync(pair, moment,
