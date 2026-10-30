@@ -50,7 +50,7 @@
     <PackageVersion Include="Microsoft.PowerShell.SDK" Version="7.6.7" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.402" />
     <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="18.12.1" />
-    <PackageVersion Include="MongoDB.Driver" Version="3.12.0" />
+    <PackageVersion Include="MongoDB.Driver" Version="3.13.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="NodaTime" Version="3.3.5" />
     <PackageVersion Include="NSubstitute" Version="6.2.0" />
