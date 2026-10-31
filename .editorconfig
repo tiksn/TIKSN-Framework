@@ -54,6 +54,13 @@ max_line_length = unset
 generated_code = true
 max_line_length = unset
 
+[*{TableA1,TableA3}.xml]
+generated_code = true
+indent_style = unset
+indent_size = unset
+trim_trailing_whitespace = unset
+max_line_length = unset
+
 # Protocol Buffers
 [*.proto]
 indent_size = 2
