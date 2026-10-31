@@ -45,7 +45,10 @@ AnsiConsole.WriteLine();
 
 var date = timeProvider.GetUtcNow();
 
-async Task FetchAndPrintExchangeRateAsync(string bankName, ICurrencyConverter bank, CurrencyPair pair)
+async Task PrintRateAsync(
+    string bankName,
+    ICurrencyConverter bank,
+    CurrencyPair pair)
 {
     try
     {
@@ -58,23 +61,15 @@ async Task FetchAndPrintExchangeRateAsync(string bankName, ICurrencyConverter ba
         AnsiConsole.MarkupLine(
             $"[bold cyan]{bankName}[/]: [red]Failed to retrieve exchange rate for {pair}. Error: {ex.Message}[/]");
     }
+}
 
-    var reversePair = currencyPairFactory.Reverse(pair);
-    try
-    {
-        var reverseRate = await bank
-            .GetExchangeRateAsync(reversePair, date, CancellationToken.None)
-            .ConfigureAwait(false);
-        AnsiConsole.MarkupLine(
-            $"[bold cyan]{bankName}[/]: [yellow]{reversePair}[/] " +
-            $"Rate: [green]{reverseRate}[/] (As of [fuchsia]{date:d}[/])");
-    }
-    catch (Exception ex)
-    {
-        AnsiConsole.MarkupLine(
-            $"[bold cyan]{bankName}[/]: [red]Failed to retrieve " +
-            $"exchange rate for {reversePair}. Error: {ex.Message}[/]");
-    }
+async Task FetchAndPrintExchangeRateAsync(
+    string bankName,
+    ICurrencyConverter bank,
+    CurrencyPair pair)
+{
+    await PrintRateAsync(bankName, bank, pair).ConfigureAwait(false);
+    await PrintRateAsync(bankName, bank, currencyPairFactory.Reverse(pair)).ConfigureAwait(false);
 }
 
 await FetchAndPrintExchangeRateAsync(
