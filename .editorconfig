@@ -50,6 +50,10 @@ max_line_length = unset
 generated_code = true
 max_line_length = unset
 
+[.gitignore]
+generated_code = true
+max_line_length = unset
+
 # Protocol Buffers
 [*.proto]
 indent_size = 2
