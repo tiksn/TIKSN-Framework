@@ -21,11 +21,11 @@
       hybrid repository cache decorators, finance and money types, pricing models, currency
       conversion, central-bank foreign exchange providers, globalization, language and region
       localization resources, JSON, XML, MessagePack, custom binary serialization, Protocol
-      Buffers-backed licensing schema support, license generation and signature services, shell
-      PowerShell, and AI-assisted shell-command discovery using Microsoft.Extensions.AI,
-      telemetry abstractions, correlation IDs, settings,
-      known folders, network connectivity, antimalware abstractions, versioning, numbering, time
-      period types, REST helpers, sitemap models, and platform-specific MAUI registrations.
+      Buffers-backed licensing schema support, license generation and signature services, shell,
+      PowerShell, and AI-assisted shell-command discovery using Microsoft.Extensions.AI, telemetry
+      abstractions, correlation IDs, settings, known folders, network connectivity, antimalware
+      abstractions, versioning, numbering, time period types, REST helpers, sitemap models, and
+      platform-specific MAUI registrations.
     </description>
     <copyright>Copyright © 2026, TIKSN Development</copyright>
     <releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/releases</releaseNotes>
@@ -75,7 +75,7 @@
     <file src="any-maccatalyst\TIKSN.Framework.Maui.dll" target="lib\net10.0-maccatalyst14.0" />
     <file src="any-maccatalyst\TIKSN.Framework.Maui.xml" target="lib\net10.0-maccatalyst14.0" />
     <file src="any-maccatalyst\TIKSN.Framework.Maui.pdb" target="lib\net10.0-maccatalyst14.0" />
-    <!-- Platform: .NET Windows-->
+    <!-- Platform: .NET Windows -->
     <file src="any-windows\TIKSN.Framework.Core.dll" target="lib\net10.0-windows10.0.19041.0" />
     <file src="any-windows\TIKSN.Framework.Core.xml" target="lib\net10.0-windows10.0.19041.0" />
     <file src="any-windows\TIKSN.Framework.Core.pdb" target="lib\net10.0-windows10.0.19041.0" />
