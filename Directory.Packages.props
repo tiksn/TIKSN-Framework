@@ -47,7 +47,7 @@
     <PackageVersion Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.1" />
     <PackageVersion Include="Microsoft.Maui.Controls" Version="10.0.120" />
     <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.120" />
-    <PackageVersion Include="Microsoft.PowerShell.SDK" Version="7.6.7" />
+    <PackageVersion Include="Microsoft.PowerShell.SDK" Version="7.6.8" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.402" />
     <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="18.12.1" />
     <PackageVersion Include="MongoDB.Driver" Version="3.13.0" />
