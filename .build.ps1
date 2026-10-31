@@ -188,7 +188,6 @@ Task FormatXmlFiles Clean, CleanupCode, {
     )
     Get-ChildItem -Include $xmlIncludes -Recurse -File
     | Where-Object { -not (git check-ignore $PSItem) }
-    | Where-Object { $PSItem.Name -notin @('TableA1.xml', 'TableA3.xml') }
     | ForEach-Object {
         print White "Formatting XML File: $PSItem"
         $content = Get-Content -Path $PSItem -Raw
