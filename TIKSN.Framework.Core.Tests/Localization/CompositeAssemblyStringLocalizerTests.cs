@@ -77,10 +77,7 @@ public partial class CompositeAssemblyStringLocalizerTests
     [LoggerMessage(
         EventId = 21923797,
         Level = LogLevel.Information,
-        Message =
-            "Duplicate Localization Key `{LocalizationKey}` Name `{LocalizationName}` " +
-            "Value `{LocalizationValue}` SearchedLocation `{LocalizationSearchedLocation}`")]
+        Message = "Duplicate key `{Key}` name `{Name}` value `{Value}` searched location `{SearchedLocation}`")]
     private static partial void LogDuplicateItem(
-        ILogger logger, string localizationKey, string localizationName, string localizationValue,
-        string? localizationSearchedLocation);
+        ILogger logger, string key, string name, string value, string? searchedLocation);
 }
