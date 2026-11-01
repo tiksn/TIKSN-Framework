@@ -430,8 +430,9 @@ public class CountryFactoryTests
             $"Country Principal Region Two-Letter ISO Name: {country.PrincipalRegion.TwoLetterISORegionName}");
         TestContext.Current.TestOutputHelper.WriteLine(
             $"Country Principal Region Three-Letter ISO Name: {country.PrincipalRegion.ThreeLetterISORegionName}");
+        var windowsRegionName = country.PrincipalRegion.ThreeLetterWindowsRegionName;
         TestContext.Current.TestOutputHelper.WriteLine(
-            $"Country Principal Region Three-Letter Windows Name: {country.PrincipalRegion.ThreeLetterWindowsRegionName}");
+            $"Country Principal Region Three-Letter Windows Name: {windowsRegionName}");
         TestContext.Current.TestOutputHelper.WriteLine(
             $"Country Principal Region English Name: {country.PrincipalRegion.EnglishName}");
         TestContext.Current.TestOutputHelper.WriteLine(

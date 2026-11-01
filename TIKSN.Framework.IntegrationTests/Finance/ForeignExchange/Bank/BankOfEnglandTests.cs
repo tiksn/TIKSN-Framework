@@ -26,8 +26,8 @@ public class BankOfEnglandTests
     [Fact]
     public async Task Calculate001()
     {
-        foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(),
-                     cancellationToken: TestContext.Current.CancellationToken))
+        var cancellationToken = TestContext.Current.CancellationToken;
+        foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), cancellationToken))
         {
             var before = new Money(pair.BaseCurrency, amount: 10m);
             var rate = await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(),
@@ -46,8 +46,8 @@ public class BankOfEnglandTests
     {
         var tenYearsAgo = this.timeProvider.GetUtcNow().AddYears(-10);
 
-        foreach (var pair in await this.bank.GetCurrencyPairsAsync(tenYearsAgo,
-                     cancellationToken: TestContext.Current.CancellationToken))
+        var cancellationToken = TestContext.Current.CancellationToken;
+        foreach (var pair in await this.bank.GetCurrencyPairsAsync(tenYearsAgo, cancellationToken))
         {
             var before = new Money(pair.BaseCurrency, amount: 10m);
             var rate = await this.bank.GetExchangeRateAsync(pair, tenYearsAgo,
@@ -246,8 +246,8 @@ public class BankOfEnglandTests
     [Fact]
     public async Task GetExchangeRate001()
     {
-        foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(),
-                     cancellationToken: TestContext.Current.CancellationToken))
+        var cancellationToken = TestContext.Current.CancellationToken;
+        foreach (var pair in await this.bank.GetCurrencyPairsAsync(this.timeProvider.GetUtcNow(), cancellationToken))
         {
             (await this.bank.GetExchangeRateAsync(pair, this.timeProvider.GetUtcNow(),
                         cancellationToken: TestContext.Current.CancellationToken) >

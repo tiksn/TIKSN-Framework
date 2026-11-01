@@ -45,39 +45,75 @@ AnsiConsole.WriteLine();
 
 var date = timeProvider.GetUtcNow();
 
-async Task FetchAndPrintExchangeRateAsync(string bankName, ICurrencyConverter bank, CurrencyPair pair)
+async Task PrintRateAsync(
+    string bankName,
+    ICurrencyConverter bank,
+    CurrencyPair pair)
 {
     try
     {
         var rate = await bank.GetExchangeRateAsync(pair, date, CancellationToken.None).ConfigureAwait(false);
-        AnsiConsole.MarkupLine($"[bold cyan]{bankName}[/]: [yellow]{pair}[/] Rate: [green]{rate}[/] (As of [fuchsia]{date:d}[/])");
+        AnsiConsole.MarkupLine(
+            $"[bold cyan]{bankName}[/]: [yellow]{pair}[/] Rate: [green]{rate}[/] (As of [fuchsia]{date:d}[/])");
     }
     catch (Exception ex)
     {
-        AnsiConsole.MarkupLine($"[bold cyan]{bankName}[/]: [red]Failed to retrieve exchange rate for {pair}. Error: {ex.Message}[/]");
-    }
-
-    var reversePair = currencyPairFactory.Reverse(pair);
-    try
-    {
-        var reverseRate = await bank.GetExchangeRateAsync(reversePair, date, CancellationToken.None).ConfigureAwait(false);
-        AnsiConsole.MarkupLine($"[bold cyan]{bankName}[/]: [yellow]{reversePair}[/] Rate: [green]{reverseRate}[/] (As of [fuchsia]{date:d}[/])");
-    }
-    catch (Exception ex)
-    {
-        AnsiConsole.MarkupLine($"[bold cyan]{bankName}[/]: [red]Failed to retrieve exchange rate for {reversePair}. Error: {ex.Message}[/]");
+        AnsiConsole.MarkupLine(
+            $"[bold cyan]{bankName}[/]: [red]Failed to retrieve exchange rate for {pair}. Error: {ex.Message}[/]");
     }
 }
 
-await FetchAndPrintExchangeRateAsync("Bank of Canada", serviceProvider.GetRequiredService<IBankOfCanada>(), cadUsd).ConfigureAwait(false);
-await FetchAndPrintExchangeRateAsync("Bank of England", serviceProvider.GetRequiredService<IBankOfEngland>(), gbpUsd).ConfigureAwait(false);
+async Task FetchAndPrintExchangeRateAsync(
+    string bankName,
+    ICurrencyConverter bank,
+    CurrencyPair pair)
+{
+    await PrintRateAsync(bankName, bank, pair).ConfigureAwait(false);
+    await PrintRateAsync(bankName, bank, currencyPairFactory.Reverse(pair)).ConfigureAwait(false);
+}
+
+await FetchAndPrintExchangeRateAsync(
+    "Bank of Canada",
+    serviceProvider.GetRequiredService<IBankOfCanada>(),
+    cadUsd).ConfigureAwait(false);
+await FetchAndPrintExchangeRateAsync(
+    "Bank of England",
+    serviceProvider.GetRequiredService<IBankOfEngland>(),
+    gbpUsd).ConfigureAwait(false);
 // For Bank of Japan, it usually provides rates of foreign currencies against JPY
-await FetchAndPrintExchangeRateAsync("Bank of Japan", serviceProvider.GetRequiredService<IBankOfJapan>(), usdJpy).ConfigureAwait(false);
-await FetchAndPrintExchangeRateAsync("Central Bank of Armenia", serviceProvider.GetRequiredService<ICentralBankOfArmenia>(), amdUsd).ConfigureAwait(false);
-await FetchAndPrintExchangeRateAsync("European Central Bank", serviceProvider.GetRequiredService<IEuropeanCentralBank>(), eurUsd).ConfigureAwait(false);
-await FetchAndPrintExchangeRateAsync("Federal Reserve System", serviceProvider.GetRequiredService<IFederalReserveSystem>(), eurUsd).ConfigureAwait(false);
-await FetchAndPrintExchangeRateAsync("Monetary Authority of Singapore", serviceProvider.GetRequiredService<IMonetaryAuthorityOfSingapore>(), sgdUsd).ConfigureAwait(false);
-await FetchAndPrintExchangeRateAsync("National Bank of Poland", serviceProvider.GetRequiredService<INationalBankOfPoland>(), plnUsd).ConfigureAwait(false);
-await FetchAndPrintExchangeRateAsync("National Bank of Ukraine", serviceProvider.GetRequiredService<INationalBankOfUkraine>(), uahUsd).ConfigureAwait(false);
-await FetchAndPrintExchangeRateAsync("Reserve Bank of Australia", serviceProvider.GetRequiredService<IReserveBankOfAustralia>(), audUsd).ConfigureAwait(false);
-await FetchAndPrintExchangeRateAsync("Swiss National Bank", serviceProvider.GetRequiredService<ISwissNationalBank>(), chfUsd).ConfigureAwait(false);
+await FetchAndPrintExchangeRateAsync(
+    "Bank of Japan",
+    serviceProvider.GetRequiredService<IBankOfJapan>(),
+    usdJpy).ConfigureAwait(false);
+await FetchAndPrintExchangeRateAsync(
+    "Central Bank of Armenia",
+    serviceProvider.GetRequiredService<ICentralBankOfArmenia>(),
+    amdUsd).ConfigureAwait(false);
+await FetchAndPrintExchangeRateAsync(
+    "European Central Bank",
+    serviceProvider.GetRequiredService<IEuropeanCentralBank>(),
+    eurUsd).ConfigureAwait(false);
+await FetchAndPrintExchangeRateAsync(
+    "Federal Reserve System",
+    serviceProvider.GetRequiredService<IFederalReserveSystem>(),
+    eurUsd).ConfigureAwait(false);
+await FetchAndPrintExchangeRateAsync(
+    "Monetary Authority of Singapore",
+    serviceProvider.GetRequiredService<IMonetaryAuthorityOfSingapore>(),
+    sgdUsd).ConfigureAwait(false);
+await FetchAndPrintExchangeRateAsync(
+    "National Bank of Poland",
+    serviceProvider.GetRequiredService<INationalBankOfPoland>(),
+    plnUsd).ConfigureAwait(false);
+await FetchAndPrintExchangeRateAsync(
+    "National Bank of Ukraine",
+    serviceProvider.GetRequiredService<INationalBankOfUkraine>(),
+    uahUsd).ConfigureAwait(false);
+await FetchAndPrintExchangeRateAsync(
+    "Reserve Bank of Australia",
+    serviceProvider.GetRequiredService<IReserveBankOfAustralia>(),
+    audUsd).ConfigureAwait(false);
+await FetchAndPrintExchangeRateAsync(
+    "Swiss National Bank",
+    serviceProvider.GetRequiredService<ISwissNationalBank>(),
+    chfUsd).ConfigureAwait(false);

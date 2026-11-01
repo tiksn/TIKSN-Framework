@@ -52,13 +52,17 @@ var pair = new CurrencyPair(usd, eur);
 
 AnsiConsole.MarkupLine("[yellow]First call (should be slow)...[/]");
 var sw1 = Stopwatch.StartNew();
-var rate1 = await converter.GetExchangeRateAsync(pair, DateTimeOffset.UtcNow, CancellationToken.None).ConfigureAwait(false);
+var rate1 = await converter
+    .GetExchangeRateAsync(pair, DateTimeOffset.UtcNow, CancellationToken.None)
+    .ConfigureAwait(false);
 sw1.Stop();
 AnsiConsole.MarkupLine($"[fuchsia]Rate:[/] {rate1} | [green]Time taken:[/] {sw1.ElapsedMilliseconds} ms");
 
 AnsiConsole.MarkupLine("[yellow]Second call (should be instant because of caching)...[/]");
 var sw2 = Stopwatch.StartNew();
-var rate2 = await converter.GetExchangeRateAsync(pair, DateTimeOffset.UtcNow, CancellationToken.None).ConfigureAwait(false);
+var rate2 = await converter
+    .GetExchangeRateAsync(pair, DateTimeOffset.UtcNow, CancellationToken.None)
+    .ConfigureAwait(false);
 sw2.Stop();
 AnsiConsole.MarkupLine($"[fuchsia]Rate:[/] {rate2} | [green]Time taken:[/] {sw2.ElapsedMilliseconds} ms");
 
@@ -67,18 +71,30 @@ AnsiConsole.MarkupLine($"[fuchsia]Rate:[/] {rate2} | [green]Time taken:[/] {sw2.
 #pragma warning disable RCS1110 // Declare type inside namespace
 public class SlowCurrencyConverter : ICurrencyConverter
 {
-    public async Task<Money> ConvertCurrencyAsync(Money baseMoney, CurrencyInfo counterCurrency, DateTimeOffset asOn, CancellationToken cancellationToken)
+    public async Task<Money> ConvertCurrencyAsync(
+        Money baseMoney,
+        CurrencyInfo counterCurrency,
+        DateTimeOffset asOn,
+        CancellationToken cancellationToken)
     {
-        var rate = await GetExchangeRateAsync(new CurrencyPair(baseMoney.Currency, counterCurrency), asOn, cancellationToken).ConfigureAwait(false);
+        var rate = await GetExchangeRateAsync(
+            new CurrencyPair(baseMoney.Currency, counterCurrency),
+            asOn,
+            cancellationToken).ConfigureAwait(false);
         return new Money(counterCurrency, baseMoney.Amount * rate);
     }
 
-    public Task<IReadOnlyCollection<CurrencyPair>> GetCurrencyPairsAsync(DateTimeOffset asOn, CancellationToken cancellationToken)
+    public Task<IReadOnlyCollection<CurrencyPair>> GetCurrencyPairsAsync(
+        DateTimeOffset asOn,
+        CancellationToken cancellationToken)
     {
         return Task.FromResult<IReadOnlyCollection<CurrencyPair>>(Array.Empty<CurrencyPair>());
     }
 
-    public async Task<decimal> GetExchangeRateAsync(CurrencyPair pair, DateTimeOffset asOn, CancellationToken cancellationToken)
+    public async Task<decimal> GetExchangeRateAsync(
+        CurrencyPair pair,
+        DateTimeOffset asOn,
+        CancellationToken cancellationToken)
     {
         // Simulate an expensive network call
         await Task.Delay(2000, cancellationToken).ConfigureAwait(false);

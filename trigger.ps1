@@ -30,5 +30,7 @@ else {
         $checkpointData['Task'] = @($Task)
         $checkpointData | Export-Clixml -Path $checkpointFile
     }
-    Build-Checkpoint -Checkpoint $checkpointFile -Build @{Task = $Task; Instance = $Instance; Version = $Version } -Preserve -Auto
+    Build-Checkpoint -Checkpoint $checkpointFile `
+        -Build @{Task = $Task; Instance = $Instance; Version = $Version } `
+        -Preserve -Auto
 }

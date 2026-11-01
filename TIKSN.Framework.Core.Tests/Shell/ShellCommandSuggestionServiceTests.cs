@@ -82,11 +82,11 @@ public class ShellCommandSuggestionServiceTests
                 /*lang=json,strict*/
                 """
                 [
-                  {
-                    "commandName": "Known command",
-                    "reason": "It might help.",
-                    "parameters": { "Unexpected": "value" }
-                  }
+                    {
+                        "commandName": "Known command",
+                        "reason": "It might help.",
+                        "parameters": { "Unexpected": "value" }
+                    }
                 ]
                 """),
             shellCommandEngine);
@@ -108,19 +108,19 @@ public class ShellCommandSuggestionServiceTests
             /*lang=json,strict*/
             """
             [
-              {
-                "commandName": "convert currency",
-                "reason": "The request asks for currency conversion.",
-                "parameters": {
-                  "amount": "25",
-                  "Target": "EUR"
+                {
+                    "commandName": "convert currency",
+                    "reason": "The request asks for currency conversion.",
+                    "parameters": {
+                        "amount": "25",
+                        "Target": "EUR"
+                    }
+                },
+                {
+                    "commandName": "Delete everything",
+                    "reason": "Unknown command.",
+                    "parameters": {}
                 }
-              },
-              {
-                "commandName": "Delete everything",
-                "reason": "Unknown command.",
-                "parameters": {}
-              }
             ]
             """);
         var service = new ShellCommandSuggestionService(chatClient, shellCommandEngine);

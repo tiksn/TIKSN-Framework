@@ -36,7 +36,8 @@ jobs:
         shell: pwsh
         run: |
           $dotnetRoot = Split-Path (Get-Command dotnet).Source
-          Get-ChildItem -Path "$dotnetRoot\metadata\workloads" -Recurse -Filter "msi" -ErrorAction SilentlyContinue | Remove-Item -Force
+          Get-ChildItem -Path "$dotnetRoot\metadata\workloads" -Recurse -Filter "msi" `
+            -ErrorAction SilentlyContinue | Remove-Item -Force
           $sdkVersion = (dotnet --version).Split('-')[0]
           $ver = [Version]$sdkVersion
           $featureBand = "$($ver.Major).$($ver.Minor).$([Math]::Floor($ver.Build / 100) * 100)"
@@ -53,7 +54,9 @@ jobs:
             ~/.dotnet/sdk-advertising
             ~/.dotnet/sdk-manifests
             ~/.dotnet/template-packs
-          key: ${{ runner.os }}-dotnet-workloads-${{ hashFiles('global.json', 'TIKSN.Framework.Maui/TIKSN.Framework.Maui.csproj') }}
+          key: >-
+            ${{ format('{0}-dotnet-workloads-{1}', runner.os,
+            hashFiles('global.json', 'TIKSN.Framework.Maui/TIKSN.Framework.Maui.csproj')) }}
           restore-keys: |
             ${{ runner.os }}-dotnet-workloads-
       - name: "Install .NET MAUI"

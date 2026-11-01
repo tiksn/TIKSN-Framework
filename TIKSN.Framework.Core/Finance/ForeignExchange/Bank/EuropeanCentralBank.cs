@@ -121,8 +121,10 @@ public class EuropeanCentralBank : IEuropeanCentralBank
 
         var rates = new List<ExchangeRate>();
 
-        foreach (var rateCube in groupCubes.Item1?.Elements(
-                     "{http://www.ecb.int/vocabulary/2002-08-01/eurofxref}Cube") ?? [])
+        var rateCubes = groupCubes.Item1?.Elements(
+            "{http://www.ecb.int/vocabulary/2002-08-01/eurofxref}Cube") ?? [];
+
+        foreach (var rateCube in rateCubes)
         {
             var currencyCode = rateCube?.Attribute("currency")?.Value ?? string.Empty;
             var rate = decimal.Parse(rateCube?.Attribute("rate")?.Value ?? string.Empty, CultureInfo.InvariantCulture);

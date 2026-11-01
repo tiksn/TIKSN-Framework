@@ -114,10 +114,12 @@ public sealed class CurrencyInfo : IEquatable<CurrencyInfo>
 
         var tableXDoc = XDocument.Load(stream);
 
-        foreach (var ccyNtryElement in tableXDoc
-                     ?.Element("ISO_4217")
-                     ?.Element(tableElementName)
-                     ?.Elements(entityElementName) ?? [])
+        var ccyNtryElements = tableXDoc
+            ?.Element("ISO_4217")
+            ?.Element(tableElementName)
+            ?.Elements(entityElementName) ?? [];
+
+        foreach (var ccyNtryElement in ccyNtryElements)
         {
             var ccyElement = ccyNtryElement.Element("Ccy");
 

@@ -140,8 +140,13 @@ public readonly struct IsoWeekDay : IDay<IsoWeekDay>
         => this.ToString(string.Empty, CultureInfo.InvariantCulture);
 
     public string ToString(string? format, IFormatProvider? formatProvider)
-        =>
-            $"{this.weekYear.ToString(format, formatProvider)}-W{this.weekOfWeekYear.ToString("00", formatProvider)}-{((int)this.dayOfWeek).ToString(formatProvider)}";
+    {
+        var year = this.weekYear.ToString(format, formatProvider);
+        var week = this.weekOfWeekYear.ToString("00", formatProvider);
+        var day = ((int)this.dayOfWeek).ToString(formatProvider);
+
+        return $"{year}-W{week}-{day}";
+    }
 
     public bool TryFormat(
         Span<char> destination,

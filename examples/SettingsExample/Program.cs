@@ -27,7 +27,9 @@ services
     .Bind(configuration.GetSection("Settings"))
     .ValidateOnStart();
 
-services.AddSingleton(new KnownFoldersConfiguration(System.Reflection.Assembly.GetExecutingAssembly(), KnownFolderVersionConsideration.None));
+services.AddSingleton(new KnownFoldersConfiguration(
+    System.Reflection.Assembly.GetExecutingAssembly(),
+    KnownFolderVersionConsideration.None));
 
 // Assuming FileSettingsService implements ISettingsService
 services.AddSingleton<ISettingsService, FileSettingsService>();

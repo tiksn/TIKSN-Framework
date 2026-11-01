@@ -86,8 +86,9 @@ public class ReserveBankOfAustralia : IReserveBankOfAustralia
                 return rate;
             }
         }
-        else if (pair.CounterCurrency == AustralianDollar
-                 && this.rates.TryGetValue(pair.BaseCurrency, out var counterRate))
+        else if (
+            pair.CounterCurrency == AustralianDollar
+            && this.rates.TryGetValue(pair.BaseCurrency, out var counterRate))
         {
             return decimal.One / counterRate;
         }
@@ -157,9 +158,11 @@ public class ReserveBankOfAustralia : IReserveBankOfAustralia
     {
         lock (this.rates)
         {
-            foreach (var item in xdoc
-                         ?.Element("{http://www.w3.org/1999/02/22-rdf-syntax-ns#}RDF")
-                         ?.Elements("{http://purl.org/rss/1.0/}item") ?? [])
+            var items = xdoc
+                ?.Element("{http://www.w3.org/1999/02/22-rdf-syntax-ns#}RDF")
+                ?.Elements("{http://purl.org/rss/1.0/}item") ?? [];
+
+            foreach (var item in items)
             {
                 this.PopulateResultItem(item, result);
             }

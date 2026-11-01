@@ -46,8 +46,11 @@ public abstract class EntityQueryRepository<TContext, TEntity, TIdentity> : Enti
 
     public async IAsyncEnumerable<TEntity> StreamAllAsync([EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        await foreach (var entity in this.OrderedEntities.AsAsyncEnumerable().WithCancellation(cancellationToken)
-                           .ConfigureAwait(false))
+        var entities = this.OrderedEntities
+            .AsAsyncEnumerable()
+            .WithCancellation(cancellationToken)
+            .ConfigureAwait(false);
+        await foreach (var entity in entities)
         {
             yield return entity;
         }

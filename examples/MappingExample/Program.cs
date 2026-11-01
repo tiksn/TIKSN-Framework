@@ -15,7 +15,12 @@ await using var serviceProvider = services.BuildServiceProvider();
 AnsiConsole.MarkupLine("[bold cyan]TIKSN Mapping Example[/]");
 AnsiConsole.MarkupLine("[grey]-----------------------------------------[/]");
 
-var entity = new UserEntity { Id = Guid.NewGuid(), FullName = "John Doe", DateOfBirth = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc) };
+var entity = new UserEntity
+{
+    Id = Guid.NewGuid(),
+    FullName = "John Doe",
+    DateOfBirth = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+};
 AnsiConsole.MarkupLine($"[yellow]Original Entity:[/] {entity.Id} - {entity.FullName}");
 
 // Map Entity to DTO

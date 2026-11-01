@@ -203,8 +203,9 @@ public class BankOfCanada : IBankOfCanada
         {
             var d = observation.GetProperty("d");
             var asOn = DateOnly.ParseExact(d.GetString() ?? string.Empty, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-            foreach (var fxElement in observation.EnumerateObject()
-                         .Where(x => x.Name.StartsWith("FX", StringComparison.OrdinalIgnoreCase)))
+            var fxElements = observation.EnumerateObject()
+                .Where(x => x.Name.StartsWith("FX", StringComparison.OrdinalIgnoreCase));
+            foreach (var fxElement in fxElements)
             {
                 Debug.Assert(fxElement.Name.EndsWith("CAD", StringComparison.Ordinal));
                 var targetCurrencyCode = fxElement.Name.Substring(startIndex: 2, length: 3);
@@ -246,18 +247,20 @@ public class BankOfCanada : IBankOfCanada
             return otherwiseValueAtYesterday;
         }
 
+        var dateText = $"{date:yyyy-MM-dd} ({date.DayOfWeek})";
         if (this.rates.Count > 0)
         {
             var closest = this.rates.Keys
                 .OrderBy(k => Math.Abs(k.DayNumber - date.DayNumber))
                 .First();
+            var closestText = $"{closest:yyyy-MM-dd} ({closest.DayOfWeek})";
 
             throw new KeyNotFoundException(
-                $"Exchange rates for date '{date:yyyy-MM-dd} ({date.DayOfWeek})' not found. Closest available date: '{closest:yyyy-MM-dd} ({closest.DayOfWeek})'.");
+                $"Exchange rates for date '{dateText}' not found. Closest available date: '{closestText}'.");
         }
 
         throw new KeyNotFoundException(
-            $"Exchange rates for date '{date:yyyy-MM-dd} ({date.DayOfWeek})' not found. No rates are available.");
+            $"Exchange rates for date '{dateText}' not found. No rates are available.");
     }
 
     private bool IsHomeCurrencyPair(CurrencyPair pair, DateTimeOffset asOn)
@@ -269,8 +272,9 @@ public class BankOfCanada : IBankOfCanada
                 return true;
             }
         }
-        else if (pair.CounterCurrency == CanadianDollar &&
-                 this.GetRatesByDate(asOn).Any(r => r.Key == pair.BaseCurrency))
+        else if (
+            pair.CounterCurrency == CanadianDollar &&
+            this.GetRatesByDate(asOn).Any(r => r.Key == pair.BaseCurrency))
         {
             return false;
         }
