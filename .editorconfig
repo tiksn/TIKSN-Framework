@@ -54,6 +54,10 @@ max_line_length = unset
 generated_code = true
 max_line_length = unset
 
+# Bank API endpoint URLs and query templates
+[*{BankOfEngland,BankOfJapan,FederalReserveSystem,FrameworkCoreServiceProviderFixture}.cs]
+max_line_length = unset
+
 # Protocol Buffers
 [*.proto]
 indent_size = 2
