@@ -133,9 +133,12 @@ public readonly struct AcademicDay : IDay<AcademicDay>
         => this.ToString(string.Empty, CultureInfo.InvariantCulture);
 
     public string ToString(string? format, IFormatProvider? formatProvider)
-        =>
-            $"{this.academicYear.ToString(format, formatProvider)}-" +
-            $"{this.dayOfAcademicYear.ToString("000", formatProvider)}";
+    {
+        var year = this.academicYear.ToString(format, formatProvider);
+        var day = this.dayOfAcademicYear.ToString("000", formatProvider);
+
+        return $"{year}-{day}";
+    }
 
     public bool TryFormat(
         Span<char> destination,
