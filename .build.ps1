@@ -411,9 +411,7 @@ Task ValidateVersion EstimateVersion, {
     $latestTagVersion = $gitTagVersions | Select-Object -First 1
 
     if ($nextVersion -lt $latestTagVersion) {
-        $msg = "Next Release version '$nextVersion' should be greater than " +
-        "or equal to latest tag version '$latestTagVersion'"
-        throw $msg
+        throw "Next Release version '$nextVersion' should be greater than or equal to '$latestTagVersion'"
     }
 }
 
