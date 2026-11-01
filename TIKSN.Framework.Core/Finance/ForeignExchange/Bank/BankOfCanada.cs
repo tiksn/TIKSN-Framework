@@ -247,19 +247,20 @@ public class BankOfCanada : IBankOfCanada
             return otherwiseValueAtYesterday;
         }
 
+        var dateText = $"{date:yyyy-MM-dd} ({date.DayOfWeek})";
         if (this.rates.Count > 0)
         {
             var closest = this.rates.Keys
                 .OrderBy(k => Math.Abs(k.DayNumber - date.DayNumber))
                 .First();
+            var closestText = $"{closest:yyyy-MM-dd} ({closest.DayOfWeek})";
 
             throw new KeyNotFoundException(
-                $"Exchange rates for date '{date:yyyy-MM-dd} ({date.DayOfWeek})' not found. " +
-                $"Closest available date: '{closest:yyyy-MM-dd} ({closest.DayOfWeek})'.");
+                $"Exchange rates for date '{dateText}' not found. Closest available date: '{closestText}'.");
         }
 
         throw new KeyNotFoundException(
-            $"Exchange rates for date '{date:yyyy-MM-dd} ({date.DayOfWeek})' not found. No rates are available.");
+            $"Exchange rates for date '{dateText}' not found. No rates are available.");
     }
 
     private bool IsHomeCurrencyPair(CurrencyPair pair, DateTimeOffset asOn)
