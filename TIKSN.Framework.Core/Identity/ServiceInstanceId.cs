@@ -1,9 +1,14 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using LanguageExt;
+using static LanguageExt.Prelude;
 
 namespace TIKSN.Identity;
 
-public sealed class ServiceInstanceId : IEquatable<ServiceInstanceId>
+public sealed class ServiceInstanceId :
+    ISpanParsable<ServiceInstanceId>,
+    ISpanFormattable,
+    IEquatable<ServiceInstanceId>
 {
     private readonly object value;
 
@@ -25,29 +30,78 @@ public sealed class ServiceInstanceId : IEquatable<ServiceInstanceId>
 
     public static ServiceInstanceId Create(Ulid value) => new(value);
 
-    public static ServiceInstanceId Parse(string input) =>
-        TryParse(input).IfNone(() => throw new FormatException("Invalid Service Instance ID format."));
-
-    public static Option<ServiceInstanceId> TryParse(string input)
+    public static ServiceInstanceId Parse(string s, IFormatProvider? provider)
     {
-        if (Guid.TryParse(input, out var guidValue))
+        ArgumentNullException.ThrowIfNull(s);
+        return TryParse(s.AsSpan(), provider, out var result)
+            ? result
+            : throw new FormatException("Invalid Service Instance ID format.");
+    }
+
+    public static ServiceInstanceId Parse(ReadOnlySpan<char> s, IFormatProvider? provider) =>
+        TryParse(s, provider, out var result)
+            ? result
+            : throw new FormatException("Invalid Service Instance ID format.");
+
+    public static ServiceInstanceId Parse(string input) =>
+        Parse(input, provider: null);
+
+    public static ServiceInstanceId Parse(ReadOnlySpan<char> input) =>
+        Parse(input, provider: null);
+
+    public static bool TryParse(
+        [NotNullWhen(true)] string? s,
+        IFormatProvider? provider,
+        [MaybeNullWhen(false)] out ServiceInstanceId result)
+    {
+        if (s is null)
         {
-            return new ServiceInstanceId(guidValue);
+            result = null;
+            return false;
         }
 
-        if (Ulid.TryParse(input, out var ulidValue))
+        return TryParse(s.AsSpan(), provider, out result);
+    }
+
+    public static bool TryParse(
+        ReadOnlySpan<char> s,
+        IFormatProvider? provider,
+        [MaybeNullWhen(false)] out ServiceInstanceId result)
+    {
+        if (s.IsEmpty || s.Length != s.Trim().Length)
         {
-            return new ServiceInstanceId(ulidValue);
+            result = null;
+            return false;
         }
 
-        if (long.TryParse(input, NumberStyles.Integer, CultureInfo.InvariantCulture, out var longValue) &&
+        if (Guid.TryParse(s, provider, out var guidValue))
+        {
+            result = new ServiceInstanceId(guidValue);
+            return true;
+        }
+
+        if (Ulid.TryParse(s, provider, out var ulidValue))
+        {
+            result = new ServiceInstanceId(ulidValue);
+            return true;
+        }
+
+        if (long.TryParse(s, NumberStyles.Integer, provider ?? CultureInfo.InvariantCulture, out var longValue) &&
             longValue >= 0L)
         {
-            return new ServiceInstanceId(longValue);
+            result = new ServiceInstanceId(longValue);
+            return true;
         }
 
-        return Option<ServiceInstanceId>.None;
+        result = null;
+        return false;
     }
+
+    public static Option<ServiceInstanceId> TryParse(string input) =>
+        TryParse(input, provider: null, out var result) ? Some(result) : None;
+
+    public static Option<ServiceInstanceId> TryParse(ReadOnlySpan<char> input) =>
+        TryParse(input, provider: null, out var result) ? Some(result) : None;
 
     public static bool operator ==(ServiceInstanceId? left, ServiceInstanceId? right)
     {
@@ -80,5 +134,37 @@ public sealed class ServiceInstanceId : IEquatable<ServiceInstanceId>
 
     public override int GetHashCode() => this.value.GetHashCode();
 
-    public override string ToString() => this.value.ToString() ?? string.Empty;
+    public override string ToString() => this.ToString(format: null, formatProvider: null);
+
+    public string ToString(string? format, IFormatProvider? formatProvider)
+    {
+        if (this.value is IFormattable formattable)
+        {
+            return formattable.ToString(format, formatProvider);
+        }
+
+        return this.value.ToString() ?? string.Empty;
+    }
+
+    public bool TryFormat(
+        Span<char> destination,
+        out int charsWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+    {
+        if (this.value is ISpanFormattable spanFormattable)
+        {
+            return spanFormattable.TryFormat(destination, out charsWritten, format, provider);
+        }
+
+        var formatted = this.ToString(format.IsEmpty ? null : format.ToString(), provider);
+        if (formatted.AsSpan().TryCopyTo(destination))
+        {
+            charsWritten = formatted.Length;
+            return true;
+        }
+
+        charsWritten = 0;
+        return false;
+    }
 }
