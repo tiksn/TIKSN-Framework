@@ -148,3 +148,28 @@ TIKSN.Finance.ForeignExchange.Bank.ReserveBankOfNewZealand.ReserveBankOfNewZeala
 *REMOVED*TIKSN.Data.ITenantIdProvider<T>.GetTenantId() -> T
 *REMOVED*TIKSN.Integration.Messages.TenantRequestBehavior<TEntityIdentity, TTenantIdentity, TRequest, TResponse>.TenantRequestBehavior(TIKSN.Data.ITenantIdProvider<TTenantIdentity>! tenantIdProvider, System.IServiceProvider! serviceProvider) -> void
 TIKSN.Integration.Messages.TenantRequestBehavior<TEntityIdentity, TTenantIdentity, TRequest, TResponse>.TenantRequestBehavior(TIKSN.Identity.ITenantIdProvider<TTenantIdentity>! tenantIdProvider, System.IServiceProvider! serviceProvider) -> void
+*REMOVED*const TIKSN.Advertising.AdProviders.Microsoft = "Microsoft" -> string!
+*REMOVED*TIKSN.Advertising.AdProviders
+*REMOVED*TIKSN.Advertising.AdUnit
+*REMOVED*TIKSN.Advertising.AdUnit.AdUnit(string! provider, string! applicationId, string! adUnitId, bool isTest = false) -> void
+*REMOVED*TIKSN.Advertising.AdUnit.AdUnitId.get -> string!
+*REMOVED*TIKSN.Advertising.AdUnit.ApplicationId.get -> string!
+*REMOVED*TIKSN.Advertising.AdUnit.IsTest.get -> bool
+*REMOVED*TIKSN.Advertising.AdUnit.Provider.get -> string!
+*REMOVED*TIKSN.Advertising.AdUnitBundle
+*REMOVED*TIKSN.Advertising.AdUnitBundle.AdUnitBundle(TIKSN.Advertising.AdUnit! designTime, TIKSN.Advertising.AdUnit! production) -> void
+*REMOVED*TIKSN.Advertising.AdUnitBundle.DesignTime.get -> TIKSN.Advertising.AdUnit!
+*REMOVED*TIKSN.Advertising.AdUnitBundle.Production.get -> TIKSN.Advertising.AdUnit!
+*REMOVED*TIKSN.Advertising.AdUnitFactoryBase
+*REMOVED*TIKSN.Advertising.AdUnitFactoryBase.AdUnitFactoryBase(TIKSN.Advertising.IAdUnitSelector! adUnitSelector) -> void
+*REMOVED*TIKSN.Advertising.AdUnitFactoryBase.Create(string! key) -> TIKSN.Advertising.AdUnit!
+*REMOVED*TIKSN.Advertising.AdUnitSelectorOptions
+*REMOVED*TIKSN.Advertising.AdUnitSelectorOptions.AdUnitSelectorOptions() -> void
+*REMOVED*TIKSN.Advertising.AdUnitSelectorOptions.IsDebug.get -> bool
+*REMOVED*TIKSN.Advertising.AdUnitSelectorOptions.IsDebug.set -> void
+*REMOVED*TIKSN.Advertising.AdUnitSelectorOptions.IsDebuggerSensitive.get -> bool
+*REMOVED*TIKSN.Advertising.AdUnitSelectorOptions.IsDebuggerSensitive.set -> void
+*REMOVED*TIKSN.Advertising.IAdUnitFactory
+*REMOVED*TIKSN.Advertising.IAdUnitFactory.Create(string! key) -> TIKSN.Advertising.AdUnit!
+*REMOVED*TIKSN.Advertising.IAdUnitSelector
+*REMOVED*TIKSN.Advertising.IAdUnitSelector.SelectAdUnit(TIKSN.Advertising.AdUnitBundle! adUnitBundle) -> TIKSN.Advertising.AdUnit!
