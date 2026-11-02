@@ -16,7 +16,6 @@ using TIKSN.Finance.ForeignExchange.Bank;
 using TIKSN.Globalization;
 using TIKSN.Identity;
 using TIKSN.Licensing;
-using TIKSN.Network;
 using TIKSN.Serialization;
 using TIKSN.Serialization.MessagePack;
 using TIKSN.Serialization.Numerics;
@@ -58,7 +57,6 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<Random>();
         services.TryAddSingleton(MessagePackSerializerOptions.Standard);
         services.TryAddSingleton<IKnownFolders, KnownFolders>();
-        services.TryAddSingleton<INetworkConnectivityService, NetworkConnectivityService>();
 
         services.TryAddSingleton<DotNetXmlDeserializer>();
         services.TryAddSingleton<DotNetXmlSerializer>();

@@ -173,3 +173,37 @@ TIKSN.Integration.Messages.TenantRequestBehavior<TEntityIdentity, TTenantIdentit
 *REMOVED*TIKSN.Advertising.IAdUnitFactory.Create(string! key) -> TIKSN.Advertising.AdUnit!
 *REMOVED*TIKSN.Advertising.IAdUnitSelector
 *REMOVED*TIKSN.Advertising.IAdUnitSelector.SelectAdUnit(TIKSN.Advertising.AdUnitBundle! adUnitBundle) -> TIKSN.Advertising.AdUnit!
+*REMOVED*abstract TIKSN.Network.NetworkConnectivityServiceBase.FetchState() -> TIKSN.Network.InternetConnectivityState!
+*REMOVED*override TIKSN.Network.InternetConnectivityState.Equals(object? obj) -> bool
+*REMOVED*override TIKSN.Network.InternetConnectivityState.GetHashCode() -> int
+*REMOVED*override TIKSN.Network.InternetConnectivityState.ToString() -> string!
+*REMOVED*override TIKSN.Network.NetworkConnectivityService.FetchState() -> TIKSN.Network.InternetConnectivityState!
+*REMOVED*static TIKSN.Network.InternetConnectivityState.operator !=(TIKSN.Network.InternetConnectivityState? left, TIKSN.Network.InternetConnectivityState? right) -> bool
+*REMOVED*static TIKSN.Network.InternetConnectivityState.operator ==(TIKSN.Network.InternetConnectivityState? left, TIKSN.Network.InternetConnectivityState? right) -> bool
+*REMOVED*TIKSN.Network.INetworkConnectivityService
+*REMOVED*TIKSN.Network.INetworkConnectivityService.GetInternetConnectivityState() -> TIKSN.Network.InternetConnectivityState!
+*REMOVED*TIKSN.Network.INetworkConnectivityService.InternetConnectivityChanged.get -> System.IObservable<TIKSN.Network.InternetConnectivityState!>!
+*REMOVED*TIKSN.Network.InternetConnectivityState
+*REMOVED*TIKSN.Network.InternetConnectivityState.Deconstruct(out bool IsInternetAvailable, out bool IsWiFiAvailable, out bool IsCellularNetworkAvailable) -> void
+*REMOVED*TIKSN.Network.InternetConnectivityState.InternetConnectivityState(bool IsInternetAvailable, bool IsWiFiAvailable, bool IsCellularNetworkAvailable) -> void
+*REMOVED*TIKSN.Network.InternetConnectivityState.InternetConnectivityState(TIKSN.Network.InternetConnectivityState! original) -> void
+*REMOVED*TIKSN.Network.InternetConnectivityState.IsCellularNetworkAvailable.get -> bool
+*REMOVED*TIKSN.Network.InternetConnectivityState.IsCellularNetworkAvailable.init -> void
+*REMOVED*TIKSN.Network.InternetConnectivityState.IsInternetAvailable.get -> bool
+*REMOVED*TIKSN.Network.InternetConnectivityState.IsInternetAvailable.init -> void
+*REMOVED*TIKSN.Network.InternetConnectivityState.IsWiFiAvailable.get -> bool
+*REMOVED*TIKSN.Network.InternetConnectivityState.IsWiFiAvailable.init -> void
+*REMOVED*TIKSN.Network.NetworkConnectivityService
+*REMOVED*TIKSN.Network.NetworkConnectivityService.NetworkConnectivityService() -> void
+*REMOVED*TIKSN.Network.NetworkConnectivityServiceBase
+*REMOVED*TIKSN.Network.NetworkConnectivityServiceBase.Dispose() -> void
+*REMOVED*TIKSN.Network.NetworkConnectivityServiceBase.GetInternetConnectivityState() -> TIKSN.Network.InternetConnectivityState!
+*REMOVED*TIKSN.Network.NetworkConnectivityServiceBase.InternalInternetConnectivityState.get -> System.IObservable<TIKSN.Network.InternetConnectivityState!>?
+*REMOVED*TIKSN.Network.NetworkConnectivityServiceBase.InternalInternetConnectivityState.set -> void
+*REMOVED*TIKSN.Network.NetworkConnectivityServiceBase.InternetConnectivityChanged.get -> System.IObservable<TIKSN.Network.InternetConnectivityState!>!
+*REMOVED*TIKSN.Network.NetworkConnectivityServiceBase.NetworkConnectivityServiceBase() -> void
+*REMOVED*virtual TIKSN.Network.InternetConnectivityState.<Clone>$() -> TIKSN.Network.InternetConnectivityState!
+*REMOVED*virtual TIKSN.Network.InternetConnectivityState.EqualityContract.get -> System.Type!
+*REMOVED*virtual TIKSN.Network.InternetConnectivityState.Equals(TIKSN.Network.InternetConnectivityState? other) -> bool
+*REMOVED*virtual TIKSN.Network.InternetConnectivityState.PrintMembers(System.Text.StringBuilder! builder) -> bool
+*REMOVED*virtual TIKSN.Network.NetworkConnectivityServiceBase.Dispose(bool disposing) -> void
