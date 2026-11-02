@@ -207,3 +207,25 @@ TIKSN.Integration.Messages.TenantRequestBehavior<TEntityIdentity, TTenantIdentit
 *REMOVED*virtual TIKSN.Network.InternetConnectivityState.Equals(TIKSN.Network.InternetConnectivityState? other) -> bool
 *REMOVED*virtual TIKSN.Network.InternetConnectivityState.PrintMembers(System.Text.StringBuilder! builder) -> bool
 *REMOVED*virtual TIKSN.Network.NetworkConnectivityServiceBase.Dispose(bool disposing) -> void
+const TIKSN.Identity.ServiceIdentity.ComponentSeparator = "." -> string!
+const TIKSN.Identity.ServiceIdentity.ComponentSeparatorChar = '.' -> char
+const TIKSN.Identity.ServiceIdentity.InstanceIdSeparator = ":" -> string!
+const TIKSN.Identity.ServiceIdentity.InstanceIdSeparatorChar = ':' -> char
+static TIKSN.Identity.ServiceIdentity.Parse(string! input) -> TIKSN.Identity.ServiceIdentity!
+static TIKSN.Identity.ServiceIdentity.Parse(string! s, System.IFormatProvider? provider) -> TIKSN.Identity.ServiceIdentity!
+static TIKSN.Identity.ServiceIdentity.Parse(System.ReadOnlySpan<char> input) -> TIKSN.Identity.ServiceIdentity!
+static TIKSN.Identity.ServiceIdentity.Parse(System.ReadOnlySpan<char> s, System.IFormatProvider? provider) -> TIKSN.Identity.ServiceIdentity!
+static TIKSN.Identity.ServiceIdentity.TryParse(string? input) -> LanguageExt.Option<TIKSN.Identity.ServiceIdentity!>
+static TIKSN.Identity.ServiceIdentity.TryParse(string? s, System.IFormatProvider? provider, out TIKSN.Identity.ServiceIdentity! result) -> bool
+static TIKSN.Identity.ServiceIdentity.TryParse(System.ReadOnlySpan<char> input) -> LanguageExt.Option<TIKSN.Identity.ServiceIdentity!>
+static TIKSN.Identity.ServiceIdentity.TryParse(System.ReadOnlySpan<char> s, System.IFormatProvider? provider, out TIKSN.Identity.ServiceIdentity! result) -> bool
+static TIKSN.Identity.ServiceInstanceId.Parse(string! s, System.IFormatProvider? provider) -> TIKSN.Identity.ServiceInstanceId!
+static TIKSN.Identity.ServiceInstanceId.Parse(System.ReadOnlySpan<char> input) -> TIKSN.Identity.ServiceInstanceId!
+static TIKSN.Identity.ServiceInstanceId.Parse(System.ReadOnlySpan<char> s, System.IFormatProvider? provider) -> TIKSN.Identity.ServiceInstanceId!
+static TIKSN.Identity.ServiceInstanceId.TryParse(string? s, System.IFormatProvider? provider, out TIKSN.Identity.ServiceInstanceId! result) -> bool
+static TIKSN.Identity.ServiceInstanceId.TryParse(System.ReadOnlySpan<char> input) -> LanguageExt.Option<TIKSN.Identity.ServiceInstanceId!>
+static TIKSN.Identity.ServiceInstanceId.TryParse(System.ReadOnlySpan<char> s, System.IFormatProvider? provider, out TIKSN.Identity.ServiceInstanceId! result) -> bool
+TIKSN.Identity.ServiceIdentity.ToString(string? format, System.IFormatProvider? formatProvider) -> string!
+TIKSN.Identity.ServiceIdentity.TryFormat(System.Span<char> destination, out int charsWritten, System.ReadOnlySpan<char> format, System.IFormatProvider? provider) -> bool
+TIKSN.Identity.ServiceInstanceId.ToString(string? format, System.IFormatProvider? formatProvider) -> string!
+TIKSN.Identity.ServiceInstanceId.TryFormat(System.Span<char> destination, out int charsWritten, System.ReadOnlySpan<char> format, System.IFormatProvider? provider) -> bool
