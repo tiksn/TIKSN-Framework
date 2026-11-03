@@ -229,3 +229,188 @@ TIKSN.Identity.ServiceIdentity.ToString(string? format, System.IFormatProvider? 
 TIKSN.Identity.ServiceIdentity.TryFormat(System.Span<char> destination, out int charsWritten, System.ReadOnlySpan<char> format, System.IFormatProvider? provider) -> bool
 TIKSN.Identity.ServiceInstanceId.ToString(string? format, System.IFormatProvider? formatProvider) -> string!
 TIKSN.Identity.ServiceInstanceId.TryFormat(System.Span<char> destination, out int charsWritten, System.ReadOnlySpan<char> format, System.IFormatProvider? provider) -> bool
+static TIKSN.Collections.Dyad<T>.implicit operator (T, T)(TIKSN.Collections.Dyad<T>! dyad) -> (T, T)
+static TIKSN.Collections.Dyad<T>.implicit operator TIKSN.Collections.Dyad<T>!((T Item1, T Item2) tuple) -> TIKSN.Collections.Dyad<T>!
+static TIKSN.Collections.Heptad<T>.implicit operator (T, T, T, T, T, T, T)(TIKSN.Collections.Heptad<T>! heptad) -> (T, T, T, T, T, T, T)
+static TIKSN.Collections.Heptad<T>.implicit operator TIKSN.Collections.Heptad<T>!((T Item1, T Item2, T Item3, T Item4, T Item5, T Item6, T Item7) tuple) -> TIKSN.Collections.Heptad<T>!
+static TIKSN.Collections.Hexad<T>.implicit operator (T, T, T, T, T, T)(TIKSN.Collections.Hexad<T>! hexad) -> (T, T, T, T, T, T)
+static TIKSN.Collections.Hexad<T>.implicit operator TIKSN.Collections.Hexad<T>!((T Item1, T Item2, T Item3, T Item4, T Item5, T Item6) tuple) -> TIKSN.Collections.Hexad<T>!
+static TIKSN.Collections.Octad<T, TRest>.implicit operator (T, T, T, T, T, T, T, TRest)(TIKSN.Collections.Octad<T, TRest>! octad) -> (T, T, T, T, T, T, T, TRest)
+static TIKSN.Collections.Octad<T, TRest>.implicit operator TIKSN.Collections.Octad<T, TRest>!((T Item1, T Item2, T Item3, T Item4, T Item5, T Item6, T Item7, TRest Item8) tuple) -> TIKSN.Collections.Octad<T, TRest>!
+static TIKSN.Collections.Octad<T>.implicit operator (T, T, T, T, T, T, T, T)(TIKSN.Collections.Octad<T>! octad) -> (T, T, T, T, T, T, T, T)
+static TIKSN.Collections.Octad<T>.implicit operator TIKSN.Collections.Octad<T>!((T Item1, T Item2, T Item3, T Item4, T Item5, T Item6, T Item7, T Item8) tuple) -> TIKSN.Collections.Octad<T>!
+static TIKSN.Collections.Pentad<T>.implicit operator (T, T, T, T, T)(TIKSN.Collections.Pentad<T>! pentad) -> (T, T, T, T, T)
+static TIKSN.Collections.Pentad<T>.implicit operator TIKSN.Collections.Pentad<T>!((T Item1, T Item2, T Item3, T Item4, T Item5) tuple) -> TIKSN.Collections.Pentad<T>!
+static TIKSN.Collections.Tetrad<T>.implicit operator (T, T, T, T)(TIKSN.Collections.Tetrad<T>! tetrad) -> (T, T, T, T)
+static TIKSN.Collections.Tetrad<T>.implicit operator TIKSN.Collections.Tetrad<T>!((T Item1, T Item2, T Item3, T Item4) tuple) -> TIKSN.Collections.Tetrad<T>!
+static TIKSN.Collections.Triad<T>.implicit operator (T, T, T)(TIKSN.Collections.Triad<T>! triad) -> (T, T, T)
+static TIKSN.Collections.Triad<T>.implicit operator TIKSN.Collections.Triad<T>!((T Item1, T Item2, T Item3) tuple) -> TIKSN.Collections.Triad<T>!
+TIKSN.Collections.Dyad<T>.All(System.Func<T, bool>! predicate) -> bool
+TIKSN.Collections.Dyad<T>.Any(System.Func<T, bool>! predicate) -> bool
+TIKSN.Collections.Dyad<T>.AreDistinct(System.Collections.Generic.IEqualityComparer<T>? comparer = null) -> bool
+TIKSN.Collections.Dyad<T>.AreEqual(System.Collections.Generic.IEqualityComparer<T>? comparer = null) -> bool
+TIKSN.Collections.Dyad<T>.Deconstruct(out T item1, out T item2) -> void
+TIKSN.Collections.Dyad<T>.First.get -> T
+TIKSN.Collections.Dyad<T>.Fold<TAccumulate>(TAccumulate initial, System.Func<TAccumulate, T, TAccumulate>! folder) -> TAccumulate
+TIKSN.Collections.Dyad<T>.Fold<TResult>(System.Func<T, T, TResult>! folder) -> TResult
+TIKSN.Collections.Dyad<T>.ForEach(System.Action<T>! action) -> void
+TIKSN.Collections.Dyad<T>.ForEachAsync(System.Func<T, System.Threading.CancellationToken, System.Threading.Tasks.Task!>! asyncAction, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+TIKSN.Collections.Dyad<T>.ForEachAsync(System.Func<T, System.Threading.Tasks.Task!>! asyncAction) -> System.Threading.Tasks.Task!
+TIKSN.Collections.Dyad<T>.Map<TResult>(System.Func<T, TResult>! selector) -> TIKSN.Collections.Dyad<TResult>!
+TIKSN.Collections.Dyad<T>.MapAsync<TResult>(System.Func<T, System.Threading.CancellationToken, System.Threading.Tasks.Task<TResult>!>! asyncSelector, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<TIKSN.Collections.Dyad<TResult>!>!
+TIKSN.Collections.Dyad<T>.MapAsync<TResult>(System.Func<T, System.Threading.Tasks.Task<TResult>!>! asyncSelector) -> System.Threading.Tasks.Task<TIKSN.Collections.Dyad<TResult>!>!
+TIKSN.Collections.Dyad<T>.Reverse() -> TIKSN.Collections.Dyad<T>!
+TIKSN.Collections.Dyad<T>.Second.get -> T
+TIKSN.Collections.Dyad<T>.Swap() -> TIKSN.Collections.Dyad<T>!
+TIKSN.Collections.Dyad<T>.ToValueTuple() -> (T, T)
+TIKSN.Collections.Dyad<T>.Zip<TOther, TResult>(TIKSN.Collections.Dyad<TOther>! other, System.Func<T, TOther, TResult>! zipper) -> TIKSN.Collections.Dyad<TResult>!
+TIKSN.Collections.Heptad<T>.All(System.Func<T, bool>! predicate) -> bool
+TIKSN.Collections.Heptad<T>.Any(System.Func<T, bool>! predicate) -> bool
+TIKSN.Collections.Heptad<T>.AreDistinct(System.Collections.Generic.IEqualityComparer<T>? comparer = null) -> bool
+TIKSN.Collections.Heptad<T>.AreEqual(System.Collections.Generic.IEqualityComparer<T>? comparer = null) -> bool
+TIKSN.Collections.Heptad<T>.Deconstruct(out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7) -> void
+TIKSN.Collections.Heptad<T>.Fifth.get -> T
+TIKSN.Collections.Heptad<T>.First.get -> T
+TIKSN.Collections.Heptad<T>.Fold<TAccumulate>(TAccumulate initial, System.Func<TAccumulate, T, TAccumulate>! folder) -> TAccumulate
+TIKSN.Collections.Heptad<T>.Fold<TResult>(System.Func<T, T, T, T, T, T, T, TResult>! folder) -> TResult
+TIKSN.Collections.Heptad<T>.ForEach(System.Action<T>! action) -> void
+TIKSN.Collections.Heptad<T>.ForEachAsync(System.Func<T, System.Threading.CancellationToken, System.Threading.Tasks.Task!>! asyncAction, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+TIKSN.Collections.Heptad<T>.ForEachAsync(System.Func<T, System.Threading.Tasks.Task!>! asyncAction) -> System.Threading.Tasks.Task!
+TIKSN.Collections.Heptad<T>.Fourth.get -> T
+TIKSN.Collections.Heptad<T>.Map<TResult>(System.Func<T, TResult>! selector) -> TIKSN.Collections.Heptad<TResult>!
+TIKSN.Collections.Heptad<T>.MapAsync<TResult>(System.Func<T, System.Threading.CancellationToken, System.Threading.Tasks.Task<TResult>!>! asyncSelector, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<TIKSN.Collections.Heptad<TResult>!>!
+TIKSN.Collections.Heptad<T>.MapAsync<TResult>(System.Func<T, System.Threading.Tasks.Task<TResult>!>! asyncSelector) -> System.Threading.Tasks.Task<TIKSN.Collections.Heptad<TResult>!>!
+TIKSN.Collections.Heptad<T>.Reverse() -> TIKSN.Collections.Heptad<T>!
+TIKSN.Collections.Heptad<T>.RotateLeft() -> TIKSN.Collections.Heptad<T>!
+TIKSN.Collections.Heptad<T>.RotateRight() -> TIKSN.Collections.Heptad<T>!
+TIKSN.Collections.Heptad<T>.Second.get -> T
+TIKSN.Collections.Heptad<T>.Seventh.get -> T
+TIKSN.Collections.Heptad<T>.Sixth.get -> T
+TIKSN.Collections.Heptad<T>.Third.get -> T
+TIKSN.Collections.Heptad<T>.ToValueTuple() -> (T, T, T, T, T, T, T)
+TIKSN.Collections.Heptad<T>.Zip<TOther, TResult>(TIKSN.Collections.Heptad<TOther>! other, System.Func<T, TOther, TResult>! zipper) -> TIKSN.Collections.Heptad<TResult>!
+TIKSN.Collections.Hexad<T>.All(System.Func<T, bool>! predicate) -> bool
+TIKSN.Collections.Hexad<T>.Any(System.Func<T, bool>! predicate) -> bool
+TIKSN.Collections.Hexad<T>.AreDistinct(System.Collections.Generic.IEqualityComparer<T>? comparer = null) -> bool
+TIKSN.Collections.Hexad<T>.AreEqual(System.Collections.Generic.IEqualityComparer<T>? comparer = null) -> bool
+TIKSN.Collections.Hexad<T>.Deconstruct(out T item1, out T item2, out T item3, out T item4, out T item5, out T item6) -> void
+TIKSN.Collections.Hexad<T>.Fifth.get -> T
+TIKSN.Collections.Hexad<T>.First.get -> T
+TIKSN.Collections.Hexad<T>.Fold<TAccumulate>(TAccumulate initial, System.Func<TAccumulate, T, TAccumulate>! folder) -> TAccumulate
+TIKSN.Collections.Hexad<T>.Fold<TResult>(System.Func<T, T, T, T, T, T, TResult>! folder) -> TResult
+TIKSN.Collections.Hexad<T>.ForEach(System.Action<T>! action) -> void
+TIKSN.Collections.Hexad<T>.ForEachAsync(System.Func<T, System.Threading.CancellationToken, System.Threading.Tasks.Task!>! asyncAction, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+TIKSN.Collections.Hexad<T>.ForEachAsync(System.Func<T, System.Threading.Tasks.Task!>! asyncAction) -> System.Threading.Tasks.Task!
+TIKSN.Collections.Hexad<T>.Fourth.get -> T
+TIKSN.Collections.Hexad<T>.Map<TResult>(System.Func<T, TResult>! selector) -> TIKSN.Collections.Hexad<TResult>!
+TIKSN.Collections.Hexad<T>.MapAsync<TResult>(System.Func<T, System.Threading.CancellationToken, System.Threading.Tasks.Task<TResult>!>! asyncSelector, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<TIKSN.Collections.Hexad<TResult>!>!
+TIKSN.Collections.Hexad<T>.MapAsync<TResult>(System.Func<T, System.Threading.Tasks.Task<TResult>!>! asyncSelector) -> System.Threading.Tasks.Task<TIKSN.Collections.Hexad<TResult>!>!
+TIKSN.Collections.Hexad<T>.Reverse() -> TIKSN.Collections.Hexad<T>!
+TIKSN.Collections.Hexad<T>.RotateLeft() -> TIKSN.Collections.Hexad<T>!
+TIKSN.Collections.Hexad<T>.RotateRight() -> TIKSN.Collections.Hexad<T>!
+TIKSN.Collections.Hexad<T>.Second.get -> T
+TIKSN.Collections.Hexad<T>.Sixth.get -> T
+TIKSN.Collections.Hexad<T>.Third.get -> T
+TIKSN.Collections.Hexad<T>.ToValueTuple() -> (T, T, T, T, T, T)
+TIKSN.Collections.Hexad<T>.Zip<TOther, TResult>(TIKSN.Collections.Hexad<TOther>! other, System.Func<T, TOther, TResult>! zipper) -> TIKSN.Collections.Hexad<TResult>!
+TIKSN.Collections.Octad<T, TRest>.Deconstruct(out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out TRest rest) -> void
+TIKSN.Collections.Octad<T, TRest>.Fifth.get -> T
+TIKSN.Collections.Octad<T, TRest>.First.get -> T
+TIKSN.Collections.Octad<T, TRest>.Fourth.get -> T
+TIKSN.Collections.Octad<T, TRest>.Second.get -> T
+TIKSN.Collections.Octad<T, TRest>.Seventh.get -> T
+TIKSN.Collections.Octad<T, TRest>.Sixth.get -> T
+TIKSN.Collections.Octad<T, TRest>.Third.get -> T
+TIKSN.Collections.Octad<T, TRest>.ToValueTuple() -> (T, T, T, T, T, T, T, TRest)
+TIKSN.Collections.Octad<T>.All(System.Func<T, bool>! predicate) -> bool
+TIKSN.Collections.Octad<T>.Any(System.Func<T, bool>! predicate) -> bool
+TIKSN.Collections.Octad<T>.AreDistinct(System.Collections.Generic.IEqualityComparer<T>? comparer = null) -> bool
+TIKSN.Collections.Octad<T>.AreEqual(System.Collections.Generic.IEqualityComparer<T>? comparer = null) -> bool
+TIKSN.Collections.Octad<T>.Deconstruct(out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out T item8) -> void
+TIKSN.Collections.Octad<T>.Eighth.get -> T
+TIKSN.Collections.Octad<T>.Fifth.get -> T
+TIKSN.Collections.Octad<T>.First.get -> T
+TIKSN.Collections.Octad<T>.Fold<TAccumulate>(TAccumulate initial, System.Func<TAccumulate, T, TAccumulate>! folder) -> TAccumulate
+TIKSN.Collections.Octad<T>.Fold<TResult>(System.Func<T, T, T, T, T, T, T, T, TResult>! folder) -> TResult
+TIKSN.Collections.Octad<T>.ForEach(System.Action<T>! action) -> void
+TIKSN.Collections.Octad<T>.ForEachAsync(System.Func<T, System.Threading.CancellationToken, System.Threading.Tasks.Task!>! asyncAction, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+TIKSN.Collections.Octad<T>.ForEachAsync(System.Func<T, System.Threading.Tasks.Task!>! asyncAction) -> System.Threading.Tasks.Task!
+TIKSN.Collections.Octad<T>.Fourth.get -> T
+TIKSN.Collections.Octad<T>.Map<TResult>(System.Func<T, TResult>! selector) -> TIKSN.Collections.Octad<TResult>!
+TIKSN.Collections.Octad<T>.MapAsync<TResult>(System.Func<T, System.Threading.CancellationToken, System.Threading.Tasks.Task<TResult>!>! asyncSelector, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<TIKSN.Collections.Octad<TResult>!>!
+TIKSN.Collections.Octad<T>.MapAsync<TResult>(System.Func<T, System.Threading.Tasks.Task<TResult>!>! asyncSelector) -> System.Threading.Tasks.Task<TIKSN.Collections.Octad<TResult>!>!
+TIKSN.Collections.Octad<T>.Reverse() -> TIKSN.Collections.Octad<T>!
+TIKSN.Collections.Octad<T>.RotateLeft() -> TIKSN.Collections.Octad<T>!
+TIKSN.Collections.Octad<T>.RotateRight() -> TIKSN.Collections.Octad<T>!
+TIKSN.Collections.Octad<T>.Second.get -> T
+TIKSN.Collections.Octad<T>.Seventh.get -> T
+TIKSN.Collections.Octad<T>.Sixth.get -> T
+TIKSN.Collections.Octad<T>.Third.get -> T
+TIKSN.Collections.Octad<T>.ToValueTuple() -> (T, T, T, T, T, T, T, T)
+TIKSN.Collections.Octad<T>.Zip<TOther, TResult>(TIKSN.Collections.Octad<TOther>! other, System.Func<T, TOther, TResult>! zipper) -> TIKSN.Collections.Octad<TResult>!
+TIKSN.Collections.Pentad<T>.All(System.Func<T, bool>! predicate) -> bool
+TIKSN.Collections.Pentad<T>.Any(System.Func<T, bool>! predicate) -> bool
+TIKSN.Collections.Pentad<T>.AreDistinct(System.Collections.Generic.IEqualityComparer<T>? comparer = null) -> bool
+TIKSN.Collections.Pentad<T>.AreEqual(System.Collections.Generic.IEqualityComparer<T>? comparer = null) -> bool
+TIKSN.Collections.Pentad<T>.Deconstruct(out T item1, out T item2, out T item3, out T item4, out T item5) -> void
+TIKSN.Collections.Pentad<T>.Fifth.get -> T
+TIKSN.Collections.Pentad<T>.First.get -> T
+TIKSN.Collections.Pentad<T>.Fold<TAccumulate>(TAccumulate initial, System.Func<TAccumulate, T, TAccumulate>! folder) -> TAccumulate
+TIKSN.Collections.Pentad<T>.Fold<TResult>(System.Func<T, T, T, T, T, TResult>! folder) -> TResult
+TIKSN.Collections.Pentad<T>.ForEach(System.Action<T>! action) -> void
+TIKSN.Collections.Pentad<T>.ForEachAsync(System.Func<T, System.Threading.CancellationToken, System.Threading.Tasks.Task!>! asyncAction, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+TIKSN.Collections.Pentad<T>.ForEachAsync(System.Func<T, System.Threading.Tasks.Task!>! asyncAction) -> System.Threading.Tasks.Task!
+TIKSN.Collections.Pentad<T>.Fourth.get -> T
+TIKSN.Collections.Pentad<T>.Map<TResult>(System.Func<T, TResult>! selector) -> TIKSN.Collections.Pentad<TResult>!
+TIKSN.Collections.Pentad<T>.MapAsync<TResult>(System.Func<T, System.Threading.CancellationToken, System.Threading.Tasks.Task<TResult>!>! asyncSelector, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<TIKSN.Collections.Pentad<TResult>!>!
+TIKSN.Collections.Pentad<T>.MapAsync<TResult>(System.Func<T, System.Threading.Tasks.Task<TResult>!>! asyncSelector) -> System.Threading.Tasks.Task<TIKSN.Collections.Pentad<TResult>!>!
+TIKSN.Collections.Pentad<T>.Reverse() -> TIKSN.Collections.Pentad<T>!
+TIKSN.Collections.Pentad<T>.RotateLeft() -> TIKSN.Collections.Pentad<T>!
+TIKSN.Collections.Pentad<T>.RotateRight() -> TIKSN.Collections.Pentad<T>!
+TIKSN.Collections.Pentad<T>.Second.get -> T
+TIKSN.Collections.Pentad<T>.Third.get -> T
+TIKSN.Collections.Pentad<T>.ToValueTuple() -> (T, T, T, T, T)
+TIKSN.Collections.Pentad<T>.Zip<TOther, TResult>(TIKSN.Collections.Pentad<TOther>! other, System.Func<T, TOther, TResult>! zipper) -> TIKSN.Collections.Pentad<TResult>!
+TIKSN.Collections.Tetrad<T>.All(System.Func<T, bool>! predicate) -> bool
+TIKSN.Collections.Tetrad<T>.Any(System.Func<T, bool>! predicate) -> bool
+TIKSN.Collections.Tetrad<T>.AreDistinct(System.Collections.Generic.IEqualityComparer<T>? comparer = null) -> bool
+TIKSN.Collections.Tetrad<T>.AreEqual(System.Collections.Generic.IEqualityComparer<T>? comparer = null) -> bool
+TIKSN.Collections.Tetrad<T>.Deconstruct(out T item1, out T item2, out T item3, out T item4) -> void
+TIKSN.Collections.Tetrad<T>.First.get -> T
+TIKSN.Collections.Tetrad<T>.Fold<TAccumulate>(TAccumulate initial, System.Func<TAccumulate, T, TAccumulate>! folder) -> TAccumulate
+TIKSN.Collections.Tetrad<T>.Fold<TResult>(System.Func<T, T, T, T, TResult>! folder) -> TResult
+TIKSN.Collections.Tetrad<T>.ForEach(System.Action<T>! action) -> void
+TIKSN.Collections.Tetrad<T>.ForEachAsync(System.Func<T, System.Threading.CancellationToken, System.Threading.Tasks.Task!>! asyncAction, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+TIKSN.Collections.Tetrad<T>.ForEachAsync(System.Func<T, System.Threading.Tasks.Task!>! asyncAction) -> System.Threading.Tasks.Task!
+TIKSN.Collections.Tetrad<T>.Fourth.get -> T
+TIKSN.Collections.Tetrad<T>.Map<TResult>(System.Func<T, TResult>! selector) -> TIKSN.Collections.Tetrad<TResult>!
+TIKSN.Collections.Tetrad<T>.MapAsync<TResult>(System.Func<T, System.Threading.CancellationToken, System.Threading.Tasks.Task<TResult>!>! asyncSelector, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<TIKSN.Collections.Tetrad<TResult>!>!
+TIKSN.Collections.Tetrad<T>.MapAsync<TResult>(System.Func<T, System.Threading.Tasks.Task<TResult>!>! asyncSelector) -> System.Threading.Tasks.Task<TIKSN.Collections.Tetrad<TResult>!>!
+TIKSN.Collections.Tetrad<T>.Reverse() -> TIKSN.Collections.Tetrad<T>!
+TIKSN.Collections.Tetrad<T>.RotateLeft() -> TIKSN.Collections.Tetrad<T>!
+TIKSN.Collections.Tetrad<T>.RotateRight() -> TIKSN.Collections.Tetrad<T>!
+TIKSN.Collections.Tetrad<T>.Second.get -> T
+TIKSN.Collections.Tetrad<T>.Third.get -> T
+TIKSN.Collections.Tetrad<T>.ToValueTuple() -> (T, T, T, T)
+TIKSN.Collections.Tetrad<T>.Zip<TOther, TResult>(TIKSN.Collections.Tetrad<TOther>! other, System.Func<T, TOther, TResult>! zipper) -> TIKSN.Collections.Tetrad<TResult>!
+TIKSN.Collections.Triad<T>.All(System.Func<T, bool>! predicate) -> bool
+TIKSN.Collections.Triad<T>.Any(System.Func<T, bool>! predicate) -> bool
+TIKSN.Collections.Triad<T>.AreDistinct(System.Collections.Generic.IEqualityComparer<T>? comparer = null) -> bool
+TIKSN.Collections.Triad<T>.AreEqual(System.Collections.Generic.IEqualityComparer<T>? comparer = null) -> bool
+TIKSN.Collections.Triad<T>.Deconstruct(out T item1, out T item2, out T item3) -> void
+TIKSN.Collections.Triad<T>.First.get -> T
+TIKSN.Collections.Triad<T>.Fold<TAccumulate>(TAccumulate initial, System.Func<TAccumulate, T, TAccumulate>! folder) -> TAccumulate
+TIKSN.Collections.Triad<T>.Fold<TResult>(System.Func<T, T, T, TResult>! folder) -> TResult
+TIKSN.Collections.Triad<T>.ForEach(System.Action<T>! action) -> void
+TIKSN.Collections.Triad<T>.ForEachAsync(System.Func<T, System.Threading.CancellationToken, System.Threading.Tasks.Task!>! asyncAction, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+TIKSN.Collections.Triad<T>.ForEachAsync(System.Func<T, System.Threading.Tasks.Task!>! asyncAction) -> System.Threading.Tasks.Task!
+TIKSN.Collections.Triad<T>.Map<TResult>(System.Func<T, TResult>! selector) -> TIKSN.Collections.Triad<TResult>!
+TIKSN.Collections.Triad<T>.MapAsync<TResult>(System.Func<T, System.Threading.CancellationToken, System.Threading.Tasks.Task<TResult>!>! asyncSelector, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<TIKSN.Collections.Triad<TResult>!>!
+TIKSN.Collections.Triad<T>.MapAsync<TResult>(System.Func<T, System.Threading.Tasks.Task<TResult>!>! asyncSelector) -> System.Threading.Tasks.Task<TIKSN.Collections.Triad<TResult>!>!
+TIKSN.Collections.Triad<T>.Reverse() -> TIKSN.Collections.Triad<T>!
+TIKSN.Collections.Triad<T>.RotateLeft() -> TIKSN.Collections.Triad<T>!
+TIKSN.Collections.Triad<T>.RotateRight() -> TIKSN.Collections.Triad<T>!
+TIKSN.Collections.Triad<T>.Second.get -> T
+TIKSN.Collections.Triad<T>.Third.get -> T
+TIKSN.Collections.Triad<T>.ToValueTuple() -> (T, T, T)
+TIKSN.Collections.Triad<T>.Zip<TOther, TResult>(TIKSN.Collections.Triad<TOther>! other, System.Func<T, TOther, TResult>! zipper) -> TIKSN.Collections.Triad<TResult>!
