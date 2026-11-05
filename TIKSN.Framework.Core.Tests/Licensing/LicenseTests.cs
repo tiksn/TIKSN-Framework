@@ -52,6 +52,110 @@ public class LicenseTests
     }
 
     [Fact]
+    public void GivenAllBitsSetDescriptorInEnvelope_WhenLicenseCreated_ThenItShouldFail()
+    {
+        // Arrange
+
+        this.Arrange(
+            "RSA",
+            out var licenseFactory,
+            out _,
+            out _,
+            out var terms,
+            out var entitlements,
+            out var publicCertificate,
+            out var privateCertificate);
+        var envelope = CreateEnvelope(licenseFactory, terms, entitlements, privateCertificate);
+        envelope.Message.Discriminator = ByteString.CopyFrom(Guid.AllBitsSet.ToByteArray());
+        var data = Resign(envelope, "RSA", privateCertificate);
+
+        // Act
+
+        var result = licenseFactory.Create(data, publicCertificate);
+
+        // Assert
+
+        this.AssertFail(result);
+    }
+
+    [Fact]
+    public void GivenAllBitsSetDescriptor_WhenLicenseCreated_ThenItShouldFail()
+    {
+        // Arrange
+
+        this.Arrange(
+            "RSA",
+            out var licenseFactory,
+            out _,
+            out _,
+            out var terms,
+            out var entitlements,
+            out _,
+            out var privateCertificate,
+            descriptor: Guid.AllBitsSet);
+
+        // Act
+
+        var result = licenseFactory.Create(terms, entitlements, privateCertificate);
+
+        // Assert
+
+        this.AssertFail(result);
+    }
+
+    [Fact]
+    public void GivenEmptyDescriptorInEnvelope_WhenLicenseCreated_ThenItShouldFail()
+    {
+        // Arrange
+
+        this.Arrange(
+            "RSA",
+            out var licenseFactory,
+            out _,
+            out _,
+            out var terms,
+            out var entitlements,
+            out var publicCertificate,
+            out var privateCertificate);
+        var envelope = CreateEnvelope(licenseFactory, terms, entitlements, privateCertificate);
+        envelope.Message.Discriminator = ByteString.CopyFrom(Guid.Empty.ToByteArray());
+        var data = Resign(envelope, "RSA", privateCertificate);
+
+        // Act
+
+        var result = licenseFactory.Create(data, publicCertificate);
+
+        // Assert
+
+        this.AssertFail(result);
+    }
+
+    [Fact]
+    public void GivenEmptyDescriptor_WhenLicenseCreated_ThenItShouldFail()
+    {
+        // Arrange
+
+        this.Arrange(
+            "RSA",
+            out var licenseFactory,
+            out _,
+            out _,
+            out var terms,
+            out var entitlements,
+            out _,
+            out var privateCertificate,
+            descriptor: Guid.Empty);
+
+        // Act
+
+        var result = licenseFactory.Create(terms, entitlements, privateCertificate);
+
+        // Assert
+
+        this.AssertFail(result);
+    }
+
+    [Fact]
     public void GivenEmptyEnvelope_WhenLicenseCreated_ThenItShouldFail()
     {
         // Arrange

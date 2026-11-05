@@ -317,6 +317,7 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
 
         if (envelope.Message.Discriminator.Length != Guid.Empty.ToByteArray().Length ||
             envelope.Message.Discriminator.All(x => x == byte.MinValue) ||
+            envelope.Message.Discriminator.All(x => x == byte.MaxValue) ||
             !envelope.Message.Discriminator.SequenceEqual(this.licenseDescriptor.Discriminator.ToByteArray()))
         {
             return Error.New(13127362, "License Descriptor is invalid");
@@ -374,6 +375,11 @@ public class LicenseFactory<TEntitlements, TEntitlementsData> : ILicenseFactory<
         if (this.licenseDescriptor.Discriminator == Guid.Empty)
         {
             errors.Add(Error.New(13127674, "'Discriminator' should not be empty GUID"));
+        }
+
+        if (this.licenseDescriptor.Discriminator == Guid.AllBitsSet)
+        {
+            errors.Add(Error.New(13127675, "'Discriminator' should not be all bits set GUID"));
         }
 
         envelope.Message = new LicenseMessage
