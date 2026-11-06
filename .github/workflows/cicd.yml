@@ -184,6 +184,9 @@ jobs:
     environment:
       name: "NuGet"
       url: https://www.nuget.org/packages/TIKSN-Framework/
+    permissions:
+      contents: read
+      id-token: write
     runs-on: windows-latest
     steps:
       - name: "Checkout"
@@ -203,8 +206,13 @@ jobs:
           if (-not (Get-Module -ListAvailable -Name InvokeBuild)) {
             Install-Module -Name InvokeBuild -Force -Scope CurrentUser
           }
+      - name: "NuGet Login"
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
+        id: login
+        with:
+          user: tiksn
       - name: "Publish"
         env:
-          NUGET_API_KEY: ${{secrets.NUGET_API_KEY}}
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
         shell: pwsh
         run: .\publish.ps1 -Instance ${{github.run_id}}
