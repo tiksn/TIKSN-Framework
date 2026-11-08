@@ -414,3 +414,7 @@ TIKSN.Collections.Triad<T>.Second.get -> T
 TIKSN.Collections.Triad<T>.Third.get -> T
 TIKSN.Collections.Triad<T>.ToValueTuple() -> (T, T, T)
 TIKSN.Collections.Triad<T>.Zip<TOther, TResult>(TIKSN.Collections.Triad<TOther>! other, System.Func<T, TOther, TResult>! zipper) -> TIKSN.Collections.Triad<TResult>!
+TIKSN.Mapping.DynamicMapper<TSource, TDestination>
+TIKSN.Mapping.DynamicMapper<TSource, TDestination>.DynamicMapper() -> void
+TIKSN.Mapping.DynamicMapper<TSource, TDestination>.Map(TSource source) -> TDestination
+TIKSN.Mapping.DynamicMapper<TSource, TDestination>.MapAsync(TSource source, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<TDestination>!
