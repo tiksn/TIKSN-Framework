@@ -24,6 +24,7 @@
     <PackageReference Include="Azure.Storage.Blobs" />
     <PackageReference Include="BouncyCastle.Cryptography" />
     <PackageReference Include="DocumentFormat.OpenXml" />
+    <PackageReference Include="DotNext.Metaprogramming" />
     <PackageReference Include="Google.Protobuf" />
     <PackageReference Include="Grpc.Tools">
       <PrivateAssets>all</PrivateAssets>
