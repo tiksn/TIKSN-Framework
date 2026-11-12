@@ -13,7 +13,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
     <description>
-      TIKSN Framework is a .NET 10 application framework and utility library for building modular
+      TIKSN Framework is a .NET 11 application framework and utility library for building modular
       services, command-line tools, data-driven applications, and .NET MAUI apps. It includes
       dependency injection helpers, Autofac modules, repository, query repository, file repository,
       stream repository, pagination, unit-of-work abstractions, Entity Framework Core, Azure Table
@@ -31,7 +31,7 @@
     <releaseNotes>Release Notes: https://github.com/tiksn/TIKSN-Framework/releases</releaseNotes>
     <language />
     <tags>
-      dotnet dotnet10 framework modularity dependency-injection autofac maui android ios maccatalyst
+      dotnet dotnet11 framework modularity dependency-injection autofac maui android ios maccatalyst
       windows repository query-repository file-repository stream-repository unit-of-work pagination
       entity-framework-core azure-table azure-blob azure-storage mongodb litedb ravendb caching
       hybrid-cache distributed-cache finance money currency pricing foreign-exchange central-bank
@@ -51,36 +51,36 @@
     <!-- Language Localization will be filled by build script -->
     <!-- Region Localization will be filled by build script -->
     <!-- Platform: .NET -->
-    <file src="any\TIKSN.Framework.Core.dll" target="lib\net10.0" />
-    <file src="any\TIKSN.Framework.Core.xml" target="lib\net10.0" />
-    <file src="any\TIKSN.Framework.Core.pdb" target="lib\net10.0" />
+    <file src="any\TIKSN.Framework.Core.dll" target="lib\net11.0" />
+    <file src="any\TIKSN.Framework.Core.xml" target="lib\net11.0" />
+    <file src="any\TIKSN.Framework.Core.pdb" target="lib\net11.0" />
     <!-- Platform: .NET Android -->
-    <file src="any-android\TIKSN.Framework.Core.dll" target="lib\net10.0-android21.0" />
-    <file src="any-android\TIKSN.Framework.Core.xml" target="lib\net10.0-android21.0" />
-    <file src="any-android\TIKSN.Framework.Core.pdb" target="lib\net10.0-android21.0" />
-    <file src="any-android\TIKSN.Framework.Maui.dll" target="lib\net10.0-android21.0" />
-    <file src="any-android\TIKSN.Framework.Maui.xml" target="lib\net10.0-android21.0" />
-    <file src="any-android\TIKSN.Framework.Maui.pdb" target="lib\net10.0-android21.0" />
+    <file src="any-android\TIKSN.Framework.Core.dll" target="lib\net11.0-android21.0" />
+    <file src="any-android\TIKSN.Framework.Core.xml" target="lib\net11.0-android21.0" />
+    <file src="any-android\TIKSN.Framework.Core.pdb" target="lib\net11.0-android21.0" />
+    <file src="any-android\TIKSN.Framework.Maui.dll" target="lib\net11.0-android21.0" />
+    <file src="any-android\TIKSN.Framework.Maui.xml" target="lib\net11.0-android21.0" />
+    <file src="any-android\TIKSN.Framework.Maui.pdb" target="lib\net11.0-android21.0" />
     <!-- Platform: .NET iOS -->
-    <file src="any-ios\TIKSN.Framework.Core.dll" target="lib\net10.0-ios14.2" />
-    <file src="any-ios\TIKSN.Framework.Core.xml" target="lib\net10.0-ios14.2" />
-    <file src="any-ios\TIKSN.Framework.Core.pdb" target="lib\net10.0-ios14.2" />
-    <file src="any-ios\TIKSN.Framework.Maui.dll" target="lib\net10.0-ios14.2" />
-    <file src="any-ios\TIKSN.Framework.Maui.xml" target="lib\net10.0-ios14.2" />
-    <file src="any-ios\TIKSN.Framework.Maui.pdb" target="lib\net10.0-ios14.2" />
+    <file src="any-ios\TIKSN.Framework.Core.dll" target="lib\net11.0-ios14.2" />
+    <file src="any-ios\TIKSN.Framework.Core.xml" target="lib\net11.0-ios14.2" />
+    <file src="any-ios\TIKSN.Framework.Core.pdb" target="lib\net11.0-ios14.2" />
+    <file src="any-ios\TIKSN.Framework.Maui.dll" target="lib\net11.0-ios14.2" />
+    <file src="any-ios\TIKSN.Framework.Maui.xml" target="lib\net11.0-ios14.2" />
+    <file src="any-ios\TIKSN.Framework.Maui.pdb" target="lib\net11.0-ios14.2" />
     <!-- Platform: .NET Mac Catalyst -->
-    <file src="any-maccatalyst\TIKSN.Framework.Core.dll" target="lib\net10.0-maccatalyst14.0" />
-    <file src="any-maccatalyst\TIKSN.Framework.Core.xml" target="lib\net10.0-maccatalyst14.0" />
-    <file src="any-maccatalyst\TIKSN.Framework.Core.pdb" target="lib\net10.0-maccatalyst14.0" />
-    <file src="any-maccatalyst\TIKSN.Framework.Maui.dll" target="lib\net10.0-maccatalyst14.0" />
-    <file src="any-maccatalyst\TIKSN.Framework.Maui.xml" target="lib\net10.0-maccatalyst14.0" />
-    <file src="any-maccatalyst\TIKSN.Framework.Maui.pdb" target="lib\net10.0-maccatalyst14.0" />
+    <file src="any-maccatalyst\TIKSN.Framework.Core.dll" target="lib\net11.0-maccatalyst14.0" />
+    <file src="any-maccatalyst\TIKSN.Framework.Core.xml" target="lib\net11.0-maccatalyst14.0" />
+    <file src="any-maccatalyst\TIKSN.Framework.Core.pdb" target="lib\net11.0-maccatalyst14.0" />
+    <file src="any-maccatalyst\TIKSN.Framework.Maui.dll" target="lib\net11.0-maccatalyst14.0" />
+    <file src="any-maccatalyst\TIKSN.Framework.Maui.xml" target="lib\net11.0-maccatalyst14.0" />
+    <file src="any-maccatalyst\TIKSN.Framework.Maui.pdb" target="lib\net11.0-maccatalyst14.0" />
     <!-- Platform: .NET Windows -->
-    <file src="any-windows\TIKSN.Framework.Core.dll" target="lib\net10.0-windows10.0.19041.0" />
-    <file src="any-windows\TIKSN.Framework.Core.xml" target="lib\net10.0-windows10.0.19041.0" />
-    <file src="any-windows\TIKSN.Framework.Core.pdb" target="lib\net10.0-windows10.0.19041.0" />
-    <file src="any-windows\TIKSN.Framework.Maui.dll" target="lib\net10.0-windows10.0.19041.0" />
-    <file src="any-windows\TIKSN.Framework.Maui.xml" target="lib\net10.0-windows10.0.19041.0" />
-    <file src="any-windows\TIKSN.Framework.Maui.pdb" target="lib\net10.0-windows10.0.19041.0" />
+    <file src="any-windows\TIKSN.Framework.Core.dll" target="lib\net11.0-windows10.0.19041.0" />
+    <file src="any-windows\TIKSN.Framework.Core.xml" target="lib\net11.0-windows10.0.19041.0" />
+    <file src="any-windows\TIKSN.Framework.Core.pdb" target="lib\net11.0-windows10.0.19041.0" />
+    <file src="any-windows\TIKSN.Framework.Maui.dll" target="lib\net11.0-windows10.0.19041.0" />
+    <file src="any-windows\TIKSN.Framework.Maui.xml" target="lib\net11.0-windows10.0.19041.0" />
+    <file src="any-windows\TIKSN.Framework.Maui.pdb" target="lib\net11.0-windows10.0.19041.0" />
   </files>
 </package>

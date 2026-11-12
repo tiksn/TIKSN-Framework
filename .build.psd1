@@ -24,17 +24,17 @@
     }
 
     MauiBuildFrameworks        = @{
-        Ios         = 'net10.0-ios'
-        MacCatalyst = 'net10.0-maccatalyst'
-        Android     = 'net10.0-android'
-        Windows     = 'net10.0-windows10.0.19041.0'
+        Ios         = 'net11.0-ios'
+        MacCatalyst = 'net11.0-maccatalyst'
+        Android     = 'net11.0-android'
+        Windows     = 'net11.0-windows10.0.19041.0'
     }
 
     DependencyTargetFrameworks = @{
-        Core        = 'net10.0'
-        Android     = 'net10.0-android21.0'
-        Ios         = 'net10.0-ios14.2'
-        MacCatalyst = 'net10.0-maccatalyst14.0'
-        Windows     = 'net10.0-windows10.0.19041.0'
+        Core        = 'net11.0'
+        Android     = 'net11.0-android21.0'
+        Ios         = 'net11.0-ios14.2'
+        MacCatalyst = 'net11.0-maccatalyst14.0'
+        Windows     = 'net11.0-windows10.0.19041.0'
     }
 }
