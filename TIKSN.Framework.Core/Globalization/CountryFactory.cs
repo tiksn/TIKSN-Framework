@@ -128,7 +128,7 @@ public class CountryFactory : MemoryCacheDecoratorBase<CountryInfo>, ICountryFac
         var regionsByPrincipalRegion = this.GetRegionsByPrincipalRegion();
         if (!regionsByPrincipalRegion.TryGetValue(principalRegion, out var regions))
         {
-            regions = new HashSet<RegionInfo>([region]);
+            regions = [with([region])];
         }
 
         ValidateCountryRegionMapping(principalRegion, regions);

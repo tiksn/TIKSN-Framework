@@ -51,10 +51,12 @@ public class PsychologicalPricingStrategyTests
         var currency = new CurrencyInfo("USD");
         var strategy = new PsychologicalPricingStrategy();
 
-        var actualEstimatedPrice = strategy.EstimateMarketPrice(new Money(currency, (decimal)originalPrice));
+        var actualEstimatedPrice = strategy.EstimateMarketPrice(new Money(currency,
+            Math.Round((decimal)originalPrice, 2, MidpointRounding.AwayFromZero)));
 
         actualEstimatedPrice.Currency.ShouldBe(currency);
-        actualEstimatedPrice.Amount.ShouldBe((decimal)expectedEstimatedPrice);
+        actualEstimatedPrice.Amount.ShouldBe(Math.Round((decimal)expectedEstimatedPrice, 2,
+            MidpointRounding.AwayFromZero));
     }
 
     [Fact]

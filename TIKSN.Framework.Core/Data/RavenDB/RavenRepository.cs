@@ -73,7 +73,7 @@ public class RavenRepository<TEntity, TIdentity> : IRavenRepository<TEntity, TId
 
     public IAsyncEnumerable<TEntity> StreamAllAsync(CancellationToken cancellationToken) =>
         this.SessionProvider.Session.Query<TEntity>(collectionName: this.CollectionName)
-            .ToAsyncEnumerable();
+            .AsAsyncEnumerable();
 
     public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken) =>
         this.SessionProvider.Session.StoreAsync(entity, this.CreateDocumentId(entity.ID), cancellationToken);
