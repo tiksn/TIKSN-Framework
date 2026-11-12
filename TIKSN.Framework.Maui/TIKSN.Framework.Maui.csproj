@@ -50,7 +50,6 @@
     <ProjectReference Include="..\TIKSN.Framework.Core\TIKSN.Framework.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="ReactiveUI.Maui" />
     <PackageReference Include="Microsoft.Maui.Controls" />
     <PackageReference Include="CommunityToolkit.Maui" />
