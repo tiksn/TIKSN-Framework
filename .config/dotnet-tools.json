@@ -2,13 +2,6 @@
   "version": 1,
   "isRoot": true,
   "tools": {
-    "snitch": {
-      "version": "2.0.0",
-      "commands": [
-        "snitch"
-      ],
-      "rollForward": false
-    },
     "dotnet-example": {
       "version": "5.0.0",
       "commands": [
