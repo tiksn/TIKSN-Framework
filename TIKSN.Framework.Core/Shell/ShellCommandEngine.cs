@@ -192,7 +192,7 @@ public partial class ShellCommandEngine : IShellCommandEngine
     private static void AppendExceptionMessage(StringBuilder messageBuilder, Exception exception)
     {
         _ = messageBuilder.Append(exception.Message);
-        if (exception.Message.EndsWith('.'))
+        if (exception.Message.EndsWith('.', StringComparison.Ordinal))
         {
             _ = messageBuilder.Append(' ');
         }

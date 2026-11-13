@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <NeutralLanguage>en</NeutralLanguage>
-    <DocumentationFile>bin\$(Configuration)\net10.0\TIKSN.LanguageLocalization.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\net11.0\TIKSN.LanguageLocalization.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>

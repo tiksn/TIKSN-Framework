@@ -10,7 +10,7 @@ public class UriTemplate
     public UriTemplate(string template)
     {
         this.template = template;
-        this.values = new Dictionary<string, string>(StringComparer.Ordinal);
+        this.values = [with(StringComparer.Ordinal)];
     }
 
     public Uri Compose()

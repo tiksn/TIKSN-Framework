@@ -26,13 +26,13 @@ AI-assisted shell-command discovery is included in `TIKSN-Framework`. It uses
 
 Supported package target frameworks:
 
-- `net10.0`
-- `net10.0-android21.0`
-- `net10.0-ios14.2`
-- `net10.0-maccatalyst14.0`
-- `net10.0-windows10.0.19041.0`
+- `net11.0`
+- `net11.0-android21.0`
+- `net11.0-ios14.2`
+- `net11.0-maccatalyst14.0`
+- `net11.0-windows10.0.19041.0`
 
-The repository uses the .NET SDK pinned in `global.json` (`10.0.100`, rolling forward to the latest major SDK when available).
+The repository uses the .NET SDK pinned in `global.json` (`11.0.100`, rolling forward to the latest major SDK when available).
 
 ## Feature Areas
 

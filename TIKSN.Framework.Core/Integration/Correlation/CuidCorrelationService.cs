@@ -148,7 +148,7 @@ public class CuidCorrelationService : ICorrelationService
         return new CorrelationId(new string(charArrayRepresentation), binaryRepresentation);
     }
 
-    private static void ConvertBytesToChars(Span<char> chars, Span<byte> bytes)
+    private static void ConvertBytesToChars(Span<char> chars, ReadOnlySpan<byte> bytes)
     {
         var value = 0L;
 
@@ -161,7 +161,7 @@ public class CuidCorrelationService : ICorrelationService
         WriteBase36(value, chars);
     }
 
-    private static void ConvertCharsToBytes(Span<char> chars, Span<byte> bytes)
+    private static void ConvertCharsToBytes(ReadOnlySpan<char> chars, Span<byte> bytes)
     {
         var value = 0L;
 
