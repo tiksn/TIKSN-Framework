@@ -33,8 +33,8 @@
     DependencyTargetFrameworks = @{
         Core        = 'net11.0'
         Android     = 'net11.0-android21.0'
-        Ios         = 'net11.0-ios14.2'
-        MacCatalyst = 'net11.0-maccatalyst14.0'
+        Ios         = 'net11.0-ios15.0'
+        MacCatalyst = 'net11.0-maccatalyst17.0'
         Windows     = 'net11.0-windows10.0.19041.0'
     }
 }
