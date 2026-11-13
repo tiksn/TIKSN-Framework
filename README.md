@@ -28,8 +28,8 @@ Supported package target frameworks:
 
 - `net11.0`
 - `net11.0-android21.0`
-- `net11.0-ios14.2`
-- `net11.0-maccatalyst14.0`
+- `net11.0-ios15.0`
+- `net11.0-maccatalyst17.0`
 - `net11.0-windows10.0.19041.0`
 
 The repository uses the .NET SDK pinned in `global.json` (`11.0.100`, rolling forward to the latest major SDK when available).
