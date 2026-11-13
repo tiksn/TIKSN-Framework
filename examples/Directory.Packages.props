@@ -9,6 +9,6 @@
     <PackageVersion Include="Microsoft.Maui.Controls" Version="11.0.10" />
     <PackageVersion Include="System.Security.Cryptography.Pkcs" Version="11.0.0" />
     <PackageVersion Include="System.Security.Cryptography.Xml" Version="11.0.0" />
-    <PackageVersion Include="TIKSN-Framework" Version="6.0.0" />
+    <PackageVersion Include="TIKSN-Framework" Version="6.0.1" />
   </ItemGroup>
 </Project>
