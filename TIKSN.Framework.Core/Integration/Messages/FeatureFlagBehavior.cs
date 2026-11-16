@@ -122,7 +122,7 @@ public class FeatureFlagBehavior<TRequest, TResponse>
             throw new ArgumentException("Feature requirement must contain a case.", nameof(requirement));
         }
 
-        return requirement switch
+        return requirement.Value switch
         {
             FeatureFlagEnabledRequirement featureFlag => await this.IsFeatureEnabledAsync(
                     featureFlag,

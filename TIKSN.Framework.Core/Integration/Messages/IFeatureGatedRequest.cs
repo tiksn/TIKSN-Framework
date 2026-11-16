@@ -8,10 +8,12 @@ public sealed record AnyFeatureFlagRequirement(Seq<FeatureFlagRequirement> Requi
 
 public sealed record AllFeatureFlagsRequirement(Seq<FeatureFlagRequirement> Requirements);
 
+#pragma warning disable CA1815
 public union FeatureFlagRequirement(
 FeatureFlagEnabledRequirement,
 AnyFeatureFlagRequirement,
 AllFeatureFlagsRequirement);
+#pragma warning restore CA1815
 
 public interface IFeatureGatedRequest
 {
