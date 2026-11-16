@@ -231,7 +231,7 @@ public sealed class ConfigurationFeatureProvider : FeatureProvider
             errorMessage: variant is null
                 ? $"Flag '{flagKey}' value '{valueSection.Value}' cannot be parsed as an integer."
                 : $"Flag '{flagKey}' variant '{variant}' value '{valueSection.Value}' " +
-                  "cannot be parsed as an integer."));
+                    "cannot be parsed as an integer."));
     }
 
     public override Task<ResolutionDetails<string>> ResolveStringValueAsync(
