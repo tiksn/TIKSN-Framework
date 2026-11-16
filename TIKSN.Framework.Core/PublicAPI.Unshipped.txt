@@ -125,8 +125,49 @@ TIKSN.Integration.Messages.FeatureTransactionContextBehavior<TTenantIdentity, TU
 TIKSN.Integration.Messages.FeatureTransactionContextBehavior<TTenantIdentity, TUserIdentity, TRequest, TResponse>.FeatureTransactionContextBehavior(OpenFeature.Model.ITransactionContextPropagator! transactionContextPropagator) -> void
 TIKSN.Integration.Messages.FeatureTransactionContextBehavior<TTenantIdentity, TUserIdentity, TRequest, TResponse>.Handle(TRequest request, MediatR.RequestHandlerDelegate<TResponse>! next, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<TResponse>!
 TIKSN.Integration.Messages.IFeatureGatedRequest
-TIKSN.Integration.Messages.IFeatureGatedRequest.Features.get -> LanguageExt.Seq<string!>
-TIKSN.Integration.Messages.IFeatureGatedRequest.RequireAllFeatures.get -> bool
+TIKSN.Integration.Messages.AllFeatureFlagsRequirement
+TIKSN.Integration.Messages.AllFeatureFlagsRequirement.AllFeatureFlagsRequirement(LanguageExt.Seq<TIKSN.Integration.Messages.FeatureFlagRequirement> Requirements) -> void
+TIKSN.Integration.Messages.AllFeatureFlagsRequirement.Deconstruct(out LanguageExt.Seq<TIKSN.Integration.Messages.FeatureFlagRequirement> Requirements) -> void
+TIKSN.Integration.Messages.AllFeatureFlagsRequirement.Equals(TIKSN.Integration.Messages.AllFeatureFlagsRequirement? other) -> bool
+override TIKSN.Integration.Messages.AllFeatureFlagsRequirement.Equals(object? obj) -> bool
+override TIKSN.Integration.Messages.AllFeatureFlagsRequirement.GetHashCode() -> int
+TIKSN.Integration.Messages.AllFeatureFlagsRequirement.Requirements.get -> LanguageExt.Seq<TIKSN.Integration.Messages.FeatureFlagRequirement>
+TIKSN.Integration.Messages.AllFeatureFlagsRequirement.Requirements.init -> void
+TIKSN.Integration.Messages.AllFeatureFlagsRequirement.<Clone>$() -> TIKSN.Integration.Messages.AllFeatureFlagsRequirement!
+override TIKSN.Integration.Messages.AllFeatureFlagsRequirement.ToString() -> string!
+static TIKSN.Integration.Messages.AllFeatureFlagsRequirement.operator !=(TIKSN.Integration.Messages.AllFeatureFlagsRequirement? left, TIKSN.Integration.Messages.AllFeatureFlagsRequirement? right) -> bool
+static TIKSN.Integration.Messages.AllFeatureFlagsRequirement.operator ==(TIKSN.Integration.Messages.AllFeatureFlagsRequirement? left, TIKSN.Integration.Messages.AllFeatureFlagsRequirement? right) -> bool
+TIKSN.Integration.Messages.AnyFeatureFlagRequirement
+TIKSN.Integration.Messages.AnyFeatureFlagRequirement.AnyFeatureFlagRequirement(LanguageExt.Seq<TIKSN.Integration.Messages.FeatureFlagRequirement> Requirements) -> void
+TIKSN.Integration.Messages.AnyFeatureFlagRequirement.Deconstruct(out LanguageExt.Seq<TIKSN.Integration.Messages.FeatureFlagRequirement> Requirements) -> void
+TIKSN.Integration.Messages.AnyFeatureFlagRequirement.Equals(TIKSN.Integration.Messages.AnyFeatureFlagRequirement? other) -> bool
+override TIKSN.Integration.Messages.AnyFeatureFlagRequirement.Equals(object? obj) -> bool
+override TIKSN.Integration.Messages.AnyFeatureFlagRequirement.GetHashCode() -> int
+TIKSN.Integration.Messages.AnyFeatureFlagRequirement.Requirements.get -> LanguageExt.Seq<TIKSN.Integration.Messages.FeatureFlagRequirement>
+TIKSN.Integration.Messages.AnyFeatureFlagRequirement.Requirements.init -> void
+TIKSN.Integration.Messages.AnyFeatureFlagRequirement.<Clone>$() -> TIKSN.Integration.Messages.AnyFeatureFlagRequirement!
+override TIKSN.Integration.Messages.AnyFeatureFlagRequirement.ToString() -> string!
+static TIKSN.Integration.Messages.AnyFeatureFlagRequirement.operator !=(TIKSN.Integration.Messages.AnyFeatureFlagRequirement? left, TIKSN.Integration.Messages.AnyFeatureFlagRequirement? right) -> bool
+static TIKSN.Integration.Messages.AnyFeatureFlagRequirement.operator ==(TIKSN.Integration.Messages.AnyFeatureFlagRequirement? left, TIKSN.Integration.Messages.AnyFeatureFlagRequirement? right) -> bool
+TIKSN.Integration.Messages.FeatureFlagEnabledRequirement
+TIKSN.Integration.Messages.FeatureFlagEnabledRequirement.FeatureFlagEnabledRequirement(string! FeatureFlagKey) -> void
+TIKSN.Integration.Messages.FeatureFlagEnabledRequirement.FeatureFlagKey.get -> string!
+TIKSN.Integration.Messages.FeatureFlagEnabledRequirement.FeatureFlagKey.init -> void
+TIKSN.Integration.Messages.FeatureFlagEnabledRequirement.Deconstruct(out string! FeatureFlagKey) -> void
+TIKSN.Integration.Messages.FeatureFlagEnabledRequirement.Equals(TIKSN.Integration.Messages.FeatureFlagEnabledRequirement? other) -> bool
+override TIKSN.Integration.Messages.FeatureFlagEnabledRequirement.Equals(object? obj) -> bool
+override TIKSN.Integration.Messages.FeatureFlagEnabledRequirement.GetHashCode() -> int
+TIKSN.Integration.Messages.FeatureFlagEnabledRequirement.<Clone>$() -> TIKSN.Integration.Messages.FeatureFlagEnabledRequirement!
+override TIKSN.Integration.Messages.FeatureFlagEnabledRequirement.ToString() -> string!
+static TIKSN.Integration.Messages.FeatureFlagEnabledRequirement.operator !=(TIKSN.Integration.Messages.FeatureFlagEnabledRequirement? left, TIKSN.Integration.Messages.FeatureFlagEnabledRequirement? right) -> bool
+static TIKSN.Integration.Messages.FeatureFlagEnabledRequirement.operator ==(TIKSN.Integration.Messages.FeatureFlagEnabledRequirement? left, TIKSN.Integration.Messages.FeatureFlagEnabledRequirement? right) -> bool
+TIKSN.Integration.Messages.FeatureFlagRequirement
+TIKSN.Integration.Messages.FeatureFlagRequirement.FeatureFlagRequirement(TIKSN.Integration.Messages.AllFeatureFlagsRequirement! value) -> void
+TIKSN.Integration.Messages.FeatureFlagRequirement.FeatureFlagRequirement(TIKSN.Integration.Messages.AnyFeatureFlagRequirement! value) -> void
+TIKSN.Integration.Messages.FeatureFlagRequirement.FeatureFlagRequirement(TIKSN.Integration.Messages.FeatureFlagEnabledRequirement! value) -> void
+TIKSN.Integration.Messages.FeatureFlagRequirement.FeatureFlagRequirement() -> void
+TIKSN.Integration.Messages.FeatureFlagRequirement.Value.get -> object?
+TIKSN.Integration.Messages.IFeatureGatedRequest.FeatureRequirement.get -> TIKSN.Integration.Messages.FeatureFlagRequirement
 TIKSN.Integration.Messages.TenantFeatureTransactionContextBehavior<TTenantIdentity, TRequest, TResponse>
 TIKSN.Integration.Messages.TenantFeatureTransactionContextBehavior<TTenantIdentity, TRequest, TResponse>.Handle(TRequest request, MediatR.RequestHandlerDelegate<TResponse>! next, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<TResponse>!
 TIKSN.Integration.Messages.TenantFeatureTransactionContextBehavior<TTenantIdentity, TRequest, TResponse>.TenantFeatureTransactionContextBehavior(OpenFeature.Model.ITransactionContextPropagator! transactionContextPropagator) -> void
