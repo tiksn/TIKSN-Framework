@@ -35,8 +35,36 @@ public sealed class ConfigurationFeatureProvider : FeatureProvider
         ArgumentException.ThrowIfNullOrWhiteSpace(flagKey);
 
         var section = this.GetFlagSection(flagKey);
-        if (section.Value is null)
+        var variantResolution = this.GetVariantResolution(section, out var valueSection, out var variant);
+        if (variantResolution == VariantResolution.Disabled)
         {
+            return Task.FromResult(new ResolutionDetails<bool>(
+                flagKey,
+                defaultValue,
+                ErrorType.None,
+                Reason.Disabled));
+        }
+
+        if (variantResolution == VariantResolution.MissingVariant)
+        {
+            return Task.FromResult(new ResolutionDetails<bool>(
+                flagKey,
+                defaultValue,
+                ErrorType.General,
+                Reason.Error,
+                errorMessage: $"Flag '{flagKey}' default variant '{variant}' was not found in its Variants section."));
+        }
+
+        if (valueSection.Value is null)
+        {
+            if (variantResolution == VariantResolution.Selected)
+            {
+                return CreateBooleanTypeMismatchAsync(
+                    flagKey,
+                    defaultValue,
+                    $"variant '{variant}' has no scalar value");
+            }
+
             return Task.FromResult(new ResolutionDetails<bool>(
                 flagKey,
                 defaultValue,
@@ -45,13 +73,15 @@ public sealed class ConfigurationFeatureProvider : FeatureProvider
                 errorMessage: $"Flag '{flagKey}' was not found in configuration."));
         }
 
-        if (bool.TryParse(section.Value, out var parsedValue))
+        var rawValue = valueSection.Value;
+        if (this.TryParseBoolean(rawValue, out var parsedValue))
         {
             return Task.FromResult(new ResolutionDetails<bool>(
                 flagKey,
                 parsedValue,
                 ErrorType.None,
-                Reason.Static));
+                Reason.Static,
+                variant: variant ?? rawValue));
         }
 
         return Task.FromResult(new ResolutionDetails<bool>(
@@ -59,7 +89,9 @@ public sealed class ConfigurationFeatureProvider : FeatureProvider
             defaultValue,
             ErrorType.TypeMismatch,
             Reason.Error,
-            errorMessage: $"Flag '{flagKey}' value '{section.Value}' cannot be parsed as a boolean."));
+            errorMessage: variant is null
+                ? $"Flag '{flagKey}' value '{rawValue}' cannot be parsed as a boolean."
+                : $"Flag '{flagKey}' variant '{variant}' value '{rawValue}' cannot be parsed as a boolean."));
     }
 
     public override Task<ResolutionDetails<double>> ResolveDoubleValueAsync(
@@ -71,8 +103,38 @@ public sealed class ConfigurationFeatureProvider : FeatureProvider
         ArgumentException.ThrowIfNullOrWhiteSpace(flagKey);
 
         var section = this.GetFlagSection(flagKey);
-        if (section.Value is null)
+        var variantResolution = this.GetVariantResolution(section, out var valueSection, out var variant);
+        if (variantResolution == VariantResolution.Disabled)
         {
+            return Task.FromResult(new ResolutionDetails<double>(
+                flagKey,
+                defaultValue,
+                ErrorType.None,
+                Reason.Disabled));
+        }
+
+        if (variantResolution == VariantResolution.MissingVariant)
+        {
+            return Task.FromResult(new ResolutionDetails<double>(
+                flagKey,
+                defaultValue,
+                ErrorType.General,
+                Reason.Error,
+                errorMessage: $"Flag '{flagKey}' default variant '{variant}' was not found in its Variants section."));
+        }
+
+        if (valueSection.Value is null)
+        {
+            if (variantResolution == VariantResolution.Selected)
+            {
+                return Task.FromResult(new ResolutionDetails<double>(
+                    flagKey,
+                    defaultValue,
+                    ErrorType.TypeMismatch,
+                    Reason.Error,
+                    errorMessage: $"Flag '{flagKey}' variant '{variant}' has no scalar value to parse as a double."));
+            }
+
             return Task.FromResult(new ResolutionDetails<double>(
                 flagKey,
                 defaultValue,
@@ -81,14 +143,15 @@ public sealed class ConfigurationFeatureProvider : FeatureProvider
                 errorMessage: $"Flag '{flagKey}' was not found in configuration."));
         }
 
-        if (double.TryParse(section.Value, NumberStyles.Float | NumberStyles.AllowThousands,
+        if (double.TryParse(valueSection.Value, NumberStyles.Float | NumberStyles.AllowThousands,
                 CultureInfo.InvariantCulture, out var parsedValue))
         {
             return Task.FromResult(new ResolutionDetails<double>(
                 flagKey,
                 parsedValue,
                 ErrorType.None,
-                Reason.Static));
+                Reason.Static,
+                variant: variant));
         }
 
         return Task.FromResult(new ResolutionDetails<double>(
@@ -96,7 +159,9 @@ public sealed class ConfigurationFeatureProvider : FeatureProvider
             defaultValue,
             ErrorType.TypeMismatch,
             Reason.Error,
-            errorMessage: $"Flag '{flagKey}' value '{section.Value}' cannot be parsed as a double."));
+            errorMessage: variant is null
+                ? $"Flag '{flagKey}' value '{valueSection.Value}' cannot be parsed as a double."
+                : $"Flag '{flagKey}' variant '{variant}' value '{valueSection.Value}' cannot be parsed as a double."));
     }
 
     public override Task<ResolutionDetails<int>> ResolveIntegerValueAsync(
@@ -108,8 +173,38 @@ public sealed class ConfigurationFeatureProvider : FeatureProvider
         ArgumentException.ThrowIfNullOrWhiteSpace(flagKey);
 
         var section = this.GetFlagSection(flagKey);
-        if (section.Value is null)
+        var variantResolution = this.GetVariantResolution(section, out var valueSection, out var variant);
+        if (variantResolution == VariantResolution.Disabled)
         {
+            return Task.FromResult(new ResolutionDetails<int>(
+                flagKey,
+                defaultValue,
+                ErrorType.None,
+                Reason.Disabled));
+        }
+
+        if (variantResolution == VariantResolution.MissingVariant)
+        {
+            return Task.FromResult(new ResolutionDetails<int>(
+                flagKey,
+                defaultValue,
+                ErrorType.General,
+                Reason.Error,
+                errorMessage: $"Flag '{flagKey}' default variant '{variant}' was not found in its Variants section."));
+        }
+
+        if (valueSection.Value is null)
+        {
+            if (variantResolution == VariantResolution.Selected)
+            {
+                return Task.FromResult(new ResolutionDetails<int>(
+                    flagKey,
+                    defaultValue,
+                    ErrorType.TypeMismatch,
+                    Reason.Error,
+                    errorMessage: $"Flag '{flagKey}' variant '{variant}' has no scalar value to parse as an integer."));
+            }
+
             return Task.FromResult(new ResolutionDetails<int>(
                 flagKey,
                 defaultValue,
@@ -118,13 +213,14 @@ public sealed class ConfigurationFeatureProvider : FeatureProvider
                 errorMessage: $"Flag '{flagKey}' was not found in configuration."));
         }
 
-        if (int.TryParse(section.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsedValue))
+        if (int.TryParse(valueSection.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsedValue))
         {
             return Task.FromResult(new ResolutionDetails<int>(
                 flagKey,
                 parsedValue,
                 ErrorType.None,
-                Reason.Static));
+                Reason.Static,
+                variant: variant));
         }
 
         return Task.FromResult(new ResolutionDetails<int>(
@@ -132,7 +228,10 @@ public sealed class ConfigurationFeatureProvider : FeatureProvider
             defaultValue,
             ErrorType.TypeMismatch,
             Reason.Error,
-            errorMessage: $"Flag '{flagKey}' value '{section.Value}' cannot be parsed as an integer."));
+            errorMessage: variant is null
+                ? $"Flag '{flagKey}' value '{valueSection.Value}' cannot be parsed as an integer."
+                : $"Flag '{flagKey}' variant '{variant}' value '{valueSection.Value}' " +
+                    "cannot be parsed as an integer."));
     }
 
     public override Task<ResolutionDetails<string>> ResolveStringValueAsync(
@@ -144,8 +243,38 @@ public sealed class ConfigurationFeatureProvider : FeatureProvider
         ArgumentException.ThrowIfNullOrWhiteSpace(flagKey);
 
         var section = this.GetFlagSection(flagKey);
-        if (section.Value is null)
+        var variantResolution = this.GetVariantResolution(section, out var valueSection, out var variant);
+        if (variantResolution == VariantResolution.Disabled)
         {
+            return Task.FromResult(new ResolutionDetails<string>(
+                flagKey,
+                defaultValue,
+                ErrorType.None,
+                Reason.Disabled));
+        }
+
+        if (variantResolution == VariantResolution.MissingVariant)
+        {
+            return Task.FromResult(new ResolutionDetails<string>(
+                flagKey,
+                defaultValue,
+                ErrorType.General,
+                Reason.Error,
+                errorMessage: $"Flag '{flagKey}' default variant '{variant}' was not found in its Variants section."));
+        }
+
+        if (valueSection.Value is null)
+        {
+            if (variantResolution == VariantResolution.Selected)
+            {
+                return Task.FromResult(new ResolutionDetails<string>(
+                    flagKey,
+                    defaultValue,
+                    ErrorType.TypeMismatch,
+                    Reason.Error,
+                    errorMessage: $"Flag '{flagKey}' variant '{variant}' does not contain a scalar string value."));
+            }
+
             return Task.FromResult(new ResolutionDetails<string>(
                 flagKey,
                 defaultValue,
@@ -156,9 +285,10 @@ public sealed class ConfigurationFeatureProvider : FeatureProvider
 
         return Task.FromResult(new ResolutionDetails<string>(
             flagKey,
-            section.Value,
+            valueSection.Value,
             ErrorType.None,
-            Reason.Static));
+            Reason.Static,
+            variant: variant));
     }
 
     public override Task<ResolutionDetails<Value>> ResolveStructureValueAsync(
@@ -170,6 +300,36 @@ public sealed class ConfigurationFeatureProvider : FeatureProvider
         ArgumentException.ThrowIfNullOrWhiteSpace(flagKey);
 
         var section = this.GetFlagSection(flagKey);
+        var variantResolution = this.GetVariantResolution(section, out var valueSection, out var variant);
+        if (variantResolution == VariantResolution.Disabled)
+        {
+            return Task.FromResult(new ResolutionDetails<Value>(
+                flagKey,
+                defaultValue,
+                ErrorType.None,
+                Reason.Disabled));
+        }
+
+        if (variantResolution == VariantResolution.MissingVariant)
+        {
+            return Task.FromResult(new ResolutionDetails<Value>(
+                flagKey,
+                defaultValue,
+                ErrorType.General,
+                Reason.Error,
+                errorMessage: $"Flag '{flagKey}' default variant '{variant}' was not found in its Variants section."));
+        }
+
+        if (variantResolution == VariantResolution.Selected)
+        {
+            return Task.FromResult(new ResolutionDetails<Value>(
+                flagKey,
+                ConvertSectionToValue(valueSection),
+                ErrorType.None,
+                Reason.Static,
+                variant: variant));
+        }
+
         var children = section.GetChildren().ToList();
         if (children.Count > 0)
         {
@@ -259,5 +419,85 @@ public sealed class ConfigurationFeatureProvider : FeatureProvider
         return string.IsNullOrWhiteSpace(sectionName)
             ? this.configuration.GetSection(flagKey)
             : this.configuration.GetSection(sectionName).GetSection(flagKey);
+    }
+
+    private bool TryParseBoolean(string rawValue, out bool parsedValue)
+    {
+        if (bool.TryParse(rawValue, out parsedValue))
+        {
+            return true;
+        }
+
+        var featureOptions = this.options.Value;
+        if (featureOptions.TrueValues.Any(value => string.Equals(value, rawValue, StringComparison.OrdinalIgnoreCase)))
+        {
+            parsedValue = true;
+            return true;
+        }
+
+        if (featureOptions.FalseValues.Any(value => string.Equals(value, rawValue, StringComparison.OrdinalIgnoreCase)))
+        {
+            parsedValue = false;
+            return true;
+        }
+
+        return false;
+    }
+
+    private VariantResolution GetVariantResolution(
+        IConfigurationSection flagSection,
+        out IConfigurationSection valueSection,
+        out string? variant)
+    {
+        valueSection = flagSection;
+        variant = null;
+        if (!this.options.Value.EnableVariantSchema)
+        {
+            return VariantResolution.None;
+        }
+
+        var variantsSection = flagSection.GetSection("Variants");
+        if (!variantsSection.GetChildren().Any())
+        {
+            return VariantResolution.None;
+        }
+
+        variant = flagSection["DefaultVariant"];
+        if (variant is null)
+        {
+            return VariantResolution.None;
+        }
+
+        if (bool.TryParse(flagSection["Disabled"], out var isDisabled) && isDisabled)
+        {
+            return VariantResolution.Disabled;
+        }
+
+        valueSection = variantsSection.GetSection(variant);
+        if (valueSection.Value is null && !valueSection.GetChildren().Any())
+        {
+            return VariantResolution.MissingVariant;
+        }
+
+        return VariantResolution.Selected;
+    }
+
+    private static Task<ResolutionDetails<bool>> CreateBooleanTypeMismatchAsync(
+        string flagKey,
+        bool defaultValue,
+        string description) =>
+        Task.FromResult(new ResolutionDetails<bool>(
+            flagKey,
+            defaultValue,
+            ErrorType.TypeMismatch,
+            Reason.Error,
+            errorMessage: $"Flag '{flagKey}' {description} and cannot be parsed as a boolean."));
+
+    private enum VariantResolution
+    {
+        None = 0,
+        Selected = 1,
+        Disabled = 2,
+        MissingVariant = 3,
     }
 }

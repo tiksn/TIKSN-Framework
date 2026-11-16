@@ -1,6 +1,10 @@
 #nullable enable
 abstract TIKSN.FeatureManagement.LicenseEntitlementsFeatureProviderBase<TEntitlements>.ResolveLicenseAsync(OpenFeature.Model.EvaluationContext? context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<LanguageExt.Option<TIKSN.Licensing.License<TEntitlements>!>>!
 const TIKSN.FeatureManagement.ConfigurationFeatureProviderOptions.DefaultSectionName = "FeatureFlags" -> string!
+TIKSN.FeatureManagement.ConfigurationFeatureProviderOptions.EnableVariantSchema.get -> bool
+TIKSN.FeatureManagement.ConfigurationFeatureProviderOptions.EnableVariantSchema.set -> void
+TIKSN.FeatureManagement.ConfigurationFeatureProviderOptions.FalseValues.get -> System.Collections.Generic.ISet<string!>!
+TIKSN.FeatureManagement.ConfigurationFeatureProviderOptions.TrueValues.get -> System.Collections.Generic.ISet<string!>!
 const TIKSN.FeatureManagement.FeatureEvaluationContextKeys.CultureName = "culture.name" -> string!
 const TIKSN.FeatureManagement.FeatureEvaluationContextKeys.DeploymentEnvironment = "deployment.environment" -> string!
 const TIKSN.FeatureManagement.FeatureEvaluationContextKeys.RegionTwoLetterIso = "region.two_letter_iso" -> string!
