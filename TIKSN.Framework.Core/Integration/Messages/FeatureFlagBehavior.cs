@@ -22,47 +22,128 @@ public class FeatureFlagBehavior<TRequest, TResponse>
         ArgumentNullException.ThrowIfNull(request);
         ArgumentNullException.ThrowIfNull(next);
 
-        var features = request.Features;
-        if (features.IsEmpty)
-        {
-            return await next(cancellationToken).ConfigureAwait(false);
-        }
-
+        var featureValues = new Dictionary<string, bool>(StringComparer.Ordinal);
         var disabledFeatures = new List<string>();
-        var anyEnabled = false;
+        var isSatisfied = await this.IsSatisfiedAsync(
+                request.FeatureRequirement,
+                featureValues,
+                disabledFeatures,
+                cancellationToken)
+            .ConfigureAwait(false);
 
-        foreach (var featureKey in features)
+        if (!isSatisfied)
         {
-            var isEnabled = await this.featureClient
-                .GetBooleanValueAsync(featureKey, defaultValue: false, cancellationToken: cancellationToken)
-                .ConfigureAwait(false);
-
-            if (isEnabled)
-            {
-                anyEnabled = true;
-            }
-            else
-            {
-                disabledFeatures.Add(featureKey);
-            }
-        }
-
-        if (request.RequireAllFeatures && disabledFeatures.Count > 0)
-        {
-            var disabledSeq = disabledFeatures.ToSeq();
+            var disabledFeatureSequence = disabledFeatures.ToSeq();
+            var disabledFeatureNames = string.Join(", ", disabledFeatureSequence);
             throw new FeatureDisabledException(
-                $"Required feature flags are disabled: {string.Join(", ", disabledSeq)}.",
-                disabledSeq);
-        }
-
-        if (!request.RequireAllFeatures && !anyEnabled)
-        {
-            var disabledSeq = disabledFeatures.ToSeq();
-            throw new FeatureDisabledException(
-                $"None of the required feature flags are enabled: {string.Join(", ", disabledSeq)}.",
-                disabledSeq);
+                $"Feature requirements are not satisfied. Disabled feature flags: {disabledFeatureNames}.",
+                disabledFeatureSequence);
         }
 
         return await next(cancellationToken).ConfigureAwait(false);
+    }
+
+    private async Task<bool> AreAllFeaturesEnabledAsync(
+        AllFeatureFlagsRequirement allOf,
+        Dictionary<string, bool> featureValues,
+        List<string> disabledFeatures,
+        CancellationToken cancellationToken)
+    {
+        var allEnabled = !allOf.Requirements.IsEmpty;
+        foreach (var child in allOf.Requirements)
+        {
+            var childEnabled = await this.IsSatisfiedAsync(
+                    child,
+                    featureValues,
+                    disabledFeatures,
+                    cancellationToken)
+                .ConfigureAwait(false);
+            allEnabled &= childEnabled;
+        }
+
+        return allEnabled;
+    }
+
+    private async Task<bool> IsAnyFeatureEnabledAsync(
+        AnyFeatureFlagRequirement anyOf,
+        Dictionary<string, bool> featureValues,
+        List<string> disabledFeatures,
+        CancellationToken cancellationToken)
+    {
+        var anyEnabled = false;
+        foreach (var child in anyOf.Requirements)
+        {
+            var childEnabled = await this.IsSatisfiedAsync(
+                    child,
+                    featureValues,
+                    disabledFeatures,
+                    cancellationToken)
+                .ConfigureAwait(false);
+            anyEnabled |= childEnabled;
+        }
+
+        return anyEnabled;
+    }
+
+    private async Task<bool> IsFeatureEnabledAsync(
+        FeatureFlagEnabledRequirement featureFlag,
+        Dictionary<string, bool> featureValues,
+        List<string> disabledFeatures,
+        CancellationToken cancellationToken)
+    {
+        if (featureValues.TryGetValue(featureFlag.FeatureFlagKey, out var cachedValue))
+        {
+            return cachedValue;
+        }
+
+        var isEnabled = await this.featureClient
+            .GetBooleanValueAsync(
+                featureFlag.FeatureFlagKey,
+                defaultValue: false,
+                cancellationToken: cancellationToken)
+            .ConfigureAwait(false);
+        featureValues.Add(featureFlag.FeatureFlagKey, isEnabled);
+        if (!isEnabled)
+        {
+            disabledFeatures.Add(featureFlag.FeatureFlagKey);
+        }
+
+        return isEnabled;
+    }
+
+    private async Task<bool> IsSatisfiedAsync(
+        FeatureFlagRequirement requirement,
+        Dictionary<string, bool> featureValues,
+        List<string> disabledFeatures,
+        CancellationToken cancellationToken)
+    {
+        if (requirement.Value is null)
+        {
+            throw new ArgumentException("Feature requirement must contain a case.", nameof(requirement));
+        }
+
+        return requirement.Value switch
+        {
+            FeatureFlagEnabledRequirement featureFlag => await this.IsFeatureEnabledAsync(
+                    featureFlag,
+                    featureValues,
+                    disabledFeatures,
+                    cancellationToken)
+                .ConfigureAwait(false),
+            AnyFeatureFlagRequirement anyOf => await this.IsAnyFeatureEnabledAsync(
+                    anyOf,
+                    featureValues,
+                    disabledFeatures,
+                    cancellationToken)
+                .ConfigureAwait(false),
+            AllFeatureFlagsRequirement allOf => await this.AreAllFeaturesEnabledAsync(
+                    allOf,
+                    featureValues,
+                    disabledFeatures,
+                    cancellationToken)
+                .ConfigureAwait(false),
+            _ => throw new ArgumentOutOfRangeException(nameof(requirement), requirement,
+                "Unsupported feature flag requirement."),
+        };
     }
 }

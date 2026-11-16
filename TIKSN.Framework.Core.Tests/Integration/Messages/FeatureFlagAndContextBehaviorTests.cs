@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using LanguageExt;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using OpenFeature;
@@ -20,7 +19,7 @@ namespace TIKSN.Tests.Integration.Messages;
 public class FeatureFlagAndContextBehaviorTests
 {
     [Fact]
-    public async Task GivenAllDisabledFeatures_WhenRequireAllFeaturesIsFalse_ThenThrowsFeatureDisabledException()
+    public async Task GivenAllDisabledFeatures_WhenAnyOfRequirementIsNotSatisfied_ThenThrowsFeatureDisabledException()
     {
         var featureClient = Substitute.For<IFeatureClient>();
         _ = featureClient.GetBooleanValueAsync("feature-a", false, null, null, Arg.Any<CancellationToken>())
@@ -28,8 +27,11 @@ public class FeatureFlagAndContextBehaviorTests
         _ = featureClient.GetBooleanValueAsync("feature-b", false, null, null, Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(false));
 
-        var behavior = new FeatureFlagBehavior<AnyGatedCommand, Unit>(featureClient);
-        var request = new AnyGatedCommand(Seq("feature-a", "feature-b"));
+        var behavior = new FeatureFlagBehavior<FeatureGatedCommand, Unit>(featureClient);
+        var request = new FeatureGatedCommand(
+            new AnyFeatureFlagRequirement(Seq<FeatureFlagRequirement>(
+                new FeatureFlagEnabledRequirement("feature-a"),
+                new FeatureFlagEnabledRequirement("feature-b"))));
 
         var exception = await Should.ThrowAsync<FeatureDisabledException>(() =>
             behavior.Handle(request, _ => Task.FromResult(Unit.Value), TestContext.Current.CancellationToken));
@@ -38,29 +40,20 @@ public class FeatureFlagAndContextBehaviorTests
     }
 
     [Fact]
-    public async Task GivenAllEnabledFeaturesOrEmpty_WhenRequireAllFeaturesIsTrue_ThenProceeds()
+    public async Task GivenDefaultFeatureRequirement_WhenEvaluated_ThenThrowsArgumentException()
     {
         var featureClient = Substitute.For<IFeatureClient>();
-        _ = featureClient.GetBooleanValueAsync("feature-a", false, null, null, Arg.Any<CancellationToken>())
-            .Returns(Task.FromResult(true));
+        var behavior = new FeatureFlagBehavior<FeatureGatedCommand, Unit>(featureClient);
 
-        var behavior = new FeatureFlagBehavior<AllGatedCommand, Unit>(featureClient);
-
-        var enabledResult = await behavior.Handle(
-            new AllGatedCommand(Seq1("feature-a")),
-            _ => Task.FromResult(Unit.Value),
-            TestContext.Current.CancellationToken);
-        enabledResult.ShouldBe(Unit.Value);
-
-        var emptyResult = await behavior.Handle(
-            new AllGatedCommand(Seq<string>()),
-            _ => Task.FromResult(Unit.Value),
-            TestContext.Current.CancellationToken);
-        emptyResult.ShouldBe(Unit.Value);
+        _ = await Should.ThrowAsync<ArgumentException>(() =>
+            behavior.Handle(
+                new FeatureGatedCommand(default),
+                _ => Task.FromResult(Unit.Value),
+                TestContext.Current.CancellationToken));
     }
 
     [Fact]
-    public async Task GivenDisabledFeature_WhenRequireAllFeaturesIsTrue_ThenThrowsFeatureDisabledException()
+    public async Task GivenDisabledFeature_WhenAllOfRequirementIsNotSatisfied_ThenThrowsFeatureDisabledException()
     {
         var featureClient = Substitute.For<IFeatureClient>();
         _ = featureClient.GetBooleanValueAsync("feature-a", false, null, null, Arg.Any<CancellationToken>())
@@ -68,13 +61,63 @@ public class FeatureFlagAndContextBehaviorTests
         _ = featureClient.GetBooleanValueAsync("feature-b", false, null, null, Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(false));
 
-        var behavior = new FeatureFlagBehavior<AllGatedCommand, Unit>(featureClient);
-        var request = new AllGatedCommand(Seq("feature-a", "feature-b"));
+        var behavior = new FeatureFlagBehavior<FeatureGatedCommand, Unit>(featureClient);
+        var request = new FeatureGatedCommand(
+            new AllFeatureFlagsRequirement(Seq<FeatureFlagRequirement>(
+                new FeatureFlagEnabledRequirement("feature-a"),
+                new FeatureFlagEnabledRequirement("feature-b"))));
 
         var exception = await Should.ThrowAsync<FeatureDisabledException>(() =>
             behavior.Handle(request, _ => Task.FromResult(Unit.Value), TestContext.Current.CancellationToken));
 
         exception.DisabledFeatures.Equals(Seq1("feature-b")).ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task GivenEmptyAllOfRequirement_WhenEvaluated_ThenThrowsFeatureDisabledException()
+    {
+        var featureClient = Substitute.For<IFeatureClient>();
+        var behavior = new FeatureFlagBehavior<FeatureGatedCommand, Unit>(featureClient);
+
+        var exception = await Should.ThrowAsync<FeatureDisabledException>(() =>
+            behavior.Handle(
+                new FeatureGatedCommand(new AllFeatureFlagsRequirement(Seq<FeatureFlagRequirement>())),
+                _ => Task.FromResult(Unit.Value),
+                TestContext.Current.CancellationToken));
+
+        exception.DisabledFeatures.IsEmpty.ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task GivenEmptyAnyOfRequirement_WhenEvaluated_ThenThrowsFeatureDisabledException()
+    {
+        var featureClient = Substitute.For<IFeatureClient>();
+        var behavior = new FeatureFlagBehavior<FeatureGatedCommand, Unit>(featureClient);
+
+        var exception = await Should.ThrowAsync<FeatureDisabledException>(() =>
+            behavior.Handle(
+                new FeatureGatedCommand(new AnyFeatureFlagRequirement(Seq<FeatureFlagRequirement>())),
+                _ => Task.FromResult(Unit.Value),
+                TestContext.Current.CancellationToken));
+
+        exception.DisabledFeatures.IsEmpty.ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task GivenEnabledFeatures_WhenAllOfRequirementIsSatisfied_ThenProceeds()
+    {
+        var featureClient = Substitute.For<IFeatureClient>();
+        _ = featureClient.GetBooleanValueAsync("feature-a", false, null, null, Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(true));
+
+        var behavior = new FeatureFlagBehavior<FeatureGatedCommand, Unit>(featureClient);
+
+        var enabledResult = await behavior.Handle(
+            new FeatureGatedCommand(new AllFeatureFlagsRequirement(
+                Seq1<FeatureFlagRequirement>(new FeatureFlagEnabledRequirement("feature-a")))),
+            _ => Task.FromResult(Unit.Value),
+            TestContext.Current.CancellationToken);
+        enabledResult.ShouldBe(Unit.Value);
     }
 
     [Fact]
@@ -113,7 +156,33 @@ public class FeatureFlagAndContextBehaviorTests
     }
 
     [Fact]
-    public async Task GivenOneEnabledFeature_WhenRequireAllFeaturesIsFalse_ThenProceeds()
+    public async Task GivenNestedAllOfAndAnyOf_WhenRequirementIsSatisfied_ThenProceeds()
+    {
+        var featureClient = Substitute.For<IFeatureClient>();
+        _ = featureClient.GetBooleanValueAsync("feature-a", false, null, null, Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(true));
+        _ = featureClient.GetBooleanValueAsync("feature-b", false, null, null, Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(false));
+        _ = featureClient.GetBooleanValueAsync("feature-c", false, null, null, Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(true));
+
+        var behavior = new FeatureFlagBehavior<FeatureGatedCommand, Unit>(featureClient);
+        var requirement = new AllFeatureFlagsRequirement(Seq<FeatureFlagRequirement>(
+            new FeatureFlagEnabledRequirement("feature-a"),
+            new AnyFeatureFlagRequirement(Seq<FeatureFlagRequirement>(
+                new FeatureFlagEnabledRequirement("feature-b"),
+                new FeatureFlagEnabledRequirement("feature-c")))));
+
+        var result = await behavior.Handle(
+            new FeatureGatedCommand(requirement),
+            _ => Task.FromResult(Unit.Value),
+            TestContext.Current.CancellationToken);
+
+        result.ShouldBe(Unit.Value);
+    }
+
+    [Fact]
+    public async Task GivenOneEnabledFeature_WhenAnyOfRequirementIsSatisfied_ThenProceeds()
     {
         var featureClient = Substitute.For<IFeatureClient>();
         _ = featureClient.GetBooleanValueAsync("feature-a", false, null, null, Arg.Any<CancellationToken>())
@@ -121,8 +190,11 @@ public class FeatureFlagAndContextBehaviorTests
         _ = featureClient.GetBooleanValueAsync("feature-b", false, null, null, Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(true));
 
-        var behavior = new FeatureFlagBehavior<AnyGatedCommand, Unit>(featureClient);
-        var request = new AnyGatedCommand(Seq("feature-a", "feature-b"));
+        var behavior = new FeatureFlagBehavior<FeatureGatedCommand, Unit>(featureClient);
+        var request = new FeatureGatedCommand(
+            new AnyFeatureFlagRequirement(Seq<FeatureFlagRequirement>(
+                new FeatureFlagEnabledRequirement("feature-a"),
+                new FeatureFlagEnabledRequirement("feature-b"))));
 
         var result = await behavior.Handle(request, _ => Task.FromResult(Unit.Value),
             TestContext.Current.CancellationToken);
@@ -209,12 +281,8 @@ public class FeatureFlagAndContextBehaviorTests
         restoredContext.GetValue("initial").AsString.ShouldBe("value");
     }
 
-    public sealed record AllGatedCommand(Seq<string> Features) : ICommand, IFeatureGatedRequest;
-
-    public sealed record AnyGatedCommand(Seq<string> Features) : ICommand, IFeatureGatedRequest
-    {
-        public bool RequireAllFeatures => false;
-    }
+    public sealed record FeatureGatedCommand(FeatureFlagRequirement FeatureRequirement)
+        : ICommand, IFeatureGatedRequest;
 
     public sealed record SampleTenantCommand(Guid TenantID) : ITenantCommand<Guid>;
 
