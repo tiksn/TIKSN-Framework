@@ -34,8 +34,9 @@ public class FeatureFlagBehavior<TRequest, TResponse>
         if (!isSatisfied)
         {
             var disabledFeatureSequence = disabledFeatures.ToSeq();
+            var disabledFeatureNames = string.Join(", ", disabledFeatureSequence);
             throw new FeatureDisabledException(
-                $"Feature requirements are not satisfied. Disabled feature flags: {string.Join(", ", disabledFeatureSequence)}.",
+                $"Feature requirements are not satisfied. Disabled feature flags: {disabledFeatureNames}.",
                 disabledFeatureSequence);
         }
 
