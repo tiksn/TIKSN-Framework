@@ -73,6 +73,110 @@ public class ConfigurationFeatureProviderTests
     }
 
     [Fact]
+    public async Task GivenBooleanWords_WhenResolved_ThenReturnsConfiguredValuesAndVariants()
+    {
+        var values = new Dictionary<string, string?>
+        {
+            ["FeatureFlags:True0"] = "True",
+            ["FeatureFlags:True1"] = "ON",
+            ["FeatureFlags:True2"] = "Yes",
+            ["FeatureFlags:True3"] = "enabled",
+            ["FeatureFlags:True4"] = "Active",
+            ["FeatureFlags:True5"] = "show",
+            ["FeatureFlags:True6"] = "1",
+            ["FeatureFlags:False0"] = "false",
+            ["FeatureFlags:False1"] = "OFF",
+            ["FeatureFlags:False2"] = "no",
+            ["FeatureFlags:False3"] = "disabled",
+            ["FeatureFlags:False4"] = "Inactive",
+            ["FeatureFlags:False5"] = "hide",
+            ["FeatureFlags:False6"] = "0",
+            ["FeatureFlags:CustomTrue"] = "go",
+            ["FeatureFlags:CustomFalse"] = "stop",
+            ["FeatureFlags:Unknown"] = "perhaps",
+        };
+        var config = new ConfigurationBuilder().AddInMemoryCollection(values).Build();
+        var options = new ConfigurationFeatureProviderOptions();
+        _ = options.TrueValues.Add("go");
+        _ = options.FalseValues.Add("stop");
+        var provider = new ConfigurationFeatureProvider(
+            config,
+            Options.Create(options));
+
+        for (var i = 0; i < 7; i++)
+        {
+            var trueResult = await provider.ResolveBooleanValueAsync(
+                $"True{i}", false, cancellationToken: TestContext.Current.CancellationToken);
+            trueResult.Value.ShouldBeTrue();
+            trueResult.ErrorType.ShouldBe(ErrorType.None);
+            trueResult.Reason.ShouldBe(Reason.Static);
+            trueResult.Variant.ShouldBe(values[$"FeatureFlags:True{i}"]);
+
+            var falseResult = await provider.ResolveBooleanValueAsync(
+                $"False{i}", true, cancellationToken: TestContext.Current.CancellationToken);
+            falseResult.Value.ShouldBeFalse();
+            falseResult.ErrorType.ShouldBe(ErrorType.None);
+            falseResult.Reason.ShouldBe(Reason.Static);
+            falseResult.Variant.ShouldBe(values[$"FeatureFlags:False{i}"]);
+        }
+
+        var customTrueResult = await provider.ResolveBooleanValueAsync(
+            "CustomTrue", false, cancellationToken: TestContext.Current.CancellationToken);
+        var customFalseResult = await provider.ResolveBooleanValueAsync(
+            "CustomFalse", true, cancellationToken: TestContext.Current.CancellationToken);
+        var unknownResult = await provider.ResolveBooleanValueAsync(
+            "Unknown", true, cancellationToken: TestContext.Current.CancellationToken);
+
+        customTrueResult.Value.ShouldBeTrue();
+        customTrueResult.Variant.ShouldBe("go");
+        customFalseResult.Value.ShouldBeFalse();
+        customFalseResult.Variant.ShouldBe("stop");
+        unknownResult.Value.ShouldBeTrue();
+        unknownResult.ErrorType.ShouldBe(ErrorType.TypeMismatch);
+        unknownResult.Reason.ShouldBe(Reason.Error);
+        unknownResult.ErrorMessage.ShouldNotBeNullOrWhiteSpace();
+    }
+
+    [Fact]
+    public async Task GivenDisabledOrInvalidVariantSchema_WhenResolved_ThenReturnsExpectedErrors()
+    {
+        var config = new ConfigurationBuilder()
+            .AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                ["FeatureFlags:Disabled:Variants:on"] = "true",
+                ["FeatureFlags:Disabled:DefaultVariant"] = "on",
+                ["FeatureFlags:Disabled:Disabled"] = "true",
+                ["FeatureFlags:Missing:Variants:on"] = "true",
+                ["FeatureFlags:Missing:DefaultVariant"] = "off",
+                ["FeatureFlags:Mismatch:Variants:on"] = "not-a-bool",
+                ["FeatureFlags:Mismatch:DefaultVariant"] = "on",
+            })
+            .Build();
+        var provider = new ConfigurationFeatureProvider(
+            config,
+            Options.Create(new ConfigurationFeatureProviderOptions { EnableVariantSchema = true }));
+
+        var disabled = await provider.ResolveBooleanValueAsync(
+            "Disabled", false, cancellationToken: TestContext.Current.CancellationToken);
+        var missing = await provider.ResolveBooleanValueAsync(
+            "Missing", true, cancellationToken: TestContext.Current.CancellationToken);
+        var mismatch = await provider.ResolveBooleanValueAsync(
+            "Mismatch", false, cancellationToken: TestContext.Current.CancellationToken);
+
+        disabled.Value.ShouldBeFalse();
+        disabled.ErrorType.ShouldBe(ErrorType.None);
+        disabled.Reason.ShouldBe(Reason.Disabled);
+        disabled.Variant.ShouldBeNull();
+        missing.ErrorType.ShouldBe(ErrorType.General);
+        _ = missing.ErrorMessage.ShouldNotBeNull();
+        missing.ErrorMessage.ShouldContain("Missing");
+        missing.ErrorMessage.ShouldContain("off");
+        mismatch.Value.ShouldBeFalse();
+        mismatch.ErrorType.ShouldBe(ErrorType.TypeMismatch);
+        mismatch.Reason.ShouldBe(Reason.Error);
+    }
+
+    [Fact]
     public async Task GivenInvalidFlags_WhenResolved_ThenReturnsTypeMismatchError()
     {
         var config = new ConfigurationBuilder()
@@ -215,7 +319,7 @@ public class ConfigurationFeatureProviderTests
             .AddConfigurationProvider(options =>
             {
                 options.SectionName = "CustomSection";
-                options.TrueValues.Add("go");
+                _ = options.TrueValues.Add("go");
             }));
 
         await using var serviceProvider = services.BuildServiceProvider();
@@ -292,68 +396,26 @@ public class ConfigurationFeatureProviderTests
     }
 
     [Fact]
-    public async Task GivenBooleanWords_WhenResolved_ThenReturnsConfiguredValuesAndVariants()
+    public async Task GivenVariantSchemaDisabled_WhenResolvedAsStructure_ThenKeepsTheWholeSection()
     {
-        var values = new Dictionary<string, string?>
-        {
-            ["FeatureFlags:True0"] = "True",
-            ["FeatureFlags:True1"] = "ON",
-            ["FeatureFlags:True2"] = "Yes",
-            ["FeatureFlags:True3"] = "enabled",
-            ["FeatureFlags:True4"] = "Active",
-            ["FeatureFlags:True5"] = "show",
-            ["FeatureFlags:True6"] = "1",
-            ["FeatureFlags:False0"] = "false",
-            ["FeatureFlags:False1"] = "OFF",
-            ["FeatureFlags:False2"] = "no",
-            ["FeatureFlags:False3"] = "disabled",
-            ["FeatureFlags:False4"] = "Inactive",
-            ["FeatureFlags:False5"] = "hide",
-            ["FeatureFlags:False6"] = "0",
-            ["FeatureFlags:CustomTrue"] = "go",
-            ["FeatureFlags:CustomFalse"] = "stop",
-            ["FeatureFlags:Unknown"] = "perhaps",
-        };
-        var config = new ConfigurationBuilder().AddInMemoryCollection(values).Build();
-        var options = new ConfigurationFeatureProviderOptions();
-        options.TrueValues.Add("go");
-        options.FalseValues.Add("stop");
+        var config = new ConfigurationBuilder()
+            .AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                ["FeatureFlags:Theme:Variants:light:Color"] = "white",
+                ["FeatureFlags:Theme:DefaultVariant"] = "light",
+            })
+            .Build();
         var provider = new ConfigurationFeatureProvider(
             config,
-            Options.Create(options));
+            Options.Create(new ConfigurationFeatureProviderOptions()));
 
-        for (var i = 0; i < 7; i++)
-        {
-            var trueResult = await provider.ResolveBooleanValueAsync(
-                $"True{i}", false, cancellationToken: TestContext.Current.CancellationToken);
-            trueResult.Value.ShouldBeTrue();
-            trueResult.ErrorType.ShouldBe(ErrorType.None);
-            trueResult.Reason.ShouldBe(Reason.Static);
-            trueResult.Variant.ShouldBe(values[$"FeatureFlags:True{i}"]);
+        var result = await provider.ResolveStructureValueAsync(
+            "Theme", new Value(), cancellationToken: TestContext.Current.CancellationToken);
 
-            var falseResult = await provider.ResolveBooleanValueAsync(
-                $"False{i}", true, cancellationToken: TestContext.Current.CancellationToken);
-            falseResult.Value.ShouldBeFalse();
-            falseResult.ErrorType.ShouldBe(ErrorType.None);
-            falseResult.Reason.ShouldBe(Reason.Static);
-            falseResult.Variant.ShouldBe(values[$"FeatureFlags:False{i}"]);
-        }
-
-        var customTrueResult = await provider.ResolveBooleanValueAsync(
-            "CustomTrue", false, cancellationToken: TestContext.Current.CancellationToken);
-        var customFalseResult = await provider.ResolveBooleanValueAsync(
-            "CustomFalse", true, cancellationToken: TestContext.Current.CancellationToken);
-        var unknownResult = await provider.ResolveBooleanValueAsync(
-            "Unknown", true, cancellationToken: TestContext.Current.CancellationToken);
-
-        customTrueResult.Value.ShouldBeTrue();
-        customTrueResult.Variant.ShouldBe("go");
-        customFalseResult.Value.ShouldBeFalse();
-        customFalseResult.Variant.ShouldBe("stop");
-        unknownResult.Value.ShouldBeTrue();
-        unknownResult.ErrorType.ShouldBe(ErrorType.TypeMismatch);
-        unknownResult.Reason.ShouldBe(Reason.Error);
-        unknownResult.ErrorMessage.ShouldNotBeNullOrWhiteSpace();
+        result.ErrorType.ShouldBe(ErrorType.None);
+        result.Value.AsStructure!.GetValue("Variants").AsStructure!.GetValue("light")
+            .AsStructure!.GetValue("Color").AsString.ShouldBe("white");
+        result.Value.AsStructure.GetValue("DefaultVariant").AsString.ShouldBe("light");
     }
 
     [Fact]
@@ -417,67 +479,5 @@ public class ConfigurationFeatureProviderTests
         structureResult.Value.AsStructure!.GetValue("Count").AsInteger.ShouldBe(2);
         structureResult.Value.AsStructure.GetValue("Name").AsString.ShouldBe("compact");
         structureResult.Variant.ShouldBe("compact");
-    }
-
-    [Fact]
-    public async Task GivenDisabledOrInvalidVariantSchema_WhenResolved_ThenReturnsExpectedErrors()
-    {
-        var config = new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string?>
-            {
-                ["FeatureFlags:Disabled:Variants:on"] = "true",
-                ["FeatureFlags:Disabled:DefaultVariant"] = "on",
-                ["FeatureFlags:Disabled:Disabled"] = "true",
-                ["FeatureFlags:Missing:Variants:on"] = "true",
-                ["FeatureFlags:Missing:DefaultVariant"] = "off",
-                ["FeatureFlags:Mismatch:Variants:on"] = "not-a-bool",
-                ["FeatureFlags:Mismatch:DefaultVariant"] = "on",
-            })
-            .Build();
-        var provider = new ConfigurationFeatureProvider(
-            config,
-            Options.Create(new ConfigurationFeatureProviderOptions { EnableVariantSchema = true }));
-
-        var disabled = await provider.ResolveBooleanValueAsync(
-            "Disabled", false, cancellationToken: TestContext.Current.CancellationToken);
-        var missing = await provider.ResolveBooleanValueAsync(
-            "Missing", true, cancellationToken: TestContext.Current.CancellationToken);
-        var mismatch = await provider.ResolveBooleanValueAsync(
-            "Mismatch", false, cancellationToken: TestContext.Current.CancellationToken);
-
-        disabled.Value.ShouldBeFalse();
-        disabled.ErrorType.ShouldBe(ErrorType.None);
-        disabled.Reason.ShouldBe(Reason.Disabled);
-        disabled.Variant.ShouldBeNull();
-        missing.ErrorType.ShouldBe(ErrorType.General);
-        missing.ErrorMessage.ShouldNotBeNull();
-        missing.ErrorMessage!.ShouldContain("Missing");
-        missing.ErrorMessage.ShouldContain("off");
-        mismatch.Value.ShouldBeFalse();
-        mismatch.ErrorType.ShouldBe(ErrorType.TypeMismatch);
-        mismatch.Reason.ShouldBe(Reason.Error);
-    }
-
-    [Fact]
-    public async Task GivenVariantSchemaDisabled_WhenResolvedAsStructure_ThenKeepsTheWholeSection()
-    {
-        var config = new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string?>
-            {
-                ["FeatureFlags:Theme:Variants:light:Color"] = "white",
-                ["FeatureFlags:Theme:DefaultVariant"] = "light",
-            })
-            .Build();
-        var provider = new ConfigurationFeatureProvider(
-            config,
-            Options.Create(new ConfigurationFeatureProviderOptions()));
-
-        var result = await provider.ResolveStructureValueAsync(
-            "Theme", new Value(), cancellationToken: TestContext.Current.CancellationToken);
-
-        result.ErrorType.ShouldBe(ErrorType.None);
-        result.Value.AsStructure!.GetValue("Variants").AsStructure!.GetValue("light")
-            .AsStructure!.GetValue("Color").AsString.ShouldBe("white");
-        result.Value.AsStructure.GetValue("DefaultVariant").AsString.ShouldBe("light");
     }
 }

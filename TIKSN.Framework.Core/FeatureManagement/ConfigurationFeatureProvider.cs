@@ -231,7 +231,7 @@ public sealed class ConfigurationFeatureProvider : FeatureProvider
             errorMessage: variant is null
                 ? $"Flag '{flagKey}' value '{valueSection.Value}' cannot be parsed as an integer."
                 : $"Flag '{flagKey}' variant '{variant}' value '{valueSection.Value}' " +
-                    "cannot be parsed as an integer."));
+                "cannot be parsed as an integer."));
     }
 
     public override Task<ResolutionDetails<string>> ResolveStringValueAsync(
@@ -413,35 +413,23 @@ public sealed class ConfigurationFeatureProvider : FeatureProvider
         return new Value(builder.Build());
     }
 
+    private static Task<ResolutionDetails<bool>> CreateBooleanTypeMismatchAsync(
+        string flagKey,
+        bool defaultValue,
+        string description) =>
+        Task.FromResult(new ResolutionDetails<bool>(
+            flagKey,
+            defaultValue,
+            ErrorType.TypeMismatch,
+            Reason.Error,
+            errorMessage: $"Flag '{flagKey}' {description} and cannot be parsed as a boolean."));
+
     private IConfigurationSection GetFlagSection(string flagKey)
     {
         var sectionName = this.options.Value.SectionName;
         return string.IsNullOrWhiteSpace(sectionName)
             ? this.configuration.GetSection(flagKey)
             : this.configuration.GetSection(sectionName).GetSection(flagKey);
-    }
-
-    private bool TryParseBoolean(string rawValue, out bool parsedValue)
-    {
-        if (bool.TryParse(rawValue, out parsedValue))
-        {
-            return true;
-        }
-
-        var featureOptions = this.options.Value;
-        if (featureOptions.TrueValues.Any(value => string.Equals(value, rawValue, StringComparison.OrdinalIgnoreCase)))
-        {
-            parsedValue = true;
-            return true;
-        }
-
-        if (featureOptions.FalseValues.Any(value => string.Equals(value, rawValue, StringComparison.OrdinalIgnoreCase)))
-        {
-            parsedValue = false;
-            return true;
-        }
-
-        return false;
     }
 
     private VariantResolution GetVariantResolution(
@@ -482,16 +470,28 @@ public sealed class ConfigurationFeatureProvider : FeatureProvider
         return VariantResolution.Selected;
     }
 
-    private static Task<ResolutionDetails<bool>> CreateBooleanTypeMismatchAsync(
-        string flagKey,
-        bool defaultValue,
-        string description) =>
-        Task.FromResult(new ResolutionDetails<bool>(
-            flagKey,
-            defaultValue,
-            ErrorType.TypeMismatch,
-            Reason.Error,
-            errorMessage: $"Flag '{flagKey}' {description} and cannot be parsed as a boolean."));
+    private bool TryParseBoolean(string rawValue, out bool parsedValue)
+    {
+        if (bool.TryParse(rawValue, out parsedValue))
+        {
+            return true;
+        }
+
+        var featureOptions = this.options.Value;
+        if (featureOptions.TrueValues.Any(value => string.Equals(value, rawValue, StringComparison.OrdinalIgnoreCase)))
+        {
+            parsedValue = true;
+            return true;
+        }
+
+        if (featureOptions.FalseValues.Any(value => string.Equals(value, rawValue, StringComparison.OrdinalIgnoreCase)))
+        {
+            parsedValue = false;
+            return true;
+        }
+
+        return false;
+    }
 
     private enum VariantResolution
     {
