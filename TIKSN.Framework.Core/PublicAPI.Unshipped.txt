@@ -463,3 +463,7 @@ TIKSN.Mapping.DynamicMapper<TSource, TDestination>
 TIKSN.Mapping.DynamicMapper<TSource, TDestination>.DynamicMapper() -> void
 TIKSN.Mapping.DynamicMapper<TSource, TDestination>.Map(TSource source) -> TDestination
 TIKSN.Mapping.DynamicMapper<TSource, TDestination>.MapAsync(TSource source, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<TDestination>!
+TIKSN.Serialization.SourceGeneratedJsonDeserializer
+TIKSN.Serialization.SourceGeneratedJsonDeserializer.SourceGeneratedJsonDeserializer(System.Text.Json.Serialization.JsonSerializerContext! context) -> void
+TIKSN.Serialization.SourceGeneratedJsonSerializer
+TIKSN.Serialization.SourceGeneratedJsonSerializer.SourceGeneratedJsonSerializer(System.Text.Json.Serialization.JsonSerializerContext! context) -> void

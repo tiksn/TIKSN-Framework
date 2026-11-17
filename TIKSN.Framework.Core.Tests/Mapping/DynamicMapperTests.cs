@@ -64,6 +64,22 @@ public class DynamicMapperTests
     }
 
     [Fact]
+    public void GivenConvertibleAndIncompatibleProperties_WhenMapped_ThenConvertsAndSkipsIncompatibleProperties()
+    {
+        var mapper = new DynamicMapper<ConversionSource, ConversionDestination>();
+        var source = new ConversionSource
+        {
+            Count = 42,
+            Name = "not a number"
+        };
+
+        var result = mapper.Map(source);
+
+        result.Count.ShouldBe(42L);
+        result.Name.ShouldBe(1);
+    }
+
+    [Fact]
     public void GivenTypeWithoutParameterlessConstructor_WhenInstantiatedAndMapped_ThenThrowsInvalidOperationException()
     {
         var mapper = new DynamicMapper<SourceModel, NoDefaultConstructorModel>();
@@ -85,6 +101,18 @@ public class DynamicMapperTests
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string? UnmatchedDestinationProperty { get; set; }
+    }
+
+    public class ConversionDestination
+    {
+        public long Count { get; set; }
+        public int Name { get; set; } = 1;
+    }
+
+    public class ConversionSource
+    {
+        public int Count { get; set; }
+        public string Name { get; set; } = string.Empty;
     }
 
     public class NoDefaultConstructorModel
