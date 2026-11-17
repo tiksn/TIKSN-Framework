@@ -9,7 +9,6 @@ using LanguageExt;
 using LanguageExt.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Time.Testing;
-using Newtonsoft.Json;
 using Shouldly;
 using TIKSN.DependencyInjection;
 using TIKSN.Licensing;
@@ -20,6 +19,11 @@ namespace TIKSN.Tests.Licensing;
 
 public class LicenseTests
 {
+    private static readonly System.Text.Json.JsonSerializerOptions IndentedJsonOptions = new()
+    {
+        WriteIndented = true
+    };
+
     private readonly Dictionary<string, string> privateCertificatePasswords;
     private readonly Dictionary<string, byte[]> privateCertificates;
     private readonly Dictionary<string, byte[]> publicCertificates;
@@ -702,7 +706,7 @@ public class LicenseTests
             notBefore,
             notAfter);
         this.testOutputHelper.WriteLine("License Terms:");
-        this.testOutputHelper.WriteLine(JsonConvert.SerializeObject(terms, Formatting.Indented));
+        this.testOutputHelper.WriteLine(System.Text.Json.JsonSerializer.Serialize(terms, IndentedJsonOptions));
         entitlements = new TestEntitlements(
             "Test-Name",
             Quantity: 100,
@@ -710,7 +714,8 @@ public class LicenseTests
             CompanyId: 1000,
             EmployeeId: 10002000);
         this.testOutputHelper.WriteLine("License Entitlements:");
-        this.testOutputHelper.WriteLine(JsonConvert.SerializeObject(entitlements, Formatting.Indented));
+        this.testOutputHelper.WriteLine(
+            System.Text.Json.JsonSerializer.Serialize(entitlements, IndentedJsonOptions));
 
         publicCertificate = X509CertificateLoader.LoadCertificate(this.publicCertificates[kind]);
         this.testOutputHelper.WriteLine(
