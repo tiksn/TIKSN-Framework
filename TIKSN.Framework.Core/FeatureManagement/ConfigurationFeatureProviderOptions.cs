@@ -1,11 +1,20 @@
-using System;
-using System.Collections.Generic;
-
 namespace TIKSN.FeatureManagement;
 
 public class ConfigurationFeatureProviderOptions
 {
     public const string DefaultSectionName = "FeatureFlags";
+    public bool EnableVariantSchema { get; set; }
+
+    public ISet<string> FalseValues { get; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+    {
+        "false",
+        "off",
+        "no",
+        "disabled",
+        "inactive",
+        "hide",
+        "0",
+    };
 
     public string SectionName { get; set; } = DefaultSectionName;
 
@@ -19,16 +28,4 @@ public class ConfigurationFeatureProviderOptions
         "show",
         "1",
     };
-
-    public ISet<string> FalseValues { get; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-    {
-        "false",
-        "off",
-        "no",
-        "disabled",
-        "inactive",
-        "hide",
-        "0",
-    };
-    public bool EnableVariantSchema { get; set; }
 }
