@@ -11,7 +11,8 @@ namespace TIKSN.Mapping;
 /// <typeparam name="TSource">The source type.</typeparam>
 /// <typeparam name="TDestination">The destination type.</typeparam>
 [RequiresDynamicCode("Mapping compiles a runtime-generated delegate and is not compatible with NativeAOT.")]
-[RequiresUnreferencedCode("Mapping discovers public properties and constructors through reflection and requires preserved model types.")]
+[RequiresUnreferencedCode(
+    "Mapping discovers public properties and constructors through reflection and requires preserved model types.")]
 public class DynamicMapper<TSource, TDestination> : IMapper<TSource, TDestination>, IAsyncMapper<TSource, TDestination>
 {
     private static readonly Lazy<Func<TSource, TDestination>> CompiledMapper = new(CreateMapper);

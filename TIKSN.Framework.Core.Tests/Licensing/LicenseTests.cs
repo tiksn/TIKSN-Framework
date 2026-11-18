@@ -19,10 +19,7 @@ namespace TIKSN.Tests.Licensing;
 
 public class LicenseTests
 {
-    private static readonly System.Text.Json.JsonSerializerOptions IndentedJsonOptions = new()
-    {
-        WriteIndented = true
-    };
+    private static readonly System.Text.Json.JsonSerializerOptions IndentedJsonOptions = new() { WriteIndented = true };
 
     private readonly Dictionary<string, string> privateCertificatePasswords;
     private readonly Dictionary<string, byte[]> privateCertificates;

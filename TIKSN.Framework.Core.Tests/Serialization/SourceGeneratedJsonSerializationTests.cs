@@ -32,18 +32,6 @@ public class SourceGeneratedJsonSerializationTests
     }
 
     [Fact]
-    public void GivenUnregisteredType_WhenSerialized_ThenReportsMissingMetadata()
-    {
-        var serializer = new SourceGeneratedJsonSerializer(TestJsonContext.Default);
-
-        Action act = () => serializer.Serialize(new UnregisteredModel(1));
-
-        var exception = act.ShouldThrow<SerializerException>();
-        exception.InnerException.ShouldBeOfType<InvalidOperationException>()
-            .Message.ShouldContain(typeof(UnregisteredModel).FullName!);
-    }
-
-    [Fact]
     public void GivenUnregisteredType_WhenDeserialized_ThenReportsMissingMetadata()
     {
         var deserializer = new SourceGeneratedJsonDeserializer(TestJsonContext.Default);
@@ -55,4 +43,15 @@ public class SourceGeneratedJsonSerializationTests
             .Message.ShouldContain(typeof(UnregisteredModel).FullName!);
     }
 
+    [Fact]
+    public void GivenUnregisteredType_WhenSerialized_ThenReportsMissingMetadata()
+    {
+        var serializer = new SourceGeneratedJsonSerializer(TestJsonContext.Default);
+
+        Action act = () => serializer.Serialize(new UnregisteredModel(1));
+
+        var exception = act.ShouldThrow<SerializerException>();
+        exception.InnerException.ShouldBeOfType<InvalidOperationException>()
+            .Message.ShouldContain(typeof(UnregisteredModel).FullName!);
+    }
 }

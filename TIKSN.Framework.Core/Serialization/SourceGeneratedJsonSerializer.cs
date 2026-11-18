@@ -11,7 +11,7 @@ public sealed class SourceGeneratedJsonSerializer : SerializerBase<string>
         => this.context = context ?? throw new ArgumentNullException(nameof(context));
 
     protected override string SerializeInternal<T>(T obj)
-        => global::System.Text.Json.JsonSerializer.Serialize(obj, this.GetTypeInfo<T>());
+        => System.Text.Json.JsonSerializer.Serialize(obj, this.GetTypeInfo<T>());
 
     private JsonTypeInfo<T> GetTypeInfo<T>()
         => this.context.GetTypeInfo(typeof(T)) as JsonTypeInfo<T>

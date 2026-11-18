@@ -11,7 +11,7 @@ public sealed class SourceGeneratedJsonDeserializer : DeserializerBase<string>
         => this.context = context ?? throw new ArgumentNullException(nameof(context));
 
     protected override T DeserializeInternal<T>(string serial)
-        => global::System.Text.Json.JsonSerializer.Deserialize(serial, this.GetTypeInfo<T>())
+        => System.Text.Json.JsonSerializer.Deserialize(serial, this.GetTypeInfo<T>())
             ?? throw new InvalidOperationException("Deserialized result is null.");
 
     private JsonTypeInfo<T> GetTypeInfo<T>()

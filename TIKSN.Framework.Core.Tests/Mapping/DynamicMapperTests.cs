@@ -10,6 +10,22 @@ namespace TIKSN.Tests.Mapping;
 public class DynamicMapperTests
 {
     [Fact]
+    public void GivenConvertibleAndIncompatibleProperties_WhenMapped_ThenConvertsAndSkipsIncompatibleProperties()
+    {
+        var mapper = new DynamicMapper<ConversionSource, ConversionDestination>();
+        var source = new ConversionSource
+        {
+            Count = 42,
+            Name = "not a number"
+        };
+
+        var result = mapper.Map(source);
+
+        result.Count.ShouldBe(42L);
+        result.Name.ShouldBe(1);
+    }
+
+    [Fact]
     public async Task GivenMatchingProperties_WhenMappedAsync_ThenDestinationPropertiesAreSet()
     {
         var mapper = new DynamicMapper<SourceModel, DestinationModel>();
@@ -64,22 +80,6 @@ public class DynamicMapperTests
     }
 
     [Fact]
-    public void GivenConvertibleAndIncompatibleProperties_WhenMapped_ThenConvertsAndSkipsIncompatibleProperties()
-    {
-        var mapper = new DynamicMapper<ConversionSource, ConversionDestination>();
-        var source = new ConversionSource
-        {
-            Count = 42,
-            Name = "not a number"
-        };
-
-        var result = mapper.Map(source);
-
-        result.Count.ShouldBe(42L);
-        result.Name.ShouldBe(1);
-    }
-
-    [Fact]
     public void GivenTypeWithoutParameterlessConstructor_WhenInstantiatedAndMapped_ThenThrowsInvalidOperationException()
     {
         var mapper = new DynamicMapper<SourceModel, NoDefaultConstructorModel>();
@@ -94,15 +94,6 @@ public class DynamicMapperTests
         _ = act.ShouldThrow<InvalidOperationException>();
     }
 
-    public class DestinationModel
-    {
-        public bool Active { get; set; }
-        public decimal Amount { get; set; }
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public string? UnmatchedDestinationProperty { get; set; }
-    }
-
     public class ConversionDestination
     {
         public long Count { get; set; }
@@ -113,6 +104,15 @@ public class DynamicMapperTests
     {
         public int Count { get; set; }
         public string Name { get; set; } = string.Empty;
+    }
+
+    public class DestinationModel
+    {
+        public bool Active { get; set; }
+        public decimal Amount { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string? UnmatchedDestinationProperty { get; set; }
     }
 
     public class NoDefaultConstructorModel

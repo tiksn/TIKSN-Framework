@@ -49,14 +49,15 @@ public class JsonSerializerTests
         var deserializer = new JsonDeserializer();
 
         var result = deserializer.Deserialize<SerializationModel>(
-            """{"id":23,"name":"System.Text.Json","category":"AOT"}""");
+            /*lang=json,strict*/
+                                 """{"id":23,"name":"System.Text.Json","category":"AOT"}""");
 
         result.Id.ShouldBe(23);
         result.Name.ShouldBe("System.Text.Json");
         result.Category.ShouldBe("AOT");
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+    [SuppressMessage(
         "Design",
         "CA1051",
         Justification = "The public field verifies IncludeFields serialization compatibility.")]
