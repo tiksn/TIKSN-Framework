@@ -5,7 +5,8 @@ using System.Xml.Serialization;
 namespace TIKSN.Serialization;
 
 [RequiresDynamicCode(
-    "XmlSerializer generates code at runtime. Use a generated serializer for NativeAOT-compatible XML deserialization.")]
+    "XmlSerializer generates code at runtime. Use a generated serializer for "
+    + "NativeAOT-compatible XML deserialization.")]
 [RequiresUnreferencedCode("XmlSerializer discovers members through reflection and requires preserved model types.")]
 public class DotNetXmlDeserializer : DeserializerBase<string>
 {

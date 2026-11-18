@@ -50,7 +50,7 @@ public class JsonSerializerTests
 
         var result = deserializer.Deserialize<SerializationModel>(
             /*lang=json,strict*/
-                                 """{"id":23,"name":"System.Text.Json","category":"AOT"}""");
+            """{"id":23,"name":"System.Text.Json","category":"AOT"}""");
 
         result.Id.ShouldBe(23);
         result.Name.ShouldBe("System.Text.Json");

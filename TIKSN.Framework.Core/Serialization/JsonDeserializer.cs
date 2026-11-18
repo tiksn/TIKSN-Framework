@@ -4,9 +4,11 @@ using System.Text.Json;
 namespace TIKSN.Serialization;
 
 [RequiresDynamicCode(
-    "System.Text.Json may generate code at runtime when deserializing values. Use SourceGeneratedJsonDeserializer for NativeAOT-compatible JSON deserialization.")]
+    "System.Text.Json may generate code at runtime when deserializing values. "
+    + "Use SourceGeneratedJsonDeserializer for NativeAOT-compatible JSON deserialization.")]
 [RequiresUnreferencedCode(
-    "System.Text.Json uses reflection to deserialize values. Use SourceGeneratedJsonDeserializer for trimming-compatible JSON deserialization.")]
+    "System.Text.Json uses reflection to deserialize values. "
+    + "Use SourceGeneratedJsonDeserializer for trimming-compatible JSON deserialization.")]
 public class JsonDeserializer : DeserializerBase<string>
 {
     private static readonly JsonSerializerOptions SerializerOptions = new()
