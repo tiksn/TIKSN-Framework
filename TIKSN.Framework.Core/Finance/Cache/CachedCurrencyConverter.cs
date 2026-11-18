@@ -2,6 +2,7 @@ namespace TIKSN.Finance.Cache;
 
 public class CachedCurrencyConverter : ICurrencyConverter
 {
+    private readonly Lock cacheLock = new();
     private readonly List<CachedCurrencyPairs> cachedCurrencyPairs;
     private readonly List<CachedRate> cachedRates;
     private readonly ICurrencyPairFactory currencyPairFactory;
@@ -57,18 +58,21 @@ public class CachedCurrencyConverter : ICurrencyConverter
 
     public TimeSpan CurrencyPairsCacheInterval { get; }
 
-    public int CurrencyPairsCacheSize => this.cachedCurrencyPairs.Count;
+    public int CurrencyPairsCacheSize => this.GetCacheSize(this.cachedCurrencyPairs);
 
     public int? RatesCacheCapacity { get; }
 
     public TimeSpan RatesCacheInterval { get; }
 
-    public int RatesCacheSize => this.cachedRates.Count;
+    public int RatesCacheSize => this.GetCacheSize(this.cachedRates);
 
     public void Clear()
     {
-        this.cachedCurrencyPairs.Clear();
-        this.cachedRates.Clear();
+        lock (this.cacheLock)
+        {
+            this.cachedCurrencyPairs.Clear();
+            this.cachedRates.Clear();
+        }
     }
 
     public async Task<Money> ConvertCurrencyAsync(
@@ -87,8 +91,12 @@ public class CachedCurrencyConverter : ICurrencyConverter
 
         var pair = this.currencyPairFactory.Create(baseMoney.Currency, counterCurrency);
 
-        var cachedRate = this.GetFromCache(this.cachedRates.Where(item => item.Pair == pair),
-            this.RatesCacheInterval, asOn);
+        CachedRate? cachedRate;
+        lock (this.cacheLock)
+        {
+            cachedRate = this.GetFromCache(this.cachedRates.Where(item => item.Pair == pair),
+                this.RatesCacheInterval, asOn);
+        }
 
         if (cachedRate != null)
         {
@@ -101,8 +109,11 @@ public class CachedCurrencyConverter : ICurrencyConverter
 
         var actualRate = actualMoney.Amount / baseMoney.Amount;
 
-        AddToCache(this.cachedRates, this.RatesCacheCapacity,
-            new CachedRate(pair, actualRate, asOn, this.timeProvider));
+        lock (this.cacheLock)
+        {
+            AddToCache(this.cachedRates, this.RatesCacheCapacity,
+                new CachedRate(pair, actualRate, asOn, this.timeProvider));
+        }
 
         return actualMoney;
     }
@@ -111,7 +122,11 @@ public class CachedCurrencyConverter : ICurrencyConverter
         DateTimeOffset asOn,
         CancellationToken cancellationToken)
     {
-        var cachedPairs = this.GetFromCache(this.cachedCurrencyPairs, this.CurrencyPairsCacheInterval, asOn);
+        CachedCurrencyPairs? cachedPairs;
+        lock (this.cacheLock)
+        {
+            cachedPairs = this.GetFromCache(this.cachedCurrencyPairs, this.CurrencyPairsCacheInterval, asOn);
+        }
 
         if (cachedPairs != null)
         {
@@ -121,8 +136,11 @@ public class CachedCurrencyConverter : ICurrencyConverter
         var actualPairs = await this.originalConverter.GetCurrencyPairsAsync(asOn, cancellationToken)
             .ConfigureAwait(false);
 
-        AddToCache(this.cachedCurrencyPairs, this.CurrencyPairsCacheCapacity,
-            new CachedCurrencyPairs(actualPairs, asOn, this.timeProvider));
+        lock (this.cacheLock)
+        {
+            AddToCache(this.cachedCurrencyPairs, this.CurrencyPairsCacheCapacity,
+                new CachedCurrencyPairs(actualPairs, asOn, this.timeProvider));
+        }
 
         return actualPairs;
     }
@@ -134,8 +152,12 @@ public class CachedCurrencyConverter : ICurrencyConverter
     {
         ArgumentNullException.ThrowIfNull(pair);
 
-        var cachedRate = this.GetFromCache(this.cachedRates.Where(item => item.Pair == pair),
-            this.RatesCacheInterval, asOn);
+        CachedRate? cachedRate;
+        lock (this.cacheLock)
+        {
+            cachedRate = this.GetFromCache(this.cachedRates.Where(item => item.Pair == pair),
+                this.RatesCacheInterval, asOn);
+        }
 
         if (cachedRate != null)
         {
@@ -145,8 +167,11 @@ public class CachedCurrencyConverter : ICurrencyConverter
         var actualRate = await this.originalConverter.GetExchangeRateAsync(pair, asOn, cancellationToken)
             .ConfigureAwait(false);
 
-        AddToCache(this.cachedRates, this.RatesCacheCapacity,
-            new CachedRate(pair, actualRate, asOn, this.timeProvider));
+        lock (this.cacheLock)
+        {
+            AddToCache(this.cachedRates, this.RatesCacheCapacity,
+                new CachedRate(pair, actualRate, asOn, this.timeProvider));
+        }
 
         return actualRate;
     }
@@ -163,25 +188,22 @@ public class CachedCurrencyConverter : ICurrencyConverter
 
     private static void AddToCache<T>(List<T> cache, int? capacity, T itemToCache) where T : CachedData
     {
-        lock (cache)
+        if (capacity != 0)
         {
-            if (capacity != 0)
+            if (capacity.HasValue)
             {
-                if (capacity.HasValue)
+                if (cache.Count + 1 > capacity.Value)
                 {
-                    if (cache.Count + 1 > capacity.Value)
-                    {
-                        var itemToRemove = cache.OrderBy(item => item.LastAccess).First();
+                    var itemToRemove = cache.OrderBy(item => item.LastAccess).First();
 
-                        _ = cache.Remove(itemToRemove);
-                    }
+                    _ = cache.Remove(itemToRemove);
+                }
 
-                    cache.Add(itemToCache);
-                }
-                else
-                {
-                    cache.Add(itemToCache);
-                }
+                cache.Add(itemToCache);
+            }
+            else
+            {
+                cache.Add(itemToCache);
             }
         }
     }
@@ -201,6 +223,14 @@ public class CachedCurrencyConverter : ICurrencyConverter
         }
 
         return false;
+    }
+
+    private int GetCacheSize<T>(List<T> cache)
+    {
+        lock (this.cacheLock)
+        {
+            return cache.Count;
+        }
     }
 
     private T? GetFromCache<T>(IEnumerable<T> cache, TimeSpan interval, DateTimeOffset asOn) where T : CachedData
