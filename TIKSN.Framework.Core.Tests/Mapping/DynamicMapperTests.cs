@@ -10,6 +10,22 @@ namespace TIKSN.Tests.Mapping;
 public class DynamicMapperTests
 {
     [Fact]
+    public void GivenConvertibleAndIncompatibleProperties_WhenMapped_ThenConvertsAndSkipsIncompatibleProperties()
+    {
+        var mapper = new DynamicMapper<ConversionSource, ConversionDestination>();
+        var source = new ConversionSource
+        {
+            Count = 42,
+            Name = "not a number"
+        };
+
+        var result = mapper.Map(source);
+
+        result.Count.ShouldBe(42L);
+        result.Name.ShouldBe(1);
+    }
+
+    [Fact]
     public async Task GivenMatchingProperties_WhenMappedAsync_ThenDestinationPropertiesAreSet()
     {
         var mapper = new DynamicMapper<SourceModel, DestinationModel>();
@@ -76,6 +92,18 @@ public class DynamicMapperTests
         Action act = () => mapper.Map(source);
 
         _ = act.ShouldThrow<InvalidOperationException>();
+    }
+
+    public class ConversionDestination
+    {
+        public long Count { get; set; }
+        public int Name { get; set; } = 1;
+    }
+
+    public class ConversionSource
+    {
+        public int Count { get; set; }
+        public string Name { get; set; } = string.Empty;
     }
 
     public class DestinationModel

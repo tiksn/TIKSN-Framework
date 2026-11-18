@@ -15,7 +15,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
-    <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="Polly" />
     <PackageReference Include="Shouldly" />
     <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" />
