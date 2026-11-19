@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Time.Testing;
 using Shouldly;
 using TIKSN.Finance;
@@ -86,6 +88,36 @@ public class CachedCurrencyConverterTests
                     capacity))
             .ShouldThrow<ArgumentNullException>();
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+    }
+
+    [Fact]
+    public async Task CachedCurrencyConverter_ConcurrentAccessAndClearAreSafe()
+    {
+        var converter = CreateFixedRateCurrencyConverter(Helper.SampleCurrencyPair1);
+        var fakeTimeProvider = new FakeTimeProvider(new DateTimeOffset(2020, 12, 31, 0, 0, 0, TimeSpan.Zero));
+        var cachedConverter = CreateCachedCurrencyConverter(
+            converter,
+            fakeTimeProvider,
+            TimeSpan.FromDays(10),
+            TimeSpan.FromDays(10));
+
+        var operations = Enumerable.Range(0, 50)
+            .Select(async index =>
+            {
+                if (index % 5 == 0)
+                {
+                    cachedConverter.Clear();
+                }
+
+                var rate = await cachedConverter.GetExchangeRateAsync(
+                    Helper.SampleCurrencyPair1,
+                    fakeTimeProvider.GetUtcNow(),
+                    TestContext.Current.CancellationToken);
+
+                rate.ShouldBeGreaterThan(0m);
+            });
+
+        await Task.WhenAll(operations);
     }
 
     [Fact]

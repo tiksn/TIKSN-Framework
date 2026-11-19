@@ -463,6 +463,15 @@ TIKSN.Mapping.DynamicMapper<TSource, TDestination>
 TIKSN.Mapping.DynamicMapper<TSource, TDestination>.DynamicMapper() -> void
 TIKSN.Mapping.DynamicMapper<TSource, TDestination>.Map(TSource source) -> TDestination
 TIKSN.Mapping.DynamicMapper<TSource, TDestination>.MapAsync(TSource source, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<TDestination>!
+TIKSN.Concurrency.AsyncReaderWriterLock
+TIKSN.Concurrency.AsyncReaderWriterLock.AcquireReadAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<System.IAsyncDisposable!>
+TIKSN.Concurrency.AsyncReaderWriterLock.AcquireWriteAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<System.IAsyncDisposable!>
+TIKSN.Concurrency.AsyncReaderWriterLock.AsyncReaderWriterLock() -> void
+TIKSN.Concurrency.AsyncReaderWriterLock.Dispose() -> void
+TIKSN.Concurrency.AsyncReaderWriterLock.DisposeAsync() -> System.Threading.Tasks.ValueTask
+TIKSN.Concurrency.IAsyncReaderWriterLock
+TIKSN.Concurrency.IAsyncReaderWriterLock.AcquireReadAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<System.IAsyncDisposable!>
+TIKSN.Concurrency.IAsyncReaderWriterLock.AcquireWriteAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<System.IAsyncDisposable!>
 TIKSN.Serialization.SourceGeneratedJsonDeserializer
 TIKSN.Serialization.SourceGeneratedJsonDeserializer.SourceGeneratedJsonDeserializer(System.Text.Json.Serialization.JsonSerializerContext! context) -> void
 TIKSN.Serialization.SourceGeneratedJsonSerializer

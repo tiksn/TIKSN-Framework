@@ -25,6 +25,7 @@
     <PackageReference Include="BouncyCastle.Cryptography" />
     <PackageReference Include="DocumentFormat.OpenXml" />
     <PackageReference Include="DotNext.Metaprogramming" />
+    <PackageReference Include="DotNext.Threading" />
     <PackageReference Include="Google.Protobuf" />
     <PackageReference Include="Grpc.Tools">
       <PrivateAssets>all</PrivateAssets>
