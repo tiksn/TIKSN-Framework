@@ -10,7 +10,7 @@
       "rollForward": false
     },
     "microsoft.cst.devskim.cli": {
-      "version": "1.0.100",
+      "version": "1.0.103",
       "commands": [
         "devskim"
       ],
