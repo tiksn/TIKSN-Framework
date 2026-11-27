@@ -52,7 +52,7 @@
     <PackageVersion Include="Microsoft.PowerShell.SDK" Version="7.7.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="11.0.100" />
     <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="18.12.1" />
-    <PackageVersion Include="MongoDB.Driver" Version="3.14.0" />
+    <PackageVersion Include="MongoDB.Driver" Version="3.14.1" />
     <PackageVersion Include="NodaTime" Version="3.3.7" />
     <PackageVersion Include="NSubstitute" Version="6.2.0" />
     <PackageVersion Include="NuGet.Versioning" Version="8.0.0" />
